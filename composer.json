@@ -6,7 +6,8 @@
 	"type": "project",
 	"require": {
 		"laravel/framework": "5.0.*",
-		"fzaninotto/faker": "1.3.*@dev"
+		"fzaninotto/faker": "1.3.*@dev",
+		"thunderid/menu": "dev-master"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",

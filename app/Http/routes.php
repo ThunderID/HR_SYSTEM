@@ -19,3 +19,13 @@ Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
+
+Route::get('coba', function()
+{
+	return view('page_template_no_nav');
+});
+
+Route::get('/login', function()
+{
+	return view('page_template_no_nav');
+});
