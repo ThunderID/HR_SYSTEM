@@ -5,7 +5,7 @@
 	<title>HR System</title>
 	<link rel="stylesheet" href="{{ elixir('css/app.css') }}">
 </head>
-<body>
+<body style="background-color:#f5f5f5">
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12">

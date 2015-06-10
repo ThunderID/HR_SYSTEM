@@ -5,11 +5,11 @@
 	<title>HR System</title>
 	<link rel="stylesheet" href="{{ elixir('css/app.css') }}">
 </head>
-<body>
+<body style="background-color:#f5f5f5">
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-xs-11 col-sm-6 col-md-6 col-xs-offset-1 col-sm-offset-6 col-md-offset-6">
-				@yield('pages')				
+			<div class="col-xs-12 col-sm-6 col-md-6 col-sm-offset-3 col-md-offset-3">
+				@yield('pages')					
 			</div>
 		</div>
 	</div>

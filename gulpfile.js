@@ -10,7 +10,12 @@ var elixir = require('laravel-elixir');
  | file for our application, as well as publishing vendor resources.
  |
  */
-
+elixir.config.sourcemaps = false;
 elixir(function(mix) {
     mix.less('app.less');
+    
+});
+elixir(function(mix) {
+	mix.copy('public/css/app.css', 'resources/css');
+	mix.version('css/app.css');
 });
