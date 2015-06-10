@@ -1,0 +1,178 @@
+<?php namespace App\Models;
+
+/* ----------------------------------------------------------------------
+ * Document Model:
+ * 	ID 								: Auto Increment, Integer, PK
+ * 	name 							: Varchar, 255, Required
+ * 	tag 							: Varchar, 255, Required
+ * 	is_required 					: Boolean
+ * 	template 		 				: 
+ *	created_at						: Timestamp
+ * 	updated_at						: Timestamp
+ * 	deleted_at						: Timestamp
+ * 
+/* ----------------------------------------------------------------------
+ * Document Relationship :
+ * 	//this package
+ 	1 Relationship hasMany 
+	{
+		Templates
+	}
+
+	//other package
+	1 Relationship belongsToMany 
+	{
+		Persons
+	}
+
+	1 Relationship belongsTo 
+	{
+		Organisation
+	}
+ * ---------------------------------------------------------------------- */
+
+use Str, Validator, DateTime, Exception;
+
+class Document extends BaseModel {
+
+	use \App\Models\Traits\BelongsToMany\HasPersonDocumentsTrait;
+	use \App\Models\Traits\BelongsTo\HasOrganisationTrait;
+	use \App\Models\Traits\HasMany\HasTemplatesTrait;
+
+	public 		$timestamps 		= 	true;
+
+	protected 	$table 				= 	'documents';
+
+	protected 	$fillable			= 	[
+											'name' 							,
+											'tag' 							,
+											'is_required' 					,
+											'template' 						,
+										];
+
+	protected	$dates 				= 	['created_at', 'updated_at', 'deleted_at'];
+
+	protected 	$rules				= 	[
+											'name' 					=> 'required|max:255',
+											'tag' 					=> 'required|max:255',
+											'is_required' 			=> 'boolean',
+											'template'				=> '',
+										];
+
+	public $searchable 				= 	[
+											'id' 						=> 'ID', 
+											'organisationid' 			=> 'OrganisationID', 
+											'name' 						=> 'Name', 
+											'tag' 						=> 'Tag', 
+											'grouptag'	 				=> 'GroupTag',
+											'countperson'	 			=> 'CountPerson',
+											'checkperson'	 			=> 'CheckPerson',
+											'checkcreate' 				=> 'CheckCreate',
+											'checkreceiver' 			=> 'CheckReceiver',
+											'isrequired' 				=> 'Required', 
+											'withattributes' 			=> 'WithAttributes'
+										];
+										
+	public $sortable 				= 	['id', 'name', 'is_required', 'created_at', 'tag'];
+
+	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
+	/**
+	 * boot
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	static function boot()
+	{
+		parent::boot();
+
+		Static::saving(function($data)
+		{
+			$validator = Validator::make($data->toArray(), $data->rules);
+
+			if ($validator->passes())
+			{
+				return true;
+			}
+			else
+			{
+				$data->errors = $validator->errors();
+				return false;
+			}
+		});
+	}
+
+	/* ---------------------------------------------------------------------------- ERRORS ----------------------------------------------------------------------------*/
+	/**
+	 * return errors
+	 *
+	 * @return MessageBag
+	 * @author 
+	 **/
+	function getError()
+	{
+		return $this->errors;
+	}
+
+	/* ---------------------------------------------------------------------------- QUERY BUILDER ---------------------------------------------------------------------------*/
+	
+	/* ---------------------------------------------------------------------------- MUTATOR ---------------------------------------------------------------------------------*/
+	
+	/* ---------------------------------------------------------------------------- ACCESSOR --------------------------------------------------------------------------------*/
+	
+	/* ---------------------------------------------------------------------------- FUNCTIONS -------------------------------------------------------------------------------*/
+	
+	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
+
+	public function scopeID($query, $variable)
+	{
+		return $query->where('id', $variable);
+	}
+
+	public function scopeOrganisationID($query, $variable)
+	{
+		return $query->where('organisation_id', $variable);
+	}
+
+	public function scopeName($query, $variable)
+	{
+		return $query->where('name', 'like' ,'%'.$variable.'%');
+	}
+
+	public function scopeTag($query, $variable)
+	{
+		return $query->where('tag' ,$variable);
+	}
+
+	public function scopeRequired($query, $variable)
+	{
+		return $query->where('is_required', $variable);
+	}
+
+	public function scopeGroupTag($query, $variable)
+	{
+		return $query->groupby('tag');
+	}
+
+	public function scopeCheckCreate($query, $variable)
+	{
+		if(!is_array($variable))
+		{
+			$days 				= new DateTime($variable);
+
+			return $query->where('created_at', '>=', $days->format('Y-m-d'));
+		}
+		return $query->where('created_at', '>=', $variable[0])
+					->where('created_at', '<=', $variable[1]);
+	}
+
+	public function scopeWithAttributes($query, $variable)
+	{
+		if(!is_array($variable))
+		{
+			$variable 			= [$variable];
+		}
+		return $query->with($variable);
+	}
+
+}

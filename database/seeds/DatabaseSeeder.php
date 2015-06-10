@@ -14,7 +14,38 @@ class DatabaseSeeder extends Seeder {
 	{
 		Model::unguard();
 
-		// $this->call('UserTableSeeder');
+		$this->call('FingerTableSeeder');
+		$this->call('FingerPrintTableSeeder');
+
+		$this->call('ApplicationTableSeeder');
+		$this->call('MenuTableSeeder');
+
+		$this->call('OrganisationTableSeeder');
+		$this->call('BranchTableSeeder');
+		$this->call('ChartTableSeeder');
+		$this->call('ApiTableSeeder');
+
+		$this->call('PersonTableSeeder');
+		$this->call('RelativeTableSeeder');
+
+		$this->call('ContactTableSeeder');
+
+		$this->call('CalendarTableSeeder');
+		$this->call('ScheduleTableSeeder');
+		$this->call('PersonScheduleTableSeeder');
+		
+		$this->call('WorkTableSeeder');
+
+		$this->call('DocumentTableSeeder');
+		$this->call('PersonDocumentTableSeeder');
+		$this->call('DocumentDetailTableSeeder');
+
+		$this->call('PersonWidgetTableSeeder');
+
+		$this->call('WorkleaveTableSeeder');
+		$this->call('PersonWorkleaveTableSeeder');
+
+		$this->call('LogTableSeeder');
 	}
 
 }
