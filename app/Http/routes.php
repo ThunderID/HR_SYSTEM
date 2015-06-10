@@ -11,21 +11,6 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
-
-Route::get('home', 'HomeController@index');
-
-Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
-]);
-
-Route::get('coba', function()
-{
-	return view('page_template_no_nav');
-});
-
-Route::get('/login', function()
-{
-	return view('page_template_no_nav');
-});
+Route::group(['prefix' => 'admin'], function(){
+	Route::get('/', 					['uses' => 'Admin\\LoginController@getLogin',		'as' => 'admin.login']);
+});	

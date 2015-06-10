@@ -1,22 +1,11 @@
-<div class="row" style="height:400px">
-	<div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-2 col-md-offset-2">
-		<form action="" class="">
-			<div class="panel panel-default">
-				<div class="panel-body">
-					<h3 class="text-center">HR System Login</h3>
-					<div class="form-group">
-						<label>Email</label>
-						<input type="text" class="form-control" placeholder="email">
-					</div>
-					<div class="form-group">
-						<label>Password</label>
-						<input type="text" class="form-control" placeholder="password">
-					</div>
-					<div class="form-group text-right">
-						<input type="submit" class="btn btn-primary" value="Login">
-					</div>
-				</div>
+@section('area')
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+				@include('widget.form.form_login', [
+					'widget_template'	=> 'panel'					
+				])
 			</div>
-		</form>
+		</div>
 	</div>
-</div>
+@stop
