@@ -27,5 +27,5 @@ $this->dispatch(new Saving(new {{Modelname}}, {{attributes in array}}, {{id of m
 
 ### Deleting
 
-$this->dispatch(new Deleting(new {{Modelname}}, {{itemid}}));
+$this->dispatch(new Deleting(new {{Modelname}}, {{itemid}}))
 	
