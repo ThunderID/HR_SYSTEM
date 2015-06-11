@@ -4,9 +4,9 @@ use Input, Session, App, Paginator, Redirect;
 use API, DB;
 use App\Console\Commands\Getting;
 use App\Models\Organisation;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 
-class OrganisationController extends Controller {
+class OrganisationController extends BaseController {
 
 	protected $controller_name = 'organisasi';
 
@@ -53,5 +53,12 @@ class OrganisationController extends Controller {
 		
 		// return $contents;
 		dd($contents);
+	}
+
+	function getChoice()
+	{
+		$this->layout->page 	= view('pages.choice_organisasi.choice_organisasi');
+
+		return $this->layout;
 	}
 }
