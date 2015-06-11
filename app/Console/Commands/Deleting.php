@@ -3,7 +3,7 @@
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
 use App\APIDTO\APIResponse as APIResponse;
-use Hash, Auth;
+use Hash, Auth, Exception;
 
 class Deleting extends Command implements SelfHandling {
 
