@@ -9,8 +9,12 @@
 	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
 </head>
 <body style="background-color:#f5f5f5">
-	
-	@yield('area', ['area'])
-			
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3" style="margin-top:12%">
+				@yield('area', ['area'])
+			</div>
+		</div>
+	</div>
 </body>
 </html>
