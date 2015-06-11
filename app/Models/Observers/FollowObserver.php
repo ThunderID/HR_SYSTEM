@@ -25,11 +25,4 @@ class FollowObserver
 			return false;
 		}
 	}
-
-	public function deleting($model)
-	{
-		// $model['errors'] 	= ['Tidak dapat menghapus kalender per posisi.'];
-
-		// return false;
-	}
 }

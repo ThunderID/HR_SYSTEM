@@ -24,26 +24,6 @@ class PersonScheduleObserver
 		{
 			if(isset($model['attributes']['person_id']))
 			{
-				// $schedule 					= new PersonSchedule;
-				// if(isset($model['attributes']['id']))
-				// {
-				// 	$data 					= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->personid($model['attributes']['person_id'])->notid($model['attributes']['id'])->first();
-				// }
-				// else
-				// {
-				// 	$data 					= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->personid($model['attributes']['person_id'])->first();
-				// }
-
-				// if(count($data))
-				// {
-				// 	$errors 				= new MessageBag;
-				// 	$errors->add('ondate', 'Tidak dapat menyimpan dua jadwal di hari yang sama. Silahkan edit jadwal sebelumnya.');
-				
-				// 	$model['errors'] 		= $errors;
-
-				// 	return false;
-				// }
-
 				if(strtolower($model['attributes']['status'])=='absence_workleave')
 				{
 					$person 				= new Person;
@@ -173,38 +153,6 @@ class PersonScheduleObserver
 						return false;
 					}
 				}
-
-				// $log 						= new Log;
-				// $log->fill([
-				// 			'name'			=> 'previous schedules',
-				// 			'on'			=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' '.$model['attributes']['start'])),
-				// 			'pc'			=> 'web'
-				// 	]);
-
-				// if(!$log->save())
-				// {
-
-				// 	$model['errors'] 	= $log->getError();
-
-				// 	return false;
-				// }
-
-				// $log 						= new Log;
-				// $log->fill([
-				// 			'name'			=> 'previous schedules',
-				// 			'on'			=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' '.$model['attributes']['end'])),
-				// 			'pc'			=> 'web'
-				// 	]);
-
-				// if(!$log->save())
-				// {
-
-				// 	$model['errors'] 	= $log->getError();
-
-				// 	return false;
-				// }
-
-				// return true;
 			}
 		}
 		if(strtolower($model['attributes']['status'])=='presence_outdoor' && isset($model['attributes']['person_id']))
@@ -244,19 +192,6 @@ class PersonScheduleObserver
 				return false;
 			}
 		}
-	}
-
-	public function updating($model)
-	{
-		// consider to add firewall
-		// if(date('Y-m-d',strtotime($model['attributes']['on'])) <= date('Y-m-d'))
-		// {
-		// 	$errors 			= new MessageBag;
-		// 	$errors->add('ondate', 'Tidak dapat mengubah jadwal pribadi seseorang pada waktu yang telah lewat atau hari ini. Silahkan tambahkan jadwal perorangan yang baru.');
-		// 	$model['errors'] 	= $errors;
-
-		// 	return false;
-		// }
 	}
 
 	public function deleting($model)

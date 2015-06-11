@@ -10,19 +10,14 @@ use Illuminate\Support\MessageBag;
 
 /* ----------------------------------------------------------------------
  * Event:
- * 	Creating						
  * 	Saving						
+ * 	Saved						
  * 	Updating						
  * 	Deleting						
  * ---------------------------------------------------------------------- */
 
 class WorkObserver 
 {
-	public function creating($model)
-	{
-		//
-	}
-
 	public function saving($model)
 	{
 		$validator 						= Validator::make($model['attributes'], $model['rules']);

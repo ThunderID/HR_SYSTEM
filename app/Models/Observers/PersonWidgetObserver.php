@@ -5,7 +5,6 @@ use App\Models\PersonWidget;
 
 /* ----------------------------------------------------------------------
  * Event:
- * 	Creating						
  * 	Saving						
  * 	Updating						
  * 	Deleting						
@@ -13,11 +12,6 @@ use App\Models\PersonWidget;
 
 class PersonWidgetObserver
 {
-	public function creating($model)
-	{
-		//
-	}
-
 	public function saving($model)
 	{
 		$validator 						= Validator::make($model['attributes'], $model['rules']);

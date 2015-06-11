@@ -45,18 +45,6 @@ class ChartObserver
 		}
 	}
 
-	public function saved($model)
-	{
-		//if(isset($model['attributes']['path']) && ($model['attributes']['path']==$model['attributes']['id']))
-		//{
-			//$apps 								= Menu::get(['id']);
-			//foreach ($apps as $key => $value) 
-			//{
-			//	$updates 						= $model->menus()->attach($value->id, ['create' => true, 'read' => true, 'update' => true, 'delete' => true]);
-			//}
-		//}
-	}
-
 	public function updated($model)
 	{
 		//
@@ -84,16 +72,8 @@ class ChartObserver
 			return false;
 		}
 
-		//$deletes 							= Chart::where('path', 'like', $model['attributes']['path'].'%')->where('current_employee','>', 0)->get(['id']);
-		//if(count($deletes)  && $model['attributes']['tag']!='admin')
-		//{
-		//	$model['errors'] 				= ['Tidak dapat menghapus posisi/departemen dengan pekerja yang masih aktif bekerja'];
-
-		//	return false;
-		//}
 		$deletes 							= Chart::where('path', 'like', $model['attributes']['path'].'%')->with(['menus'])->get();
 
-		//$apps 								= Menu::get(['id']);
 		foreach ($deletes as $key => $value) 
 		{
 			if($value['attributes']['current_employee']>0&& $model['attributes']['tag']!='admin')
