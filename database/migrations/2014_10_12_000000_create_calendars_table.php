@@ -19,7 +19,7 @@ class CreateCalendarsTable extends Migration {
 			$table->string('name', 255);
 			$table->text('workdays');
 			$table->time('start');
-			$table->string('end');
+			$table->time('end');
 			$table->timestamps();
 			$table->softDeletes();
 			
