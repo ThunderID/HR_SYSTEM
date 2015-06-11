@@ -1,13 +1,15 @@
 {!! HTML::style('plugins/select2/css/select2.css') !!}
 {!! HTML::style('plugins/select2-skin/css/select2-skins.min.css') !!}
-{!! HTML::script('plugins/select2/js/select2.js') !!}
+{!! HTML::script('plugins/select2/js/select2.min.js') !!}
 
 <script>
 	// ---------------------------- BASIC SELECT2 ----------------------------
-	// $('.select2').select2();
+	$('.select2').select2();
 
 	// ---------------------------- SELECT2 SKINs ----------------------------
-	$('.select2-skin').select2({		
+	$('.select2-skin').select2({
+		containerCssClass: 'tpx-select2-container',
+		dropdownCssClass: 'tpx-select2-drop'
 	});
 
 	// ---------------------------- SELECT2 ARTICLE ----------------------------
