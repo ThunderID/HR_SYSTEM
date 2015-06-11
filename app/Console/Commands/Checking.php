@@ -3,7 +3,7 @@
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
 use App\APIDTO\APIResponse as APIResponse;
-use Hash, Auth;
+use Hash, Auth, Excecption;
 
 class Checking extends Command implements SelfHandling {
 
