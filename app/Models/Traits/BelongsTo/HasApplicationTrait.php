@@ -21,8 +21,8 @@ trait HasApplicationTrait {
 		return $this->belongsTo('App\Models\Application', 'application_id');
 	}
 
-	public function scopeApplicationName($query, $variable)
+	public function scopeApplicationID($query, $variable)
 	{
-		return $query->whereHas('application', function($q)use($variable){$q->name($variable);});
+		return $query->whereHas('application', function($q)use($variable){$q->id($variable);});
 	}
 }

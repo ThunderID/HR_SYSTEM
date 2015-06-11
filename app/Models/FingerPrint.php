@@ -111,22 +111,4 @@ class FingerPrint extends BaseModel {
 	/* ---------------------------------------------------------------------------- FUNCTIONS -------------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
-
-	public function scopeBranchID($query, $variable)
-	{
-		return $query->where('branch_id', $variable);
-	}
-
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-		return $query->with($variable);
-	}
 }

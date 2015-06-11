@@ -19,5 +19,4 @@ trait HasWorkTrait {
 	{
 		return $this->belongsTo('App\Models\Work');
 	}
-
 }

@@ -53,10 +53,10 @@ use Str, Validator, DateTime, Exception;
 class Chart extends BaseModel {
 
 	//use SoftDeletes;
+	use \App\Models\Traits\BelongsTo\HasBranchTrait;
 	use \App\Models\Traits\HasMany\HasChartsTrait;
 	use \App\Models\Traits\HasMany\HasWorkleavesTrait;
 	use \App\Models\Traits\BelongsTo\HasChartTrait;
-	use \App\Models\Traits\BelongsTo\HasBranchTrait;
 	use \App\Models\Traits\BelongsToMany\HasWorksTrait;
 	use \App\Models\Traits\BelongsToMany\HasMenusTrait;
 	use \App\Models\Traits\BelongsToMany\HasFollowCalendarsTrait;
@@ -91,6 +91,7 @@ class Chart extends BaseModel {
 											'id' 					=> 'ID', 
 											'branchid'		 		=> 'BranchID',
 											'organisationid'		=> 'OrganisationID',
+
 											'name' 					=> 'Name', 
 											'orname' 				=> 'OrName', 
 											'tag' 					=> 'Tag', 
@@ -98,6 +99,7 @@ class Chart extends BaseModel {
 											'child' 				=> 'Child', 
 											'neighbor' 				=> 'Neighbor', 
 											'grouptag'	 			=> 'GroupTag',
+
 											'orbranchname' 			=> 'OrBranchName', 
 											'withattributes' 		=> 'WithAttributes'
 										];
@@ -153,25 +155,6 @@ class Chart extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
-	public function scopeID($query, $variable)
-	{
-		if(is_array($variable))
-		{
-			return $query->whereIn('charts.id', $variable);
-		}
-		return $query->where('charts.id', $variable);
-	}
-
-	public function scopeBranchID($query, $variable)
-	{
-		if(is_null($variable))
-		{
-			return $query;
-		}
-
-		return $query->where('branch_id', $variable);
-	}
-
 	public function scopeOrName($query, $variable)
 	{
 		if(is_array($variable))
@@ -226,12 +209,4 @@ class Chart extends BaseModel {
 		return $query->groupby('tag');
 	}
 
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-		return $query->with($variable);
-	}
 }

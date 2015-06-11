@@ -55,7 +55,6 @@ class Workleave extends BaseModel {
 											'name' 						=> 'Name', 
 											'charttag' 					=> 'ChartTag', 
 											'branchid' 					=> 'BranchID', 
-											'branchname' 				=> 'BranchName', 
 											'withattributes' 			=> 'WithAttributes'
 										];
 
@@ -97,28 +96,10 @@ class Workleave extends BaseModel {
 	/* ---------------------------------------------------------------------------- FUNCTIONS -------------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
-
-	public function scopeOrganisationID($query, $variable)
-	{
-		return $query->where('organisation_id', $variable);
-	}
 
 	public function scopeName($query, $variable)
 	{
 		return $query->where('name', 'like', '%'.$variable.'%');
 	}
 
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-
-		return $query->with($variable);
-	}
 }

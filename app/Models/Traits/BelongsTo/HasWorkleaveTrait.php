@@ -19,4 +19,14 @@ trait HasWorkleaveTrait {
 	{
 		return $this->belongsTo('App\Models\Workleave');
 	}
+
+	public function scopeWorkleaveID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->wherein('workleave_id', $variable);
+		}
+
+		return $query->where('workleave_id', $variable);
+	}
 }

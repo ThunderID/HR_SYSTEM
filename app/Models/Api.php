@@ -45,6 +45,7 @@ class Api extends BaseModel {
 	public $searchable 				= 	[
 											'id' 								=> 'ID', 
 											'branchid' 							=> 'BranchID', 
+											
 											'client' 							=> 'Client', 
 											'secret' 							=> 'Secret', 
 											'withattributes' 					=> 'WithAttributes',
@@ -101,16 +102,6 @@ class Api extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
-
-	public function scopeBranchID($query, $variable)
-	{
-		return $query->where('branch_id', $variable);
-	}
-
 	public function scopeClient($query, $variable)
 	{
 		return $query->where('client', $variable);
@@ -119,15 +110,5 @@ class Api extends BaseModel {
 	public function scopeSecret($query, $variable)
 	{
 		return $query->where('secret', $variable);
-	}
-
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-
-		return $query->with($variable);
 	}
 }

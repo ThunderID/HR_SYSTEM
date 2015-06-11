@@ -35,8 +35,8 @@ use Str, Validator, DateTime, Exception;
 
 class Document extends BaseModel {
 
-	use \App\Models\Traits\BelongsToMany\HasPersonDocumentsTrait;
 	use \App\Models\Traits\BelongsTo\HasOrganisationTrait;
+	use \App\Models\Traits\BelongsToMany\HasPersonDocumentsTrait;
 	use \App\Models\Traits\HasMany\HasTemplatesTrait;
 
 	public 		$timestamps 		= 	true;
@@ -62,14 +62,14 @@ class Document extends BaseModel {
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'organisationid' 			=> 'OrganisationID', 
+
 											'name' 						=> 'Name', 
 											'tag' 						=> 'Tag', 
 											'grouptag'	 				=> 'GroupTag',
-											'countperson'	 			=> 'CountPerson',
-											'checkperson'	 			=> 'CheckPerson',
+
 											'checkcreate' 				=> 'CheckCreate',
-											'checkreceiver' 			=> 'CheckReceiver',
 											'isrequired' 				=> 'Required', 
+											
 											'withattributes' 			=> 'WithAttributes'
 										];
 										
@@ -124,16 +124,6 @@ class Document extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
-
-	public function scopeOrganisationID($query, $variable)
-	{
-		return $query->where('organisation_id', $variable);
-	}
-
 	public function scopeName($query, $variable)
 	{
 		return $query->where('name', 'like' ,'%'.$variable.'%');
@@ -165,14 +155,4 @@ class Document extends BaseModel {
 		return $query->where('created_at', '>=', $variable[0])
 					->where('created_at', '<=', $variable[1]);
 	}
-
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-		return $query->with($variable);
-	}
-
 }

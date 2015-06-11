@@ -20,18 +20,22 @@ trait HasWorksOnTrait {
 	public function Works()
 	{
 		return $this->belongsToMany('App\Models\Chart', 'works', 'person_id', 'chart_id')
-					->withPivot('status', 'start', 'end');
-	}
-
-	public function Experiences()
-	{
-		return $this->belongsToMany('App\Models\Chart', 'works', 'person_id', 'chart_id')
 					->withPivot('status', 'start', 'end', 'reason_end_job');
 	}
 
 	public function WorksCalendars()
 	{
 		return $this->hasMany('App\Models\Work');
+	}
+
+	public function scopeBranchID($query, $variable)
+	{
+		return $query->whereHas('works', function($q)use($variable){$q->branchid($variable);});
+	}
+
+	public function scopeChartID($query, $variable)
+	{
+		return $query->whereHas('works', function($q)use($variable){$q->id($variable);});
 	}
 
 	public function scopeCheckWork($query, $variable)
@@ -48,61 +52,25 @@ trait HasWorksOnTrait {
 		return $query->whereHas('works', function($q)use($variable){$q;});
 	}
 
-	public function scopeCheckResign($query, $variable)
-	{
-		if(strtotime($variable))
-		{
-			$days = new DateTime($variable);
-			
-			return $query->whereHas('experiences', function($q)use($days){$q->where('end', '<', $days->format('Y-m-d'));});
-		}
-		return $query->whereHas('experiences', function($q)use($variable){$q->where('end', '<', $variable);});
-	}
-
 	public function scopeCurrentWork($query, $variable)
 	{
 		if(!is_null($variable))
 		{
-			return $query->whereHas('works', function($q){$q->whereNull('end')->orderBy('start', 'asc');})
-					->whereHas('works.branch', function($q)use($variable){$q->organisationid($variable);})
-					->with(['works' => function($q){$q->whereNull('end')->orderBy('start', 'asc');}, 'works.branch' => function($q)use($variable){$q->organisationid($variable);}]);
+			return $query->with(['works' => function($q)use($variable){$q->whereNull('end')->orderBy('start', 'asc')->id($variable);}]);
 		}
-		return $query->with(['works' => function($q){$q->whereNull('end')->orderBy('start', 'asc');}, 'works.branch.organisation' => function($q)use($variable){$q;}]);
+
+		return $query->with(['works' => function($q){$q->whereNull('end')->orderBy('start', 'asc');}]);
 	}
 
-	public function scopeCheckApps($query, $variable)
+	public function scopePreviousWork($query, $variable)
 	{
-		return $query->with(['works.applications']);
-	}
+		return $query->with(['works' => function($q){$q->whereNotNull('end')->orderBy('start', 'asc');}]);
 
-	// public function scopeOrganisationID($query, $variable)
-	// {
-	// 	return $query->whereHas('works.branch.organisation', function($q)use($variable){$q->where('id', $variable);});
-	// }
-
-	public function scopeBranchName($query, $variable)
-	{
-		return $query->whereHas('works.branch', function($q)use($variable){$q->where('name', 'like', '%'.$variable.'%');});
-	}
-
-	public function scopeBranchID($query, $variable)
-	{
-		return $query->whereHas('works.branch', function($q)use($variable){$q->where('id', $variable);});
-	}
-
-	public function scopeChartID($query, $variable)
-	{
-		return $query->whereHas('works', function($q)use($variable){$q->where('charts.id', $variable);});
 	}
 
 	public function scopeChartTag($query, $variable)
 	{
-		return $query->WhereHas('works', function($q)use($variable){$q->where('tag', 'like', '%'.$variable.'%');});
-	}
-
-	public function scopeExperiences($query, $variable)
-	{
-		return $query->with(['experiences' => function($q)use($variable){$q->orderBy($variable, 'asc')->take(10);}, 'experiences.branch.organisation']);
+		return $query->WhereHas('works', function($q)use($variable){$q->tag($variable);});
 	}
 
 	public function ScopeWorkCalendar($query, $variable)

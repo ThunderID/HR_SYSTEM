@@ -21,4 +21,13 @@ trait HasMenuTrait {
 		return $this->belongsTo('App\Models\Menu');
 	}
 
+	public function scopeMenuID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('menu_id', $variable);
+		}
+
+		return $query->where('menu_id', $variable);
+	}
 }

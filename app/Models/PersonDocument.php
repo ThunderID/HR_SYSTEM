@@ -54,8 +54,10 @@ class PersonDocument extends BaseModel {
 											'id' 						=> 'ID', 
 											'documentid' 				=> 'DocumentID', 
 											'personid' 					=> 'PersonID', 
+											
+											'documenttag' 				=> 'DocumentTag', 
+
 											'branchid' 					=> 'BranchID', 
-											'tag' 						=> 'Tag', 
 											'currentwork' 				=> 'CurrentWork',
 											'withattributes' 			=> 'WithAttributes'
 										];
@@ -122,27 +124,4 @@ class PersonDocument extends BaseModel {
 	/* ---------------------------------------------------------------------------- FUNCTIONS -------------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
-
-	public function scopeDocumentID($query, $variable)
-	{
-		return $query->where('document_id', $variable);
-	}
-
-	public function scopePersonID($query, $variable)
-	{
-		return $query->where('person_id', $variable);
-	}
-
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-		return $query->with($variable);
-	}
 }

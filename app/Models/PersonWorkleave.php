@@ -53,7 +53,8 @@ class PersonWorkleave extends BaseModel {
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'personid' 					=> 'PersonID', 
-											'workleaveid' 				=> 'WorkleaveID', 
+											'workleaveid' 				=> 'WorkleaveID',
+											 
 											'ondate' 					=> 'OnDate', 
 											'withattributes' 			=> 'WithAttributes'
 										];
@@ -96,20 +97,6 @@ class PersonWorkleave extends BaseModel {
 	/* ---------------------------------------------------------------------------- FUNCTIONS -------------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
-
-	public function scopePersonID($query, $variable)
-	{
-		return $query->where('person_id', $variable);
-	}
-
-	public function scopeWorkleaveID($query, $variable)
-	{
-		return $query->where('workleave_id', $variable);
-	}
 
 	public function scopeOnDate($query, $variable)
 	{
@@ -130,15 +117,5 @@ class PersonWorkleave extends BaseModel {
 			}
 		}
 		return $query->where('end', '>=', date('Y-m-d', strtotime($variable)));
-	}
-
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-
-		return $query->with($variable);
 	}
 }

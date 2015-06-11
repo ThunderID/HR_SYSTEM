@@ -53,7 +53,7 @@ class Menu extends BaseModel {
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'name' 						=> 'Name', 
-											'applicationname' 			=> 'ApplicationName', 
+											'applicationid' 			=> 'ApplicationID', 
 											'withattributes' 			=> 'WithAttributes',
 										];
 	public $sortable 				= ['name', 'menu', 'created_at', 'applications.id'];
@@ -107,23 +107,9 @@ class Menu extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
-
 	public function scopeName($query, $variable)
 	{
 		return $query->where('name', 'like' ,'%'.$variable.'%');
 	}
 
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-
-		return $query->with($variable);
-	}
 }

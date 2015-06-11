@@ -99,15 +99,6 @@ class PersonSchedule extends BaseModel {
 	/* ---------------------------------------------------------------------------- FUNCTIONS -------------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
-
-	public function scopePersonID($query, $variable)
-	{
-		return $query->where('person_id', $variable);
-	}
 
 	public function scopeName($query, $variable)
 	{
@@ -147,20 +138,5 @@ class PersonSchedule extends BaseModel {
 			return $query->where('status', 'absence_workleave');
 		}
 		return $query->where('status', 'absence_not_workleave');
-	}
-
-	public function scopeNotID($query, $variable)
-	{
-		return $query->where('id', '<>',$variable);
-	}
-
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-
-		return $query->with($variable);
 	}
 }

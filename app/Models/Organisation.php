@@ -143,24 +143,9 @@ class Organisation extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
-	public function scopeID($query, $variable)
-	{
-		if(is_array($variable))
-		{
-			return $query->whereIn('id', $variable);
-		}
-
-		return $query->where('id', $variable);
-	}
-
 	public function scopeName($query, $variable)
 	{
 		return $query->where('name', 'like' ,'%'.$variable.'%');
-	}
-
-	public function scopeAppAuth($query, $variable)
-	{
-		return $query->with(['authentications' => function($q){$q->whereIn('role', ['application', 'superadmin'])->orderBy('role', 'asc');}, 'authentications.person']);
 	}
 
 	public function scopeOnlyAdmin($query, $variable)
@@ -169,12 +154,4 @@ class Organisation extends BaseModel {
 					->with(['branches.charts.works' => function($q){$q->where('status', '<>', 'admin');}]);
 	}
 
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-		return $query->with($variable);
-	}
 }

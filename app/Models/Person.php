@@ -60,17 +60,17 @@ use Str, Validator, DateTime, Exception;
 class Person extends BaseModel {
 
 	//use SoftDeletes;
+	use \App\Models\Traits\BelongsTo\HasOrganisationTrait;
+	use \App\Models\Traits\MorphMany\HasContactsTrait;
 	use \App\Models\Traits\BelongsToMany\HasRelativesTrait;
 	use \App\Models\Traits\BelongsToMany\HasDocumentsTrait;
-	use \App\Models\Traits\BelongsToMany\HasCalendarsTrait;
-	use \App\Models\Traits\BelongsToMany\HasWorksOnTrait;
-	use \App\Models\Traits\MorphMany\HasContactsTrait;
 	use \App\Models\Traits\HasMany\HasScheduleTrait;
-	use \App\Models\Traits\HasMany\HasProcessLogsTrait;
 	use \App\Models\Traits\HasMany\HasPersonWorkleavesTrait;
+	use \App\Models\Traits\BelongsToMany\HasWorksOnTrait;
+	use \App\Models\Traits\BelongsToMany\HasCalendarsTrait;
 	use \App\Models\Traits\HasMany\HasWidgetsTrait;
+	use \App\Models\Traits\HasMany\HasProcessLogsTrait;
 	use \App\Models\Traits\HasOne\HasFingerTrait;
-	use \App\Models\Traits\BelongsTo\HasOrganisationTrait;
 
 	public 		$timestamps 		= 	true;
 
@@ -104,39 +104,41 @@ class Person extends BaseModel {
 	public $searchable 				= 	[
 											'id' 							=> 'ID', 
 											'organisationid' 				=> 'OrganisationID', 
+											
 											'fullname' 						=> 'FullName', 
 											'prefixtitle' 					=> 'PrefixTitle', 
 											'suffixtitle' 					=> 'SuffixTitle', 
 											'dateofbirth' 					=> 'DateOfBirth', 
 											'gender' 						=> 'Gender', 
+											'checkcreate' 					=> 'CheckCreate',
 											'withattributes' 				=> 'WithAttributes',
-											'currentwork' 					=> 'CurrentWork',
-											'currentcontact' 				=> 'CurrentContact',
+											
+											'defaultcontact' 				=> 'DefaultContact',
 											'email'			 				=> 'Email',
+											'defaultemail' 					=> 'DefaultEmail',
+
+											'checkrelative' 				=> 'CheckRelative',
+											'checkrelation' 				=> 'CheckRelation',
+											'checkrelationof' 				=> 'CheckRelationOf',
+											
 											'takenworkleave'				=> 'TakenWorkleave',
 											'checktakenworkleave'			=> 'CheckTakenWorkleave',
-											'defaultemail' 					=> 'DefaultEmail',
-											'experiences' 					=> 'Experiences',
-											'checkrelation' 				=> 'CheckRelation',
-											'checkwork'	 					=> 'CheckWork',
-											'checkresign'	 				=> 'CheckResign',
-											'checkwidget'	 				=> 'CheckWidget',
-											'checkapps'	 					=> 'CheckApps',
-											'checkcreate' 					=> 'CheckCreate',
-											'checkrelative' 				=> 'CheckRelative',
-											'checkrelationof' 				=> 'CheckRelationOf',
+											'minusquotas'					=> 'MinusQuotas',
+											'fullschedule' 					=> 'FullSchedule', 
+
+											'workleaveid'					=> 'WorkleaveID',
 											'checkworkleave' 				=> 'CheckWorkleave',
-											'groupcontacts' 				=> 'GroupContacts',
-											'charttag' 						=> 'ChartTag', 
-											'branchname' 					=> 'BranchName', 
+											'quotas'						=> 'Quotas',
+
 											'branchid' 						=> 'BranchID', 
 											'chartid' 						=> 'ChartID', 
-											'fullschedule' 					=> 'FullSchedule', 
+											'charttag' 						=> 'ChartTag', 
+											'checkwork'	 					=> 'CheckWork',
+											'currentwork' 					=> 'CurrentWork',
+											'previouswork' 					=> 'PreviousWork',
+
 											'displayupdatedfinger'			=> 'DisplayUpdatedFinger',
-											'quotas'						=> 'Quotas',
-											'minusquotas'					=> 'MinusQuotas',
-											'workleaveid'					=> 'WorkleaveID',
-											'requireddocuments'	 			=> 'RequiredDocuments',
+
 											'globalattendance'	 			=> 'GlobalAttendance',
 										];
 
@@ -251,16 +253,6 @@ class Person extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
-	public function scopeID($query, $variable)
-	{
-		return $query->where('persons.id', $variable);
-	}
-
-	public function scopeOrganisationID($query, $variable)
-	{
-		return $query->where('persons.organisation_id', $variable);
-	}
-	
 	public function scopeFullName($query, $variable)
 	{
 		return $query->where('name', 'like' ,'%'.$variable.'%');
@@ -384,16 +376,6 @@ class Person extends BaseModel {
 		}
 		return $query->where('created_at', '>=', $variable[0])
 					->where('created_at', '<=', $variable[1]);
-	}
-
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-
-		return $query->with($variable);
 	}
 
 }

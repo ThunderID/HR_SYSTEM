@@ -59,8 +59,9 @@ class Schedule extends BaseModel {
 											'name' 							=> 'Name', 
 											'ondate' 						=> 'OnDate', 
 											'notid' 						=> 'NotID', 
-											'chartname' 					=> 'ChartName', 
-											'branchname' 					=> 'BranchName', 
+
+											'branchid' 						=> 'BranchID', 
+											'chartid' 						=> 'ChartID', 
 											'withattributes' 				=> 'WithAttributes'
 										];
 
@@ -102,15 +103,6 @@ class Schedule extends BaseModel {
 	/* ---------------------------------------------------------------------------- FUNCTIONS -------------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
-
-	public function scopeCalendarID($query, $variable)
-	{
-		return $query->where('calendar_id', $variable);
-	}
 
 	public function scopeName($query, $variable)
 	{
@@ -136,20 +128,5 @@ class Schedule extends BaseModel {
 			}
 		}
 		return $query->where('on', 'like', date('Y-m', strtotime($variable)).'%');
-	}
-
-	public function scopeNotID($query, $variable)
-	{
-		return $query->where('id', '<>',$variable);
-	}
-
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-
-		return $query->with($variable);
 	}
 }

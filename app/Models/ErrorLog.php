@@ -96,15 +96,6 @@ class ErrorLog extends BaseModel {
 	/* ---------------------------------------------------------------------------- FUNCTIONS -------------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
-
-	public function scopeOrganisationID($query, $variable)
-	{
-		return $query->where('organisation_id', $variable);
-	}
 
 	public function scopeName($query, $variable)
 	{
@@ -137,13 +128,4 @@ class ErrorLog extends BaseModel {
 		return $query->where('on', '>=', date('Y-m-d', strtotime($variable)));
 	}
 
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-
-		return $query->with($variable);
-	}
 }

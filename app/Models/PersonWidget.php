@@ -111,11 +111,6 @@ class PersonWidget extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
-
 	public function scopeTitle($query, $variable)
 	{
 		return $query->where('title', 'like' ,'%'.$variable.'%');
@@ -124,20 +119,5 @@ class PersonWidget extends BaseModel {
 	public function scopeType($query, $variable)
 	{
 		return $query->where('type', $variable);
-	}
-
-	public function scopePersonID($query, $variable)
-	{
-		return $query->where('person_id', $variable);
-	}
-
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-
-		return $query->with($variable);
 	}
 }

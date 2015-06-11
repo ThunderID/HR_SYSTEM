@@ -82,7 +82,11 @@ class ProcessLog extends BaseModel {
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'personid' 					=> 'PersonID', 
+
 											'organisationid' 			=> 'OrganisationID', 
+											'branchid' 					=> 'BranchID', 
+											'charttag' 					=> 'ChartTag', 
+											
 											'ondate' 					=> 'OnDate', 
 											'late' 						=> 'Late', 
 											'ontime' 					=> 'OnTime', 
@@ -90,8 +94,6 @@ class ProcessLog extends BaseModel {
 											'overtime' 					=> 'Overtime', 
 											'global' 					=> 'Global', 
 											'local' 					=> 'Local', 
-											'charttag' 					=> 'ChartTag', 
-											'branchname' 				=> 'BranchName', 
 											'orderworkhour' 			=> 'OrderWorkHour', 
 											'orderavgworkhour' 			=> 'OrderAverageWorkHour', 
 											'withattributes' 			=> 'WithAttributes'
@@ -172,15 +174,6 @@ class ProcessLog extends BaseModel {
 	/* ---------------------------------------------------------------------------- FUNCTIONS -------------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
-
-	public function scopePersonID($query, $variable)
-	{
-		return $query->where('person_id', $variable);
-	}
 
 	public function scopeOnDate($query, $variable)
 	{
@@ -256,16 +249,6 @@ class ProcessLog extends BaseModel {
 	{
 		return $query->selectRaw('*')
 					->selectRaw('(TIME_TO_SEC(end)) - (TIME_TO_SEC(start)) as total_workhour');
-	}
-
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-
-		return $query->with($variable);
 	}
 
 	public function scopeOrderWorkHour($query, $variable)

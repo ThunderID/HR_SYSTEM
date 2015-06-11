@@ -20,13 +20,13 @@ trait HasCalendarTrait {
 		return $this->belongsTo('App\Models\Calendar');
 	}
 
-	public function scopeChartName($query, $variable)
+	public function scopeCalendarID($query, $variable)
 	{
-		return $query->WhereHas('calendar.charts', function($q)use($variable){$q->where('name', $variable);});
-	}
+		if(is_array($variable))
+		{
+			return $query->whereIn('calendar_id', $variable);
+		}
 
-	public function scopeBranchName($query, $variable)
-	{
-		return $query->WhereHas('calendar.charts.branch', function($q)use($variable){$q->where('name', $variable);});
+		return $query->where('calendar_id', $variable);
 	}
 }

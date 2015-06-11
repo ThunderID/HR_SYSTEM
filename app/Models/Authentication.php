@@ -62,6 +62,7 @@ class Authentication extends BaseModel {
 											'id' 								=> 'ID', 
 											'chartid' 							=> 'ChartID', 
 											'menuid' 							=> 'MenuID', 
+											
 											'email' 							=> 'Email', 
 											'access' 							=> 'Access', 
 											'withattributes' 					=> 'WithAttributes',
@@ -118,26 +119,6 @@ class Authentication extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
-
-	public function scopeChartID($query, $variable)
-	{
-		if(is_array($variable))
-		{
-			return $query->whereIn('chart_id', $variable);
-		}
-
-		return $query->where('chart_id', $variable);
-	}
-
-	public function scopeMenuID($query, $variable)
-	{
-		return $query->where('menu_id', $variable);
-	}
-
 	public function scopeAccess($query, $variable)
 	{
 		if(is_null($variable))
@@ -150,15 +131,5 @@ class Authentication extends BaseModel {
 		}
 		
 		return $query;
-	}
-
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-
-		return $query->with($variable);
 	}
 }

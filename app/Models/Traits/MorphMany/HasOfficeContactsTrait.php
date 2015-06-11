@@ -21,18 +21,8 @@ trait HasOfficeContactsTrait {
 		return $this->morphMany('App\Models\Contact', 'branch');
 	}
 
-	public function scopeCurrentContact($query, $variable)
+	public function scopeDefaultContact($query, $variable)
 	{
-		return $query->with(['contacts' => function($q)use($variable){$q->where('is_default', true)->orderBy($variable, 'asc');}]);
-	}
-
-	public function TagContacts()
-	{
-		return $this->morphMany('App\Models\Contact', 'branch');
-	}
-
-	public function scopeGroupContacts($query, $variable)
-	{
-		return $query->with(['tagcontacts' => function($q)use($variable){$q->groupBy('item');}]);
+		return $query->with(['contacts' => function($q)use($variable){$q->default(true)->orderBy($variable, 'asc');}]);
 	}
 }

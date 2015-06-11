@@ -20,9 +20,4 @@ trait HasWidgetsTrait {
 	{
 		return $this->hasMany('App\Models\PersonWidget');
 	}
-
-	public function ScopeCheckWidget($query, $variable)
-	{
-		return $query->with(['widgets' => function($q)use($variable){$q->orderBy($variable, 'asc');}]);
-	}
 }

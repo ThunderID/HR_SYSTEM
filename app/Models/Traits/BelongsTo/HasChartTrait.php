@@ -20,6 +20,16 @@ trait HasChartTrait {
 		return $this->belongsTo('App\Models\Chart', 'chart_id');
 	}
 
+	public function scopeChartID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('chart_id', $variable);
+		}
+
+		return $query->where('chart_id', $variable);
+	}
+	
 	public function scopeEmail($query, $variable)
 	{
 		return $query->whereHas('chart', function($q){$q;})

@@ -44,15 +44,8 @@ trait HasRelativesTrait {
 					 ->whereNull('relatives.deleted_at');
 	}
 
-	public function scopeRelativeOrganisationID($query, $variable)
-	{
-		return $query->select('persons.*')
-					 ->join('relatives', 'persons.id', '=', 'relatives.relative_id')
-					 ->where('organisation_id', $variable);
-	}
-
 	public function scopeCheckRelative($query, $variable)
 	{
-		return $query->with(['relatives' => function($q){$q->take(1);}]);
+		return $query->wherehas('relatives', function($q){$q;});
 	}
 }

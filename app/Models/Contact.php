@@ -54,6 +54,7 @@ class Contact extends BaseModel {
 											'id' 						=> 'ID', 
 											'branchid' 					=> 'BranchID', 
 											'personid' 					=> 'PersonID', 
+
 											'item' 						=> 'Item', 
 											'messageservices' 			=> 'MessageServices', 
 											'withattributes' 			=> 'WithAttributes'
@@ -97,10 +98,6 @@ class Contact extends BaseModel {
 	/* ---------------------------------------------------------------------------- FUNCTIONS -------------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
 
 	public function scopeBranchID($query, $variable)
 	{
@@ -121,17 +118,22 @@ class Contact extends BaseModel {
 		return $query->where('item', $variable);
 	}
 
+	public function scopeValue($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('value', $variable);
+		}
+		return $query->where('value', $variable);
+	}
+
 	public function scopeMessageServices($query, $variable)
 	{
 		return $query->whereNotIn('item', ['email', 'address' , 'phone']);
 	}
 
-	public function scopeWithAttributes($query, $variable)
+	public function scopeDefault($query, $variable)
 	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-		return $query->with($variable);
+		return $query->where('is_default', $variable);
 	}
 }

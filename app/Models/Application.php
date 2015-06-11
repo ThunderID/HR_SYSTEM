@@ -39,8 +39,9 @@ class Application extends BaseModel {
 									];
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
-											'name' 						=> 'Name', 
 											'chartid' 					=> 'ChartID', 
+											
+											'name' 						=> 'Name', 
 											'withattributes' 			=> 'WithAttributes',
 										];
 	public $sortable 				= ['name', 'created_at', 'applications.id'];
@@ -94,23 +95,8 @@ class Application extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
-
 	public function scopeName($query, $variable)
 	{
 		return $query->where('name', 'like' ,'%'.$variable.'%');
-	}
-
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-
-		return $query->with($variable);
 	}
 }

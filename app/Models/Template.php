@@ -109,27 +109,8 @@ class Template extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
-
 	public function scopeField($query, $variable)
 	{
 		return $query->where('field', 'like' ,'%'.$variable.'%');
-	}
-
-	public function scopeDocumentID($query, $variable)
-	{
-		return $query->where('document_id', $variable);
-	}
-
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-		return $query->with($variable);
 	}
 }

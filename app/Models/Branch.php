@@ -33,11 +33,11 @@ use Str, Validator, DateTime, Exception;
 
 class Branch extends BaseModel {
 
+	use \App\Models\Traits\BelongsTo\HasOrganisationTrait;
+	use \App\Models\Traits\MorphMany\HasOfficeContactsTrait;
 	use \App\Models\Traits\HasMany\HasChartsTrait;
 	use \App\Models\Traits\HasMany\HasApisTrait;
 	use \App\Models\Traits\HasOne\HasFingerPrintTrait;
-	use \App\Models\Traits\BelongsTo\HasOrganisationTrait;
-	use \App\Models\Traits\MorphMany\HasOfficeContactsTrait;
 
 	public 		$timestamps 		= 	true;
 
@@ -56,17 +56,12 @@ class Branch extends BaseModel {
 	public $searchable 				= 	[
 											'id' 							=> 'ID', 
 											'organisationid'	 			=> 'OrganisationID',
+
 											'name' 							=> 'Name', 
-											'currentcontact' 				=> 'CurrentContact',
 											'checkcreate' 					=> 'CheckCreate',
-											'countresign' 					=> 'CountResign',
-											'countworkerbystatus'			=> 'CountWorkerByStatus',
-											'countworkerbybranchbystatus'	=> 'CountWorkerByBranchByStatus',
-											'structure' 					=> 'Structure',
-											'structurebydepartment' 		=> 'StructureByDepartment',
-											'displaydepartments' 			=> 'DisplayDepartments',
-											'groupcontacts' 				=> 'GroupContacts',
-											'withattributes' 				=> 'WithAttributes'
+											'withattributes' 				=> 'WithAttributes',
+											
+											'defaultcontact' 				=> 'DefaultContact'
 										];
 
 	public $sortable 				= 	['id', 'name', 'created_at', 'branches.created_at'];
@@ -138,24 +133,9 @@ class Branch extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
-
 	public function scopeName($query, $variable)
 	{
 		return $query->where('name', 'like' ,'%'.$variable.'%');
-	}
-
-	public function scopeOrganisationID($query, $variable)
-	{
-		if(is_null($variable))
-		{
-			return $query;
-		}
-		
-		return $query->where('organisation_id', $variable);
 	}
 
 	public function scopeCheckCreate($query, $variable)
@@ -166,14 +146,5 @@ class Branch extends BaseModel {
 		}
 		return $query->where('created_at', '>=', $variable[0])
 					->where('created_at', '<=', $variable[1]);
-	}
-
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-		return $query->with($variable);
 	}
 }

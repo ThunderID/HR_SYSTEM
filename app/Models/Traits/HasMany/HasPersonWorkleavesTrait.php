@@ -23,6 +23,11 @@ trait HasPersonWorkleavesTrait {
 		return $this->hasMany('App\Models\PersonWorkleave');
 	}
 
+	public function ScopeWorkleaveID($query, $variable)
+	{
+		return $query->whereHas('personworkleaves', function($q)use($variable){$q->workleaveid($variable);});
+	}
+
 	public function ScopeCheckWorkleave($query, $variable)
 	{
 		if(is_array($variable))
@@ -34,11 +39,6 @@ trait HasPersonWorkleavesTrait {
 			return $query->whereDoesntHave('personworkleaves', function($q)use($variable){$q;});
 		}
 		return $query->whereHas('personworkleaves', function($q)use($variable){$q;});
-	}
-
-	public function ScopeWorkleaveID($query, $variable)
-	{
-		return $query->whereHas('personworkleaves', function($q)use($variable){$q->workleaveid($variable);});
 	}
 
 	public function ScopeQuotas($query, $variable)

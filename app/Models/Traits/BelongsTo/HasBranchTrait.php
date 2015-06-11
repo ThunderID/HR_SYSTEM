@@ -21,6 +21,22 @@ trait HasBranchTrait {
 		return $this->belongsTo('App\Models\Branch', 'branch_id');
 	}
 
+
+	public function scopeBranchID($query, $variable)
+	{
+		if(is_null($variable))
+		{
+			return $query->whereIn('branch_id', $variable);
+		}
+
+		return $query->where('branch_id', $variable);
+	}
+
+	public function scopeOrganisationID($query, $variable)
+	{
+		return $query->WhereHas('branch', function($q)use($variable){$q->organisationid($variable);});
+	}
+
 	public function scopeOrBranchName($query, $variable)
 	{
 		$query =  $query->selectraw('hr_charts.*')->selectraw('hr_branches.name as branchname')->join('branches', 'branches.id', '=', 'charts.branch_id');
@@ -34,18 +50,5 @@ trait HasBranchTrait {
 			return $query;
 		}
 		return $query->orwhere('branches.name', 'like', '%'.$variable.'%');
-	}
-
-	public function scopeOrganisationID($query, $variable)
-	{
-		return $query->WhereHas('branch.organisation', function($q)use($variable){
-			if(is_array($variable))
-			{
-				$q->whereIn('organisations.id', $variable);
-
-				return $q;
-			}
-			return $q->where('organisations.id', $variable);
-		});
 	}
 }

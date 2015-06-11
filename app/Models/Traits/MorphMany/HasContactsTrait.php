@@ -20,28 +20,18 @@ trait HasContactsTrait {
 		return $this->morphMany('App\Models\Contact', 'person');
 	}
 
-	public function TagContacts()
+	public function scopeDefaultContact($query, $variable)
 	{
-		return $this->morphMany('App\Models\Contact', 'person');
-	}
-
-	public function scopeGroupContacts($query, $variable)
-	{
-		return $query->with(['tagcontacts' => function($q)use($variable){$q->groupBy('item');}]);
-	}
-
-	public function scopeCurrentContact($query, $variable)
-	{
-		return $query->with(['contacts' => function($q)use($variable){$q->where('is_default', true)->orderBy($variable, 'asc');}]);
+		return $query->with(['contacts' => function($q)use($variable){$q->default(true)->orderBy($variable, 'asc');}]);
 	}
 
 	public function scopeEmail($query, $variable)
 	{
-		return $query->whereHas('contacts', function($q)use($variable){$q->where('item', 'email')->where('value', $variable)->where('is_default', true);});
+		return $query->whereHas('contacts', function($q)use($variable){$q->item('email')->value($variable)->default(true);});
 	}
 
 	public function scopeDefaultEmail($query, $variable)
 	{
-		return $query->with(['contacts' => function($q)use($variable){$q->where('is_default', true)->where('item', 'email')->take(1);}]);
+		return $query->with(['contacts' => function($q)use($variable){$q->item('email')->default(true)->take(1);}]);
 	}
 }

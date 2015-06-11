@@ -20,20 +20,13 @@ trait HasOrganisationTrait {
 		return $this->belongsTo('App\Models\Organisation');
 	}
 
+	public function scopeOrganisationID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->wherein('organisation_id', $variable);
+		}
 
-	// public function scopeChartTag($query, $variable)
-	// {
-	// 	return $query->WhereHas('organisation.branches.charts', function($q)use($variable){$q->where('tag', $variable);});
-	// }
-
-	// public function scopeBranchName($query, $variable)
-	// {
-	// 	return $query->WhereHas('organisation.branches', function($q)use($variable){$q->where('name', $variable);});
-	// }
-
-	// public function scopeBranchID($query, $variable)
-	// {
-	// 	return $query->whereHas('persons.works.branch', function($q)use($variable){$q->id($variable);});
-	// }
-
+		return $query->where('organisation_id', $variable);
+	}
 }

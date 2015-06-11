@@ -92,28 +92,4 @@ class Follow extends BaseModel {
 	/* ---------------------------------------------------------------------------- FUNCTIONS -------------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
-	public function scopeID($query, $variable)
-	{
-		return $query->where('id', $variable);
-	}
-
-	public function scopeCalendarID($query, $variable)
-	{
-		return $query->where('calendar_id', $variable);
-	}
-
-	public function scopeChartID($query, $variable)
-	{
-		return $query->where('chart_id', $variable);
-	}
-
-	public function scopeWithAttributes($query, $variable)
-	{
-		if(!is_array($variable))
-		{
-			$variable 			= [$variable];
-		}
-
-		return $query->with($variable);
-	}
 }
