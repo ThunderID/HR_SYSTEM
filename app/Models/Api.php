@@ -51,6 +51,15 @@ class Api extends BaseModel {
 											'withattributes' 					=> 'WithAttributes',
 										];
 
+	public $searchableScope 		= 	[
+											'id' 								=> 'Could be array or integer', 
+											'branchid' 							=> 'Could be array or integer', 
+											
+											'client' 							=> 'Must be string', 
+											'secret' 							=> 'Must be string', 
+											'withattributes' 					=> 'Must be array of relationship',
+										];
+
 	public $sortable 				= 	['chart_id', 'created_at'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/

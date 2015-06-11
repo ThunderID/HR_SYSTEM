@@ -74,6 +74,18 @@ class Calendar extends BaseModel {
 											'withattributes' 			=> 'WithAttributes'
 										];
 
+	public $searchableScope 		= 	[
+											'id' 						=> 'Could be array or integer', 
+											'organisationid' 			=> 'Could be array or integer', 
+											'name' 						=> 'Must be string', 
+											'orname' 					=> 'Could be array or string', 
+
+											'branchid' 					=> 'Could be array or integer', 
+											'charttag' 					=> 'Must be string', 
+											
+											'withattributes' 			=> 'Must be array of relationship',
+										];
+
 	public $sortable 				= 	['created_at', 'name'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/

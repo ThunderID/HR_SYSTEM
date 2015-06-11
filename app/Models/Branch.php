@@ -64,6 +64,17 @@ class Branch extends BaseModel {
 											'defaultcontact' 				=> 'DefaultContact'
 										];
 
+	public $searchableScope 		= 	[
+											'id' 							=> 'Could be array or integer', 
+											'organisationid'	 			=> 'Could be array or integer',
+
+											'name' 							=> 'Must be string', 
+											'checkcreate' 					=> 'Could be array or string (time)',
+											'withattributes' 				=> 'Must be array of relationship',
+											
+											'defaultcontact' 				=> 'Must be true or false'
+										];
+
 	public $sortable 				= 	['id', 'name', 'created_at', 'branches.created_at'];
 	
 	protected $appends				= 	['has_contacts', 'has_charts'];

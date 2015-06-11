@@ -58,6 +58,13 @@ class ErrorLog extends BaseModel {
 											'withattributes' 			=> 'WithAttributes'
 										];
 										
+	public $searchableScope 		= 	[
+											'id' 						=> 'Could be array or integer', 
+											'organisationid' 			=> 'Could be array or integer', 
+											'name' 						=> 'Must be string', 
+											'withattributes' 			=> 'Must be array of relationship'
+										];
+
 	public $sortable 				= 	['created_at'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/

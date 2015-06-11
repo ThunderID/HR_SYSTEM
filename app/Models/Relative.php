@@ -35,7 +35,15 @@ class Relative extends BaseModel {
 											'personid' 					=> 'PersonID', 
 											'withattributes' 			=> 'WithAttributes'
 										];
-	public $sortable 				= ['created_at'];
+
+	public $searchableScope 		= 	[
+											'id' 						=> 'Could be array or integer', 
+											'personid' 					=> 'Could be array or integer', 
+											'relativeid' 				=> 'Could be array or integer', 
+											'withattributes' 			=> 'Must be array of relationship',
+										];
+
+	public $sortable 				= 	['created_at'];
 
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/

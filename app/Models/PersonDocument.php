@@ -62,6 +62,16 @@ class PersonDocument extends BaseModel {
 											'withattributes' 			=> 'WithAttributes'
 										];
 
+	public $searchableScope 		= 	[
+											'id' 						=> 'Could be array or integer', 
+											'documentid' 				=> 'Could be array or integer', 
+											'personid' 					=> 'Could be array or integer', 
+											'documenttag' 				=> 'Must be string', 
+											'branchid' 					=> 'Could be array or integer', 
+											'currentwork' 				=> 'Could be null or integer of ID',
+											'withattributes' 			=> 'Must be array of relationship',
+										];
+
 	public $sortable 				= 	['created_at', 'person_id'];
 
 	protected $appends				= 	['document_number'];

@@ -71,7 +71,15 @@ class Work extends BaseModel {
 											'personid' 					=> 'PersonID', 
 											'withattributes' 			=> 'WithAttributes'
 										];
-										
+
+	public $searchableScope 		= 	[
+											'id' 						=> 'Could be array or integer', 
+											'calendarid' 				=> 'Could be array or integer', 
+											'chartid' 					=> 'Could be array or integer', 
+											'personid' 					=> 'Could be array or integer', 
+											'withattributes' 			=> 'Must be array of relationship',
+										];
+
 	public $sortable 				= 	['created_at', 'start', 'end'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/

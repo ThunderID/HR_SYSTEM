@@ -54,7 +54,13 @@ class Organisation extends BaseModel {
 											'name' 						=> 'Name', 
 											'withattributes' 			=> 'WithAttributes',
 										];
-										
+	
+	public $searchableScope 		= 	[
+											'id' 						=> 'Could be array or integer', 
+											'name' 						=> 'Must be string', 
+											'withattributes' 			=> 'Must be array of relationship',
+										];
+
 	public $sortable 				= 	['id', 'name', 'created_at'];
 
 	protected $appends				= 	['has_branches', 'has_documents', 'has_workleaves', 'has_calendars'];

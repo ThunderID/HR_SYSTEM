@@ -61,6 +61,15 @@ class PersonSchedule extends BaseModel {
 											'withattributes' 			=> 'WithAttributes'
 										];
 
+	public $searchableScope 		= 	[
+											'id' 						=> 'Could be array or integer', 
+											'personid' 					=> 'Could be array or integer', 
+											'name' 						=> 'Must be string', 
+											'status' 					=> 'Must be string', 
+											'ondate' 					=> 'Could be array or string (date)', 
+											'withattributes' 			=> 'Must be array of relationship',
+										];
+
 	public $sortable 				= 	['created_at', 'on'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/

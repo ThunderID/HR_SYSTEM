@@ -58,6 +58,14 @@ class PersonWorkleave extends BaseModel {
 											'ondate' 					=> 'OnDate', 
 											'withattributes' 			=> 'WithAttributes'
 										];
+										
+	public $searchableScope 		= 	[
+											'id' 						=> 'Could be array or integer', 
+											'personid' 					=> 'Could be array or integer', 
+											'workleaveid' 				=> 'Could be array or integer', 
+											'ondate' 					=> 'Could be array or string (date)', 
+											'withattributes' 			=> 'Must be array of relationship',
+										];
 
 	public $sortable 				= 	['created_at', 'name'];
 

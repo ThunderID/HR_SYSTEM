@@ -73,6 +73,20 @@ class Document extends BaseModel {
 											'withattributes' 			=> 'WithAttributes'
 										];
 										
+	public $searchableScope 		= 	[
+											'id' 						=> 'Could be array or integer', 
+											'organisationid' 			=> 'Could be array or integer', 
+
+											'name' 						=> 'Must be string', 
+											'tag' 						=> 'Must be string', 
+											'grouptag'	 				=> 'Null',
+
+											'checkcreate' 				=> 'Could be array or string (time)',
+											'isrequired' 				=> 'Must be true or false', 
+											
+											'withattributes' 			=> 'Must be array of relationship'
+										];
+
 	public $sortable 				= 	['id', 'name', 'is_required', 'created_at', 'tag'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/

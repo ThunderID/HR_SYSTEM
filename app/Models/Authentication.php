@@ -68,6 +68,16 @@ class Authentication extends BaseModel {
 											'withattributes' 					=> 'WithAttributes',
 										];
 
+	public $searchableScope 		= 	[
+											'id' 								=> 'Could be array or integer', 
+											'chartid' 							=> 'Could be array or integer', 
+											'menuid' 							=> 'Could be array or integer', 
+											
+											'email' 							=> 'Must be string', 
+											'access' 							=> 'String in create, read, update, delete or null for all access', 
+											'withattributes' 					=> 'Must be array of relationship',
+										];
+
 	public $sortable 				= 	['chart_id', 'created_at'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/

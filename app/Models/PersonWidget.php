@@ -34,25 +34,28 @@ class PersonWidget extends BaseModel {
 	public 		$timestamps 		= true;
 
 	protected 	$table 				= 'person_widgets';
-	protected 	$fillable			= [
-										'title' 						,
-										'type' 							,
-										'row' 							,
-										'col' 							,
-										'query' 						,
-										'field' 						,
-										'function' 						,
-									];
+
+	protected 	$fillable			= 	[
+											'title' 					,
+											'type' 						,
+											'row' 						,
+											'col' 						,
+											'query' 					,
+											'field' 					,
+											'function' 					,
+										];
 	protected	$dates 				= ['created_at', 'updated_at', 'deleted_at'];
-	protected 	$rules				= [
-										'title' 						=> 'required|max:255',
-										'type' 							=> 'required|in:table,panel,stat',
-										'row' 							=> 'required|numeric',
-										'col' 							=> 'required|numeric',
-										'query' 						=> 'required|max:255',
-										'field' 						=> 'max:255',
-										'function' 						=> 'required|in:total_documents,total_branches,total_employees,index_branches,index_employees,index_documents|max:255',
-									];
+
+	protected 	$rules				= 	[
+											'title' 					=> 'required|max:255',
+											'type' 						=> 'required|in:table,panel,stat',
+											'row' 						=> 'required|numeric',
+											'col' 						=> 'required|numeric',
+											'query' 					=> 'required|max:255',
+											'field' 					=> 'max:255',
+											'function' 					=> 'required|in:total_documents,total_branches,total_employees,index_branches,index_employees,index_documents|max:255',
+										];
+
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'personid' 					=> 'PersonID', 
@@ -60,7 +63,16 @@ class PersonWidget extends BaseModel {
 											'type' 						=> 'Type', 
 											'withattributes' 			=> 'WithAttributes',
 										];
-	public $sortable 				= ['title', 'row', 'created_at'];
+
+	public $searchableScope 		= 	[
+											'id' 						=> 'Could be array or integer', 
+											'personid' 					=> 'Could be array or integer', 
+											'title' 					=> 'Must be string', 
+											'type' 						=> 'Must be string', 
+											'withattributes' 			=> 'Must be array of relationship',
+										];
+
+	public $sortable 				= 	['title', 'row', 'created_at'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**

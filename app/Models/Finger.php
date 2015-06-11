@@ -66,6 +66,14 @@ class Finger extends BaseModel {
 											'withattributes' 			=> 'WithAttributes'
 										];
 
+	public $searchableScope 		= 	[
+											'id' 						=> 'Could be array or integer', 
+											'personid' 					=> 'Could be array or integer', 
+											'updatedat' 				=> 'Could be array or string (time)', 
+											'currentwork' 				=> 'Must be true', 
+											'withattributes' 			=> 'Must be array of relationship'
+										];
+
 	public $sortable 				= ['created_at'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/

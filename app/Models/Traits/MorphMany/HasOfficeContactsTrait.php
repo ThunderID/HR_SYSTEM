@@ -23,6 +23,6 @@ trait HasOfficeContactsTrait {
 
 	public function scopeDefaultContact($query, $variable)
 	{
-		return $query->with(['contacts' => function($q)use($variable){$q->default(true)->orderBy($variable, 'asc');}]);
+		return $query->with(['contacts' => function($q)use($variable){$q->default($variable);}]);
 	}
 }

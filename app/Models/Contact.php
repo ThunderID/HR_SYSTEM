@@ -56,8 +56,20 @@ class Contact extends BaseModel {
 											'personid' 					=> 'PersonID', 
 
 											'item' 						=> 'Item', 
+											'value' 					=> 'Value', 
 											'messageservices' 			=> 'MessageServices', 
 											'withattributes' 			=> 'WithAttributes'
+										];
+
+	public $searchableScope 		= 	[
+											'id' 						=> 'Could be array or integer', 
+											'branchid' 					=> 'Could be array or integer', 
+											'personid' 					=> 'Could be array or integer', 
+
+											'item' 						=> 'Could be array or string', 
+											'value' 					=> 'Could be array or string', 
+											'messageservices' 			=> 'No Need', 
+											'withattributes' 			=> 'Must be array of relationship'
 										];
 
 	public $sortable 				= 	['created_at', 'is_default', 'item'];

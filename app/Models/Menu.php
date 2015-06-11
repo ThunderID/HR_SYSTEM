@@ -52,10 +52,18 @@ class Menu extends BaseModel {
 									];
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
-											'name' 						=> 'Name', 
 											'applicationid' 			=> 'ApplicationID', 
+											'name' 						=> 'Name', 
 											'withattributes' 			=> 'WithAttributes',
 										];
+
+	public $searchableScope 		= 	[
+											'id' 						=> 'Could be array or integer', 
+											'applicationid' 			=> 'Could be array or integer', 
+											'name' 						=> 'Must be string', 
+											'withattributes' 			=> 'Must be array of relationship'
+										];
+
 	public $sortable 				= ['name', 'menu', 'created_at', 'applications.id'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/

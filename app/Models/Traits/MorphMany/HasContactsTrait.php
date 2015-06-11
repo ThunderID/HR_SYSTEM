@@ -22,7 +22,7 @@ trait HasContactsTrait {
 
 	public function scopeDefaultContact($query, $variable)
 	{
-		return $query->with(['contacts' => function($q)use($variable){$q->default(true)->orderBy($variable, 'asc');}]);
+		return $query->with(['contacts' => function($q)use($variable){$q->default($variable);}]);
 	}
 
 	public function scopeEmail($query, $variable)
@@ -32,6 +32,6 @@ trait HasContactsTrait {
 
 	public function scopeDefaultEmail($query, $variable)
 	{
-		return $query->with(['contacts' => function($q)use($variable){$q->item('email')->default(true)->take(1);}]);
+		return $query->with(['contacts' => function($q)use($variable){$q->item('email')->default($variable)->take(1);}]);
 	}
 }

@@ -142,6 +142,48 @@ class Person extends BaseModel {
 											'globalattendance'	 			=> 'GlobalAttendance',
 										];
 
+
+	public $searchableScope 		= 	[
+
+											'id' 							=> 'Could be array or integer', 
+											'organisationid' 				=> 'Could be array or integer', 
+											
+											'fullname' 						=> 'Must be string', 
+											'prefixtitle' 					=> 'Must be string', 
+											'suffixtitle' 					=> 'Must be string', 
+											'dateofbirth' 					=> 'Could be array or string (date)', 
+											'gender' 						=> 'Must be male or female', 
+											'checkcreate' 					=> 'Could be array or string (date)',
+											'globalattendance'	 			=> 'Must be array of string and or case and or sort',
+											'withattributes' 				=> 'Must be array of relationship',
+											
+											'defaultcontact' 				=> 'Must be true',
+											'email'			 				=> 'Must be string',
+											'defaultemail' 					=> 'Must be true',
+
+											'checkrelative' 				=> 'Null',
+											'checkrelation' 				=> 'Must be integer of ID',
+											'checkrelationof' 				=> 'Must be integer of ID',
+											
+											'takenworkleave'				=> 'Must be array of : status and on (could be array or string (date))',
+											'checktakenworkleave'			=> 'Must be array of : status and on (could be array or string (date))',
+											'minusquotas'					=> 'Must be array of : ids (array of integer ID) and ondate (array of string (date))',
+											'fullschedule' 					=> 'Must be string (date)', 
+
+											'workleaveid'					=> 'Could be array or integer',
+											'checkworkleave' 				=> 'Could be false or array or string (time)',
+											'quotas'						=> 'Must be array of ondate (array of string(time))',
+
+											'branchid' 						=> 'Could be array or integer', 
+											'chartid' 						=> 'Could be array or integer', 
+											'charttag' 						=> 'Must be string', 
+											'checkwork'	 					=> 'Could be false or string (date)',
+											'currentwork' 					=> 'Could be null or integer of ID',
+											'previouswork' 					=> 'Null',
+
+											'displayupdatedfinger'			=> 'Must be string (datetime)',
+										];
+
 	public $sortable 				= 	['name', 'prefix_title', 'suffix_title', 'date_of_birth', 'created_at', 'persons.created_at', 'persons.id'];
 	
 	protected $appends				= 	['has_relatives', 'has_works', 'has_contacts', 'log_notes'];

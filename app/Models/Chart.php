@@ -104,6 +104,23 @@ class Chart extends BaseModel {
 											'withattributes' 		=> 'WithAttributes'
 										];
 
+	public $searchableScope 		= 	[
+											'id' 					=> 'Could be array or integer', 
+											'branchid'		 		=> 'Could be array or integer',
+											'organisationid'		=> 'Could be array or integer',
+
+											'name' 					=> 'Must be string', 
+											'orname' 				=> 'Could be array or string', 
+											'tag' 					=> 'Must be string', 
+											'ortag' 				=> 'Could be array or string', 
+											'child' 				=> 'Path of current node', 
+											'neighbor' 				=> 'Path of current node', 
+											'grouptag'	 			=> 'Null',
+
+											'orbranchname' 			=> 'Could be array or string', 
+											'withattributes' 		=> 'Must be array of relationship',
+										];
+
 	public $sortable 				= 	['id', 'name', 'created_at', 'path', 'charts.name'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/

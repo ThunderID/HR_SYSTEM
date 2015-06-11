@@ -54,6 +54,13 @@ class Follow extends BaseModel {
 											'withattributes' 			=> 'WithAttributes'
 										];
 
+	public $searchableScope 		= 	[
+											'id' 						=> 'Could be array or integer', 
+											'chartid' 					=> 'Could be array or integer', 
+											'calendarid' 				=> 'Could be array or integer', 
+											'withattributes' 			=> 'Must be array of relationship'
+										];
+
 	public $sortable 				= 	['created_at', 'chart_id'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/

@@ -157,6 +157,8 @@ class Getting extends Command implements SelfHandling {
 		{
 			if (!array_key_exists(strtolower($field), ($this->searchable)))
 			{
+				$error 					= $this->errorpage($this->model->searchableScope, $field . ": Is not searchable", "Searchable");
+				print_r($error);exit;
 				throw new Exception($field . ": Is not searchable", 2);
 			}
 		}
@@ -181,6 +183,8 @@ class Getting extends Command implements SelfHandling {
 		{
 			if (!in_array(strtolower($field), $this->sortable))
 			{
+				$error 					= $this->errorpage($this->model->sortable, $field . ": Is not sortable", "Sortable");
+				print_r($error);exit;
 				throw new Exception($field . ": Is not sortable", 4);
 			}
 
@@ -250,6 +254,36 @@ class Getting extends Command implements SelfHandling {
 		{
 			throw new Exception("Model does not exist", 13);
 		}
+	}
+
+
+	private function errorpage($error, $message, $function)
+	{
+		$review = '<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>HR System</title>
+	<link href="http://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
+</head>
+<body style="background-color:#f5f5f5">
+	<div class="container">
+	<h2>'.$message.'</h2>
+	<h3>'.$function.' Function</h3>
+			';
+			foreach ($error as $key => $value) 
+			{
+				$review 	= $review.'<p>'.$key.' : '.$value.'</p>';
+			}
+			$review = $review.
+			'
+	</div>
+</body>
+</html>';
+
+return $review;
 	}
 
 }

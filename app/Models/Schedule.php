@@ -65,6 +65,17 @@ class Schedule extends BaseModel {
 											'withattributes' 				=> 'WithAttributes'
 										];
 
+	public $searchableScope 		= 	[
+											'id' 							=> 'Could be array or integer', 
+											'calendarid' 					=> 'Could be array or integer', 
+											'ondate' 						=> 'Could be array or string (date)', 
+											'name' 							=> 'Must be string', 
+											'branchid' 						=> 'Could be array or integer', 
+											'chartid' 						=> 'Could be array or integer', 
+											'notid' 						=> 'Must be integer', 
+											'withattributes' 				=> 'Must be array of relationship',
+										];
+
 	public $sortable 				= ['created_at', 'name'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/

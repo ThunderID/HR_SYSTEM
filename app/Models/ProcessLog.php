@@ -98,7 +98,25 @@ class ProcessLog extends BaseModel {
 											'orderavgworkhour' 			=> 'OrderAverageWorkHour', 
 											'withattributes' 			=> 'WithAttributes'
 										];
-										
+
+	public $searchableScope 		= 	[
+											'id' 						=> 'Could be array or integer', 
+											'personid' 					=> 'Could be array or integer', 
+											'organisationid' 			=> 'Could be array or integer', 
+											'branchid' 					=> 'Could be array or integer', 
+											'charttag' 					=> 'Must be string', 
+											'ondate' 					=> 'Could be array or string (date)', 
+											'late' 						=> 'Null', 
+											'ontime' 					=> 'Null', 
+											'earlier' 					=> 'Null', 
+											'overtime' 					=> 'Null', 
+											'global' 					=> 'Null', 
+											'local' 					=> 'Null', 
+											'orderworkhour' 			=> 'Null', 
+											'orderavgworkhour' 			=> 'Null', 
+											'withattributes' 			=> 'Must be array of relationship',
+										];
+
 	public $sortable 				= 	['created_at', 'on', 'margin_start', 'margin_end', 'total_idle', 'person_id', 'total_active', 'total_sleep'];
 
 	protected $appends				= 	['has_schedule', 'notes'];

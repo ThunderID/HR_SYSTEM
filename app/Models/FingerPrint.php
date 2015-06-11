@@ -73,6 +73,12 @@ class FingerPrint extends BaseModel {
 											'withattributes' 			=> 'WithAttributes'
 										];
 
+	public $searchableScope 		= 	[
+											'id' 						=> 'Could be array or integer', 
+											'branchid' 					=> 'Could be array or integer', 
+											'withattributes' 			=> 'Must be array of relationship'
+										];
+
 	public $sortable 				= ['created_at'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
