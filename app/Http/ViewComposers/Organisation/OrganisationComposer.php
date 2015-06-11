@@ -1,4 +1,4 @@
-<?php namespace App\Http\ViewComposers\Common;
+<?php namespace App\Http\ViewComposers\Organisation;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\MessageBag;
@@ -6,7 +6,7 @@ use App\Console\Commands\Getting;
 use App\Models\Organisation;
 use Input, Validator, App;
 
-class ChoiceOrgFormComposer extends \App\Http\ViewComposers\WidgetComposer {
+class OrganisationComposer extends \App\Http\ViewComposers\WidgetComposer {
 
 	protected function setRules()
 	{
@@ -17,6 +17,6 @@ class ChoiceOrgFormComposer extends \App\Http\ViewComposers\WidgetComposer {
 
 	protected function setData()
 	{
-		$contents 								= $this->dispatch(new Getting(new Organisation, [], ['name' => 'asc'] , 1, 0));
+		
 	}
 }

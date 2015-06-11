@@ -40,9 +40,9 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		View::composer(['widgets.form.form_login'], 'App\Http\ViewComposers\Common\LoginFormComposer');
 
 		// -----------------------------------------------------------------------------
-		// ARTICLE
+		// ORGANISATION
 		// -----------------------------------------------------------------------------
-		// View::composer(['admin.widgets.article.filter'], 'App\Http\ViewComposers\Admin\Article\StatusComposer');
+		View::composer(['widgets.form.form_choice_org'], 'App\Http\ViewComposers\Organisation\OrganisationComposer');
 
 		// -----------------------------------------------------------------------------
 		// CATEGORY

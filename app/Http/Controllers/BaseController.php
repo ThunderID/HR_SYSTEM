@@ -10,13 +10,8 @@ abstract class BaseController extends Controller {
 
 	function __construct() 
 	{
-		if (!Route::is('hr.login'))
-		{
-
-			if (Route::is('hr.org.hr.org.get_choice'))
-			{
-				$this->layout = view('page_templates.page_template_no_nav');		
-			}
+		if ((!Route::is('hr.login'))&(!Route::is('hr.org.get_choice')))
+		{			
 			
 			$this->layout = view('page_templates.page_template');
 		}

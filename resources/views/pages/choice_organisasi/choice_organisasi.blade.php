@@ -3,8 +3,8 @@
 		'widget_template'	=> 'panel',
 		'widget_options'	=> ['widget_title'		=> 'Pilih Organisasi :',
 								'form_url'			=> route('hr.postlogin'),
-								'user_id'			=> 'email',
-								'user_id_label'		=> 'Email'
+								'org_id'			=> 'organisasi',
+								'org_id_label'		=> 'Organisasi'
 								]
 	])	
 @stop

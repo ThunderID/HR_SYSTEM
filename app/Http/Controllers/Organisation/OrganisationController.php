@@ -56,8 +56,7 @@ class OrganisationController extends BaseController {
 	}
 
 	function getChoice()
-	{
-		$this->layout->contents 								= $this->dispatch(new Getting(new Organisation, [], ['name' => 'asc'] , 1, []));
+	{		
 		$this->layout->page 	= view('pages.choice_organisasi.choice_organisasi');
 
 		return $this->layout;
