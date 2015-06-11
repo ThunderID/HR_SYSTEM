@@ -1,10 +1,11 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
 @section('widget_title')	
-	HR System Login
+	{{ $widget_data['widget_title'] }}
 @overwrite
 
 @section('widget_body')
+	<br/>
 	{!! Form::open(['url' => $widget_data['form_url'], 'method' => 'post', 'class' => 'form-horizontal']) !!}	
 		<div class="form-group">
 			<div class="col-md-2">

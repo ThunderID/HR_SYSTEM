@@ -56,7 +56,7 @@ class OrganisationController extends BaseController {
 	}
 
 	function getChoice()
-	{
+	{		
 		$this->layout->page 	= view('pages.choice_organisasi.choice_organisasi');
 
 		return $this->layout;

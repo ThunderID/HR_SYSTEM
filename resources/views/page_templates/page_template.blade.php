@@ -17,7 +17,7 @@
 			</div>
 		</div>
 	</div>
-	{!! HTML::script('plugins/jquery/jquery.min.js') !!}
+	{!! HTML::script('plugins/jquery/jquery-2.1.4.min.js') !!}
 	@include('plugins.select2')
 </body>
 </html>
