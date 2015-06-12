@@ -172,6 +172,16 @@ class Chart extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
+	public function scopeID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('charts.id', $variable);
+		}
+		return $query->where('charts.id', $variable);
+	}
+	
+
 	public function scopeOrName($query, $variable)
 	{
 		if(is_array($variable))

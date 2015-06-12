@@ -124,6 +124,15 @@ class Calendar extends BaseModel {
 	/* ---------------------------------------------------------------------------- FUNCTIONS -------------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
+	
+	public function scopeID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('tmp_calendars.id', $variable);
+		}
+		return $query->where('tmp_calendars.id', $variable);
+	}
 
 	public function scopeName($query, $variable)
 	{

@@ -114,6 +114,15 @@ class Schedule extends BaseModel {
 	/* ---------------------------------------------------------------------------- FUNCTIONS -------------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
+	
+	public function scopeID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('tmp_schedules.id', $variable);
+		}
+		return $query->where('tmp_schedules.id', $variable);
+	}
 
 	public function scopeName($query, $variable)
 	{

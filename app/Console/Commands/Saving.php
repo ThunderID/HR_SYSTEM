@@ -80,17 +80,17 @@ class Saving extends Command implements SelfHandling {
 		{
 			if(isset($this->syncModel))
 			{
-				if($this->syncModel == new \ThunderID\Organisation\Models\Branch)
+				if($this->syncModel == new \App\Models\Branch)
 				{
 					$this->syncModel = $this->syncModel->findorfail($this->syncid);
 					$this->model->Branch()->associate($this->syncModel);
 				}
-				elseif($this->syncModel == new \ThunderID\Organisation\Models\Organisation)
+				elseif($this->syncModel == new \App\Models\Organisation)
 				{
 					$this->syncModel = $this->syncModel->findorfail($this->syncid);
 					$this->model->Organisation()->associate($this->syncModel);
 				}
-				elseif($this->syncModel == new \ThunderID\Person\Models\Person)
+				elseif($this->syncModel == new \App\Models\Person)
 				{
 					$this->syncModel = $this->syncModel->findorfail($this->syncid);
 					if(isset($this->pivot))
@@ -102,27 +102,27 @@ class Saving extends Command implements SelfHandling {
 						$this->model->Person()->associate($this->syncModel);
 					}
 				}
-				elseif($this->syncModel == new \ThunderID\Doclate\Models\Document)
+				elseif($this->syncModel == new \App\Models\Document)
 				{
 					$this->syncModel = $this->syncModel->findorfail($this->syncid);
 					$this->model->Document()->associate($this->syncModel);
 				}
-				elseif($this->syncModel == new \ThunderID\Doclate\Models\PersonDocument)
+				elseif($this->syncModel == new \App\Models\PersonDocument)
 				{
 					$this->syncModel = $this->syncModel->findorfail($this->syncid);
 					$this->model->PersonDocument()->associate($this->syncModel);
 				}
-				elseif($this->syncModel == new \ThunderID\Organisation\Models\Chart)
+				elseif($this->syncModel == new \App\Models\Chart)
 				{
 					$this->syncModel = $this->syncModel->findorfail($this->syncid);
 					$this->model->Chart()->associate($this->syncModel);
 				}
-				elseif($this->syncModel == new \ThunderID\Schedule\Models\Calendar)
+				elseif($this->syncModel == new \App\Models\Calendar)
 				{
 					$this->syncModel = $this->syncModel->findorfail($this->syncid);
 					$this->model->Calendar()->associate($this->syncModel);
 				}
-				elseif($this->syncModel == new \ThunderID\Chauth\Models\Menu)
+				elseif($this->syncModel == new \App\Models\Menu)
 				{
 					$this->syncModel = $this->syncModel->findorfail($this->syncid);
 					$this->model->Menu()->associate($this->syncModel);

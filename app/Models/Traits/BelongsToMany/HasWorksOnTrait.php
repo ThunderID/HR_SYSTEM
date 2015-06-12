@@ -77,7 +77,7 @@ trait HasWorksOnTrait {
 	{
 		if(isset($variable['id']))
 		{
-			return $query->whereHas('workscalendars' ,function($q)use($variable){$q->where('calendar_id', $variable['id']);});
+			return $query->whereHas('workscalendars' ,function($q)use($variable){$q->calendarid($variable['id']);});
 		}
 		return $query->whereHas('workscalendars' ,function($q)use($variable){$q;});
 	}

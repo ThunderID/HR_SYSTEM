@@ -32,6 +32,6 @@ trait HasContactsTrait {
 
 	public function scopeDefaultEmail($query, $variable)
 	{
-		return $query->with(['contacts' => function($q)use($variable){$q->item('email')->default($variable)->take(1);}]);
+		return $query->with(['contacts' => function($q)use($variable){$q->item('email')->default($variable);}]);
 	}
 }
