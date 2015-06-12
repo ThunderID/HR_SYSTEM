@@ -21,11 +21,6 @@ trait HasDocumentTrait {
 		return $this->belongsTo('App\Models\Document');
 	}
 
-	// public function scopeOrganisationID($query, $variable)
-	// {
-	// 	return $query->wherehas('document.organisation', function($q)use($variable){$q->where('id', $variable);});
-	// }
-	
 	public function scopeDocumentID($query, $variable)
 	{
 		if(is_array($variable))
@@ -36,7 +31,7 @@ trait HasDocumentTrait {
 		return $query->where('document_id', $variable);
 	}
 
-	public function scopeTag($query, $variable)
+	public function scopeDocumentTag($query, $variable)
 	{
 		return $query->wherehas('document', function($q)use($variable){$q->tag($variable);});
 	}

@@ -13,7 +13,7 @@ class OrganisationController extends BaseController {
 	function index($page = 1)
 	{
 		// ---------------------- LOAD DATA ----------------------
-		$search 									= ['id' => 1, 'withattributes' => ['branches', 'branches.charts']];
+		$search 									= ['000' => 1, 'withattributes' => ['branches', 'branches.charts']];
 		if(Input::has('q'))
 		{
 			$search['name']							= Input::get('q');			
@@ -44,7 +44,7 @@ class OrganisationController extends BaseController {
 		}
 		else
 		{
-			$sort 									= ['created_at' => 'asc'];
+			$sort 									= ['name' => 'asc'];
 		}
 
 		$per_page 									= 12;

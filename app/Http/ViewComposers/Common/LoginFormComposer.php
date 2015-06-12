@@ -4,7 +4,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\MessageBag;
 use Input, Validator, App;
 
-class LoginFormComposer extends \App\Http\ViewComposers\WidgetComposer {
+class LoginFormComposer extends WidgetComposer {
 
 	protected function setRules()
 	{
@@ -15,6 +15,6 @@ class LoginFormComposer extends \App\Http\ViewComposers\WidgetComposer {
 
 	protected function setData()
 	{
-			
+		
 	}
 }

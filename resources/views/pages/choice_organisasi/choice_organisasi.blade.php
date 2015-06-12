@@ -3,10 +3,12 @@
 		'widget_template'	=> 'panel',
 		'widget_options'	=> ['widget_title'		=> 'Pilih Organisasi :',
 								'form_url'			=> route('hr.postlogin'),
-								'org_id'			=> 'organisasi',
-								'org_id_label'		=> 'Organisasi',
-								'org_search'		=> [],
-								'org_sort'			=> ['name' => ''],
+								'organisation_id'	=> 1,
+								'document_id'		=> 1,
+								'search'			=> [],
+								'sort'				=> [],
+								'page'				=> 1,
+								'per_page'			=> 12,
 								]
 	])	
 @stop

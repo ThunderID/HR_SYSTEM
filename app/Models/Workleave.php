@@ -53,17 +53,13 @@ class Workleave extends BaseModel {
 											'id' 						=> 'ID', 
 											'organisationid' 			=> 'OrganisationID', 
 											'name' 						=> 'Name', 
-											'charttag' 					=> 'ChartTag', 
-											'branchid' 					=> 'BranchID', 
 											'withattributes' 			=> 'WithAttributes'
 										];
 
 	public $searchableScope 		= 	[
 											'id' 						=> 'Could be array or integer', 
 											'organisationid' 			=> 'Could be array or integer', 
-											'branchid' 					=> 'Could be array or integer', 
 											'name' 						=> 'Must be string', 
-											'charttag' 					=> 'Must be string', 
 											'withattributes' 			=> 'Must be array of relationship',
 										];
 

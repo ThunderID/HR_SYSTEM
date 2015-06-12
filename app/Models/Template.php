@@ -54,7 +54,6 @@ class Template extends BaseModel {
 	public $searchable 				= 	[
 											'id' 								=> 'ID', 
 											'documentid'	 					=> 'DocumentID', 
-											'organisationid'	 				=> 'OrganisationID', 
 											'field' 							=> 'Field', 
 											'withattributes' 					=> 'WithAttributes'
 										];
@@ -62,7 +61,6 @@ class Template extends BaseModel {
 	public $searchableScope 		= 	[
 											'id' 							=> 'Could be array or integer', 
 											'documentid' 					=> 'Could be array or integer', 
-											'organisationid' 				=> 'Could be array or integer', 
 											'field' 						=> 'Must be string', 
 											'withattributes' 				=> 'Must be array of relationship',
 										];
