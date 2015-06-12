@@ -6,7 +6,12 @@ use App\Console\Commands\Getting;
 use App\Models\Organisation;
 use Input, Validator, App;
 
-class OrganisationComposer extends \App\Http\ViewComposers\WidgetComposer {
+
+
+class OrganisationComposer extends \App\Http\ViewComposers\WidgetComposer 
+{
+	use \Illuminate\Foundation\Bus\DispatchesCommands;
+	use \Illuminate\Foundation\Validation\ValidatesRequests;
 
 	protected function setRules()
 	{
@@ -17,6 +22,15 @@ class OrganisationComposer extends \App\Http\ViewComposers\WidgetComposer {
 
 	protected function setData()
 	{
+		$results 								=  $this->dispatch(new Getting(new Organisation, [], [] , 1, 100));
+
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
 		
+		$this->widget_data['organisation'] 		= json_decode(json_encode($contents->data), true);
 	}
 }

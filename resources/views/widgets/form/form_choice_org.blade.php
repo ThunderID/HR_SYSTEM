@@ -12,14 +12,9 @@
 			</div>	
 			<div class="col-md-10">
 				<select name="{{ $widget_data['org_id'] }}" id="org" class="select2-skin" style="width:100%">
-					<option value="">Khiels A</option>
-					<option value="">Khiels B</option>
-					<option value="">Khiels C</option>
-					<option value="">Khiels 1</option>
-					<option value="">Khiels 2</option>
-					<option value="">Khiels 3</option>
-					<option value="">Khiels 4</option>
-					<option value="">Khiels 5</option>
+					@foreach($widget_data['organisation'] as $key => $value)
+					<option value="">{{$value['name']}}</option>
+					@endforeach
 				</select>
 			</div>
 		</div>
