@@ -46,7 +46,7 @@ class OrganisationObserver
 				$apps		= Menu::get(['id']);
 				foreach ($apps as $key => $value) 
 				{
-					$chart->menus()->attach($value->id, ['create' => true, 'read' => true, 'update' => true, 'delete' => true]);
+					$chart->menus()->attach($value->id, ['is_create' => true, 'is_read' => true, 'is_update' => true, 'is_delete' => true]);
 					if(!$chart->save())
 					{
 						$model['errors'] 	= $chart->getError();

@@ -16,10 +16,10 @@ class CreateAuthenticationsTable extends Migration {
 			$table->increments('id');
 			$table->integer('menu_id')->unsigned()->index();
 			$table->integer('chart_id')->unsigned()->index();
-			$table->boolean('create');
-			$table->boolean('read');
-			$table->boolean('update');
-			$table->boolean('delete');
+			$table->boolean('is_create');
+			$table->boolean('is_read');
+			$table->boolean('is_update');
+			$table->boolean('is_delete');
 			$table->timestamps();
 			$table->softDeletes();
 		});

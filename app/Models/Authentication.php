@@ -6,10 +6,10 @@
  * 	ID 								: Auto Increment, Integer, PK
  * 	menu_id 						: Required, Integer, FK from Menu
  * 	chart_id 						: Required, Integer, FK from Chart
- * 	create 			 				: Boolean
- * 	read 			 				: Boolean
- * 	update 			 				: Boolean
- * 	delete 			 				: Boolean
+ * 	is create 			 			: Boolean
+ * 	is read 			 			: Boolean
+ * 	is update 			 			: Boolean
+ * 	is delete 			 			: Boolean
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -44,18 +44,18 @@ class Authentication extends BaseModel {
 
 	protected 	$fillable			=	[
 											'chart_id' 							,
-											'create' 							,
-											'read' 								,
-											'update' 							,
-											'delete' 							,
+											'is_create' 						,
+											'is_read' 							,
+											'is_update' 						,
+											'is_delete' 							,
 										];
 
 	protected 	$rules				= 	[
 											'chart_id' 							=> 'required|exists:charts,id',
-											'create'							=> 'boolean',
-											'read'								=> 'boolean',
-											'update'							=> 'boolean',
-											'delete'							=> 'boolean',
+											'is_create'							=> 'boolean',
+											'is_read'							=> 'boolean',
+											'is_update'							=> 'boolean',
+											'is_delete'							=> 'boolean',
 										];
 
 	public $searchable 				= 	[
@@ -135,7 +135,7 @@ class Authentication extends BaseModel {
 		{
 			return $query;
 		}
-		if(in_array($variable, ['create', 'read', 'update', 'delete']))
+		if(in_array($variable, ['is_create', 'is_read', 'is_update', 'is_delete']))
 		{
 			return $query->where($variable, true);
 		}
