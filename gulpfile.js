@@ -12,8 +12,8 @@ var elixir = require('laravel-elixir');
  */
 elixir.config.sourcemaps = false;
 elixir(function(mix) {
-    mix.less('app.less')
+	mix.less('app.less')
+		.less('bootstrap/bootstrap.less', 'public/css/')    	
 		.version('public/css/app.css')
 		.copy('resources/assets/plugins/', 'public/plugins');
-    
 });
