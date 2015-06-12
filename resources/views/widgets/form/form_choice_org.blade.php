@@ -13,7 +13,7 @@
 			<div class="col-md-10">
 				<select name="{{ $widget_data['org_id'] }}" id="org" class="select2-skin" style="width:100%">
 					@foreach($widget_data['organisation'] as $key => $value)
-					<option value="">{{$value['name']}}</option>
+						<option value="">{{$value['name']}}</option>
 					@endforeach
 				</select>
 			</div>

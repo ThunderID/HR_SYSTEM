@@ -6,6 +6,9 @@ use Input, App, Validator;
 
 abstract class WidgetComposer {
 
+	use \Illuminate\Foundation\Bus\DispatchesCommands;
+	use \Illuminate\Foundation\Validation\ValidatesRequests;
+
 	protected $widget_options;
 	protected $widget_data;
 	protected $widget_rules;

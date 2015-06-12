@@ -4,6 +4,7 @@ use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
 use App\APIDTO\APIResponse as APIResponse;
 use Hash, Auth, Exception;
+use Illuminate\Support\MessageBag;
 
 class Deleting extends Command implements SelfHandling {
 
@@ -14,6 +15,8 @@ class Deleting extends Command implements SelfHandling {
 	 */
 	public function __construct($model, $id = null)
 	{
+		$this->errors = new MessageBag();
+		
 		// model
 		$this->model 		= $model;
 		$this->validate_model($model);
@@ -28,6 +31,12 @@ class Deleting extends Command implements SelfHandling {
 	 */
 	public function handle()
 	{		
+		if($this->errors->count())
+		{
+			$response = new APIResponse((array)$this->model, $this->errors->toArray(), ['page' => 1, 'per_page' => 1]);
+			return $response->toJson();
+		}
+
 		return $this->delete();
 	}
 
@@ -92,7 +101,7 @@ class Deleting extends Command implements SelfHandling {
 	{
 		if (!isset($this->model))
 		{
-			throw new Exception("Model does not exist", 13);
+			$this->errors->add(13, "Model does not exist");
 		}
 	}
 }

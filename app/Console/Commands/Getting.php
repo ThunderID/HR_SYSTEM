@@ -1,6 +1,7 @@
 <?php namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\MessageBag;
 use Illuminate\Contracts\Bus\SelfHandling;
 use App\APIDTO\APIResponse as APIResponse;
 use Hash, Auth, Exception;
@@ -14,6 +15,8 @@ class Getting extends Command implements SelfHandling {
 	 */
 	public function __construct($model, $query, $sortby, $page = 1, $per_page = 10)
 	{
+		$this->errors = new MessageBag();
+		
 		$this->validate_sortable($model);
 		$this->validate_searchable($model);
 		$this->max_per_page = 100;
@@ -31,7 +34,7 @@ class Getting extends Command implements SelfHandling {
 		// query
 		$this->query = $query;
 		$this->validate_query($query);
-
+		
 		// sort
 		$this->sortby = $sortby;
 		$this->validate_sortby($sortby);
@@ -53,6 +56,11 @@ class Getting extends Command implements SelfHandling {
 	 */
 	public function handle()
 	{		
+		if($this->errors->count())
+		{
+			$response = new APIResponse((array)$this->model, $this->errors->toArray(), ['page' => $this->page, 'per_page' => $this->per_page]);
+			return $response->toJson();
+		}
 		return $this->get();
 	}
 
@@ -157,9 +165,12 @@ class Getting extends Command implements SelfHandling {
 		{
 			if (!array_key_exists(strtolower($field), ($this->searchable)))
 			{
-				$error 					= $this->errorpage($this->model->searchableScope, $field . ": Is not searchable", "Searchable");
-				print_r($error);exit;
-				throw new Exception($field . ": Is not searchable", 2);
+				$this->errors->add(1, $field . ": Is not searchable");
+				$this->errors->add(1, 'Searchable Function');
+				foreach ($this->model->searchableScope as $key => $value) 
+				{
+					$this->errors->add(2, $key. ' => '. $value);
+				}
 			}
 		}
 	}
@@ -183,14 +194,17 @@ class Getting extends Command implements SelfHandling {
 		{
 			if (!in_array(strtolower($field), $this->sortable))
 			{
-				$error 					= $this->errorpage($this->model->sortable, $field . ": Is not sortable", "Sortable");
-				print_r($error);exit;
-				throw new Exception($field . ": Is not sortable", 4);
+				$this->errors->add(4, $field . ": Is not sortable");
+				$this->errors->add(4, 'Sortable Function');
+				foreach ($this->model->sortable as $key => $value) 
+				{
+					$this->errors->add(4, $value);
+				}
 			}
 
 			if (!str_is('asc', $value) && !str_is('desc', $value))
 			{
-				throw new Exception("Sort mode must be either asc or desc", 9);
+				$this->errors->add(9, 'Sort mode must be either asc or desc');
 			}
 		}
 	}
@@ -205,7 +219,7 @@ class Getting extends Command implements SelfHandling {
 	{
 		if (!is_integer($page) || $page < 1)
 		{
-			throw new Exception("Page must be an integer greater than 0", 5);
+			$this->errors->add(5, "Page must be an integer greater than 0");
 		}
 	}
 
@@ -219,7 +233,7 @@ class Getting extends Command implements SelfHandling {
 	{
 		if (!is_integer($per_page) || $per_page < 1 || $per_page > 100)
 		{
-			throw new Exception("Page must be an integer between 1 and 100", 6);
+			$this->errors->add(6, "Page must be an integer between 1 and 100");
 		}
 	}
 
@@ -235,7 +249,7 @@ class Getting extends Command implements SelfHandling {
 		{
 			if (!method_exists($model, 'scope'.$func))
 			{
-				throw new Exception("Function for searching $field ($func) does not exist", 11);
+				$this->errors->add(11, "Function for searching $field ($func) does not exist");
 			}
 		}
 	}
@@ -244,7 +258,7 @@ class Getting extends Command implements SelfHandling {
 	{
 		if (!isset($model->sortable))
 		{
-			throw new Exception("Sortable field has not been set", 12);
+			$this->errors->add(12, "Sortable field has not been set");
 		}
 	}
 
@@ -252,38 +266,7 @@ class Getting extends Command implements SelfHandling {
 	{
 		if (!isset($this->model))
 		{
-			throw new Exception("Model does not exist", 13);
+			$this->errors->add(13, "Model does not exist");
 		}
 	}
-
-
-	private function errorpage($error, $message, $function)
-	{
-		$review = '<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>HR System</title>
-	<link href="http://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
-</head>
-<body style="background-color:#f5f5f5">
-	<div class="container">
-	<h2>'.$message.'</h2>
-	<h3>'.$function.' Function</h3>
-			';
-			foreach ($error as $key => $value) 
-			{
-				$review 	= $review.'<p>'.$key.' : '.$value.'</p>';
-			}
-			$review = $review.
-			'
-	</div>
-</body>
-</html>';
-
-return $review;
-	}
-
 }
