@@ -2,6 +2,7 @@
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\MessageBag;
+use App\Http\ViewComposers\WidgetComposer;
 use Input, Validator, App;
 
 class LoginFormComposer extends WidgetComposer {

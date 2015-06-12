@@ -10,7 +10,7 @@ class OrganisationComposer extends WidgetComposer
 {
 	protected function setRules()
 	{
-		$this->widget_rules['form_url']			= ['required', 'url'];						// url for form submit
+		$this->widget_rules['form_url']			= ['required_without', 'url'];				// url for form submit
 		$this->widget_rules['search'] 			= ['array'];								// search: label for search
 		$this->widget_rules['sort'] 			= ['array'];								// sort: label for sort
 		$this->widget_rules['page'] 			= ['required', 'numeric'];					// page: label for page
