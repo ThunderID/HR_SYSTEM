@@ -42,7 +42,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// ORGANISATION
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.form.form_choice_org'], 'App\Http\ViewComposers\WorkleaveComposer');
+		View::composer(['widgets.form.form_choice_org', 'widgets.common.nav_sidebar'], 'App\Http\ViewComposers\OrganisationComposer');
 
 		// -----------------------------------------------------------------------------
 		// CATEGORY

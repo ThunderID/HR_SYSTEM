@@ -18,6 +18,10 @@ Route::group(['prefix' => 'admin'], function(){
 		Route::get('/logout',				['uses' => 'LoginController@getLogout',				'as' => 'hr.logout']);
 	});
 
+	Route::group(['namespace' => 'Dashboard\\'], function() {
+		Route::get('dashboard', 			['uses' => 'DashboardController@overview',			'as' => 'hr.dashboard']);
+	});
+
 	Route::group(['namespace' => 'Organisation\\'], function() {
 		Route::get('choice-organisasi',		['uses' => 'OrganisationController@getChoice',		'as' => 'hr.org.get_choice']);
 	});
