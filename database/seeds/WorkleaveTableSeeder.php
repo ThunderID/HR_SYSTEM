@@ -11,7 +11,7 @@ class WorkleaveTableSeeder extends Seeder
 	function run()
 	{
 
-		DB::table('workleaves')->truncate();
+		DB::table('tmp_workleaves')->truncate();
 		$faker 										= Factory::create();
 		$organisation 								= Organisation::find(1);
 		$workleaves 								= ['Cuti Tahunan', 'Cuti Bersama', 'Cuti Melahirkan', 'Cuti Menikah'];

@@ -26,6 +26,7 @@ class PersonScheduleTableSeeder extends Seeder
 				$randay 						= rand(2,40);
 				$data 							= new PersonSchedule;
 				$data->fill([
+					'created_by'				=> 1,
 					'on'						=> date('Y-m-d', strtotime('+ '.$randay.' days')),
 					'name'						=> $schedule[$rand],
 					'status'					=> $status[$rand],

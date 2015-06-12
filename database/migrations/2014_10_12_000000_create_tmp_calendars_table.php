@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCalendarsTable extends Migration {
+class CreateTmpCalendarsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,7 @@ class CreateCalendarsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('calendars', function(Blueprint $table)
+		Schema::create('tmp_calendars', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('organisation_id')->unsigned()->index();

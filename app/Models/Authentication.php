@@ -10,6 +10,7 @@
  * 	is read 			 			: Boolean
  * 	is update 			 			: Boolean
  * 	is delete 			 			: Boolean
+ * 	settings 			 			: Text
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -47,7 +48,8 @@ class Authentication extends BaseModel {
 											'is_create' 						,
 											'is_read' 							,
 											'is_update' 						,
-											'is_delete' 							,
+											'is_delete' 						,
+											'settings' 							,
 										];
 
 	protected 	$rules				= 	[

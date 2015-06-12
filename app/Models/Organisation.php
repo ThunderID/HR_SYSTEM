@@ -37,7 +37,7 @@ class Organisation extends BaseModel {
 
 	public 		$timestamps 		= true;
 
-	protected 	$table 				= 'organisations';
+	protected 	$table 				= 	'organisations';
 
 	protected 	$fillable			= 	[
 											'name' 						,

@@ -35,7 +35,7 @@ class Schedule extends BaseModel {
 
 	public 		$timestamps 		= 	true;
 
-	protected 	$table 				= 	'schedules';
+	protected 	$table 				= 	'tmp_schedules';
 
 	protected 	$fillable			= 	[
 											'name' 							,
@@ -76,7 +76,7 @@ class Schedule extends BaseModel {
 											'withattributes' 				=> 'Must be array of relationship',
 										];
 
-	public $sortable 				= ['created_at', 'name'];
+	public $sortable 				= 	['created_at', 'name'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**

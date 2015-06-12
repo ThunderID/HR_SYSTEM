@@ -28,6 +28,9 @@ class CreateProcessLogsTable extends Migration {
 			$table->double('margin_start');
 			$table->double('margin_end');
 			$table->double('total_idle');
+			$table->double('total_idle_1');
+			$table->double('total_idle_2');
+			$table->double('total_idle_3');
 			$table->double('total_sleep');
 			$table->double('total_active');
 			$table->text('tooltip');

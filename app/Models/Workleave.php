@@ -37,7 +37,7 @@ class Workleave extends BaseModel {
 
 	public 		$timestamps 		= 	true;
 
-	protected 	$table 				=	'workleaves';
+	protected 	$table 				=	'tmp_workleaves';
 
 	protected 	$fillable			= 	[
 											'name' 						,

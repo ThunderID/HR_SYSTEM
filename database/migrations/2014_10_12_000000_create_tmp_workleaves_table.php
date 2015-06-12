@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWorkleavesTable extends Migration {
+class CreateTmpWorkleavesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,7 @@ class CreateWorkleavesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('workleaves', function(Blueprint $table)
+		Schema::create('tmp_workleaves', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('organisation_id')->unsigned()->index();

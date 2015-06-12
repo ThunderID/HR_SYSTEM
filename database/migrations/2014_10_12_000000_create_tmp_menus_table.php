@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTemplatesTable extends Migration {
+class CreateTmpMenusTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,11 @@ class CreateTemplatesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('templates', function(Blueprint $table)
+		Schema::create('tmp_menus', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('document_id')->unsigned()->index();
-			$table->string('field', 255);
-			$table->string('type', 255);
+			$table->integer('application_id')->unsigned()->index();
+			$table->string('name', 255);
 			$table->timestamps();
 			$table->softDeletes();
 		});
@@ -30,7 +29,7 @@ class CreateTemplatesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('templates');
+		Schema::drop('menus');
 	}
 
 }

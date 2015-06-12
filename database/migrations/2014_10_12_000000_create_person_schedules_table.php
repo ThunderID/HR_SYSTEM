@@ -16,6 +16,7 @@ class CreatePersonSchedulesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('person_id')->unsigned()->index();
+			$table->integer('created_by')->unsigned()->index();
 			$table->string('name', 255);
 			$table->enum('status', ['presence_indoor', 'presence_outdoor', 'absence_workleave', 'absence_not_workleave']);
 			$table->date('on');

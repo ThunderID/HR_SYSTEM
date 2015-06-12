@@ -12,8 +12,8 @@ class DocumentTableSeeder extends Seeder
 {
 	function run()
 	{
-		DB::table('documents')->truncate();
-		DB::table('templates')->truncate();
+		DB::table('tmp_documents')->truncate();
+		DB::table('tmp_templates')->truncate();
 		$name 										= [
 														'surat peringatan', 
 														'kontrak kerja', 

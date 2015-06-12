@@ -44,7 +44,7 @@ class PersonWorkleave extends BaseModel {
 										];
 
 	protected 	$rules				= 	[
-											'workleave_id'				=> 'required|exists:workleaves,id',
+											'workleave_id'				=> 'required|exists:tmp_workleaves,id',
 											'start'						=> 'required|date_format:"Y-m-d"',
 											'end'						=> 'required|date_format:"Y-m-d"',
 											'is_default'				=> 'boolean',

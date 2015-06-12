@@ -12,7 +12,7 @@ class ApplicationTableSeeder extends Seeder
 {
 	function run()
 	{
-		DB::table('applications')->truncate();
+		DB::table('tmp_applications')->truncate();
 		DB::table('authentications')->truncate();
 
 		$app 										= ['web', 'tracker', 'fingerprint'];
