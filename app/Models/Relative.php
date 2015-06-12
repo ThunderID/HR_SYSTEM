@@ -27,7 +27,7 @@ class Relative extends BaseModel {
 	
 	public 		$timestamps 		= true;
 
-	protected 	$table 				= 'relatives';
+	protected 	$table 				= 	'relatives';
 	
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 

@@ -18,7 +18,10 @@ use DB;
  * 	schedule_end 		 			: Required, Time
  * 	margin_start 		 			: Double
  * 	margin_end 		 				: Double
- * 	total_idle 		 				: Double
+ * 	total_idle 	 					: Double
+ * 	total_idle_1 	 				: Double
+ * 	total_idle_2 	 				: Double
+ * 	total_idle_3 	 				: Double
  * 	total_sleep 					: Double
  * 	total_active 					: Double
  *	created_at						: Timestamp
@@ -46,23 +49,27 @@ class ProcessLog extends BaseModel {
 
 	public 		$timestamps 		= true;
 
-	protected 	$table 				= 'process_logs';
-	protected 	$fillable			= [
-										'name' 							,
-										'on' 							,
-										'start' 						,
-										'end' 							,
-										'fp_start' 						,
-										'fp_end' 						,
-										'schedule_start' 				,
-										'schedule_end' 					,
-										'margin_start' 					,
-										'margin_end' 					,
-										'total_idle' 					,
-										'total_sleep' 					,
-										'total_active' 					,
-										'tooltip' 						,
-									];
+	protected 	$table 				= 	'process_logs';
+	
+	protected 	$fillable			= 	[
+											'name' 							,
+											'on' 							,
+											'start' 						,
+											'end' 							,
+											'fp_start' 						,
+											'fp_end' 						,
+											'schedule_start' 				,
+											'schedule_end' 					,
+											'margin_start' 					,
+											'margin_end' 					,
+											'total_idle' 					,
+											'total_idle_1' 					,
+											'total_idle_2' 					,
+											'total_idle_3' 					,
+											'total_sleep' 					,
+											'total_active' 					,
+											'tooltip' 						,
+										];
 
 	protected 	$rules				= 	[
 											'name'						=> 'required|max:255',
@@ -76,9 +83,13 @@ class ProcessLog extends BaseModel {
 											'margin_start'				=> 'numeric',
 											'margin_end'				=> 'numeric',
 											'total_idle'				=> 'numeric',
+											'total_idle_1'				=> 'numeric',
+											'total_idle_2'				=> 'numeric',
+											'total_idle_3'				=> 'numeric',
 											'total_sleep'				=> 'numeric',
 											'total_active'				=> 'numeric',
 										];
+
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'personid' 					=> 'PersonID', 

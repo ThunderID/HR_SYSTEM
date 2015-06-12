@@ -41,7 +41,7 @@ class DocumentDetail extends BaseModel {
 										];
 
 	protected 	$rules				= 	[
-											'template_id'			=> 'required|exists:templates,id',
+											'template_id'			=> 'required|exists:tmp_templates,id',
 											'numeric'				=> 'required_without:text',
 											'text'					=> 'required_without:numeric',
 										];

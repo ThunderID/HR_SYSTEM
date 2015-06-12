@@ -30,7 +30,7 @@ class Api extends BaseModel {
 
 	public 		$timestamps 		= true;
 
-	protected 	$table 				= 'apis';
+	protected 	$table 				= 	'apis';
 
 	protected 	$fillable			= 	[
 											'client' 							,

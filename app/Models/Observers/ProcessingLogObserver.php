@@ -36,6 +36,9 @@ class ProcessingLogObserver
 			$margin_start 			= 0;
 			$margin_end 			= 0;
 			$total_idle 			= 0;
+			$total_idle_1 			= 0;
+			$total_idle_2 			= 0;
+			$total_idle_3 			= 0;
 			$total_sleep 			= 0;
 			$total_active 			= 0;
 
@@ -212,6 +215,19 @@ class ProcessingLogObserver
 					$new_idle 		= $hours*3600+$minutes*60+$seconds;
 
 					$total_idle		= $total_idle + $new_idle - $start_idle;
+					if($new_idle - $start_idle <= 900)
+					{
+						$total_idle_1 	= $total_idle_1 + $new_idle - $start_idle;
+					}
+					elseif($new_idle - $start_idle > 900 && $new_idle - $start_idle < 3600)
+					{
+						$total_idle_2 	= $total_idle_2 + $new_idle - $start_idle;
+					}
+					elseif($new_idle - $start_idle >= 3600)
+					{
+						$total_idle_3 	= $total_idle_3 + $new_idle - $start_idle;
+					}
+					
 					unset($start_idle);
 				}
 
@@ -249,6 +265,9 @@ class ProcessingLogObserver
 										'margin_start'	=> $margin_start,
 										'margin_end'	=> $margin_end,
 										'total_idle'	=> $total_idle,
+										'total_idle_1'	=> $total_idle_1,
+										'total_idle_2'	=> $total_idle_2,
+										'total_idle_3'	=> $total_idle_3,
 										'total_sleep'	=> $total_sleep,
 										'total_active'	=> $total_active,
 								]

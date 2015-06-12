@@ -47,7 +47,7 @@ class Calendar extends BaseModel {
 
 	public 		$timestamps 		= 	true;
 
-	protected 	$table 				= 	'calendars';
+	protected 	$table 				= 	'tmp_calendars';
 	
 	protected 	$fillable			= 	[
 											'name' 						,

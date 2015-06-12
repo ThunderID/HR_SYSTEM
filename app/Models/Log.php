@@ -32,7 +32,7 @@ class Log extends BaseModel {
 
 	public 		$timestamps 		= true;
 
-	protected 	$table 				= 'logs';
+	protected 	$table 				= 	'logs';
 
 	protected 	$fillable			= 	[
 											'name' 							,

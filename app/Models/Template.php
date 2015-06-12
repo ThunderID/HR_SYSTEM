@@ -40,7 +40,8 @@ class Template extends BaseModel {
 
 	public 		$timestamps 		= 	true;
 
-	protected 	$table 				= 	'templates';
+	protected 	$table 				= 	'tmp_templates';
+	
 	protected 	$fillable			= 	[
 											'field' 							,
 											'type' 								,

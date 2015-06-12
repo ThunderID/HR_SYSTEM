@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Document Model:
  * 	ID 								: Auto Increment, Integer, PK
  * 	person_id 						: Foreign Key From Person, Integer, Required
+ * 	created_by 						: Foreign Key From Person, Integer, Required
  * 	name 		 					: Required max 255
  * 	on 		 						: Required, Date
  * 	start 	 						: Required, Time
@@ -38,6 +39,7 @@ class PersonSchedule extends BaseModel {
 
 	protected 	$fillable			= 	[
 											'name' 						,
+											'created_by' 				,
 											'on' 						,
 											'start' 					,
 											'end' 						,
@@ -45,6 +47,7 @@ class PersonSchedule extends BaseModel {
 										];
 
 	protected 	$rules				= 	[
+											'created_by'				=> 'required|exists:persons,id',
 											'name'						=> 'required|max:255',
 											'on'						=> 'required|date_format:"Y-m-d"',
 											'start'						=> 'required|date_format:"H:i:s"',

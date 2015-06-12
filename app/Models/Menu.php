@@ -42,14 +42,18 @@ class Menu extends BaseModel {
 
 	public 		$timestamps 		= true;
 
-	protected 	$table 				= 'menus';
-	protected 	$fillable			= [
-										'name' 							,
-									];
-	protected	$dates 				= ['created_at', 'updated_at', 'deleted_at'];
-	protected 	$rules				= [
-										'name' 							=> 'required|max:255',
-									];
+	protected 	$table 				= 	'tmp_menus';
+	
+	protected 	$fillable			= 	[
+											'name' 							,
+										];
+
+	protected	$dates 				= 	['created_at', 'updated_at', 'deleted_at'];
+
+	protected 	$rules				= 	[
+											'name' 							=> 'required|max:255',
+										];
+
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'applicationid' 			=> 'ApplicationID', 
@@ -64,7 +68,7 @@ class Menu extends BaseModel {
 											'withattributes' 			=> 'Must be array of relationship'
 										];
 
-	public $sortable 				= ['name', 'menu', 'created_at', 'applications.id'];
+	public $sortable 				= 	['name', 'menu', 'created_at', 'tmp_applications.id'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**

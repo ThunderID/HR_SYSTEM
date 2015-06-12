@@ -20,6 +20,7 @@ class CreateAuthenticationsTable extends Migration {
 			$table->boolean('is_read');
 			$table->boolean('is_update');
 			$table->boolean('is_delete');
+			$table->text('settings');
 			$table->timestamps();
 			$table->softDeletes();
 		});

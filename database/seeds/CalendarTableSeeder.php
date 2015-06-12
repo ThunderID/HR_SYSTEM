@@ -14,7 +14,7 @@ class CalendarTableSeeder extends Seeder
 	function run()
 	{
 
-		DB::table('calendars')->truncate();
+		DB::table('tmp_calendars')->truncate();
 		$faker 										= Factory::create();
 		$total_persons  							= Person::count();
 		$total_orgs 		 						= Organisation::count();

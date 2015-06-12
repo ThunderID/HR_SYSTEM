@@ -41,7 +41,7 @@ class Document extends BaseModel {
 
 	public 		$timestamps 		= 	true;
 
-	protected 	$table 				= 	'documents';
+	protected 	$table 				= 	'tmp_documents';
 
 	protected 	$fillable			= 	[
 											'name' 							,

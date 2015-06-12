@@ -29,14 +29,18 @@ class Application extends BaseModel {
 
 	public 		$timestamps 		= true;
 
-	protected 	$table 				= 'applications';
-	protected 	$fillable			= [
-										'name' 							,
-									];
-	protected	$dates 				= ['created_at', 'updated_at', 'deleted_at'];
-	protected 	$rules				= [
-										'name' 							=> 'required|max:255',
-									];
+	protected 	$table 				= 	'tmp_applications';
+
+	protected 	$fillable			= 	[
+											'name' 							,
+										];
+
+	protected	$dates 				= 	['created_at', 'updated_at', 'deleted_at'];
+
+	protected 	$rules				= 	[
+											'name' 							=> 'required|max:255',
+										];
+
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'chartid' 					=> 'ChartID', 
@@ -44,7 +48,8 @@ class Application extends BaseModel {
 											'name' 						=> 'Name', 
 											'withattributes' 			=> 'WithAttributes',
 										];
-	public $sortable 				= ['name', 'created_at', 'applications.id'];
+
+	public $sortable 				= 	['name', 'created_at', 'tmp_applications.id'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**

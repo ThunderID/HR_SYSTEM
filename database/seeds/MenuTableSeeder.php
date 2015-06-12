@@ -13,7 +13,7 @@ class MenuTableSeeder extends Seeder
 {
 	function run()
 	{
-		DB::table('menus')->truncate();
+		DB::table('tmp_menus')->truncate();
 		DB::table('authentications')->truncate();
 		$menus 										= 
 														[
