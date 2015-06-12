@@ -3,6 +3,7 @@
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
 use App\APIDTO\APIResponse as APIResponse;
+use Illuminate\Support\MessageBag;
 use Hash, Auth, Excecption;
 
 class Checking extends Command implements SelfHandling {
@@ -14,8 +15,11 @@ class Checking extends Command implements SelfHandling {
 	 */
 	public function __construct($model, $credentials)
 	{
+		$this->errors = new MessageBag();
+
 		$this->credentials 	= $credentials;
 		$this->model 		= $model;
+		$this->validate_model($model);
 	}
 
 	/**
@@ -27,7 +31,13 @@ class Checking extends Command implements SelfHandling {
 	{
 		if (!is_array($this->credentials))
 		{
-			throw new InvalidArgumentException("Credential must be type of Array");
+			$this->errors->add(14, "Credential must be type of array");
+		}
+
+		if($this->errors->count())
+		{
+			$response = new APIResponse((array)$this->model, $this->errors->toArray(), ['page' => 1, 'per_page' => 1]);
+			return $response->toJson();
 		}
 
 		// find user
@@ -69,4 +79,11 @@ class Checking extends Command implements SelfHandling {
 		}
 	}
 
+	private function validate_model()
+	{
+		if (!isset($this->model))
+		{
+			$this->errors->add(13, "Model does not exist");
+		}
+	}
 }

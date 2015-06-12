@@ -4,7 +4,9 @@
 		'widget_options'	=> ['widget_title'		=> 'Pilih Organisasi :',
 								'form_url'			=> route('hr.postlogin'),
 								'org_id'			=> 'organisasi',
-								'org_id_label'		=> 'Organisasi'
+								'org_id_label'		=> 'Organisasi',
+								'org_search'		=> [],
+								'org_sort'			=> ['name' => ''],
 								]
 	])	
 @stop

@@ -3,6 +3,7 @@
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
 use App\APIDTO\APIResponse as APIResponse;
+use Illuminate\Support\MessageBag;
 use Hash, Auth, Exception;
 
 class Saving extends Command implements SelfHandling {
@@ -14,6 +15,8 @@ class Saving extends Command implements SelfHandling {
 	 */
 	public function __construct($model, $attributes, $id = null, $syncModel = null, $syncid = null, $pivot = null)
 	{
+		$this->errors = new MessageBag();
+		
 		if (!is_null($pivot))
 		{
 			$this->pivot = $pivot;
@@ -41,7 +44,7 @@ class Saving extends Command implements SelfHandling {
 
 		if (!is_array($attributes))
 		{
-			throw new Exception("Attributes must be type of array", 14);
+			$this->errors->add(14, "Attributes must be type of array");
 		}
 
 		$this->id 			= $id;
@@ -54,7 +57,13 @@ class Saving extends Command implements SelfHandling {
 	 * @return void
 	 */
 	public function handle()
-	{		
+	{	
+		if($this->errors->count())
+		{
+			$response = new APIResponse((array)$this->model, $this->errors->toArray(), ['page' => 1, 'per_page' => 1]);
+			return $response->toJson();
+		}
+
 		return $this->save();
 	}
 
@@ -138,7 +147,7 @@ class Saving extends Command implements SelfHandling {
 	{
 		if (!isset($this->model))
 		{
-			throw new Exception("Model does not exist", 13);
+			$this->errors->add(13, "Model does not exist");
 		}
 	}
 
