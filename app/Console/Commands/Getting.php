@@ -116,9 +116,18 @@ class Getting extends Command implements SelfHandling {
 		}
 		else
 		{
-			$data 		= [$this->model];
-			$message	= ['Data not exists'];
-			$page_info 	= ['page' => $this->page, 'per_page' => $this->per_page];
+			if(is_null($this->query['id']))
+			{
+				$data 		= null;
+				$message	= null;
+				$page_info 	= ['page' => $this->page, 'per_page' => $this->per_page];
+			}
+			else
+			{
+				$data 		= [$this->model];
+				$message	= ['Data not exists'];
+				$page_info 	= ['page' => $this->page, 'per_page' => $this->per_page];
+			}
 		}
 
 		$response = new APIResponse($data, $message, $page_info);

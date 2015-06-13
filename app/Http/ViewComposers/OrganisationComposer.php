@@ -19,9 +19,9 @@ class OrganisationComposer extends WidgetComposer
 
 	protected function setData()
 	{
-		$results 								=  $this->dispatch(new Getting(new Organisation, $this->widget_data['search'], $this->widget_data['sort'] , $this->widget_data['page'], $this->widget_data['per_page']));
+		$results 						=  $this->dispatch(new Getting(new Organisation, $this->widget_data['search'], $this->widget_data['sort'] , $this->widget_data['page'], $this->widget_data['per_page']));
 
-		$contents 								= json_decode($results);
+		$contents 						= json_decode($results);
 
 		if(!$contents->meta->success)
 		{
@@ -39,13 +39,11 @@ class OrganisationComposer extends WidgetComposer
 					$this->widget_errors->add('Organisation', $value);
 				}
 			}
-
-			$this->widget_data['data'] 			= [];
+			$this->widget_data['data'] 	= null;
 		}
 		else
 		{
-			$this->widget_data['data'] 			= json_decode(json_encode($contents->data), true);
+			$this->widget_data['data'] 	= json_decode(json_encode($contents->data), true);
 		}
-		
 	}
 }
