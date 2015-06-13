@@ -14,6 +14,8 @@
                 <li>
                     <a href=""><i class="fa fa-bank fa-fw"></i> {{ $value['name'] }} <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
+                        <li><a href=""><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
+                        <li><a href=""><i class="fa fa-trash fa-fw"></i> Delete</a></li>
                         <li><a href=""><i class="fa fa-tachometer fa-fw"></i> Dashboard</a></li>
                         <li><a href=""><i class="fa fa-building fa-fw"></i> Cabang</a></li>
                         <li><a href=""><i class="fa fa-calendar fa-fw"></i> Kalender</a></li>

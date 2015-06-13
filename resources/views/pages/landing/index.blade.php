@@ -1,10 +1,8 @@
 @section('area')
-	@include('widgets.form.form_choice_org', [
+	@include('widgets.form.organisation_list', [
 		'widget_template'	=> 'panel',
 		'widget_options'	=> ['widget_title'		=> 'Pilih Organisasi :',
-								'form_url'			=> route('hr.postlogin'),
-								'organisation_id'	=> 1,
-								'document_id'		=> 1,
+								'form_url'			=> route('hr.organisations.show'),
 								'search'			=> [],
 								'sort'				=> [],
 								'page'				=> 1,

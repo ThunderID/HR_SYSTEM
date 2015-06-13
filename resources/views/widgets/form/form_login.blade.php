@@ -6,6 +6,7 @@
 
 @section('widget_body')
 	<br/>
+	{{$widget_data['cemcem']}}
 	{!! Form::open(['url' => $widget_data['form_url'], 'method' => 'post', 'class' => 'form-horizontal']) !!}	
 		<div class="form-group">
 			<div class="col-md-2">

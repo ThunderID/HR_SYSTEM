@@ -11,19 +11,29 @@
 |
 */
 
-Route::group(['prefix' => 'admin'], function(){
-	Route::group(['namespace' => 'Auth\\'], function() {
-		Route::get('/', 					['uses' => 'LoginController@getLogin',				'as' => 'hr.login']);
+Route::group(['prefix' => ''], function()
+{
+	// ------------------------------------------------------------------------------------
+	// LOGIN PAGE
+	// ------------------------------------------------------------------------------------
+
+	Route::group(['namespace' => 'Auth\\'], function() 
+	{
+		Route::get('/login', 				['uses' => 'LoginController@getLogin',				'as' => 'hr.login']);
 		Route::post('/login',				['uses' => 'LoginController@postLogin',				'as' => 'hr.postlogin']);
 		Route::get('/logout',				['uses' => 'LoginController@getLogout',				'as' => 'hr.logout']);
 	});
 
-	Route::group(['namespace' => 'Dashboard\\'], function() {
-		Route::get('dashboard', 			['uses' => 'DashboardController@overview',			'as' => 'hr.dashboard']);
-	});
+	// ------------------------------------------------------------------------------------
+	// LANDING PAGE (CHOOSE ORGANISATION OR CREATE ORGANISATION)
+	// ------------------------------------------------------------------------------------
 
-	Route::group(['namespace' => 'Organisation\\'], function() {
-		Route::get('choice-organisasi',		['uses' => 'OrganisationController@getChoice',		'as' => 'hr.org.get_choice']);
-	});
+	Route::get('/', 						['uses' => 'LandingController@get',					'as' => 'hr.start.get']);
+
+	// ------------------------------------------------------------------------------------
+	// SHOW ORGANISATION
+	// ------------------------------------------------------------------------------------
+
+	Route::get('show',						['uses' => 'OrganisationController@show',			'as' => 'hr.organisations.show']);
 });	
 

@@ -3,16 +3,15 @@
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Http\Controllers\Controller;
-use Auth, Route;
+use Auth, Route, Input;
 
 abstract class BaseController extends Controller {
 	protected $layout;
 
 	function __construct() 
 	{
-		if ((!Route::is('hr.login'))&(!Route::is('hr.org.get_choice')))
+		if (Input::has('org_id'))
 		{			
-			
 			$this->layout = view('page_templates.page_template');
 		}
 		else
