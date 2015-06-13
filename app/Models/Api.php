@@ -111,6 +111,15 @@ class Api extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
+	public function scopeID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('apis.id', $variable);
+		}
+		return $query->where('apis.id', $variable);
+	}
+	
 	public function scopeClient($query, $variable)
 	{
 		return $query->where('client', $variable);

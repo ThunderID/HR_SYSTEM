@@ -149,6 +149,15 @@ class Organisation extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
+	public function scopeID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('organisations.id', $variable);
+		}
+		return $query->where('organisations.id', $variable);
+	}
+	
 	public function scopeName($query, $variable)
 	{
 		return $query->where('name', 'like' ,'%'.$variable.'%');

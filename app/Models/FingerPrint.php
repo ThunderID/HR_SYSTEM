@@ -117,4 +117,14 @@ class FingerPrint extends BaseModel {
 	/* ---------------------------------------------------------------------------- FUNCTIONS -------------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
+
+	public function scopeID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('finger_prints.id', $variable);
+		}
+		return $query->where('finger_prints.id', $variable);
+	}
+	
 }

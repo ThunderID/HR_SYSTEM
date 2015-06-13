@@ -131,6 +131,15 @@ class Authentication extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
+	public function scopeID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('authentications.id', $variable);
+		}
+		return $query->where('authentications.id', $variable);
+	}
+	
 	public function scopeAccess($query, $variable)
 	{
 		if(is_null($variable))

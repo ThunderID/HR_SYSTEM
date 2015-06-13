@@ -116,6 +116,15 @@ class Template extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
+	public function scopeID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('tmp_templates.id', $variable);
+		}
+		return $query->where('tmp_templates.id', $variable);
+	}
+	
 	public function scopeField($query, $variable)
 	{
 		return $query->where('field', 'like' ,'%'.$variable.'%');

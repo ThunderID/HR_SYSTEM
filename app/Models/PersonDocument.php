@@ -134,4 +134,14 @@ class PersonDocument extends BaseModel {
 	/* ---------------------------------------------------------------------------- FUNCTIONS -------------------------------------------------------------------------------*/
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
+
+	public function scopeID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('persons_documents.id', $variable);
+		}
+		return $query->where('persons_documents.id', $variable);
+	}
+	
 }

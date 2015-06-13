@@ -204,6 +204,15 @@ class ProcessLog extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
+	public function scopeID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('process_logs.id', $variable);
+		}
+		return $query->where('process_logs.id', $variable);
+	}
+	
 	public function scopeOnDate($query, $variable)
 	{
 		if(is_array($variable))

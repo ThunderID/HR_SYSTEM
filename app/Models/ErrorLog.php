@@ -104,6 +104,15 @@ class ErrorLog extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
+	public function scopeID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('error_logs.id', $variable);
+		}
+		return $query->where('error_logs.id', $variable);
+	}
+	
 	public function scopeName($query, $variable)
 	{
 		if(is_array($variable))

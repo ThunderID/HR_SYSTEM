@@ -95,6 +95,15 @@ class Relative extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
+	public function scopeID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('relatives.id', $variable);
+		}
+		return $query->where('relatives.id', $variable);
+	}
+	
 	public function scopeRelativeID($query, $variable)
 	{
 		return $query->where('relative_id', $variable);

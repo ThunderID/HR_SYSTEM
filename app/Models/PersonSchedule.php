@@ -112,6 +112,15 @@ class PersonSchedule extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
+	public function scopeID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('person_schedules.id', $variable);
+		}
+		return $query->where('person_schedules.id', $variable);
+	}
+	
 	public function scopeName($query, $variable)
 	{
 		return $query->where('name', 'like', '%'.$variable.'%');

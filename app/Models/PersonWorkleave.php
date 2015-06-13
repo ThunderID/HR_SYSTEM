@@ -106,6 +106,15 @@ class PersonWorkleave extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
+	public function scopeID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('persons_workleaves.id', $variable);
+		}
+		return $query->where('persons_workleaves.id', $variable);
+	}
+	
 	public function scopeOnDate($query, $variable)
 	{
 		if(is_array($variable))

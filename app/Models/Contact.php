@@ -111,6 +111,15 @@ class Contact extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
+	public function scopeID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('contacts.id', $variable);
+		}
+		return $query->where('contacts.id', $variable);
+	}
+	
 	public function scopeBranchID($query, $variable)
 	{
 		return $query->where('branch_id', $variable);

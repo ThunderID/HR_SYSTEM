@@ -102,6 +102,15 @@ class Workleave extends BaseModel {
 	
 	/* ---------------------------------------------------------------------------- SCOPE -------------------------------------------------------------------------------*/
 
+	public function scopeID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('tmp_workleaves.id', $variable);
+		}
+		return $query->where('tmp_workleaves.id', $variable);
+	}
+	
 	public function scopeName($query, $variable)
 	{
 		return $query->where('name', 'like', '%'.$variable.'%');
