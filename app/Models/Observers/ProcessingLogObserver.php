@@ -2,6 +2,7 @@
 
 use DB, Validator;
 use App\Models\ProcessLog;
+use App\Models\Work;
 use App\Models\Log;
 use App\Models\Person;
 use Illuminate\Support\MessageBag;
@@ -23,6 +24,7 @@ class ProcessingLogObserver
 			$time 					= date("H:i:s", strtotime($model['attributes']['on']));
 
 			$person 				= Person::find($model['attributes']['person_id']);
+			$workid 				= null;
 			$plog 					= new ProcessLog;
 			$data 					= $plog->ondate([$on, $on])->personid($model['attributes']['person_id'])->first();
 
@@ -74,16 +76,19 @@ class ProcessingLogObserver
 				$ccalendars 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->WorkCalendarschedule(['on' => [$on, $on]])->first();
 				if(!is_null($ccalendars))
 				{
-					$ccalendar 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->WorkCalendarschedule(['on' => [$on, $on]])->withAttributes(['workscalendars', 'workscalendars.calendar', 'workscalendars.calendar.schedules'])->first();
+					$ccalendar 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->WorkCalendarschedule(['on' => [$on, $on]])->with(['workscalendars', 'workscalendars.calendar', 'workscalendars.calendar.schedules' => function($q)use($on){$q->ondate([$on, $on]);}])->first();
 					
 					$schedule_start	= $ccalendar->workscalendars[0]->calendar->schedules[0]->start;
 					$schedule_end	= $ccalendar->workscalendars[0]->calendar->schedules[0]->end;
+					$workid 		= $ccalendar->workscalendars[0]->id;
+
 				}
 				else
 				{
 					$calendar 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->withAttributes(['workscalendars','workscalendars.calendar'])->first();
 					if($calendar)
 					{
+						$workid 	= $ccalendar->workscalendars[0]->id;
 						$workdays  	= explode(',', $calendar->workscalendars[0]->calendar->workdays);
 						$wd			= ['monday' => 'senin', 'tuesday' => 'selasa', 'wednesday' => 'rabu', 'thursday' => 'kamis', 'friday' => 'jumat', 'saturday' => 'sabtu', 'sunday' => 'minggu'];
 						$day 		= date("l", strtotime($model['attributes']['on']));
@@ -274,7 +279,17 @@ class ProcessingLogObserver
 										'total_active'	=> $total_active,
 								]
 						);
+
 			$plog->Person()->associate($person);
+
+			if(!is_null($workid))
+			{
+				$work 			= Work::find($workid);
+				if($work)
+				{
+					$plog->Work()->associate($work);
+				} 		
+			}
 
 			if (!$plog->save())
 			{
