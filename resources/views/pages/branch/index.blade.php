@@ -1,5 +1,5 @@
 @section('nav_topbar')
-	@include('widgets.common.nav_topbar')
+	@include('widgets.common.nav_topbar', ['breadcrumb' => [['name' => 'ORGANISATION NAME']]])
 @stop
 
 @section('nav_sidebar')
@@ -28,7 +28,7 @@
 		'widget_options'	=> ['widget_title'		=> 'Pilih Organisasi :',
 								'form_url'			=> route('hr.organisations.show', 1),
 								'organisation_id'	=> Input::get('org_id'),
-								'search'			=> [],
+								'search'			=> ['withattributes' => ['organisation']],
 								'sort'				=> [],
 								'page'				=> 1,
 								'per_page'			=> 12,
