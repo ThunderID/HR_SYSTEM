@@ -30,6 +30,9 @@ Route::group(['prefix' => ''], function()
 
 	Route::resource('organisations',		'OrganisationController',							['names' => ['index' => 'hr.organisations.index', 'create' => 'hr.organisations.create', 'store' => 'hr.organisations.store', 'show' => 'hr.organisations.show', 'edit' => 'hr.organisations.edit', 'update' => 'hr.organisations.update', 'destroy' => 'hr.organisations.delete']]);
 
+	Route::group(['namespace' => 'Organisation\\'], function() 
+	{
+
 	// ------------------------------------------------------------------------------------
 	// BRANCHES RESOURCE
 	// ------------------------------------------------------------------------------------
@@ -65,5 +68,7 @@ Route::group(['prefix' => ''], function()
 	// ------------------------------------------------------------------------------------
 
 	Route::resource('reports',				'ReportController',									['names' => ['index' => 'hr.reports.index', 'create' => 'hr.reports.create', 'store' => 'hr.reports.store', 'show' => 'hr.reports.show', 'edit' => 'hr.reports.edit', 'update' => 'hr.reports.update', 'destroy' => 'hr.reports.delete']]);
+
+	});
 });	
 

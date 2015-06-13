@@ -14,23 +14,23 @@
 		<!-- Navigation -->		
 		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 			<!-- topbar -->
-		    @yield('nav_topbar', ['nav_topbar'])   
+		    @yield('nav_topbar', '[nav_topbar]')   
 		
 		    <div class="navbar-default sidebar" role="navigation">
 		        <div class="sidebar-nav navbar-collapse">
 		        	<!-- sidebar -->
-		            @yield('nav_sidebar', ['nav_sidebar'])
+		            @yield('nav_sidebar', '[nav_sidebar]')
 		        </div>		        
 		    </div>		    
 		</nav>
 		<div id="page-wrapper">
-			@yield('content_filter', ['content_filter'])
+			@yield('content_filter', '[content_filter]')
 			<div class="row">	
 				<div class="col-xs-12 col-sm-12 col-md-12">
-					@yield('content_body', ['content_body'])
+					@yield('content_body', '[content_body]')
 				</div>
 			</div>
-			@yield('content_footer', ['content_footer'])
+			@yield('content_footer', '[content_footer]')
 		</div>
 	</div>
 </body>
