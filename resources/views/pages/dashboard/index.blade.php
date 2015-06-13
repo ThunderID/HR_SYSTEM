@@ -23,7 +23,7 @@
 @overwrite
 
 @section('content_body')	
-	<p class="text-center font-34 " style="height:760px; margin-top:15%;">Under <br> Construction</p>
+	<p class="text-center font-34 " style="height:580px; margin-top:15%;">Under <br> Construction</p>
 @overwrite
 
 @section('content_footer')
