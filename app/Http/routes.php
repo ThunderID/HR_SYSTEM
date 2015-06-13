@@ -25,15 +25,9 @@ Route::group(['prefix' => ''], function()
 	});
 
 	// ------------------------------------------------------------------------------------
-	// LANDING PAGE (CHOOSE ORGANISATION OR CREATE ORGANISATION)
+	// LANDING PAGE (CHOOSE ORGANISATION OR CREATE ORGANISATION), SHOW ORGANISATION (STARTED WITH DASHBOARD)
 	// ------------------------------------------------------------------------------------
 
-	Route::get('/', 						['uses' => 'LandingController@get',					'as' => 'hr.start.get']);
-
-	// ------------------------------------------------------------------------------------
-	// SHOW ORGANISATION
-	// ------------------------------------------------------------------------------------
-
-	Route::get('show',						['uses' => 'OrganisationController@show',			'as' => 'hr.organisations.show']);
+	Route::resource('organisations',		'OrganisationController',							['names' => ['index' => 'hr.organisations.index', 'create' => 'hr.organisations.create', 'store' => 'hr.organisations.store', 'show' => 'hr.organisations.show', 'edit' => 'hr.organisations.edit', 'update' => 'hr.organisations.update', 'delete' => 'hr.organisations.delete']]);
 });	
 
