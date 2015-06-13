@@ -13,10 +13,8 @@
 		</button>
 		<a class="btn btn-default btn-back">Kembali</a>
 		<span class="breadcrumb">
-			<a class="" href="">halo</a> <i class="fa fa-angle-double-right"></i>
-			<a href="">sekarang</a>	<i class="fa fa-angle-double-right"></i>
-			<a href="">lalu</a> <i class="fa fa-angle-double-right"></i>
-			nanti
+			<a class="" href="">HR SYSTEM</a>
+			@yield('breadcrumb')
 		</span>
 	</div>
 	 
