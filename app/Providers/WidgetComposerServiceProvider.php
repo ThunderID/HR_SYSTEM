@@ -47,7 +47,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// BRANCH
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.branch.card'], 	'App\Http\ViewComposers\BranchComposer');
+		View::composer(['widgets.common.box'], 	'App\Http\ViewComposers\BranchComposer');
 
 		// -----------------------------------------------------------------------------
 		// CATEGORY

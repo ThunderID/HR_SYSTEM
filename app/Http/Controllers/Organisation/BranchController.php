@@ -85,7 +85,7 @@ class BranchController extends BaseController
 			$this->layout->page_title 				= 'Hasil Pencarian "'.Input::get('q').'"';
 		}
 
-		$this->layout->page 					= view('pages.branch.index');
+		$this->layout->page 						= view('pages.branch.index');
 		$this->layout->page->controller_name 		= $this->controller_name;
 		$this->layout->page->data 					= $data;
 		$this->layout->page->branches 				= $branches;

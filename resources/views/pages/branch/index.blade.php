@@ -38,7 +38,13 @@
 			<div class="col-md-6">
 				@include('widgets.common.box', [
 					'widget_template'		=> 'panel_no_title',
-					'widget_title'			=> $value['name']
+					'widget_title'			=> $value['name'],
+					'widget_options'		=> ['form_url' 			=> null,
+												'organisation_id'	=> $data['id'],
+												'sort'				=> [],
+												'page'				=> 1,
+												'per_page'			=> 1
+												]
 				])
 			</div>
 		@endforeach
@@ -46,7 +52,14 @@
 			<div class="col-md-6">
 				@include('widgets.common.box', [
 					'widget_template'		=> 'panel_no_title',
-					'widget_title'			=> $value['name']
+					'widget_title'			=> $value['name'],
+					'widget_options'		=> ['form_url' 			=> null,
+												'organisation_id'	=> $data['id'],
+												'search'			=> [],
+												'sort'				=> [],
+												'page'				=> 1,
+												'per_page'			=> 12
+												]
 				])
 			</div>
 		@endforeach
