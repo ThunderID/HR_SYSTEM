@@ -116,31 +116,6 @@ class WorkleaveController extends BaseController
 			$errors->add('Workleave', $is_success->meta->errors);
 		}
 
-		if(isset($attributes['persons']))
-		{
-			foreach ($attributes['persons'] as $key => $value) 
-			{
-				$workleave						= $attributes['person']['workleave'];
-				if(isset($attributes['person']['workleave']['id']) && $attributes['person']['workleave']['id']!='' && !is_null($attributes['person']['workleave']['id']))
-				{
-					$workleave['id']			= $attributes['person']['workleave']['id'];
-				}
-				else
-				{
-					$workleave['id']			= null;
-				}
-				$workleave['workleave_id']		= $id;
-
-				$saved_workleave 				= $this->dispatch(new Saving(new PersonWorkleave, $workleave, $workleave['id'], new Person, $value['id']));
-				$is_success_2 					= json_decode($saved_workleave);
-
-				if(!$is_success_2->meta->success)
-				{
-					$errors->add('Workleave', $is_success_2->meta->errors);
-				}
-			}
-		}
-
 		if(!$errors->count())
 		{
 			DB::commit();

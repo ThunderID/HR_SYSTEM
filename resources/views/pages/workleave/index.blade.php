@@ -8,14 +8,15 @@
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
-		'widget_options'	=> ['widget_title'		=> 'Pilih Organisasi :',								
-								'organisation_id'	=> 1,
-								'document_id'		=> 1,
-								'search'			=> [],
-								'sort'				=> [],
-								'page'				=> 1,
-								'per_page'			=> 12,
-								]
+		'widget_options'		=> 	[
+										'widget_title'		=> 'Pilih Organisasi :',
+										'organisation_id'	=> 1,
+										'identifier'		=> 1,
+										'search'			=> [],
+										'sort'				=> [],
+										'page'				=> 1,
+										'per_page'			=> 12,
+									]
 	])
 @overwrite
 
@@ -23,24 +24,14 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.common.show_info', [
+	@include('widgets.workleave.table', [
 		'widget_template'		=> 'plain',
-		'widget_title'			=> $data['name'],
-		'widget_title_class'	=> '',
-		'widget_body_class'		=> '',
-		'widget_info'			=> 'Total Template Cuti',
-		'widget_info_class'		=> 'mb-10',
-		'widget_options'		=> ['total'	=> '']		
-	])
-	
-	@include('widgets.workleave.card', [
-		'widget_template'		=> 'plain_no_title',
-		'widget_title'			=> 'Structure',		
+		'widget_title'			=> 'Template Cuti Index',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'widget_title'		=> 'Pilih Organisasi :',								
 										'organisation_id'	=> $data['id'],
+										'identifier'		=> 1,
 										'search'			=> [],
 										'sort'				=> [],
 										'page'				=> 1,
