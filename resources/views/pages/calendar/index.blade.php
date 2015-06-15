@@ -10,7 +10,6 @@
 		'widget_body_class'		=> '',
 		'widget_options'	=> [
 									'identifier'		=> 1,
-									'organisation_id'	=> 1,
 									'search'			=> [],
 									'sort'				=> ['name' => 'asc'],
 									'page'				=> 1,

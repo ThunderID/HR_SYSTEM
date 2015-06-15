@@ -9,7 +9,6 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> [
-										'organisation_id'	=> 1,
 										'identifier'		=> 1,
 										'search'			=> [],
 										'sort'				=> [],

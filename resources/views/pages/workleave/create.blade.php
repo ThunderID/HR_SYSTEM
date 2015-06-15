@@ -10,7 +10,6 @@
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
 										'widget_title'		=> 'Pilih Organisasi :',								
-										'organisation_id'	=> 1,
 										'identifier'		=> 1,
 										'search'			=> [],
 										'sort'				=> [],
