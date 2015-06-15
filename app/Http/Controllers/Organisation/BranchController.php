@@ -43,54 +43,9 @@ class BranchController extends BaseController
 
 		$data 										= json_decode(json_encode($contents->data), true);
 
-
-		/*--------------------------------------- LOAD DATA ---------------------------------*/
-		$search										= ['organisationid' => $org_id];
-		if(Input::has('q'))
-		{
-			if(Input::has('field'))
-			{
-				$search[Input::get('field')]		= Input::get('q');			
-			}
-			else
-			{
-				$search['name']						= Input::get('q');			
-			}
-		}
-
-		if(Input::has('sort_name'))
-		{
-			$sort['name']							= Input::get('sort_name');			
-		}
-		else
-		{
-			$sort 									= ['name' => 'asc'];
-		}
-
-
-		$results 									= $this->dispatch(new Getting(new Branch, $search, $sort , $page, 12));		
-
-		$contents 									= json_decode($results);
-		
-		if(!$contents->meta->success)
-		{
-			App::abort(404);
-		}
-		
-		$branches 									= json_decode(json_encode($contents->data), true);
-
-
-		if(Input::has('q'))
-		{
-			$this->layout->page_title 				= 'Hasil Pencarian "'.Input::get('q').'"';
-		}
-
 		$this->layout->page 						= view('pages.branch.index');
 		$this->layout->page->controller_name 		= $this->controller_name;
 		$this->layout->page->data 					= $data;
-		$this->layout->page->branches 				= $branches;
-		// $this->layout->page->paginator 				= $paginator;
-		$this->layout->page->route 					= ['org_id' => $data['id']];
 
 		return $this->layout;
 	}
@@ -124,9 +79,8 @@ class BranchController extends BaseController
 		$data 										= json_decode(json_encode($contents->data), true);
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		
-		$this->layout->pages 						= view('pages.branch.create', compact('id'));
-		$this->layout->pages->data 					= $data;
+
+		$this->layout->pages 						= view('pages.branch.create', compact('id', 'data'));
 
 		return $this->layout;
 	}
@@ -138,46 +92,30 @@ class BranchController extends BaseController
 			$id 								= Input::get('id');
 		}
 		
-		// $attributes 							= Input::only('name');
-		// $person 								= 1;//Session::get('user.id');
+		$attributes 							= Input::only('name');
+
+		if(Input::has('org_id'))
+		{
+			$org_id 							= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 							= Session::get('user.organisation');
+		}
+
+		$attributes 							= Input::only('name');
 		
-		// $errors 								= new MessageBag();
+		$errors 								= new MessageBag();
 		
-		// DB::beginTransaction();
+		DB::beginTransaction();
 		
-		// $content 								= $this->dispatch(new Saving(new Organisation, $attributes, $id));
+		$content 								= $this->dispatch(new Saving(new Branch, $attributes, $id, new Organisation, $org_id));
 
-		// $is_success 							= json_decode($content);
-
-		// if(!$is_success->meta->success)
-		// {
-		// 	$errors->add('Organisation', $is_success->meta->errors);
-		// }
-
-		// if(is_null($id))
-		// {
-		// 	$content_2								= $this->dispatch(new Getting(new Organisation, ['ID' => $is_success->data->id, 'withattributes' => ['branches', 'branches.charts', 'branches.charts.calendars']], ['created_at' => 'asc'] ,1, 1));
-
-		// 	$is_success_2 							= json_decode($content_2);
-
-		// 	if(!$is_success_2->meta->success || !isset($is_success_2->data->branches[0]) || !isset($is_success_2->data->branches[0]->charts[0]))
-		// 	{
-		// 		$errors->add('Organisation', $is_success_2->meta->errors);
-		// 	}
-
-		// 	$work['chart_id'] 						= $is_success_2->data->branches[0]->charts[0]->id;
-		// 	$work['status'] 						= 'admin';
-		// 	$work['position'] 						= 'admin';
-		// 	$work['start'] 							= date('Y-m-d');
-
-		// 	$saved_work 							= $this->dispatch(new Saving(new Work, $work, null, new Person, $person));
-		// 	$is_success_3 							= json_decode($saved_work);
-			
-		// 	if(!$is_success_3->meta->success)
-		// 	{
-		// 		$errors->add('Organisation', $is_success_3->meta->errors);
-		// 	}
-		// }
+		$is_success 							= json_decode($content);
+		if(!$is_success->meta->success)
+		{
+			$errors->add('Branch', $is_success->meta->errors);
+		}
 
 		if(!$errors->count())
 		{
@@ -228,9 +166,7 @@ class BranchController extends BaseController
 
 	public function edit($id)
 	{
-		$this->layout->page 					= view('pages.branch.create', compact('id'));
-
-		return $this->layout;
+		return $this->create($id);
 	}
 
 }

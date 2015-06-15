@@ -47,7 +47,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// BRANCH
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.branch.data_table'], 	'App\Http\ViewComposers\BranchComposer');
+		View::composer(['widgets.branch.table', 'widgets.branch.form'], 	'App\Http\ViewComposers\BranchComposer');
 
 		// -----------------------------------------------------------------------------
 		// CALENDAR
