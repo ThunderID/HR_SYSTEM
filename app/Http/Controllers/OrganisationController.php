@@ -83,19 +83,19 @@ class OrganisationController extends BaseController
 		}
 
 		DB::rollback();
-		return Redirect::back()->withErrors($content->meta->errors)->withInput();
+		return Redirect::back()->withErrors($errors)->withInput();
 	}
 
 	public function show()
 	{
-		$this->layout->page 	= view('pages.organisation.show');
+		$this->layout->page 						= view('pages.organisation.show');
 
 		return $this->layout;
 	}
 
 	public function edit($id)
 	{
-		$this->layout->page 					= view('pages.organisation.create', compact('id'));
+		$this->layout->page 						= view('pages.organisation.create', compact('id'));
 
 		return $this->layout;
 	}

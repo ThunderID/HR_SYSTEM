@@ -72,3 +72,10 @@ Route::group(['prefix' => ''], function()
 	});
 });	
 
+Blade::extend(function ($value, $compiler)
+{
+	$pattern = $compiler->createMatcher('time_indo');
+	$replace = '<?php echo date("H:i", strtotime($2)); ?>';
+
+	return preg_replace($pattern, '$1'.$replace, $value);
+});

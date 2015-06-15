@@ -47,12 +47,12 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// BRANCH
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.common.box'], 	'App\Http\ViewComposers\BranchComposer');
+		View::composer(['widgets.common.box'],		'App\Http\ViewComposers\BranchComposer');
 
 		// -----------------------------------------------------------------------------
-		// CATEGORY
+		// CALENDAR
 		// -----------------------------------------------------------------------------
-		// View::composer(['admin.widgets.article.filter'], 'App\Http\ViewComposers\Admin\Categories\CategoryComposer');
+		View::composer(['widgets.calendar.card', 'widgets.calendar.form'], 	'App\Http\ViewComposers\CalendarComposer');
 
 		// -----------------------------------------------------------------------------
 		// USERS
