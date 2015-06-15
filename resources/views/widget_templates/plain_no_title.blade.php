@@ -6,5 +6,5 @@
 		@endforeach
 	</div>
 @else		
-	@yield('widget_body', ['widget_body'])			
+	@yield('widget_body', '[widget_body]')
 @endif

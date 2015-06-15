@@ -19,34 +19,24 @@
 	])
 @overwrite
 
-@section('content_filter')
-@overwrite
-
-@section('content_body')	
+@section('content_body')
 	@include('widgets.common.show_info', [
 		'widget_template'		=> 'plain',
-		'widget_title'			=> $data['name'],
+		'widget_title'			=> $data[0]['name'],
 		'widget_title_class'	=> '',
 		'widget_body_class'		=> '',
-		'widget_info'			=> 'Total Cabang',
+		'widget_info'			=> 'Total Kontak',
 		'widget_info_class'		=> 'mb-10',
-		'widget_options'		=> ['total'	=> count($branches)]		
-	])
-	
-	@include('widgets.branch.data_table', [
-		'widget_template'		=> 'plain_no_title',
-		'widget_options'		=> ['form_url' 			=> null,
-									'organisation_id'	=> $data['id'],
-									'search'			=> ['defaultcontact' => true],
-									'sort'				=> [],
-									'page'				=> 1,
-									'per_page'			=> 12
-									]
+		'widget_options'		=> []		
 	])
 
-	@include('widgets.modal.delete', [
-		'widget_template'		=> 'plain_no_title'
+	@include('widgets.branch.detail', [
+		'widget_template'		=> 'plain_no_title',
+		'widget_body_class'		=> '',
 	])
+@overwrite
+
+@section('content_filter')
 @overwrite
 
 @section('content_footer')

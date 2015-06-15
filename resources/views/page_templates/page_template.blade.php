@@ -33,5 +33,7 @@
 			@yield('content_footer', '[content_footer]')
 		</div>
 	</div>
+	{!! HTML::script('plugins/jquery/jquery-2.1.4.min.js') !!}
+	{!! HTML::script('plugins/bootstrap/bootstrap.min.js') !!}
 </body>
 </html>
