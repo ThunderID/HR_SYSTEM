@@ -4,7 +4,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Getting;
 use App\Models\Workleave;
-use Input, Validator, App;
+use Input, Validator, App, Paginator;
 
 class WorkleaveComposer extends WidgetComposer 
 {
@@ -44,12 +44,16 @@ class WorkleaveComposer extends WidgetComposer
 				}
 			}
 
-			$this->widget_data['workleave-'.$this->widget_data['identifier']] 			= null;
+			$this->widget_data['workleave-'.$this->widget_data['identifier']] 				= null;
+			$this->widget_data['workleave-pagination-'.$this->widget_data['identifier']] 	= null;
 		}
 		else
 		{
+			$page 																		= json_decode(json_encode($contents->pagination), true);
 			$this->widget_data['workleave-'.$this->widget_data['identifier']] 			= json_decode(json_encode($contents->data), true);
+			$this->widget_data['workleave-pagination-'.$this->widget_data['identifier']] = new Paginator($page['total_data'], $page['total_data'], $page['per_page'], $page['page']);
+			$this->widget_data['workleave-pagination-'.$this->widget_data['identifier']]->setPath(route('hr.workleaves.index'));
+			$this->widget_data['workleave-display-'.$this->widget_data['identifier']] 	= $page;
 		}
-		
 	}
 }
