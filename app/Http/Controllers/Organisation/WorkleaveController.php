@@ -144,7 +144,7 @@ class WorkleaveController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.workleaves.show', [$is_success->data->id, 'org_id' => $is_success->data->id])->with('alert_success', 'kalender "' . $is_success->data->name. '" sudah disimpan');
+			return Redirect::route('hr.workleaves.show', [$is_success->data->id, 'org_id' => $is_success->data->id])->with('alert_success', 'Cuti "' . $is_success->data->name. '" sudah disimpan');
 		}
 
 		DB::rollback();

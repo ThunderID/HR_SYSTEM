@@ -64,12 +64,6 @@ Route::group(['prefix' => ''], function()
 	Route::resource('persons',				'PersonController',									['names' => ['index' => 'hr.persons.index', 'create' => 'hr.persons.create', 'store' => 'hr.persons.store', 'show' => 'hr.persons.show', 'edit' => 'hr.persons.edit', 'update' => 'hr.persons.update', 'destroy' => 'hr.persons.delete']]);
 
 	// ------------------------------------------------------------------------------------
-	// PERSONS RESOURCE
-	// ------------------------------------------------------------------------------------
-
-	Route::resource('persons',				'PersonController',									['names' => ['index' => 'hr.persons.index', 'create' => 'hr.persons.create', 'store' => 'hr.persons.store', 'show' => 'hr.persons.show', 'edit' => 'hr.persons.edit', 'update' => 'hr.persons.update', 'destroy' => 'hr.persons.delete']]);
-
-	// ------------------------------------------------------------------------------------
 	// REPORTS RESOURCE
 	// ------------------------------------------------------------------------------------
 
