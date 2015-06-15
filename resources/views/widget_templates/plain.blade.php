@@ -11,7 +11,5 @@
 	</h4>
 
 	<hr style="margin-bottom:0">
-	<div class='{{$widget_body_class}}'>
-		@yield('widget_body','[widget_body]')
-	</div>
+	@yield('widget_body','[widget_body]')
 @endif

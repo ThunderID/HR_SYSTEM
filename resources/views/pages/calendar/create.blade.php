@@ -8,14 +8,15 @@
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
-		'widget_options'	=> ['widget_title'		=> 'Pilih Organisasi :',								
-								'organisation_id'	=> 1,
-								'document_id'		=> 1,
-								'search'			=> [],
-								'sort'				=> [],
-								'page'				=> 1,
-								'per_page'			=> 12,
-								]
+		'widget_options'		=> 	[
+										'widget_title'		=> 'Pilih Organisasi :',								
+										'organisation_id'	=> 1,
+										'identifier'		=> 1,
+										'search'			=> [],
+										'sort'				=> [],
+										'page'				=> 1,
+										'per_page'			=> 12,
+									]
 	])
 @overwrite
 
@@ -23,25 +24,16 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.common.show_info', [
-		'widget_template'		=> 'plain',
-		'widget_title'			=> $data['name'],
-		'widget_title_class'	=> '',
-		'widget_body_class'		=> '',
-		'widget_info'			=> 'Total Kalender',
-		'widget_info_class'		=> 'mb-10',
-		'widget_options'		=> ['total'	=> '']		
-	])
-	
 	@include('widgets.calendar.form', [
 		'widget_template'	=> 'panel',
-		'widget_options'	=> ['widget_title'		=> 'Tambah Kalender :',
-								'form_url'			=> route('hr.calendars.store', ['id' => $id, 'org_id' => $data['id']]),
-								'organisation_id'	=> $data['id'],
-								'search'			=> ['id' => $id],
-								'sort'				=> [],
-								'page'				=> 1,
-								'per_page'			=> 1,
+		'widget_options'	=> 	[
+									'form_url'			=> route('hr.calendars.store', ['id' => $id, 'org_id' => $data['id']]),
+									'organisation_id'	=> $data['id'],
+									'identifier'		=> 1,
+									'search'			=> ['id' => $id],
+									'sort'				=> [],
+									'page'				=> 1,
+									'per_page'			=> 1,
 								]
 	])
 
