@@ -10,7 +10,7 @@ class DocumentComposer extends WidgetComposer
 {
 	protected function setRules()
 	{
-		$this->widget_rules['form_url']			= ['required', 'url'];						// url for form submit
+		$this->widget_rules['form_url']			= ['url'];									// url for form submit
 		$this->widget_rules['organisation_id'] 	= ['required', 'alpha_dash'];				// organisation_id: filter organisation
 		$this->widget_rules['search'] 			= ['array'];								// search: label for search
 		$this->widget_rules['sort'] 			= ['array'];								// sort: label for sort
@@ -43,7 +43,7 @@ class DocumentComposer extends WidgetComposer
 				}
 			}
 
-			$this->widget_data['data'] 			= [];
+			$this->widget_data['data'] 			= null;
 		}
 		else
 		{

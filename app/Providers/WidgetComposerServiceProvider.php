@@ -60,6 +60,11 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		View::composer(['widgets.workleave.card', 'widgets.workleave.form'], 	'App\Http\ViewComposers\WorkleaveComposer');
 
 		// -----------------------------------------------------------------------------
+		// DOCUMENT
+		// -----------------------------------------------------------------------------
+		View::composer(['widgets.document.card', 'widgets.document.form'], 	'App\Http\ViewComposers\DocumentComposer');
+
+		// -----------------------------------------------------------------------------
 		// USERS
 		// -----------------------------------------------------------------------------
 		// View::composer(['admin.widgets.article.filter'], 'App\Http\ViewComposers\Admin\Team\TeamComposer');
