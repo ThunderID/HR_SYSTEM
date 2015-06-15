@@ -8,7 +8,7 @@
 @else
 	<div class="panel panel-default">
 		<div class="panel-body">			
-			@yield('widget_body', ['widget_body'])		
+			@yield('widget_body', '[widget_body]')		
 		</div>
 	</div>
 @endif

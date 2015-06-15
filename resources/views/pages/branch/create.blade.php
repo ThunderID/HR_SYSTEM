@@ -23,18 +23,11 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.common.show_info', [
+	@include('widgets.branch.form', [
 		'widget_template'		=> 'plain',
-		'widget_title'			=> $data['name'],
-		'widget_title_class'	=> '',
+		'widget_title'			=> 'Tambah Kantor Cabang',
+		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
-		'widget_info'			=> 'Total Cabang',
-		'widget_info_class'		=> 'mb-10',
-		'widget_options'		=> ['total'	=> count($branches)]		
-	])
-	
-	@include('widgets.branch.data_table', [
-		'widget_template'		=> 'plain_no_title',
 		'widget_options'		=> ['form_url' 			=> null,
 									'organisation_id'	=> $data['id'],
 									'search'			=> ['defaultcontact' => true],
@@ -44,9 +37,6 @@
 									]
 	])
 
-	@include('widgets.modal.delete', [
-		'widget_template'		=> 'plain_no_title'
-	])
 @overwrite
 
 @section('content_footer')

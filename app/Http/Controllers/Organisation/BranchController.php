@@ -97,7 +97,36 @@ class BranchController extends BaseController
 
 	public function create($id = null)
 	{
-		$this->layout->page 					= view('pages.branch.create', compact('id'));
+		if(Input::has('org_id'))
+		{
+			$org_id 								= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 								= Session::get('user.organisation');
+		}
+
+		// if(!in_array($org_id, Session::get('user.orgids')))
+		// {
+		// 	App::abort(404);
+		// }
+
+		$search['id']								= $org_id;
+		$sort 										= ['name' => 'asc'];
+		$results 									= $this->dispatch(new Getting(new Organisation, $search, $sort , 1, 1));
+		$contents 									= json_decode($results);		
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$data 										= json_decode(json_encode($contents->data), true);
+
+		// ---------------------- GENERATE CONTENT ----------------------
+		
+		$this->layout->pages 						= view('pages.branch.create', compact('id'));
+		$this->layout->pages->data 					= $data;
 
 		return $this->layout;
 	}
@@ -160,10 +189,40 @@ class BranchController extends BaseController
 		return Redirect::back()->withErrors($content->meta->errors)->withInput();
 	}
 
-	public function show()
+	public function show($id, $page = 1)
 	{
-		$this->layout->page 	= view('pages.branch.show');
+		// ---------------------- LOAD DATA ----------------------
+		if(Input::has('org_id'))
+		{
+			$org_id 								= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 								= Session::get('user.organisation');
+		}
 
+		// if(!in_array($org_id, Session::get('user.orgids')))
+		// {
+		// 	App::abort(404);
+		// }
+		$search 									= ['id' => $id, 'organisationid' => $org_id];
+		$results 									= $this->dispatch(new Getting(new Branch, $search, [] , 1, 12));	
+		$contents 									= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$data 										= json_decode(json_encode($contents->data), true);
+
+		// ---------------------- GENERATE CONTENT ----------------------
+		
+		$this->layout->pages 						= view('pages.branch.show');
+		$this->layout->pages->data 					= $data;
+		// $this->layout->pages->paginator 			= $paginator;
+		// $this->layout->pages->route 				= ['id' => $branch['id'],'org_id' => $data['id']];
+		
 		return $this->layout;
 	}
 
