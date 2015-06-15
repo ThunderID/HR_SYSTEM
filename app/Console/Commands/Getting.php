@@ -106,7 +106,7 @@ class Getting extends Command implements SelfHandling {
 		else
 		{
 			$data = $model->first();
-			$page_info 	= ['page' => $this->page, 'per_page' => $this->per_page];
+			$page_info 	= ['page' => $this->page, 'per_page' => $this->per_page, 'total_data' => 1];
 		}
 
 		if($data)

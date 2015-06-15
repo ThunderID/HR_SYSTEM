@@ -52,10 +52,10 @@ Route::group(['prefix' => ''], function()
 	Route::resource('workleaves',			'WorkleaveController',								['names' => ['index' => 'hr.workleaves.index', 'create' => 'hr.workleaves.create', 'store' => 'hr.workleaves.store', 'show' => 'hr.workleaves.show', 'edit' => 'hr.workleaves.edit', 'update' => 'hr.workleaves.update', 'destroy' => 'hr.workleaves.delete']]);
 
 	// ------------------------------------------------------------------------------------
-	// PERSONS RESOURCE
+	// DOCUMENTS RESOURCE
 	// ------------------------------------------------------------------------------------
 
-	Route::resource('persons',				'PersonController',									['names' => ['index' => 'hr.persons.index', 'create' => 'hr.persons.create', 'store' => 'hr.persons.store', 'show' => 'hr.persons.show', 'edit' => 'hr.persons.edit', 'update' => 'hr.persons.update', 'destroy' => 'hr.persons.delete']]);
+	Route::resource('documents',			'DocumentController',								['names' => ['index' => 'hr.documents.index', 'create' => 'hr.documents.create', 'store' => 'hr.documents.store', 'show' => 'hr.documents.show', 'edit' => 'hr.documents.edit', 'update' => 'hr.documents.update', 'destroy' => 'hr.documents.delete']]);
 
 	// ------------------------------------------------------------------------------------
 	// PERSONS RESOURCE
@@ -72,3 +72,10 @@ Route::group(['prefix' => ''], function()
 	});
 });	
 
+Blade::extend(function ($value, $compiler)
+{
+	$pattern = $compiler->createMatcher('time_indo');
+	$replace = '<?php echo date("H:i", strtotime($2)); ?>';
+
+	return preg_replace($pattern, '$1'.$replace, $value);
+});
