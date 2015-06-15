@@ -9,7 +9,6 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'	=> [
-									'widget_title'		=> 'Pilih Organisasi :',								
 									'identifier'		=> 1,
 									'organisation_id'	=> 1,
 									'search'			=> [],

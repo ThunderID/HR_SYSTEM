@@ -11,7 +11,7 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th>Nama Kalender</th>
+					<th>Nama Cuti</th>
 					<th>Quota Cuti</th>
 					<th>&nbsp;</th>
 				</tr>
