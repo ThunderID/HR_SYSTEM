@@ -4,6 +4,9 @@
     {{ $widget_title or 'Structure' }}
 @overwrite
 
+@section('widget_info')
+@overwrite
+
 @section('widget_body')
     <ul class="nav" id="side-menu">
         <li>

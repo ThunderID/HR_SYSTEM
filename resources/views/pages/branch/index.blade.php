@@ -23,15 +23,35 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.branch.card', [
-		'widget_template'	=> 'panel',
-		'widget_options'	=> ['widget_title'		=> 'Pilih Organisasi :',
-								'form_url'			=> route('hr.organisations.show', 1),
-								'organisation_id'	=> Input::get('org_id'),
-								'search'			=> ['withattributes' => ['organisation']],
-								'sort'				=> [],
-								'page'				=> 1,
-								'per_page'			=> 12,
-								]
-	])	
+	@include('widgets.common.show_info', [
+		'widget_template'		=> 'plain',
+		'widget_title'			=> $data['name'],
+		'widget_title_class'	=> '',
+		'widget_body_class'		=> '',
+		'widget_info'			=> 'Total Cabang',
+		'widget_info_class'		=> 'mb-10',
+		'widget_options'		=> ['total'	=> count($branches)]		
+	])
+	
+	<div class="row">
+		@foreach($branches as $key => $value)								
+			<div class="col-md-6">
+				@include('widgets.common.box', [
+					'widget_template'		=> 'panel_no_title',
+					'widget_title'			=> $value['name']
+				])
+			</div>
+		@endforeach
+		@foreach($branches as $key => $value)								
+			<div class="col-md-6">
+				@include('widgets.common.box', [
+					'widget_template'		=> 'panel_no_title',
+					'widget_title'			=> $value['name']
+				])
+			</div>
+		@endforeach
+	</div>	
+@overwrite
+
+@section('content_footer')
 @overwrite

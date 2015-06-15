@@ -9,6 +9,11 @@
 	<h4 class='text-bold {{$widget_title_class}}'>
 		@yield('widget_title','[widget_title]')
 	</h4>
+
+	<span class="{{ isset($widget_info) ? $widget_info : '' }}">
+		@yield('widget_info', '[widget_info]')
+	</span>
+
 	<hr style="margin-bottom:0">
 	<div class='{{$widget_body_class}}'>
 		@yield('widget_body','[widget_body]')

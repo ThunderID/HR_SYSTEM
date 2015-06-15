@@ -24,7 +24,7 @@ class LoginController extends BaseController {
 		if($content->meta->success)
 		{
 			Session::put('loggedUser', $content->data->id);
-			return Redirect::intended(route('hr.org.get_choice'));
+			return Redirect::intended(route('hr.organisations.index'));
 		}
 		
 		return Redirect::back()->withErrors(['Email dan password yang anda masukkan tidak cocok dengan data kami. Harap anda memeriksa data masukkan dan mencoba lagi.']);	

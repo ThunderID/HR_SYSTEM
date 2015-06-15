@@ -14,10 +14,10 @@
 		<a class="btn btn-default btn-back">Kembali</a>
 		<span class="breadcrumb">
 			<a class="" href="">HR SYSTEM</a>
-			@forelse($breadcrumb as $key => $value)
-				<i class="fa fa-angle-double-right"></i><a class="" href="">{{$value['name']}}</a>
-			@empty
-			@endforelse
+			{{-- @forelse($breadcrumb as $key => $value) --}}
+				{{-- <i class="fa fa-angle-double-right"></i><a class="" href="">{{$value['name']}}</a> --}}
+			{{-- @empty --}}
+			{{-- @endforelse --}}
 		</span>
 	</div>
 	 

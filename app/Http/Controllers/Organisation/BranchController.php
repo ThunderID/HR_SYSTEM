@@ -8,15 +8,89 @@ use App\Console\Commands\Getting;
 use App\Models\Organisation;
 use App\Models\Work;
 use App\Models\Person;
+use App\Models\Branch;
 
 class BranchController extends BaseController 
 {
 
 	protected $controller_name 					= 'cabang';
 
-	public function index()
+	public function index($page = 1)
 	{		
+		if(Input::has('org_id'))
+		{
+			$org_id 								= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 								= Session::get('user.organisation');
+		}
+
+		// if(!in_array($org_id, Session::get('user.orgids')))
+		// {
+		// 	App::abort(404);
+		// }
+
+		$search['id']								= $org_id;
+		$sort 										= ['name' => 'asc'];
+		$results 									= $this->dispatch(new Getting(new Organisation, $search, $sort , $page, 1));
+		$contents 									= json_decode($results);		
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$data 										= json_decode(json_encode($contents->data), true);
+
+
+		/*--------------------------------------- LOAD DATA ---------------------------------*/
+		$search										= ['organisationid' => $org_id];
+		if(Input::has('q'))
+		{
+			if(Input::has('field'))
+			{
+				$search[Input::get('field')]		= Input::get('q');			
+			}
+			else
+			{
+				$search['name']						= Input::get('q');			
+			}
+		}
+
+		if(Input::has('sort_name'))
+		{
+			$sort['name']							= Input::get('sort_name');			
+		}
+		else
+		{
+			$sort 									= ['name' => 'asc'];
+		}
+
+
+		$results 									= $this->dispatch(new Getting(new Branch, $search, $sort , $page, 12));		
+
+		$contents 									= json_decode($results);
+		
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+		
+		$branches 									= json_decode(json_encode($contents->data), true);
+
+
+		if(Input::has('q'))
+		{
+			$this->layout->page_title 				= 'Hasil Pencarian "'.Input::get('q').'"';
+		}
+
 		$this->layout->page 					= view('pages.branch.index');
+		$this->layout->page->controller_name 		= $this->controller_name;
+		$this->layout->page->data 					= $data;
+		$this->layout->page->branches 				= $branches;
+		// $this->layout->page->paginator 				= $paginator;
+		$this->layout->page->route 					= ['org_id' => $data['id']];
 
 		return $this->layout;
 	}
