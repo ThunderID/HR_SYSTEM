@@ -16,6 +16,7 @@ class WorkleaveComposer extends WidgetComposer
 		$this->widget_rules['sort'] 			= ['array'];								// sort: label for sort
 		$this->widget_rules['page'] 			= ['required', 'numeric'];					// page: label for page
 		$this->widget_rules['per_page'] 		= ['required', 'numeric', 'max:100'];		// per page: label for per page
+		$this->widget_rules['identifier'] 		= ['required', 'numeric'];					// identifier
 	}
 
 	protected function setData()
@@ -43,11 +44,11 @@ class WorkleaveComposer extends WidgetComposer
 				}
 			}
 
-			$this->widget_data['data'] 			= null;
+			$this->widget_data['workleave-'.$this->widget_data['identifier']] 			= null;
 		}
 		else
 		{
-			$this->widget_data['data'] 			= json_decode(json_encode($contents->data), true);
+			$this->widget_data['workleave-'.$this->widget_data['identifier']] 			= json_decode(json_encode($contents->data), true);
 		}
 		
 	}

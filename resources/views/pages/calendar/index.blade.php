@@ -8,13 +8,14 @@
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
-		'widget_options'	=> ['widget_title'		=> 'Pilih Organisasi :',								
-								'organisation_id'	=> 1,
-								'document_id'		=> 1,
-								'search'			=> [],
-								'sort'				=> [],
-								'page'				=> 1,
-								'per_page'			=> 12,
+		'widget_options'	=> [
+									'widget_title'		=> 'Pilih Organisasi :',								
+									'identifier'		=> 1,
+									'organisation_id'	=> 1,
+									'search'			=> [],
+									'sort'				=> ['name' => 'asc'],
+									'page'				=> 1,
+									'per_page'			=> 100,
 								]
 	])
 @overwrite
@@ -23,27 +24,18 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.common.show_info', [
+
+	@include('widgets.calendar.table', [
 		'widget_template'		=> 'plain',
-		'widget_title'			=> $data['name'],
-		'widget_title_class'	=> '',
-		'widget_body_class'		=> '',
-		'widget_info'			=> 'Total Kalender',
-		'widget_info_class'		=> 'mb-10',
-		'widget_options'		=> ['total'	=> '']		
-	])
-	
-	@include('widgets.calendar.card', [
-		'widget_template'		=> 'plain_no_title',
-		'widget_title'			=> 'Structure',		
+		'widget_title'			=> 'Kalender Index',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'widget_title'		=> 'Pilih Organisasi :',								
 										'organisation_id'	=> $data['id'],
+										'identifier'		=> 1,
 										'search'			=> [],
-										'sort'				=> [],
-										'page'				=> 1,
+										'sort'				=> ['name' => 'asc'],
+										'page'				=> (Input::has('page') ? Input::get('page') : 1),
 										'per_page'			=> 12,
 									]
 	])

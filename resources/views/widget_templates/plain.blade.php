@@ -6,13 +6,9 @@
 		@endforeach
 	</div>
 @else
-	<h4 class='text-bold {{$widget_title_class}}'>
+	<h4 class='text-bold'>
 		@yield('widget_title','[widget_title]')
 	</h4>
-
-	<span class="{{ isset($widget_info) ? $widget_info : '' }}">
-		@yield('widget_info', '[widget_info]')
-	</span>
 
 	<hr style="margin-bottom:0">
 	<div class='{{$widget_body_class}}'>

@@ -182,6 +182,7 @@ return [
 		'Log'       => 'Illuminate\Support\Facades\Log',
 		'Mail'      => 'Illuminate\Support\Facades\Mail',
 		'Password'  => 'Illuminate\Support\Facades\Password',
+		'Paginator' => 'Illuminate\Pagination\LengthAwarePaginator',
 		'Queue'     => 'Illuminate\Support\Facades\Queue',
 		'Redirect'  => 'Illuminate\Support\Facades\Redirect',
 		'Redis'     => 'Illuminate\Support\Facades\Redis',

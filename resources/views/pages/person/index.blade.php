@@ -33,12 +33,11 @@
 	])
 	
 	@include('widgets.person.card', [
-		'widget_template'		=> 'plain_no_title',
+		'widget_template'		=> 'plain',
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'widget_title'		=> 'Pilih Organisasi :',								
 										'organisation_id'	=> $data['id'],
 										'search'			=> ['currentwork' => null, 'defaultemail' => true, 'checkwork' => true, 'withattributes' => ['works.branch']],
 										'sort'				=> [],
