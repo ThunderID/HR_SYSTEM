@@ -60,7 +60,7 @@ class Api extends BaseModel {
 											'withattributes' 					=> 'Must be array of relationship',
 										];
 
-	public $sortable 				= 	['chart_id', 'created_at'];
+	public $sortable 				= 	['branch_id', 'created_at'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**

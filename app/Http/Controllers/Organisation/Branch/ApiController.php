@@ -4,12 +4,12 @@ use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
-use App\Models\Chart;
+use App\Models\Api;
 use App\Models\Branch;
 
-class ChartController extends BaseController
+class ApiController extends BaseController
 {
-	protected $controller_name = 'jabatan';
+	protected $controller_name = 'api';
 
 	public function index($page = 1)
 	{
@@ -50,7 +50,7 @@ class ChartController extends BaseController
 
 		$branch 								= json_decode(json_encode($contents->data), true);
 		$data 									= $branch['organisation'];
-		$this->layout->page 					= view('pages.chart.index');
+		$this->layout->page 					= view('pages.api.index');
 		$this->layout->page->controller_name 	= $this->controller_name;
 		$this->layout->page->data 				= $data;
 		$this->layout->page->branch 			= $branch;
@@ -98,7 +98,7 @@ class ChartController extends BaseController
 		$data 									= $branch['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.chart.create', compact('id', 'data', 'branch'));
+		$this->layout->pages 					= view('pages.api.create', compact('id', 'data', 'branch'));
 
 		return $this->layout;
 	}
@@ -139,13 +139,13 @@ class ChartController extends BaseController
 			App::abort(404);
 		}
 
-		$attributes 							= Input::only('name', 'tag', 'grade', 'min_employee', 'max_employee', 'ideal_employee', 'path');
+		$attributes 							= Input::only('client', 'secret');
 
 		$errors 								= new MessageBag();
 
 		DB::beginTransaction();
 
-		$content 								= $this->dispatch(new Saving(new Chart, $attributes, $id, new Branch, $branch_id));
+		$content 								= $this->dispatch(new Saving(new Api, $attributes, $id, new Branch, $branch_id));
 		$is_success 							= json_decode($content);
 		
 		if(!$is_success->meta->success)
@@ -156,7 +156,7 @@ class ChartController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.branches.show', [$branch_id, 'org_id' => $org_id])->with('alert_success', 'Kontak cabang "' . $contents->data->name. '" sudah disimpan');
+			return Redirect::route('hr.branch.apis.index', [$branch_id, 'org_id' => $org_id])->with('alert_success', 'API cabang "' . $contents->data->name. '" sudah disimpan');
 		}
 		
 		DB::rollback();

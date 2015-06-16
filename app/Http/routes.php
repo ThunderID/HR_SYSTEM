@@ -83,6 +83,12 @@ Route::group(['prefix' => ''], function()
 		// ------------------------------------------------------------------------------------
 
 		Route::resource('charts',			'ChartController',									['names' => ['index' => 'hr.branch.charts.index', 'create' => 'hr.branch.charts.create', 'store' => 'hr.branch.charts.store', 'show' => 'hr.branch.charts.show', 'edit' => 'hr.branch.charts.edit', 'update' => 'hr.branch.charts.update', 'destroy' => 'hr.branch.charts.delete']]);
+
+		// ------------------------------------------------------------------------------------
+		// APIS FOR BRANCH RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('apis',				'ApiController',									['names' => ['index' => 'hr.branch.apis.index', 'create' => 'hr.branch.apis.create', 'store' => 'hr.branch.apis.store', 'show' => 'hr.branch.apis.show', 'edit' => 'hr.branch.apis.edit', 'update' => 'hr.branch.apis.update', 'destroy' => 'hr.branch.apis.delete']]);
 	});
 
 	});
