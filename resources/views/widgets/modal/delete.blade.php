@@ -2,7 +2,7 @@
 
 @if ((isset($widget_errors) && !$widget_errors->count() || !isset($widget_errors)))
 	@section('widget_body')
-		<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="Hapus" aria-hidden="true">
+		<div class="modal fade delete" id="delete" tabindex="-1" role="dialog" aria-labelledby="Hapus" aria-hidden="true">
 			<div class="modal-dialog form">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -33,7 +33,7 @@
 					</div>
 					<div class="modal-footer bg-grey">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-						<button type="button" class="btn btn-danger">Hapus</button>
+						<button type="submit" class="btn btn-danger">Hapus</button>
 					</div>
 				</div>
 			</div>

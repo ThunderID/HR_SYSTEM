@@ -37,6 +37,7 @@
 	{!! HTML::script('plugins/bootstrap/bootstrap.min.js') !!}
 	{!! HTML::script('plugins/metisMenu/metisMenu.min.js') !!}
 	@include('plugins/toggle')
+	@include('plugins/modal')
 	<script>
 		$('#side-menu').metisMenu();
 	</script>
