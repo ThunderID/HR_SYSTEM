@@ -9,8 +9,6 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'widget_title'		=> 'Pilih Organisasi :',
-										'organisation_id'	=> 1,
 										'identifier'		=> 1,
 										'search'			=> [],
 										'sort'				=> [],
@@ -33,8 +31,8 @@
 										'organisation_id'	=> $data['id'],
 										'identifier'		=> 1,
 										'search'			=> [],
-										'sort'				=> [],
-										'page'				=> 1,
+										'sort'				=> ['name' => 'asc'],
+										'page'				=> (Input::has('page') ? Input::get('page') : 1),
 										'per_page'			=> 12,
 									]
 	])

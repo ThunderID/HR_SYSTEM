@@ -47,7 +47,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// BRANCH
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.branch.data_table'], 	'App\Http\ViewComposers\BranchComposer');
+		View::composer(['widgets.branch.table', 'widgets.branch.form'], 	'App\Http\ViewComposers\BranchComposer');
 
 		// -----------------------------------------------------------------------------
 		// CALENDAR
@@ -62,12 +62,12 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// DOCUMENT
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.document.card', 'widgets.document.form'], 	'App\Http\ViewComposers\DocumentComposer');
+		View::composer(['widgets.document.table', 'widgets.document.form'], 	'App\Http\ViewComposers\DocumentComposer');
 
 		// -----------------------------------------------------------------------------
 		// PERSON
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.person.card', 'widgets.person.form'], 	'App\Http\ViewComposers\PersonComposer');
+		View::composer(['widgets.person.table', 'widgets.person.form'], 	'App\Http\ViewComposers\PersonComposer');
 	}
 
 	private function web_widget()

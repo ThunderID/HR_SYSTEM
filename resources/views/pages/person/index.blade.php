@@ -8,13 +8,13 @@
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
-		'widget_options'	=> ['widget_title'		=> 'Pilih Organisasi :',								
-								'organisation_id'	=> 1,
-								'search'			=> [],
-								'sort'				=> [],
-								'page'				=> 1,
-								'per_page'			=> 12,
-								]
+		'widget_options'		=> 	[
+										'identifier'		=> 1,
+										'search'			=> [],
+										'sort'				=> [],
+										'page'				=> 1,
+										'per_page'			=> 12,
+									]
 	])
 @overwrite
 
@@ -22,25 +22,16 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.common.show_info', [
-		'widget_template'		=> 'plain',
-		'widget_title'			=> $data['name'],
-		'widget_title_class'	=> '',
-		'widget_body_class'		=> '',
-		'widget_info'			=> 'Total Karyawan',
-		'widget_info_class'		=> 'mb-10',
-		'widget_options'		=> ['total'	=> '']		
-	])
-	
-	@include('widgets.person.card', [
+	@include('widgets.person.table', [
 		'widget_template'		=> 'plain',
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
+										'identifier'		=> 1,
 										'organisation_id'	=> $data['id'],
 										'search'			=> ['currentwork' => null, 'defaultemail' => true, 'checkwork' => true, 'withattributes' => ['works.branch']],
-										'sort'				=> [],
+										'sort'				=> ['name' => 'asc'],
 										'page'				=> 1,
 										'per_page'			=> 12,
 									]

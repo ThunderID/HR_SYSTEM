@@ -4,7 +4,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Getting;
 use App\Models\Person;
-use Input, Validator, App;
+use Input, Validator, App, Paginator;
 
 class PersonComposer extends WidgetComposer 
 {
@@ -44,11 +44,16 @@ class PersonComposer extends WidgetComposer
 				}
 			}
 
-			$this->widget_data['person-'.$this->widget_data['identifier']] 			= null;
+			$this->widget_data['person-'.$this->widget_data['identifier']] 				= null;
+			$this->widget_data['person-pagination-'.$this->widget_data['identifier']] 	= null;
 		}
 		else
 		{
-			$this->widget_data['person-'.$this->widget_data['identifier']] 			= json_decode(json_encode($contents->data), true);
+			$page 																		= json_decode(json_encode($contents->pagination), true);
+			$this->widget_data['person-'.$this->widget_data['identifier']] 				= json_decode(json_encode($contents->data), true);
+			$this->widget_data['person-pagination-'.$this->widget_data['identifier']] 	= new Paginator($page['total_data'], $page['total_data'], $page['per_page'], $page['page']);
+			$this->widget_data['person-pagination-'.$this->widget_data['identifier']]->setPath(route('hr.persons.index'));
+			$this->widget_data['person-display-'.$this->widget_data['identifier']] 		= $page;
 		}
 		
 	}
