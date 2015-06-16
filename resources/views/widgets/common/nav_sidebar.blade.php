@@ -1,7 +1,7 @@
 @extends('widget_templates.'. (isset($widget_template) ? $widget_template : 'plain_no_title'))
 
 @section('widget_title')
-    {{ $widget_title or 'Structure' }}
+    <span class="ml-20">{{ $widget_title or 'Structure' }}</span>
 @overwrite
 
 @section('widget_info')

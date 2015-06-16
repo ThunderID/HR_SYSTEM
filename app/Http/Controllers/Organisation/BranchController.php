@@ -242,9 +242,9 @@ class BranchController extends BaseController
 		// 	App::abort(404);
 		// }
 
-		$search['id']								= $org_id;
+		$search['id']								= $id;
 		$sort 										= ['name' => 'asc'];
-		$results 									= $this->dispatch(new Getting(new Organisation, $search, $sort , 1, 1));
+		$results 									= $this->dispatch(new Getting(new Branch, $search, $sort , 1, 1));
 		$contents 									= json_decode($results);		
 
 		if(!$contents->meta->success)
@@ -264,6 +264,49 @@ class BranchController extends BaseController
 		// $this->layout->page 					= view('pages.branch.create', compact('id'));
 
 		// return $this->layout;
+	}
+
+	function update($id)
+	{
+		return $this->store($id);
+	}
+
+	function delete($id)
+	{
+		$username 					= Session::get('user.email');
+		$password 					= Input::get('password');
+
+		$results 					= API::person()->authenticate($username, $password);
+
+		$content 					= json_decode($results);
+
+		if($content->meta->success)
+		{
+			if(Input::has('org_id'))
+			{
+				$org_id 								= Input::get('org_id');
+			}
+			else
+			{
+				$org_id 								= Session::get('user.organisation');
+			}
+
+			$results 									= API::branch()->destroy($org_id, $id);
+			$contents 									= json_decode($results);
+
+			if (!$contents->meta->success)
+			{
+				return Redirect::route('hr.organisation.branches.show', ['id' => $id, 'org_id' => $org_id])->withErrors($contents->meta->errors);
+			}
+			else
+			{
+				return Redirect::route('hr.organisation.branches.index', ['page' => 1,'org_id' => $org_id])->with('alert_success', 'Data Cabang "' . $contents->data->name. '" sudah dihapus');
+			}
+		}
+		else
+		{
+			return Redirect::route('hr.organisation.branches.show', ['id' => $id])->withErrors(['Password yang Anda masukkan tidak sah!']);
+		}
 	}
 
 }

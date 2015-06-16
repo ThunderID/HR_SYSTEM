@@ -38,7 +38,7 @@
 							@endforeach
 						</td>
 						<td class="text-right">
-							<a href="" class="btn btn-default"><i class="fa fa-trash"></i></a>
+							<a href="" class="btn btn-default" data-toggle="modal" data-target="#delete"><i class="fa fa-trash"></i></a>
 							<a href="{{route('hr.branches.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 							<a href="" class="btn btn-default"><i class="fa fa-eye"></i></a>
 						</td>

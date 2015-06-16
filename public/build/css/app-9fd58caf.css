@@ -3990,7 +3990,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-default {
-  background-color: #f8f8f8;
+  background-color: #fff;
   border-color: #e7e7e7;
 }
 .navbar-default .navbar-brand {
@@ -5322,7 +5322,7 @@ button.close {
   opacity: 0;
   filter: alpha(opacity=0);
 }
-.modal-backdrop.in {
+.modal-backdrop.fade.in {
   opacity: 0.5;
   filter: alpha(opacity=50);
 }
@@ -6351,6 +6351,7 @@ label,
 .text-bold {
   font-weight: bold;
 }
+.bg-grey            {background-color: #f5f5f5;}
 /* Wrapper */
 #wrapper {
   width: 100%;

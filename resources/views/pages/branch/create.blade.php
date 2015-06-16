@@ -1,3 +1,11 @@
+<?php
+	if (Route::is('hr.branches.edit')) {
+		$title = 'Edit Cabang';
+	} else {
+		$title = 'Tambah Cabang';
+	}
+?>
+
 @section('nav_topbar')
 	
 @stop
@@ -8,10 +16,7 @@
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
-		'widget_options'	=> ['widget_title'		=> 'Pilih Organisasi :',								
-								'organisation_id'	=> 1,
-								'identifier'		=> 1,
-								'document_id'		=> 1,
+		'widget_options'	=> ['identifier'		=> 1,
 								'search'			=> [],
 								'sort'				=> [],
 								'page'				=> 1,
@@ -26,15 +31,17 @@
 @section('content_body')	
 	@include('widgets.branch.form', [
 		'widget_template'		=> 'plain',
-		'widget_title'			=> 'Tambah Kantor Cabang',
+		'widget_title'			=> $title.' Kantor Cabang',
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
-		'widget_options'		=> ['form_url' 			=> null,
-									'organisation_id'	=> $data['id'],
-									'search'			=> ['defaultcontact' => true],
+		'widget_options'		=> ['form_url' 			=> route('hr.branches.store'),
+									'organisation_id'	=> $data['organisation_id'],
+									'identifier'		=> 1,
+									'search'			=> ['id' => $data['id']],
 									'sort'				=> [],
 									'page'				=> 1,
-									'per_page'			=> 12
+									'per_page'			=> 1,
+									'route_edit'		=> route('hr.branches.index', ['org_id' => $data['organisation_id']])
 									]
 	])
 

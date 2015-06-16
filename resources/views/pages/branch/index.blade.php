@@ -1,5 +1,5 @@
 @section('nav_topbar')
-	
+	@include('widgets.common.nav_topbar', ['breadcrumb' => [['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']])]]])
 @stop
 
 @section('nav_sidebar')
@@ -21,6 +21,12 @@
 @overwrite
 
 @section('content_filter')
+	@include('widgets.branch.filter', [
+		'widget_template'		=> 'plain_no_title',
+		'widget_options'		=> [
+									'form_url'	=> ''
+									]
+	])
 @overwrite
 
 @section('content_body')	
@@ -34,7 +40,7 @@
 		'widget_options'		=> ['total'	=> count($branches)]		
 	])
 	
-	@include('widgets.branch.data_table', [
+	@include('widgets.branch.table', [
 		'widget_template'		=> 'plain_no_title',
 		'widget_options'		=> ['form_url' 			=> null,
 									'organisation_id'	=> $data['id'],

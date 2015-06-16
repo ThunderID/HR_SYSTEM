@@ -35,5 +35,6 @@
 	</div>
 	{!! HTML::script('plugins/jquery/jquery-2.1.4.min.js') !!}
 	{!! HTML::script('plugins/bootstrap/bootstrap.min.js') !!}
+	@include('plugins/toggle')
 </body>
 </html>

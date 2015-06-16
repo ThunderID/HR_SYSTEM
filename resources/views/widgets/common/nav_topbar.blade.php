@@ -23,7 +23,7 @@
 	 
 	<ul class="nav navbar-top-links navbar-right">
 		<li>
-			<a href=""><i class="fa fa-search"></i></a>
+			<a href="javascript:;" class="open-filter"><i class="fa fa-search"></i></a>
 		</li>
 		<li class="dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">

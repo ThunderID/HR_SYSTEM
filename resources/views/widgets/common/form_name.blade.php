@@ -5,13 +5,13 @@
 @overwrite
 
 @section('widget_body')
-	{!! Form::open(['url' => $widget_data['form_url']]) !!}	
+	{!! Form::open(['url' => $widget_data['form_url'], 'class' => 'form-horizontal']) !!}	
 		<div class="form-group">
 			<div class="col-md-2">
 				<label class="control-label">Nama</label>
 			</div>	
 			<div class="col-md-10">
-				{!!Form::input('text', 'name', $widget_data['data']['name'], ['class' => 'form-control'])!!}
+				{!!Form::input('text', 'name', '', ['class' => 'form-control'])!!}
 			</div>
 		</div>
 		<div class="form-group">

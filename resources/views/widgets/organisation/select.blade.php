@@ -5,12 +5,12 @@
 @overwrite
 
 @section('widget_body')
-	{!! Form::open(['url' => $widget_data['form_url'], 'method' => 'get']) !!}	
+	{!! Form::open(['url' => $widget_data['form_url'], 'class' => 'form-horizontal', 'method' => 'get']) !!}	
 		<div class="form-group">
-			<div class="col-md-2">
+			<div class="col-md-3">
 				<label class="control-label">Akses Perusahaan</label>
 			</div>	
-			<div class="col-md-10">
+			<div class="col-md-9">
 				<select name="org_id" id="org" class="select2-skin" style="width:100%">
 					@if(isset($widget_data['data']))
 						@foreach($widget_data['data'] as $key => $value)
