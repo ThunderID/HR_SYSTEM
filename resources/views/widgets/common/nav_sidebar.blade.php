@@ -12,8 +12,8 @@
         <li>
             <a href="{{route('hr.organisations.create')}}"><i class="fa fa-plus-circle fa-fw"></i> Tambah Organisasi</a>
         </li>
-        @if(isset($widget_data['organisation-'.$widget_data['identifier']]))
-            @foreach($widget_data['organisation-'.$widget_data['identifier']] as $key => $value)
+        @if(isset($OrganisationComposer['widget_data']['navbar']['organisation']))
+            @foreach($OrganisationComposer['widget_data']['navbar']['organisation'] as $key => $value)
                 <li>
                     <a href="{{route('hr.organisations.show', $value['id'])}}"><i class="fa fa-bank fa-fw"></i> {{ $value['name'] }} <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">

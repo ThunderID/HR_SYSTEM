@@ -8,21 +8,22 @@ use Input, Validator, App;
 
 class OrganisationComposer extends WidgetComposer 
 {
-	protected function setRules()
+	protected function setRules($options)
 	{
-		$this->widget_rules['form_url']			= ['required_without', 'url'];				// url for form submit
-		$this->widget_rules['search'] 			= ['array'];								// search: label for search
-		$this->widget_rules['sort'] 			= ['array'];								// sort: label for sort
-		$this->widget_rules['page'] 			= ['required', 'numeric'];					// page: label for page
-		$this->widget_rules['per_page'] 		= ['required', 'numeric', 'max:100'];		// per page: label for per page
-		$this->widget_rules['identifier'] 		= ['required', 'numeric'];					// identifier
+		$widget_rules['form_url']			= ['required_without', 'url'];				// url for form submit
+		$widget_rules['search'] 			= ['array'];								// search: label for search
+		$widget_rules['sort'] 				= ['array'];								// sort: label for sort
+		$widget_rules['page'] 				= ['required', 'numeric'];					// page: label for page
+		$widget_rules['per_page'] 			= ['required', 'numeric', 'max:100'];		// per page: label for per page
+	
+		return $widget_rules;
 	}
 
-	protected function setData()
+	protected function setData($options)
 	{
-		$results 						=  $this->dispatch(new Getting(new Organisation, $this->widget_data['search'], $this->widget_data['sort'] , $this->widget_data['page'], $this->widget_data['per_page']));
+		$results 									=  $this->dispatch(new Getting(new Organisation, $options['search'], $options['sort'] , $options['page'], $options['per_page']));
 
-		$contents 						= json_decode($results);
+		$contents 									= json_decode($results);
 
 		if(!$contents->meta->success)
 		{
@@ -40,11 +41,13 @@ class OrganisationComposer extends WidgetComposer
 					$this->widget_errors->add('Organisation', $value);
 				}
 			}
-			$this->widget_data['organisation-'.$this->widget_data['identifier']] 	= null;
+			$widget_data['organisation'] 	= null;
 		}
 		else
 		{
-			$this->widget_data['organisation-'.$this->widget_data['identifier']] 	= json_decode(json_encode($contents->data), true);
+			$widget_data['organisation'] 	= json_decode(json_encode($contents->data), true);
 		}
+
+		return $widget_data;
 	}
 }

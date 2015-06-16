@@ -2,11 +2,11 @@
 
 @section('widget_title')
 <h1> Cabang </h1>
-<small>Total data {{$widget_data['branch-pagination-'.$widget_data['identifier']]->total()}}</small>
+<small>Total data {{$BranchComposer['widget_data']['branchlist']['branch-pagination']->total()}}</small>
 @overwrite
 
 @section('widget_body')
-	@if(isset($widget_data['branch-'.$widget_data['identifier']]))
+	@if(isset($BranchComposer['widget_data']['branchlist']['branch']))
 		<div class="clearfix">&nbsp;</div>
 		<table class="table">
 			<thead>
@@ -17,7 +17,7 @@
 					<th>&nbsp;</th>
 				</tr>
 			</thead>
-			@foreach($widget_data['branch-'.$widget_data['identifier']] as $key => $value)
+			@foreach($BranchComposer['widget_data']['branchlist']['branch'] as $key => $value)
 				<tbody>
 					<tr>
 						<td>
@@ -49,8 +49,8 @@
 
 		<div class="row">
 			<div class="col-sm-12 text-center">
-				<p>Menampilkan {!!$widget_data['branch-display-'.$widget_data['identifier']]['from']!!} - {!!$widget_data['branch-display-'.$widget_data['identifier']]['to']!!}</p>
-				{!!$widget_data['branch-pagination-'.$widget_data['identifier']]->appends(Input::all())->render()!!}
+				<p>Menampilkan {!!$BranchComposer['widget_data']['branchlist']['branch-display']['from']!!} - {!!$BranchComposer['widget_data']['branchlist']['branch-display']['to']!!}</p>
+				{!!$BranchComposer['widget_data']['branchlist']['branch-pagination']->appends(Input::all())->render()!!}
 			</div>
 		</div>
 

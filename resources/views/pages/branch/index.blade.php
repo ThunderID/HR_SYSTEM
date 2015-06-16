@@ -8,12 +8,14 @@
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
-		'widget_options'		=> 	[
-										'identifier'		=> 1,
-										'search'			=> [],
-										'sort'				=> [],
-										'page'				=> 1,
-										'per_page'			=> 12,
+		'widget_options'		=> [ 'navbar' 					=>
+										[
+											'identifier'		=> 1,
+											'search'			=> [],
+											'sort'				=> [],
+											'page'				=> 1,
+											'per_page'			=> 12,
+										]
 									]
 	])
 @overwrite
@@ -35,14 +37,16 @@
 
 	@include('widgets.branch.table', [
 		'widget_template'		=> 'panel',
-		'widget_options'		=> [
-										'form_url' 			=> null,
-										'organisation_id'	=> $data['id'],
-										'identifier'		=> 1,
-										'search'			=> ['defaultcontact' => true],
-										'sort'				=> [],
-										'page'				=> 1,
-										'per_page'			=> 12
+		'widget_options'		=> [ 'branchlist' 				=>
+										[
+											'form_url' 			=> null,
+											'organisation_id'	=> $data['id'],
+											'identifier'		=> 1,
+											'search'			=> ['defaultcontact' => true],
+											'sort'				=> [],
+											'page'				=> 1,
+											'per_page'			=> 12
+											]
 									]
 	])
 	
