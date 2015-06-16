@@ -1,13 +1,5 @@
-<?php
-	if (Route::is('hr.branches.edit')) {
-		$title = 'Edit Cabang';
-	} else {
-		$title = 'Tambah Cabang';
-	}
-?>
-
 @section('nav_topbar')
-	
+	@include('widgets.common.nav_topbar', ['breadcrumb' => [['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], ['name' => 'Cabang', 'route' => route('hr.branches.index', ['org_id' => $data['id']]) ]]])
 @stop
 
 @section('nav_sidebar')
@@ -30,18 +22,19 @@
 
 @section('content_body')	
 	@include('widgets.branch.form', [
-		'widget_template'		=> 'plain',
-		'widget_title'			=> $title.' Kantor Cabang',
+		'widget_template'		=> 'panel',
+		'widget_title'			=> 'Cabang',
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
-		'widget_options'		=> ['form_url' 			=> route('hr.branches.store'),
-									'organisation_id'	=> $data['organisation_id'],
+		'widget_options'		=> [
+									'form_url' 			=> route('hr.branches.store', ['id' => $id, 'org_id' => $data['id']]),
+									'organisation_id'	=> $data['id'],
 									'identifier'		=> 1,
 									'search'			=> ['id' => $data['id']],
 									'sort'				=> [],
 									'page'				=> 1,
 									'per_page'			=> 1,
-									'route_edit'		=> route('hr.branches.index', ['org_id' => $data['organisation_id']])
+									'route_edit'		=> route('hr.branches.index', ['org_id' => $data['id']])
 									]
 	])
 
