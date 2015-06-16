@@ -77,6 +77,12 @@ Route::group(['prefix' => ''], function()
 		// ------------------------------------------------------------------------------------
 
 		Route::resource('contacts',			'ContactController',								['names' => ['index' => 'hr.branch.contacts.index', 'create' => 'hr.branch.contacts.create', 'store' => 'hr.branch.contacts.store', 'show' => 'hr.branch.contacts.show', 'edit' => 'hr.branch.contacts.edit', 'update' => 'hr.branch.contacts.update', 'destroy' => 'hr.branch.contacts.delete']]);
+
+		// ------------------------------------------------------------------------------------
+		// CHARTS FOR BRANCH RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('charts',			'ChartController',									['names' => ['index' => 'hr.branch.charts.index', 'create' => 'hr.branch.charts.create', 'store' => 'hr.branch.charts.store', 'show' => 'hr.branch.charts.show', 'edit' => 'hr.branch.charts.edit', 'update' => 'hr.branch.charts.update', 'destroy' => 'hr.branch.charts.delete']]);
 	});
 
 	});

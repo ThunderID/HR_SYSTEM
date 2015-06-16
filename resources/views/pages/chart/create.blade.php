@@ -3,7 +3,7 @@
 	['breadcrumb' => [
 						['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
 						['name' => $branch['name'], 'route' => route('hr.branches.show', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
-						['name' => 'Kontak', 'route' => route('hr.branches.show', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
+						['name' => 'Jabatan', 'route' => route('hr.branch.charts.index', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
 					]
 	])
 @stop
@@ -29,10 +29,10 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.contact.form', [
+	@include('widgets.chart.form', [
 		'widget_template'	=> 'panel',
 		'widget_options'	=> 	[
-									'form_url'			=> route('hr.branch.contacts.store', ['id' => $id, 'branch_id' => $branch['id'], 'org_id' => $data['id']]),
+									'form_url'			=> route('hr.branch.charts.store', ['id' => $id, 'branch_id' => $branch['id'], 'org_id' => $data['id']]),
 									'organisation_id'	=> $data['id'],
 									'identifier'		=> 1,
 									'search'			=> ['id' => $id],
