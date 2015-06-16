@@ -33,6 +33,7 @@
 		</div>
 		<div class="form-group">
 			<div class="col-md-12 text-right">
+				<a href="{{ $widget_data['route_back'] }}" class="btn btn-default mr-5">Batal</a>
 				<input type="submit" class="btn btn-primary" value="Simpan">
 			</div>
 		</div>

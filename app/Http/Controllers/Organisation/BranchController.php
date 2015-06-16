@@ -42,6 +42,8 @@ class BranchController extends BaseController
 		$this->layout->page 					= view('pages.branch.index');
 		$this->layout->page->controller_name 	= $this->controller_name;
 		$this->layout->page->data 				= $data;
+		$this->layout->page->route_back 		= route('hr.organisations.show', $org_id);
+
 		return $this->layout;
 	}
 	
@@ -149,9 +151,11 @@ class BranchController extends BaseController
 		$data 							= $branch['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 			= view('pages.branch.show');
-		$this->layout->pages->data 		= $data;
-		$this->layout->pages->branch 	= $branch;
+		$this->layout->pages 				= view('pages.branch.show');
+		$this->layout->pages->data 			= $data;
+		$this->layout->pages->branch 		= $branch;
+		$this->layout->pages->route_back 	= route('hr.branches.index', ['org_id' => $org_id]);
+
 		return $this->layout;
 	}
 

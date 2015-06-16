@@ -12,8 +12,8 @@
 			</div>	
 			<div class="col-md-9">
 				<select name="org_id" id="org" class="select2-skin" style="width:100%">
-					@if(isset($widget_data['data']))
-						@foreach($widget_data['data'] as $key => $value)
+					@if(isset($widget_data['organisation-'.$widget_data['identifier']]))
+						@foreach($widget_data['organisation-'.$widget_data['identifier']] as $key => $value)
 							<option value="{{$value['id']}}">{{$value['name']}}</option>
 						@endforeach
 					@endif

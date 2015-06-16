@@ -26,13 +26,13 @@
 
 @section('content_body')
 	@include('widgets.contact.table', [
-		'widget_template'		=> 'plain',
+		'widget_template'		=> 'panel',
 		'widget_options'		=> 	[
 										'identifier'		=> 1,
 										'search'			=> ['branchid' => $branch['id']],
 										'sort'				=> ['is_default' => 'desc'],
 										'page'				=> 1,
-										'per_page'			=> 12,
+										'per_page'			=> 12
 									]
 	])
 @overwrite

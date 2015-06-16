@@ -17,9 +17,9 @@
                 <li>
                     <a href="{{route('hr.organisations.show', $value['id'])}}"><i class="fa fa-bank fa-fw"></i> {{ $value['name'] }} <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="{{route('hr.organisations.show', $value['id'])}}"><i class="fa fa-eye fa-fw"></i> Show</a></li>
+                        {{-- <li><a href="{{route('hr.organisations.show', $value['id'])}}"><i class="fa fa-eye fa-fw"></i> Show</a></li> --}}
                         <li><a href="{{route('hr.organisations.edit', $value['id'])}}"><i class="fa fa-pencil fa-fw"></i> Ubah</a></li>
-                        <li><a href="{{route('hr.organisations.delete', $value['id'])}}"><i class="fa fa-trash fa-fw"></i> Hapus</a></li>
+                        <li><a href="{{route('hr.organisations.delete', [$value['id'], 'org_id' => $value['id']]) }}"><i class="fa fa-trash fa-fw"></i> Hapus</a></li>
                         <li><a href="{{route('hr.organisations.show', $value['id'])}}"><i class="fa fa-tachometer fa-fw"></i> Dashboard</a></li>
                         <li><a href="{{route('hr.branches.index', ['org_id' => $value['id']])}}"><i class="fa fa-building fa-fw"></i> Cabang</a></li>
                         <li><a href="{{route('hr.calendars.index', ['org_id' => $value['id']])}}"><i class="fa fa-calendar fa-fw"></i> Kalender</a></li>

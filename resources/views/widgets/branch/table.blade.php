@@ -25,7 +25,7 @@
 						</td>
 						<td>
 							@foreach($value['contacts'] as $key2 => $value2)
-								@if(strtolower($value2['item'])=='phone')
+								@if((strtolower($value2['item'])=='phone')||(strtolower($value2['item'])=='mobile'))
 									{{$value2['value']}}
 								@endif
 							@endforeach

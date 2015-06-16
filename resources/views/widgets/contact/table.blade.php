@@ -39,7 +39,6 @@
 						<td class="text-right">
 							<a href="" class="btn btn-default"><i class="fa fa-trash"></i></a>
 							<a href="{{route('hr.branch.contacts.edit', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-							<a href="" class="btn btn-default"><i class="fa fa-eye"></i></a>
 						</td>
 					</tr>
 				</tbody>
