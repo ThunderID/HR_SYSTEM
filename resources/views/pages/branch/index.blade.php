@@ -1,5 +1,5 @@
 @section('nav_topbar')
-	@include('widgets.common.nav_topbar', ['breadcrumb' => [['name' => 'ORGANISATION NAME']]])
+	
 @stop
 
 @section('nav_sidebar')
@@ -10,6 +10,7 @@
 		'widget_body_class'		=> '',
 		'widget_options'	=> ['widget_title'		=> 'Pilih Organisasi :',								
 								'organisation_id'	=> 1,
+								'identifier'		=> 1,
 								'document_id'		=> 1,
 								'search'			=> [],
 								'sort'				=> [],
@@ -37,6 +38,7 @@
 		'widget_template'		=> 'plain_no_title',
 		'widget_options'		=> ['form_url' 			=> null,
 									'organisation_id'	=> $data['id'],
+									'identifier'		=> 1,
 									'search'			=> ['defaultcontact' => true],
 									'sort'				=> [],
 									'page'				=> 1,

@@ -2,7 +2,7 @@
 
 @if ((isset($widget_errors) && !$widget_errors->count() || !isset($widget_errors)))
 	@section('widget_body')
-		@if(isset($widget_data['data']))
+		@if(isset($widget_data['branch-'.$widget_options['identifier']]))
 			<table class="table table-hover mt-20">
 				<thead>
 					<th>#</th>
@@ -12,7 +12,7 @@
 					<th></th>
 				</thead>
 				<tbody>
-					@foreach($widget_data['data'] as $key => $value)
+					@foreach($widget_data['branch-'.$widget_options['identifier']] as $key => $value)
 						<tr>
 							<td>{{ $key+1 }}</td>
 							<td>{{ $value['name'] }}</td>
@@ -27,7 +27,7 @@
 							@endif
 							<td>
 								<a href="" class="btn btn-default"><i class="fa fa-eye"></i></a>
-								<a href="{{ isset($edit) ? $edit : '' }}" class="btn btn-default">
+								<a href="{{ route('hr.branches.edit', $value['id']) }}" class="btn btn-default">
 									<i class="fa fa-pencil"></i>
 								</a>
 								<a href="{{ isset($delete) ? $delete : '' }}" class="btn btn-default" data-toggle="modal" data-target="#delete"><i class="fa fa-trash"></i></a>
