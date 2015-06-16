@@ -3,7 +3,7 @@
 	['breadcrumb' => [
 						['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
 						['name' => $branch['name'], 'route' => route('hr.branches.show', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
-						['name' => 'Kontak', 'route' => route('hr.branches.show', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
+						['name' => 'Jabatan', 'route' => route('hr.branch.charts.index', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
 					]
 	])
 @stop
@@ -25,14 +25,15 @@
 @overwrite
 
 @section('content_body')
-	@include('widgets.contact.table', [
+	@include('widgets.chart.list', [
 		'widget_template'		=> 'plain',
 		'widget_options'		=> 	[
 										'identifier'		=> 1,
+										'organisation_id'	=> $data['id'],
 										'search'			=> ['branchid' => $branch['id']],
-										'sort'				=> ['is_default' => 'desc'],
+										'sort'				=> ['path' => 'asc'],
 										'page'				=> 1,
-										'per_page'			=> 12,
+										'per_page'			=> 100,
 									]
 	])
 @overwrite

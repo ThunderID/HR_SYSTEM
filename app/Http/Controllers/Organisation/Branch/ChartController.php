@@ -1,16 +1,15 @@
-<?php namespace App\Http\Controllers\Organisation;
+<?php namespace App\Http\Controllers\Organisation\Branch;
 use Input, Session, App, Paginator, Redirect, DB;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
-use App\Models\Organisation;
-use App\Models\Work;
-use App\Models\Person;
+use App\Models\Chart;
 use App\Models\Branch;
-class BranchController extends BaseController
+
+class ChartController extends BaseController
 {
-	protected $controller_name = 'cabang';
+	protected $controller_name = 'jabatan';
 
 	public function index($page = 1)
 	{
@@ -23,14 +22,25 @@ class BranchController extends BaseController
 			$org_id 							= Session::get('user.organisation');
 		}
 
+		if(Input::has('branch_id'))
+		{
+			$branch_id 							= Input::get('branch_id');
+		}
+		else
+		{
+			App::abort(404);
+		}
+
 		// if(!in_array($org_id, Session::get('user.orgids')))
 		// {
 		// App::abort(404);
 		// }
 
-		$search['id'] 							= $org_id;
+		$search['id'] 							= $branch_id;
+		$search['organisationid'] 				= $org_id;
+		$search['withattributes'] 				= ['organisation'];
 		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Organisation, $search, $sort , $page, 1));
+		$results 								= $this->dispatch(new Getting(new Branch, $search, $sort , $page, 1));
 		$contents 								= json_decode($results);
 
 		if(!$contents->meta->success)
@@ -38,10 +48,12 @@ class BranchController extends BaseController
 			App::abort(404);
 		}
 
-		$data 									= json_decode(json_encode($contents->data), true);
-		$this->layout->page 					= view('pages.branch.index');
+		$branch 								= json_decode(json_encode($contents->data), true);
+		$data 									= $branch['organisation'];
+		$this->layout->page 					= view('pages.chart.index');
 		$this->layout->page->controller_name 	= $this->controller_name;
 		$this->layout->page->data 				= $data;
+		$this->layout->page->branch 			= $branch;
 		return $this->layout;
 	}
 	
@@ -56,14 +68,25 @@ class BranchController extends BaseController
 			$org_id 							= Session::get('user.organisation');
 		}
 
+		if(Input::has('branch_id'))
+		{
+			$branch_id 							= Input::get('branch_id');
+		}
+		else
+		{
+			App::abort(404);
+		}
+
 		// if(!in_array($org_id, Session::get('user.orgids')))
 		// {
 		// App::abort(404);
 		// }
 
-		$search['id'] 							= $org_id;
+		$search['id'] 							= $branch_id;
+		$search['organisationid'] 				= $org_id;
+		$search['withattributes'] 				= ['organisation'];
 		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Organisation, $search, $sort , 1, 1));
+		$results 								= $this->dispatch(new Getting(new Branch, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
 
 		if(!$contents->meta->success)
@@ -71,10 +94,12 @@ class BranchController extends BaseController
 			App::abort(404);
 		}
 
-		$data 									= json_decode(json_encode($contents->data), true);
+		$branch 								= json_decode(json_encode($contents->data), true);
+		$data 									= $branch['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.branch.create', compact('id', 'data'));
+		$this->layout->pages 					= view('pages.chart.create', compact('id', 'data', 'branch'));
+
 		return $this->layout;
 	}
 	
@@ -84,7 +109,6 @@ class BranchController extends BaseController
 		{
 			$id 								= Input::get('id');
 		}
-		$attributes 							= Input::only('name');
 
 		if(Input::has('org_id'))
 		{
@@ -95,13 +119,33 @@ class BranchController extends BaseController
 			$org_id 							= Session::get('user.organisation');
 		}
 
-		$attributes 							= Input::only('name');
+		if(Input::has('branch_id'))
+		{
+			$branch_id 							= Input::get('branch_id');
+		}
+		else
+		{
+			App::abort(404);
+		}
+
+		$search['id'] 							= $branch_id;
+		$search['organisationid'] 				= $org_id;
+		$sort 									= ['name' => 'asc'];
+		$results 								= $this->dispatch(new Getting(new Branch, $search, $sort , 1, 1));
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$attributes 							= Input::only('name', 'tag', 'grade', 'min_employee', 'max_employee', 'ideal_employee', 'path');
 
 		$errors 								= new MessageBag();
 
 		DB::beginTransaction();
 
-		$content 								= $this->dispatch(new Saving(new Branch, $attributes, $id, new Organisation, $org_id));
+		$content 								= $this->dispatch(new Saving(new Chart, $attributes, $id, new Branch, $branch_id));
 		$is_success 							= json_decode($content);
 		
 		if(!$is_success->meta->success)
@@ -112,11 +156,11 @@ class BranchController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.branches.show', [$is_success->data->id, 'org_id' => $is_success->data->id])->with('alert_success', 'Cabang "' . $is_success->data->name. '" sudah disimpan');
+			return Redirect::route('hr.branches.show', [$branch_id, 'org_id' => $org_id])->with('alert_success', 'Kontak cabang "' . $contents->data->name. '" sudah disimpan');
 		}
 		
 		DB::rollback();
-		return Redirect::back()->withErrors($errors)->withInput();
+		return Redirect::back()->withErrors($content->meta->errors)->withInput();
 	}
 
 	public function show($id)
