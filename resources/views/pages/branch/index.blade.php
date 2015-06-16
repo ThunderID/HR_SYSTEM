@@ -28,6 +28,11 @@
 @overwrite
 
 @section('content_body')	
+	@section('content_body')
+	@include('widgets.branch.alert', [
+		'widget_template'		=> 'plain_no_title'
+	])
+
 	@include('widgets.branch.table', [
 		'widget_template'		=> 'panel',
 		'widget_options'		=> [

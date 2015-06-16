@@ -15,8 +15,9 @@
         @if(isset($widget_data['organisation-'.$widget_data['identifier']]))
             @foreach($widget_data['organisation-'.$widget_data['identifier']] as $key => $value)
                 <li>
-                    <a href=""><i class="fa fa-bank fa-fw"></i> {{ $value['name'] }} <span class="fa arrow"></span></a>
+                    <a href="{{route('hr.organisations.show', $value['id'])}}"><i class="fa fa-bank fa-fw"></i> {{ $value['name'] }} <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
+                        <li><a href="{{route('hr.organisations.show', $value['id'])}}"><i class="fa fa-eye fa-fw"></i> Show</a></li>
                         <li><a href="{{route('hr.organisations.edit', $value['id'])}}"><i class="fa fa-pencil fa-fw"></i> Ubah</a></li>
                         <li><a href="{{route('hr.organisations.delete', $value['id'])}}"><i class="fa fa-trash fa-fw"></i> Hapus</a></li>
                         <li><a href="{{route('hr.organisations.show', $value['id'])}}"><i class="fa fa-tachometer fa-fw"></i> Dashboard</a></li>
