@@ -69,6 +69,16 @@ Route::group(['prefix' => ''], function()
 
 	Route::resource('reports',				'ReportController',									['names' => ['index' => 'hr.reports.index', 'create' => 'hr.reports.create', 'store' => 'hr.reports.store', 'show' => 'hr.reports.show', 'edit' => 'hr.reports.edit', 'update' => 'hr.reports.update', 'destroy' => 'hr.reports.delete']]);
 
+	Route::group(['namespace' => 'Branch\\', 'prefix' => 'branch'], function() 
+	{
+
+		// ------------------------------------------------------------------------------------
+		// CONTACTS FOR BRANCH RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('contacts',			'ContactController',								['names' => ['index' => 'hr.branch.contacts.index', 'create' => 'hr.branch.contacts.create', 'store' => 'hr.branch.contacts.store', 'show' => 'hr.branch.contacts.show', 'edit' => 'hr.branch.contacts.edit', 'update' => 'hr.branch.contacts.update', 'destroy' => 'hr.branch.contacts.delete']]);
+	});
+
 	});
 });	
 

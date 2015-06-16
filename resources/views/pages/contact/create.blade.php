@@ -15,6 +15,7 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
+										'widget_title'		=> 'Pilih Organisasi :',								
 										'identifier'		=> 1,
 										'search'			=> [],
 										'sort'				=> [],
@@ -24,20 +25,23 @@
 	])
 @overwrite
 
-@section('content_body')
-	@include('widgets.contact.table', [
-		'widget_template'		=> 'plain',
-		'widget_options'		=> 	[
-										'identifier'		=> 1,
-										'search'			=> ['branchid' => $branch['id']],
-										'sort'				=> ['is_default' => 'desc'],
-										'page'				=> 1,
-										'per_page'			=> 12,
-									]
-	])
+@section('content_filter')
 @overwrite
 
-@section('content_filter')
+@section('content_body')	
+	@include('widgets.contact.form', [
+		'widget_template'	=> 'panel',
+		'widget_options'	=> 	[
+									'form_url'			=> route('hr.branch.contacts.store', ['id' => $id, 'branch_id' => $branch['id'], 'org_id' => $data['id']]),
+									'organisation_id'	=> $data['id'],
+									'identifier'		=> 1,
+									'search'			=> ['id' => $id],
+									'sort'				=> [],
+									'page'				=> 1,
+									'per_page'			=> 1,
+								]
+	])
+
 @overwrite
 
 @section('content_footer')
