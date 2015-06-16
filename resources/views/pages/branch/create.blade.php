@@ -8,12 +8,15 @@
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
-		'widget_options'	=> ['identifier'		=> 1,
-								'search'			=> [],
-								'sort'				=> [],
-								'page'				=> 1,
-								'per_page'			=> 12,
-								]
+		'widget_options'		=> [ 'navbar' 					=>
+										[
+											'identifier'		=> 1,
+											'search'			=> [],
+											'sort'				=> [],
+											'page'				=> 1,
+											'per_page'			=> 12,
+										]
+									]
 	])
 @overwrite
 
@@ -32,14 +35,17 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> [
-									'form_url' 			=> route('hr.branches.store', ['id' => $id, 'org_id' => $data['id']]),
-									'organisation_id'	=> $data['id'],
-									'identifier'		=> 1,
-									'search'			=> ['id' => $data['id']],
-									'sort'				=> [],
-									'page'				=> 1,
-									'per_page'			=> 1,
-									'route_edit'		=> route('hr.branches.index', ['org_id' => $data['id']])
+									'branchlist' 				=>
+										[	
+											'form_url' 			=> route('hr.branches.store', ['id' => $id, 'org_id' => $data['id']]),
+											'organisation_id'	=> $data['id'],
+											'identifier'		=> 1,
+											'search'			=> ['id' => $data['id']],
+											'sort'				=> [],
+											'page'				=> 1,
+											'per_page'			=> 1,
+											'route_edit'		=> route('hr.branches.index', ['org_id' => $data['id']])
+										]
 									]
 	])
 
