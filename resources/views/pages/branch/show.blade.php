@@ -26,7 +26,7 @@
 
 @section('content_body')
 	@include('widgets.contact.table', [
-		'widget_template'		=> 'plain',
+		'widget_template'		=> 'panel',
 		'widget_options'		=> 	[
 										'identifier'		=> 1,
 										'search'			=> ['branchid' => $branch['id']],
