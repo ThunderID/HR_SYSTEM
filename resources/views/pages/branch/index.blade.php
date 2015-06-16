@@ -45,10 +45,12 @@
 										'per_page'			=> 12
 									]
 	])
-
-	@include('widgets.modal.delete', [
-		'widget_template'		=> 'plain_no_title'
-	])
+	
+	{!! Form::open(array('route' => array('hr.branches.delete', 0),'method' => 'POST')) !!}
+		@include('widgets.modal.delete', [
+			'widget_template'		=> 'plain_no_title'
+		])
+	{!! Form::close() !!}
 @overwrite
 
 @section('content_footer')
