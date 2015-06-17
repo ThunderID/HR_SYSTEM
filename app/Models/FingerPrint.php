@@ -79,7 +79,7 @@ class FingerPrint extends BaseModel {
 											'withattributes' 			=> 'Must be array of relationship'
 										];
 
-	public $sortable 				= ['created_at'];
+	public $sortable 				= ['created_at', 'branch_id'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**

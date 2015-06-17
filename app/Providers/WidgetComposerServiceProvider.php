@@ -84,6 +84,11 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// API
 		// -----------------------------------------------------------------------------
 		View::composer(['widgets.api.table', 'widgets.api.form'], 	'App\Http\ViewComposers\ApiComposer');
+
+		// -----------------------------------------------------------------------------
+		// FINGERPRINT
+		// -----------------------------------------------------------------------------
+		View::composer(['widgets.fingerprint.table', 'widgets.fingerprint.form'], 	'App\Http\ViewComposers\FingerPrintComposer');
 	}
 
 	private function web_widget()

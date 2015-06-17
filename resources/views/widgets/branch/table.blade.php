@@ -67,3 +67,4 @@
 
 	@section('widget_body')
 	@overwrite
+@endif
