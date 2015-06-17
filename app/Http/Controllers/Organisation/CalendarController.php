@@ -129,17 +129,4 @@ class CalendarController extends BaseController
 		DB::rollback();
 		return Redirect::back()->withErrors($errors)->withInput();
 	}
-
-	public function show()
-	{
-		$this->layout->page 	= view('pages.calendar.show');
-
-		return $this->layout;
-	}
-
-	public function edit($id)
-	{
-		return $this->create($id);
-	}
-
 }

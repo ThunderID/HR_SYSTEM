@@ -5,12 +5,12 @@ use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
 use App\Models\Chart;
-use App\Models\Authentication;
-use App\Models\Menu;
+use App\Models\Calendar;
+use App\Models\Follow;
 
-class AuthenticationController extends BaseController
+class CalendarController extends BaseController
 {
-	protected $controller_name = 'otentikasi';
+	protected $controller_name = 'kalender';
 
 	public function index($page = 1)
 	{
@@ -60,7 +60,7 @@ class AuthenticationController extends BaseController
 		$data 							= $chart['branch']['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 			= view('pages.chart.show');
+		$this->layout->pages 			= view('pages.follow.index');
 		$this->layout->pages->data 		= $data;
 		$this->layout->pages->branch 	= $branch;
 		$this->layout->pages->chart 	= $chart;

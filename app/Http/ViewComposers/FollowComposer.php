@@ -4,23 +4,24 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Getting;
 use App\Models\Follow;
-use Input, Validator, App;
+use Input, Validator, App, Paginator;
 
 class FollowComposer extends WidgetComposer 
 {
-	protected function setRules()
+	protected function setRules($options)
 	{
-		$this->widget_rules['form_url']			= ['required', 'url'];						// url for form submit
-		$this->widget_rules['search'] 			= ['array'];								// search: label for search
-		$this->widget_rules['sort'] 			= ['array'];								// sort: label for sort
-		$this->widget_rules['page'] 			= ['required', 'numeric'];					// page: label for page
-		$this->widget_rules['per_page'] 		= ['required', 'numeric', 'max:100'];		// per page: label for per page
-		$this->widget_rules['identifier'] 		= ['required', 'numeric'];					// identifier
+		$widget_rules['form_url']			= ['url'];									// url for form submit
+		$widget_rules['search'] 			= ['array'];								// search: label for search
+		$widget_rules['sort'] 				= ['array'];								// sort: label for sort
+		$widget_rules['page'] 				= ['required', 'numeric'];					// page: label for page
+		$widget_rules['per_page'] 			= ['required', 'numeric', 'max:100'];		// per page: label for per page
+
+		return $widget_rules;
 	}
 
-	protected function setData()
+	protected function setData($options)
 	{
-		$results 								=  $this->dispatch(new Getting(new Follow, $this->widget_data['search'], $this->widget_data['sort'] , $this->widget_data['page'], $this->widget_data['per_page']));
+		$results 								=  $this->dispatch(new Getting(new Follow, $options['search'], $options['sort'] , $options['page'], $options['per_page']));
 
 		$contents 								= json_decode($results);
 
@@ -32,21 +33,26 @@ class FollowComposer extends WidgetComposer
 				{
 					foreach ($value as $key2 => $value2) 
 					{
-						$this->widget_errors->add('Follow', $value2);
+						$widget_errors->add('Follow', $value2);
 					}
 				}
 				else
 				{
-					$this->widget_errors->add('Follow', $value);
+					$widget_errors->add('Follow', $value);
 				}
 			}
 
-			$this->widget_data['follow-'.$this->widget_data['identifier']] 			= [];
+			$widget_data['follow'] 				= null;
+			$widget_data['follow-pagination'] 	= null;
 		}
 		else
 		{
-			$this->widget_data['follow-'.$this->widget_data['identifier']] 			= json_decode(json_encode($contents->data), true);
+			$page 								= json_decode(json_encode($contents->pagination), true);
+			$widget_data['follow'] 				= json_decode(json_encode($contents->data), true);
+			$widget_data['follow-pagination'] 	= new Paginator($page['total_data'], $page['total_data'], $page['per_page'], $page['page']);
+			$widget_data['follow-display'] 		= $page;
 		}
 		
+		return $widget_data;
 	}
 }

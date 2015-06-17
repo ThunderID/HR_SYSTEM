@@ -94,7 +94,11 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// AUTHENTICATION
 		// -----------------------------------------------------------------------------
 		View::composer(['widgets.authentication.table', 'widgets.authentication.form'], 	'App\Http\ViewComposers\ApplicationComposer');
-		// View::composer(['widgets.authentication.table', 'widgets.authentication.form'], 	'App\Http\ViewComposers\ApplicationComposer');
+
+		// -----------------------------------------------------------------------------
+		// FOLLOW
+		// -----------------------------------------------------------------------------
+		View::composer(['widgets.follow.table', 'widgets.follow.form'], 	'App\Http\ViewComposers\FollowComposer');
 	}
 
 	private function web_widget()
