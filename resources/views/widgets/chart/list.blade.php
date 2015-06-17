@@ -24,7 +24,7 @@
 					<div class="text-right col-xs-6 col-sm-6">
 						<a href="" class="btn btn-default"><i class="fa fa-trash"></i></a>
 						<a href="{{route('hr.branch.charts.edit', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-						<a href="" class="btn btn-default"><i class="fa fa-eye"></i></a>
+						<a href="{{route('hr.branch.charts.show', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
 					</div>
 				</div>
 			@endforeach

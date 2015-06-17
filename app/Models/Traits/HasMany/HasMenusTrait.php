@@ -23,6 +23,6 @@ trait HasMenusTrait {
 
 	public function scopeChartID($query, $variable)
 	{
-		return $query->with(['menus', 'menus.authentications' => function($q)use($variable){$q->where('chart_id', $variable);}]);
+		return $query->with(['menus', 'menus.authentications' => function($q)use($variable){$q->chartid($variable);}]);
 	}
 }
