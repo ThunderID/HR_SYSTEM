@@ -18,16 +18,16 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th>Jempol Kiri</th>
-							<th>Telunjuk Kiri</th>
-							<th>Tengah Kiri</th>
-							<th>Manis Kiri</th>
-							<th>Kelingking Kiri</th>
-							<th>Jempol Kanan</th>
-							<th>Telunjuk Kanan</th>
-							<th>Tengah Kanan</th>
-							<th>Manis Kanan</th>
-							<th>Kelingking Kanan</th>
+							<th class="text-center">Jempol Kiri</th>
+							<th class="text-center">Telunjuk Kiri</th>
+							<th class="text-center">Tengah Kiri</th>
+							<th class="text-center">Manis Kiri</th>
+							<th class="text-center">Kelingking Kiri</th>
+							<th class="text-center">Jempol Kanan</th>
+							<th class="text-center">Telunjuk Kanan</th>
+							<th class="text-center">Tengah Kanan</th>
+							<th class="text-center">Manis Kanan</th>
+							<th class="text-center">Kelingking Kanan</th>
 						</tr>
 					</thead>
 						<tbody>
