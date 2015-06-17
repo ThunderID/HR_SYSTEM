@@ -125,6 +125,47 @@ Route::group(['prefix' => ''], function()
 		Route::resource('schedules',		'ScheduleController',								['names' => ['index' => 'hr.calendar.schedules.index', 'create' => 'hr.calendar.schedules.create', 'store' => 'hr.calendar.schedules.store', 'show' => 'hr.calendar.schedules.show', 'edit' => 'hr.calendar.schedules.edit', 'update' => 'hr.calendar.schedules.update', 'destroy' => 'hr.calendar.schedules.delete']]);
 	});
 
+
+	Route::group(['namespace' => 'Person\\', 'prefix' => 'person'], function() 
+	{
+
+		// ------------------------------------------------------------------------------------
+		// CONTACTS FOR PERSON RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('contacts',			'ContactController',								['names' => ['index' => 'hr.person.contacts.index', 'create' => 'hr.person.contacts.create', 'store' => 'hr.person.contacts.store', 'show' => 'hr.person.contacts.show', 'edit' => 'hr.person.contacts.edit', 'update' => 'hr.person.contacts.update', 'destroy' => 'hr.person.contacts.delete']]);
+
+		// ------------------------------------------------------------------------------------
+		// RELATIVES FOR PERSON RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('relatives',		'RelativeController',								['names' => ['index' => 'hr.person.relatives.index', 'create' => 'hr.person.relatives.create', 'store' => 'hr.person.relatives.store', 'show' => 'hr.person.relatives.show', 'edit' => 'hr.person.relatives.edit', 'update' => 'hr.person.relatives.update', 'destroy' => 'hr.person.relatives.delete']]);
+
+		// ------------------------------------------------------------------------------------
+		// WORKS FOR PERSON RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('works',			'WorkController',									['names' => ['index' => 'hr.person.works.index', 'create' => 'hr.person.works.create', 'store' => 'hr.person.works.store', 'show' => 'hr.person.works.show', 'edit' => 'hr.person.works.edit', 'update' => 'hr.person.works.update', 'destroy' => 'hr.person.works.delete']]);
+
+		// ------------------------------------------------------------------------------------
+		// SCHEDULES FOR PERSON RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('schedules',		'ScheduleController',								['names' => ['index' => 'hr.person.schedules.index', 'create' => 'hr.person.schedules.create', 'store' => 'hr.person.schedules.store', 'show' => 'hr.person.schedules.show', 'edit' => 'hr.person.schedules.edit', 'update' => 'hr.person.schedules.update', 'destroy' => 'hr.person.schedules.delete']]);
+
+		// ------------------------------------------------------------------------------------
+		// WORKLEAVES FOR PERSON RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('workleaves',		'WorkleaveController',								['names' => ['index' => 'hr.person.workleaves.index', 'create' => 'hr.person.workleaves.create', 'store' => 'hr.person.workleaves.store', 'show' => 'hr.person.workleaves.show', 'edit' => 'hr.person.workleaves.edit', 'update' => 'hr.person.workleaves.update', 'destroy' => 'hr.person.workleaves.delete']]);
+
+		// ------------------------------------------------------------------------------------
+		// DOCUMENTS FOR PERSON RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('documents',		'DocumentController',								['names' => ['index' => 'hr.person.documents.index', 'create' => 'hr.person.documents.create', 'store' => 'hr.person.documents.store', 'show' => 'hr.person.documents.show', 'edit' => 'hr.person.documents.edit', 'update' => 'hr.person.documents.update', 'destroy' => 'hr.person.documents.delete']]);
+	});
+
 	});
 });	
 

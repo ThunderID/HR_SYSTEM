@@ -134,10 +134,45 @@ class PersonController extends BaseController
 		return Redirect::back()->withErrors($errors)->withInput();
 	}
 
-	public function show()
+	public function show($id)
 	{
-		$this->layout->page 	= view('pages.person.show');
+		if(Input::has('org_id'))
+		{
+			$org_id 							= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 							= Session::get('user.organisation');
+		}
 
+		if(Input::has('person_id'))
+		{
+			$id 								= Input::get('person_id');
+		}
+
+		// if(!in_array($org_id, Session::get('user.orgids')))
+		// {
+		// App::abort(404);
+		// }
+
+		$search['id'] 							= $id;
+		$search['organisationid'] 				= $org_id;
+		$search['withattributes'] 				= ['organisation'];
+		$sort 									= ['name' => 'asc'];
+		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$person 								= json_decode(json_encode($contents->data), true);
+		$data 									= $person['organisation'];
+		$this->layout->page 					= view('pages.person.show');
+		$this->layout->page->controller_name 	= $this->controller_name;
+		$this->layout->page->data 				= $data;
+		$this->layout->page->person 			= $person;
 		return $this->layout;
 	}
 

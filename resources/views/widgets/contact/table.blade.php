@@ -1,5 +1,5 @@
 <?php
-	$ContactComposer['widget_data']['contactlist']['contact-pagination']->setPath(route('hr.branch.contacts.index'));
+	$ContactComposer['widget_data']['contactlist']['contact-pagination']->setPath(route('hr.person.contacts.index'));
  ?>
 
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
@@ -9,11 +9,6 @@
 	<h1> {{ $widget_title or 'Kontak' }} </h1>
 	<small>Total data {{ $ContactComposer['widget_data']['contactlist']['contact-pagination']->total() }}</small>
 
-	<div class="row">
-		<div class="col-md-2 mt-20">
-			@include('widgets.branch.sidemenu')
-		</div>
-		<div class="col-md-10">
 	@overwrite
 
 	@section('widget_body')
@@ -45,7 +40,7 @@
 								</td>
 								<td class="text-right">
 									<a href="" class="btn btn-default"><i class="fa fa-trash"></i></a>
-									<a href="{{route('hr.branch.contacts.edit', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									<a href="{{route('hr.person.contacts.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 								</td>
 							</tr>
 						</tbody>
@@ -61,8 +56,6 @@
 
 				<div class="clearfix">&nbsp;</div>
 			@endif
-		</div>
-	</div>
 	@overwrite	
 @else
 	@section('widget_title')

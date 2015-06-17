@@ -17,35 +17,34 @@
 		'widget_options'		=> 	[
 										'sidebar'				=> 
 										[
+											'identifier'		=> 1,
 											'search'			=> [],
 											'sort'				=> [],
 											'page'				=> 1,
-											'per_page'			=> 12,
+											'per_page'			=> 12
 										]
 									]
 	])
 @overwrite
 
-@section('content_filter')
+@section('content_body')
+			@include('widgets.contact.table', [
+				'widget_template'		=> 'panel',
+				'widget_title'			=> $person['name'],
+				'widget_options'		=> 	[
+												'contactlist'			=>
+												[
+													'identifier'		=> 1,
+													'search'			=> ['personid' => $person['id']],
+													'sort'				=> ['is_default' => 'desc'],
+													'page'				=> 1,
+													'per_page'			=> 12
+												]
+											]
+			])
 @overwrite
 
-@section('content_body')	
-	@include('widgets.contact.form', [
-		'widget_template'	=> 'panel',
-		'widget_options'	=> 	[
-									'contactlist'			=>
-									[
-										'form_url'			=> route('hr.person.contacts.store', ['id' => $id, 'person_id' => $person['id'], 'org_id' => $data['id']]),
-										'organisation_id'	=> $data['id'],
-										'search'			=> ['id' => $id],
-										'sort'				=> [],
-										'page'				=> 1,
-										'per_page'			=> 1,
-										'route_back'	 	=> route('hr.persons.show', [$person['id'], 'org_id' => $data['id']])
-									]
-								]
-	])
-
+@section('content_filter')
 @overwrite
 
 @section('content_footer')
