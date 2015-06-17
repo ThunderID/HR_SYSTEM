@@ -175,13 +175,22 @@ class ChartController extends BaseController
 			$org_id 					= Session::get('user.organisation');
 		}
 
+		if(Input::has('branch_id'))
+		{
+			$branch_id 					= Input::get('branch_id');
+		}
+		else
+		{
+			App::abort(404);
+		}
+
 		// if(!in_array($org_id, Session::get('user.orgids')))
 		// {
 		// App::abort(404);
 		// }
 		
-		$search 						= ['id' => $id, 'organisationid' => $org_id, 'withattributes' => ['organisation']];
-		$results 						= $this->dispatch(new Getting(new Branch, $search, [] , 1, 1));
+		$search 						= ['id' => $id, 'branchid' => $branch_id, 'organisationid' => $org_id, 'withattributes' => ['branch', 'branch.organisation']];
+		$results 						= $this->dispatch(new Getting(new Chart, $search, [] , 1, 1));
 		$contents 						= json_decode($results);
 		
 		if(!$contents->meta->success)
@@ -189,13 +198,15 @@ class ChartController extends BaseController
 			App::abort(404);
 		}
 
-		$branch 						= json_decode(json_encode($contents->data), true);
-		$data 							= $branch['organisation'];
+		$chart 							= json_decode(json_encode($contents->data), true);
+		$branch 						= $chart['branch'];
+		$data 							= $chart['branch']['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 			= view('pages.branch.show');
+		$this->layout->pages 			= view('pages.chart.show');
 		$this->layout->pages->data 		= $data;
 		$this->layout->pages->branch 	= $branch;
+		$this->layout->pages->chart 	= $chart;
 		return $this->layout;
 	}
 

@@ -91,12 +91,23 @@ Route::group(['prefix' => ''], function()
 
 		Route::resource('apis',				'ApiController',									['names' => ['index' => 'hr.branch.apis.index', 'create' => 'hr.branch.apis.create', 'store' => 'hr.branch.apis.store', 'show' => 'hr.branch.apis.show', 'edit' => 'hr.branch.apis.edit', 'update' => 'hr.branch.apis.update', 'destroy' => 'hr.branch.apis.delete']]);
 
-
 		// ------------------------------------------------------------------------------------
 		// FINGER FOR BRANCH RESOURCE
 		// ------------------------------------------------------------------------------------
 
 		Route::resource('fingers',			'FingerController',									['names' => ['index' => 'hr.branch.fingers.index', 'create' => 'hr.branch.fingers.create', 'store' => 'hr.branch.fingers.store', 'show' => 'hr.branch.fingers.show', 'edit' => 'hr.branch.fingers.edit', 'update' => 'hr.branch.fingers.update', 'destroy' => 'hr.branch.fingers.delete']]);
+	
+	Route::group(['namespace' => 'Chart\\', 'prefix' => 'chart'], function() 
+	{
+
+		// ------------------------------------------------------------------------------------
+		// AUTHENTICATIONS FOR CHART RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('authentications',	'AuthenticationController',							['names' => ['index' => 'hr.chart.authentications.index', 'create' => 'hr.chart.authentications.create', 'store' => 'hr.chart.authentications.store', 'show' => 'hr.chart.authentications.show', 'edit' => 'hr.chart.authentications.edit', 'update' => 'hr.chart.authentications.update', 'destroy' => 'hr.chart.authentications.delete']]);
+
+	});
+
 	});
 
 	});

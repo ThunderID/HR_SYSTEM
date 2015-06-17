@@ -38,15 +38,23 @@ class Application extends BaseModel {
 	protected	$dates 				= 	['created_at', 'updated_at', 'deleted_at'];
 
 	protected 	$rules				= 	[
-											'name' 							=> 'required|max:255',
+											'name' 								=> 'required|max:255',
 										];
 
 	public $searchable 				= 	[
-											'id' 						=> 'ID', 
-											'chartid' 					=> 'ChartID', 
+											'id' 								=> 'ID', 
+											'chartid' 							=> 'ChartID', 
 											
-											'name' 						=> 'Name', 
-											'withattributes' 			=> 'WithAttributes',
+											'name' 								=> 'Name', 
+											'withattributes' 					=> 'WithAttributes',
+										];
+
+	public $searchableScope 		= 	[
+											'id' 								=> 'Could be array or integer', 
+											'chartid' 							=> 'Could be array or integer', 
+											
+											'anme' 								=> 'Must be string', 
+											'withattributes' 					=> 'Must be array of relationship',
 										];
 
 	public $sortable 				= 	['name', 'created_at', 'tmp_applications.id'];

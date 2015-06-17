@@ -124,6 +124,5 @@ abstract class WidgetComposer
 		$widget_error_count 						= $view->widget_error_count;
 		$widget_error_count+= $this->widget_errors->count();
 		$view->with('widget_error_count', $widget_error_count);
-
 	}
 }

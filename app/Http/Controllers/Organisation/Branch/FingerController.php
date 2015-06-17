@@ -141,11 +141,11 @@ class FingerController extends BaseController
 
 		if(Input::has('right'))
 		{
-			$attributes[strtolower(Input::get('right'))]= 0;
+			$attributes[strtolower(Input::get('right'))]= false;
 		}
 		elseif(Input::has('wrong'))
 		{
-			$attributes[strtolower(Input::get('wrong'))]= 1;
+			$attributes[strtolower(Input::get('wrong'))]= true;
 		}
 
 		$errors 								= new MessageBag();
