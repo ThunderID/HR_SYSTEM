@@ -15,12 +15,15 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'widget_title'		=> 'Pilih Organisasi :',								
-										'identifier'		=> 1,
-										'search'			=> [],
-										'sort'				=> [],
-										'page'				=> 1,
-										'per_page'			=> 12,
+										'sidebar'				=> 
+										[
+											'widget_title'		=> 'Pilih Organisasi :',								
+											'identifier'		=> 1,
+											'search'			=> [],
+											'sort'				=> [],
+											'page'				=> 1,
+											'per_page'			=> 12,
+										]
 									]
 	])
 @overwrite
@@ -32,14 +35,17 @@
 	@include('widgets.contact.form', [
 		'widget_template'	=> 'panel',
 		'widget_options'	=> 	[
-									'form_url'			=> route('hr.branch.contacts.store', ['id' => $id, 'branch_id' => $branch['id'], 'org_id' => $data['id']]),
-									'organisation_id'	=> $data['id'],
-									'identifier'		=> 1,
-									'search'			=> ['id' => $id],
-									'sort'				=> [],
-									'page'				=> 1,
-									'per_page'			=> 1,
-									'route_back'	 	=> route('hr.branches.show', [$branch['id'], 'org_id' => $data['id']])
+									'contactlist'			=>
+									[
+										'form_url'			=> route('hr.branch.contacts.store', ['id' => $id, 'branch_id' => $branch['id'], 'org_id' => $data['id']]),
+										'organisation_id'	=> $data['id'],
+										'identifier'		=> 1,
+										'search'			=> ['id' => $id],
+										'sort'				=> [],
+										'page'				=> 1,
+										'per_page'			=> 1,
+										'route_back'	 	=> route('hr.branches.show', [$branch['id'], 'org_id' => $data['id']])
+									]
 								]
 	])
 

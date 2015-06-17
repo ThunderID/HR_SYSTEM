@@ -1,16 +1,16 @@
 <?php
-	$widget_data['contact-pagination-'.$widget_data['identifier']]->setPath(route('hr.branch.contacts.index'));
+	$ContactComposer['widget_data']['contactlist']['contact-pagination']->setPath(route('hr.branch.contacts.index'));
  ?>
 
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
 @section('widget_title')
 <h1> Kontak </h1>
-<small>Total data {{$widget_data['contact-pagination-'.$widget_data['identifier']]->total()}}</small>
+<small>Total data {{ $ContactComposer['widget_data']['contactlist']['contact-pagination']->total() }}</small>
 @overwrite
 
 @section('widget_body')
-	@if(isset($widget_data['contact-'.$widget_data['identifier']]))
+	@if(isset($ContactComposer['widget_data']['contactlist']['contact']))
 		<div class="clearfix">&nbsp;</div>
 		<table class="table">
 			<thead>
@@ -20,7 +20,7 @@
 					<th>&nbsp;</th>
 				</tr>
 			</thead>
-			@foreach($widget_data['contact-'.$widget_data['identifier']] as $key => $value)
+			@foreach($ContactComposer['widget_data']['contactlist']['contact'] as $key => $value)
 				<tbody>
 					<tr>
 						<td>
@@ -47,8 +47,8 @@
 
 		<div class="row">
 			<div class="col-sm-12 text-center">
-				<p>Menampilkan {!!$widget_data['contact-display-'.$widget_data['identifier']]['from']!!} - {!!$widget_data['contact-display-'.$widget_data['identifier']]['to']!!}</p>
-				{!!$widget_data['contact-pagination-'.$widget_data['identifier']]->appends(Input::all())->render()!!}
+				<p>Menampilkan {!! $ContactComposer['widget_data']['contactlist']['contact-display']['from']!!} - {!! $ContactComposer['widget_data']['contactlist']['contact-display']['to']!!}</p>
+				{!! $ContactComposer['widget_data']['contactlist']['contact-pagination']->appends(Input::all())->render()!!}
 			</div>
 		</div>
 
