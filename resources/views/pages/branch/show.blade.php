@@ -15,11 +15,14 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'identifier'		=> 1,
-										'search'			=> [],
-										'sort'				=> [],
-										'page'				=> 1,
-										'per_page'			=> 12,
+										'sidebar'				=> 
+										[
+											'identifier'		=> 1,
+											'search'			=> [],
+											'sort'				=> [],
+											'page'				=> 1,
+											'per_page'			=> 12
+										]
 									]
 	])
 @overwrite
@@ -28,11 +31,14 @@
 	@include('widgets.contact.table', [
 		'widget_template'		=> 'panel',
 		'widget_options'		=> 	[
-										'identifier'		=> 1,
-										'search'			=> ['branchid' => $branch['id']],
-										'sort'				=> ['is_default' => 'desc'],
-										'page'				=> 1,
-										'per_page'			=> 12
+										'contactlist'			=>
+										[
+											'identifier'		=> 1,
+											'search'			=> ['branchid' => $branch['id']],
+											'sort'				=> ['is_default' => 'desc'],
+											'page'				=> 1,
+											'per_page'			=> 12
+										]
 									]
 	])
 @overwrite
