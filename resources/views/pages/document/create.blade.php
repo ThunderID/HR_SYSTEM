@@ -9,11 +9,14 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> [
-										'identifier'		=> 1,
-										'search'			=> [],
-										'sort'				=> [],
-										'page'				=> 1,
-										'per_page'			=> 12,
+										'sidebar'				=>
+										[
+											'identifier'		=> 1,
+											'search'			=> [],
+											'sort'				=> [],
+											'page'				=> 1,
+											'per_page'			=> 12,
+										]
 									]
 	])
 @overwrite
@@ -26,13 +29,17 @@
 	@include('widgets.document.form', [
 		'widget_template'	=> 'panel',
 		'widget_options'	=> 	[
-									'form_url'			=> route('hr.documents.store', ['id' => $id, 'org_id' => $data['id']]),
-									'identifier'		=> 1,
-									'organisation_id'	=> $data['id'],
-									'search'			=> ['id' => $id],
-									'sort'				=> [],
-									'page'				=> 1,
-									'per_page'			=> 1,
+									'documentlist'			=>
+									[
+										'form_url'			=> route('hr.documents.store', ['id' => $id, 'org_id' => $data['id']]),
+										'identifier'		=> 1,
+										'organisation_id'	=> $data['id'],
+										'search'			=> ['id' => $id],
+										'sort'				=> [],
+										'page'				=> 1,
+										'per_page'			=> 1,
+										'route_back'		=> route('hr.documents.index', ['org_id' => $data['id']])
+									]
 								]
 	])
 

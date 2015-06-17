@@ -9,12 +9,15 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'widget_title'		=> 'Pilih Organisasi :',								
-										'identifier'		=> 1,
-										'search'			=> [],
-										'sort'				=> [],
-										'page'				=> 1,
-										'per_page'			=> 12,
+										'sidebar'				=> 
+										[
+											'widget_title'		=> 'Pilih Organisasi :',								
+											'identifier'		=> 1,
+											'search'			=> [],
+											'sort'				=> [],
+											'page'				=> 1,
+											'per_page'			=> 12,
+										]
 									]
 	])
 @overwrite
@@ -26,13 +29,17 @@
 	@include('widgets.workleave.form', [
 		'widget_template'	=> 'panel',
 		'widget_options'	=> 	[
-									'form_url'			=> route('hr.workleaves.store', ['id' => $id, 'org_id' => $data['id']]),
-									'organisation_id'	=> $data['id'],
-									'identifier'		=> 1,
-									'search'			=> ['id' => $id],
-									'sort'				=> [],
-									'page'				=> 1,
-									'per_page'			=> 1,
+									'workleavelist'			=>
+									[
+										'form_url'			=> route('hr.workleaves.store', ['id' => $id, 'org_id' => $data['id']]),
+										'organisation_id'	=> $data['id'],
+										'identifier'		=> 1,
+										'search'			=> ['id' => $id],
+										'sort'				=> [],
+										'page'				=> 1,
+										'per_page'			=> 1,
+										'route_back'		=> route('hr.workleaves.index', ['org_id' => $data['id']])
+									]
 								]
 	])
 

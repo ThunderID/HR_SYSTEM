@@ -9,11 +9,14 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> [
-										'identifier'		=> 1,
-										'search'			=> [],
-										'sort'				=> [],
-										'page'				=> 1,
-										'per_page'			=> 12,
+										'sidebar'				=> 
+										[
+											'identifier'		=> 1,
+											'search'			=> [],
+											'sort'				=> [],
+											'page'				=> 1,
+											'per_page'			=> 12,
+										]
 									]
 	])
 @overwrite
@@ -23,17 +26,20 @@
 
 @section('content_body')	
 	@include('widgets.document.table', [
-		'widget_template'		=> 'plain',
+		'widget_template'		=> 'panel',
 		'widget_title'			=> 'Dokumen Index',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'organisation_id'	=> $data['id'],
-										'identifier'		=> 1,
-										'search'			=> [],
-										'sort'				=> ['name' => 'asc'],
-										'page'				=> (Input::has('page') ? Input::get('page') : 1),
-										'per_page'			=> 12,
+										'documentlist'			=>
+										[
+											'organisation_id'	=> $data['id'],
+											'identifier'		=> 1,
+											'search'			=> [],
+											'sort'				=> ['name' => 'asc'],
+											'page'				=> (Input::has('page') ? Input::get('page') : 1),
+											'per_page'			=> 12,
+										]
 									]
 	])
 

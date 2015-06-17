@@ -2,11 +2,11 @@
 
 @section('widget_title')
 <h1> Kalender </h1>
-<small>Total data {{$widget_data['calendar-pagination-'.$widget_data['identifier']]->total()}}</small>
+<small>Total data {{$CalendarComposer['widget_data']['calendarlist']['calendar-pagination']->total()}}</small>
 @overwrite
 
 @section('widget_body')
-	@if(isset($widget_data['calendar-'.$widget_data['identifier']]))
+	@if(isset($CalendarComposer['widget_data']['calendarlist']['calendar']))
 		<div class="clearfix">&nbsp;</div>
 		<table class="table">
 			<thead>
@@ -17,7 +17,7 @@
 					<th>&nbsp;</th>
 				</tr>
 			</thead>
-			@foreach($widget_data['calendar-'.$widget_data['identifier']] as $key => $value)
+			@foreach($CalendarComposer['widget_data']['calendarlist']['calendar'] as $key => $value)
 				<tbody>
 					<tr>
 						<td>
@@ -33,7 +33,7 @@
 						<td class="text-right">
 							<a href="" class="btn btn-default"><i class="fa fa-trash"></i></a>
 							<a href="{{route('hr.calendars.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-							<a href="" class="btn btn-default"><i class="fa fa-eye"></i></a>
+							<a href="#" class="btn btn-default"><i class="fa fa-eye"></i></a>
 						</td>
 					</tr>
 				</tbody>
@@ -42,8 +42,8 @@
 
 		<div class="row">
 			<div class="col-sm-12 text-center">
-				<p>Menampilkan {!!$widget_data['calendar-display-'.$widget_data['identifier']]['from']!!} - {!!$widget_data['calendar-display-'.$widget_data['identifier']]['to']!!}</p>
-				{!!$widget_data['calendar-pagination-'.$widget_data['identifier']]->appends(Input::all())->render()!!}
+				<p>Menampilkan {!!$CalendarComposer['widget_data']['calendarlist']['calendar-display']['from']!!} - {!!$CalendarComposer['widget_data']['calendarlist']['calendar-display']['to']!!}</p>
+				{!!$CalendarComposer['widget_data']['calendarlist']['calendar-pagination']->appends(Input::all())->render()!!}
 			</div>
 		</div>
 

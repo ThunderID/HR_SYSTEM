@@ -9,11 +9,14 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'identifier'		=> 1,
-										'search'			=> [],
-										'sort'				=> [],
-										'page'				=> 1,
-										'per_page'			=> 12,
+										'sidebar'				=> 
+										[
+											'identifier'		=> 1,
+											'search'			=> [],
+											'sort'				=> [],
+											'page'				=> 1,
+											'per_page'			=> 12,
+										]
 									]
 	])
 @overwrite
@@ -23,17 +26,20 @@
 
 @section('content_body')	
 	@include('widgets.person.table', [
-		'widget_template'		=> 'plain',
+		'widget_template'		=> 'panel',
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'identifier'		=> 1,
-										'organisation_id'	=> $data['id'],
-										'search'			=> ['currentwork' => null, 'defaultemail' => true, 'checkwork' => true, 'withattributes' => ['works.branch']],
-										'sort'				=> ['name' => 'asc'],
-										'page'				=> 1,
-										'per_page'			=> 12,
+										'personlist'			=>
+										[
+											'identifier'		=> 1,
+											'organisation_id'	=> $data['id'],
+											'search'			=> ['currentwork' => null, 'defaultemail' => true, 'checkwork' => true, 'withattributes' => ['works.branch']],
+											'sort'				=> ['name' => 'asc'],
+											'page'				=> 1,
+											'per_page'			=> 12,
+										]
 									]
 	])
 

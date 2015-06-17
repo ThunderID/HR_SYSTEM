@@ -9,11 +9,14 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'	=> [
-									'identifier'		=> 1,
-									'search'			=> [],
-									'sort'				=> ['name' => 'asc'],
-									'page'				=> 1,
-									'per_page'			=> 100,
+									'sidebar'				=>
+									[
+										'identifier'		=> 1,
+										'search'			=> [],
+										'sort'				=> ['name' => 'asc'],
+										'page'				=> 1,
+										'per_page'			=> 100,
+									]
 								]
 	])
 @overwrite
@@ -22,19 +25,21 @@
 @overwrite
 
 @section('content_body')	
-
 	@include('widgets.calendar.table', [
-		'widget_template'		=> 'plain',
+		'widget_template'		=> 'panel',
 		'widget_title'			=> 'Kalender Index',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'organisation_id'	=> $data['id'],
-										'identifier'		=> 1,
-										'search'			=> [],
-										'sort'				=> ['name' => 'asc'],
-										'page'				=> (Input::has('page') ? Input::get('page') : 1),
-										'per_page'			=> 12,
+										'calendarlist'			=>
+										[
+											'organisation_id'	=> $data['id'],
+											'identifier'		=> 1,
+											'search'			=> [],
+											'sort'				=> ['name' => 'asc'],
+											'page'				=> (Input::has('page') ? Input::get('page') : 1),
+											'per_page'			=> 12,
+										]
 									]
 	])
 

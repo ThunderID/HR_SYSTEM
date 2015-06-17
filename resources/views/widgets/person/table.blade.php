@@ -2,11 +2,11 @@
 
 @section('widget_title')
 <h1> Data Karyawan </h1>
-<small>Total data {{$widget_data['person-pagination-'.$widget_data['identifier']]->total()}}</small>
+<small>Total data {{$PersonComposer['widget_data']['personlist']['person-pagination']->total()}}</small>
 @overwrite
 
 @section('widget_body')
-	@if(isset($widget_data['person-'.$widget_data['identifier']]))
+	@if(isset($PersonComposer['widget_data']['personlist']['person']))
 		<div class="clearfix">&nbsp;</div>
 		<table class="table">
 			<thead>
@@ -17,7 +17,7 @@
 					<th>&nbsp;</th>
 				</tr>
 			</thead>
-			@foreach($widget_data['person-'.$widget_data['identifier']] as $key => $value)
+			@foreach($PersonComposer['widget_data']['personlist']['person'] as $key => $value)
 				<tbody>
 					<tr>
 						<td>
@@ -41,8 +41,8 @@
 
 		<div class="row">
 			<div class="col-sm-12 text-center">
-				<p>Menampilkan {!!$widget_data['person-display-'.$widget_data['identifier']]['from']!!} - {!!$widget_data['person-display-'.$widget_data['identifier']]['to']!!}</p>
-				{!!$widget_data['person-pagination-'.$widget_data['identifier']]->appends(Input::all())->render()!!}
+				<p>Menampilkan {!!$PersonComposer['widget_data']['personlist']['person-display']['from']!!} - {!!$PersonComposer['widget_data']['personlist']['person-display']['to']!!}</p>
+				{!!$PersonComposer['widget_data']['personlist']['person-pagination']->appends(Input::all())->render()!!}
 			</div>
 		</div>
 

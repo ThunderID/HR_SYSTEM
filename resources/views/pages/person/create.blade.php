@@ -25,13 +25,17 @@
 	@include('widgets.person.form', [
 		'widget_template'		=> 'panel',
 		'widget_options'		=> 	[
-										'form_url'			=> route('hr.persons.store', ['id' => $id, 'org_id' => $data['id']]),
-										'identifier'		=> 1,
-										'organisation_id'	=> $data['id'],
-										'search'			=> ['id' => $id],
-										'sort'				=> [],
-										'page'				=> 1,
-										'per_page'			=> 1,
+										'personlist'			=>
+										[
+											'form_url'			=> route('hr.persons.store', ['id' => $id, 'org_id' => $data['id']]),
+											'identifier'		=> 1,
+											'organisation_id'	=> $data['id'],
+											'search'			=> ['id' => $id],
+											'sort'				=> [],
+											'page'				=> 1,
+											'per_page'			=> 1,
+											'route_back'		=> route('hr.persons.index', ['org_id' => $data['id']])
+										]
 									]
 	])
 

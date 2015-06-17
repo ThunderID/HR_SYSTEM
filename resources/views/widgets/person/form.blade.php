@@ -5,14 +5,14 @@
 @overwrite
 
 @section('widget_body')
-	{!! Form::open(['url' => $widget_data['form_url'], 'class' => 'form-horizontal']) !!}	
+	{!! Form::open(['url' => $PersonComposer['widget_data']['personlist']['form_url'], 'class' => 'form-horizontal']) !!}	
 		<div class="clearfix">&nbsp;</div>
 		<div class="form-group">
 			<div class="col-md-2">
 				<label class="control-label">ID</label>
 			</div>	
 			<div class="col-md-10">
-				{!!Form::input('text', 'uniqid', $widget_data['person-'.$widget_data['identifier']]['uniqid'], ['class' => 'form-control'])!!}
+				{!!Form::input('text', 'uniqid', $PersonComposer['widget_data']['personlist']['person']['uniqid'], ['class' => 'form-control'])!!}
 			</div>
 		</div>
 		<div class="form-group">
@@ -20,7 +20,7 @@
 				<label class="control-label">Gelar Depan</label>
 			</div>	
 			<div class="col-md-10">
-				{!!Form::input('text', 'prefix_title', $widget_data['person-'.$widget_data['identifier']]['prefix_title'], ['class' => 'form-control'])!!}
+				{!!Form::input('text', 'prefix_title', $PersonComposer['widget_data']['personlist']['person']['prefix_title'], ['class' => 'form-control'])!!}
 			</div>
 		</div>
 		<div class="form-group">
@@ -28,7 +28,7 @@
 				<label class="control-label">Nama</label>
 			</div>	
 			<div class="col-md-10">
-				{!!Form::input('text', 'name', $widget_data['person-'.$widget_data['identifier']]['name'], ['class' => 'form-control'])!!}
+				{!!Form::input('text', 'name', $PersonComposer['widget_data']['personlist']['person']['name'], ['class' => 'form-control'])!!}
 			</div>
 		</div>
 		<div class="form-group">
@@ -36,7 +36,7 @@
 				<label class="control-label">Gelar Akhir</label>
 			</div>	
 			<div class="col-md-10">
-				{!!Form::input('text', 'suffix_title', $widget_data['person-'.$widget_data['identifier']]['suffix_title'], ['class' => 'form-control'])!!}
+				{!!Form::input('text', 'suffix_title', $PersonComposer['widget_data']['personlist']['person']['suffix_title'], ['class' => 'form-control'])!!}
 			</div>
 		</div>
 		<div class="form-group">
@@ -44,7 +44,7 @@
 				<label class="control-label">Tempat Lahir</label>
 			</div>	
 			<div class="col-md-10">
-				{!!Form::input('text', 'place_of_birth', $widget_data['person-'.$widget_data['identifier']]['place_of_birth'], ['class' => 'form-control'])!!}
+				{!!Form::input('text', 'place_of_birth', $PersonComposer['widget_data']['personlist']['person']['place_of_birth'], ['class' => 'form-control'])!!}
 			</div>
 		</div>
 		<div class="form-group">
@@ -52,7 +52,7 @@
 				<label class="control-label">Tanggal Lahir</label>
 			</div>	
 			<div class="col-md-10">
-				{!!Form::input('text', 'date_of_birth', $widget_data['person-'.$widget_data['identifier']]['date_of_birth'], ['class' => 'form-control'])!!}
+				{!!Form::input('text', 'date_of_birth', $PersonComposer['widget_data']['personlist']['person']['date_of_birth'], ['class' => 'form-control'])!!}
 			</div>
 		</div>
 		<div class="form-group">
@@ -60,11 +60,12 @@
 				<label class="control-label">Jenis Kelamin</label>
 			</div>	
 			<div class="col-md-10">
-				{!!Form::input('text', 'gender', $widget_data['person-'.$widget_data['identifier']]['gender'], ['class' => 'form-control'])!!}
+				{!!Form::input('text', 'gender', $PersonComposer['widget_data']['personlist']['person']['gender'], ['class' => 'form-control'])!!}
 			</div>
 		</div>
 		<div class="form-group">
 			<div class="col-md-12 text-right">
+				<a href="{{ $PersonComposer['widget_data']['personlist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
 				<input type="submit" class="btn btn-primary" value="Simpan">
 			</div>
 		</div>
