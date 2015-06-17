@@ -74,7 +74,7 @@ class Finger extends BaseModel {
 											'withattributes' 			=> 'Must be array of relationship'
 										];
 
-	public $sortable 				= ['created_at'];
+	public $sortable 				= ['created_at', 'person_id'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**

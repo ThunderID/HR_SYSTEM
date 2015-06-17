@@ -8,7 +8,7 @@
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
-		'widget_options'		=> [ 'navbar' 					=>
+		'widget_options'		=> [ 'sidebar' 					=>
 										[
 											'identifier'		=> 1,
 											'search'			=> [],

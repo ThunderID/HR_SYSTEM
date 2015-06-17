@@ -10,6 +10,6 @@
 		<a href="{{ route('hr.branch.apis.index', ['org_id' => $data['id'], 'branch_id' => $branch['id']]) }}"><i class="fa fa-file fa-fw"></i> Api Key</a>
 	</li>
 	<li class="ml-5 mt-10">
-		<a href=""><i class="fa fa-file fa-fw"></i> Absen Jari</a>
+		<a href="{{ route('hr.branch.fingers.index', ['org_id' => $data['id'], 'branch_id' => $branch['id']]) }}"><i class="fa fa-file fa-fw"></i> Absen Jari</a>
 	</li>
 </ul>

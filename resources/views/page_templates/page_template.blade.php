@@ -38,6 +38,7 @@
 	{!! HTML::script('plugins/metisMenu/metisMenu.min.js') !!}
 	@include('plugins/toggle')
 	@include('plugins/modal')
+	@include('plugins.checkbox')
 	<script>
 		$('#side-menu').metisMenu();
 	</script>

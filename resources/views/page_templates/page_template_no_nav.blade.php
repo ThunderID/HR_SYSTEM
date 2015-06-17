@@ -13,7 +13,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3" style="margin-top:12%">
-				@yield('area', ['area'])
+				@yield('area', '[area]')
 			</div>
 		</div>
 	</div>	

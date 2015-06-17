@@ -4,12 +4,12 @@ use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
-use App\Models\Api;
+use App\Models\FingerPrint;
 use App\Models\Branch;
 
-class ApiController extends BaseController
+class FingerController extends BaseController
 {
-	protected $controller_name = 'api';
+	protected $controller_name = 'jari';
 
 	public function index($page = 1)
 	{
@@ -50,7 +50,7 @@ class ApiController extends BaseController
 
 		$branch 								= json_decode(json_encode($contents->data), true);
 		$data 									= $branch['organisation'];
-		$this->layout->page 					= view('pages.api.index');
+		$this->layout->page 					= view('pages.fingerprint.index');
 		$this->layout->page->controller_name 	= $this->controller_name;
 		$this->layout->page->data 				= $data;
 		$this->layout->page->branch 			= $branch;
@@ -139,13 +139,20 @@ class ApiController extends BaseController
 			App::abort(404);
 		}
 
-		$attributes 							= Input::only('client', 'secret');
+		if(Input::has('right'))
+		{
+			$attributes[strtolower(Input::get('right'))]= 0;
+		}
+		elseif(Input::has('wrong'))
+		{
+			$attributes[strtolower(Input::get('wrong'))]= 1;
+		}
 
 		$errors 								= new MessageBag();
 
 		DB::beginTransaction();
 
-		$content 								= $this->dispatch(new Saving(new Api, $attributes, $id, new Branch, $branch_id));
+		$content 								= $this->dispatch(new Saving(new FingerPrint, $attributes, $id, new Branch, $branch_id));
 		$is_success 							= json_decode($content);
 		
 		if(!$is_success->meta->success)
@@ -156,9 +163,9 @@ class ApiController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.branch.apis.index', ['branch_id' => $branch_id, 'org_id' => $org_id])->with('alert_success', 'Sidik Jari Cabang "' . $contents->data->name. '" sudah disimpan');
+			return Redirect::route('hr.branch.fingers.index', ['branch_id' => $branch_id, 'org_id' => $org_id])->with('alert_success', 'Sidik Jari Cabang "' . $contents->data->name. '" sudah disimpan');
 		}
-		
+
 		DB::rollback();
 		return Redirect::back()->withErrors($errors)->withInput();
 	}
