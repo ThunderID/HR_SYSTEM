@@ -1,18 +1,18 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
 @section('widget_title')	
-	{{ $widget_data['widget_title'] }}
+	{{ $LoginFormComposer['widget_data']['login']['widget_title'] }}
 @overwrite
 
 @section('widget_body')
 	<br/>
-	{!! Form::open(['url' => $widget_data['form_url'], 'method' => 'post', 'class' => 'form-horizontal']) !!}	
+	{!! Form::open(['url' => $LoginFormComposer['widget_data']['login']['form_url'], 'method' => 'post', 'class' => 'form-horizontal']) !!}	
 		<div class="form-group">
 			<div class="col-md-2">
-				<label class="control-label">{{ $widget_data['user_id_label'] }}</label>
+				<label class="control-label">{{ $LoginFormComposer['widget_data']['login']['user_id_label'] }}</label>
 			</div>					
 			<div class="col-md-10">
-				<input name="{{ $widget_data['user_id'] }}" type="text" class="form-control" placeholder={{ $widget_data['user_id_label'] }} autofocus autocomplete="off">
+				<input name="{{ $LoginFormComposer['widget_data']['login']['user_id'] }}" type="text" class="form-control" placeholder={{ $LoginFormComposer['widget_data']['login']['user_id_label'] }} autofocus autocomplete="off">
 			</div>	
 		</div>
 		<div class="form-group">
