@@ -99,6 +99,11 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// FOLLOW
 		// -----------------------------------------------------------------------------
 		View::composer(['widgets.follow.table', 'widgets.follow.form'], 	'App\Http\ViewComposers\FollowComposer');
+
+		// -----------------------------------------------------------------------------
+		// SCHEDULE
+		// -----------------------------------------------------------------------------
+		View::composer(['widgets.schedule.table', 'widgets.schedule.form'], 	'App\Http\ViewComposers\ScheduleComposer');
 	}
 
 	private function web_widget()

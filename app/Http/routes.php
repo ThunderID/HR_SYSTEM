@@ -115,6 +115,16 @@ Route::group(['prefix' => ''], function()
 
 	});
 
+	Route::group(['namespace' => 'Calendar\\', 'prefix' => 'calendar'], function() 
+	{
+
+		// ------------------------------------------------------------------------------------
+		// SCHEDULES FOR CALENDAR RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('schedules',		'ScheduleController',								['names' => ['index' => 'hr.calendar.schedules.index', 'create' => 'hr.calendar.schedules.create', 'store' => 'hr.calendar.schedules.store', 'show' => 'hr.calendar.schedules.show', 'edit' => 'hr.calendar.schedules.edit', 'update' => 'hr.calendar.schedules.update', 'destroy' => 'hr.calendar.schedules.delete']]);
+	});
+
 	});
 });	
 
@@ -122,6 +132,14 @@ Blade::extend(function ($value, $compiler)
 {
 	$pattern = $compiler->createMatcher('time_indo');
 	$replace = '<?php echo date("H:i", strtotime($2)); ?>';
+
+	return preg_replace($pattern, '$1'.$replace, $value);
+});
+
+Blade::extend(function ($value, $compiler)
+{
+	$pattern = $compiler->createMatcher('date_indo');
+	$replace = '<?php echo date("d-m-Y", strtotime($2)); ?>';
 
 	return preg_replace($pattern, '$1'.$replace, $value);
 });

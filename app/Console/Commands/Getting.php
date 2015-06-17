@@ -120,13 +120,13 @@ class Getting extends Command implements SelfHandling {
 			{
 				$data 		= null;
 				$message	= null;
-				$page_info 	= ['page' => $this->page, 'per_page' => $this->per_page];
+				$page_info 	= ['page' => $this->page, 'per_page' => $this->per_page, 'total_data' => 0];
 			}
 			else
 			{
 				$data 		= [$this->model];
 				$message	= ['Data not exists'];
-				$page_info 	= ['page' => $this->page, 'per_page' => $this->per_page];
+				$page_info 	= ['page' => $this->page, 'per_page' => $this->per_page, 'total_data' => 0];
 			}
 		}
 

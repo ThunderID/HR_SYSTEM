@@ -60,8 +60,8 @@ class Schedule extends BaseModel {
 											'ondate' 						=> 'OnDate', 
 											'notid' 						=> 'NotID', 
 
-											'branchid' 						=> 'BranchID', 
-											'chartid' 						=> 'ChartID', 
+											// 'branchid' 						=> 'BranchID', 
+											// 'chartid' 						=> 'ChartID', 
 											'withattributes' 				=> 'WithAttributes'
 										];
 
@@ -70,13 +70,13 @@ class Schedule extends BaseModel {
 											'calendarid' 					=> 'Could be array or integer', 
 											'ondate' 						=> 'Could be array or string (date)', 
 											'name' 							=> 'Must be string', 
-											'branchid' 						=> 'Could be array or integer', 
-											'chartid' 						=> 'Could be array or integer', 
+											// 'branchid' 						=> 'Could be array or integer', 
+											// 'chartid' 						=> 'Could be array or integer', 
 											'notid' 						=> 'Must be integer', 
 											'withattributes' 				=> 'Must be array of relationship',
 										];
 
-	public $sortable 				= 	['created_at', 'name'];
+	public $sortable 				= 	['created_at', 'name', 'on'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**
