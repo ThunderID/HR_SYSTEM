@@ -5,16 +5,16 @@
 @overwrite
 
 @section('widget_body')
-	{!! Form::open(['url' => $widget_data['form_url'], 'class' => 'form-horizontal', 'method' => 'get']) !!}	
+	{!! Form::open(['url' => $OrganisationComposer['widget_data']['organisationlist']['form_url'], 'class' => 'form-horizontal', 'method' => 'get']) !!}	
 		<div class="form-group">
 			<div class="col-md-3">
 				<label class="control-label">Akses Perusahaan</label>
 			</div>	
 			<div class="col-md-9">
 				<select name="org_id" id="org" class="select2-skin" style="width:100%">
-					@if(isset($widget_data['organisation-'.$widget_data['identifier']]))
-						@foreach($widget_data['organisation-'.$widget_data['identifier']] as $key => $value)
-							<option value="{{$value['id']}}">{{$value['name']}}</option>
+					@if(isset($OrganisationComposer['widget_data']['organisationlist']['organisation']))
+						@foreach($OrganisationComposer['widget_data']['organisationlist']['organisation'] as $key => $value)
+							<option value="{{ $value['id'] }}">{{ $value['name'] }}</option>
 						@endforeach
 					@endif
 				</select>

@@ -8,13 +8,17 @@
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
-		'widget_options'	=> ['widget_title'		=> 'Pilih Organisasi :',								
-								'organisation_id'	=> Input::get('org_id'),
-								'identifier'		=> 1,
-								'search'			=> [],
-								'sort'				=> [],
-								'page'				=> 1,
-								'per_page'			=> 12,
+		'widget_options'	=> [
+									'sidebar'				=>
+									[
+										'widget_title'		=> 'Pilih Organisasi :',								
+										'organisation_id'	=> Input::get('org_id'),
+										'identifier'		=> 1,
+										'search'			=> [],
+										'sort'				=> [],
+										'page'				=> 1,
+										'per_page'			=> 12,
+									]
 								]
 	])
 @overwrite
