@@ -15,25 +15,32 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'identifier'		=> 1,
-										'search'			=> [],
-										'sort'				=> [],
-										'page'				=> 1,
-										'per_page'			=> 12,
+										'sidebar'				=> 
+										[
+											'identifier'		=> 1,
+											'search'			=> [],
+											'sort'				=> [],
+											'page'				=> 1,
+											'per_page'			=> 12,
+										]
 									]
 	])
 @overwrite
 
 @section('content_body')
 	@include('widgets.chart.list', [
-		'widget_template'		=> 'plain',
+		'widget_template'		=> 'panel',
+		'widget_title'			=> $branch['name'],
 		'widget_options'		=> 	[
-										'identifier'		=> 1,
-										'organisation_id'	=> $data['id'],
-										'search'			=> ['branchid' => $branch['id']],
-										'sort'				=> ['path' => 'asc'],
-										'page'				=> 1,
-										'per_page'			=> 100,
+										'chartlist'				=>
+										[
+											'identifier'		=> 1,
+											'organisation_id'	=> $data['id'],
+											'search'			=> ['branchid' => $branch['id']],
+											'sort'				=> ['path' => 'asc'],
+											'page'				=> 1,
+											'per_page'			=> 100,
+										]
 									]
 	])
 @overwrite

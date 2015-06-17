@@ -1,6 +1,6 @@
 @extends('widget_templates.'. (isset($widget_template) ? $widget_template : 'plain_no_title'))
 
-@if ((isset($widget_errors) && !$widget_errors->count() || !isset($widget_errors)))
+@if (!$widget_errors->count())
 	@section('widget_body')
 		@foreach (['alert_success', 'alert_warning', 'alert_danger', 'alert_info'] as $alert)
 			@if (Session::has($alert))

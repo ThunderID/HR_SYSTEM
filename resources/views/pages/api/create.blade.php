@@ -15,11 +15,14 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'identifier'		=> 1,
-										'search'			=> [],
-										'sort'				=> [],
-										'page'				=> 1,
-										'per_page'			=> 12,
+										'sidebar'				=>
+										[
+											'identifier'		=> 1,
+											'search'			=> [],
+											'sort'				=> [],
+											'page'				=> 1,
+											'per_page'			=> 12,
+										]
 									]
 	])
 @overwrite
@@ -31,13 +34,17 @@
 	@include('widgets.api.form', [
 		'widget_template'	=> 'panel',
 		'widget_options'	=> 	[
-									'form_url'			=> route('hr.branch.apis.store', ['id' => $id, 'branch_id' => $branch['id'], 'org_id' => $data['id']]),
-									'branch_id'			=> $branch['id'],
-									'identifier'		=> 1,
-									'search'			=> ['id' => $id],
-									'sort'				=> [],
-									'page'				=> 1,
-									'per_page'			=> 1,
+									'apilist'				=>
+									[
+										'form_url'			=> route('hr.branch.apis.store', ['id' => $id, 'branch_id' => $branch['id'], 'org_id' => $data['id']]),
+										'branch_id'			=> $branch['id'],
+										'identifier'		=> 1,
+										'search'			=> ['id' => $id],
+										'sort'				=> [],
+										'page'				=> 1,
+										'per_page'			=> 1,
+										'route_back'		=> route('hr.branch.apis.index', ['branch_id' => $branch['id'], 'org_id' => $data['id']])
+									]
 								]
 	])
 

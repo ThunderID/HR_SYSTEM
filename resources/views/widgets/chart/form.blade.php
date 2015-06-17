@@ -1,74 +1,83 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
-@section('widget_title')
-<h1> Jabatan </h1>
-@overwrite
+@if (!$widget_error_count)
+	@section('widget_title')
+	<h1> Jabatan </h1>
+	@overwrite
 
-@section('widget_body')
-	<div class="clearfix">&nbsp;</div>
-	{!! Form::open(['url' => $widget_data['form_url'], 'class' => 'form-horizontal']) !!}	
-		<div class="form-group">
-			<div class="col-md-2">
-				<label class="control-label">Nama</label>
-			</div>	
-			<div class="col-md-10">
-				{!!Form::input('text', 'name', $widget_data['chart-'.$widget_data['identifier']]['name'], ['class' => 'form-control'])!!}
+	@section('widget_body')
+		<div class="clearfix">&nbsp;</div>
+		{!! Form::open(['url' => $ChartComposer['widget_data']['chartlist']['form_url'], 'class' => 'form-horizontal']) !!}	
+			<div class="form-group">
+				<div class="col-md-2">
+					<label class="control-label">Nama</label>
+				</div>	
+				<div class="col-md-10">
+					{!!Form::input('text', 'name', $ChartComposer['widget_data']['chartlist']['chart']['name'], ['class' => 'form-control'])!!}
+				</div>
 			</div>
-		</div>
-		<div class="form-group">
-			<div class="col-md-2">
-				<label class="control-label">Bawahan Dari</label>
-			</div>	
-			<div class="col-md-10">
-				{!!Form::input('text', 'path', $widget_data['chart-'.$widget_data['identifier']]['path'], ['class' => 'form-control'])!!}
+			<div class="form-group">
+				<div class="col-md-2">
+					<label class="control-label">Bawahan Dari</label>
+				</div>	
+				<div class="col-md-10">
+					{!!Form::input('text', 'path', $ChartComposer['widget_data']['chartlist']['chart']['path'], ['class' => 'form-control'])!!}
+				</div>
 			</div>
-		</div>
-		<div class="form-group">
-			<div class="col-md-2">
-				<label class="control-label">Departemen</label>
-			</div>	
-			<div class="col-md-10">
-				{!!Form::input('text', 'tag', $widget_data['chart-'.$widget_data['identifier']]['tag'], ['class' => 'form-control'])!!}
+			<div class="form-group">
+				<div class="col-md-2">
+					<label class="control-label">Departemen</label>
+				</div>	
+				<div class="col-md-10">
+					{!!Form::input('text', 'tag', $ChartComposer['widget_data']['chartlist']['chart']['tag'], ['class' => 'form-control'])!!}
+				</div>
 			</div>
-		</div>
-		<div class="form-group">
-			<div class="col-md-2">
-				<label class="text-left">Grade</label>
-			</div>	
-			<div class="col-md-10">
-				{!!Form::input('text', 'grade', $widget_data['chart-'.$widget_data['identifier']]['grade'], ['class' => 'form-control'])!!}
+			<div class="form-group">
+				<div class="col-md-2">
+					<label class="text-left">Grade</label>
+				</div>	
+				<div class="col-md-10">
+					{!!Form::input('text', 'grade', $ChartComposer['widget_data']['chartlist']['chart']['grade'], ['class' => 'form-control'])!!}
+				</div>
 			</div>
-		</div>
-		<div class="form-group">
-			<div class="col-md-2">
-				<label class="text-left">Jumlah Pegawai Minimum</label>
-			</div>	
-			<div class="col-md-10">
-				{!!Form::input('text', 'min_employee', $widget_data['chart-'.$widget_data['identifier']]['min_employee'], ['class' => 'form-control'])!!}
+			<div class="form-group">
+				<div class="col-md-2">
+					<label class="text-left">Jumlah Pegawai Minimum</label>
+				</div>	
+				<div class="col-md-10">
+					{!!Form::input('text', 'min_employee', $ChartComposer['widget_data']['chartlist']['chart']['min_employee'], ['class' => 'form-control'])!!}
+				</div>
 			</div>
-		</div>
 
-		<div class="form-group">
-			<div class="col-md-2">
-				<label class="text-left">Jumlah Pegawai Maximum</label>
-			</div>	
-			<div class="col-md-10">
-				{!!Form::input('text', 'max_employee', $widget_data['chart-'.$widget_data['identifier']]['max_employee'], ['class' => 'form-control'])!!}
+			<div class="form-group">
+				<div class="col-md-2">
+					<label class="text-left">Jumlah Pegawai Maximum</label>
+				</div>	
+				<div class="col-md-10">
+					{!!Form::input('text', 'max_employee', $ChartComposer['widget_data']['chartlist']['chart']['max_employee'], ['class' => 'form-control'])!!}
+				</div>
 			</div>
-		</div>
 
-		<div class="form-group">
-			<div class="col-md-2">
-				<label class="text-left">Jumlah Pegawai Ideal</label>
-			</div>	
-			<div class="col-md-10">
-				{!!Form::input('text', 'ideal_employee', $widget_data['chart-'.$widget_data['identifier']]['ideal_employee'], ['class' => 'form-control'])!!}
+			<div class="form-group">
+				<div class="col-md-2">
+					<label class="text-left">Jumlah Pegawai Ideal</label>
+				</div>	
+				<div class="col-md-10">
+					{!!Form::input('text', 'ideal_employee', $ChartComposer['widget_data']['chartlist']['chart']['ideal_employee'], ['class' => 'form-control'])!!}
+				</div>
 			</div>
-		</div>
-		<div class="form-group">
-			<div class="col-md-12 text-right">
-				<input type="submit" class="btn btn-primary" value="Simpan">
+			<div class="form-group">
+				<div class="col-md-12 text-right">
+					<a href="{{ $ChartComposer['widget_data']['chartlist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
+					<input type="submit" class="btn btn-primary" value="Simpan">
+				</div>
 			</div>
-		</div>
-	{!! Form::close() !!}
-@overwrite	
+		{!! Form::close() !!}
+	@overwrite	
+@else
+	@section('widget_title')
+	@overwrite
+
+	@section('widget_body')
+	@overwrite
+@endif

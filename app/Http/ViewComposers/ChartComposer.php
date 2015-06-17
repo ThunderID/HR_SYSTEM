@@ -8,22 +8,24 @@ use Input, Validator, App, Paginator;
 
 class ChartComposer extends WidgetComposer 
 {
-	protected function setRules()
+	protected function setRules($options)
 	{
-		$this->widget_rules['form_url']			= ['url'];									// url for form submit
-		$this->widget_rules['organisation_id'] 	= ['required', 'alpha_dash'];				// organisation_id: filter organisation
-		$this->widget_rules['search'] 			= ['array'];								// search: label for search
-		$this->widget_rules['sort'] 			= ['array'];								// sort: label for sort
-		$this->widget_rules['page'] 			= ['required', 'numeric'];					// page: label for page
-		$this->widget_rules['per_page'] 		= ['required', 'numeric', 'max:100'];		// per page: label for per page
-		$this->widget_rules['identifier'] 		= ['required', 'numeric'];					// identifier
+		$widget_rules['form_url']			= ['url'];									// url for form submit
+		$widget_rules['organisation_id'] 	= ['required', 'alpha_dash'];				// organisation_id: filter organisation
+		$widget_rules['search'] 			= ['array'];								// search: label for search
+		$widget_rules['sort'] 				= ['array'];								// sort: label for sort
+		$widget_rules['page'] 				= ['required', 'numeric'];					// page: label for page
+		$widget_rules['per_page'] 			= ['required', 'numeric', 'max:100'];		// per page: label for per page
+		$widget_rules['identifier'] 		= ['required', 'numeric'];					// identifier
+
+		return $widget_rules;
 	}
 
-	protected function setData()
+	protected function setData($options)
 	{
-		$this->widget_data['search']['organisationid'] 	= $this->widget_data['organisation_id'];
+		$widget_data['search']['organisationid'] 	= $options['organisation_id'];
 
-		$results 								=  $this->dispatch(new Getting(new Chart, $this->widget_data['search'], $this->widget_data['sort'] , $this->widget_data['page'], $this->widget_data['per_page']));
+		$results 								=  $this->dispatch(new Getting(new Chart, $options['search'], $options['sort'] , $options['page'], $options['per_page']));
 
 		$contents 								= json_decode($results);
 
@@ -44,16 +46,17 @@ class ChartComposer extends WidgetComposer
 				}
 			}
 
-			$this->widget_data['chart-'.$this->widget_data['identifier']] 				= null;
-			$this->widget_data['chart-pagination-'.$this->widget_data['identifier']] 	= null;
+			$widget_data['chart'] 				= null;
+			$widget_data['chart-pagination'] 	= null;
 		}
 		else
 		{
-			$page 																		= json_decode(json_encode($contents->pagination), true);
-			$this->widget_data['chart-'.$this->widget_data['identifier']] 				= json_decode(json_encode($contents->data), true);
-			$this->widget_data['chart-pagination-'.$this->widget_data['identifier']] 	= new Paginator($page['total_data'], $page['total_data'], $page['per_page'], $page['page']);
-			$this->widget_data['chart-display-'.$this->widget_data['identifier']] 		= $page;
+			$page 								= json_decode(json_encode($contents->pagination), true);
+			$widget_data['chart'] 				= json_decode(json_encode($contents->data), true);
+			$widget_data['chart-pagination'] 	= new Paginator($page['total_data'], $page['total_data'], $page['per_page'], $page['page']);
+			$widget_data['chart-display'] 		= $page;
 		}
 		
+		return $widget_data;
 	}
 }
