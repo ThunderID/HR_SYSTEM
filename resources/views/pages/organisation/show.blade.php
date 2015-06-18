@@ -14,7 +14,7 @@
 										'widget_title'		=> 'Pilih Organisasi :',								
 										'organisation_id'	=> Input::get('org_id'),
 										'identifier'		=> 1,
-										'search'			=> [],
+										'search'			=> ['withattributes' => 'branches'],
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 12,

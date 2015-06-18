@@ -6466,7 +6466,8 @@ label,
   content: "\f107";
 }
 .sidebar .nav-second-level li,
-.sidebar .nav-third-level li {
+.sidebar .nav-third-level li,
+.sidebar .nav-fourty-level li {
   border-bottom: none !important;
 }
 .sidebar .nav-second-level li a {
@@ -6475,6 +6476,10 @@ label,
 .sidebar .nav-third-level li a {
   padding-left: 52px;
 }
+.sidebar .nav-fourty-level li a {
+  padding-left: 67px;
+}
+
 @media (min-width: 768px) {
   .sidebar {
     z-index: 1;

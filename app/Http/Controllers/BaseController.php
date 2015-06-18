@@ -10,7 +10,7 @@ abstract class BaseController extends Controller {
 
 	function __construct() 
 	{
-		if (Input::has('org_id'))
+		if (Input::has('org_id')|(Route::is('hr.organisations.create'))|(Route::is('hr.organisations.edit')))
 		{			
 			$this->layout = view('page_templates.page_template');
 		}
