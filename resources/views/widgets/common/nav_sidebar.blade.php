@@ -35,7 +35,7 @@
                         <li><a href="{{route('hr.organisations.delete', [$value['id'], 'org_id' => $value['id']]) }}"><i class="fa fa-trash fa-fw"></i> Hapus</a></li>
                         <li><a href="{{route('hr.organisations.show', $value['id'])}}"><i class="fa fa-tachometer fa-fw"></i> Dashboard</a></li>
                         <li>
-                            @if (count($value['branches'])==0)
+                            @if (!isset($value['branches']))
                                 <a href="{{route('hr.branches.index', ['org_id' => $value['id']])}}"><i class="fa fa-building fa-fw"></i> Cabang</a>
                             @else
                                 <a href="{{route('hr.branches.index', ['org_id' => $value['id']])}}"><i class="fa fa-building fa-fw"></i> Cabang <span class="fa arrow"></span></a>
@@ -46,7 +46,7 @@
                                             <a href="">{{ $branch['name'] }} <span class="fa arrow"></span></a>
                                             <ul class="nav nav-fourty-level">
                                                 <li><a href="">Contact</a></li>
-                                                <li><a href="">Chart</a></li>
+                                                <li><a href="{ route('hr.branch.charts.index', ['org_id' => $value['id'], 'branch_id' => $branch['id']]) }}">Chart</a></li>
                                                 <li><a href="">Api</a></li>
                                                 <li><a href="">Finger</a></li>
                                             </ul>
