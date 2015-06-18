@@ -2,7 +2,6 @@
 @extends('widget_templates.'. (isset($widget_template) ? $widget_template : 'plain_no_title'))
 
 @section('widget_title')
-    <span class="ml-20">{{ $widget_title or 'Structure' }}</span>
 @overwrite
 
 @section('widget_info')
@@ -33,7 +32,7 @@
                         {{-- <li><a href="{{route('hr.organisations.show', $value['id'])}}"><i class="fa fa-eye fa-fw"></i> Show</a></li> --}}
                         <li><a href="{{route('hr.organisations.edit', $value['id'])}}"><i class="fa fa-pencil fa-fw"></i> Ubah</a></li>
                         <li><a href="{{route('hr.organisations.delete', [$value['id'], 'org_id' => $value['id']]) }}"><i class="fa fa-trash fa-fw"></i> Hapus</a></li>
-                        <li><a href="{{route('hr.organisations.show', $value['id'])}}"><i class="fa fa-tachometer fa-fw"></i> Dashboard</a></li>
+                        <li><a href="{{route('hr.organisations.show', [$value['id'], 'org_id' => $value['id']])}}"><i class="fa fa-tachometer fa-fw"></i> Dashboard</a></li>
                         <li>
                             @if (!isset($value['branches']))
                                 <a href="{{route('hr.branches.index', ['org_id' => $value['id']])}}"><i class="fa fa-building fa-fw"></i> Cabang</a>

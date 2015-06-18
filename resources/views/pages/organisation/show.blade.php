@@ -1,5 +1,11 @@
 @section('nav_topbar')
-	@include('widgets.common.nav_topbar', ['breadcrumb' => [['name' => 'ORGANISASI ', 'route' => route('hr.organisations.show', [Input::get('org_id'), 'org_id' => Input::get('org_id')]) ]]])
+	@include('widgets.common.nav_topbar', 
+	[
+		'breadcrumb' 	=> 	[
+								['name' => $organisation['name'], 'route' => route('hr.organisations.show', [$organisation['id'], 'org_id' => $organisation['id']])],
+								['name' => 'Dashboard', 'route' => null]
+							]
+	])
 @stop
 
 @section('nav_sidebar')
@@ -11,10 +17,7 @@
 		'widget_options'	=> [
 									'sidebar'				=>
 									[
-										'widget_title'		=> 'Pilih Organisasi :',								
-										'organisation_id'	=> Input::get('org_id'),
-										'identifier'		=> 1,
-										'search'			=> ['withattributes' => 'branches'],
+										'search'			=> ['id' => Config::get('user.orgids')],
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 12,
@@ -23,11 +26,11 @@
 	])
 @overwrite
 
-@section('content_filter')
-@overwrite
-
-@section('content_body')	
+@section('content_body')
 	<p class="text-center font-34 " style="height:580px; margin-top:15%;">Under <br> Construction</p>
+@stop
+
+@section('content_filter')
 @overwrite
 
 @section('content_footer')

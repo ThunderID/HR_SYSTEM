@@ -1,5 +1,20 @@
 @section('nav_topbar')
-	@include('widgets.common.nav_topbar', ['breadcrumb' => [['name' => 'ORGANISASI ', 'route' => route('hr.organisations.show', [Input::get('org_id'), 'org_id' => Input::get('org_id')]) ]]])
+	@if(is_null($id))
+		@include('widgets.common.nav_topbar', 
+		[
+			'breadcrumb' 	=> 	[
+									['name' => 'Tambah Organisasi ', 'route' => '']
+								]
+		])
+	@else
+		@include('widgets.common.nav_topbar', 
+		[
+			'breadcrumb' 	=> 	[
+									['name' => $organisation['name'], 'route' => route('hr.organisations.show', [$organisation['id'], 'org_id' => $organisation['id']])],
+									['name' => 'Ubah', 'route' => null]
+								]
+		])
+	@endif
 @stop
 
 @section('nav_sidebar')
@@ -11,10 +26,7 @@
 		'widget_options'	=> [
 									'sidebar'				=>
 									[
-										'widget_title'		=> 'Pilih Organisasi :',								
-										'organisation_id'	=> Input::get('org_id'),
-										'identifier'		=> 1,
-										'search'			=> ['withattributes' => 'branches'],
+										'search'			=> ['id' => Config::get('user.orgids')],
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 12,
@@ -24,13 +36,12 @@
 @overwrite
 
 @section('content_body')
-	@include('widgets.common.form_name', [
+	@include('widgets.organisation.form', [
 		'widget_template'	=> 'panel',
 		'widget_options'	=> [
 									'organisationlist'		=>
 									[
 										'form_url'			=> route('hr.organisations.store', ['id' => $id]),
-										'identifier'		=> 1,
 										'search'			=> ['id' => $id],
 										'sort'				=> [],
 										'page'				=> 1,

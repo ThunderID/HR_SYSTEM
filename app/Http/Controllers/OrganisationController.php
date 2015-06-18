@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use Input, Session, App, Paginator, Redirect, DB;
+use Input, Config, App, Paginator, Redirect, DB;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -23,7 +23,29 @@ class OrganisationController extends BaseController
 
 	public function create($id = null)
 	{
-		$this->layout->page 					= view('pages.organisation.create', compact('id'));
+		if(is_null($id))
+		{
+			$this->layout->page 				= view('pages.organisation.create', compact('id'));
+		}
+		else
+		{
+			if(!in_array($id, Config::get('user.orgids')))
+			{
+				App::abort(404);
+			}
+
+			$result								= $this->dispatch(new Getting(new Organisation, ['ID' => $id], ['created_at' => 'asc'] ,1, 1));
+
+			$content 							= json_decode($result);
+
+			if(!$content->meta->success)
+			{
+				App::abort(404);
+			}
+		
+			$organisation 				 		= json_decode(json_encode($content->data), true);
+			$this->layout->page 				= view('pages.organisation.create', compact('id', 'organisation'));
+		}
 
 		return $this->layout;
 	}
@@ -36,7 +58,7 @@ class OrganisationController extends BaseController
 		}
 		
 		$attributes 							= Input::only('name');
-		$person 								= 1;//Session::get('user.id');
+		$person 								= Config::get('user.id');
 		
 		$errors 								= new MessageBag();
 		
@@ -53,22 +75,22 @@ class OrganisationController extends BaseController
 
 		if(is_null($id))
 		{
-			$content_2								= $this->dispatch(new Getting(new Organisation, ['ID' => $is_success->data->id, 'withattributes' => ['branches', 'branches.charts', 'branches.charts.calendars']], ['created_at' => 'asc'] ,1, 1));
+			$content_2							= $this->dispatch(new Getting(new Organisation, ['ID' => $is_success->data->id, 'withattributes' => ['branches', 'branches.charts', 'branches.charts.calendars']], ['created_at' => 'asc'] ,1, 1));
 
-			$is_success_2 							= json_decode($content_2);
+			$is_success_2 						= json_decode($content_2);
 
 			if(!$is_success_2->meta->success || !isset($is_success_2->data->branches[0]) || !isset($is_success_2->data->branches[0]->charts[0]))
 			{
 				$errors->add('Organisation', $is_success_2->meta->errors);
 			}
 
-			$work['chart_id'] 						= $is_success_2->data->branches[0]->charts[0]->id;
-			$work['status'] 						= 'admin';
-			$work['position'] 						= 'admin';
-			$work['start'] 							= date('Y-m-d');
+			$work['chart_id'] 					= $is_success_2->data->branches[0]->charts[0]->id;
+			$work['status'] 					= 'admin';
+			$work['position'] 					= 'admin';
+			$work['start'] 						= date('Y-m-d');
 
-			$saved_work 							= $this->dispatch(new Saving(new Work, $work, null, new Person, $person));
-			$is_success_3 							= json_decode($saved_work);
+			$saved_work 						= $this->dispatch(new Saving(new Work, $work, null, new Person, $person));
+			$is_success_3 						= json_decode($saved_work);
 			
 			if(!$is_success_3->meta->success)
 			{
@@ -86,18 +108,37 @@ class OrganisationController extends BaseController
 		return Redirect::back()->withErrors($errors)->withInput();
 	}
 
-	public function show()
+	public function show($id = null)
 	{
-		$this->layout->page 						= view('pages.organisation.show');
+		if(!in_array($id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
+
+		$result								= $this->dispatch(new Getting(new Organisation, ['ID' => $id], ['created_at' => 'asc'] ,1, 1));
+
+		$content 							= json_decode($result);
+
+		if(!$content->meta->success)
+		{
+			App::abort(404);
+		}
+	
+		$organisation 				 		= json_decode(json_encode($content->data), true);
+
+		$this->layout->page 				= view('pages.organisation.show', compact('organisation', 'id'));
 
 		return $this->layout;
 	}
 
 	public function edit($id)
 	{
-		$this->layout->page 						= view('pages.organisation.create', compact('id'));
+		if(!in_array($id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
-		return $this->layout;
+		return $this->create($id);
 	}
 
 }
