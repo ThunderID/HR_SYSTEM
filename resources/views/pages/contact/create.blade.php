@@ -41,7 +41,7 @@
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 1,
-										'route_back'	 	=> route('hr.branches.show', [$branch['id'], 'org_id' => $data['id']])
+										'route_back'	 	=> route('hr.branches.show', [$branch['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])
 									]
 								]
 	])
