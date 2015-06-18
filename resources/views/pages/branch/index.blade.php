@@ -10,7 +10,6 @@
 		'widget_body_class'		=> '',
 		'widget_options'		=> [ 'sidebar' 					=>
 										[
-											'identifier'		=> 1,
 											'search'			=> ['withattributes' => 'branches'],
 											'sort'				=> [],
 											'page'				=> 1,
@@ -41,7 +40,6 @@
 										[
 											'form_url' 			=> null,
 											'organisation_id'	=> $data['id'],
-											'identifier'		=> 1,
 											'search'			=> ['defaultcontact' => true],
 											'sort'				=> [],
 											'page'				=> 1,

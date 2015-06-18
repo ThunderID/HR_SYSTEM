@@ -44,7 +44,6 @@ class BranchComposer extends WidgetComposer
 					$this->widget_errors->add('Branch', $value);
 				}
 			}
-
 			$widget_data['branch'] 				= null;
 			$widget_data['branch-pagination'] 	= null;
 		}

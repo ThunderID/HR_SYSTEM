@@ -2,6 +2,7 @@
 
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Config;
 
 class RouteServiceProvider extends ServiceProvider {
 
@@ -14,6 +15,13 @@ class RouteServiceProvider extends ServiceProvider {
 	 */
 	protected $namespace = 'App\Http\Controllers';
 
+	public function register()
+	{
+		Config::set('user.id', 1);
+		Config::set('user.orgids', [1,13]);
+		//
+	}
+
 	/**
 	 * Define your route model bindings, pattern filters, etc.
 	 *
@@ -23,10 +31,9 @@ class RouteServiceProvider extends ServiceProvider {
 	public function boot(Router $router)
 	{
 		parent::boot($router);
-
 		//
 	}
-
+		
 	/**
 	 * Define the routes for the application.
 	 *
