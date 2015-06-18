@@ -40,7 +40,7 @@
 								</td>
 								<td class="text-right">
 									<a href="" class="btn btn-default"><i class="fa fa-trash"></i></a>
-									<a href="{{route('hr.person.contacts.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									<a href="{{route('hr.person.contacts.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 								</td>
 							</tr>
 						</tbody>
