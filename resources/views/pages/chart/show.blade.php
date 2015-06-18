@@ -19,7 +19,7 @@
 										'sidebar'				=> 
 										[
 											'identifier'		=> 1,
-											'search'			=> [],
+											'search'			=> ['withattributes' => 'branches'],
 											'sort'				=> [],
 											'page'				=> 1,
 											'per_page'			=> 12

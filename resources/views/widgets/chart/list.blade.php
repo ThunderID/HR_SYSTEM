@@ -2,14 +2,8 @@
 
 @if (!$widget_error_count)
 	@section('widget_title')
-	<h1> {{ $widget_title or 'Jabatan' }} </h1>
-	<small>Total data {{$ChartComposer['widget_data']['chartlist']['chart-pagination']->total()}}</small>
-
-	<div class="row">
-		<div class="col-md-2 mt-20">
-			@include('widgets.branch.sidemenu')
-		</div>
-		<div class="col-md-10">
+		<h1> {{ $widget_title or 'Jabatan' }} </h1>
+		<small>Total data {{$ChartComposer['widget_data']['chartlist']['chart-pagination']->total()}}</small>
 	@overwrite
 
 	@section('widget_body')
