@@ -2,6 +2,7 @@
 
 @section('widget_title')	
 <h1> @if(is_null($id)) Tambah Organisasi @else Ubah "{{$OrganisationComposer['widget_data']['organisationlist']['organisation']['name']}}" @endif  </h1>
+@include('widgets.common.alert')
 @overwrite
 
 @section('widget_body')
