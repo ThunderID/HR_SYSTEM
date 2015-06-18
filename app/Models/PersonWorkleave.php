@@ -67,7 +67,7 @@ class PersonWorkleave extends BaseModel {
 											'withattributes' 			=> 'Must be array of relationship',
 										];
 
-	public $sortable 				= 	['created_at', 'name'];
+	public $sortable 				= 	['created_at', 'name', 'start', 'end'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**

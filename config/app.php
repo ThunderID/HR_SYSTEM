@@ -193,6 +193,7 @@ return [
 		'Session'   => 'Illuminate\Support\Facades\Session',
 		'Storage'   => 'Illuminate\Support\Facades\Storage',
 		'URL'       => 'Illuminate\Support\Facades\URL',
+		'Str'       => 'Illuminate\Support\Str',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
 		'Form'      => 'Illuminate\Html\FormFacade',
