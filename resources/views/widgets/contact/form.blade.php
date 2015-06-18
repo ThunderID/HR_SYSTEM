@@ -12,7 +12,7 @@
 				<label class="control-label">Item</label>
 			</div>	
 			<div class="col-md-10">
-				{!!Form::input('text', 'item', $ContactComposer['widget_data']['contactlist']['contact']['item'], ['class' => 'form-control'])!!}
+				{!! Form::select('item', ['alamat', 'bbm', 'email', 'line', 'phone', 'whatsapp'], null, ['class' => 'select2 select2-skin', 'style' => 'width:100%'] ) !!}
 			</div>
 		</div>
 		<div class="form-group">
@@ -28,7 +28,11 @@
 				<label class="control-label">Aktif</label>
 			</div>	
 			<div class="col-md-10">
-				{!!Form::input('text', 'is_default', $ContactComposer['widget_data']['contactlist']['contact']['is_default'], ['class' => 'form-control'])!!}
+				<div class="checkbox">
+					<label for="">
+					{!!Form::checkbox('is_default', '1', $ContactComposer['widget_data']['contactlist']['contact']['is_default'], ['class' => ''])!!}
+					</label>
+				</div>
 			</div>
 		</div>
 		<div class="form-group">
