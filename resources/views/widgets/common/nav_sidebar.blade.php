@@ -65,7 +65,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="javascript:;"><i class="fa fa-archive"></i> Data<span class="fa arrow"></span></a>
+                            <a href="javascript:;"><i class="fa fa-briefcase"></i> Data<span class="fa arrow"></span></a>
                             <ul class="nav nav-third-level">
                                 <li>
                                     <a href="{{route('hr.persons.index', ['org_id' => $value['id']])}}"><i class="fa fa-users fa-fw"></i> Data Karyawan</a>

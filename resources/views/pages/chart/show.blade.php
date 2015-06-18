@@ -29,16 +29,17 @@
 @overwrite
 
 @section('content_body')
-			@include('widgets.authentication.table', [
+			@include('widgets.chart.table', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> $chart['name'],
 				'widget_options'		=> 	[
-												'applicationlist'		=>
+												'chartlist'		=>
 												[
-													'search'			=> ['chartid' => $chart['id']],
+													'organisation_id'	=> $data['id'],
+													'search'			=> ['id' => $chart['id']],
 													'sort'				=> [],
 													'page'				=> 1,
-													'per_page'			=> 100
+													'per_page'			=> 1
 												]
 											]
 			])

@@ -2,8 +2,8 @@
 	@include('widgets.common.nav_topbar', 
 	['breadcrumb' => [
 						['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
-						['name' => $person['name'], 'route' => route('hr.persons.show', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
-						['name' => 'Kontak', 'route' => route('hr.persons.show', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
+						['name' => $branch['name'], 'route' => route('hr.branches.show', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
+						['name' => 'Kontak', 'route' => route('hr.branches.show', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
 					]
 	])
 @stop
@@ -35,13 +35,13 @@
 		'widget_options'	=> 	[
 									'contactlist'			=>
 									[
-										'form_url'			=> route('hr.person.contacts.store', ['id' => $id, 'person_id' => $person['id'], 'org_id' => $data['id']]),
+										'form_url'			=> route('hr.branch.contacts.store', ['id' => $id, 'branch_id' => $branch['id'], 'org_id' => $data['id']]),
 										'organisation_id'	=> $data['id'],
 										'search'			=> ['id' => $id],
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 1,
-										'route_back'	 	=> route('hr.persons.show', [$person['id'], 'org_id' => $data['id']])
+										'route_back'	 	=> route('hr.branches.show', [$branch['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])
 									]
 								]
 	])
