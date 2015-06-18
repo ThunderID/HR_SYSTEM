@@ -28,6 +28,7 @@
 @overwrite
 
 @section('content_body')
+
 			@include('widgets.follow.table', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> $chart['name'],

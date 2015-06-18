@@ -19,7 +19,7 @@
                     <ul class="nav nav-second-level">
                         {{-- <li><a href="{{route('hr.organisations.show', $value['id'])}}"><i class="fa fa-eye fa-fw"></i> Show</a></li> --}}
                         <li><a href="{{route('hr.organisations.edit', $value['id'])}}"><i class="fa fa-pencil fa-fw"></i> Ubah</a></li>
-                        <li><a href="{{route('hr.organisations.delete', [$value['id'], 'org_id' => $value['id']]) }}"><i class="fa fa-trash fa-fw"></i> Hapus</a></li>
+                        <li><a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.organisations.delete', [$value['id'], 'org_id' => $value['id']]) }}"><i class="fa fa-trash"></i> Hapus</a>
                         <li><a href="{{route('hr.organisations.show', [$value['id'], 'org_id' => $value['id']])}}"><i class="fa fa-tachometer fa-fw"></i> Dashboard</a></li>
                         <li>
                             <a href="javascript"><i class="fa fa-cog"></i> Pengaturan <span class="fa arrow"></span></a>
@@ -80,4 +80,10 @@
             @endforeach
         @endif
     </ul>
+
+    {!! Form::open(array('route' => array('hr.organisations.delete', 0),'method' => 'DELETE')) !!}
+        @include('widgets.modal.delete', [
+            'widget_template'       => 'plain_no_title'
+        ])
+    {!! Form::close() !!}
 @overwrite

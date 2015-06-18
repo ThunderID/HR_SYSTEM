@@ -25,11 +25,18 @@
 		</nav>
 		<div id="page-wrapper">
 			@yield('content_filter', '[content_filter]')
+
+			@if($errors->count())
+				<div class="clearfix">&nbsp;</div>
+				@include('widgets.common.alert', ['errors' => $errors])
+			@endif
+
 			<div class="row">	
 				<div class="col-xs-12 col-sm-12 col-md-12">
 					@yield('content_body', '[content_body]')
 				</div>
 			</div>
+
 			@yield('content_footer', '[content_footer]')
 		</div>
 	</div>

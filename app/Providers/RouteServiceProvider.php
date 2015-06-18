@@ -19,6 +19,7 @@ class RouteServiceProvider extends ServiceProvider {
 	{
 		Config::set('user.id', 1);
 		Config::set('user.orgids', [1,13]);
+		Config::set('user.email', 'hr@thunderid.com');
 		//
 	}
 

@@ -1,8 +1,7 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
 @section('widget_title')	
-<h1> @if(is_null($id)) Tambah Organisasi @else Ubah "{{$OrganisationComposer['widget_data']['organisationlist']['organisation']['name']}}" @endif  </h1>
-@include('widgets.common.alert')
+	<h1> @if(is_null($id)) Tambah Organisasi @else Ubah "{{$OrganisationComposer['widget_data']['organisationlist']['organisation']['name']}}" @endif  </h1>
 @overwrite
 
 @section('widget_body')

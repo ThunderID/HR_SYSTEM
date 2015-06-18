@@ -1,10 +1,12 @@
 <?php namespace App\Http\Controllers;
 
-use Input, Config, App, Paginator, Redirect, DB;
+use Input, Config, App, Paginator, Redirect, DB, Session;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
+use App\Console\Commands\Checking;
+use App\Console\Commands\Deleting;
 use App\Models\Organisation;
 use App\Models\Work;
 use App\Models\Person;
@@ -70,7 +72,20 @@ class OrganisationController extends BaseController
 
 		if(!$is_success->meta->success)
 		{
-			$errors->add('Organisation', $is_success->meta->errors);
+			foreach ($is_success->meta->errors as $key => $value) 
+			{
+				if(is_array($value))
+				{
+					foreach ($value as $key2 => $value2) 
+					{
+						$errors->add('Organisation', $value2);
+					}
+				}
+				else
+				{
+					$errors->add('Organisation', $value);
+				}
+			}
 		}
 
 		if(is_null($id))
@@ -81,7 +96,20 @@ class OrganisationController extends BaseController
 
 			if(!$is_success_2->meta->success || !isset($is_success_2->data->branches[0]) || !isset($is_success_2->data->branches[0]->charts[0]))
 			{
-				$errors->add('Organisation', $is_success_2->meta->errors);
+				foreach ($is_success_2->meta->errors as $key => $value) 
+				{
+					if(is_array($value))
+					{
+						foreach ($value as $key2 => $value2) 
+						{
+							$errors->add('Organisation', $value2);
+						}
+					}
+					else
+					{
+						$errors->add('Organisation', $value);
+					}
+				}
 			}
 
 			$work['chart_id'] 					= $is_success_2->data->branches[0]->charts[0]->id;
@@ -94,14 +122,27 @@ class OrganisationController extends BaseController
 			
 			if(!$is_success_3->meta->success)
 			{
-				$errors->add('Organisation', $is_success_3->meta->errors);
+				foreach ($is_success_3->meta->errors as $key => $value) 
+				{
+					if(is_array($value))
+					{
+						foreach ($value as $key2 => $value2) 
+						{
+							$errors->add('Organisation', $value2);
+						}
+					}
+					else
+					{
+						$errors->add('Organisation', $value);
+					}
+				}
 			}
 		}
 
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.organisations.show', [$is_success->data->id, 'org_id' => $is_success->data->id])->with('alert_success', 'organisasi "' . $is_success->data->name. '" sudah disimpan');
+			return Redirect::route('hr.organisations.show', [$is_success->data->id, 'org_id' => $is_success->data->id])->with('local_msg', $errors)->with('alert_success', 'organisasi "' . $is_success->data->name. '" sudah disimpan');
 		}
 
 		DB::rollback();
@@ -141,4 +182,31 @@ class OrganisationController extends BaseController
 		return $this->create($id);
 	}
 
+	function destroy($id)
+	{
+		$attributes 						= ['email' => Config::get('user.email'), 'password' => 'admin'];
+
+		$results 							= $this->dispatch(new Checking(new Person, $attributes));
+
+		$content 							= json_decode($results);
+
+		if($content->meta->success)
+		{
+			$results 						= $this->dispatch(new Deleting(new Organisation, $id));
+			$contents 						= json_decode($results);
+
+			if (!$contents->meta->success)
+			{
+				return Redirect::back()->withErrors($contents->meta->errors);
+			}
+			else
+			{
+				return Redirect::route('hr.organisations.index')->with('local_msg', $errors)->with('alert_success', 'Organisasi "' . $contents->data->name. '" sudah dihapus');
+			}
+		}
+		else
+		{
+			return Redirect::back()->withErrors(['Password yang Anda masukkan tidak sah!']);
+		}
+	}
 }
