@@ -20,12 +20,6 @@
 @overwrite
 
 @section('content_filter')
-	@include('widgets.branch.filter', [
-		'widget_template'		=> 'plain_no_title',
-		'widget_options'		=> [
-									'form_url'	=> ''
-									]
-	])
 @overwrite
 
 @section('content_body')	
