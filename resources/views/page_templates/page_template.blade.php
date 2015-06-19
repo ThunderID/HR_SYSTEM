@@ -47,6 +47,7 @@
 	@include('plugins/toggle')
 	@include('plugins/modal')
 	@include('plugins.checkbox')
+	@include('plugins.inputmask')
 	<script>
 		$('#side-menu').metisMenu();
 	</script>

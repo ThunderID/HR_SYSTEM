@@ -13,14 +13,14 @@
 				<div class="row mb-10">
 					<div class="col-xs-6 col-sm-6">
 						@for($i=1;$i<count(explode(',',$value['path']));$i++)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@endfor 
-						<i class="fa fa-chevron-circle-right"></i>&nbsp;&nbsp;<a href="{{route('hr.branch.charts.show', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $value['id']])}}" >{{$value['name']}} - {{$value['tag']}}</a>
+						<i class="fa fa-chevron-circle-right"></i>&nbsp;&nbsp;<a href="javascript:;" >{{$value['name']}} - {{$value['tag']}}</a>
 					</div>
 					<div class="text-right col-xs-6 col-sm-6">
-						<a href="" class="btn btn-default"><i class="fa fa-trash"></i></a>
-						<a href="{{route('hr.branch.charts.edit', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-						<a href="{{route('hr.branch.charts.show', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
-						<a href="{{route('hr.chart.authentications.index', ['id' => $value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default"><i class="fa fa-lock"></i></a>
-						<a href="" class="btn btn-default"><i class="fa fa-calendar"></i></a>
+						<a href="" class="btn btn-default" title="hapus"><i class="fa fa-trash"></i></a>
+						<a href="{{route('hr.branch.charts.edit', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default" title="ubah"><i class="fa fa-pencil"></i></a>
+						<a href="{{route('hr.branch.charts.show', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default" title="lihat data"><i class="fa fa-eye"></i></a>
+						<a href="{{route('hr.chart.authentications.index', ['chart_id' => $value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default" title="lihat otentikasi"><i class="fa fa-lock"></i></a>
+						<a href="{{ route('hr.chart.calendars.index', ['chart_id' => $value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']]) }}" class="btn btn-default" title="lihat kalender"><i class="fa fa-calendar"></i></a>
 					</div>
 				</div>
 			@endforeach
