@@ -44,7 +44,7 @@
                                                             <a href="{{ route('hr.branch.contacts.index', ['org_id' => $value['id'], 'branch_id' => $branch['id']]) }}">Kontak</a>
                                                         </li>
                                                         <li>
-                                                            <a href="{{ route('hr.branch.charts.index', ['org_id' => $value['id'], 'branch_id' => $branch['id']]) }}">Jabatan</a>
+                                                            <a href="{{ route('hr.branch.charts.index', ['org_id' => $value['id'], 'branch_id' => $branch['id']]) }}">Struktur Organisasi</a>
                                                         </li>
                                                         <li>
                                                             <a href="{{ route('hr.branch.apis.index', ['org_id' => $value['id'], 'branch_id' => $branch['id']]) }}">API</a>

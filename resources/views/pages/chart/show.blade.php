@@ -39,7 +39,8 @@
 													'search'			=> ['id' => $chart['id']],
 													'sort'				=> [],
 													'page'				=> 1,
-													'per_page'			=> 1
+													'per_page'			=> 1,
+													'route_create'		=> route('hr.branch.charts.create', ['branch_id' => $branch['id'], 'org_id' => $data['id']]),
 												]
 											]
 			])

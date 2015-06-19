@@ -7,6 +7,7 @@
 	@overwrite
 
 	@section('widget_body')
+		<a href="{{ $ChartComposer['widget_data']['chartlist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
 		@if(isset($ChartComposer['widget_data']['chartlist']['chart']))
 			<div class="clearfix">&nbsp;</div>
 			@foreach($ChartComposer['widget_data']['chartlist']['chart'] as $key => $value)
@@ -16,8 +17,8 @@
 						<i class="fa fa-chevron-circle-right"></i>&nbsp;&nbsp;<a href="javascript:;" >{{$value['name']}} - {{$value['tag']}}</a>
 					</div>
 					<div class="text-right col-xs-6 col-sm-6">
-						<a href="" class="btn btn-default" title="hapus"><i class="fa fa-trash"></i></a>
-						<a href="{{route('hr.branch.charts.edit', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default" title="ubah"><i class="fa fa-pencil"></i></a>
+						<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.branch.charts.delete', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']]) }}"><i class="fa fa-trash"></i></a>
+						<a href="{{route('hr.branch.charts.edit', [$value['id'], 'path' => $value['path'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default" title="ubah"><i class="fa fa-pencil"></i></a>
 						<a href="{{route('hr.branch.charts.show', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default" title="lihat data"><i class="fa fa-eye"></i></a>
 						<a href="{{route('hr.chart.authentications.index', ['chart_id' => $value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default" title="lihat otentikasi"><i class="fa fa-lock"></i></a>
 						<a href="{{ route('hr.chart.calendars.index', ['chart_id' => $value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']]) }}" class="btn btn-default" title="lihat kalender"><i class="fa fa-calendar"></i></a>

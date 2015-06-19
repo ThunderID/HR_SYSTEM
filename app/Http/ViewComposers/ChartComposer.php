@@ -22,7 +22,7 @@ class ChartComposer extends WidgetComposer
 
 	protected function setData($options)
 	{
-		$widget_data['search']['organisationid'] 	= $options['organisation_id'];
+		$widget_data['search']['organisationid'] = $options['organisation_id'];
 
 		$results 								=  $this->dispatch(new Getting(new Chart, $options['search'], $options['sort'] , $options['page'], $options['per_page']));
 
@@ -52,7 +52,7 @@ class ChartComposer extends WidgetComposer
 		{
 			$page 								= json_decode(json_encode($contents->pagination), true);
 			$widget_data['chart'] 				= json_decode(json_encode($contents->data), true);
-			$widget_data['chart-pagination'] 	= new Paginator($page['total_data'], $page['total_data'], $page['per_page'], $page['page']);
+			$widget_data['chart-pagination'] 	= new Paginator((($page['total_data']==0) ? 1 : $page['total_data']), (($page['total_data']==0) ? 1 : $page['total_data']), (($page['per_page']==0) ? 1 : $page['per_page']), (($page['page']==0) ? 1 : $page['page']));
 			$widget_data['chart-display'] 		= $page;
 		}
 		

@@ -22,7 +22,7 @@ class BranchComposer extends WidgetComposer
 
 	protected function setData($options)
 	{
-		$widget_data['search']['organisationid'] = $options['organisation_id'];
+		$options['search']['organisationid'] 	= $options['organisation_id'];
 
 		$results 								=  $this->dispatch(new Getting(new Branch, $options['search'], $options['sort'] , (int)$options['page'], (int)$options['per_page']));
 

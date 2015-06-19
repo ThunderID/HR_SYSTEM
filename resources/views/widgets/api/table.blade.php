@@ -1,9 +1,9 @@
-<?php
-	$ApiComposer['widget_data']['apilist']['api-pagination']->setPath(route('hr.branch.apis.index'));
- ?>
+@extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
 @if (!$widget_error_count)
-	@extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
+	<?php
+		$ApiComposer['widget_data']['apilist']['api-pagination']->setPath(route('hr.branch.apis.index'));
+	?>
 
 	@section('widget_title')
 		<h1> {!! $widget_title or 'Api' !!} </h1>

@@ -4,6 +4,7 @@
 						['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
 						['name' => $branch['name'], 'route' => route('hr.branches.show', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
 						['name' => 'API', 'route' => route('hr.branch.apis.index', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
+						['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.branch.apis.create', ['org_id' => $data['id'], 'branch_id' => $branch['id']]) : route('hr.branch.apis.edit', ['org_id' => $data['id'], 'branch_id' => $branch['id'], 'id' => $id]) )]
 					]
 	])
 @stop

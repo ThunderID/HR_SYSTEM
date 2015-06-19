@@ -3,7 +3,8 @@
 	['breadcrumb' => [
 						['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
 						['name' => $branch['name'], 'route' => route('hr.branches.show', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
-						['name' => 'Jabatan', 'route' => route('hr.branch.charts.index', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
+						['name' => 'Struktur Organisasi', 'route' => route('hr.branch.charts.index', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
+						['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.branch.charts.create', ['org_id' => $data['id'], 'branch_id' => $branch['id']]) : route('hr.branch.charts.edit', ['org_id' => $data['id'], 'branch_id' => $branch['id'], 'id' => $id]) )]
 					]
 	])
 @stop
@@ -17,11 +18,10 @@
 		'widget_options'		=> 	[
 										'sidebar'				=>
 										[
-											'identifier'		=> 1,
 											'search'			=> ['withattributes' => 'branches'],
 											'sort'				=> [],
 											'page'				=> 1,
-											'per_page'			=> 12,
+											'per_page'			=> 100,
 										]
 									]
 	])
@@ -38,12 +38,20 @@
 									[
 										'form_url'			=> route('hr.branch.charts.store', ['id' => $id, 'branch_id' => $branch['id'], 'org_id' => $data['id']]),
 										'organisation_id'	=> $data['id'],
-										'identifier'		=> 1,
-										'search'			=> ['id' => $id],
+										'search'			=> ['branchid' => $branch['id'], 'id' => $id],
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 1,
 										'route_back'		=> route('hr.branch.charts.index', ['branch_id' => $branch['id'], 'org_id' => $data['id']]),
+									],
+
+									'chartpath'				=>
+									[
+										'organisation_id'	=> $data['id'],
+										'search'			=> ['branchid' => $branch['id'], 'neighbor' => (Input::has('path') ? Input::get('path') : 0)],
+										'sort'				=> ['path' => 'desc'],
+										'page'				=> 1,
+										'per_page'			=> 100,
 									]
 								]
 	])

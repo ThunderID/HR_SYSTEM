@@ -13,7 +13,7 @@
 											'search'			=> ['withattributes' => 'branches'],
 											'sort'				=> [],
 											'page'				=> 1,
-											'per_page'			=> 12,
+											'per_page'			=> 100,
 										]
 									]
 	])
@@ -44,7 +44,7 @@
 											'search'			=> ['defaultcontact' => true],
 											'sort'				=> [],
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
-											'per_page'			=> 12
+											'per_page'			=> 12,
 											'route_create'		=> route('hr.branches.create', ['org_id' => $data['id']])
 											]
 									]
