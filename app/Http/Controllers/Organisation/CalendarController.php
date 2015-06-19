@@ -135,5 +135,36 @@ class CalendarController extends BaseController
 		return $this->create($id);
 	}
 
-	
+	public function show($id)
+	{
+		if(Input::has('org_id'))
+		{
+			$org_id 							= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 							= Session::get('user.organisation');
+		}
+
+		// if(!in_array($org_id, Session::get('user.orgids')))
+		// {
+		// 	App::abort(404);
+		// }
+
+		$search['id']							= $org_id;
+		$sort 									= ['name' => 'asc'];
+		$results 								= $this->dispatch(new Getting(new Organisation, $search, $sort , 1, 1));
+		$contents 								= json_decode($results);		
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$data 									= json_decode(json_encode($contents->data), true);
+
+		$this->layout->page 					= view('pages.calendar.show', compact('id', 'data'));
+
+		return $this->layout;
+	}
 }
