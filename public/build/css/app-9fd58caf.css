@@ -6467,7 +6467,8 @@ label,
 }
 .sidebar .nav-second-level li,
 .sidebar .nav-third-level li,
-.sidebar .nav-fourty-level li {
+.sidebar .nav-fourty-level li,
+.sidebar .nav-fifty-level li {
   border-bottom: none !important;
 }
 .sidebar .nav-second-level li a {
@@ -6478,6 +6479,9 @@ label,
 }
 .sidebar .nav-fourty-level li a {
   padding-left: 67px;
+}
+.sidebar .nav-fifty-level li a {
+  padding-left: 80px;
 }
 
 @media (min-width: 768px) {

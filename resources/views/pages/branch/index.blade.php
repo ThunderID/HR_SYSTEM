@@ -20,7 +20,7 @@
 @overwrite
 
 @section('content_filter')
-	@include('widgets.branch.filter', [
+	@include('widgets.common.filter', [
 		'widget_template'		=> 'plain_no_title',
 		'widget_options'		=> [
 									'form_url'	=> ''
@@ -45,6 +45,7 @@
 											'sort'				=> [],
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
 											'per_page'			=> 12
+											'route_create'		=> route('hr.branches.create', ['org_id' => $data['id']])
 											]
 									]
 	])

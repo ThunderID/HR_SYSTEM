@@ -6,6 +6,7 @@
 @overwrite
 
 @section('widget_body')
+	<a href="{{ $CalendarComposer['widget_data']['calendarlist']['route_create'] }}" class="btn btn-primary">Tambah</a>
 	@if(isset($CalendarComposer['widget_data']['calendarlist']['calendar']))
 		<div class="clearfix">&nbsp;</div>
 		<table class="table">
@@ -33,7 +34,7 @@
 						<td class="text-right">
 							<a href="" class="btn btn-default"><i class="fa fa-trash"></i></a>
 							<a href="{{route('hr.calendars.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-							<a href="#" class="btn btn-default"><i class="fa fa-eye"></i></a>
+							<a href="{{route('hr.calendars.show', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
 						</td>
 					</tr>
 				</tbody>

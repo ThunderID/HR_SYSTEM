@@ -39,6 +39,7 @@
 											'sort'				=> ['name' => 'asc'],
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
 											'per_page'			=> 12,
+											'route_create'		=> route('hr.calendars.create', ['org_id' => $data['id']])
 										]
 									]
 	])

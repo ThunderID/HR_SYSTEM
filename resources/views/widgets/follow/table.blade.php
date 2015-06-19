@@ -6,6 +6,7 @@
 @overwrite
 
 @section('widget_body')
+	<a href="" class="btn btn-primary">Tambah</a>
 	@if(isset($FollowComposer['widget_data']['followlist']['follow']))
 		<div class="clearfix">&nbsp;</div>
 		<table class="table">

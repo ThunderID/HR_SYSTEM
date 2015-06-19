@@ -26,10 +26,15 @@
                             <ul class="nav nav-third-level">
                                 <li>
                                     @if ((!isset($value['branches']))|(!Input::get('branch_id')))
-                                        <a href="{{route('hr.branches.index', ['org_id' => $value['id']])}}"><i class="fa fa-building fa-fw"></i> Cabang</a>
+                                        <a href="{{route('hr.branches.index', ['org_id' => $value['id']])}}"><i class="fa fa-building fa-fw"></i> Cabang <span class="fa arrow"></span></a>
+                                        <ul class="nav nav-fourty-level">
+                                            <li><a href="{{route('hr.branches.create', ['org_id' => $value['id'], 'branch_id' => Input::get('branch_id')])}}">Tambah Cabang</a></li>
+                                            <li><a href="{{route('hr.branches.index', ['org_id' => $value['id']])}}">Semua Cabang</a></li>
+                                        </ul>
                                     @else
                                         <a href="{{route('hr.branches.index', ['org_id' => $value['id']])}}"><i class="fa fa-building fa-fw"></i> Cabang <span class="fa arrow"></span></a>
                                         <ul class="nav nav-fourty-level">
+                                            <li><a href="{{route('hr.branches.create', ['org_id' => $value['id'], 'branch_id' => Input::get('branch_id')])}}">Tambah Cabang</a></li>
                                             <li><a href="{{route('hr.branches.index', ['org_id' => $value['id']])}}">Semua Cabang</a></li>
                                             @foreach($value['branches'] as $branch)
                                                 <li>

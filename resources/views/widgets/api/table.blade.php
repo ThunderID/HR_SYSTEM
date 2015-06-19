@@ -11,6 +11,7 @@
 	@overwrite
 
 	@section('widget_body')
+		<a href="{{ $ApiComposer['widget_data']['apilist']['route_create'] }}" class="btn btn-primary">Tambah</a>
 		@if(isset($ApiComposer['widget_data']['apilist']['api']))
 			<div class="clearfix">&nbsp;</div>
 			<table class="table">
@@ -31,7 +32,7 @@
 								{{$value['secret']}}
 							</td>
 							<td class="text-right">
-								<a href="" class="btn btn-default"><i class="fa fa-trash"></i></a>
+								<a href="{{ $ApiComposer['widget_data']['apilist']['route_back'] }}" class="btn btn-default"><i class="fa fa-trash"></i></a>
 								<a href="{{route('hr.branch.apis.edit', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 								{{-- <a href="" class="btn btn-default"><i class="fa fa-eye"></i></a> --}}
 							</td>
