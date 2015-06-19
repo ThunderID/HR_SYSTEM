@@ -1,5 +1,5 @@
 <?php namespace App\Http\Controllers\Organisation\Branch;
-use Input, Session, App, Paginator, Redirect, DB;
+use Input, Session, App, Paginator, Redirect, DB, Config;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -31,10 +31,10 @@ class FingerController extends BaseController
 			App::abort(404);
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
 		$search['id'] 							= $branch_id;
 		$search['organisationid'] 				= $org_id;
@@ -54,52 +54,6 @@ class FingerController extends BaseController
 		$this->layout->page->controller_name 	= $this->controller_name;
 		$this->layout->page->data 				= $data;
 		$this->layout->page->branch 			= $branch;
-		return $this->layout;
-	}
-	
-	public function create($id = null)
-	{
-		if(Input::has('org_id'))
-		{
-			$org_id 							= Input::get('org_id');
-		}
-		else
-		{
-			$org_id 							= Session::get('user.organisation');
-		}
-
-		if(Input::has('branch_id'))
-		{
-			$branch_id 							= Input::get('branch_id');
-		}
-		else
-		{
-			App::abort(404);
-		}
-
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
-
-		$search['id'] 							= $branch_id;
-		$search['organisationid'] 				= $org_id;
-		$search['withattributes'] 				= ['organisation'];
-		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Branch, $search, $sort , 1, 1));
-		$contents 								= json_decode($results);
-
-		if(!$contents->meta->success)
-		{
-			App::abort(404);
-		}
-
-		$branch 								= json_decode(json_encode($contents->data), true);
-		$data 									= $branch['organisation'];
-
-		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.api.create', compact('id', 'data', 'branch'));
-
 		return $this->layout;
 	}
 	
@@ -128,6 +82,11 @@ class FingerController extends BaseController
 			App::abort(404);
 		}
 
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
+		
 		$search['id'] 							= $branch_id;
 		$search['organisationid'] 				= $org_id;
 		$sort 									= ['name' => 'asc'];
@@ -168,46 +127,5 @@ class FingerController extends BaseController
 
 		DB::rollback();
 		return Redirect::back()->withErrors($errors)->withInput();
-	}
-
-	public function show($id)
-	{
-		// ---------------------- LOAD DATA ----------------------
-		if(Input::has('org_id'))
-		{
-			$org_id 					= Input::get('org_id');
-		}
-		else
-		{
-			$org_id 					= Session::get('user.organisation');
-		}
-
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
-		
-		$search 						= ['id' => $id, 'organisationid' => $org_id, 'withattributes' => ['organisation']];
-		$results 						= $this->dispatch(new Getting(new Branch, $search, [] , 1, 1));
-		$contents 						= json_decode($results);
-		
-		if(!$contents->meta->success)
-		{
-			App::abort(404);
-		}
-
-		$branch 						= json_decode(json_encode($contents->data), true);
-		$data 							= $branch['organisation'];
-
-		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 			= view('pages.branch.show');
-		$this->layout->pages->data 		= $data;
-		$this->layout->pages->branch 	= $branch;
-		return $this->layout;
-	}
-
-	public function edit($id)
-	{
-		return $this->create($id);
 	}
 }

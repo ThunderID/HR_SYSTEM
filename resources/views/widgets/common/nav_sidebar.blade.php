@@ -41,16 +41,16 @@
                                                     <a href="">{{ $branch['name'] }} <span class="fa arrow"></span></a>
                                                     <ul class="nav nav-fifty-level">
                                                         <li>
-                                                            <a href="{{ route('hr.branch.contacts.index', ['org_id' => $value['id'], 'branch_id' => $branch['id']]) }}">Contact</a>
+                                                            <a href="{{ route('hr.branch.contacts.index', ['org_id' => $value['id'], 'branch_id' => $branch['id']]) }}">Kontak</a>
                                                         </li>
                                                         <li>
-                                                            <a href="{{ route('hr.branch.charts.index', ['org_id' => $value['id'], 'branch_id' => $branch['id']]) }}">Chart</a>
+                                                            <a href="{{ route('hr.branch.charts.index', ['org_id' => $value['id'], 'branch_id' => $branch['id']]) }}">Jabatan</a>
                                                         </li>
                                                         <li>
-                                                            <a href="{{ route('hr.branch.apis.index', ['org_id' => $value['id'], 'branch_id' => $branch['id']]) }}">Api</a>
+                                                            <a href="{{ route('hr.branch.apis.index', ['org_id' => $value['id'], 'branch_id' => $branch['id']]) }}">API</a>
                                                         </li>
                                                         <li>
-                                                            <a href="{{ route('hr.branch.fingers.index', ['org_id' => $value['id'], 'branch_id' => $branch['id']]) }}">Finger</a>
+                                                            <a href="{{ route('hr.branch.fingers.index', ['org_id' => $value['id'], 'branch_id' => $branch['id']]) }}">Absen Sidik Jari</a>
                                                         </li>
                                                     </ul>
                                                 </li>

@@ -3,7 +3,7 @@
 	['breadcrumb' => [
 						['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
 						['name' => $branch['name'], 'route' => route('hr.branches.show', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
-						['name' => 'Sidik Jari', 'route' => route('hr.branch.fingers.index', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
+						['name' => 'Absen Sidik Jari', 'route' => route('hr.branch.fingers.index', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
 					]
 	])
 @stop
@@ -30,7 +30,7 @@
 @section('content_body')
 	@include('widgets.fingerprint.table', [
 		'widget_template'		=> 'panel',
-		'widget_title'			=> $branch['name'],
+		'widget_title'			=> 'Absen Sidik Jari Cabang '.$branch['name'],
 		'widget_options'		=> 	[
 										'fingerprintlist'				=>
 										[
