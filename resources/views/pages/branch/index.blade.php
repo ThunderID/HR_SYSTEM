@@ -20,6 +20,12 @@
 @overwrite
 
 @section('content_filter')
+	@include('widgets.common.filter', [
+		'widget_template'		=> 'plain_no_title',
+		'widget_options'		=> [
+									'form_url'	=> ''
+									]
+	])
 @overwrite
 
 @section('content_body')	
@@ -37,7 +43,8 @@
 											'search'			=> ['defaultcontact' => true],
 											'sort'				=> [],
 											'page'				=> 1,
-											'per_page'			=> 12
+											'per_page'			=> 12,
+											'route_create'		=> route('hr.branches.create', ['org_id' => $data['id']])
 											]
 									]
 	])

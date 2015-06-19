@@ -1,9 +1,11 @@
-{!! HTML::style('plugins/select2/select2.css') !!}
-{!! HTML::script('plugins/select2/select2.3.5.min.js') !!}
+{{-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script> --}}
+{!! HTML::style('plugins/select2/css/select2.css') !!}
+{!! HTML::script('plugins/select2/js/select2.3.5.min.js') !!}
 
 <script type="text/javascript">
 	$(document).ready(function(){
-
+	$('select').select2();
 
 	// ---------------------------- BASIC SELECT2 ----------------------------
 	$('.select2').select2();

@@ -8,6 +8,7 @@
 	@overwrite
 
 	@section('widget_body')
+		<a href="{{ $BranchComposer['widget_data']['branchlist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
 		@if(isset($BranchComposer['widget_data']['branchlist']['branch']))
 			<div class="clearfix">&nbsp;</div>
 			<table class="table">
