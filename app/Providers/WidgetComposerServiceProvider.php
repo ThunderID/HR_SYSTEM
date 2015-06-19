@@ -52,7 +52,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// CALENDAR
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.calendar.table', 'widgets.calendar.form'], 	'App\Http\ViewComposers\CalendarComposer');
+		View::composer(['widgets.calendar.table', 'widgets.calendar.form', 'widgets.calendar.calendar'], 	'App\Http\ViewComposers\CalendarComposer');
 
 		// -----------------------------------------------------------------------------
 		// WORKLEAVE
@@ -78,7 +78,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// CHART
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.chart.list', 'widgets.chart.form'], 	'App\Http\ViewComposers\ChartComposer');
+		View::composer(['widgets.chart.list', 'widgets.chart.form', 'widgets.chart.table'], 	'App\Http\ViewComposers\ChartComposer');
 
 		// -----------------------------------------------------------------------------
 		// API
