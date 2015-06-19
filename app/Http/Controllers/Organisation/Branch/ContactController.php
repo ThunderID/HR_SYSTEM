@@ -186,7 +186,7 @@ class ContactController extends BaseController
 
 	public function destroy($id)
 	{
-		$attributes 						= ['email' => Config::get('user.email'), 'password' => 'admin'];
+		$attributes 						= ['email' => Config::get('user.email'), 'password' => Input::get('password')];
 
 		$results 							= $this->dispatch(new Checking(new Person, $attributes));
 

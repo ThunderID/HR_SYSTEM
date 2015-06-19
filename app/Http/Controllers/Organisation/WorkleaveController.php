@@ -1,13 +1,16 @@
 <?php namespace App\Http\Controllers\Organisation;
 
-use Input, Session, App, Paginator, Redirect, DB;
+use Input, Session, App, Paginator, Redirect, DB, Config;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
+use App\Console\Commands\Deleting;
+use App\Console\Commands\Checking;
 use App\Models\Organisation;
 use App\Models\Workleave;
 use App\Models\PersonWorkleave;
+use App\Models\Person;
 
 class WorkleaveController extends BaseController 
 {
@@ -26,10 +29,10 @@ class WorkleaveController extends BaseController
 			$org_id 								= Session::get('user.organisation');
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// 	App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
 		$search['id']								= $org_id;
 		$sort 										= ['name' => 'asc'];
@@ -59,10 +62,10 @@ class WorkleaveController extends BaseController
 			$org_id 							= Session::get('user.organisation');
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// 	App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
 		$search['id']							= $org_id;
 		$sort 									= ['name' => 'asc'];
@@ -99,10 +102,10 @@ class WorkleaveController extends BaseController
 			$org_id 							= Session::get('user.organisation');
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// 	App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
 		$errors 								= new MessageBag();
 
@@ -138,4 +141,54 @@ class WorkleaveController extends BaseController
 		return $this->create($id);
 	}
 
+	public function destroy($id)
+	{
+		$attributes 						= ['email' => Config::get('user.email'), 'password' => Input::get('password')];
+
+		$results 							= $this->dispatch(new Checking(new Person, $attributes));
+
+		$content 							= json_decode($results);
+
+		if($content->meta->success)
+		{
+			if(Input::has('org_id'))
+			{
+				$org_id 					= Input::get('org_id');
+			}
+			else
+			{
+				$org_id 					= Session::get('user.organisation');
+			}
+
+			if(!in_array($org_id, Config::get('user.orgids')))
+			{
+				App::abort(404);
+			}
+
+			$search 						= ['id' => $id, 'organisationid' => $org_id];
+			$results 						= $this->dispatch(new Getting(new Workleave, $search, [] , 1, 1));
+			$contents 						= json_decode($results);
+			
+			if(!$contents->meta->success)
+			{
+				App::abort(404);
+			}
+
+			$results 						= $this->dispatch(new Deleting(new Workleave, $id));
+			$contents 						= json_decode($results);
+
+			if (!$contents->meta->success)
+			{
+				return Redirect::back()->withErrors($contents->meta->errors);
+			}
+			else
+			{
+				return Redirect::route('hr.workleaves.index', ['org_id' => $org_id])->with('local_msg', $errors)->with('alert_success', 'Cabang "' . $contents->data->name. '" sudah dihapus');
+			}
+		}
+		else
+		{
+			return Redirect::back()->withErrors(['Password yang Anda masukkan tidak sah!']);
+		}
+	}
 }

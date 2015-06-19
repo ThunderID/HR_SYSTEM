@@ -16,7 +16,6 @@ class WorkleaveComposer extends WidgetComposer
 		$widget_rules['sort'] 				= ['array'];								// sort: label for sort
 		$widget_rules['page'] 				= ['required', 'numeric'];					// page: label for page
 		$widget_rules['per_page'] 			= ['required', 'numeric', 'max:100'];		// per page: label for per page
-		$widget_rules['identifier'] 		= ['required', 'numeric'];					// identifier
 
 		return $widget_rules;
 	}
@@ -25,7 +24,7 @@ class WorkleaveComposer extends WidgetComposer
 	{
 		$widget_data['search']['organisationid'] 	= $options['organisation_id'];
 
-		$results 									=  $this->dispatch(new Getting(new Workleave, $options['search'], $options['sort'] , $options['page'], $options['per_page']));
+		$results 									=  $this->dispatch(new Getting(new Workleave, $options['search'], $options['sort'] , (int)$options['page'], (int)$options['per_page']));
 
 		$contents 									= json_decode($results);
 
