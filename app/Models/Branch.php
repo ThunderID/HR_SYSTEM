@@ -61,6 +61,7 @@ class Branch extends BaseModel {
 											'checkcreate' 					=> 'CheckCreate',
 											'withattributes' 				=> 'WithAttributes',
 											
+											'contactid' 					=> 'ContactID',
 											'defaultcontact' 				=> 'DefaultContact'
 										];
 
@@ -72,6 +73,7 @@ class Branch extends BaseModel {
 											'checkcreate' 					=> 'Could be array or string (time)',
 											'withattributes' 				=> 'Must be array of relationship',
 											
+											'contactid' 					=> 'ID of contact',
 											'defaultcontact' 				=> 'Must be true or false'
 										];
 

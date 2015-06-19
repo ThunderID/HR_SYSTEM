@@ -3,7 +3,7 @@
 @if (!$widget_error_count)
 
 	@section('widget_title')
-	<h1> Cabang </h1>
+	<h1> {!! $widget_title  or 'Cabang' !!} </h1>
 	<small>Total data {{$BranchComposer['widget_data']['branchlist']['branch-pagination']->total()}}</small>
 	@overwrite
 

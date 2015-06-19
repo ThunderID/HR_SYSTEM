@@ -21,7 +21,7 @@ class ContactComposer extends WidgetComposer
 
 	protected function setData($options)
 	{
-		$results 								=  $this->dispatch(new Getting(new Contact, $options['search'], $options['sort'] , $options['page'], $options['per_page']));
+		$results 								=  $this->dispatch(new Getting(new Contact, $options['search'], $options['sort'] , (int)$options['page'], (int)$options['per_page']));
 
 		$contents 								= json_decode($results);
 
@@ -51,7 +51,7 @@ class ContactComposer extends WidgetComposer
 			$widget_data['contact-pagination'] 	= new Paginator($page['total_data'], $page['total_data'], $page['per_page'], $page['page']);
 			$widget_data['contact-display'] 	= $page;
 		}
-		
+
 		return $widget_data;
 	}
 }

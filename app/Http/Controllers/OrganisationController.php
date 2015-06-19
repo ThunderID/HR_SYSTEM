@@ -182,7 +182,7 @@ class OrganisationController extends BaseController
 		return $this->create($id);
 	}
 
-	function destroy($id)
+	public function destroy($id)
 	{
 		$attributes 						= ['email' => Config::get('user.email'), 'password' => 'admin'];
 

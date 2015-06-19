@@ -1,12 +1,12 @@
 <?php
-	$ContactComposer['widget_data']['contactlist']['contact-pagination']->setPath(route('hr.person.contacts.index'));
+	$ContactComposer['widget_data']['contactlist']['contact-pagination']->setPath($ContactComposer['widget_data']['contactlist']['route']);
  ?>
 
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
 @if (!$widget_error_count)
 	@section('widget_title')
-	<h1> {{ $widget_title or 'Kontak' }} </h1>
+	<h1> {!! $widget_title or 'Kontak' !!} </h1>
 	<small>Total data {{ $ContactComposer['widget_data']['contactlist']['contact-pagination']->total() }}</small>
 
 	@overwrite
@@ -39,7 +39,7 @@
 									@endif
 								</td>
 								<td class="text-right">
-									<a href="" class="btn btn-default"><i class="fa fa-trash"></i></a>
+									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route($ContactComposer['widget_data']['contactlist']['deleteroute'], [$value['id'], 'org_id' => $data['id'], $ContactComposer['widget_data']['contactlist']['next'] => $ContactComposer['widget_data']['contactlist']['nextid'] ]) }}"><i class="fa fa-trash"></i></a>
 									<a href="{{route('hr.branch.contacts.edit', ['id' => $value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 								</td>
 							</tr>

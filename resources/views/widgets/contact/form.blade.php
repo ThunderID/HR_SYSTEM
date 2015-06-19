@@ -1,7 +1,7 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
 @section('widget_title')
-<h1> Kontak </h1>
+	<h1> {{ is_null($id) ? 'Tambah Kontak' : 'Ubah Kontak'. (isset($ContactComposer['widget_data']['contactlist']['contact']['branch']['name']) ? ' Cabang '.$ContactComposer['widget_data']['contactlist']['contact']['branch']['name'] : $ContactComposer['widget_data']['contactlist']['contact']['person']['name'])}} </h1> 
 @overwrite
 
 @section('widget_body')
@@ -12,7 +12,7 @@
 				<label class="control-label">Item</label>
 			</div>	
 			<div class="col-md-10">
-				{!!Form::input('text', 'value', $ContactComposer['widget_data']['contactlist']['contact']['item'], ['class' => 'select2-tag-contact', 'style' => 'width:100%'])!!}
+				{!!Form::input('text', 'item', $ContactComposer['widget_data']['contactlist']['contact']['item'], ['class' => 'select2-tag-contact', 'style' => 'width:100%'])!!}
 			</div>
 		</div>
 		<div class="form-group">

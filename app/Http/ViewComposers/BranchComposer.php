@@ -24,7 +24,7 @@ class BranchComposer extends WidgetComposer
 	{
 		$widget_data['search']['organisationid'] = $options['organisation_id'];
 
-		$results 								=  $this->dispatch(new Getting(new Branch, $options['search'], $options['sort'] , $options['page'], $options['per_page']));
+		$results 								=  $this->dispatch(new Getting(new Branch, $options['search'], $options['sort'] , (int)$options['page'], (int)$options['per_page']));
 
 		$contents 								= json_decode($results);
 
@@ -55,7 +55,7 @@ class BranchComposer extends WidgetComposer
 			$widget_data['branch-pagination']->setPath(route('hr.branches.index'));
 			$widget_data['branch-display'] 		= $page;
 		}
-		
+
 		return $widget_data;
 	}
 }

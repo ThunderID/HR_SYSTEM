@@ -17,7 +17,6 @@
 		'widget_options'		=> 	[
 										'sidebar'				=> 
 										[
-											'identifier'		=> 1,
 											'search'			=> ['withattributes' => 'branches'],
 											'sort'				=> [],
 											'page'				=> 1,
@@ -30,18 +29,27 @@
 @section('content_body')
 			@include('widgets.contact.table', [
 				'widget_template'		=> 'panel',
-				'widget_title'			=> $branch['name'],
+				'widget_title'			=> 'Kontak Cabang '.$branch['name'].((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 				'widget_options'		=> 	[
 												'contactlist'			=>
 												[
-													'identifier'		=> 1,
 													'search'			=> ['branchid' => $branch['id']],
 													'sort'				=> ['is_default' => 'desc'],
-													'page'				=> 1,
-													'per_page'			=> 12
+													'page'				=> (Input::has('page') ? Input::get('page') : 1),
+													'per_page'			=> 12,
+													'route'				=> route('hr.branch.contacts.index'),
+													'deleteroute'		=> 'hr.branch.contacts.delete',
+													'next'				=> 'branch_id',
+													'nextid'			=> $branch['id']
 												]
 											]
 			])
+
+	{!! Form::open(array('route' => array('hr.branch.contacts.delete', 0),'method' => 'DELETE')) !!}
+		@include('widgets.modal.delete', [
+			'widget_template'		=> 'plain_no_title'
+		])
+	{!! Form::close() !!}
 @overwrite
 
 @section('content_filter')

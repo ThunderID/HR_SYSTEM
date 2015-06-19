@@ -4,6 +4,7 @@
 						['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
 						['name' => $branch['name'], 'route' => route('hr.branches.show', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
 						['name' => 'Kontak', 'route' => route('hr.branches.show', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
+						['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.branch.contacts.create', ['org_id' => $data['id'], 'branch_id' => $branch['id']]) : route('hr.branch.contacts.edit', ['org_id' => $data['id'], 'branch_id' => $branch['id'], 'id' => $id]) )]
 					]
 	])
 @stop
@@ -37,7 +38,7 @@
 									[
 										'form_url'			=> route('hr.branch.contacts.store', ['id' => $id, 'branch_id' => $branch['id'], 'org_id' => $data['id']]),
 										'organisation_id'	=> $data['id'],
-										'search'			=> ['id' => $id],
+										'search'			=> ['id' => $id ,'withattributes' => ['branch']],
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 1,
