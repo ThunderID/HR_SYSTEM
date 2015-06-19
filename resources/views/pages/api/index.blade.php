@@ -17,11 +17,10 @@
 		'widget_options'		=> 	[
 										'sidebar'				=>
 										[
-											'identifier'		=> 1,
 											'search'			=> ['withattributes' => 'branches'],
 											'sort'				=> [],
 											'page'				=> 1,
-											'per_page'			=> 12,
+											'per_page'			=> 100,
 										]
 									]
 	])
@@ -29,21 +28,27 @@
 
 @section('content_body')
 	@include('widgets.api.table', [
+		'widget_title'			=> 'API Cabang '.$branch['name'].((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_template'		=> 'panel',
 		'widget_options'		=> 	[
 										'apilist'				=>
 										[
-											'identifier'		=> 1,
 											'branch_id'			=> $branch['id'],
 											'search'			=> ['branchid' => $branch['id']],
 											'sort'				=> ['branch_id' => 'asc'],
-											'page'				=> 1,
-											'per_page'			=> 100,
+											'page'				=> (Input::has('page') ? Input::get('page') : 1),
+											'per_page'			=> 12,
 											'route_create'		=> route('hr.branch.apis.create', ['org_id' => $data['id'], 'branch_id' => $branch['id']]),
 											'route_back'		=> route('hr.branch.apis.index', ['org_id' => $data['id'], 'branch_id' => $branch['id']])
 										]
 									]
 	])
+
+	{!! Form::open(array('route' => array('hr.branch.apis.delete', 0),'method' => 'DELETE')) !!}
+		@include('widgets.modal.delete', [
+			'widget_template'		=> 'plain_no_title'
+		])
+	{!! Form::close() !!}
 @overwrite
 
 @section('content_filter')

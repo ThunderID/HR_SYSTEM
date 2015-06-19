@@ -12,6 +12,7 @@
 	@overwrite
 
 	@section('widget_body')
+			<a href="{{ $ContactComposer['widget_data']['contactlist']['route_create'] }}" class="btn btn-primary">Tambah</a>
 			@if(isset($ContactComposer['widget_data']['contactlist']['contact']))
 				<div class="clearfix">&nbsp;</div>
 				<table class="table">
@@ -39,7 +40,7 @@
 									@endif
 								</td>
 								<td class="text-right">
-									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route($ContactComposer['widget_data']['contactlist']['deleteroute'], [$value['id'], 'org_id' => $data['id'], $ContactComposer['widget_data']['contactlist']['next'] => $ContactComposer['widget_data']['contactlist']['nextid'] ]) }}"><i class="fa fa-trash"></i></a>
+									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route($ContactComposer['widget_data']['contactlist']['route_delete'], [$value['id'], 'org_id' => $data['id'], $ContactComposer['widget_data']['contactlist']['next'] => $ContactComposer['widget_data']['contactlist']['nextid'] ]) }}"><i class="fa fa-trash"></i></a>
 									<a href="{{route('hr.branch.contacts.edit', ['id' => $value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 								</td>
 							</tr>

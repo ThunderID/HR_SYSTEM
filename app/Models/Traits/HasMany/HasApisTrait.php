@@ -20,4 +20,9 @@ trait HasApisTrait {
 	{
 		return $this->hasMany('App\Models\Api');
 	}
+
+	public function scopeApiID($query, $variable)
+	{
+		return $query->whereHas('apis', function($q)use($variable){$q->id($variable);});
+	}
 }

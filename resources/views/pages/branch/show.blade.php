@@ -38,7 +38,8 @@
 													'page'				=> (Input::has('page') ? Input::get('page') : 1),
 													'per_page'			=> 12,
 													'route'				=> route('hr.branch.contacts.index'),
-													'deleteroute'		=> 'hr.branch.contacts.delete',
+													'route_create'		=> route('hr.branch.contacts.create', ['org_id' => $data['id'], 'branch_id' => $branch['id']]),
+													'route_delete'		=> 'hr.branch.contacts.delete',
 													'next'				=> 'branch_id',
 													'nextid'			=> $branch['id']
 												]

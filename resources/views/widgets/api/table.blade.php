@@ -6,7 +6,7 @@
 	@extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
 	@section('widget_title')
-		<h1> {{ $widget_title or 'Api' }} </h1>
+		<h1> {!! $widget_title or 'Api' !!} </h1>
 		<small>Total data {{$ApiComposer['widget_data']['apilist']['api-pagination']->total()}}</small>
 	@overwrite
 
@@ -32,9 +32,8 @@
 								{{$value['secret']}}
 							</td>
 							<td class="text-right">
-								<a href="{{ $ApiComposer['widget_data']['apilist']['route_back'] }}" class="btn btn-default"><i class="fa fa-trash"></i></a>
+								<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.branch.apis.delete', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id'] ]) }}"><i class="fa fa-trash"></i></a>
 								<a href="{{route('hr.branch.apis.edit', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-								{{-- <a href="" class="btn btn-default"><i class="fa fa-eye"></i></a> --}}
 							</td>
 						</tr>
 					</tbody>
