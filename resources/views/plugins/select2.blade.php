@@ -1,22 +1,22 @@
-{{-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script> --}}
-{!! HTML::style('plugins/select2/css/select2.css') !!}
-{!! HTML::script('plugins/select2/js/select2.3.5.min.js') !!}
+{!! HTML::style('plugins/select2/select2.css') !!}
+{!! HTML::style('plugins/select2/select2-bootstrap.css') !!}
+{!! HTML::script('plugins/select2/select2.min.js') !!}
 
 <script type="text/javascript">
 	$(document).ready(function(){
-	$('select').select2();
-
 	// ---------------------------- BASIC SELECT2 ----------------------------
 	$('.select2').select2();
 
 	// ---------------------------- SELECT2 SKINs ----------------------------
 	
 	$('.select2-tag-contact').select2({
-		tokenSeparators: [",", " ", "_", "-"],
-		tags: 'true',
+ 		tokenSeparators: [",", " ", "_", "-"],
+		tags: ['alamat', 'bbm', 'email', 'line', 'phone', 'whatsapp'],
+		placeholder: "",
+		maximumSelectionSize: 1,
+		selectOnBlur: true,
 		placeholder: ""
-	});
+ 	});
 
 	// ---------------------------- SELECT2 ARTICLE ----------------------------
 	// function formatArticle (repo) 
