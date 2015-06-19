@@ -2,7 +2,7 @@
 
 @if (!$widget_error_count)
 	@section('widget_title')
-		<h1> {{ is_null($id) ? 'Tambah Template Cuti' : 'Ubah '. $WorkleaveComposer['widget_data']['workleavelist']['workleave']['name']}} </h1> 
+		<h1> {{ is_null($id) ? 'Tambah Template Cuti' : 'Ubah Template Cuti '. $WorkleaveComposer['widget_data']['workleavelist']['workleave']['name']}} </h1> 
 	@overwrite
 
 	@section('widget_body')

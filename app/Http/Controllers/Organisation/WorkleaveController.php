@@ -116,7 +116,20 @@ class WorkleaveController extends BaseController
 		$is_success 							= json_decode($content);
 		if(!$is_success->meta->success)
 		{
-			$errors->add('Workleave', $is_success->meta->errors);
+			foreach ($is_success->meta->errors as $key => $value) 
+			{
+				if(is_array($value))
+				{
+					foreach ($value as $key2 => $value2) 
+					{
+						$errors->add('Workleave', $value2);
+					}
+				}
+				else
+				{
+					$errors->add('Workleave', $value);
+				}
+			}
 		}
 
 		if(!$errors->count())

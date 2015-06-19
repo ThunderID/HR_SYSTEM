@@ -1,5 +1,10 @@
 @section('nav_topbar')
-	@include('widgets.common.nav_topbar', ['breadcrumb' => [['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], ['name' => 'Template Dokumen', 'route' => route('hr.documents.index', ['org_id' => $data['id']]) ]]])
+	@include('widgets.common.nav_topbar', 
+	['breadcrumb' => 	[
+							['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
+							['name' => 'Template Dokumen', 'route' => route('hr.documents.index', ['org_id' => $data['id']]) ]
+						]
+	])
 @stop
 
 @section('nav_sidebar')
@@ -11,11 +16,10 @@
 		'widget_options'		=> [
 										'sidebar'				=> 
 										[
-											'identifier'		=> 1,
 											'search'			=> [],
 											'sort'				=> [],
 											'page'				=> 1,
-											'per_page'			=> 12,
+											'per_page'			=> 100,
 										]
 									]
 	])
@@ -27,22 +31,27 @@
 @section('content_body')	
 	@include('widgets.document.table', [
 		'widget_template'		=> 'panel',
-		'widget_title'			=> 'Dokumen Index',		
+		'widget_title'			=> 'Template Dokumen '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
 										'documentlist'			=>
 										[
 											'organisation_id'	=> $data['id'],
-											'identifier'		=> 1,
 											'search'			=> [],
 											'sort'				=> ['name' => 'asc'],
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
 											'per_page'			=> 12,
+											'route_create'		=> route('hr.documents.create', ['org_id' => $data['id']])
 										]
 									]
 	])
 
+	{!! Form::open(array('route' => array('hr.documents.delete', 0),'method' => 'DELETE')) !!}
+		@include('widgets.modal.delete', [
+			'widget_template'		=> 'plain_no_title'
+		])
+	{!! Form::close() !!}
 @overwrite
 
 @section('content_footer')

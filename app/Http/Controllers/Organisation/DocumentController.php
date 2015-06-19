@@ -1,13 +1,16 @@
 <?php namespace App\Http\Controllers\Organisation;
 
-use Input, Session, App, Paginator, Redirect, DB;
+use Input, Session, App, Paginator, Redirect, DB, Config;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
+use App\Console\Commands\Checking;
+use App\Console\Commands\Deleting;
 use App\Models\Organisation;
 use App\Models\Document;
 use App\Models\Template;
+use App\Models\Person;
 
 class DocumentController extends BaseController 
 {
@@ -26,10 +29,10 @@ class DocumentController extends BaseController
 			$org_id 								= Session::get('user.organisation');
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// 	App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
 		$search['id']								= $org_id;
 		$sort 										= ['name' => 'asc'];
@@ -59,10 +62,10 @@ class DocumentController extends BaseController
 			$org_id 							= Session::get('user.organisation');
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// 	App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
 		$search['id']							= $org_id;
 		$sort 									= ['name' => 'asc'];
@@ -99,10 +102,10 @@ class DocumentController extends BaseController
 			$org_id 							= Session::get('user.organisation');
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// 	App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
 		$errors 								= new MessageBag();
 
@@ -113,9 +116,21 @@ class DocumentController extends BaseController
 		$is_success 							= json_decode($content);
 		if(!$is_success->meta->success)
 		{
-			$errors->add('Document', $is_success->meta->errors);
+			foreach ($is_success->meta->errors as $key => $value) 
+			{
+				if(is_array($value))
+				{
+					foreach ($value as $key2 => $value2) 
+					{
+						$errors->add('Document', $value2);
+					}
+				}
+				else
+				{
+					$errors->add('Document', $value);
+				}
+			}
 		}
-
 		if(isset($attributes['templates']))
 		{
 			foreach ($attributes['templates'] as $key => $value) 
@@ -162,4 +177,54 @@ class DocumentController extends BaseController
 		return $this->create($id);
 	}
 
+	public function destroy($id)
+	{
+		$attributes 						= ['email' => Config::get('user.email'), 'password' => Input::get('password')];
+
+		$results 							= $this->dispatch(new Checking(new Person, $attributes));
+
+		$content 							= json_decode($results);
+
+		if($content->meta->success)
+		{
+			if(Input::has('org_id'))
+			{
+				$org_id 					= Input::get('org_id');
+			}
+			else
+			{
+				$org_id 					= Session::get('user.organisation');
+			}
+
+			if(!in_array($org_id, Config::get('user.orgids')))
+			{
+				App::abort(404);
+			}
+
+			$search 						= ['id' => $id, 'organisationid' => $org_id];
+			$results 						= $this->dispatch(new Getting(new Document, $search, [] , 1, 1));
+			$contents 						= json_decode($results);
+			
+			if(!$contents->meta->success)
+			{
+				App::abort(404);
+			}
+
+			$results 						= $this->dispatch(new Deleting(new Document, $id));
+			$contents 						= json_decode($results);
+
+			if (!$contents->meta->success)
+			{
+				return Redirect::back()->withErrors($contents->meta->errors);
+			}
+			else
+			{
+				return Redirect::route('hr.documents.index', ['org_id' => $org_id])->with('local_msg', $errors)->with('alert_success', 'Cabang "' . $contents->data->name. '" sudah dihapus');
+			}
+		}
+		else
+		{
+			return Redirect::back()->withErrors(['Password yang Anda masukkan tidak sah!']);
+		}
+	}
 }
