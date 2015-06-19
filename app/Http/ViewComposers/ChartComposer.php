@@ -22,7 +22,7 @@ class ChartComposer extends WidgetComposer
 
 	protected function setData($options)
 	{
-		$widget_data['search']['organisationid'] = $options['organisation_id'];
+		$options['search']['organisationid'] 	= $options['organisation_id'];
 
 		$results 								=  $this->dispatch(new Getting(new Chart, $options['search'], $options['sort'] , $options['page'], $options['per_page']));
 

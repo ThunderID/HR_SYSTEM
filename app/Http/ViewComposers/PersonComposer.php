@@ -10,23 +10,23 @@ class PersonComposer extends WidgetComposer
 {
 	protected function setRules($options)
 	{
-		$widget_rules['form_url']			= ['url'];									// url for form submit
-		$widget_rules['organisation_id'] 	= ['required', 'alpha_dash'];				// organisation_id: filter organisation
-		$widget_rules['search'] 			= ['array'];								// search: label for search
-		$widget_rules['sort'] 				= ['array'];								// sort: label for sort
-		$widget_rules['page'] 				= ['required', 'numeric'];					// page: label for page
-		$widget_rules['per_page'] 			= ['required', 'numeric', 'max:100'];		// per page: label for per page
+		$widget_rules['form_url']					= ['url'];									// url for form submit
+		$widget_rules['organisation_id'] 			= ['required', 'alpha_dash'];				// organisation_id: filter organisation
+		$widget_rules['search'] 					= ['array'];								// search: label for search
+		$widget_rules['sort'] 						= ['array'];								// sort: label for sort
+		$widget_rules['page'] 						= ['required', 'numeric'];					// page: label for page
+		$widget_rules['per_page'] 					= ['required', 'numeric', 'max:100'];		// per page: label for per page
 
 		return $widget_rules;
 	}
 
 	protected function setData($options)
 	{
-		$widget_data['search']['organisationid'] 	= $options['organisation_id'];
+		$options['search']['organisationid'] 		= $options['organisation_id'];
 
-		$results 								=  $this->dispatch(new Getting(new Person, $options['search'], $options['sort'] , $options['page'], $options['per_page']));
+		$results 									=  $this->dispatch(new Getting(new Person, $options['search'], $options['sort'] , (int)$options['page'], (int)$options['per_page']));
 
-		$contents 								= json_decode($results);
+		$contents 									= json_decode($results);
 
 		if(!$contents->meta->success)
 		{

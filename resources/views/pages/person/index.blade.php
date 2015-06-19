@@ -11,7 +11,6 @@
 		'widget_options'		=> 	[
 										'sidebar'				=> 
 										[
-											'identifier'		=> 1,
 											'search'			=> [],
 											'sort'				=> [],
 											'page'				=> 1,
@@ -27,21 +26,27 @@
 @section('content_body')	
 	@include('widgets.person.table', [
 		'widget_template'		=> 'panel',
-		'widget_title'			=> 'Structure',		
+		'widget_title'			=> 'Data Karyawan '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
 										'personlist'			=>
 										[
-											'identifier'		=> 1,
 											'organisation_id'	=> $data['id'],
 											'search'			=> ['currentwork' => null, 'defaultemail' => true, 'checkwork' => true, 'withattributes' => ['works.branch']],
 											'sort'				=> ['name' => 'asc'],
-											'page'				=> 1,
+											'page'				=> (Input::has('page') ? Input::get('page') : 1),
 											'per_page'			=> 12,
+											'route_create'		=> route('hr.persons.create', ['org_id' => $data['id']])
 										]
 									]
 	])
+
+	{!! Form::open(array('route' => array('hr.persons.delete', 0),'method' => 'DELETE')) !!}
+		@include('widgets.modal.delete', [
+			'widget_template'		=> 'plain_no_title'
+		])
+	{!! Form::close() !!}
 
 @overwrite
 
