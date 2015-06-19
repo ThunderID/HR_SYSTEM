@@ -39,6 +39,8 @@
 											'sort'				=> ['branch_id' => 'asc'],
 											'page'				=> 1,
 											'per_page'			=> 100,
+											'route_create'		=> route('hr.branch.apis.create', ['org_id' => $data['id'], 'branch_id' => $branch['id']]),
+											'route_back'		=> route('hr.branch.apis.index', ['org_id' => $data['id'], 'branch_id' => $branch['id']])
 										]
 									]
 	])

@@ -28,13 +28,13 @@
 				<label class="control-label">Start</label>
 			</div>	
 			<div class="col-md-4">
-				{!!Form::input('text', 'start', $CalendarComposer['widget_data']['calendarlist']['calendar']['start'], ['class' => 'form-control'])!!}
+				{!!Form::input('text', 'start', $CalendarComposer['widget_data']['calendarlist']['calendar']['start'], ['class' => 'form-control time-mask'])!!}
 			</div>
 			<div class="col-md-1 col-md-offset-1">
 				<label class="control-label">End</label>
 			</div>	
 			<div class="col-md-4">
-				{!!Form::input('text', 'end', $CalendarComposer['widget_data']['calendarlist']['calendar']['end'], ['class' => 'form-control'])!!}
+				{!!Form::input('text', 'end', $CalendarComposer['widget_data']['calendarlist']['calendar']['end'], ['class' => 'form-control time-mask'])!!}
 			</div>
 		</div>
 		<div class="form-group">

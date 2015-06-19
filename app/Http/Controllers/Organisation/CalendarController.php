@@ -129,4 +129,11 @@ class CalendarController extends BaseController
 		DB::rollback();
 		return Redirect::back()->withErrors($errors)->withInput();
 	}
+
+	public function edit($id)
+	{
+		return $this->create($id);
+	}
+
+	
 }

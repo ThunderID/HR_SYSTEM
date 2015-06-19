@@ -1,45 +1,42 @@
 {!! HTML::style('plugins/select2/select2.css') !!}
-{!! HTML::style('plugins/select2-skin/css/select2-skins.min.css') !!}
-{!! HTML::script('plugins/select2/select2.min.js') !!}
+{!! HTML::script('plugins/select2/select2.3.5.min.js') !!}
 
-<script>
+<script type="text/javascript">
+	$(document).ready(function(){
+
+
 	// ---------------------------- BASIC SELECT2 ----------------------------
 	$('.select2').select2();
 
 	// ---------------------------- SELECT2 SKINs ----------------------------
-	$('.select2-skin').select2({
-		containerCssClass: 'tpx-select2-container',
-		dropdownCssClass: 'tpx-select2-drop'
-	});
-
+	
 	$('.select2-tag-contact').select2({
 		tokenSeparators: [",", " ", "_", "-"],
-		tags: ['alamat', 'bbm', 'email', 'line', 'phone', 'whatsapp'],
-		placeholder: "",
-		maximumSelectionSize: 1,
-		selectOnBlur: true
+		tags: 'true',
+		placeholder: ""
 	});
 
 	// ---------------------------- SELECT2 ARTICLE ----------------------------
-	function formatArticle (repo) 
-	{
-		if (repo.loading) return repo.text;
+	// function formatArticle (repo) 
+	// {
+	// 	if (repo.loading) return repo.text;
 
-		var markup = '<div class="clearfix">' +
-						'<div class="col-sm-1">' +
-							'<img src="' + repo.thumbnail + '" style="max-width: 100%" />' +
-						'</div>' +
-						'<div clas="col-sm-10">' +
-							'<div class="col-sm-10">' + repo.title + '</div>' +
-						'</div>' + 
-					'</div>';
-		markup += '</div>';
+	// 	var markup = '<div class="clearfix">' +
+	// 					'<div class="col-sm-1">' +
+	// 						'<img src="' + repo.thumbnail + '" style="max-width: 100%" />' +
+	// 					'</div>' +
+	// 					'<div clas="col-sm-10">' +
+	// 						'<div class="col-sm-10">' + repo.title + '</div>' +
+	// 					'</div>' + 
+	// 				'</div>';
+	// 	markup += '</div>';
 
-		return markup;
-	}
+	// 	return markup;
+	// }
 
-	function formatArticleSelection (repo) 
-	{
-		return repo.title;
-	}	
+	// function formatArticleSelection (repo) 
+	// {
+	// 	return repo.title;
+	// }
+	});	
 </script>

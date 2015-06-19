@@ -6,6 +6,7 @@
 @overwrite
 
 @section('widget_body')
+	<a href="{{ $CalendarComposer['widget_data']['calendarlist']['route_create'] }}" class="btn btn-primary">Tambah</a>
 	@if(isset($CalendarComposer['widget_data']['calendarlist']['calendar']))
 		<div class="clearfix">&nbsp;</div>
 		<table class="table">
