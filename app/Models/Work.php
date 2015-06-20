@@ -69,6 +69,8 @@ class Work extends BaseModel {
 											'calendarid' 				=> 'CalendarID', 
 											'chartid' 					=> 'ChartID', 
 											'personid' 					=> 'PersonID', 
+											'status' 					=> 'Status', 
+											'active' 					=> 'Active', 
 											'withattributes' 			=> 'WithAttributes'
 										];
 
@@ -77,6 +79,8 @@ class Work extends BaseModel {
 											'calendarid' 				=> 'Could be array or integer', 
 											'chartid' 					=> 'Could be array or integer', 
 											'personid' 					=> 'Could be array or integer', 
+											'status' 					=> 'Could be array or string', 
+											'active' 					=> 'Need to be true', 
 											'withattributes' 			=> 'Must be array of relationship',
 										];
 
@@ -135,5 +139,10 @@ class Work extends BaseModel {
 			return $query->whereIn('status', $variable);
 		}
 		return $query->where('status', $variable);
+	}
+
+	public function scopeActive($query, $variable)
+	{
+		return $query->wherenull('end');
 	}
 }

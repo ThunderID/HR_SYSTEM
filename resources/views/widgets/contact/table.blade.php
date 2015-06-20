@@ -41,7 +41,7 @@
 								</td>
 								<td class="text-right">
 									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route($ContactComposer['widget_data']['contactlist']['route_delete'], [$value['id'], 'org_id' => $data['id'], $ContactComposer['widget_data']['contactlist']['next'] => $ContactComposer['widget_data']['contactlist']['nextid'] ]) }}"><i class="fa fa-trash"></i></a>
-									<a href="{{route('hr.branch.contacts.edit', ['id' => $value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									<a href="{{route($ContactComposer['widget_data']['contactlist']['route_edit'], ['id' => $value['id'], 'org_id' => $data['id'],  $ContactComposer['widget_data']['contactlist']['next'] => $ContactComposer['widget_data']['contactlist']['nextid'] ])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 								</td>
 							</tr>
 						</tbody>

@@ -52,7 +52,7 @@ use Str, Validator, DateTime, Exception;
 
 class Chart extends BaseModel {
 
-	//use SoftDeletes;
+	// use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasBranchTrait;
 	use \App\Models\Traits\HasMany\HasChartsTrait;
 	use \App\Models\Traits\HasMany\HasWorkleavesTrait;
