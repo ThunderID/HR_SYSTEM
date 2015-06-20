@@ -1,11 +1,14 @@
 <?php namespace App\Http\Controllers\Organisation\Person;
-use Input, Session, App, Paginator, Redirect, DB;
+use Input, Session, App, Paginator, Redirect, DB, Config, Response, DateTime, DateInterval, DatePeriod;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
+use App\Models\ProcessLog;
 use App\Models\Person;
+use App\Models\Work;
 use App\Models\Schedule;
+use App\Models\PersonSchedule;
 
 class ScheduleController extends BaseController
 {
@@ -31,31 +34,281 @@ class ScheduleController extends BaseController
 			App::abort(404);
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
+		if(Input::has('start'))
+		{
+			$start 								= Input::get('start');
+		}
+		else
+		{
+			$start 								= date('Y-m-d', strtotime('First Day of this month'));
+		}
+
+		if(Input::has('end'))
+		{
+			$end 								= Input::get('end');
+		}
+		else
+		{
+			$end 								= date('Y-m-d', strtotime('First Day of next month'));
+		}
+
+		//check if person worked or not
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
-		$search['withattributes'] 				= ['organisation'];
-		$search['checkwork'] 					= true;
 		$sort 									= ['name' => 'asc'];
 		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
 
 		if(!$contents->meta->success)
 		{
+			return Response::json(['message' => 'Not Found2'], 404);
+		}
+
+		$person 								= json_decode(json_encode($contents->data), true);
+
+		unset($search);
+		unset($sort);
+
+		//look for person calendar via work
+		$search['personid'] 					= $person_id;
+		$search['status'] 						= ['contract','trial','internship','permanent','previous'];
+		$search['active'] 						= true;
+		$search['withattributes'] 				= ['calendar'];
+		$sort 									= ['start' => 'asc'];
+		$results 								= $this->dispatch(new Getting(new Work, $search, $sort , 1, 1));
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			return Response::json(['message' => 'Not Found3'], 404);
+		}
+
+		$work 									= json_decode(json_encode($contents->data), true);
+		$wcalendar 								= $work['calendar'];
+
+		unset($search);
+		unset($sort);
+
+		//look for schedule based on work calendar
+		$search['calendarid'] 					= $wcalendar;
+		$search['ondate'] 						= [$start, $end];
+		$sort 									= ['on' => 'asc'];
+		$results 								= $this->dispatch(new Getting(new Schedule, $search, $sort , 1, 100));
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			return Response::json(['message' => 'Not Found4'], 404);
+		}
+
+		$cschedule 								= json_decode(json_encode($contents->data), true);
+
+		unset($search);
+		unset($sort);
+
+		//look for person schedule
+		$search['personid'] 					= $person_id;
+		$search['ondate'] 						= [$start, $end];
+		$sort 									= ['on' => 'asc'];
+		$results 								= $this->dispatch(new Getting(new PersonSchedule, $search, $sort , 1, 100));
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			return Response::json(['message' => 'Not Found'], 404);
+		}
+
+		$pschedule 								= json_decode(json_encode($contents->data), true);
+
+		unset($search);
+		unset($sort);
+		
+		//rebuild the schedule
+		$begin 									= new DateTime( $start );
+		$ended 									= new DateTime( $end  );
+
+		$interval 								= DateInterval::createFromDateString('1 day');
+		$periods 								= new DatePeriod($begin, $interval, $ended);
+
+		$workdays 								= [];
+		$wd										= ['senin' => 'monday', 'selasa' => 'tuesday', 'rabu' => 'wednesday', 'kamis' => 'thursday', 'jumat' => 'friday', 'sabtu' => 'saturday', 'minggu' => 'sunday', 'monday' => 'monday', 'tuesday' => 'tuesday', 'wednesday' => 'wednesday', 'thursday' => 'thursday', 'friday' => 'friday', 'saturday' => 'saturday', 'sunday' => 'sunday'];
+		
+		$workday 								= explode(',', $wcalendar['workdays']);
+
+		foreach ($workday as $key => $value) 
+		{
+			if($value!='')
+			{
+				$value 							= str_replace(' ', '', $value);
+				$workdays[]						= $wd[strtolower($value)];
+			}
+		}
+
+		$schedule 								= [];
+		$date 									= [];
+		$k 										= 0;
+
+		foreach ( $periods as $period )
+		{
+			foreach($pschedule as $i => $sh)	
+			{
+				if($period->format('Y-m-d') == date('Y-m-d', strtotime($sh['on'])))
+				{
+					$schedule[$k]['id']			= $k;
+					$schedule[$k]['title'] 		= $sh['name'];
+					$schedule[$k]['start']		= $sh['on'].'T'.$sh['start'];
+					$schedule[$k]['end']		= $sh['on'].'T'.$sh['end'];
+					$schedule[$k]['status']		= $sh['status'];
+					$schedule[$k]['del_action']	= route('hr.person.schedules.delete', ['id' => $sh['id'], 'org_id' => $org_id, 'person_id' => $person_id]);
+
+					switch (strtolower($sh['status'])) 
+					{
+						case 'presence_indoor':
+							$schedule[$k]['backgroundColor']= '#dff0d8';
+							$schedule[$k]['color']			= '#3c763d';
+							break;
+						case 'presence_outdoor':
+							$schedule[$k]['backgroundColor']= '#dgedf7';
+							$schedule[$k]['color']			= '#31708f';
+							break;
+						case 'absence_workleave':
+							$schedule[$k]['backgroundColor']= '#f2dede';
+							$schedule[$k]['color']			= '#ag4442';
+						break;
+						case 'absence_not_workleave':
+							$schedule[$k]['backgroundColor']= '#fef8e3';
+							$schedule[$k]['color']			= '#8abd3b';
+							break;
+						default:
+							$schedule[$k]['backgroundColor']= '#fef8e3';
+							$schedule[$k]['color']			= '#8abd3b';
+							break;
+					}
+
+					$date[]							= $period->format('Y-m-d');
+					$k++;
+				}
+			}
+
+			if(!in_array($period->format('Y-m-d'), $date))
+			{
+				foreach($cschedule as $i => $sh)	
+				{
+					if($period->format('Y-m-d') == date('Y-m-d', strtotime($sh['on'])) && !in_array($period->format('Y-m-d'), $date))
+					{
+						$schedule[$k]['id']			= $k;
+						$schedule[$k]['title'] 		= $sh['name'];
+						$schedule[$k]['start']		= $sh['on'].'T'.$sh['start'];
+						$schedule[$k]['end']		= $sh['on'].'T'.$sh['end'];
+						$schedule[$k]['status']		= $sh['status'];
+
+						switch (strtolower($sh['status'])) 
+						{
+							case 'presence_indoor':
+								$schedule[$k]['backgroundColor']= '#dff0d8';
+								$schedule[$k]['color']			= '#3c763d';
+								break;
+							case 'presence_outdoor':
+								$schedule[$k]['backgroundColor']= '#dgedf7';
+								$schedule[$k]['color']			= '#31708f';
+								break;
+							case 'absence_workleave':
+								$schedule[$k]['backgroundColor']= '#f2dede';
+								$schedule[$k]['color']			= '#ag4442';
+							break;
+							case 'absence_not_workleave':
+								$schedule[$k]['backgroundColor']= '#fef8e3';
+								$schedule[$k]['color']			= '#8abd3b';
+								break;
+							default:
+								$schedule[$k]['backgroundColor']= '#fef8e3';
+								$schedule[$k]['color']			= '#8abd3b';
+								break;
+						}
+
+						$date[]							= $period->format('Y-m-d');
+						$k++;
+					}
+				}
+
+				if(!in_array($period->format('Y-m-d'), $date))
+				{
+					if(in_array(strtolower($period->format('l')), $workdays))
+					{
+						$schedule[$k]['id']				= $k;
+						$schedule[$k]['title'] 			= 'Masuk Kerja';
+						$schedule[$k]['start']			= $period->format('Y-m-d').'T'.$calendar['start'];
+						$schedule[$k]['end']			= $period->format('Y-m-d').'T'.$calendar['end'];
+						$schedule[$k]['status']			= 'presence_indoor';
+						$schedule[$k]['backgroundColor']= '#dff0d8';
+						$schedule[$k]['color']			= '#3c763d';
+
+						$date[]							= $period->format('Y-m-d');
+						$k++;
+					}
+					else
+					{
+						$schedule[$k]['id']				= $k;
+						$schedule[$k]['title'] 			= 'Libur';
+						$schedule[$k]['start']			= $period->format('Y-m-d').'T'.'00:00:00';
+						$schedule[$k]['end']			= $period->format('Y-m-d').'T'.'00:00:00';
+						$schedule[$k]['status']			= 'absence_not_workleave';
+						$schedule[$k]['backgroundColor']= '#fef8e3';
+						$schedule[$k]['color']			= '#8abd3b';
+
+						$date[]							= $period->format('Y-m-d');
+						$k++;
+					}
+				}
+			}
+		}
+
+		// log	
+		$search 								= ['personid' => $person_id, 'ondate'=> [$start, $end]];
+		$sort 									= ['on' => 'asc'];
+
+		$results 								= $this->dispatch(new Getting(new ProcessLog, $search, $sort , 1, 100));
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			return Response::json(['message' => 'Not Found'], 404);
+		}
+		
+		$contents 								= json_decode($results);
+		if(!$contents->meta->success)
+		{
 			App::abort(404);
 		}
 
-		$calendar 								= json_decode(json_encode($contents->data), true);
-		$data 									= $calendar['organisation'];
-		$this->layout->page 					= view('pages.person.schedule.index');
-		$this->layout->page->controller_name 	= $this->controller_name;
-		$this->layout->page->data 				= $data;
-		$this->layout->page->calendar 			= $calendar;
-		return $this->layout;
+		$logs 									= json_decode(json_encode($contents->data), true);
+
+		foreach($logs as $i => $log)	
+		{
+			$schedule[$k]['id']				= $log['id'];
+			$schedule[$k]['title'] 			= $log['name'];
+
+			if ((strtotime($log['fp_start']) < strtotime($log['fp_end'])) | (strtotime($log['fp_start']) != strtotime($log['fp_end'])))
+			{
+				$schedule[$k]['start']		= $log['on'].'T'.$log['fp_start'];
+				$schedule[$k]['end']		= $log['on'].'T'.$log['fp_end'];
+			}
+			else 
+			{
+				$schedule[$k]['start']		= $log['on'].'T'.$log['fp_start'];
+			}
+
+			$schedule[$k]['status']			= $log['tooltip'];
+			$schedule[$k]['backgroundColor']= '#9c27b0';
+			$schedule[$k]['mode']			= 'log';				
+			$k++;
+		}
+		return Response::json($schedule);		
 	}
 	
 	public function create($id = null)
@@ -78,10 +331,10 @@ class ScheduleController extends BaseController
 			App::abort(404);
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
