@@ -6,6 +6,11 @@
 	@overwrite
 
 	@section('widget_body')
+		<div class="bs-callout bs-callout-warning" id="callout-helper-context-color-accessibility">
+		    <h4>Conveying meaning to assistive technologies</h4>
+		    <p>Using color to add meaning only provides a visual indication, which will not be conveyed to users of assistive technologies – such as screen readers. Ensure that information denoted by the color is either obvious from the content itself (the contextual colors are only used to reinforce meaning that is already present in the text/markup), or is included through alternative means, such as additional text hidden with the <code>.sr-only</code> class.</p>
+		</div>
+		  
 		<div class="clearfix">&nbsp;</div>
 		{!! Form::open(['url' => $DocumentComposer['widget_data']['documentlist']['form_url'], 'class' => 'form-horizontal']) !!}	
 			<div class="form-group">
@@ -58,7 +63,7 @@
 						</select>
 					</div>
 					<div class="col-md-2">
-						<a href="javascript:;" class="" style="color:#666;"><i class="fa fa-plus-circle fa-lg mt-10"></i></a>
+						<a href="javascript:;" class="btn-delete-doc" style="color:#666;"><i class="fa fa-plus-circle fa-lg mt-10"></i></a>
 					</div>
 				</div>
 			@else
@@ -66,7 +71,7 @@
 				<div class="form-group">
 					<div class="col-md-2">&nbsp;</div>
 					<div class="col-md-10">
-						<a class="btn btn-default" document-duplicate="docTemplate" document-target="#documentList">Tambah Inputan</a>
+						<a class="btn btn-default btn-add-doc" document-duplicate="docTemplate" document-target="#documentList">Tambah Inputan</a>
 					</div>
 				</div>
 			@endif
@@ -87,31 +92,7 @@
 			</div>
 		{!! Form::close() !!}
 			
-		<script type="text/html" id="docTemplate">
-			<div class="form-group">
-				<div class="col-md-2">&nbsp;</div>
-				<div class="col-md-2">					
-					<label for="field[]" class="control-label">Nama Input</label>
-				</div>
-				<div class="col-md-2">
-					<input type="text" class="form-control" id="field[]" name="field[]">
-				</div>
-				<div class="col-md-2">
-					<label for="" class="control-label">Tipe Input</label>
-				</div>
-				<div class="col-md-2">
-					<select id="Type" class="form-control form-control input-md" name="type[]">
-						<option value="numeric">Angka</option>
-						<option value="date">Tanggal</option>
-						<option value="string">Teks Singkat</option>
-						<option value="text">Teks Panjang</option>
-					</select>
-				</div>
-				<div class="col-md-2">
-					<a href="javascript:;" class="" style="color:#666;"><i class="fa fa-plus-circle fa-lg mt-10"></i></a>
-				</div>
-			</div>
-		</script>
+		
 	@overwrite	
 @else
 	@section('widget_title')
