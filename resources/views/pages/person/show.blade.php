@@ -38,7 +38,14 @@
 													'search'			=> ['personid' => $person['id']],
 													'sort'				=> ['is_default' => 'desc'],
 													'page'				=> 1,
-													'per_page'			=> 12
+													'per_page'			=> 12,
+													'route'				=> route('hr.person.contacts.index'),
+													'route_create'		=> route('hr.person.contacts.create', ['org_id' => $data['id'], 'person_id' => $person['id']]),
+													'route_edit'		=> 'hr.person.contacts.edit',
+													'route_delete'		=> 'hr.person.contacts.delete',
+													'next'				=> 'person_id',
+													'nextid'			=> $person['id']
+
 												]
 											]
 			])
