@@ -44,6 +44,7 @@ class BranchController extends BaseController
 		$this->layout->page 					= view('pages.branch.index');
 		$this->layout->page->controller_name 	= $this->controller_name;
 		$this->layout->page->data 				= $data;
+		$this->layout->page->filter 			= [['filter' => 'urutkan','filters' => ['urutkan asc', 'urutkan desc']]];
 		$this->layout->page->route_back 		= route('hr.organisations.show', $org_id);
 
 		return $this->layout;

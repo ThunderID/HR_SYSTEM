@@ -53,6 +53,7 @@
 	
 	@include('plugins.summernote')
 	@include('plugins.microtemplate')
+	@include('plugins.imageupload')
 
 	<script>
 		$('#side-menu').metisMenu();

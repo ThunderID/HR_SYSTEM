@@ -15,10 +15,13 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> [
-										'search'			=> [],
-										'sort'				=> [],
-										'page'				=> 1,
-										'per_page'			=> 100,
+										'sidebar'			=>
+										[
+											'search'			=> ['withattributes' => 'branches'],
+											'sort'				=> [],
+											'page'				=> 1,
+											'per_page'			=> 100,
+										]
 									]
 	])
 @overwrite

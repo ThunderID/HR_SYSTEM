@@ -11,30 +11,26 @@
 					</div>
 				</div>
 				<div class="col-xs-1 col-sm-1 colcol-md-1">
-					<a href="" class="btn btn-default"><i class="fa fa-plus"></i></a>
+					<a href="" class="btn btn-filter-add"><i class="fa fa-plus"></i></a>
 				</div>
 			</div>
 			<div class="form-group">
-				<div class="col-xs-12 col-sm-12 col-md-12">
+				<div class="col-xs-12 col-sm-12 col-md-12">					
 					<div class="btn-group">
-						<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-							Filter &nbsp;<span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="">filter</a></li>
-							<li><a href="">filter</a></li>
-							<li><a href="">filter</a></li>
-						</ul>
+						<select name="filter" id="" class="form-control">
+							@foreach($filter as $a)															
+								<option value="{{ $a['filter'] }}">{{ $a['filter'] }}</option>
+							@endforeach							
+						</select>						
 					</div>
 					<div class="btn-group ml-10">
-						<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-							Value &nbsp;<span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="">value</a></li>
-							<li><a href="">value</a></li>
-							<li><a href="">value</a></li>
-						</ul>
+						<select name="value" id="" class="form-control">
+							@foreach($filter as $b)								
+								@foreach($b['filters'] as $c)
+									<option value="{{ $c }}">{{ $c }}</option>
+								@endforeach
+							@endforeach
+						</select>						
 					</div>
 				</div>
 			</div>
