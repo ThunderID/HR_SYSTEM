@@ -107,7 +107,7 @@ Route::group(['prefix' => ''], function()
 				Route::resource('authentications',	'AuthenticationController',						['names' => ['index' => 'hr.chart.authentications.index', 'create' => 'hr.chart.authentications.create', 'store' => 'hr.chart.authentications.store', 'show' => 'hr.chart.authentications.show', 'edit' => 'hr.chart.authentications.edit', 'update' => 'hr.chart.authentications.update', 'destroy' => 'hr.chart.authentications.delete']]);
 
 				// ------------------------------------------------------------------------------------
-				// CHARTS FOR CHART RESOURCE
+				// CALENDARS FOR CHART RESOURCE
 				// ------------------------------------------------------------------------------------
 
 				Route::resource('calendars',		'CalendarController',							['names' => ['index' => 'hr.chart.calendars.index', 'create' => 'hr.chart.calendars.create', 'store' => 'hr.chart.calendars.store', 'show' => 'hr.chart.calendars.show', 'edit' => 'hr.chart.calendars.edit', 'update' => 'hr.chart.calendars.update', 'destroy' => 'hr.chart.calendars.delete']]);
@@ -122,7 +122,13 @@ Route::group(['prefix' => ''], function()
 		// SCHEDULES FOR CALENDAR RESOURCE
 		// ------------------------------------------------------------------------------------
 
-		Route::resource('schedules',		'ScheduleController',								['names' => ['index' => 'hr.calendar.schedules.index', 'create' => 'hr.calendar.schedules.create', 'store' => 'hr.calendar.schedules.store', 'show' => 'hr.calendar.schedules.show', 'edit' => 'hr.calendar.schedules.edit', 'update' => 'hr.calendar.schedules.update', 'destroy' => 'hr.calendar.schedules.delete']]);
+		Route::resource('schedules',		'ScheduleController',									['names' => ['index' => 'hr.calendar.schedules.index', 'create' => 'hr.calendar.schedules.create', 'store' => 'hr.calendar.schedules.store', 'show' => 'hr.calendar.schedules.show', 'edit' => 'hr.calendar.schedules.edit', 'update' => 'hr.calendar.schedules.update', 'destroy' => 'hr.calendar.schedules.delete']]);
+
+		// ------------------------------------------------------------------------------------
+		// CALENDAR FOR CHARTS RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('charts',			'ChartController',										['names' => ['index' => 'hr.calendar.charts.index', 'create' => 'hr.calendar.charts.create', 'store' => 'hr.calendar.charts.store', 'show' => 'hr.calendar.charts.show', 'edit' => 'hr.calendar.charts.edit', 'update' => 'hr.calendar.charts.update', 'destroy' => 'hr.calendar.charts.delete']]);
 	});
 
 
