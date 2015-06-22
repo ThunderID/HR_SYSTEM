@@ -11,10 +11,10 @@
 		'widget_options'		=> 	[
 										'sidebar'				=> 
 										[
-											'search'			=> [],
+											'search'			=> ['withattributes' => 'branches'],
 											'sort'				=> [],
 											'page'				=> 1,
-											'per_page'			=> 12,
+											'per_page'			=> 100,
 										]
 									]
 	])
