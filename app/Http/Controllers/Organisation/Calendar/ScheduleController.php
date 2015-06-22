@@ -123,23 +123,23 @@ class ScheduleController extends BaseController
 					switch (strtolower($sh['status'])) 
 					{
 						case 'presence_indoor':
-							$schedule[$k]['backgroundColor']= '#dff0d8';
-							$schedule[$k]['color']			= '#3c763d';
-							break;
-						case 'presence_outdoor':
-							$schedule[$k]['backgroundColor']= '#dgedf7';
+							$schedule[$k]['backgroundColor']= '#31708f';
 							$schedule[$k]['color']			= '#31708f';
 							break;
-						case 'absence_workleave':
-							$schedule[$k]['backgroundColor']= '#f2dede';
+						case 'presence_outdoor':
+							$schedule[$k]['backgroundColor']= '#ag4442';
 							$schedule[$k]['color']			= '#ag4442';
+							break;
+						case 'absence_workleave':
+							$schedule[$k]['backgroundColor']= '#00B10F';
+							$schedule[$k]['color']			= '#00B10F';
 						break;
 						case 'absence_not_workleave':
-							$schedule[$k]['backgroundColor']= '#fef8e3';
-							$schedule[$k]['color']			= '#8abd3b';
+							$schedule[$k]['backgroundColor']= '#3C763D';
+							$schedule[$k]['color']			= '#3C763D';
 							break;
 						default:
-							$schedule[$k]['backgroundColor']= '#fef8e3';
+							$schedule[$k]['backgroundColor']= '#8abd3b';
 							$schedule[$k]['color']			= '#8abd3b';
 							break;
 					}
@@ -158,8 +158,8 @@ class ScheduleController extends BaseController
 					$schedule[$k]['start']			= $period->format('Y-m-d').'T'.$calendar['start'];
 					$schedule[$k]['end']			= $period->format('Y-m-d').'T'.$calendar['end'];
 					$schedule[$k]['status']			= 'presence_indoor';
-					$schedule[$k]['backgroundColor']= '#dff0d8';
-					$schedule[$k]['color']			= '#3c763d';
+					$schedule[$k]['backgroundColor']= '#31708F';
+					$schedule[$k]['color']			= '#31708F';
 
 					$date[]							= $period->format('Y-m-d');
 					$k++;
@@ -171,8 +171,8 @@ class ScheduleController extends BaseController
 					$schedule[$k]['start']			= $period->format('Y-m-d').'T'.'00:00:00';
 					$schedule[$k]['end']			= $period->format('Y-m-d').'T'.'00:00:00';
 					$schedule[$k]['status']			= 'absence_not_workleave';
-					$schedule[$k]['backgroundColor']= '#fef8e3';
-					$schedule[$k]['color']			= '#8abd3b';
+					$schedule[$k]['backgroundColor']= '#D78409';
+					$schedule[$k]['color']			= '#D78409';
 
 					$date[]							= $period->format('Y-m-d');
 					$k++;

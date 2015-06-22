@@ -78,7 +78,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// CHART
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.chart.list', 'widgets.chart.form', 'widgets.chart.table'], 	'App\Http\ViewComposers\ChartComposer');
+		View::composer(['widgets.chart.list', 'widgets.chart.form', 'widgets.chart.stat'], 	'App\Http\ViewComposers\ChartComposer');
 
 		// -----------------------------------------------------------------------------
 		// API

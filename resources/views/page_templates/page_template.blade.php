@@ -45,8 +45,8 @@
 	{!! HTML::script('plugins/metisMenu/metisMenu.min.js') !!}
 
 	@include('plugins.select2')
-	@include('plugins/toggle')
-	@include('plugins/modal')
+	@include('plugins.toggle')
+	@include('plugins.modal')
 	@include('plugins.checkbox')
 	@include('plugins.inputmask')
 	@include('plugins.calendar')

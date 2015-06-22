@@ -3,7 +3,12 @@
 {!! HTML::script('plugins/fullcalendar/fullcalendar.js') !!}
 
 <script type="text/javascript">
-	var curSource = cal_link;	
+	if(typeof(cal_link) != "undefined" && cal_link !== null) {
+		var curSource = cal_link;	
+	}
+	else {
+		var curSource = '';
+	}
 	
 	$('#calendar').fullCalendar({
 		timeFormat: 'HH:mm',

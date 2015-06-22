@@ -12,37 +12,7 @@
 	@overwrite
 
 	@section('widget_body')
-		<a href="{{ $ChartComposer['widget_data']['chartlist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
-		@if(isset($ChartComposer['widget_data']['chartlist']['chart']))
-			<div class="clearfix">&nbsp;</div>
-			<table class="table">
-				<thead>
-					<tr>
-						<th class="text-center">Min Pegawai</th>
-						<th class="text-center">Ideal Pegawai</th>
-						<th class="text-center">Total Pegawai</th>
-						<th class="text-center">Max Pegawai</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td class="text-center">
-							{{ $ChartComposer['widget_data']['chartlist']['chart']['min_employee'] }}
-						</td>
-						<td class="text-center">
-							{{ $ChartComposer['widget_data']['chartlist']['chart']['ideal_employee'] }}
-						</td>
-						<td class="text-center">
-							{{ $ChartComposer['widget_data']['chartlist']['chart']['current_employee'] }}
-						</td>
-						<td class="text-center">
-							{{ $ChartComposer['widget_data']['chartlist']['chart']['max_employee'] }}
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<div class="clearfix">&nbsp;</div>
-		@endif
+		tes
 	@overwrite	
 @else
 	@section('widget_title')

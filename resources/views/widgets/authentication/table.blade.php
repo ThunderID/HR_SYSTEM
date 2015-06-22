@@ -2,29 +2,28 @@
 
 @section('widget_title')
 	<h1> {{ $widget_title or 'Kontak' }} </h1>
-	<small>Total data {{ $ApplicationComposer['widget_data']['applicationlist']['application-pagination']->total() }}</small>
 @overwrite
 
 @section('widget_body')
-	<div class="clearfix">&nbsp;</div>
-	<form class="check" method="post">
-		<table class="table">
-			<thead>
-				<tr>
-					<th  class="text-center" rowspan="2" width="15%">Aplikasi</th>
-					<th  class="text-center" rowspan="2" width="15%">Menu</th>
-					<th  class="text-center" colspan="4">Autentikasi</th>
-				</tr>
-				<tr>
-					<th  class="text-center">Tambah</th>
-					<th  class="text-center">Akses</th>
-					<th  class="text-center">Ubah</th>
-					<th  class="text-center">Hapus</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php $prev = null;?>
-				<form class="check" action="" method="post">
+
+	<div class="clearfix">&nbsp;</div>	
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th  class="text-center" rowspan="2" width="15%" style="vertical-align:middle">Aplikasi</th>
+				<th  class="text-center" rowspan="2" width="15%" style="vertical-align:middle">Menu</th>
+				<th  class="text-center" colspan="4">Autentikasi</th>
+			</tr>
+			<tr>
+				<th  class="text-center">Tambah</th>
+				<th  class="text-center">Akses</th>
+				<th  class="text-center">Ubah</th>
+				<th  class="text-center">Hapus</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php $prev = null;?>
+			<form class="check" action="" method="post">					
 				@foreach($ApplicationComposer['widget_data']['applicationlist']['application'] as $key => $value)
 					@foreach($value['menus'] as $key2 => $value2)
 						<tr>
@@ -36,10 +35,10 @@
 							<td>
 								{{$value2['name']}}
 							</td>
-							<td class="text-center">
+							<td class="text-center">							
 								<div class="checkbox checkbox-inline checkbox-styled">
 									<label>	
-										<input type="checkbox" class="thumb" data-checked-action="@if(isset($value2['authentications'][0]['is_create']) && $value2['authentications'][0]['is_create']) {{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'wrong' => 'is_create', 'org_id' => $data['id']]) }} @endif" data-unchecked-action="@if (isset($value2['authentications'][0]['is_create'])) {{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'right' => 'is_create', 'org_id' => $data['id']]) }} @else {{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'right' => 'is_create', 'org_id' => $data['id']]) }} @endif" @if(isset($value2['authentications'][0]['is_create']) && $value2['authentications'][0]['is_create']) checked @endif>
+										<input type="checkbox" class="thumb" data-checked-action="@if(isset($value2['authentications'][0]['is_create'])&&$value2['authentications'][0]['is_create']){{route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'wrong' => 'is_create', 'org_id' => $data['id']])}}@endif" data-unchecked-action="@if(isset($value2['authentications'][0]['is_create'])){{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'right' => 'is_create', 'org_id' => $data['id']]) }}@else{{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'right' => 'is_create', 'org_id' => $data['id']]) }}@endif" @if(isset($value2['authentications'][0]['is_create']) && $value2['authentications'][0]['is_create']) checked @endif>
 									</label>
 								</div>
 							</td>
@@ -68,8 +67,8 @@
 					<?php $prev = $value['id'];?>
 					@endforeach
 				@endforeach
-			</tbody>
-		</table>
-	</form>
+			</form>
+		</tbody>
+	</table>
 	<div class="clearfix">&nbsp;</div>
 @overwrite	
