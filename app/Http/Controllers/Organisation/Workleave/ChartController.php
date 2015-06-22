@@ -1,9 +1,11 @@
 <?php namespace App\Http\Controllers\Organisation\Workleave;
-use Input, Session, App, Paginator, Redirect, DB;
+use Input, Session, App, Paginator, Redirect, DB, Config;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
+use App\Models\Chart;
+use App\Models\Person;
 use App\Models\Workleave;
 use App\Models\PersonWorkleave;
 
@@ -22,21 +24,21 @@ class ChartController extends BaseController
 			$org_id 							= Session::get('user.organisation');
 		}
 
-		if(Input::has('cal_id'))
+		if(Input::has('workleave_id'))
 		{
-			$cal_id 							= Input::get('cal_id');
+			$workleave_id 						= Input::get('workleave_id');
 		}
 		else
 		{
 			App::abort(404);
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
-		$search['id'] 							= $cal_id;
+		$search['id'] 							= $workleave_id;
 		$search['organisationid'] 				= $org_id;
 		$search['withattributes'] 				= ['organisation'];
 		$sort 									= ['name' => 'asc'];
@@ -73,16 +75,25 @@ class ChartController extends BaseController
 			$org_id 							= Session::get('user.organisation');
 		}
 
-		if(Input::has('cal_id'))
+		if(Input::has('workleave_id'))
 		{
-			$cal_id 							= Input::get('cal_id');
+			$workleave_id 							= Input::get('workleave_id');
 		}
 		else
 		{
 			App::abort(404);
 		}
 
-		$search['id'] 							= $cal_id;
+		if(Input::has('chart_id'))
+		{
+			$chart_id 							= Input::get('chart_id');
+		}
+		else
+		{
+			App::abort(404);
+		}
+
+		$search['id'] 							= $workleave_id;
 		$search['organisationid'] 				= $org_id;
 		$search['withattributes'] 				= ['organisation'];
 		$sort 									= ['name' => 'asc'];
@@ -94,25 +105,55 @@ class ChartController extends BaseController
 			App::abort(404);
 		}
 
-		$attributes 							= Input::only('name', 'status', 'on', 'start', 'end');
-		$attributes['on'] 						= date('Y-m-d', strtotime($attributes['on']));
+		$search['id'] 							= $chart_id;
+		$search['organisationid'] 				= $org_id;
+		$search['withattributes'] 				= ['works'];
+		$sort 									= ['name' => 'asc'];
+		$results 								= $this->dispatch(new Getting(new Chart, $search, $sort , 1, 1));
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$attributes 							= Input::only('start', 'end', 'is_default');
+		$attributes['start'] 					= date('Y-m-d', strtotime($attributes['start']));
+		$attributes['end'] 						= date('Y-m-d', strtotime($attributes['end']));
+		$attributes['workleave_id']				= $workleave_id;
 
 		$errors 								= new MessageBag();
 
 		DB::beginTransaction();
 
-		$content 								= $this->dispatch(new Saving(new PersonWorkleave, $attributes, $id, new Workleave, $cal_id));
-		$is_success 							= json_decode($content);
-		
-		if(!$is_success->meta->success)
+		foreach ($contents->data->works as $key => $value) 
 		{
-			$errors->add('Workleave', $is_success->meta->errors);
+			$content 							= $this->dispatch(new Saving(new PersonWorkleave, $attributes, $id, new Person, $value->id));
+			$is_success 						= json_decode($content);
+			
+			if(!$is_success->meta->success)
+			{
+				foreach ($is_success->meta->errors as $key => $value) 
+				{
+					if(is_array($value))
+					{
+						foreach ($value as $key2 => $value2) 
+						{
+							$errors->add('Workleave', $value2);
+						}
+					}
+					else
+					{
+						$errors->add('Workleave', $value);
+					}
+				}
+			}
 		}
 
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.calendars.show', [$cal_id, 'org_id' => $org_id])->with('alert_success', 'Jadwal kalender "' . $contents->data->name. '" sudah disimpan');
+			return Redirect::route('hr.workleaves.show', [$workleave_id, 'workleave_id' => $workleave_id, 'org_id' => $org_id])->with('alert_success', 'Jadwal kalender "' . $contents->data->name. '" sudah disimpan');
 		}
 
 		DB::rollback();

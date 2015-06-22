@@ -125,12 +125,20 @@ Route::group(['prefix' => ''], function()
 		Route::resource('schedules',		'ScheduleController',									['names' => ['index' => 'hr.calendar.schedules.index', 'create' => 'hr.calendar.schedules.create', 'store' => 'hr.calendar.schedules.store', 'show' => 'hr.calendar.schedules.show', 'edit' => 'hr.calendar.schedules.edit', 'update' => 'hr.calendar.schedules.update', 'destroy' => 'hr.calendar.schedules.delete']]);
 
 		// ------------------------------------------------------------------------------------
-		// CALENDAR FOR CHARTS RESOURCE
+		// CHARTS FOR CALENDAR RESOURCE
 		// ------------------------------------------------------------------------------------
 
 		Route::resource('charts',			'ChartController',										['names' => ['index' => 'hr.calendar.charts.index', 'create' => 'hr.calendar.charts.create', 'store' => 'hr.calendar.charts.store', 'show' => 'hr.calendar.charts.show', 'edit' => 'hr.calendar.charts.edit', 'update' => 'hr.calendar.charts.update', 'destroy' => 'hr.calendar.charts.delete']]);
 	});
 
+	Route::group(['namespace' => 'Workleave\\', 'prefix' => 'workleave'], function() 
+	{
+		// ------------------------------------------------------------------------------------
+		// CHARTS FOR WORKLEAVE RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('charts',			'ChartController',										['names' => ['index' => 'hr.workleave.charts.index', 'create' => 'hr.workleave.charts.create', 'store' => 'hr.workleave.charts.store', 'show' => 'hr.workleave.charts.show', 'edit' => 'hr.workleave.charts.edit', 'update' => 'hr.workleave.charts.update', 'destroy' => 'hr.workleave.charts.delete']]);
+	});
 
 	Route::group(['namespace' => 'Person\\', 'prefix' => 'person'], function() 
 	{
