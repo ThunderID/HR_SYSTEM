@@ -113,11 +113,13 @@ class ScheduleController extends BaseController
 			{
 				if($period->format('Y-m-d') == date('Y-m-d', strtotime($sh['on'])))
 				{
+					$schedule[$k]['data_target']= '#modal_schedule_branch';
 					$schedule[$k]['id']			= $sh['id'];
 					$schedule[$k]['title'] 		= $sh['name'];
 					$schedule[$k]['start']		= $sh['on'].'T'.$sh['start'];
 					$schedule[$k]['end']		= $sh['on'].'T'.$sh['end'];
-					$schedule[$k]['status']		= $sh['status'];
+					$schedule[$k]['status']		= $sh['status'];					
+					$schedule[$k]['ed_action']	= route('hr.calendar.schedules.store', ['id' => $sh['id'], 'org_id' => $org_id, 'cal_id' => $cal_id]);
 					$schedule[$k]['del_action']	= route('hr.calendar.schedules.delete', ['id' => $sh['id'], 'org_id' => $org_id, 'cal_id' => $cal_id]);
 
 					switch (strtolower($sh['status'])) 
@@ -142,7 +144,7 @@ class ScheduleController extends BaseController
 							$schedule[$k]['backgroundColor']= '#8abd3b';
 							$schedule[$k]['color']			= '#8abd3b';
 							break;
-					}
+					}					
 
 					$date[]							= $period->format('Y-m-d');
 					$k++;

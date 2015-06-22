@@ -5,7 +5,7 @@
 	<small>Total data {{$ScheduleComposer['widget_data']['schedulelist']['schedule-pagination']->total()}}</small>
 @overwrite
 
-@section('widget_body')
+@section('widget_body')	
 	@if(isset($ScheduleComposer['widget_data']['schedulelist']['schedule']))
 		<div class="clearfix">&nbsp;</div>
 		<table class="table">

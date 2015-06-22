@@ -28,7 +28,7 @@
 				<label class="control-label">Tanggal</label>
 			</div>	
 			<div class="col-md-10">
-				{!!Form::input('text', 'on', $ScheduleComposer['widget_data']['schedulelist']['schedule']['on'], ['class' => 'form-control'])!!}
+				{!!Form::input('text', 'on', $ScheduleComposer['widget_data']['schedulelist']['schedule']['on'], ['class' => 'form-control date-mask'])!!}
 			</div>
 		</div>
 		<div class="form-group">
@@ -36,13 +36,13 @@
 				<label class="control-label">Start</label>
 			</div>	
 			<div class="col-md-4">
-				{!!Form::input('text', 'start', $ScheduleComposer['widget_data']['schedulelist']['schedule']['start'], ['class' => 'form-control'])!!}
+				{!!Form::input('text', 'start', $ScheduleComposer['widget_data']['schedulelist']['schedule']['start'], ['class' => 'form-control time-mask'])!!}
 			</div>
 			<div class="col-md-1 col-md-offset-1">
 				<label class="control-label">End</label>
 			</div>	
 			<div class="col-md-4">
-				{!!Form::input('text', 'end', $ScheduleComposer['widget_data']['schedulelist']['schedule']['end'], ['class' => 'form-control'])!!}
+				{!!Form::input('text', 'end', $ScheduleComposer['widget_data']['schedulelist']['schedule']['end'], ['class' => 'form-control time-mask'])!!}
 			</div>
 		</div>
 		<div class="form-group">

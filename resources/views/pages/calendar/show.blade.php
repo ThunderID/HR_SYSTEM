@@ -45,6 +45,19 @@
 									]
 								]
 	])
+	
+	{!! Form::open(array('route' => array('hr.branch.contacts.delete', 0),'method' => 'POST')) !!}
+		@include('widgets.modal.modal_create_schedule_branch', [
+			'widget_template'		=> 'plain_no_title'
+		])
+	{!! Form::close() !!}
+
+	{!! Form::open(array('route' => array('hr.branch.contacts.delete', 0),'method' => 'DELETE')) !!}
+		@include('widgets.modal.delete', [
+			'widget_template'		=> 'plain_no_title'
+		])
+	{!! Form::close() !!}
+
 	<script type="text/javascript">
 		var cal_link = "{!! route('hr.calendar.schedules.index',['org_id' => $data['id'],'cal_id' => $id]) !!}";
 	</script>

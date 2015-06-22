@@ -33,7 +33,7 @@
 		'widget_options'		=> 	[
 										'schedulelist'			=>
 										[
-											'identifier'		=> 1,
+											'identifier'		=> 1,											
 											'calendar_id'		=> $calendar['id'],
 											'search'			=> ['calendarid' => $calendar['id']],
 											'sort'				=> ['on' => 'desc'],

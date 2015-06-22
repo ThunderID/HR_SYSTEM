@@ -4,13 +4,14 @@
 
 <script type="text/javascript">
 	if(typeof(cal_link) != "undefined" && cal_link !== null) {
-		var curSource = cal_link;	
+		var curSource = cal_link;			
 	}
 	else {
-		var curSource = '';
+		var curSource = '';		
 	}
 	
 	$('#calendar').fullCalendar({
+		header: {left:'', center: '', right:  'today prev,next'},
 		timeFormat: 'HH:mm',
 		displayEventEnd: true,
 		dayNamesShort: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
@@ -45,29 +46,37 @@
 			var datetime_start 	= event.start._i.split('T');
 			if (event.end != null) {
 				var datetime_end 	= event.end._i.split('T');
-			}
-			else {
+			}else {
 				var datetime_end 	= datetime_start;
 			}
 
 			var date_start 		= datetime_start[0].split(/-/);	
 			date_start 			= date_start[2]+'-'+date_start[1]+'-'+date_start[0];
 
-			element.find('#date-title').html(element.find('span.fc-event-title').text());
-
-			if (event.mode !== 'log') {
+			if(typeof(event.data_target) != "undefined" && event.data_target !== null) {
+				element.attr('data-target', event.data_target);
 				element.attr('data-toggle', 'modal');
-				element.attr('data-target', '#scheduleCreate');
+				element.attr('href', 'javascript:;');
 			}
+
+			element.find('#date-title').html(element.find('span.fc-event-title').text());			
+			element.find('.fc-title').append('<br>');
+
 			element.attr('data-id', event.id);
 			element.attr('data-title', event.title);
 			element.attr('data-date', date_start);
 			element.attr('data-status', event.status);
 			element.attr('data-start', datetime_start[1]);
-			element.attr('data-end', datetime_end[1]);				
+			element.attr('data-end', datetime_end[1]);			
+			element.attr('data-is-affect-salary', event.affect_salary);			
+			element.attr('data-edit-action', event.ed_action);
 			element.attr('data-delete-action', event.del_action);
-			element.attr('data-is-affect-salary', event.affect_salary);
-			element.find('.fc-title').append('<br>');
-		}
+		},
+		viewRender: function (view, element) {			
+	        //The title isn't rendered until after this callback, so we need to use a timeout.	        
+	        window.setTimeout(function(){
+	            $("h4.title-calendar").empty().append(view.title);
+	        },0);
+	    },
 	});
 </script>
