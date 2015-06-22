@@ -188,7 +188,6 @@ class CalendarController extends BaseController
 		return $this->layout;
 	}
 
-
 	public function destroy($id)
 	{
 		$attributes 						= ['email' => Config::get('user.email'), 'password' => Input::get('password')];

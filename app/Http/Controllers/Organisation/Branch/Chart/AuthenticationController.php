@@ -41,6 +41,7 @@ class AuthenticationController extends BaseController
 		{
 			App::abort(404);
 		}
+		
 		// if(!in_array($org_id, Session::get('user.orgids')))
 		// {
 		// App::abort(404);
@@ -161,10 +162,5 @@ class AuthenticationController extends BaseController
 		
 		DB::rollback();
 		return Redirect::back()->withErrors($errors)->withInput();
-	}
-
-	public function edit($id)
-	{
-		return $this->create($id);
 	}
 }

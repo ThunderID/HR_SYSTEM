@@ -104,16 +104,16 @@ Route::group(['prefix' => ''], function()
 				// AUTHENTICATIONS FOR CHART RESOURCE
 				// ------------------------------------------------------------------------------------
 
-				Route::resource('authentications',	'AuthenticationController',							['names' => ['index' => 'hr.chart.authentications.index', 'create' => 'hr.chart.authentications.create', 'store' => 'hr.chart.authentications.store', 'show' => 'hr.chart.authentications.show', 'edit' => 'hr.chart.authentications.edit', 'update' => 'hr.chart.authentications.update', 'destroy' => 'hr.chart.authentications.delete']]);
+				Route::resource('authentications',	'AuthenticationController',						['names' => ['index' => 'hr.chart.authentications.index', 'create' => 'hr.chart.authentications.create', 'store' => 'hr.chart.authentications.store', 'show' => 'hr.chart.authentications.show', 'edit' => 'hr.chart.authentications.edit', 'update' => 'hr.chart.authentications.update', 'destroy' => 'hr.chart.authentications.delete']]);
 
 				// ------------------------------------------------------------------------------------
 				// CHARTS FOR CHART RESOURCE
 				// ------------------------------------------------------------------------------------
 
-			Route::resource('calendars',		'CalendarController',								['names' => ['index' => 'hr.chart.calendars.index', 'create' => 'hr.chart.calendars.create', 'store' => 'hr.chart.calendars.store', 'show' => 'hr.chart.calendars.show', 'edit' => 'hr.chart.calendars.edit', 'update' => 'hr.chart.calendars.update', 'destroy' => 'hr.chart.calendars.delete']]);
-		});
+				Route::resource('calendars',		'CalendarController',							['names' => ['index' => 'hr.chart.calendars.index', 'create' => 'hr.chart.calendars.create', 'store' => 'hr.chart.calendars.store', 'show' => 'hr.chart.calendars.show', 'edit' => 'hr.chart.calendars.edit', 'update' => 'hr.chart.calendars.update', 'destroy' => 'hr.chart.calendars.delete']]);
+			});
 
-	});
+		});
 
 	Route::group(['namespace' => 'Calendar\\', 'prefix' => 'calendar'], function() 
 	{
