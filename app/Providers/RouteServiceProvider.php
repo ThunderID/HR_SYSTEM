@@ -2,7 +2,7 @@
 
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Config;
+use Config, Session;
 
 class RouteServiceProvider extends ServiceProvider {
 
@@ -20,7 +20,7 @@ class RouteServiceProvider extends ServiceProvider {
 		Config::set('user.id', 1);
 		Config::set('user.orgids', [1,13]);
 		Config::set('user.email', 'hr@thunderid.com');
-		//
+		Session::put('user.organisation', 1);
 	}
 
 	/**

@@ -113,6 +113,7 @@ class Person extends BaseModel {
 											'checkcreate' 					=> 'CheckCreate',
 											'withattributes' 				=> 'WithAttributes',
 											
+											'contactid' 					=> 'ContactID',
 											'defaultcontact' 				=> 'DefaultContact',
 											'email'			 				=> 'Email',
 											'defaultemail' 					=> 'DefaultEmail',
@@ -157,6 +158,7 @@ class Person extends BaseModel {
 											'globalattendance'	 			=> 'Must be array of string and or case and or sort',
 											'withattributes' 				=> 'Must be array of relationship',
 											
+											'contactid' 					=> 'ID of contact',
 											'defaultcontact' 				=> 'Must be true',
 											'email'			 				=> 'Must be string',
 											'defaultemail' 					=> 'Must be true',

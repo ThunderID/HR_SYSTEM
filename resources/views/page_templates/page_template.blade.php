@@ -44,6 +44,7 @@
 	{!! HTML::script('plugins/bootstrap/bootstrap.min.js') !!}
 	{!! HTML::script('plugins/metisMenu/metisMenu.min.js') !!}
 	
+	@include('plugins.modal')
 	@include('plugins.summernote')
 	@include('plugins.microtemplate')
 

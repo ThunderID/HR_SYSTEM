@@ -1,7 +1,7 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
 @section('widget_title')
-	<h1> {{ is_null($id) ? 'Tambah Kontak' : 'Ubah Kontak'. (isset($ContactComposer['widget_data']['contactlist']['contact']['branch']) ? ' Cabang '.$ContactComposer['widget_data']['contactlist']['contact']['branch']['name'] : $ContactComposer['widget_data']['contactlist']['contact']['person']['name'])}} </h1> 
+	<h1> {{ is_null($id) ? 'Tambah Kontak ' : 'Ubah Kontak '. (isset($ContactComposer['widget_data']['contactlist']['contact']['branch']) ? ' Cabang '.$ContactComposer['widget_data']['contactlist']['contact']['branch']['name'] : $ContactComposer['widget_data']['contactlist']['contact']['person']['name'])}} </h1> 
 @overwrite
 
 @section('widget_body')

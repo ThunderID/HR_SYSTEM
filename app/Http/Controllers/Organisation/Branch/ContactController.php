@@ -235,7 +235,7 @@ class ContactController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.branches.show', [$branch_id, 'org_id' => $org_id, 'branch_id' => $branch_id])->with('local_msg', $errors)->with('alert_success', 'Cabang "' . $contents->data->name. '" sudah dihapus');
+				return Redirect::route('hr.branches.show', [$branch_id, 'org_id' => $org_id, 'branch_id' => $branch_id])->with('local_msg', $errors)->with('alert_success', 'Kontak Cabang "' . $contents->data->name. '" sudah dihapus');
 			}
 		}
 		else
