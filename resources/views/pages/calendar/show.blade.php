@@ -41,7 +41,9 @@
 									]
 								]
 	])
-
+	<script type="text/javascript">
+		var cal_link = "{!! route('hr.calendar.schedules.index',['org_id' => $data['id'],'cal_id' => $id]) !!}";
+	</script>
 @overwrite
 
 @section('content_footer')
