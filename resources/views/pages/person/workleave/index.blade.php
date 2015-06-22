@@ -43,10 +43,16 @@
 											'sort'				=> ['start' => 'asc'],
 											'page'				=> 1,
 											'per_page'			=> 12,
+											'route_create'		=> route('hr.person.workleaves.create', ['org_id' => $data['id'], 'person_id' => $person['id']])
 										]
 									]
 	])
 
+	{!! Form::open(array('route' => array('hr.workleaves.delete', 0),'method' => 'DELETE')) !!}
+		@include('widgets.modal.delete', [
+			'widget_template'		=> 'plain_no_title'
+		])
+	{!! Form::close() !!}
 @overwrite
 
 @section('content_footer')

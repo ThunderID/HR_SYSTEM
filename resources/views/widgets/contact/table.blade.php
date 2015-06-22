@@ -1,6 +1,3 @@
-<?php
-	$ContactComposer['widget_data']['contactlist']['contact-pagination']->setPath($ContactComposer['widget_data']['contactlist']['route']);
- ?>
 
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
@@ -8,7 +5,9 @@
 	@section('widget_title')
 	<h1> {!! $widget_title or 'Kontak' !!} </h1>
 	<small>Total data {{ $ContactComposer['widget_data']['contactlist']['contact-pagination']->total() }}</small>
-
+	<?php
+		$ContactComposer['widget_data']['contactlist']['contact-pagination']->setPath($ContactComposer['widget_data']['contactlist']['route']);
+	 ?>
 	@overwrite
 
 	@section('widget_body')

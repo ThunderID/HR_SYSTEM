@@ -3,8 +3,8 @@
 	['breadcrumb' => [
 						['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
 						['name' => $person['name'], 'route' => route('hr.persons.show', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
-						['name' => 'Kontak', 'route' => route('hr.persons.show', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
-						['name' => (is_null($id) ? 'Tambah' : 'Ubah '), 'route' => (is_null($id) ? route('hr.person.contacts.create', ['org_id' => $data['id'], 'person_id' => $person['id']]) : route('hr.person.contacts.edit', ['org_id' => $data['id'], 'person_id' => $person['id'], 'id' => $id]) )]
+						['name' => 'Jatah Cuti', 'route' => route('hr.person.workleaves.index', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
+						['name' => (is_null($id) ? 'Tambah' : 'Ubah '), 'route' => (is_null($id) ? route('hr.person.workleaves.create', ['org_id' => $data['id'], 'person_id' => $person['id']]) : route('hr.person.workleaves.edit', ['org_id' => $data['id'], 'person_id' => $person['id'], 'id' => $id]) )]
 					]
 	])
 @stop
@@ -31,18 +31,18 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.contact.form', [
+	@include('widgets.person.workleave.form', [
 		'widget_template'	=> 'panel',
 		'widget_options'	=> 	[
-									'contactlist'			=>
+									'personworkleavelist'			=>
 									[
-										'form_url'			=> route('hr.person.contacts.store', ['id' => $id, 'person_id' => $person['id'], 'org_id' => $data['id']]),
+										'form_url'			=> route('hr.person.workleaves.store', ['id' => $id, 'person_id' => $person['id'], 'org_id' => $data['id']]),
 										'organisation_id'	=> $data['id'],
 										'search'			=> ['id' => $id ,'withattributes' => ['person']],
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 1,
-										'route_back'	 	=> route('hr.persons.show', [$person['id'], 'org_id' => $data['id'], 'person_id' => $person['id']])
+										'route_back'	 	=> route('hr.person.workleaves.index', [$person['id'], 'org_id' => $data['id'], 'person_id' => $person['id']])
 									]
 								]
 	])

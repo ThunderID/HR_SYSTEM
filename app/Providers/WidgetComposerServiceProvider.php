@@ -57,7 +57,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// WORKLEAVE
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.workleave.table', 'widgets.workleave.form'], 	'App\Http\ViewComposers\WorkleaveComposer');
+		View::composer(['widgets.workleave.table', 'widgets.workleave.form', 'widgets.workleave.select'], 	'App\Http\ViewComposers\WorkleaveComposer');
 
 		// -----------------------------------------------------------------------------
 		// DOCUMENT

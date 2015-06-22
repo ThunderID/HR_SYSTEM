@@ -23,6 +23,11 @@ trait HasPersonWorkleavesTrait {
 		return $this->hasMany('App\Models\PersonWorkleave');
 	}
 
+	public function ScopePersonWorkleaveID($query, $variable)
+	{
+		return $query->whereHas('personworkleaves', function($q)use($variable){$q->id($variable);});
+	}
+
 	public function ScopeWorkleaveID($query, $variable)
 	{
 		return $query->whereHas('personworkleaves', function($q)use($variable){$q->workleaveid($variable);});
@@ -46,9 +51,9 @@ trait HasPersonWorkleavesTrait {
 		return $query->CheckWork(true)
 					->selectRaw('sum(IF(is_default = true, quota, 0)) as quota')
 					->selectRaw('sum(IF(is_default = false, quota, 0)) as plus_quota')
-					->selectRaw('hr_persons.*')
+					->selectRaw('persons.*')
 					->leftjoin('persons_workleaves', 'persons.id', '=', 'persons_workleaves.person_id')
-					->leftjoin('workleaves','persons_workleaves.workleave_id', '=', 'workleaves.id')
+					->leftjoin('tmp_workleaves','persons_workleaves.workleave_id', '=', 'tmp_workleaves.id')
 					->where('persons_workleaves.start', '<=', date('Y-m-d',strtotime($variable['ondate'][0])))
 					->where('persons_workleaves.end', '>=', date('Y-m-d',strtotime($variable['ondate'][1])))
 					->groupBy('persons.id');

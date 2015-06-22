@@ -21,7 +21,7 @@
 					<label class="control-label">Bawahan Dari</label>
 				</div>
 				<div class="col-md-4">
-						<select name="path">
+					<select name="path">
 							<option></option>
 						@foreach($ChartComposer['widget_data']['chartpath']['chart'] as $key => $value)
 							<option value="{{$value['path']}}" @if($value['id']==$ChartComposer['widget_data']['chartlist']['chart']['chart_id']) selected @endif>{{$value['name']}} Departemen {{$value['tag']}}</option>

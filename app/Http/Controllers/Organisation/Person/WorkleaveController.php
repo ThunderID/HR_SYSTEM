@@ -1,9 +1,11 @@
 <?php namespace App\Http\Controllers\Organisation\Person;
-use Input, Session, App, Paginator, Redirect, DB;
+use Input, Session, App, Paginator, Redirect, DB, Config;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
+use App\Console\Commands\Checking;
+use App\Console\Commands\Deleting;
 use App\Models\Person;
 use App\Models\PersonWorkleave;
 
@@ -31,10 +33,10 @@ class WorkleaveController extends BaseController
 			App::abort(404);
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
@@ -78,10 +80,10 @@ class WorkleaveController extends BaseController
 			App::abort(404);
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
@@ -129,9 +131,13 @@ class WorkleaveController extends BaseController
 			App::abort(404);
 		}
 
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
+
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
-		$search['withattributes'] 				= ['organisation'];
 		$sort 									= ['name' => 'asc'];
 		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
@@ -141,8 +147,9 @@ class WorkleaveController extends BaseController
 			App::abort(404);
 		}
 
-		$attributes 							= Input::only('name', 'status', 'on', 'start', 'end');
-		$attributes['on'] 						= date('Y-m-d', strtotime($attributes['on']));
+		$attributes 							= Input::only('workleave_id', 'is_default', 'start', 'end');
+		$attributes['start'] 					= date('Y-m-d', strtotime($attributes['start']));
+		$attributes['end'] 						= date('Y-m-d', strtotime($attributes['end']));
 
 		$errors 								= new MessageBag();
 
@@ -153,13 +160,26 @@ class WorkleaveController extends BaseController
 		
 		if(!$is_success->meta->success)
 		{
-			$errors->add('Person', $is_success->meta->errors);
+			foreach ($is_success->meta->errors as $key => $value) 
+			{
+				if(is_array($value))
+				{
+					foreach ($value as $key2 => $value2) 
+					{
+						$errors->add('Person', $value2);
+					}
+				}
+				else
+				{
+					$errors->add('Person', $value);
+				}
+			}
 		}
 
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.persons.show', [$person_id, 'org_id' => $org_id])->with('alert_success', 'Jadwal kalender "' . $contents->data->name. '" sudah disimpan');
+			return Redirect::route('hr.person.workleaves.index', [$person_id, 'org_id' => $org_id])->with('alert_success', 'Jadwal kalender "' . $contents->data->name. '" sudah disimpan');
 		}
 
 		DB::rollback();
@@ -187,10 +207,10 @@ class WorkleaveController extends BaseController
 			App::abort(404);
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 		
 		$search 						= ['id' => $id, 'branchid' => $branch_id, 'organisationid' => $org_id, 'withattributes' => ['branch', 'branch.organisation']];
 		$results 						= $this->dispatch(new Getting(new Chart, $search, [] , 1, 1));
@@ -216,5 +236,66 @@ class WorkleaveController extends BaseController
 	public function edit($id)
 	{
 		return $this->create($id);
+	}
+
+
+	public function destroy($id)
+	{
+		$attributes 						= ['email' => Config::get('user.email'), 'password' => Input::get('password')];
+
+		$results 							= $this->dispatch(new Checking(new Person, $attributes));
+
+		$content 							= json_decode($results);
+
+		if($content->meta->success)
+		{
+			if(Input::has('org_id'))
+			{
+				$org_id 					= Input::get('org_id');
+			}
+			else
+			{
+				$org_id 					= Session::get('user.organisation');
+			}
+
+			if(Input::has('person_id'))
+			{
+				$person_id 					= Input::get('person_id');
+			}
+			else
+			{
+				App::abort(404);
+			}
+
+			if(!in_array($org_id, Config::get('user.orgids')))
+			{
+				App::abort(404);
+			}
+
+			$search 						= ['id' => $person_id, 'organisationid' => $org_id, 'personworkleaveid' => $id];
+			$results 						= $this->dispatch(new Getting(new Person, $search, [] , 1, 1));
+			$contents 						= json_decode($results);
+
+			if(!$contents->meta->success)
+			{
+				App::abort(404);
+			}
+
+			$results 						= $this->dispatch(new Deleting(new PersonWorkleave, $id));
+			$contents 						= json_decode($results);
+
+			if (!$contents->meta->success)
+			{
+				return Redirect::back()->withErrors($contents->meta->errors);
+			}
+			else
+			{
+				return Redirect::route('hr.person.workleaves.index', [$person_id, 'org_id' => $org_id, 'person_id' => $person_id])->with('alert_success', 'Kontak Personalia "' . $contents->data->item. '" sudah dihapus');
+			}
+		}
+		else
+		{
+			return Redirect::back()->withErrors(['Password yang Anda masukkan tidak sah!']);
+		}
 	}
 }

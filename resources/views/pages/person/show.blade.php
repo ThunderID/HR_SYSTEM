@@ -2,7 +2,7 @@
 	@include('widgets.common.nav_topbar', 
 	['breadcrumb' => [
 						['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
-						['name' => $person['name'], 'route' => route('hr.persons.show', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
+						['name' => $person['name'], 'route' => route('hr.persons.index', ['org_id' => $data['id'] ])], 
 						['name' => 'Kontak', 'route' => route('hr.persons.show', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
 					]
 	])

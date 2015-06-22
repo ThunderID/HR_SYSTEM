@@ -157,7 +157,20 @@ class ContactController extends BaseController
 		
 		if(!$is_success->meta->success)
 		{
-			$errors->add('Person', $is_success->meta->errors);
+			foreach ($is_success->meta->errors as $key => $value) 
+			{
+				if(is_array($value))
+				{
+					foreach ($value as $key2 => $value2) 
+					{
+						$errors->add('Person', $value2);
+					}
+				}
+				else
+				{
+					$errors->add('Person', $value);
+				}
+			}
 		}
 
 		if(!$errors->count())

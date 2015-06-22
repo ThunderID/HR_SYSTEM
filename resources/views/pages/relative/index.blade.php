@@ -3,7 +3,7 @@
 	['breadcrumb' => [
 						['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
 						['name' => $person['name'], 'route' => route('hr.persons.show', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
-						['name' => 'Kerabat', 'route' => route('hr.person.relatives.index', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
+						['name' => 'Data Kerabat', 'route' => route('hr.person.relatives.index', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
 					]
 	])
 @stop
@@ -43,6 +43,7 @@
 											'sort'				=> ['name' => 'asc'],
 											'page'				=> 1,
 											'per_page'			=> 12,
+											'route_create'		=> route('hr.persons.create', ['org_id' => $data['id']])
 										]
 									]
 	])

@@ -122,6 +122,7 @@ class Person extends BaseModel {
 											'checkrelation' 				=> 'CheckRelation',
 											'checkrelationof' 				=> 'CheckRelationOf',
 											
+											'personworkleaveid'				=> 'PersonWorkleaveID',
 											'takenworkleave'				=> 'TakenWorkleave',
 											'checktakenworkleave'			=> 'CheckTakenWorkleave',
 											'minusquotas'					=> 'MinusQuotas',
