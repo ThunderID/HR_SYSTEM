@@ -1,6 +1,6 @@
-{!! HTML::script('plugins/microtemplate/microtemplating.min.js')!!}	
+<!-- {!! HTML::script('plugins/microtemplate/microtemplating.min.js')!!}	
 {!! HTML::script('plugins/microtemplate/Pluginmicrotemplating.min.js')!!}
-{!! HTML::script('plugins/microtemplate/handlebars-v3.0.3.js')!!}
+{!! HTML::script('plugins/microtemplate/handlebars-v3.0.3.js')!!} -->
 
 
 <script type="text/javascript">
@@ -28,7 +28,7 @@
 								</select> \
 							</div> \
 							<div class="col-md-2"> \
-								<a href="javascript:;" class="btn-delete-doc" style="color:#666;"><i class="fa fa-plus-circle fa-lg mt-10"></i></a> \
+								<a href="javascript:;" class="btn-delete-doc" style="color:#666;"><i class="fa fa-minus-circle fa-lg mt-10"></i></a> \
 							</div> \
 						</div> \
 					';
@@ -39,6 +39,7 @@
 
 	function bind_delete(e) {
 		console.log(e);
+		bind_delete(e);
 	}
 	
 </script>
