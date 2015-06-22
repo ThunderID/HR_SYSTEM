@@ -5,12 +5,7 @@
 		<h1> {{ is_null($id) ? 'Tambah Template Dokumen' : 'Ubah Template Dokumen '. $DocumentComposer['widget_data']['documentlist']['document']['name']}} </h1> 
 	@overwrite
 
-	@section('widget_body')
-		<div class="bs-callout bs-callout-warning" id="callout-helper-context-color-accessibility">
-		    <h4>Conveying meaning to assistive technologies</h4>
-		    <p>Using color to add meaning only provides a visual indication, which will not be conveyed to users of assistive technologies – such as screen readers. Ensure that information denoted by the color is either obvious from the content itself (the contextual colors are only used to reinforce meaning that is already present in the text/markup), or is included through alternative means, such as additional text hidden with the <code>.sr-only</code> class.</p>
-		</div>
-		  
+	@section('widget_body')	  
 		<div class="clearfix">&nbsp;</div>
 		{!! Form::open(['url' => $DocumentComposer['widget_data']['documentlist']['form_url'], 'class' => 'form-horizontal']) !!}	
 			<div class="form-group">
@@ -63,7 +58,7 @@
 						</select>
 					</div>
 					<div class="col-md-2">
-						<a href="javascript:;" class="btn-delete-doc" style="color:#666;"><i class="fa fa-plus-circle fa-lg mt-10"></i></a>
+						<a href="javascript:;" class="btn-delete-doc" style="color:#666;"><i class="fa fa-minus-circle fa-lg mt-10"></i></a>
 					</div>
 				</div>
 			@else
@@ -91,8 +86,6 @@
 				</div>
 			</div>
 		{!! Form::close() !!}
-			
-		
 	@overwrite	
 @else
 	@section('widget_title')
