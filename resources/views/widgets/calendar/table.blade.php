@@ -11,16 +11,16 @@
 		<div class="clearfix">&nbsp;</div>
 		<table class="table">
 			<thead>
-				<tr>
-					<th>Nama Kalender</th>
-					<th>Hari Kerja</th>
-					<th>Jam Kerja</th>
-					<th>&nbsp;</th>
+				<tr class="row">
+					<th class="col-sm-3">Nama Kalender</th>
+					<th class="col-sm-4">Hari Kerja</th>
+					<th class="col-sm-2">Jam Kerja</th>
+					<th class="col-sm-3">&nbsp;</th>
 				</tr>
 			</thead>
 			@foreach($CalendarComposer['widget_data']['calendarlist']['calendar'] as $key => $value)
 				<tbody>
-					<tr>
+					<tr class="row">
 						<td>
 							{{$value['name']}}
 						</td>
@@ -32,7 +32,7 @@
 							@time_indo($value['end'])
 						</td>
 						<td class="text-right">
-							<a href="" class="btn btn-default"><i class="fa fa-trash"></i></a>
+							<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.calendars.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash"></i></a>
 							<a href="{{route('hr.calendars.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 							<a href="{{route('hr.calendars.show', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
 						</td>

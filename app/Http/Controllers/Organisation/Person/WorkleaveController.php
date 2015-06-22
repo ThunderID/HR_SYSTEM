@@ -238,7 +238,6 @@ class WorkleaveController extends BaseController
 		return $this->create($id);
 	}
 
-
 	public function destroy($id)
 	{
 		$attributes 						= ['email' => Config::get('user.email'), 'password' => Input::get('password')];
