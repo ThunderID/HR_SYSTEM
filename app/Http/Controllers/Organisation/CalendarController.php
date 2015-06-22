@@ -167,19 +167,23 @@ class CalendarController extends BaseController
 			App::abort(404);
 		}
 
-		$search['id']							= $org_id;
-		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Organisation, $search, $sort , 1, 1));
-		$contents 								= json_decode($results);		
-
+		$search 								= ['id' => $id, 'organisationid' => $org_id, 'withattributes' => ['organisation']];
+		$results 								= $this->dispatch(new Getting(new Calendar, $search, [] , 1, 1));
+		$contents 								= json_decode($results);
+		
 		if(!$contents->meta->success)
 		{
 			App::abort(404);
 		}
 
-		$data 									= json_decode(json_encode($contents->data), true);
+		$calendar 								= json_decode(json_encode($contents->data), true);
+		$data 									= $calendar['organisation'];
 
-		$this->layout->page 					= view('pages.calendar.show', compact('id', 'data'));
+		// ---------------------- GENERATE CONTENT ----------------------
+		$this->layout->pages 					= view('pages.calendar.show', compact('id', 'data', 'calendar'));
+		$this->layout->pages->data 				= $data;
+		$this->layout->pages->calendar 			= $calendar;
+		$this->layout->pages->route_back 		= route('hr.calendars.index', ['org_id' => $org_id]);
 
 		return $this->layout;
 	}

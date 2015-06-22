@@ -1,5 +1,11 @@
 @section('nav_topbar')
-	@include('widgets.common.nav_topbar', ['breadcrumb' => [['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], ['name' => 'Kalender', 'route' => route('hr.calendars.index', ['org_id' => $data['id']]) ]]])
+	@include('widgets.common.nav_topbar', 
+		['breadcrumb' 			=> 	[
+										['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
+										['name' => 'Kalender', 'route' => route('hr.calendars.index', ['org_id' => $data['id']]) ],
+										['name' => $calendar['name'], 'route' => route('hr.calendars.show', ['id' => $calendar['id'], 'calendar_id' => $calendar['id'],'org_id' => $data['id'] ])], 
+									]
+		])
 @stop
 
 @section('nav_sidebar')
@@ -12,11 +18,10 @@
 										'sidebar'				=>
 										[
 											'widget_title'		=> 'Pilih Organisasi :',								
-											'identifier'		=> 1,
 											'search'			=> [],
 											'sort'				=> [],
 											'page'				=> 1,
-											'per_page'			=> 12,
+											'per_page'			=> 100,
 										]
 									]
 	])
@@ -32,7 +37,6 @@
 									'calendarlist'			=>
 									[
 										'organisation_id'	=> $data['id'],
-										'identifier'		=> 1,
 										'search'			=> ['id' => $id],
 										'sort'				=> [],
 										'page'				=> 1,
