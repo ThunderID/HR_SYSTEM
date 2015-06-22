@@ -53,7 +53,7 @@ class Application extends BaseModel {
 											'id' 								=> 'Could be array or integer', 
 											'chartid' 							=> 'Could be array or integer', 
 											
-											'anme' 								=> 'Must be string', 
+											'name' 								=> 'Must be string', 
 											'withattributes' 					=> 'Must be array of relationship',
 										];
 

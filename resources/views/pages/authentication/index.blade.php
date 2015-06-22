@@ -18,6 +18,7 @@
 		'widget_options'		=> 	[
 										'sidebar'				=> 
 										[
+											'identifier'		=> 1,
 											'search'			=> ['withattributes' => 'branches'],
 											'sort'				=> [],
 											'page'				=> 1,
@@ -28,18 +29,18 @@
 @overwrite
 
 @section('content_body')
-			@include('widgets.chart.stat', [
+			@include('widgets.authentication.table', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> $chart['name'],
 				'widget_options'		=> 	[
-												'chartlist'		=>
+												'applicationlist'		=>
 												[
 													'organisation_id'	=> $data['id'],
-													'search'			=> ['id' => $chart['id']],
+													'search'			=> ['chartid' => $chart['id']],
 													'sort'				=> [],
 													'page'				=> 1,
-													'per_page'			=> 1,
-													'route_create'		=> route('hr.branch.charts.create', ['branch_id' => $branch['id'], 'org_id' => $data['id']]),
+													'per_page'			=> 100,
+													'route_create'		=> '',
 												]
 											]
 			])
