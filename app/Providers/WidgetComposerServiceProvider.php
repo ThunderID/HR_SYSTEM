@@ -78,7 +78,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// CHART
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.chart.list', 'widgets.chart.form', 'widgets.chart.stat'], 	'App\Http\ViewComposers\ChartComposer');
+		View::composer(['widgets.chart.list', 'widgets.chart.form', 'widgets.chart.stat', 'widgets.chart.select'], 	'App\Http\ViewComposers\ChartComposer');
 
 		// -----------------------------------------------------------------------------
 		// API
@@ -98,7 +98,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// FOLLOW
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.follow.table', 'widgets.follow.form'], 	'App\Http\ViewComposers\FollowComposer');
+		View::composer(['widgets.follow.table', 'widgets.follow.form', 'widgets.calendar.chart.table', 'widgets.calendar.chart.form'], 	'App\Http\ViewComposers\FollowComposer');
 
 		// -----------------------------------------------------------------------------
 		// SCHEDULE
@@ -113,7 +113,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// PERSON WORKLEAVE
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.person.workleave.table', 'widgets.person.workleave.form'], 	'App\Http\ViewComposers\PersonWorkleaveComposer');
+		View::composer(['widgets.person.workleave.table', 'widgets.person.workleave.form', 'widgets.workleave.chart.form'], 	'App\Http\ViewComposers\PersonWorkleaveComposer');
 
 		// -----------------------------------------------------------------------------
 		// PERSON DOCUMENT
