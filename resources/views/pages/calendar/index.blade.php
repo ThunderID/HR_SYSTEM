@@ -26,7 +26,7 @@
 @section('content_body')	
 	@include('widgets.calendar.table', [
 		'widget_template'		=> 'panel',
-		'widget_title'			=> 'Kalender',		
+		'widget_title'			=> 'Kalender '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
