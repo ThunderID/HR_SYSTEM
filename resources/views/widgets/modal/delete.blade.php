@@ -1,7 +1,7 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
 @section('widget_body')
-	<div class="modal fade delete" id="delete" tabindex="-1" role="dialog" aria-labelledby="Hapus" aria-hidden="true">
+	<div class="modal fade delete" id="{{ (isset($modal) ? $modal : 'delete') }}" tabindex="-1" role="dialog" aria-labelledby="Hapus" aria-hidden="true">
 		<div class="modal-dialog form">
 			<div class="modal-content">
 				<div class="modal-header">

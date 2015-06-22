@@ -17,7 +17,6 @@
 		'widget_options'		=> 	[
 										'sidebar'				=> 
 										[
-											'identifier'		=> 1,
 											'search'			=> [],
 											'sort'				=> [],
 											'page'				=> 1,
@@ -34,7 +33,6 @@
 				'widget_options'		=> 	[
 												'contactlist'			=>
 												[
-													'identifier'		=> 1,
 													'search'			=> ['personid' => $person['id']],
 													'sort'				=> ['is_default' => 'desc'],
 													'page'				=> 1,
@@ -49,6 +47,12 @@
 												]
 											]
 			])
+
+		{!! Form::open(array('route' => array('hr.person.contacts.delete', 0),'method' => 'DELETE')) !!}
+			@include('widgets.modal.delete', [
+				'widget_template'		=> 'plain_no_title'
+			])
+		{!! Form::close() !!}
 @overwrite
 
 @section('content_filter')

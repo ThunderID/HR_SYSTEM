@@ -43,12 +43,14 @@
 	{!! HTML::script('plugins/jquery/jquery-2.1.4.min.js') !!}
 	{!! HTML::script('plugins/bootstrap/bootstrap.min.js') !!}
 	{!! HTML::script('plugins/metisMenu/metisMenu.min.js') !!}
+
 	@include('plugins.select2')
 	@include('plugins.toggle')
 	@include('plugins.modal')
 	@include('plugins.checkbox')
 	@include('plugins.inputmask')
 	@include('plugins.calendar')
+	
 	@include('plugins.summernote')
 	@include('plugins.microtemplate')
 

@@ -68,7 +68,7 @@ class Deleting extends Command implements SelfHandling {
 			}
 			else
 			{
-				$response 				= new APIResponse((array)$deleted_model, $this->model->getError(), 1);
+				$response 				= new APIResponse((array)$deleted_model, (array)$this->model->getError(), 1);
 			}
 
 			return $response->toJson();
@@ -91,7 +91,7 @@ class Deleting extends Command implements SelfHandling {
 			}
 			else
 			{
-				$response 				= new APIResponse((array)$deleted_model, $this->model->getError(), 1);
+				$response 				= new APIResponse((array)$deleted_model, (array)$this->model->getError(), 1);
 			}
 
 			return $response->toJson();

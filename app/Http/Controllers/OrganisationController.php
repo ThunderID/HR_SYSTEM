@@ -184,6 +184,15 @@ class OrganisationController extends BaseController
 
 	public function destroy($id)
 	{
+		if(Input::has('org_id'))
+		{
+			$id 							= Input::get('org_id');
+		}
+		else
+		{
+			$id 							= Session::get('user.organisation');
+		}
+
 		$attributes 						= ['email' => Config::get('user.email'), 'password' => Input::get('password')];
 
 		$results 							= $this->dispatch(new Checking(new Person, $attributes));
@@ -192,6 +201,11 @@ class OrganisationController extends BaseController
 
 		if($content->meta->success)
 		{
+			if(!in_array($id, Config::get('user.orgids')))
+			{
+				App::abort(404);
+			}
+
 			$results 						= $this->dispatch(new Deleting(new Organisation, $id));
 			$contents 						= json_decode($results);
 
