@@ -31,7 +31,7 @@
 @section('content_body')
 			@include('widgets.authentication.table', [
 				'widget_template'		=> 'panel',
-				'widget_title'			=> $chart['name'],
+				'widget_title'			=> 'Otentikasi Jabatan '.$chart['name'],
 				'widget_options'		=> 	[
 												'applicationlist'		=>
 												[

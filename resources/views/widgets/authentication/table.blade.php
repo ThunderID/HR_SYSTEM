@@ -1,7 +1,7 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
 @section('widget_title')
-	<h1> {{ $widget_title or 'Kontak' }} </h1>
+	<h1> {{ $widget_title or 'Otentikasi' }} </h1>
 @overwrite
 
 @section('widget_body')
@@ -12,7 +12,7 @@
 			<tr>
 				<th  class="text-center" rowspan="2" width="15%" style="vertical-align:middle">Aplikasi</th>
 				<th  class="text-center" rowspan="2" width="15%" style="vertical-align:middle">Menu</th>
-				<th  class="text-center" colspan="4">Autentikasi</th>
+				<th  class="text-center" colspan="4">Otentikasi</th>
 			</tr>
 			<tr>
 				<th  class="text-center">Tambah</th>
@@ -38,28 +38,60 @@
 							<td class="text-center">							
 								<div class="checkbox checkbox-inline checkbox-styled">
 									<label>	
-										<input type="checkbox" class="thumb" data-checked-action="@if(isset($value2['authentications'][0]['is_create'])&&$value2['authentications'][0]['is_create']){{route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'wrong' => 'is_create', 'org_id' => $data['id']])}}@endif" data-unchecked-action="@if(isset($value2['authentications'][0]['is_create'])){{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'right' => 'is_create', 'org_id' => $data['id']]) }}@else{{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'right' => 'is_create', 'org_id' => $data['id']]) }}@endif" @if(isset($value2['authentications'][0]['is_create']) && $value2['authentications'][0]['is_create']) checked @endif>
+										<input type="checkbox" class="thumb" 
+										data-checked-action="
+											@if(isset($value2['authentications'][0]['is_create'])) {{route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'wrong' => 'is_create', 'org_id' => $data['id']])}} 
+											@else {{route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => null, 'wrong' => 'is_create', 'org_id' => $data['id']])}} 
+											@endif" 
+										data-unchecked-action="
+											@if(isset($value2['authentications'][0]['is_create'])){{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'right' => 'is_create', 'org_id' => $data['id']]) }}
+											@else{{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'right' => 'is_create', 'org_id' => $data['id']]) }}@endif" 
+										@if(isset($value2['authentications'][0]['is_create']) && $value2['authentications'][0]['is_create']) checked @endif>
 									</label>
 								</div>
 							</td>
 							<td class="text-center">
 								<div class="checkbox checkbox-inline checkbox-styled">
 									<label>	
-										<input type="checkbox" class="thumb" data-checked-action=" @if(isset($value2['authentications'][0]['is_read']) && $value2['authentications'][0]['is_read']) {{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'wrong' => 'is_read', 'org_id' => $data['id']]) }} @endif" data-unchecked-action="@if (isset($value2['authentications'][0]['is_read'])) {{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'right' => 'is_read', 'org_id' => $data['id']]) }} @else {{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'right' => 'is_read', 'org_id' => $data['id']]) }} @endif" @if(isset($value2['authentications'][0]['is_read']) && $value2['authentications'][0]['is_read']) checked @endif>
+										<input type="checkbox" class="thumb" 
+										data-checked-action="
+											@if(isset($value2['authentications'][0]['is_read'])) {{route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'wrong' => 'is_read', 'org_id' => $data['id']])}} 
+											@else {{route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => null, 'wrong' => 'is_read', 'org_id' => $data['id']])}} 
+											@endif" 
+										data-unchecked-action="
+											@if(isset($value2['authentications'][0]['is_read'])){{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'right' => 'is_read', 'org_id' => $data['id']]) }}
+											@else{{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'right' => 'is_read', 'org_id' => $data['id']]) }}@endif" 
+										@if(isset($value2['authentications'][0]['is_read']) && $value2['authentications'][0]['is_read']) checked @endif>
 									</label>
 								</div>
 							</td>
 							<td class="text-center">
 								<div class="checkbox checkbox-inline checkbox-styled">
 									<label>	
-										<input type="checkbox" class="thumb" data-checked-action="@if(isset($value2['authentications'][0]['is_update']) && $value2['authentications'][0]['is_update']) {{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'wrong' => 'is_update', 'org_id' => $data['id']]) }} @endif" data-unchecked-action="@if (isset($value2['authentications'][0]['is_update'])) {{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'right' => 'is_update', 'org_id' => $data['id']]) }} @else {{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'right' => 'is_update', 'org_id' => $data['id']]) }} @endif" @if(isset($value2['authentications'][0]['is_update']) && $value2['authentications'][0]['is_update']) checked @endif>
+										<input type="checkbox" class="thumb" 
+										data-checked-action="
+											@if(isset($value2['authentications'][0]['is_update'])) {{route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'wrong' => 'is_update', 'org_id' => $data['id']])}} 
+											@else {{route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => null, 'wrong' => 'is_update', 'org_id' => $data['id']])}} 
+											@endif" 
+										data-unchecked-action="
+											@if(isset($value2['authentications'][0]['is_update'])){{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'right' => 'is_update', 'org_id' => $data['id']]) }}
+											@else{{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'right' => 'is_update', 'org_id' => $data['id']]) }}@endif" 
+										@if(isset($value2['authentications'][0]['is_update']) && $value2['authentications'][0]['is_update']) checked @endif>
 									</label>
 								</div>
 							</td>
 							<td class="text-center">
 								<div class="checkbox checkbox-inline checkbox-styled">
 									<label>	
-										<input type="checkbox" class="thumb" data-checked-action="@if(isset($value2['authentications'][0]['is_delete']) && $value2['authentications'][0]['is_delete']) {{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'wrong' => 'is_delete', 'org_id' => $data['id']]) }} @endif" data-unchecked-action="@if (isset($value2['authentications'][0]['is_delete'])) {{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'right' => 'is_delete', 'org_id' => $data['id']]) }} @else {{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'right' => 'is_delete', 'org_id' => $data['id']]) }} @endif" @if(isset($value2['authentications'][0]['is_delete']) && $value2['authentications'][0]['is_delete']) checked @endif>
+										<input type="checkbox" class="thumb" 
+										data-checked-action="
+											@if(isset($value2['authentications'][0]['is_delete'])) {{route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'wrong' => 'is_delete', 'org_id' => $data['id']])}} 
+											@else {{route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => null, 'wrong' => 'is_delete', 'org_id' => $data['id']])}} 
+											@endif" 
+										data-unchecked-action="
+											@if(isset($value2['authentications'][0]['is_delete'])){{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'auth_id' => $value2['authentications'][0]['id'], 'right' => 'is_delete', 'org_id' => $data['id']]) }}
+											@else{{ route('hr.chart.authentications.store', ['branch_id' => $branch['id'],'chart_id' => $chart['id'], 'menu_id' => $value2['id'], 'right' => 'is_delete', 'org_id' => $data['id']]) }}@endif" 
+										@if(isset($value2['authentications'][0]['is_delete']) && $value2['authentications'][0]['is_delete']) checked @endif>
 									</label>
 								</div>
 							</td>

@@ -41,6 +41,7 @@ class AuthenticationController extends BaseController
 		{
 			App::abort(404);
 		}
+		
 		// if(!in_array($org_id, Session::get('user.orgids')))
 		// {
 		// App::abort(404);
@@ -145,26 +146,36 @@ class AuthenticationController extends BaseController
 
 		DB::beginTransaction();
 
+		$attributes['chart_id']					= $chart_id;
+
 		$content 								= $this->dispatch(new Saving(new Authentication, $attributes, $id, new Menu, $menu_id));
 		$is_success 							= json_decode($content);
 
 		if(!$is_success->meta->success)
 		{
-			$errors->add('Chart', $is_success->meta->errors);
+			foreach ($is_success->meta->errors as $key => $value) 
+			{
+				if(is_array($value))
+				{
+					foreach ($value as $key2 => $value2) 
+					{
+						$errors->add('Chart', $value2);
+					}
+				}
+				else
+				{
+					$errors->add('Chart', $value);
+				}
+			}
 		}
 
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.charts.show', [$chart_id, 'branch_id' => $branch_id, 'org_id' => $org_id])->with('alert_success', 'Otentikasi Jabatan "' . $contents->data->name. '" sudah disimpan');
+			return Redirect::route('hr.chart.authentications.index', ['chart_id' => $chart_id, 'branch_id' => $branch_id, 'org_id' => $org_id])->with('alert_success', 'Otentikasi Jabatan "' . $contents->data->name. '" sudah disimpan');
 		}
 		
 		DB::rollback();
 		return Redirect::back()->withErrors($errors)->withInput();
-	}
-
-	public function edit($id)
-	{
-		return $this->create($id);
 	}
 }

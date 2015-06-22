@@ -277,7 +277,20 @@ class ScheduleController extends BaseController
 		
 		if(!$is_success->meta->success)
 		{
-			$errors->add('Calendar', $is_success->meta->errors);
+			foreach ($is_success->meta->errors as $key => $value) 
+			{
+				if(is_array($value))
+				{
+					foreach ($value as $key2 => $value2) 
+					{
+						$errors->add('Calendar', $value2);
+					}
+				}
+				else
+				{
+					$errors->add('Calendar', $value);
+				}
+			}
 		}
 
 		if(!$errors->count())
