@@ -1,5 +1,5 @@
 <?php namespace App\Http\Controllers\Organisation\Person;
-use Input, Session, App, Paginator, Redirect, DB;
+use Input, Session, App, Paginator, Redirect, DB, Config;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -31,14 +31,13 @@ class RelativeController extends BaseController
 			App::abort(404);
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
-		$search['withattributes'] 				= ['organisation'];
 		$sort 									= ['name' => 'asc'];
 		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
@@ -77,14 +76,13 @@ class RelativeController extends BaseController
 			App::abort(404);
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
-		$search['withattributes'] 				= ['organisation'];
 		$sort 									= ['name' => 'asc'];
 		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
@@ -98,7 +96,7 @@ class RelativeController extends BaseController
 		$data 									= $person['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.contact.create', compact('id', 'data', 'person'));
+		$this->layout->page 					= view('pages.person.create', compact('id', 'data'));
 
 		return $this->layout;
 	}
@@ -124,6 +122,11 @@ class RelativeController extends BaseController
 			$person_id 							= Input::get('person_id');
 		}
 		else
+		{
+			App::abort(404);
+		}
+
+		if(!in_array($org_id, Config::get('user.orgids')))
 		{
 			App::abort(404);
 		}
@@ -175,11 +178,11 @@ class RelativeController extends BaseController
 			$org_id 					= Session::get('user.organisation');
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
-		
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
+
 		$search 						= ['id' => $id, 'organisationid' => $org_id, 'withattributes' => ['organisation']];
 		$results 						= $this->dispatch(new Getting(new Person, $search, [] , 1, 1));
 		$contents 						= json_decode($results);

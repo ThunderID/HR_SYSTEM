@@ -11,7 +11,6 @@
 		'widget_options'	=> [
 									'sidebar'				=>
 									[
-										'identifier'		=> 1,
 										'search'			=> [],
 										'sort'				=> ['name' => 'asc'],
 										'page'				=> 1,
@@ -27,14 +26,13 @@
 @section('content_body')	
 	@include('widgets.calendar.table', [
 		'widget_template'		=> 'panel',
-		'widget_title'			=> 'Kalender Index',		
+		'widget_title'			=> 'Kalender',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
 										'calendarlist'			=>
 										[
 											'organisation_id'	=> $data['id'],
-											'identifier'		=> 1,
 											'search'			=> [],
 											'sort'				=> ['name' => 'asc'],
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
@@ -44,6 +42,11 @@
 									]
 	])
 
+	{!! Form::open(array('route' => array('hr.calendars.delete', 0),'method' => 'DELETE')) !!}
+		@include('widgets.modal.delete', [
+			'widget_template'		=> 'plain_no_title'
+		])
+	{!! Form::close() !!}
 @overwrite
 
 @section('content_footer')
