@@ -140,6 +140,15 @@ Route::group(['prefix' => ''], function()
 		Route::resource('charts',			'ChartController',										['names' => ['index' => 'hr.workleave.charts.index', 'create' => 'hr.workleave.charts.create', 'store' => 'hr.workleave.charts.store', 'show' => 'hr.workleave.charts.show', 'edit' => 'hr.workleave.charts.edit', 'update' => 'hr.workleave.charts.update', 'destroy' => 'hr.workleave.charts.delete']]);
 	});
 
+	Route::group(['namespace' => 'Document\\', 'prefix' => 'document'], function() 
+	{
+		// ------------------------------------------------------------------------------------
+		// CHARTS FOR WORKLEAVE RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('templates',		'TemplateController',									['names' => ['index' => 'hr.document.templates.index', 'create' => 'hr.document.templates.create', 'store' => 'hr.document.templates.store', 'show' => 'hr.document.templates.show', 'edit' => 'hr.document.templates.edit', 'update' => 'hr.document.templates.update', 'destroy' => 'hr.document.templates.delete']]);
+	});
+
 	Route::group(['namespace' => 'Person\\', 'prefix' => 'person'], function() 
 	{
 

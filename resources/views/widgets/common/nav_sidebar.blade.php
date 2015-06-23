@@ -14,7 +14,7 @@
         </li>
         @if(isset($OrganisationComposer['widget_data']['sidebar']['organisation']))
             @foreach($OrganisationComposer['widget_data']['sidebar']['organisation'] as $key => $value)
-                <li>
+                <li @if(Input::has('org_id') && Input::get('org_id')==$value['id']) class = "active" @endif>
                     <a href="{{route('hr.organisations.show', $value['id'])}}"><i class="fa fa-bank fa-fw"></i> {{ $value['name'] }} <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         {{-- <li><a href="{{route('hr.organisations.show', $value['id'])}}"><i class="fa fa-eye fa-fw"></i> Show</a></li> --}}

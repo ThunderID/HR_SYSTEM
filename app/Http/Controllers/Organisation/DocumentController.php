@@ -165,9 +165,39 @@ class DocumentController extends BaseController
 		return Redirect::back()->withErrors($errors)->withInput();
 	}
 
-	public function show()
+	public function show($id = null)
 	{
-		$this->layout->page 	= view('pages.document.show');
+		if(Input::has('org_id'))
+		{
+			$org_id 							= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 							= Session::get('user.organisation');
+		}
+
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
+
+		$search 								= ['id' => $id, 'organisationid' => $org_id, 'withattributes' => ['organisation']];
+		$results 								= $this->dispatch(new Getting(new Document, $search, [] , 1, 1));
+		$contents 								= json_decode($results);
+		
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$document 								= json_decode(json_encode($contents->data), true);
+		$data 									= $document['organisation'];
+
+		// ---------------------- GENERATE CONTENT ----------------------
+		$this->layout->pages 					= view('pages.document.show', compact('id', 'data', 'document'));
+		$this->layout->pages->data 				= $data;
+		$this->layout->pages->document 			= $document;
+		$this->layout->pages->route_back 		= route('hr.documents.index', ['org_id' => $org_id]);
 
 		return $this->layout;
 	}

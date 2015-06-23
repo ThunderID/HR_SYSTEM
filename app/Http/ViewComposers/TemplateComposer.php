@@ -4,26 +4,27 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Getting;
 use App\Models\Template;
-use Input, Validator, App;
+use Input, Validator, App, Paginator;
 
 class TemplateComposer extends WidgetComposer 
 {
-	protected function setRules()
+	protected function setRules($options)
 	{
-		$this->widget_rules['form_url']			= ['required', 'url'];						// url for form submit
-		$this->widget_rules['document_id'] 		= ['required', 'alpha_dash'];				// document_id: filter organisation
-		$this->widget_rules['search'] 			= ['array'];								// search: label for search
-		$this->widget_rules['sort'] 			= ['array'];								// sort: label for sort
-		$this->widget_rules['page'] 			= ['required', 'numeric'];					// page: label for page
-		$this->widget_rules['per_page'] 		= ['required', 'numeric', 'max:100'];		// per page: label for per page
-		$this->widget_rules['identifier'] 		= ['required', 'numeric'];					// identifier
+		$widget_rules['form_url']			= ['url'];									// url for form submit
+		$widget_rules['document_id'] 		= ['required', 'alpha_dash'];				// document_id: filter organisation
+		$widget_rules['search'] 			= ['array'];								// search: label for search
+		$widget_rules['sort'] 				= ['array'];								// sort: label for sort
+		$widget_rules['page'] 				= ['required', 'numeric'];					// page: label for page
+		$widget_rules['per_page'] 			= ['required', 'numeric', 'max:100'];		// per page: label for per page
+
+		return $widget_rules;
 	}
 
-	protected function setData()
+	protected function setData($options)
 	{
-		$this->widget_data['search']['documentid'] 	= $this->widget_data['document_id'];
+		$options['search']['documentid'] 		= $options['document_id'];
 
-		$results 								=  $this->dispatch(new Getting(new Template, $this->widget_data['search'], $this->widget_data['sort'] , $this->widget_data['page'], $this->widget_data['per_page']));
+		$results 								=  $this->dispatch(new Getting(new Template, $options['search'], $options['sort'] , (int)$options['page'], (int)$options['per_page']));
 
 		$contents 								= json_decode($results);
 
@@ -44,12 +45,18 @@ class TemplateComposer extends WidgetComposer
 				}
 			}
 
-			$this->widget_data['template-'.$this->widget_data['identifier']] 			= [];
+			$widget_data['template'] 			= null;
+			$widget_data['template-pagination'] = null;
 		}
 		else
 		{
-			$this->widget_data['template-'.$this->widget_data['identifier']] 			= json_decode(json_encode($contents->data), true);
+			$page 								= json_decode(json_encode($contents->pagination), true);
+			$widget_data['template'] 			= json_decode(json_encode($contents->data), true);
+			$widget_data['template-pagination'] = new Paginator($page['total_data'], $page['total_data'], $page['per_page'], $page['page']);
+			$widget_data['template-pagination']->setPath(route('hr.document.templates.index'));
+			$widget_data['template-display'] 	= $page;
 		}
 		
+		return $widget_data;
 	}
 }
