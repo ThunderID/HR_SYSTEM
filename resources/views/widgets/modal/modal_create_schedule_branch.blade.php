@@ -6,7 +6,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title text-xl " id="formModalLabel">Edit Jadwal</h4>
+					<h4 class="modal-title text-xl schedule_branch_title" id="formModalLabel">Edit Jadwal</h4>
 				</div>
 				<div class="modal-body" style="background-color:#f5f5f5">
 					<div class="row">
@@ -24,7 +24,7 @@
 							<label class="control-label">Label</label>
 						</div>	
 						<div class="col-md-10">
-							<input type="text" name="name" class="form-control schedule_branch_label">							
+							<input type="text" name="name" class="form-control schedule_branch_label">
 						</div>
 					</div>
 					<div class="form-group">
@@ -59,7 +59,7 @@
 					</div>
 				</div>
 				<div class="modal-footer bg-grey">
-					<a href="" class="btn btn-danger pull-left" data-toggle="modal" data-target="#delete">Hapus</a>
+					<a href="javascript:;" class="btn btn-danger pull-left schedule_branch_delete" data-toggle="modal" data-target="#delete" data-delete-action="">Hapus</a>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>
 				</div>

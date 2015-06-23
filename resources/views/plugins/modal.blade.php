@@ -14,6 +14,7 @@
 		var start 			= $(e.relatedTarget).attr('data-start');
 		var end 			= $(e.relatedTarget).attr('data-end');
 		var status 			= $(e.relatedTarget).attr('data-status');
+		var add				= $(e.relatedTarget).attr('data-add-action');
 		var edit 			= $(e.relatedTarget).attr('data-edit-action'); 
 		var del 			= $(e.relatedTarget).attr('data-delete-action');
 
@@ -26,8 +27,9 @@
 			$('.schedule_branch_end').val(end);
 			$('.schedule_branch_status').val(status);
 			$('.schedule_branch_delete').attr('href', del);
-			$(this).parent().attr('action', edit);
-			$(this).find('.modal_schedule_btn_save').text('Edit');
+			$('.schedule_branch_delete').show();
+			$('.schedule_branch_title').text('Edit Jadwal');
+			$(this).parent().attr('action', edit);			
 		}
 		else
 		{
@@ -37,7 +39,9 @@
 			$('.schedule_branch_start').val('');
 			$('.schedule_branch_end').val('');
 			$('.schedule_branch_status').val('');
-			$(this).find('.modal_schedule_btn_save').text('Tambah');
+			$('.schedule_branch_delete').hide();
+			$('.schedule_branch_title').text('Tambah Jadwal');
+			$(this).parent().attr('action', add);
 		}		
 	});
 </script>
