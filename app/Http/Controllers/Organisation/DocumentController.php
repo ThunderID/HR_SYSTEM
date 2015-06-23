@@ -131,15 +131,21 @@ class DocumentController extends BaseController
 				}
 			}
 		}
-		if(isset($attributes['templates']))
+
+		if(Input::has('field'))
 		{
-			foreach ($attributes['templates'] as $key => $value) 
+			$fields 							= Input::get('field');
+			$types 								= Input::get('type');
+			$ids 								= Input::get('temp_id');
+
+			foreach ($fields as $key => $value) 
 			{
-				$template['field']				= $value['field'];
-				$template['type']				= $value['type'];
-				if(isset($value['id']) && $value['id']!='' && !is_null($value['id']))
+				$template['field']				= $value;
+				$template['type']				= $types[$key];
+
+				if(isset($ids[$key]) && $ids[$key]!='' && !is_null($ids[$key]) && (int)$ids[$key])
 				{
-					$template['id']				= $value['id'];
+					$template['id']				= $ids[$key];
 				}
 				else
 				{
@@ -150,7 +156,20 @@ class DocumentController extends BaseController
 				$is_success_2 					= json_decode($saved_template);
 				if(!$is_success_2->meta->success)
 				{
-					$errors->add('Document', $is_success_2->meta->errors);
+					foreach ($is_success_2->meta->errors as $key => $value) 
+					{
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Document', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Document', $value);
+						}
+					}
 				}
 			}
 		}
@@ -158,7 +177,7 @@ class DocumentController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.documents.show', [$is_success->data->id, 'org_id' => $is_success->data->id])->with('alert_success', 'Dokumen "' . $is_success->data->name. '" sudah disimpan');
+			return Redirect::route('hr.documents.show', [$is_success->data->id, 'org_id' => $org_id])->with('alert_success', 'Dokumen "' . $is_success->data->name. '" sudah disimpan');
 		}
 
 		DB::rollback();

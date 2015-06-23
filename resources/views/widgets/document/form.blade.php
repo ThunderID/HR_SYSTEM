@@ -37,30 +37,33 @@
 				</div>
 			</div>
 
-			@if ($DocumentComposer['widget_data']['documentlist']['document']['id'])
-				<div class="form-group">
-					<div class="col-md-2">&nbsp;</div>
-					<div class="col-md-2">					
-						<label for="field[]" class="control-label">Nama Input</label>
+			@if ($DocumentComposer['widget_data']['documentlist']['document']['templates'])
+				@foreach($DocumentComposer['widget_data']['documentlist']['document']['templates'] as $key => $value)
+					<div class="form-group">
+						<div class="col-md-2">&nbsp;</div>
+						<div class="col-md-2">					
+							<label for="field[]" class="control-label">Nama Input</label>
+						</div>
+						<div class="col-md-2">
+							<input type="text" class="form-control" id="field[]" name="field[{{$key}}]" value="{{$value['field']}}">
+						</div>
+						<div class="col-md-2">
+							<label for="" class="control-label">Tipe Input</label>
+						</div>
+						<div class="col-md-2">
+							<select id="Type" class="form-control form-control input-md" name="type[{{$key}}]">
+								<option @if($value['type']=='numeric') selected @endif value="numeric">Angka</option>
+								<option @if($value['type']=='date') selected @endif value="date">Tanggal</option>
+								<option @if($value['type']=='string') selected @endif value="string">Teks Singkat</option>
+								<option @if($value['type']=='text') selected @endif value="text">Teks Panjang</option>
+							</select>
+							<input type="hidden" class="form-control" id="temp_id[]" name="temp_id[{{$key}}]" value="{{($value['id'] ? $value['id'] : null )}}">
+						</div>
+						<div class="col-md-2">
+							<a href="javascript:;" class="btn-delete-doc" style="color:#666;"><i class="fa fa-minus-circle fa-lg mt-10"></i></a>
+						</div>
 					</div>
-					<div class="col-md-2">
-						<input type="text" class="form-control" id="field[]" name="field[]">
-					</div>
-					<div class="col-md-2">
-						<label for="" class="control-label">Tipe Input</label>
-					</div>
-					<div class="col-md-2">
-						<select id="Type" class="form-control form-control input-md" name="type[]">
-							<option value="numeric">Angka</option>
-							<option value="date">Tanggal</option>
-							<option value="string">Teks Singkat</option>
-							<option value="text">Teks Panjang</option>
-						</select>
-					</div>
-					<div class="col-md-2">
-						<a href="javascript:;" class="btn-delete-doc" style="color:#666;"><i class="fa fa-minus-circle fa-lg mt-10"></i></a>
-					</div>
-				</div>
+				@endforeach
 			@else
 				<ul class="list-unstyled" id="documentList"></ul>
 				<div class="form-group">
