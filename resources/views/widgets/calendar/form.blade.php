@@ -2,7 +2,7 @@
 
 @if (!$widget_error_count)
 	@section('widget_title')
-	<h1> {{ is_null($id) ? 'Tambah Kalender' : 'Ubah Kalender '. $WorkleaveComposer['widget_data']['calendarlist']['calendar']['name']}} </h1> 
+	<h1> {{ is_null($id) ? 'Tambah Kalender' : 'Ubah Kalender '. $CalendarComposer['widget_data']['calendarlist']['calendar']['name']}} </h1> 
 	@overwrite
 
 	@section('widget_body')

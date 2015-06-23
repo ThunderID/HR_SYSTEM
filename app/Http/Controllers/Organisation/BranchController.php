@@ -10,6 +10,7 @@ use App\Models\Organisation;
 use App\Models\Work;
 use App\Models\Person;
 use App\Models\Branch;
+
 class BranchController extends BaseController
 {
 	protected $controller_name = 'cabang';

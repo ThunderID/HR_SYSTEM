@@ -95,6 +95,7 @@ class PersonController extends BaseController
 		}
 		
 		$attributes 							= Input::only('uniqid','name', 'prefix_title', 'suffix_title', 'gender', 'date_of_birth', 'place_of_birth');
+		$attributes['date_of_birth'] 			= date('Y-m-d', strtotime($attributes['date_of_birth']));
 
 		if(Input::has('org_id'))
 		{
@@ -123,13 +124,26 @@ class PersonController extends BaseController
 		$is_success 							= json_decode($content);
 		if(!$is_success->meta->success)
 		{
-			$errors->add('Person', $is_success->meta->errors);
+			foreach ($is_success->meta->errors as $key => $value) 
+			{
+				if(is_array($value))
+				{
+					foreach ($value as $key2 => $value2) 
+					{
+						$errors->add('Person', $value2);
+					}
+				}
+				else
+				{
+					$errors->add('Person', $value);
+				}
+			}
 		}
 
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.persons.show', [$is_success->data->id, 'org_id' => $is_success->data->id])->with('alert_success', 'Data "' . $is_success->data->name. '" sudah disimpan');
+			return Redirect::route('hr.persons.show', [$is_success->data->id, 'org_id' => $org_id])->with('alert_success', 'Data "' . $is_success->data->name. '" sudah disimpan');
 		}
 
 		DB::rollback();
