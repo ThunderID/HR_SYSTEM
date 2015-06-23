@@ -3,8 +3,7 @@
 	['breadcrumb' => [
 						['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
 						['name' => $workleave['name'], 'route' => route('hr.workleaves.show', ['id' => $workleave['id'], 'cal_id' => $workleave['id'],'org_id' => $data['id'] ])], 
-						['name' => 'Jabatan', 'route' => route('hr.workleave.charts.index', ['id' => $id, 'cal_id' => $workleave['id'], 'org_id' => $data['id'] ])], 
-						['name' => (is_null($id) ? 'Tambah' : 'Ubah '), 'route' => (is_null($id) ? route('hr.workleave.charts.create', ['org_id' => $data['id'], 'cal_id' => $workleave['id']]) : route('hr.workleave.charts.edit', ['org_id' => $data['id'], 'cal_id' => $workleave['id'], 'id' => $id]) )]
+						['name' => (is_null($id) ? 'Tambah Jabatan' : 'Ubah '), 'route' => (is_null($id) ? route('hr.workleave.charts.create', ['org_id' => $data['id'], 'cal_id' => $workleave['id']]) : route('hr.workleave.charts.edit', ['org_id' => $data['id'], 'cal_id' => $workleave['id'], 'id' => $id]) )]
 					]
 	])
 @stop

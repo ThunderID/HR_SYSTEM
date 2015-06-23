@@ -3,7 +3,7 @@
 @if (!$widget_error_count)
 
 	@section('widget_title')
-	<h1> {{ (is_null($id) ? 'Tambah Jabatan untuk Kalender ' : 'Ubah Jabatan untuk Kalender '). $workleave['name']}} </h1> 
+	<h1> {{ (is_null($id) ? 'Tambah Jatah Cuti '.$workleave['name'].' Untuk Jabatan ' : 'Ubah Jatah Cuti '.$workleave['name'].' Untuk Jabatan ')}} </h1> 
 	@overwrite
 
 	@section('widget_body')

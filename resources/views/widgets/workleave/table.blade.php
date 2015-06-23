@@ -30,6 +30,7 @@
 							<td class="text-right">
 								<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.workleaves.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash"></i></a>
 								<a href="{{route('hr.workleaves.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+								<a href="{{route('hr.workleave.charts.create', ['workleave_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-plus"></i></a>
 								{{-- <a href="" class="btn btn-default"><i class="fa fa-eye"></i></a> --}}
 							</td>
 						</tr>
