@@ -3,9 +3,12 @@ use Input, Session, App, Paginator, Redirect, DB, Config, Response, DateTime, Da
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
+use App\Console\Commands\Checking;
+use App\Console\Commands\Deleting;
 use App\Console\Commands\Getting;
 use App\Models\Calendar;
 use App\Models\Schedule;
+use App\Models\Person;
 
 class ScheduleController extends BaseController
 {
@@ -113,7 +116,7 @@ class ScheduleController extends BaseController
 			{
 				if($period->format('Y-m-d') == date('Y-m-d', strtotime($sh['on'])))
 				{
-					$schedule[$k]['data_target']= '#modal_schedule_branch';
+					$schedule[$k]['data_target']= '#modal_schedule';
 					$schedule[$k]['id']			= $sh['id'];
 					$schedule[$k]['title'] 		= $sh['name'];
 					$schedule[$k]['start']		= $sh['on'].'T'.$sh['start'];
@@ -269,6 +272,8 @@ class ScheduleController extends BaseController
 
 		$attributes 							= Input::only('name', 'status', 'on', 'start', 'end');
 		$attributes['on'] 						= date('Y-m-d', strtotime($attributes['on']));
+		$attributes['start'] 					= date('H:i:s', strtotime($attributes['start']));
+		$attributes['end'] 						= date('H:i:s', strtotime($attributes['end']));
 
 		$errors 								= new MessageBag();
 
@@ -309,5 +314,74 @@ class ScheduleController extends BaseController
 	public function edit($id)
 	{
 		return $this->create($id);
+	}
+
+	public function destroy($id)
+	{
+		$attributes 						= ['email' => Config::get('user.email'), 'password' => Input::get('password')];
+
+		$results 							= $this->dispatch(new Checking(new Person, $attributes));
+
+		$content 							= json_decode($results);
+
+		if($content->meta->success)
+		{
+			if(Input::has('org_id'))
+			{
+				$org_id 					= Input::get('org_id');
+			}
+			else
+			{
+				$org_id 					= Session::get('user.organisation');
+			}
+
+			if(Input::has('cal_id'))
+			{
+				$cal_id 					= Input::get('cal_id');
+			}
+			else
+			{
+				App::abort(404);
+			}
+
+			if(!in_array($org_id, Config::get('user.orgids')))
+			{
+				App::abort(404);
+			}
+
+			$search 						= ['organisationid' => $org_id, 'id' => $cal_id];
+			$results 						= $this->dispatch(new Getting(new Calendar, $search, [] , 1, 1));
+			$contents 						= json_decode($results);
+			
+			if(!$contents->meta->success)
+			{
+				App::abort(404);
+			}
+
+			$search 						= ['id' => $id, 'calendarid' => $cal_id];
+			$results 						= $this->dispatch(new Getting(new Schedule, $search, [] , 1, 1));
+			$contents 						= json_decode($results);
+			
+			if(!$contents->meta->success)
+			{
+				App::abort(404);
+			}
+
+			$results 						= $this->dispatch(new Deleting(new Schedule, $id));
+			$contents 						= json_decode($results);
+
+			if (!$contents->meta->success)
+			{
+				return Redirect::back()->withErrors($contents->meta->errors);
+			}
+			else
+			{
+				return Redirect::route('hr.calendar.schedules.index', ['org_id' => $org_id, 'cal_id' => $cal_id])->with('local_msg', $errors)->with('alert_success', 'Cabang "' . $contents->data->name. '" sudah dihapus');
+			}
+		}
+		else
+		{
+			return Redirect::back()->withErrors(['Password yang Anda masukkan tidak sah!']);
+		}
 	}
 }

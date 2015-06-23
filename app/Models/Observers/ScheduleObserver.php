@@ -122,8 +122,13 @@ class ScheduleObserver
 
 	public function deleting($model)
 	{
-		$model['errors'] 					= ['Tidak dapat menghapus jadwal.'];
+		if(date('Y-m-d', strtotime($model['attributes']['on']))<date('Y-m-d'))
+		{
+			$model['errors'] 				= ['Tidak dapat menghapus jadwal.'];
 
-		return false;
+			return false;
+		}
+
+		return true;
 	}
 }

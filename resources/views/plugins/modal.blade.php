@@ -6,7 +6,7 @@
 	});	
 
 	/* Modal Schedule Branch */
-	$('.modal_schedule_branch').on('show.bs.modal', function(e) {
+	$('.modal_schedule').on('show.bs.modal', function(e) {
 		var id 				= $(e.relatedTarget).attr('data-id');
 		var title 			= $(e.relatedTarget).attr('data-title');
 		var date_start 		= $(e.relatedTarget).attr('data-date');
@@ -21,26 +21,26 @@
 		if (id != 0) 
 		{
 			$('.modal_schedule_id').val(id);
-			$('.schedule_branch_label').val(title);
-			$('.schedule_branch_on').val(date_start);			
-			$('.schedule_branch_start').val(start);
-			$('.schedule_branch_end').val(end);
-			$('.schedule_branch_status').val(status);
-			$('.schedule_branch_delete').attr('href', del);
-			$('.schedule_branch_delete').show();
-			$('.schedule_branch_title').text('Edit Jadwal');
+			$('.schedule_label').val(title);
+			$('.schedule_on').val(date_start);			
+			$('.schedule_start').val(start);
+			$('.schedule_end').val(end);
+			$('.schedule_status').val(status);
+			$('.schedule_delete').attr('data-delete-action', del);
+			$('.schedule_delete').show();
+			$('.schedule_title').text('Edit Jadwal');			
 			$(this).parent().attr('action', edit);			
 		}
 		else
 		{
 			$('.modal_schedule_id').val(null);
-			$('.schedule_branch_label').val('');
-			$('.schedule_branch_on').val('');			
-			$('.schedule_branch_start').val('');
-			$('.schedule_branch_end').val('');
-			$('.schedule_branch_status').val('');
-			$('.schedule_branch_delete').hide();
-			$('.schedule_branch_title').text('Tambah Jadwal');
+			$('.schedule_label').val('');
+			$('.schedule_on').val('');			
+			$('.schedule_start').val('');
+			$('.schedule_end').val('');
+			$('.schedule_status').val('');
+			$('.schedule_delete').hide();
+			$('.schedule_title').text('Tambah Jadwal');
 			$(this).parent().attr('action', add);
 		}		
 	});

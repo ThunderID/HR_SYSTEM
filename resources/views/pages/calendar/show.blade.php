@@ -46,13 +46,13 @@
 								]
 	])
 	
-	{!! Form::open(array('route' => array('hr.branch.contacts.delete', 0),'method' => 'POST')) !!}
-		@include('widgets.modal.modal_create_schedule_branch', [
+	{!! Form::open(array('route' => array('hr.calendar.schedules.delete', 0),'method' => 'POST')) !!}
+		@include('widgets.modal.modal_create_schedule', [
 			'widget_template'		=> 'plain_no_title'
 		])
 	{!! Form::close() !!}
 
-	{!! Form::open(array('route' => array('hr.branch.contacts.delete', 0),'method' => 'DELETE')) !!}
+	{!! Form::open(array('route' => array('hr.calendar.schedules.delete', 0),'method' => 'DELETE')) !!}
 		@include('widgets.modal.delete', [
 			'widget_template'		=> 'plain_no_title'
 		])
