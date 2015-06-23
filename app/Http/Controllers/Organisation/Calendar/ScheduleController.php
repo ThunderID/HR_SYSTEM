@@ -376,7 +376,7 @@ class ScheduleController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.calendar.schedules.index', ['org_id' => $org_id, 'cal_id' => $cal_id])->with('local_msg', $errors)->with('alert_success', 'Cabang "' . $contents->data->name. '" sudah dihapus');
+				return Redirect::route('hr.calendar.schedules.index', ['org_id' => $org_id, 'cal_id' => $cal_id])->with('alert_success', 'Jadwal "' . $contents->data->name. '" sudah dihapus');
 			}
 		}
 		else
