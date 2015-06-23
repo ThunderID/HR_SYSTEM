@@ -21,7 +21,7 @@ class WorkComposer extends WidgetComposer
 
 	protected function setData($options)
 	{
-		$results 								=  $this->dispatch(new Getting(new Work, $options['search'], $options['sort'] , $options['page'], $options['per_page']));
+		$results 								=  $this->dispatch(new Getting(new Work, $options['search'], $options['sort'] , (int)$options['page'], (int)$options['per_page']));
 
 		$contents 								= json_decode($results);
 

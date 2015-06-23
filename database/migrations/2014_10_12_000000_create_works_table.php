@@ -20,7 +20,7 @@ class CreateWorksTable extends Migration {
 			$table->integer('calendar_id')->unsigned()->index();
 			$table->enum('status', ['contract', 'trial', 'internship', 'permanent', 'previous', 'admin']);
 			$table->date('start');
-			$table->date('end');
+			$table->date('end')->nullable();
 			$table->string('position', 255);
 			$table->string('organisation', 255);
 			$table->text('reason_end_job');

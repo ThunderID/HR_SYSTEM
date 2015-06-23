@@ -123,7 +123,7 @@ class WorkObserver
 	{
 		if($model->chart && $model->chart->count() && $model['attributes']['status']!='admin')
 		{
-			$model['errors'] 	= ['Tidak dapat pekerjaan saat ini. Silahkan tandai sebagai pekerjaan yang sudah berakhir dengan catatan khusus.'];
+			$model['errors'] 	= ['Tidak dapat menghapus pekerjaan saat ini. Silahkan tandai sebagai pekerjaan yang sudah berakhir dengan catatan khusus.'];
 
 			return false;
 		}

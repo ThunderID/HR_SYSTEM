@@ -2,7 +2,7 @@
 
 @if (!$widget_error_count)
 	@section('widget_title')
-	<h1> Karir </h1>
+	<h1> Pengalaman Kerja </h1>
 	@overwrite
 
 	@section('widget_body')
@@ -10,42 +10,18 @@
 		{!! Form::open(['url' => $WorkComposer['widget_data']['worklist']['form_url'], 'class' => 'form-horizontal']) !!}	
 			<div class="form-group">
 				<div class="col-md-2">
-					<label class="control-label">Posisi</label>
+					<label class="control-label">Perusahaan</label>
 				</div>	
 				<div class="col-md-10">
-					@include('widgets.chart.select', [
-						'widget_options'		=> 	[
-														'chartlist'			=>
-														[
-															'organisation_id'	=> $data['id'],
-															'search'			=> ['withattributes' => ['branch']],
-															'sort'				=> ['name' => 'asc'],
-															'page'				=> 1,
-															'per_page'			=> 100,
-															'chart_id'			=> $WorkComposer['widget_data']['worklist']['work']['chart_id'],
-														]
-													]
-					])
+					{!!Form::input('text', 'organisation', $WorkComposer['widget_data']['worklist']['work']['organisation'], ['class' => 'form-control'])!!}
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-md-2">
-					<label class="control-label">Calendar</label>
+					<label class="control-label">Posisi</label>
 				</div>	
 				<div class="col-md-10">
-					@include('widgets.calendar.select', [
-						'widget_options'		=> 	[
-														'calendarlist'			=>
-														[
-															'organisation_id'	=> $data['id'],
-															'search'			=> [],
-															'sort'				=> ['name' => 'asc'],
-															'page'				=> 1,
-															'per_page'			=> 100,
-															'calendar_id'		=> $WorkComposer['widget_data']['worklist']['work']['calendar_id'],
-														]
-													]
-					])
+					{!!Form::input('text', 'position', $WorkComposer['widget_data']['worklist']['work']['position'], ['class' => 'form-control'])!!}
 				</div>
 			</div>
 			<div class="form-group">

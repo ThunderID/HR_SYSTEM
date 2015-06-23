@@ -1,9 +1,11 @@
 <?php namespace App\Http\Controllers\Organisation\Person;
-use Input, Session, App, Paginator, Redirect, DB;
+use Input, Session, App, Paginator, Redirect, DB, Config;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
+use App\Console\Commands\Checking;
+use App\Console\Commands\Deleting;
 use App\Models\Work;
 use App\Models\Person;
 
@@ -31,10 +33,10 @@ class WorkController extends BaseController
 			App::abort(404);
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
@@ -77,11 +79,10 @@ class WorkController extends BaseController
 			App::abort(404);
 		}
 
-
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
@@ -129,6 +130,11 @@ class WorkController extends BaseController
 			App::abort(404);
 		}
 
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
+
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
 		$sort 									= ['name' => 'asc'];
@@ -140,7 +146,22 @@ class WorkController extends BaseController
 			App::abort(404);
 		}
 
-		$attributes 							= Input::only('position', 'organisation', 'start', 'end', 'reason_end_job', 'status');
+		if(Input::has('chart_id'))
+		{
+			$attributes 						= Input::only('chart_id', 'calendar_id', 'start', 'reason_end_job', 'status');
+		}
+		else
+		{
+			$attributes 						= Input::only('position', 'organisation', 'start', 'reason_end_job', 'status');
+		}
+
+		$attributes['start'] 					= date('Y-m-d', strtotime($attributes['start']));
+
+		if(Input::has('end') && !is_null(Input::get('end')))
+		{
+			dd(Input::all());
+			$attributes['end'] 					= date('Y-m-d', strtotime(Input::get('end')));
+		}
 
 		$errors 								= new MessageBag();
 
@@ -151,7 +172,20 @@ class WorkController extends BaseController
 		
 		if(!$is_success->meta->success)
 		{
-			$errors->add('Person', $is_success->meta->errors);
+			foreach ($is_success->meta->errors as $key => $value) 
+			{
+				if(is_array($value))
+				{
+					foreach ($value as $key2 => $value2) 
+					{
+						$errors->add('Person', $value2);
+					}
+				}
+				else
+				{
+					$errors->add('Person', $value);
+				}
+			}
 		}
 
 		if(!$errors->count())
@@ -176,10 +210,10 @@ class WorkController extends BaseController
 			$org_id 					= Session::get('user.organisation');
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 		
 		$search 						= ['id' => $id, 'organisationid' => $org_id, 'withattributes' => ['organisation']];
 		$results 						= $this->dispatch(new Getting(new Person, $search, [] , 1, 1));
@@ -203,5 +237,74 @@ class WorkController extends BaseController
 	public function edit($id)
 	{
 		return $this->create($id);
+	}
+
+	public function destroy($id)
+	{
+		$attributes 						= ['email' => Config::get('user.email'), 'password' => Input::get('password')];
+
+		$results 							= $this->dispatch(new Checking(new Person, $attributes));
+
+		$content 							= json_decode($results);
+
+		if($content->meta->success)
+		{
+			if(Input::has('org_id'))
+			{
+				$org_id 					= Input::get('org_id');
+			}
+			else
+			{
+				$org_id 					= Session::get('user.organisation');
+			}
+
+			if(Input::has('person_id'))
+			{
+				$person_id 					= Input::get('person_id');
+			}
+			else
+			{
+				App::abort(404);
+			}
+
+			if(!in_array($org_id, Config::get('user.orgids')))
+			{
+				App::abort(404);
+			}
+
+			$search 						= ['organisationid' => $org_id, 'id' => $person_id];
+			$results 						= $this->dispatch(new Getting(new Person, $search, [] , 1, 1));
+			$contents 						= json_decode($results);
+			
+			if(!$contents->meta->success)
+			{
+				App::abort(404);
+			}
+
+			$search 						= ['id' => $id, 'personid' => $person_id];
+			$results 						= $this->dispatch(new Getting(new Work, $search, [] , 1, 1));
+			$contents 						= json_decode($results);
+			
+			if(!$contents->meta->success)
+			{
+				App::abort(404);
+			}
+
+			$results 						= $this->dispatch(new Deleting(new Work, $id));
+			$contents 						= json_decode($results);
+
+			if (!$contents->meta->success)
+			{
+				return Redirect::back()->withErrors($contents->meta->errors);
+			}
+			else
+			{
+				return Redirect::route('hr.person.works.index', ['org_id' => $org_id, 'person_id' => $person_id])->with('alert_success', 'Karir "' . $contents->data->name. '" sudah dihapus');
+			}
+		}
+		else
+		{
+			return Redirect::back()->withErrors(['Password yang Anda masukkan tidak sah!']);
+		}
 	}
 }

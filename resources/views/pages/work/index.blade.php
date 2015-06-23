@@ -32,7 +32,7 @@
 @section('content_body')	
 	@include('widgets.work.table', [
 		'widget_template'		=> 'panel',
-		'widget_title'			=> 'Karir',		
+		'widget_title'			=> 'Karir '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
@@ -41,12 +41,17 @@
 											'organisation_id'	=> $data['id'],
 											'search'			=> ['personid' => $person['id'], 'withattributes' => ['chart', 'chart.branch', 'chart.branch.organisation']],
 											'sort'				=> ['end' => 'asc'],
-											'page'				=> 1,
+											'page'				=> (Input::has('page') ? Input::get('page') : 1),
 											'per_page'			=> 12,
 										]
 									]
 	])
 
+	{!! Form::open(array('route' => array('hr.person.works.delete', 0),'method' => 'DELETE')) !!}
+		@include('widgets.modal.delete', [
+			'widget_template'		=> 'plain_no_title'
+		])
+	{!! Form::close() !!}
 @overwrite
 
 @section('content_footer')
