@@ -38,8 +38,8 @@
 			}
 		},
 		loading: function(bool) {					
-			// $('#calendar').toggleClass('calendar-loading');
-			// $('.sk-spinner').toggle(bool);
+			$('#calendar').toggleClass('calendar-loading');
+			$('.sk-spinner').toggle(bool);
 		},
 		events:  curSource,
 		eventRender: function (event, element) {					
