@@ -38,8 +38,8 @@
 			}
 		},
 		loading: function(bool) {					
-			// $('#calendar').toggleClass('calendar-loading');
-			// $('.sk-spinner').toggle(bool);
+			$('#calendar').toggleClass('calendar-loading');
+			$('.sk-spinner').toggle(bool);
 		},
 		events:  curSource,
 		eventRender: function (event, element) {					
@@ -60,7 +60,7 @@
 			}
 
 			element.find('#date-title').html(element.find('span.fc-event-title').text());			
-			element.find('.fc-title').append('<br>');
+			element.find('.fc-title').append('<br>');			
 
 			element.attr('data-id', event.id);
 			element.attr('data-title', event.title);
