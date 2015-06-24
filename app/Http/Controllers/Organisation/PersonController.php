@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers\Organisation;
 
-use Input, Session, App, Paginator, Redirect, DB, Config, Validator;
+use Input, Session, App, Paginator, Redirect, DB, Config, Validator, Image;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -88,20 +88,22 @@ class PersonController extends BaseController
 	}
 
 	public function store($id = null)
-	{
-		if (Input::hasFile('link_profile_picture'))
-		{
-			$this->upload_image(Input::file('link_profile_picture'));
-		}
+	{		
 		
 		if(Input::has('id'))
 		{
 			$id 								= Input::get('id');
 		}
-		
+
+
 		$attributes 							= Input::only('uniqid','name', 'prefix_title', 'suffix_title', 'gender', 'date_of_birth', 'place_of_birth');
 		$attributes['date_of_birth'] 			= date('Y-m-d', strtotime($attributes['date_of_birth']));
 
+		if (Input::hasFile('link_profile_picture'))
+		{
+			$upload 							= $this->upload_image(Input::file('link_profile_picture'));			
+			$attributes['avatar']				= $upload['ori'];
+		}
 		if(Input::has('org_id'))
 		{
 			$org_id 							= Input::get('org_id');
@@ -254,7 +256,7 @@ class PersonController extends BaseController
 	}
 
 	public function upload_image($file)
-	{
+	{		
 		if ($file)
 		{
 			$validator = Validator::make(['file' => $file], ['file' => 'image|max:500']);
@@ -283,8 +285,10 @@ class PersonController extends BaseController
 			$paths['sm'] = asset($this->copyAndResizeImage($path . $filename, 320, 180));
 			$paths['md'] = asset($this->copyAndResizeImage($path . $filename, 640, 360));
 			$paths['lg'] = asset($this->copyAndResizeImage($path . $filename, 960, 540));
-			$paths['ori'] = asset($path .  $filename);
+			$paths['ori'] = asset($path .  $filename);			
 		}
+
+		return $paths;
 	}
 
 	private function copyAndResizeImage($image_path, $width, $height)

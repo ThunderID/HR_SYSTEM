@@ -31,12 +31,10 @@
 			</li>
 			<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-					<i class="fa fa-user fa-fw"></i> Admin &nbsp;&nbsp; <i class="fa fa-caret-down"></i>
+					{!! HTML::image('images/male.png', 'alt', array( 'width' => 32, 'height' => 32, 'class' => 'img-rounded' )) !!} Admin &nbsp;&nbsp; <i class="fa fa-caret-down"></i>
 				</a>
-				<ul class="dropdown-menu dropdown-user">
-					<li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a></li>
-					<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a></li>
-					<li class="divider"></li>
+				<ul class="dropdown-menu dropdown-user">					
+					<li><a href="#"><i class="fa fa-gear fa-fw"></i> Ganti Password</a></li>					
 					<li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
 				</ul>	            
 			</li>	        

@@ -1,5 +1,4 @@
 {!! HTML::style('plugins/select2/select2.css') !!}
-{!! HTML::style('plugins/select2/select2-bootstrap.css') !!}
 {!! HTML::script('plugins/select2/select2.min.js') !!}
 
 <script type="text/javascript">
@@ -12,6 +11,15 @@
 	$('.select2-tag-contact').select2({
  		tokenSeparators: [",", " ", "_", "-"],
 		tags: ['alamat', 'bbm', 'email', 'line', 'phone', 'whatsapp'],
+		placeholder: "",
+		maximumSelectionSize: 1,
+		selectOnBlur: true,
+		placeholder: ""
+ 	});
+
+ 	$('.select2-tag-document').select2({
+ 		tokenSeparators: [",", " ", "_", "-"],
+		tags: ['akun', 'appraisal', 'kontrak', 'identitas', 'pajak', 'pendidikan', 'sp'],
 		placeholder: "",
 		maximumSelectionSize: 1,
 		selectOnBlur: true,

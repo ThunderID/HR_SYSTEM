@@ -12,13 +12,13 @@
 								<label for="field[]" class="control-label">Nama Input</label> \
 							</div> \
 							<div class="col-md-2"> \
-								<input type="text" class="form-control field" id="field[]" name="field['+x+']"> \
+								<input type="text" class="form-control field" id="field[]" name="field[]"> \
 							</div> \
 							<div class="col-md-2"> \
 								<label for="" class="control-label">Tipe Input</label> \
 							</div> \
 							<div class="col-md-2"> \
-								<select id="Type" class="form-control form-control input-md type" name="type['+x+']"> \
+								<select id="Type" class="form-control form-control input-md type" name="type[]"> \
 									<option value="numeric">Angka</option> \
 									<option value="date">Tanggal</option> \
 									<option value="string">Teks Singkat</option> \
@@ -37,15 +37,7 @@
 		
 	function bind_delete(e) {		
 		$(e).parent().parent().remove();
-
-		var x = $('.template > .form-group').length; 
-		console.log(x);
-
-		for (var y=0; y<x; y++) {
-			$('.template .field').attr('name', 'field['+y+']');
-			$('.template .type').attr('name', 'type['+y+']');
-		}
-		
+		$('.btn-delete-doc').on('click', function(){bind_delete($(this))});		
 	}
 	
 </script>

@@ -39,7 +39,7 @@
 													'per_page'			=> 12,
 													'route'				=> route('hr.branch.contacts.index'),
 													'route_create'		=> route('hr.branch.contacts.create', ['org_id' => $data['id'], 'branch_id' => $branch['id']]),
-													'route_edit'		=> 'hr.person.contacts.edit',
+													'route_edit'		=> 'hr.branch.contacts.edit',
 													'route_delete'		=> 'hr.branch.contacts.delete',
 													'next'				=> 'branch_id',
 													'nextid'			=> $branch['id']

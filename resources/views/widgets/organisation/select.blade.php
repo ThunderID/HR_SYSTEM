@@ -11,7 +11,7 @@
 				<label class="control-label">Akses Perusahaan</label>
 			</div>	
 			<div class="col-md-9">
-				<select name="org_id" id="org" class="select2-skin" style="width:100%">
+				<select name="org_id" id="org" class="select2 form-control" style="width:100%">
 					@if(isset($OrganisationComposer['widget_data']['organisationlist']['organisation']))
 						@foreach($OrganisationComposer['widget_data']['organisationlist']['organisation'] as $key => $value)
 							<option value="{{ $value['id'] }}">{{ $value['name'] }}</option>
