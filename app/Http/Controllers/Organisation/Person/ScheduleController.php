@@ -311,6 +311,7 @@ class ScheduleController extends BaseController
 
 		if(!$contents->meta->success)
 		{
+			dd($contents);
 			return Response::json(['message' => 'Not Found4'], 404);
 		}
 

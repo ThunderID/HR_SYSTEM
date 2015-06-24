@@ -309,11 +309,6 @@ class Person extends BaseModel {
 		return $query->where('persons.id', $variable);
 	}
 
-	public function scopeNotID($query, $variable)
-	{
-		return $query->where('id', '<>',$variable);
-	}
-
 	public function scopeFullName($query, $variable)
 	{
 		return $query->where('name', 'like' ,'%'.$variable.'%');
