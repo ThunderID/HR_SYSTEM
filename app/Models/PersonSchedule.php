@@ -38,8 +38,8 @@ class PersonSchedule extends BaseModel {
 	protected 	$table 				= 	'person_schedules';
 
 	protected 	$fillable			= 	[
-											'name' 						,
 											'created_by' 				,
+											'name' 						,
 											'on' 						,
 											'start' 					,
 											'end' 						,

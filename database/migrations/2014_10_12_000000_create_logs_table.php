@@ -16,6 +16,7 @@ class CreateLogsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('person_id')->unsigned()->index();
+			$table->integer('created_by')->unsigned()->index();
 			$table->string('name', 255);
 			$table->datetime('on');
 			$table->string('pc', 255);

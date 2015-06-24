@@ -29,7 +29,7 @@ class CreateTmpMenusTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('menus');
+		Schema::drop('tmp_menus');
 	}
 
 }

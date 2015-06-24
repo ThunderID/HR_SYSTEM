@@ -32,7 +32,7 @@ class CreateTmpWorkleavesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('workleaves');
+		Schema::drop('tmp_workleaves');
 	}
 
 }
