@@ -49,6 +49,8 @@ class AppServiceProvider extends ServiceProvider {
 		\App\Models\PersonWorkleave::observe(new \App\Models\Observers\PersonWorkleaveObserver);
 
 		\App\Models\Work::observe(new \App\Models\Observers\WorkObserver);
+		
+		\App\Models\SettingIdle::observe(new \App\Models\Observers\SettingIdleObserver);
 		//
 	}
 
@@ -100,6 +102,8 @@ class AppServiceProvider extends ServiceProvider {
 		\App\Models\PersonWorkleave::observe(new \App\Models\Observers\PersonWorkleaveObserver);
 
 		\App\Models\Work::observe(new \App\Models\Observers\WorkObserver);
+
+		\App\Models\SettingIdle::observe(new \App\Models\Observers\SettingIdleObserver);
 
 		$this->app->bind(
 			'Illuminate\Contracts\Auth\Registrar',

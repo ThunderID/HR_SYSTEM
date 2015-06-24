@@ -58,15 +58,18 @@
                                         </ul>
                                     @endif
                                 </li>
-                                <li>
-                                    <a href="{{route('hr.calendars.index', ['org_id' => $value['id']])}}"><i class="fa fa-calendar fa-fw"></i> Kalender</a>
-                                </li>
+								<li>
+								    <a href="{{route('hr.calendars.index', ['org_id' => $value['id']])}}"><i class="fa fa-calendar fa-fw"></i> Kalender</a>
+								</li>
                                 <li>
                                     <a href="{{route('hr.workleaves.index', ['org_id' => $value['id']])}}"><i class="fa fa-calendar-o fa-fw"></i> Template Cuti</a>
                                 </li>
-                                <li>
-                                    <a href="{{route('hr.documents.index', ['org_id' => $value['id']])}}"><i class="fa fa-archive fa-fw"></i> Template Dokumen</a>
-                                </li>
+								<li>
+								    <a href="{{route('hr.documents.index', ['org_id' => $value['id']])}}"><i class="fa fa-archive fa-fw"></i> Template Dokumen</a>
+								</li>
+								<li>
+								    <a href="{{route('hr.idles.index', ['org_id' => $value['id']])}}"><i class="fa fa-clock-o fa-fw"></i> Pengaturan Idle</a>
+								</li>
                             </ul>
                         </li>
                         <li>

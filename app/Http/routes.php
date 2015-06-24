@@ -59,6 +59,12 @@ Route::group(['prefix' => ''], function()
 		Route::resource('documents',			'DocumentController',								['names' => ['index' => 'hr.documents.index', 'create' => 'hr.documents.create', 'store' => 'hr.documents.store', 'show' => 'hr.documents.show', 'edit' => 'hr.documents.edit', 'update' => 'hr.documents.update', 'destroy' => 'hr.documents.delete']]);
 
 		// ------------------------------------------------------------------------------------
+		// IDLES RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('idles',				'IdleController',									['names' => ['index' => 'hr.idles.index', 'create' => 'hr.idles.create', 'store' => 'hr.idles.store', 'show' => 'hr.idles.show', 'edit' => 'hr.idles.edit', 'update' => 'hr.idles.update', 'destroy' => 'hr.idles.delete']]);
+
+		// ------------------------------------------------------------------------------------
 		// PERSONS RESOURCE
 		// ------------------------------------------------------------------------------------
 

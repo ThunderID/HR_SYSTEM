@@ -24,6 +24,10 @@ class ProcessingLogObserver
 			$time 					= date("H:i:s", strtotime($model['attributes']['on']));
 
 			$person 				= Person::find($model['attributes']['person_id']);
+			
+			$idle_rule 				= new SettingIdle;
+			$idle_rule 				= $idle_rule->organisationid($person->organisation_id)->start($on)->orderBy('start', 'desc')->first();
+
 			$workid 				= null;
 			$plog 					= new ProcessLog;
 			$data 					= $plog->ondate([$on, $on])->personid($model['attributes']['person_id'])->first();
@@ -235,15 +239,15 @@ class ProcessingLogObserver
 					$new_idle 		= $hours*3600+$minutes*60+$seconds;
 
 					$total_idle		= $total_idle + $new_idle - $start_idle;
-					if($new_idle - $start_idle <= 900)
+					if($new_idle - $start_idle <= $idle_rule->idle_1)
 					{
 						$total_idle_1 	= $total_idle_1 + $new_idle - $start_idle;
 					}
-					elseif($new_idle - $start_idle > 900 && $new_idle - $start_idle < 3600)
+					elseif($new_idle - $start_idle > $idle_rule->idle_1 && $new_idle - $start_idle < $idle_rule->idle_2)
 					{
 						$total_idle_2 	= $total_idle_2 + $new_idle - $start_idle;
 					}
-					elseif($new_idle - $start_idle >= 3600)
+					elseif($new_idle - $start_idle >= $idle_rule->idle_2)
 					{
 						$total_idle_3 	= $total_idle_3 + $new_idle - $start_idle;
 					}
