@@ -81,18 +81,23 @@
                                         @if(isset($person['id']))
                                             <li>
                                                 <a href="javascript:;">{{ $person['name'] }} <span class="fa arrow"></span></a>
-                                                <ul class="nav nav-fifty-level">    
+                                                <ul class="nav nav-fifty-level">
+                                                    <li><a href="{{route('hr.persons.edit', [$person['id'], 'org_id' => $value['id'], 'person_id' => $person['id']])}}">Ubah</a></li>
+                                                    <li><a href="">Hapus</a></li>
                                                     <li>
-                                                        <a href="">Kerabat</a>
+                                                        <a href="{{ route('hr.person.contacts.index', ['org_id' => $value['id'], 'person_id' => $person['id']]) }}">Kontak</a>
+                                                    </li>    
+                                                    <li>
+                                                        <a href="{{ route('hr.person.relatives.index', ['org_id' => $value['id'], 'person_id' => $person['id']]) }}">Kerabat</a>
                                                     </li>
                                                     <li>
-                                                        <a href="">Pekerjaan</a>
+                                                        <a href="{{ route('hr.person.works.index', ['org_id' => $value['id'], 'person_id' => $person['id']]) }}">Pekerjaan</a>
                                                     </li>
                                                     <li>
-                                                        <a href="">Jadwal</a>
+                                                        <a href="{{ route('hr.person.schedules.index', ['org_id' => $value['id'], 'person_id' => $person['id']]) }}">Jadwal</a>
                                                     </li>
                                                     <li>
-                                                        <a href="">Dokumen</a>
+                                                        <a href="{{ route('hr.person.documents.index', ['org_id' => $value['id'], 'person_id' => $person['id']]) }}">Dokumen</a>
                                                     </li>
                                                 </ul>
                                             </li>
