@@ -46,7 +46,7 @@
 								]
 	])
 	
-	{!! Form::open(array('route' => array('hr.calendar.schedules.delete', 0),'method' => 'POST')) !!}
+	{!! Form::open(array('route' => array('hr.calendar.schedules.delete', 0),'method' => 'POST', 'class' => 'no_enter')) !!}
 		@include('widgets.modal.modal_create_schedule', [
 			'widget_template'		=> 'plain_no_title'
 		])

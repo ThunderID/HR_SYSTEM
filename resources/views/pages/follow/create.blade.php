@@ -19,7 +19,7 @@
 		'widget_options'		=> 	[
 										'sidebar'				=> 
 										[
-											'search'			=> [],
+											'search'			=> ['withattributes' => 'branches'],
 											'sort'				=> [],
 											'page'				=> 1,
 											'per_page'			=> 100,
@@ -43,7 +43,7 @@
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 1,
-										'route_back'	 	=> route('hr.chart.calendars.index', [$chart['id'], 'org_id' => $data['id'], 'chart_id' => $chart['id']])
+										'route_back'	 	=> route('hr.chart.calendars.index', ['chart_id' => $chart['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])
 									]
 								]
 	])

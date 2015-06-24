@@ -3,50 +3,31 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
-	// ---------------------------- BASIC SELECT2 ----------------------------
-	$('.select2').select2();
+		// ---------------------------- BASIC SELECT2 ----------------------------
+		$('.select2').select2();
 
-	// ---------------------------- SELECT2 SKINs ----------------------------
-	
-	$('.select2-tag-contact').select2({
- 		tokenSeparators: [",", " ", "_", "-"],
-		tags: ['alamat', 'bbm', 'email', 'line', 'phone', 'whatsapp'],
-		placeholder: "",
-		maximumSelectionSize: 1,
-		selectOnBlur: true,
-		placeholder: ""
- 	});
+		// ---------------------------- SELECT2 SKINs ----------------------------
+		
+		$('.select2-tag-contact').select2({
+	 		tokenSeparators: [",", " ", "_", "-"],
+			tags: ['alamat', 'bbm', 'email', 'line', 'phone', 'whatsapp'],			
+			maximumSelectionSize: 1,
+			selectOnBlur: true
+	 	});
 
- 	$('.select2-tag-document').select2({
- 		tokenSeparators: [",", " ", "_", "-"],
-		tags: ['akun', 'appraisal', 'kontrak', 'identitas', 'pajak', 'pendidikan', 'sp'],
-		placeholder: "",
-		maximumSelectionSize: 1,
-		selectOnBlur: true,
-		placeholder: ""
- 	});
+	 	$('.select2-tag-document').select2({
+	 		tokenSeparators: [",", " ", "_", "-"],
+			tags: ['akun', 'appraisal', 'kontrak', 'identitas', 'pajak', 'pendidikan', 'sp'],		
+			maximumSelectionSize: 1,
+			selectOnBlur: true
+	 	});
 
-	// ---------------------------- SELECT2 ARTICLE ----------------------------
-	// function formatArticle (repo) 
-	// {
-	// 	if (repo.loading) return repo.text;
-
-	// 	var markup = '<div class="clearfix">' +
-	// 					'<div class="col-sm-1">' +
-	// 						'<img src="' + repo.thumbnail + '" style="max-width: 100%" />' +
-	// 					'</div>' +
-	// 					'<div clas="col-sm-10">' +
-	// 						'<div class="col-sm-10">' + repo.title + '</div>' +
-	// 					'</div>' + 
-	// 				'</div>';
-	// 	markup += '</div>';
-
-	// 	return markup;
-	// }
-
-	// function formatArticleSelection (repo) 
-	// {
-	// 	return repo.title;
-	// }
+		$('.select2-tag-days').select2({
+	 		tokenSeparators: [",", " ", "_", "-"],
+			tags: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],			
+			maximumSelectionSize: 7,
+			selectOnBlur: true,
+			createSearchChoice: function() { return null; }
+		});
 	});	
 </script>
