@@ -32,7 +32,7 @@
 							<label class="control-label">Status</label>
 						</div>	
 						<div class="col-md-10">
-							<select name="status" class="schedule_status">
+							<select name="status" class="form-control schedule_status">
 								<option value="presence_indoor">Masuk, Dalam Ruangan</option>
 								<option value="presence_outdoor">Masuk, Luar Ruangan</option>
 								<option value="absence_not_workleave">Absen, Tidak Mengurangi Cuti</option>

@@ -73,7 +73,31 @@
                             <a href="javascript:;"><i class="fa fa-briefcase"></i> Data<span class="fa arrow"></span></a>
                             <ul class="nav nav-third-level">
                                 <li>
-                                    <a href="{{route('hr.persons.index', ['org_id' => $value['id']])}}"><i class="fa fa-users fa-fw"></i> Data Karyawan</a>
+                                    <a href="javascript:;"><i class="fa fa-users fa-fw"></i> Data Karyawan <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-fourty-level">
+                                        <li>
+                                            <a href="{{route('hr.persons.index', ['org_id' => $value['id']])}}">Semua Karyawan</a>
+                                        </li>
+                                        @if(isset($person['id']))
+                                            <li>
+                                                <a href="javascript:;">{{ $person['name'] }} <span class="fa arrow"></span></a>
+                                                <ul class="nav nav-fifty-level">    
+                                                    <li>
+                                                        <a href="">Kerabat</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="">Pekerjaan</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="">Jadwal</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="">Dokumen</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        @endif
+                                    </ul>
                                 </li>
                             </ul>
                         </li>

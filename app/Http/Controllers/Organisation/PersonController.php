@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers\Organisation;
 
-use Input, Session, App, Paginator, Redirect, DB, Config;
+use Input, Session, App, Paginator, Redirect, DB, Config, Validator;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -89,6 +89,11 @@ class PersonController extends BaseController
 
 	public function store($id = null)
 	{
+		if (Input::hasFile('link_profile_picture'))
+		{
+			$this->upload_image(Input::file('link_profile_picture'));
+		}
+		
 		if(Input::has('id'))
 		{
 			$id 								= Input::get('id');
@@ -246,5 +251,60 @@ class PersonController extends BaseController
 		{
 			return Redirect::back()->withErrors(['Password yang Anda masukkan tidak sah!']);
 		}
+	}
+
+	public function upload_image($file)
+	{
+		if ($file)
+		{
+			$validator = Validator::make(['file' => $file], ['file' => 'image|max:500']);
+			if (!$validator->passes())
+			{
+				return Response::json(['message' => $validator->errors()->first()], 500);
+			}
+
+			// generate path 
+			$path = '/images/' . date('Y/m/d/H') . '/'; 
+
+			// generate filename
+			$filename =  str_replace(' ', '-', $file->getClientOriginalName());
+
+			$i = 1;
+			while (file_exists(public_path() . '/' . $path . $filename))
+			{
+				$filename = $i . '-' . str_replace(' ', '-', $file->getClientOriginalName());
+				$i++;
+			}
+			
+			// move uploaded file to path
+			$file->move(public_path() . '/' . $path,  str_replace(' ', '-', $filename));
+
+			// create 
+			$paths['sm'] = asset($this->copyAndResizeImage($path . $filename, 320, 180));
+			$paths['md'] = asset($this->copyAndResizeImage($path . $filename, 640, 360));
+			$paths['lg'] = asset($this->copyAndResizeImage($path . $filename, 960, 540));
+			$paths['ori'] = asset($path .  $filename);
+		}
+	}
+
+	private function copyAndResizeImage($image_path, $width, $height)
+	{
+		if (!is_integer($width))
+		{
+			throw new InvalidArgumentException("Width must be type of integer", 1);
+		}
+
+		if (!is_integer($height))
+		{
+			throw new InvalidArgumentException("Height must be type of integer", 1);
+		}
+
+		//
+		$path 			= pathinfo($image_path);
+		$new_file_name 	= $path['filename'] . '_' . $width . 'x' . $height . '.' . $path['extension'];
+		// process
+		$image = Image::make(public_path() . '/' . $image_path)->resize($width, $height)->save(public_path($path['dirname'] . '/' . $new_file_name));
+
+		return $path['dirname'] . '/' . $new_file_name;
 	}
 }
