@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('WorkleaveTableSeeder');
 		$this->call('PersonWorkleaveTableSeeder');
 
+		$this->call('SettingIdleTableSeeder');
 		$this->call('LogTableSeeder');
 	}
 

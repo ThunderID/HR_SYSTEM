@@ -17,12 +17,11 @@
 		'widget_options'		=> 	[
 										'sidebar'				=> 
 										[
-											'widget_title'		=> 'Pilih Organisasi :',								
 											'identifier'		=> 1,
 											'search'			=> [],
 											'sort'				=> [],
 											'page'				=> 1,
-											'per_page'			=> 12,
+											'per_page'			=> 100,
 										]
 									]
 	])

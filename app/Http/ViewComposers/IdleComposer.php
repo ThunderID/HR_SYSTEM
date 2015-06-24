@@ -3,10 +3,10 @@
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Getting;
-use App\Models\Branch;
+use App\Models\SettingIdle;
 use Input, Validator, App, Paginator;
 
-class BranchComposer extends WidgetComposer 
+class IdleComposer extends WidgetComposer 
 {
 	protected function setRules($options)
 	{
@@ -24,7 +24,7 @@ class BranchComposer extends WidgetComposer
 	{
 		$options['search']['organisationid'] 	= $options['organisation_id'];
 
-		$results 								=  $this->dispatch(new Getting(new Branch, $options['search'], $options['sort'] , (int)$options['page'], (int)$options['per_page']));
+		$results 								= $this->dispatch(new Getting(new SettingIdle, $options['search'], $options['sort'] , (int)$options['page'], (int)$options['per_page']));
 
 		$contents 								= json_decode($results);
 
@@ -36,24 +36,24 @@ class BranchComposer extends WidgetComposer
 				{
 					foreach ($value as $key2 => $value2) 
 					{
-						$this->widget_errors->add('Branch', $value2);
+						$this->widget_errors->add('SettingIdle', $value2);
 					}
 				}
 				else
 				{
-					$this->widget_errors->add('Branch', $value);
+					$this->widget_errors->add('SettingIdle', $value);
 				}
 			}
-			$widget_data['branch'] 				= null;
-			$widget_data['branch-pagination'] 	= null;
+			$widget_data['idle'] 				= null;
+			$widget_data['idle-pagination'] 	= null;
 		}
 		else
 		{
 			$page 								= json_decode(json_encode($contents->pagination), true);
-			$widget_data['branch'] 				= json_decode(json_encode($contents->data), true);
-			$widget_data['branch-pagination'] 	= new Paginator($page['total_data'], $page['total_data'], $page['per_page'], $page['page']);
-			$widget_data['branch-pagination']->setPath(route('hr.branches.index'));
-			$widget_data['branch-display'] 		= $page;
+			$widget_data['idle'] 				= json_decode(json_encode($contents->data), true);
+			$widget_data['idle-pagination'] 	= new Paginator($page['total_data'], $page['total_data'], $page['per_page'], $page['page']);
+			$widget_data['idle-pagination']->setPath(route('hr.idles.index'));
+			$widget_data['idle-display'] 		= $page;
 		}
 
 		return $widget_data;
