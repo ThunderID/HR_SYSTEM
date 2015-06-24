@@ -6,12 +6,12 @@
 	@overwrite
 
 	@section('widget_body')
-		{!! Form::open(['url' => $PersonComposer['widget_data']['personlist']['form_url'], 'class' => 'form']) !!}	
+		{!! Form::open(['url' => $PersonComposer['widget_data']['personlist']['form_url'], 'class' => 'form', 'files' => true]) !!}	
 			<div class="clearfix">&nbsp;</div>
 			<div class="row">
 				<div class="col-sm-3">
 					<div class="box-profile-picture p-15">
-						<input name="link_profile_picture" type="file" class="thumbnail_image_upload" data-img="{{ isset($data['avatar']) ? $data['avatar'] : '' }}">
+						<input name="link_profile_picture" type="file" class="thumbnail_image_upload" data-img="{{ isset($PersonComposer['widget_data']['personlist']['person']['avatar']) ? $PersonComposer['widget_data']['personlist']['person']['avatar'] : '' }}">
 					</div>
 				</div>
 				<div class="col-sm-9">

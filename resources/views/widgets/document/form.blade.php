@@ -65,13 +65,37 @@
 					</div>
 				@endforeach
 			@else
-				<ul class="list-unstyled" id="documentList"></ul>
-				<div class="form-group">
-					<div class="col-md-2">&nbsp;</div>
-					<div class="col-md-10">
-						<a class="btn btn-default btn-add-doc" document-duplicate="docTemplate" document-target="#documentList">Tambah Inputan</a>
+				<div id="template" class="template">
+					<div class="form-group">
+						<div class="col-md-2">&nbsp;</div>
+						<div class="col-md-2">					
+							<label for="field[]" class="control-label">Nama Input</label>
+						</div>
+						<div class="col-md-2">
+							<input type="text" class="form-control field0" id="field[]" name="field[0]">
+						</div>
+						<div class="col-md-2">
+							<label for="" class="control-label">Tipe Input</label>
+						</div>
+						<div class="col-md-2">
+							<select id="Type" class="form-control form-control input-md type0" name="type[0]">
+								<option value="numeric">Angka</option>
+								<option value="date">Tanggal</option>
+								<option value="string">Teks Singkat</option>
+								<option value="text">Teks Panjang</option>
+							</select>
+						</div>
+						<div class="col-md-2">
+							<a href="javascript:;" class="btn-delete-doc" style="color:#666;" data-count="0" data-total-count="1"><i class="fa fa-minus-circle fa-lg mt-10"></i></a>
+						</div>
 					</div>
 				</div>
+					<div class="form-group">
+						<div class="col-md-2">&nbsp;</div>
+						<div class="col-md-10">
+							<a class="btn btn-default btn-add-doc" document-duplicate="docTemplate" document-target="#documentList" >Tambah Inputan</a>
+						</div>
+					</div>
 			@endif
 			<div class="form-group">
 				<div class="col-md-2">

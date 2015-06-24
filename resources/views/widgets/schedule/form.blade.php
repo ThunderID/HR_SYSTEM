@@ -20,7 +20,7 @@
 				<label class="control-label">Status</label>
 			</div>	
 			<div class="col-md-10">
-				<select name="status">
+				<select name="status" class="form-control">
 					<option value="presence_indoor" @if($ScheduleComposer['widget_data']['schedulelist']['schedule']['status']=='presence_indoor') selected @endif>Presen, Dalam Ruangan</option>
 					<option value="presence_outdoor" @if($ScheduleComposer['widget_data']['schedulelist']['schedule']['status']=='presence_outdoor') selected @endif>Presen, Luar Ruangan</option>
 					<option value="absence_not_workleave" @if($ScheduleComposer['widget_data']['schedulelist']['schedule']['status']=='absence_not_workleave') selected @endif>Absen, Tidak Mengurangi Cuti</option>

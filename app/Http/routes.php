@@ -65,6 +65,11 @@ Route::group(['prefix' => ''], function()
 		Route::resource('persons',				'PersonController',									['names' => ['index' => 'hr.persons.index', 'create' => 'hr.persons.create', 'store' => 'hr.persons.store', 'show' => 'hr.persons.show', 'edit' => 'hr.persons.edit', 'update' => 'hr.persons.update', 'destroy' => 'hr.persons.delete']]);
 
 		// ------------------------------------------------------------------------------------
+		// UPLOAD IMAGE PERSON
+		// ------------------------------------------------------------------------------------		
+		Route::any('upload-image',				['uses' => 'PersonController@upload_image',			'as' => 'hr.upload.image']);
+
+		// ------------------------------------------------------------------------------------
 		// REPORTS RESOURCE
 		// ------------------------------------------------------------------------------------
 
