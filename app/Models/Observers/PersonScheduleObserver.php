@@ -189,7 +189,6 @@ class PersonScheduleObserver
 
 			if(!$log->save())
 			{
-
 				$model['errors'] 	= $log->getError();
 
 				return false;
