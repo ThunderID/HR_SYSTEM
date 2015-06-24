@@ -5,9 +5,9 @@
 		<h1> {{ is_null($id) ? 'Tambah Kontak ' : 'Ubah Kontak '. (isset($ContactComposer['widget_data']['contactlist']['contact']['branch']) ? ' Cabang '.$ContactComposer['widget_data']['contactlist']['contact']['branch']['name'] : $ContactComposer['widget_data']['contactlist']['contact']['person']['name'])}} </h1> 
 	@overwrite
 
-	@section('widget_body')
+	@section('widget_body')		
 		<div class="clearfix">&nbsp;</div>
-		{!! Form::open(['url' => $ContactComposer['widget_data']['contactlist']['form_url'], 'class' => 'form-horizontal']) !!}	
+		{!! Form::open(['url' => $ContactComposer['widget_data']['contactlist']['form_url'], 'class' => 'form-horizontal no_enter']) !!}	
 			<div class="form-group">
 				<div class="col-md-2">
 					<label class="control-label">Item</label>

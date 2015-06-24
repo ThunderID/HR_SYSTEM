@@ -8,7 +8,7 @@
 
 	@section('widget_body')
 		<div class="clearfix">&nbsp;</div>
-		{!! Form::open(['url' => $PersonWorkleaveComposer['widget_data']['personworkleavelist']['form_url'], 'class' => 'form-horizontal']) !!}	
+		{!! Form::open(['url' => $PersonWorkleaveComposer['widget_data']['personworkleavelist']['form_url'], 'class' => 'form-horizontal no_enter']) !!}	
 			<div class="form-group">
 				<div class="col-md-2">
 					<label class="control-label">Jabatan</label>
@@ -34,13 +34,13 @@
 					<label class="control-label">Start</label>
 				</div>	
 				<div class="col-md-4">
-					{!!Form::input('text', 'start', $PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['start'], ['class' => 'form-control'])!!}
+					{!!Form::input('text', 'start', $PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['start'], ['class' => 'form-control date-mask'])!!}
 				</div>
 				<div class="col-md-1 col-md-offset-1">
 					<label class="control-label">End</label>
 				</div>	
 				<div class="col-md-4">
-					{!!Form::input('text', 'end', $PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['end'], ['class' => 'form-control'])!!}
+					{!!Form::input('text', 'end', $PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['end'], ['class' => 'form-control date-mask'])!!}
 				</div>
 			</div>
 			<div class="form-group">

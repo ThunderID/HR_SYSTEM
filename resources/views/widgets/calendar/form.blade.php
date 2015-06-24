@@ -7,7 +7,7 @@
 
 	@section('widget_body')
 		<div class="clearfix">&nbsp;</div>
-		{!! Form::open(['url' => $CalendarComposer['widget_data']['calendarlist']['form_url'], 'class' => 'form-horizontal']) !!}	
+		{!! Form::open(['url' => $CalendarComposer['widget_data']['calendarlist']['form_url'], 'class' => 'form-horizontal no_enter']) !!}	
 			<div class="form-group">
 				<div class="col-md-2">
 					<label class="control-label">Nama</label>
@@ -21,7 +21,7 @@
 					<label class="control-label">Workdays</label>
 				</div>	
 				<div class="col-md-10">
-					{!!Form::input('text', 'workdays', $CalendarComposer['widget_data']['calendarlist']['calendar']['workdays'], ['class' => 'form-control'])!!}
+					{!!Form::input('text', 'workdays', $CalendarComposer['widget_data']['calendarlist']['calendar']['workdays'], ['class' => 'form-control select2-tag-days'])!!}
 				</div>
 			</div>
 			<div class="form-group">

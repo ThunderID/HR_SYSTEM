@@ -7,7 +7,7 @@
 
 	@section('widget_body')	  
 		<div class="clearfix">&nbsp;</div>
-		{!! Form::open(['url' => $TemplateComposer['widget_data']['templatelist']['form_url'], 'class' => 'form-horizontal']) !!}	
+		{!! Form::open(['url' => $TemplateComposer['widget_data']['templatelist']['form_url'], 'class' => 'form-horizontal no_enter']) !!}	
 			<div class="form-group">
 				<div class="col-md-2">
 					<label class="control-label">Input</label>

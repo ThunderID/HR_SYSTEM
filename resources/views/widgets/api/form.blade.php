@@ -8,7 +8,7 @@
 
 	@section('widget_body')
 		<div class="clearfix">&nbsp;</div>
-		{!! Form::open(['url' => $ApiComposer['widget_data']['apilist']['form_url'], 'class' => 'form-horizontal']) !!}	
+		{!! Form::open(['url' => $ApiComposer['widget_data']['apilist']['form_url'], 'class' => 'form-horizontal no_enter']) !!}	
 			<div class="form-group">
 				<div class="col-md-2">
 					<label class="control-label">API KEY</label>
