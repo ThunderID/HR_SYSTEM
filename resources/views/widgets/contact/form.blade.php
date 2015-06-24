@@ -13,7 +13,7 @@
 					<label class="control-label">Item</label>
 				</div>	
 				<div class="col-md-10">
-					{!!Form::input('text', 'item', $ContactComposer['widget_data']['contactlist']['contact']['item'], ['class' => 'select2-tag-contact', 'style' => 'width:100%'])!!}
+					{!!Form::input('text', 'item', $ContactComposer['widget_data']['contactlist']['contact']['item'], ['class' => 'form-control select2-tag-contact', 'style' => 'width:100%'])!!}
 				</div>
 			</div>
 			<div class="form-group">
