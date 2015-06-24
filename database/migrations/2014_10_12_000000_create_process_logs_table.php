@@ -17,6 +17,8 @@ class CreateProcessLogsTable extends Migration {
 			$table->increments('id');
 			$table->integer('person_id')->unsigned()->index();
 			$table->integer('work_id')->unsigned()->index();
+			$table->integer('modified_start_by')->unsigned()->index();
+			$table->integer('modified_end_by')->unsigned()->index();
 			$table->string('name', 255);
 			$table->date('on');
 			$table->time('start');
@@ -33,7 +35,15 @@ class CreateProcessLogsTable extends Migration {
 			$table->double('total_idle_3');
 			$table->double('total_sleep');
 			$table->double('total_active');
+			$table->string('actual_start_status', 255);
+			$table->string('actual_end_status', 255);
+			$table->string('modified_start_status', 255);
+			$table->string('modified_end_status', 255);
+			$table->double('tolerance_start_time');
+			$table->double('tolerance_end_time');
 			$table->text('tooltip');
+			$table->datetime('modified_start_at')->nullable();
+			$table->datetime('modified_end_at')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
 			

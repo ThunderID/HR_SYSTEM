@@ -34,7 +34,7 @@ class CreateTmpDocumentsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('documents');
+		Schema::drop('tmp_documents');
 	}
 
 }

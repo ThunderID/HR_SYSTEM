@@ -34,6 +34,7 @@ class ScheduleTableSeeder extends Seeder
 				{
 					$data 							= new Schedule;
 					$data->fill([
+						'created_by'				=> 1,
 						'on'						=> $period->format('Y-m-d'),
 						'status'					=> $status[$rand],
 						'name'						=> str_replace('_', ' ', $status[$rand]),

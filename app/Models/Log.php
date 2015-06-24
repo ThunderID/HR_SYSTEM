@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Document Model:
  * 	ID 								: Auto Increment, Integer, PK
  * 	person_id 						: Foreign Key From Person, Integer, Required
+ * 	created_by 						: Foreign Key From Person, Integer, Required
  * 	name 		 					: Required max 255
  * 	on 		 						: Required, Datetime
  * 	pc 			 					: Required max 255
@@ -35,15 +36,16 @@ class Log extends BaseModel {
 	protected 	$table 				= 	'logs';
 
 	protected 	$fillable			= 	[
-											'name' 							,
-											'on' 							,
-											'pc' 							,
+											'name' 						,
+											'on' 						,
+											'pc' 						,
 										];
 
 	protected 	$rules				= 	[
-											'name'							=> 'required|max:255',
-											'on'							=> 'required|date_format:"Y-m-d H:i:s"',
-											'pc'							=> 'required|max:255',
+											'created_by'				=> 'exists:persons,id',
+											'name'						=> 'required|max:255',
+											'on'						=> 'required|date_format:"Y-m-d H:i:s"',
+											'pc'						=> 'required|max:255',
 										];
 
 	public $searchable 				= 	[

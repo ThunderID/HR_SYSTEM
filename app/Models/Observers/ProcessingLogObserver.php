@@ -44,6 +44,9 @@ class ProcessingLogObserver
 			$total_sleep 			= 0;
 			$total_active 			= 0;
 
+			$actual_start_status 	= '';
+			$actual_end_status 		= '';
+
 			$name 					= 'Attendance';
 			$tooltip 				= [];
 
@@ -57,7 +60,7 @@ class ProcessingLogObserver
 				{
 					if(!in_array($model['attributes']['name'], $tooltip))
 					{
-						$tooltip[] 		= $model['attributes']['name'];
+						$tooltip[] 	= $model['attributes']['name'];
 					}						
 				}
 				else
@@ -66,7 +69,7 @@ class ProcessingLogObserver
 					{
 						if(!in_array($value->status, $tooltip))
 						{
-							$tooltip[] 		= $value->status;
+							$tooltip[] 	= $value->status;
 						}
 					}
 				}
@@ -88,7 +91,7 @@ class ProcessingLogObserver
 					$calendar 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->withAttributes(['workscalendars','workscalendars.calendar'])->first();
 					if($calendar)
 					{
-						$workid 	= $ccalendar->workscalendars[0]->id;
+						$workid 	= $calendar->workscalendars[0]->id;
 						$workdays  	= explode(',', $calendar->workscalendars[0]->calendar->workdays);
 						$wd			= ['monday' => 'senin', 'tuesday' => 'selasa', 'wednesday' => 'rabu', 'thursday' => 'kamis', 'friday' => 'jumat', 'saturday' => 'sabtu', 'sunday' => 'minggu'];
 						$day 		= date("l", strtotime($model['attributes']['on']));
@@ -119,6 +122,11 @@ class ProcessingLogObserver
 				$fp_end 			= $data->fp_end;
 				$start 				= $data->start;
 				$end 				= $data->end;
+
+				if(isset($data->created_by) && $data->created_by!=0)
+				{
+					$modified_end_by= $data->created_by;
+				}
 
 				$result 			= json_decode($data->tooltip);
 				$tooltip 			= json_decode(json_encode($result), true);
@@ -156,6 +164,11 @@ class ProcessingLogObserver
 			}
 			else
 			{
+				if(isset($data->created_by) && $data->created_by!=0)
+				{
+					$modified_start_by= $data->created_by;
+				}
+
 				if(strtolower($model['attributes']['name'])=='finger_print')
 				{
 					$fp_start 		= $time;
@@ -256,29 +269,67 @@ class ProcessingLogObserver
 					unset($start_sleep);
 				}
 			}
+
+			if($margin_start==0 && $margin_end==0)
+			{
+				$actual_start_status 	= 'AS';
+			}
+			elseif($margin_start>=0)
+			{
+				$actual_start_status 	= 'HB';
+			}
+			else
+			{
+				$actual_start_status 	= 'HC';
+			}
 			
-			$total_active 			= $total_active - $total_sleep - $total_idle;
+			if($margin_start==0 && $margin_end==0)
+			{
+				$actual_end_status 		= 'AS';
+			}
+			elseif($margin_end>=0)
+			{
+				$actual_end_status 		= 'HB';
+			}
+			else
+			{
+				$actual_end_status 		= 'HC';
+			}
+
+			$total_active 				= $total_active - $total_sleep - $total_idle;
 
 			$plog->fill([
-										'name'			=> $name,
-										'on'			=> $on,
-										'schedule_start'=> $schedule_start,
-										'schedule_end'	=> $schedule_end,										
-										'tooltip'		=> json_encode($tooltip),
-										'start'			=> $start,
-										'end'			=> $end,
-										'fp_start'		=> $fp_start,
-										'fp_end'		=> $fp_end,
-										'margin_start'	=> $margin_start,
-										'margin_end'	=> $margin_end,
-										'total_idle'	=> $total_idle,
-										'total_idle_1'	=> $total_idle_1,
-										'total_idle_2'	=> $total_idle_2,
-										'total_idle_3'	=> $total_idle_3,
-										'total_sleep'	=> $total_sleep,
-										'total_active'	=> $total_active,
+										'name'					=> $name,
+										'on'					=> $on,
+										'schedule_start'		=> $schedule_start,
+										'schedule_end'			=> $schedule_end,										
+										'tooltip'				=> json_encode($tooltip),
+										'start'					=> $start,
+										'end'					=> $end,
+										'fp_start'				=> $fp_start,
+										'fp_end'				=> $fp_end,
+										'margin_start'			=> $margin_start,
+										'margin_end'			=> $margin_end,
+										'total_idle'			=> $total_idle,
+										'total_idle_1'			=> $total_idle_1,
+										'total_idle_2'			=> $total_idle_2,
+										'total_idle_3'			=> $total_idle_3,
+										'total_sleep'			=> $total_sleep,
+										'total_active'			=> $total_active,
+										'actual_start_status'	=> $actual_start_status,
+										'actual_end_status'		=> $actual_end_status,
 								]
 						);
+
+			if(isset($modified_start_by))
+			{
+				$plog->fill(['modified_start_by' 	=> $modified_start_by]);
+			}
+
+			if(isset($modified_end_by))
+			{
+				$plog->fill(['modified_end_by' 		=> $modified_end_by]);
+			}
 
 			$plog->Person()->associate($person);
 

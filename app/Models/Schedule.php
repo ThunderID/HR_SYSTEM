@@ -7,6 +7,7 @@ use DB;
  * Document Model:
  * 	ID 								: Auto Increment, Integer, PK
  * 	calendar_id 					: Foreign Key From Calendar, Integer, Required
+ * 	created_by 						: Foreign Key From Person, Integer, Required
  * 	name 		 					: Required max 255
  * 	on 		 						: Required, Date
  * 	start 	 						: Required, Time
@@ -38,6 +39,7 @@ class Schedule extends BaseModel {
 	protected 	$table 				= 	'tmp_schedules';
 
 	protected 	$fillable			= 	[
+											'created_by' 					,
 											'name' 							,
 											'on' 							,
 											'start' 						,
@@ -46,6 +48,7 @@ class Schedule extends BaseModel {
 										];
 
 	protected 	$rules				= 	[
+											'created_by'					=> 'required|exists:persons,id',
 											'name'							=> 'required|max:255',
 											'on'							=> 'required|date_format:"Y-m-d"',
 											'start'							=> 'required|date_format:"H:i:s"',
@@ -60,8 +63,6 @@ class Schedule extends BaseModel {
 											'ondate' 						=> 'OnDate', 
 											'notid' 						=> 'NotID', 
 
-											// 'branchid' 						=> 'BranchID', 
-											// 'chartid' 						=> 'ChartID', 
 											'withattributes' 				=> 'WithAttributes'
 										];
 
@@ -70,8 +71,7 @@ class Schedule extends BaseModel {
 											'calendarid' 					=> 'Could be array or integer', 
 											'ondate' 						=> 'Could be array or string (date)', 
 											'name' 							=> 'Must be string', 
-											// 'branchid' 						=> 'Could be array or integer', 
-											// 'chartid' 						=> 'Could be array or integer', 
+
 											'notid' 						=> 'Must be integer', 
 											'withattributes' 				=> 'Must be array of relationship',
 										];

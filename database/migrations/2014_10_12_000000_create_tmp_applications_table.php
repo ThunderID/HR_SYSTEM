@@ -28,7 +28,7 @@ class CreateTmpApplicationsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('applications');
+		Schema::drop('tmp_applications');
 	}
 
 }

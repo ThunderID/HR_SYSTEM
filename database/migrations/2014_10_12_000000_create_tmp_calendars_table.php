@@ -34,7 +34,7 @@ class CreateTmpCalendarsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('calendars');
+		Schema::drop('tmp_calendars');
 	}
 
 }

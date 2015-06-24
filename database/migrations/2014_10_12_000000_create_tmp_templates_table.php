@@ -30,7 +30,7 @@ class CreateTmpTemplatesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('templates');
+		Schema::drop('tmp_templates');
 	}
 
 }
