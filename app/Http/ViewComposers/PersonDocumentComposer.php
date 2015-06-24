@@ -19,7 +19,7 @@ class PersonDocumentComposer extends WidgetComposer
 
 	protected function setData($options)
 	{
-		$results 								=  $this->dispatch(new Getting(new PersonDocument, $options['search'], $options['sort'] , $options['page'], $options['per_page']));
+		$results 								=  $this->dispatch(new Getting(new PersonDocument, $options['search'], $options['sort'] , (int)$options['page'], (int)$options['per_page']));
 
 		$contents 								= json_decode($results);
 		if(!$contents->meta->success)

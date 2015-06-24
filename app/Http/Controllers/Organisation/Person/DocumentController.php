@@ -1,11 +1,15 @@
 <?php namespace App\Http\Controllers\Organisation\Person;
-use Input, Session, App, Paginator, Redirect, DB;
+use Input, Session, App, Paginator, Redirect, DB, Config;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
+use App\Console\Commands\Checking;
+use App\Console\Commands\Deleting;
 use App\Models\Person;
 use App\Models\PersonDocument;
+use App\Models\DocumentDetail;
+use App\Models\Document;
 
 class DocumentController extends BaseController
 {
@@ -31,10 +35,10 @@ class DocumentController extends BaseController
 			App::abort(404);
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
@@ -78,10 +82,10 @@ class DocumentController extends BaseController
 			App::abort(404);
 		}
 
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
 
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
@@ -98,8 +102,25 @@ class DocumentController extends BaseController
 		$person 								= json_decode(json_encode($contents->data), true);
 		$data 									= $person['organisation'];
 
+		unset($search);
+		unset($sort);
+
+		$search['id'] 							= $id;
+		$search['personid'] 					= $person_id;
+		$search['withattributes'] 				= ['details'];
+		$sort 									= [];
+		$results 								= $this->dispatch(new Getting(new PersonDocument, $search, $sort , 1, 1));
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$persondocument 						= json_decode(json_encode($contents->data), true);
+
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.person.document.create', compact('id', 'data', 'person'));
+		$this->layout->pages 					= view('pages.person.document.create', compact('id', 'data', 'person', 'persondocument'));
 
 		return $this->layout;
 	}
@@ -129,9 +150,22 @@ class DocumentController extends BaseController
 			App::abort(404);
 		}
 
+		if(Input::has('doc_id'))
+		{
+			$doc_id 							= Input::get('doc_id');
+		}
+		else
+		{
+			App::abort(404);
+		}
+
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
+
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
-		$search['withattributes'] 				= ['organisation'];
 		$sort 									= ['name' => 'asc'];
 		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
@@ -141,8 +175,18 @@ class DocumentController extends BaseController
 			App::abort(404);
 		}
 
-		$attributes 							= Input::only('name', 'status', 'on', 'start', 'end');
-		$attributes['on'] 						= date('Y-m-d', strtotime($attributes['on']));
+		$search['id'] 							= $person_id;
+		$search['organisationid'] 				= $org_id;
+		$sort 									= ['name' => 'asc'];
+		$results 								= $this->dispatch(new Getting(new Document, $search, $sort , 1, 1));
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$attributes 							= ['document_id' => $doc_id];
 
 		$errors 								= new MessageBag();
 
@@ -153,13 +197,75 @@ class DocumentController extends BaseController
 		
 		if(!$is_success->meta->success)
 		{
-			$errors->add('Person', $is_success->meta->errors);
+			foreach ($is_success->meta->errors as $key => $value) 
+			{
+				if(is_array($value))
+				{
+					foreach ($value as $key2 => $value2) 
+					{
+						$errors->add('Person', $value2);
+					}
+				}
+				else
+				{
+					$errors->add('Person', $value);
+				}
+			}
+		}
+
+		if(Input::has('template_id'))
+		{
+			$template_ids 						= Input::get('template_id');
+			$detail_ids 						= Input::get('detail_id');
+			$contents 							= Input::get('content');
+			foreach ($template_ids as $key => $value) 
+			{
+				$attributes_2 					= ['template_id' => $value];
+				if((int)$contents[$key])
+				{
+					$attributes_2['numeric']	= $contents[$key];
+				}
+				else
+				{
+					$attributes_2['text']		= $contents[$key];
+				}
+
+				if(isset($detail_ids[$key]) && $detail_ids[$key]!='' && !is_null($detail_ids[$key]))
+				{
+					$attributes_2['id']			= $detail_ids[$key];
+				}
+				else
+				{
+					$attributes_2['id']			= null;
+				}
+
+				$saved_detail 					= $this->dispatch(new Saving(new DocumentDetail, $attributes_2, $attributes_2['id'], new PersonDocument, $is_success->data->id));
+				$is_success_2 					= json_decode($saved_detail);
+
+				if(!$is_success_2->meta->success)
+				{
+					foreach ($is_success_2->meta->errors as $key => $value) 
+					{
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Person', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Person', $value);
+						}
+					}
+				}
+			}
 		}
 
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.persons.show', [$person_id, 'org_id' => $org_id])->with('alert_success', 'Jadwal kalender "' . $contents->data->name. '" sudah disimpan');
+			return Redirect::route('hr.person.documents.index', ['person_id' => $person_id, 'org_id' => $org_id])->with('alert_success', 'Dokumen sudah disimpan');
 		}
 
 		DB::rollback();
@@ -216,5 +322,74 @@ class DocumentController extends BaseController
 	public function edit($id)
 	{
 		return $this->create($id);
+	}
+
+	public function destroy($id)
+	{
+		$attributes 						= ['email' => Config::get('user.email'), 'password' => Input::get('password')];
+
+		$results 							= $this->dispatch(new Checking(new Person, $attributes));
+
+		$content 							= json_decode($results);
+
+		if($content->meta->success)
+		{
+			if(Input::has('org_id'))
+			{
+				$org_id 					= Input::get('org_id');
+			}
+			else
+			{
+				$org_id 					= Session::get('user.organisation');
+			}
+
+			if(Input::has('person_id'))
+			{
+				$person_id 					= Input::get('person_id');
+			}
+			else
+			{
+				App::abort(404);
+			}
+
+			if(!in_array($org_id, Config::get('user.orgids')))
+			{
+				App::abort(404);
+			}
+
+			$search 						= ['organisationid' => $org_id, 'id' => $person_id];
+			$results 						= $this->dispatch(new Getting(new Person, $search, [] , 1, 1));
+			$contents 						= json_decode($results);
+			
+			if(!$contents->meta->success)
+			{
+				App::abort(404);
+			}
+
+			$search 						= ['id' => $id, 'personid' => $person_id];
+			$results 						= $this->dispatch(new Getting(new PersonDocument, $search, [] , 1, 1));
+			$contents 						= json_decode($results);
+			
+			if(!$contents->meta->success)
+			{
+				App::abort(404);
+			}
+
+			$results 						= $this->dispatch(new Deleting(new PersonDocument, $id));
+			$contents 						= json_decode($results);
+
+			if (!$contents->meta->success)
+			{
+				return Redirect::back()->withErrors($contents->meta->errors);
+			}
+			else
+			{
+				return Redirect::route('hr.person.documents.index', ['org_id' => $org_id, 'person_id' => $person_id])->with('alert_success', 'Dokumen sudah dihapus');
+			}
+		}
+		else
+		{
+			return Redirect::back()->withErrors(['Password yang Anda masukkan tidak sah!']);
+		}
 	}
 }

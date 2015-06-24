@@ -47,7 +47,7 @@ class PersonDocument extends BaseModel {
 										];
 
 	protected 	$rules				= 	[
-											'document_id'				=> 'required|exists:documents,id',
+											'document_id'				=> 'required|exists:tmp_documents,id',
 										];
 
 	public $searchable 				= 	[

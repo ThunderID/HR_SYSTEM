@@ -32,7 +32,7 @@
 @section('content_body')	
 	@include('widgets.person.document.table', [
 		'widget_template'		=> 'panel',
-		'widget_title'			=> 'Dokumen',		
+		'widget_title'			=> 'Dokumen '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
@@ -41,11 +41,18 @@
 											'organisation_id'	=> $data['id'],
 											'search'			=> ['personid' => $person['id'], 'withattributes' => ['document']],
 											'sort'				=> ['created_at' => 'asc'],
-											'page'				=> 1,
+											'page'				=> (Input::has('page') ? Input::get('page') : 1),
 											'per_page'			=> 12,
+											'route_create'		=> route('hr.person.documents.create', ['org_id' => $data['id'], 'person_id' => $person['id']])
 										]
 									]
 	])
+
+	{!! Form::open(array('route' => array('hr.person.documents.delete', 0),'method' => 'DELETE')) !!}
+		@include('widgets.modal.delete', [
+			'widget_template'		=> 'plain_no_title'
+		])
+	{!! Form::close() !!}
 
 @overwrite
 
