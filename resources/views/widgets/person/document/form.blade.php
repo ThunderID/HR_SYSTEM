@@ -7,7 +7,7 @@
 
 	@section('widget_body')	  
 		<div class="clearfix">&nbsp;</div>
-		{!! Form::open(['url' => $DocumentComposer['widget_data']['documentlist']['form_url'], 'class' => 'form-horizontal']) !!}	
+		{!! Form::open(['url' => $DocumentComposer['widget_data']['documentlist']['form_url'], 'class' => 'form-horizontal no_enter']) !!}	
 			@foreach($DocumentComposer['widget_data']['documentlist']['document']['templates'] as $key => $value)
 				<div class="form-group">
 					<div class="col-md-2">					

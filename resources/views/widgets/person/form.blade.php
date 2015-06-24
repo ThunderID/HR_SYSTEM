@@ -6,7 +6,7 @@
 	@overwrite
 
 	@section('widget_body')
-		{!! Form::open(['url' => $PersonComposer['widget_data']['personlist']['form_url'], 'class' => 'form', 'files' => true]) !!}	
+		{!! Form::open(['url' => $PersonComposer['widget_data']['personlist']['form_url'], 'class' => 'form no_enter', 'files' => true]) !!}	
 			<div class="clearfix">&nbsp;</div>
 			<div class="row">
 				<div class="col-sm-3">
@@ -24,19 +24,19 @@
 						</div>
 					</div>				
 					<div class="row">
-						<div class="col-sm-4">
+						<div class="col-sm-3">
 							<div class="form-group">
 								<label class="control-label">Gelar Depan</label>				
 								{!!Form::input('text', 'prefix_title', $PersonComposer['widget_data']['personlist']['person']['prefix_title'], ['class' => 'form-control'])!!}
 							</div>
 						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
 							<div class="form-group">
 								<label class="control-label">Nama</label>
 								{!!Form::input('text', 'name', $PersonComposer['widget_data']['personlist']['person']['name'], ['class' => 'form-control'])!!}
 							</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-3">
 							<div class="form-group">
 								<label class="control-label">Gelar Akhir</label>
 								{!!Form::input('text', 'suffix_title', $PersonComposer['widget_data']['personlist']['person']['suffix_title'], ['class' => 'form-control'])!!}
@@ -58,7 +58,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-sm-4">
+						<div class="col-sm-2">
 							<div class="form-group">
 								<label class="mt-10">Jenis Kelamin</label>
 							</div>

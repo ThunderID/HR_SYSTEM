@@ -39,6 +39,214 @@ class ScheduleController extends BaseController
 			App::abort(404);
 		}
 
+		$search['id'] 							= $person_id;
+		$search['organisationid'] 				= $org_id;
+		$search['withattributes'] 				= ['organisation'];
+		$sort 									= ['name' => 'asc'];
+		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$person 								= json_decode(json_encode($contents->data), true);
+		$data 									= $person['organisation'];
+
+		// ---------------------- GENERATE CONTENT ----------------------
+		$this->layout->pages 					= view('pages.person.schedule.index', compact('id', 'data', 'person'));
+
+		return $this->layout;	
+	}
+	
+	public function create($id = null)
+	{
+		if(Input::has('org_id'))
+		{
+			$org_id 							= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 							= Session::get('user.organisation');
+		}
+
+		if(Input::has('person_id'))
+		{
+			$person_id 							= Input::get('person_id');
+		}
+		else
+		{
+			App::abort(404);
+		}
+
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
+
+		$search['id'] 							= $person_id;
+		$search['organisationid'] 				= $org_id;
+		$search['withattributes'] 				= ['organisation'];
+		$sort 									= ['name' => 'asc'];
+		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$calendar 								= json_decode(json_encode($contents->data), true);
+		$data 									= $calendar['organisation'];
+
+		// ---------------------- GENERATE CONTENT ----------------------
+		$this->layout->pages 					= view('pages.person.schedule.create', compact('id', 'data', 'calendar'));
+
+		return $this->layout;
+	}
+	
+	public function store($id = null)
+	{
+		if(Input::has('id'))
+		{
+			$id 								= Input::get('id');
+		}
+
+		if(Input::has('org_id'))
+		{
+			$org_id 							= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 							= Session::get('user.organisation');
+		}
+
+		if(Input::has('person_id'))
+		{
+			$person_id 							= Input::get('person_id');
+		}
+		else
+		{
+			App::abort(404);
+		}
+
+		$search['id'] 							= $person_id;
+		$search['organisationid'] 				= $org_id;
+		$search['withattributes'] 				= ['organisation'];
+		$sort 									= ['name' => 'asc'];
+		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$attributes 							= Input::only('name', 'status', 'on', 'start', 'end');
+		$attributes['on'] 						= date('Y-m-d', strtotime($attributes['on']));
+		$attributes['start'] 					= date('H:i:s', strtotime($attributes['start']));
+		$attributes['end'] 						= date('H:i:s', strtotime($attributes['end']));
+
+		$errors 								= new MessageBag();
+
+		DB::beginTransaction();
+
+		$content 								= $this->dispatch(new Saving(new Schedule, $attributes, $id, new Person, $person_id));
+		$is_success 							= json_decode($content);		
+		
+		if(!$is_success->meta->success)
+		{
+			$errors->add('Person', $is_success->meta->errors);
+		}
+
+		if(!$errors->count())
+		{
+			DB::commit();
+			return Redirect::route('hr.calendars.show', [$person_id, 'org_id' => $org_id])->with('alert_success', 'Jadwal kalender "' . $contents->data->name. '" sudah disimpan');
+		}
+
+		DB::rollback();
+		return Redirect::back()->withErrors($errors)->withInput();
+	}
+
+	public function show($id)
+	{
+		// ---------------------- LOAD DATA ----------------------
+		if(Input::has('org_id'))
+		{
+			$org_id 					= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 					= Session::get('user.organisation');
+		}
+
+		if(Input::has('branch_id'))
+		{
+			$branch_id 					= Input::get('branch_id');
+		}
+		else
+		{
+			App::abort(404);
+		}
+
+		// if(!in_array($org_id, Session::get('user.orgids')))
+		// {
+		// App::abort(404);
+		// }
+		
+		$search 						= ['id' => $id, 'branchid' => $branch_id, 'organisationid' => $org_id, 'withattributes' => ['branch', 'branch.organisation']];
+		$results 						= $this->dispatch(new Getting(new Chart, $search, [] , 1, 1));
+		$contents 						= json_decode($results);
+		
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$chart 							= json_decode(json_encode($contents->data), true);
+		$branch 						= $chart['branch'];
+		$data 							= $chart['branch']['organisation'];
+
+		// ---------------------- GENERATE CONTENT ----------------------
+		$this->layout->pages 			= view('pages.chart.show');
+		$this->layout->pages->data 		= $data;
+		$this->layout->pages->branch 	= $branch;
+		$this->layout->pages->chart 	= $chart;
+		return $this->layout;
+	}
+
+	public function edit($id)
+	{
+		return $this->create($id);
+	}
+
+	public function ajax($page = 1)
+	{
+		if(Input::has('org_id'))
+		{
+			$org_id 							= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 							= Session::get('user.organisation');
+		}
+
+		if(Input::has('person_id'))
+		{
+			$person_id 							= Input::get('person_id');
+		}
+		else
+		{
+			App::abort(404);
+		}
+
+		if(!in_array($org_id, Config::get('user.orgids')))
+		{
+			App::abort(404);
+		}
+
 		if(Input::has('start'))
 		{
 			$start 								= Input::get('start');
@@ -159,30 +367,32 @@ class ScheduleController extends BaseController
 			{
 				if($period->format('Y-m-d') == date('Y-m-d', strtotime($sh['on'])))
 				{
-					$schedule[$k]['id']			= $k;
-					$schedule[$k]['title'] 		= $sh['name'];
-					$schedule[$k]['start']		= $sh['on'].'T'.$sh['start'];
-					$schedule[$k]['end']		= $sh['on'].'T'.$sh['end'];
-					$schedule[$k]['status']		= $sh['status'];
-					$schedule[$k]['del_action']	= route('hr.person.schedules.delete', ['id' => $sh['id'], 'org_id' => $org_id, 'person_id' => $person_id]);
+					$schedule[$k]['id']				= $k;
+					$schedule[$k]['title'] 			= $sh['name'];
+					$schedule[$k]['start']			= $sh['on'].'T'.$sh['start'];
+					$schedule[$k]['end']			= $sh['on'].'T'.$sh['end'];
+					$schedule[$k]['status']			= $sh['status'];
+					$schedule[$k]['data_target']	= '#modal_schedule';
+					$schedule[$k]['ed_action']		= route('hr.person.schedules.store', ['id' => $sh['id'], 'org_id' => $org_id, 'person_id' => $person_id]);
+					$schedule[$k]['del_action']		= route('hr.person.schedules.delete', ['id' => $sh['id'], 'org_id' => $org_id, 'person_id' => $person_id]);
 
 					switch (strtolower($sh['status'])) 
 					{
 						case 'presence_indoor':
-							$schedule[$k]['backgroundColor']= '#dff0d8';
-							$schedule[$k]['color']			= '#3c763d';
+							$schedule[$k]['backgroundColor']= '#6D7DDA';
+							$schedule[$k]['color']			= '#6D7DDA';
 							break;
 						case 'presence_outdoor':
 							$schedule[$k]['backgroundColor']= '#dgedf7';
 							$schedule[$k]['color']			= '#31708f';
 							break;
 						case 'absence_workleave':
-							$schedule[$k]['backgroundColor']= '#f2dede';
-							$schedule[$k]['color']			= '#ag4442';
+							$schedule[$k]['backgroundColor']= '#EDA7A7';
+							$schedule[$k]['color']			= '#EDA7A7';
 						break;
 						case 'absence_not_workleave':
-							$schedule[$k]['backgroundColor']= '#fef8e3';
-							$schedule[$k]['color']			= '#8abd3b';
+							$schedule[$k]['backgroundColor']= '#9E998A';
+							$schedule[$k]['color']			= '#9E998A';
 							break;
 						default:
 							$schedule[$k]['backgroundColor']= '#fef8e3';
@@ -201,32 +411,32 @@ class ScheduleController extends BaseController
 				{
 					if($period->format('Y-m-d') == date('Y-m-d', strtotime($sh['on'])) && !in_array($period->format('Y-m-d'), $date))
 					{
-						$schedule[$k]['id']			= $k;
-						$schedule[$k]['title'] 		= $sh['name'];
-						$schedule[$k]['start']		= $sh['on'].'T'.$sh['start'];
-						$schedule[$k]['end']		= $sh['on'].'T'.$sh['end'];
-						$schedule[$k]['status']		= $sh['status'];
-
+						$schedule[$k]['id']				= $k;
+						$schedule[$k]['title'] 			= $sh['name'];
+						$schedule[$k]['start']			= $sh['on'].'T'.$sh['start'];
+						$schedule[$k]['end']			= $sh['on'].'T'.$sh['end'];
+						$schedule[$k]['status']			= $sh['status'];
+										
 						switch (strtolower($sh['status'])) 
 						{
 							case 'presence_indoor':
-								$schedule[$k]['backgroundColor']= '#dff0d8';
-								$schedule[$k]['color']			= '#3c763d';
-								break;
-							case 'presence_outdoor':
-								$schedule[$k]['backgroundColor']= '#dgedf7';
+								$schedule[$k]['backgroundColor']= '#31708f';
 								$schedule[$k]['color']			= '#31708f';
 								break;
-							case 'absence_workleave':
-								$schedule[$k]['backgroundColor']= '#f2dede';
+							case 'presence_outdoor':
+								$schedule[$k]['backgroundColor']= '#ag4442';
 								$schedule[$k]['color']			= '#ag4442';
+								break;
+							case 'absence_workleave':
+								$schedule[$k]['backgroundColor']= '#23AB2F';
+								$schedule[$k]['color']			= '#23AB2F';
 							break;
 							case 'absence_not_workleave':
-								$schedule[$k]['backgroundColor']= '#fef8e3';
-								$schedule[$k]['color']			= '#8abd3b';
+								$schedule[$k]['backgroundColor']= '#3C763D';
+								$schedule[$k]['color']			= '#3C763D';
 								break;
 							default:
-								$schedule[$k]['backgroundColor']= '#fef8e3';
+								$schedule[$k]['backgroundColor']= '#8abd3b';
 								$schedule[$k]['color']			= '#8abd3b';
 								break;
 						}
@@ -242,11 +452,11 @@ class ScheduleController extends BaseController
 					{
 						$schedule[$k]['id']				= $k;
 						$schedule[$k]['title'] 			= 'Masuk Kerja';
-						$schedule[$k]['start']			= $period->format('Y-m-d').'T'.$calendar['start'];
-						$schedule[$k]['end']			= $period->format('Y-m-d').'T'.$calendar['end'];
+						$schedule[$k]['start']			= $period->format('Y-m-d').'T'.$sh['start'];
+						$schedule[$k]['end']			= $period->format('Y-m-d').'T'.$sh['end'];
 						$schedule[$k]['status']			= 'presence_indoor';
-						$schedule[$k]['backgroundColor']= '#dff0d8';
-						$schedule[$k]['color']			= '#3c763d';
+						$schedule[$k]['backgroundColor']= '#31708F';
+						$schedule[$k]['color']			= '#31708F';
 
 						$date[]							= $period->format('Y-m-d');
 						$k++;
@@ -258,8 +468,8 @@ class ScheduleController extends BaseController
 						$schedule[$k]['start']			= $period->format('Y-m-d').'T'.'00:00:00';
 						$schedule[$k]['end']			= $period->format('Y-m-d').'T'.'00:00:00';
 						$schedule[$k]['status']			= 'absence_not_workleave';
-						$schedule[$k]['backgroundColor']= '#fef8e3';
-						$schedule[$k]['color']			= '#8abd3b';
+						$schedule[$k]['backgroundColor']= '#D78409';
+						$schedule[$k]['color']			= '#D78409';
 
 						$date[]							= $period->format('Y-m-d');
 						$k++;
@@ -308,166 +518,6 @@ class ScheduleController extends BaseController
 			$schedule[$k]['mode']			= 'log';				
 			$k++;
 		}
-		return Response::json($schedule);		
-	}
-	
-	public function create($id = null)
-	{
-		if(Input::has('org_id'))
-		{
-			$org_id 							= Input::get('org_id');
-		}
-		else
-		{
-			$org_id 							= Session::get('user.organisation');
-		}
-
-		if(Input::has('person_id'))
-		{
-			$person_id 							= Input::get('person_id');
-		}
-		else
-		{
-			App::abort(404);
-		}
-
-		if(!in_array($org_id, Config::get('user.orgids')))
-		{
-			App::abort(404);
-		}
-
-		$search['id'] 							= $person_id;
-		$search['organisationid'] 				= $org_id;
-		$search['withattributes'] 				= ['organisation'];
-		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
-		$contents 								= json_decode($results);
-
-		if(!$contents->meta->success)
-		{
-			App::abort(404);
-		}
-
-		$calendar 								= json_decode(json_encode($contents->data), true);
-		$data 									= $calendar['organisation'];
-
-		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.person.schedule.create', compact('id', 'data', 'calendar'));
-
-		return $this->layout;
-	}
-	
-	public function store($id = null)
-	{
-		if(Input::has('id'))
-		{
-			$id 								= Input::get('id');
-		}
-
-		if(Input::has('org_id'))
-		{
-			$org_id 							= Input::get('org_id');
-		}
-		else
-		{
-			$org_id 							= Session::get('user.organisation');
-		}
-
-		if(Input::has('person_id'))
-		{
-			$person_id 							= Input::get('person_id');
-		}
-		else
-		{
-			App::abort(404);
-		}
-
-		$search['id'] 							= $person_id;
-		$search['organisationid'] 				= $org_id;
-		$search['withattributes'] 				= ['organisation'];
-		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
-		$contents 								= json_decode($results);
-
-		if(!$contents->meta->success)
-		{
-			App::abort(404);
-		}
-
-		$attributes 							= Input::only('name', 'status', 'on', 'start', 'end');
-		$attributes['on'] 						= date('Y-m-d', strtotime($attributes['on']));
-
-		$errors 								= new MessageBag();
-
-		DB::beginTransaction();
-
-		$content 								= $this->dispatch(new Saving(new Schedule, $attributes, $id, new Person, $person_id));
-		$is_success 							= json_decode($content);
-		
-		if(!$is_success->meta->success)
-		{
-			$errors->add('Person', $is_success->meta->errors);
-		}
-
-		if(!$errors->count())
-		{
-			DB::commit();
-			return Redirect::route('hr.calendars.show', [$person_id, 'org_id' => $org_id])->with('alert_success', 'Jadwal kalender "' . $contents->data->name. '" sudah disimpan');
-		}
-
-		DB::rollback();
-		return Redirect::back()->withErrors($errors)->withInput();
-	}
-
-	public function show($id)
-	{
-		// ---------------------- LOAD DATA ----------------------
-		if(Input::has('org_id'))
-		{
-			$org_id 					= Input::get('org_id');
-		}
-		else
-		{
-			$org_id 					= Session::get('user.organisation');
-		}
-
-		if(Input::has('branch_id'))
-		{
-			$branch_id 					= Input::get('branch_id');
-		}
-		else
-		{
-			App::abort(404);
-		}
-
-		// if(!in_array($org_id, Session::get('user.orgids')))
-		// {
-		// App::abort(404);
-		// }
-		
-		$search 						= ['id' => $id, 'branchid' => $branch_id, 'organisationid' => $org_id, 'withattributes' => ['branch', 'branch.organisation']];
-		$results 						= $this->dispatch(new Getting(new Chart, $search, [] , 1, 1));
-		$contents 						= json_decode($results);
-		
-		if(!$contents->meta->success)
-		{
-			App::abort(404);
-		}
-
-		$chart 							= json_decode(json_encode($contents->data), true);
-		$branch 						= $chart['branch'];
-		$data 							= $chart['branch']['organisation'];
-
-		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 			= view('pages.chart.show');
-		$this->layout->pages->data 		= $data;
-		$this->layout->pages->branch 	= $branch;
-		$this->layout->pages->chart 	= $chart;
-		return $this->layout;
-	}
-
-	public function edit($id)
-	{
-		return $this->create($id);
+		return Response::json($schedule);
 	}
 }
