@@ -72,8 +72,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// PERSON
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.person.table', 'widgets.person.form'], 	'App\Http\ViewComposers\PersonComposer');
-
+		View::composer(['widgets.person.table', 'widgets.person.form', 'widgets.person.select'], 	'App\Http\ViewComposers\PersonComposer');
 
 		// -----------------------------------------------------------------------------
 		// CONTACT
@@ -124,6 +123,11 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// PERSON DOCUMENT
 		// -----------------------------------------------------------------------------
 		View::composer(['widgets.person.document.table'], 	'App\Http\ViewComposers\PersonDocumentComposer');
+
+		// -----------------------------------------------------------------------------
+		// RELATIVE
+		// -----------------------------------------------------------------------------
+		View::composer(['widgets.person.relative.table', 'widgets.person.relative.form', 'widgets.person.relative.employee.form'], 	'App\Http\ViewComposers\RelativeComposer');
 
 		// -----------------------------------------------------------------------------
 		// TEMPLATE

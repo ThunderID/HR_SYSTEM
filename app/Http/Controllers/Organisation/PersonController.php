@@ -95,7 +95,6 @@ class PersonController extends BaseController
 			$id 								= Input::get('id');
 		}
 
-
 		$attributes 							= Input::only('uniqid','name', 'prefix_title', 'suffix_title', 'gender', 'date_of_birth', 'place_of_birth');
 		$attributes['date_of_birth'] 			= date('Y-m-d', strtotime($attributes['date_of_birth']));
 

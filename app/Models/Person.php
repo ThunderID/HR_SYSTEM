@@ -103,6 +103,7 @@ class Person extends BaseModel {
 
 	public $searchable 				= 	[
 											'id' 							=> 'ID', 
+											'notid' 						=> 'NotID', 
 											'organisationid' 				=> 'OrganisationID', 
 											
 											'fullname' 						=> 'FullName', 
@@ -148,6 +149,7 @@ class Person extends BaseModel {
 	public $searchableScope 		= 	[
 
 											'id' 							=> 'Could be array or integer', 
+											'notid' 						=> 'Must be integer', 
 											'organisationid' 				=> 'Could be array or integer', 
 											
 											'fullname' 						=> 'Must be string', 
@@ -306,7 +308,12 @@ class Person extends BaseModel {
 		}
 		return $query->where('persons.id', $variable);
 	}
-	
+
+	public function scopeNotID($query, $variable)
+	{
+		return $query->where('id', '<>',$variable);
+	}
+
 	public function scopeFullName($query, $variable)
 	{
 		return $query->where('name', 'like' ,'%'.$variable.'%');

@@ -24,15 +24,30 @@ use Str, Validator, DateTime, Exception;
 
 class Relative extends BaseModel {
 	use \App\Models\Traits\BelongsTo\HasPersonTrait;
+	use \App\Models\Traits\BelongsTo\HasRelativeTrait;
 	
 	public 		$timestamps 		= true;
 
 	protected 	$table 				= 	'relatives';
+
+	protected 	$fillable			= 	[
+											'relative_id' 				,
+											'relationship' 				,
+										];
+
+	protected 	$rules				= 	[
+											'relative_id' 				=> 'required|exists:persons,id',
+											'relationship' 				=> 'required|in:spouse,parent,child,partner',
+										];
 	
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'relativeid' 				=> 'RelativeID', 
 											'personid' 					=> 'PersonID', 
+
+											'relativeorganisationid' 	=> 'RelativeOrganisationID',
+											'defaultcontact' 			=> 'DefaultContact',
+
 											'withattributes' 			=> 'WithAttributes'
 										];
 
@@ -40,6 +55,9 @@ class Relative extends BaseModel {
 											'id' 						=> 'Could be array or integer', 
 											'personid' 					=> 'Could be array or integer', 
 											'relativeid' 				=> 'Could be array or integer', 
+
+											'relativeorganisationid' 	=> 'Could be array or integer',
+											'defaultcontact' 			=> 'Must be true or false',
 											'withattributes' 			=> 'Must be array of relationship',
 										];
 

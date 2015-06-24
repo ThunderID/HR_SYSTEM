@@ -239,15 +239,15 @@ class ProcessingLogObserver
 					$new_idle 		= $hours*3600+$minutes*60+$seconds;
 
 					$total_idle		= $total_idle + $new_idle - $start_idle;
-					if($new_idle - $start_idle <= $idle_rule->idle_1)
+					if($new_idle - $start_idle <= (int)$idle_rule->idle_1)
 					{
 						$total_idle_1 	= $total_idle_1 + $new_idle - $start_idle;
 					}
-					elseif($new_idle - $start_idle > $idle_rule->idle_1 && $new_idle - $start_idle < $idle_rule->idle_2)
+					elseif($new_idle - $start_idle > (int)$idle_rule->idle_1 && $new_idle - $start_idle < (int)$idle_rule->idle_2)
 					{
 						$total_idle_2 	= $total_idle_2 + $new_idle - $start_idle;
 					}
-					elseif($new_idle - $start_idle >= $idle_rule->idle_2)
+					elseif($new_idle - $start_idle >= (int)$idle_rule->idle_2)
 					{
 						$total_idle_3 	= $total_idle_3 + $new_idle - $start_idle;
 					}

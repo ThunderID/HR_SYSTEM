@@ -2,7 +2,7 @@
 	@include('widgets.common.nav_topbar', 
 		['breadcrumb' 			=> 	[
 										['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
-										['name' => 'Idle', 'route' => route('hr.idles.index', ['org_id' => $data['id']]) ],
+										['name' => 'Pengaturan Idle', 'route' => route('hr.idles.index', ['org_id' => $data['id']]) ],
 										['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.idles.create', ['org_id' => $data['id']]) : route('hr.idles.edit', ['org_id' => $data['id'], 'id' => $id]) )]
 									]
 		])
