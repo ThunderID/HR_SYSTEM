@@ -41,7 +41,7 @@
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 1,
-										'route_back'	 	=> route('hr.workleave.charts.index', [$workleave['id'], 'org_id' => $data['id'], 'cal_id' => $workleave['id']])
+										'route_back'	 	=> route('hr.workleaves.index', ['org_id' => $data['id']])
 									]
 								]
 	])
