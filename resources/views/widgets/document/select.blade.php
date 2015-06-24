@@ -13,7 +13,7 @@
 					<label class="control-label">Jenis Dokumen</label>
 				</div>	
 				<div class="col-md-10">
-					<select name="doc_id" id="doc" class="form-control">
+					<select name="doc_id" id="doc" class="form-control select2">
 						@if(isset($DocumentComposer['widget_data']['documentlist']['document']))
 							@foreach($DocumentComposer['widget_data']['documentlist']['document'] as $key => $value)
 								<option value="{{ $value['id'] }}">{{ $value['name'] }}</option>

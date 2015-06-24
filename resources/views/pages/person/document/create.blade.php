@@ -44,7 +44,7 @@
 											'sort'				=> [],
 											'page'				=> 1,
 											'per_page'			=> 1,
-											'route_back'	 	=> route('hr.persons.show', [$person['id'], 'org_id' => $data['id']])
+											'route_back'	 	=> route('hr.person.documents.index', ['org_id' => $data['id'], 'person_id' => $person['id']])
 										]
 									]
 		])
