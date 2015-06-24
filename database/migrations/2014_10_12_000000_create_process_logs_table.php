@@ -35,10 +35,10 @@ class CreateProcessLogsTable extends Migration {
 			$table->double('total_idle_3');
 			$table->double('total_sleep');
 			$table->double('total_active');
-			$table->string('actual_status_start', 255);
-			$table->string('actual_status_end', 255);
-			$table->string('modified_status_start', 255);
-			$table->string('modified_status_end', 255);
+			$table->string('actual_start_status', 255);
+			$table->string('actual_end_status', 255);
+			$table->string('modified_start_status', 255);
+			$table->string('modified_end_status', 255);
 			$table->double('tolerance_start_time');
 			$table->double('tolerance_end_time');
 			$table->text('tooltip');
