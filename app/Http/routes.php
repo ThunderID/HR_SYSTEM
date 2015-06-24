@@ -182,6 +182,12 @@ Route::group(['prefix' => ''], function()
 		Route::resource('schedules',		'ScheduleController',								['names' => ['index' => 'hr.person.schedules.index', 'create' => 'hr.person.schedules.create', 'store' => 'hr.person.schedules.store', 'show' => 'hr.person.schedules.show', 'edit' => 'hr.person.schedules.edit', 'update' => 'hr.person.schedules.update', 'destroy' => 'hr.person.schedules.delete']]);
 
 		// ------------------------------------------------------------------------------------
+		// AJAX SCHEDULES FOR PERSON
+		// ------------------------------------------------------------------------------------
+
+		Route::any('schedules-list',		['uses' => 'ScheduleController@ajax',				'as' => 'hr.person.schedule.ajax']);
+
+		// ------------------------------------------------------------------------------------
 		// WORKLEAVES FOR PERSON RESOURCE
 		// ------------------------------------------------------------------------------------
 

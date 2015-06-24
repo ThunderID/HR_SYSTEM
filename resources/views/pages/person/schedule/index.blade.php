@@ -30,22 +30,38 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.work.table', [
+	@include('widgets.schedule.calendar', [
 		'widget_template'		=> 'panel',
 		'widget_title'			=> 'Jadwal',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'worklist'			=>
+										'schedulelist'			=>
 										[
 											'organisation_id'	=> $data['id'],
-											'search'			=> ['personid' => $person['id'], 'withattributes' => ['chart', 'chart.branch', 'chart.branch.organisation']],
+											'search'			=> [],
 											'sort'				=> ['end' => 'asc'],
 											'page'				=> 1,
 											'per_page'			=> 12,
 										]
 									]
 	])
+
+	{!! Form::open(array('route' => array('hr.calendar.schedules.delete', 0),'method' => 'POST', 'class' => 'no_enter')) !!}
+		@include('widgets.modal.modal_create_schedule', [
+			'widget_template'		=> 'plain_no_title'
+		])
+	{!! Form::close() !!}
+
+	{!! Form::open(array('route' => array('hr.calendar.schedules.delete', 0),'method' => 'DELETE')) !!}
+		@include('widgets.modal.delete', [
+			'widget_template'		=> 'plain_no_title'
+		])
+	{!! Form::close() !!}
+	
+	<script type="text/javascript">
+		var cal_link = "{!! route('hr.person.schedule.ajax',['org_id' => $data['id'],'person_id' => $person['id']]) !!}";
+	</script>
 
 @overwrite
 
