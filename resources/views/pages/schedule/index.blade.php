@@ -17,11 +17,10 @@
 		'widget_options'		=> 	[
 										'sidebar'				=>
 										[
-											'identifier'		=> 1,
 											'search'			=> [],
 											'sort'				=> [],
 											'page'				=> 1,
-											'per_page'			=> 12,
+											'per_page'			=> 100,
 										]
 									]
 	])
@@ -33,7 +32,6 @@
 		'widget_options'		=> 	[
 										'schedulelist'			=>
 										[
-											'identifier'		=> 1,											
 											'calendar_id'		=> $calendar['id'],
 											'search'			=> ['calendarid' => $calendar['id']],
 											'sort'				=> ['on' => 'desc'],

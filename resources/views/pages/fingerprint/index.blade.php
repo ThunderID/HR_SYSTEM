@@ -17,11 +17,10 @@
 		'widget_options'		=> 	[
 										'sidebar'				=> 
 										[
-											'identifier'		=> 1,
 											'search'			=> ['withattributes' => 'branches'],
 											'sort'				=> [],
 											'page'				=> 1,
-											'per_page'			=> 12,
+											'per_page'			=> 100,
 										]
 									]
 	])
@@ -32,9 +31,8 @@
 		'widget_template'		=> 'panel',
 		'widget_title'			=> 'Absen Sidik Jari Cabang '.$branch['name'],
 		'widget_options'		=> 	[
-										'fingerprintlist'				=>
+										'fingerprintlist'		=>
 										[
-											'identifier'		=> 1,
 											'organisation_id'	=> $data['id'],
 											'search'			=> ['branchid' => $branch['id']],
 											'sort'				=> ['branch_id' => 'asc'],

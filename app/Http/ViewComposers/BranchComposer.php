@@ -10,12 +10,12 @@ class BranchComposer extends WidgetComposer
 {
 	protected function setRules($options)
 	{
-		$widget_rules['form_url'] 			= ['requiredWithout', 'url'];				// url for form submit
-		$widget_rules['organisation_id'] 	= ['required', 'alpha_dash'];				// organisation_id: filter organisation
-		$widget_rules['search'] 			= ['array'];								// search: label for search
-		$widget_rules['sort'] 				= ['array'];								// sort: label for sort
-		$widget_rules['page'] 				= ['required', 'numeric'];					// page: label for page
-		$widget_rules['per_page'] 			= ['required', 'numeric', 'max:100'];		// per page: label for per page
+		$widget_rules['form_url'] 				= ['requiredWithout', 'url'];				// url for form submit
+		$widget_rules['organisation_id'] 		= ['required', 'alpha_dash'];				// organisation_id: filter organisation
+		$widget_rules['search'] 				= ['array'];								// search: label for search
+		$widget_rules['sort'] 					= ['array'];								// sort: label for sort
+		$widget_rules['page'] 					= ['required', 'numeric'];					// page: label for page
+		$widget_rules['per_page'] 				= ['required', 'numeric', 'max:100'];		// per page: label for per page
 
 		return $widget_rules;
 	}
