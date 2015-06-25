@@ -7,42 +7,32 @@
 
 	@section('widget_body')
 		<div class="clearfix">&nbsp;</div>
-		{!! Form::open(['url' => $CalendarComposer['widget_data']['calendarlist']['form_url'], 'class' => 'form-horizontal no_enter']) !!}	
-			<div class="form-group">
-				<div class="col-md-2">
-					<label class="control-label">Nama</label>
-				</div>	
-				<div class="col-md-10">
-					{!!Form::input('text', 'name', $CalendarComposer['widget_data']['calendarlist']['calendar']['name'], ['class' => 'form-control'])!!}
-				</div>
+		{!! Form::open(['url' => $CalendarComposer['widget_data']['calendarlist']['form_url'], 'class' => 'form no_enter']) !!}	
+			<div class="form-group">				
+				<label class="control-label">Nama</label>				
+				{!!Form::input('text', 'name', $CalendarComposer['widget_data']['calendarlist']['calendar']['name'], ['class' => 'form-control', 'tabindex' => '1'])!!}				
 			</div>
-			<div class="form-group">
-				<div class="col-md-2">
-					<label class="control-label">Workdays</label>
-				</div>	
-				<div class="col-md-10">
-					{!!Form::input('text', 'workdays', $CalendarComposer['widget_data']['calendarlist']['calendar']['workdays'], ['class' => 'form-control select2-tag-days'])!!}
-				</div>
+			<div class="form-group">				
+				<label class="control-label">Workdays</label>				
+				{!!Form::input('text', 'workdays', $CalendarComposer['widget_data']['calendarlist']['calendar']['workdays'], ['class' => 'form-control select2-tag-days', 'tabindex' => '2'])!!}				
 			</div>
-			<div class="form-group">
-				<div class="col-md-2">
-					<label class="control-label">Start</label>
-				</div>	
-				<div class="col-md-4">
-					{!!Form::input('text', 'start', $CalendarComposer['widget_data']['calendarlist']['calendar']['start'], ['class' => 'form-control time-mask'])!!}
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="control-label">Start</label>
+						{!!Form::input('text', 'start', $CalendarComposer['widget_data']['calendarlist']['calendar']['start'], ['class' => 'form-control time-mask', 'tabindex' => '3'])!!}
+					</div>
 				</div>
-				<div class="col-md-1 col-md-offset-1">
-					<label class="control-label">End</label>
-				</div>	
-				<div class="col-md-4">
-					{!!Form::input('text', 'end', $CalendarComposer['widget_data']['calendarlist']['calendar']['end'], ['class' => 'form-control time-mask'])!!}
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="control-label">End</label>
+						{!!Form::input('text', 'end', $CalendarComposer['widget_data']['calendarlist']['calendar']['end'], ['class' => 'form-control time-mask', 'tabindex' => '4'])!!}
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-md-12 text-right">
-					<a href="{{ $CalendarComposer['widget_data']['calendarlist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
-					<input type="submit" class="btn btn-primary" value="Simpan">
-				</div>
+			</div>				
+			<div class="form-group text-right">				
+				<a href="{{ $CalendarComposer['widget_data']['calendarlist']['route_back'] }}" class="btn btn-default mr-5" tabindex="6">Batal</a>
+				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="5">				
 			</div>
 		{!! Form::close() !!}
 	@overwrite	

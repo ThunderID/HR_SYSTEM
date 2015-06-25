@@ -6,27 +6,18 @@
 
 @section('widget_body')
 	<br/>
-	{!! Form::open(['url' => $LoginFormComposer['widget_data']['login']['form_url'], 'method' => 'post', 'class' => 'form-horizontal']) !!}	
+	{!! Form::open(['url' => $LoginFormComposer['widget_data']['login']['form_url'], 'method' => 'post', 'class' => 'form']) !!}	
 		<div class="form-group">
-			<div class="col-md-2">
-				<label class="control-label">{{ $LoginFormComposer['widget_data']['login']['user_id_label'] }}</label>
-			</div>					
-			<div class="col-md-10">
-				<input name="{{ $LoginFormComposer['widget_data']['login']['user_id'] }}" type="text" class="form-control" placeholder={{ $LoginFormComposer['widget_data']['login']['user_id_label'] }} autofocus autocomplete="off">
-			</div>	
+			<label class="control-label">{{ $LoginFormComposer['widget_data']['login']['user_id_label'] }}</label>
+			<input name="{{ $LoginFormComposer['widget_data']['login']['user_id'] }}" type="email" class="form-control" placeholder={{ $LoginFormComposer['widget_data']['login']['user_id_label'] }} autofocus autocomplete="off" autocapitalize="off" autocorrect="off">
 		</div>
 		<div class="form-group">
-			<div class="col-md-2">
-				<label class="control-label">Password</label>
-			</div>
-			<div class="col-md-10">
-				<input name="password" type="password" class="form-control" placeholder="Password">
-			</div>
+			<label class="control-label">Password</label>
+			<input name="password" type="password" class="form-control" placeholder="Password">			
 		</div>
-		<div class="col-md-12">
-			<div class="form-group text-right">
-				<input type="submit" class="btn btn-primary" value="Login">
-			</div>
+		<div class="form-group text-right">
+			<input type="submit" class="btn btn-primary" value="Login">
 		</div>
+		
 	{!! Form::close() !!}
 @overwrite	

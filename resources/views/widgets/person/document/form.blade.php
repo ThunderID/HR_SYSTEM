@@ -39,7 +39,7 @@
 								$form 		= '<textarea name="content[]" value="" class="form-control">'.$content.'</textarea>';
 								break;
 							case 'date':
-								$form 		= '<input type="date" class="form-control" id="text" name="content[]" value="'.$content.'">';
+								$form 		= '<input type="date" class="form-control date-mask" id="text" name="content[]" value="'.$content.'">';
 								break;
 							case 'numeric':
 								$form 		= '<input type="numeric" class="form-control" id="text" name="content[]" value="'.$content.'">';
