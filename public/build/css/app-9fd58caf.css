@@ -882,7 +882,7 @@ body {
   font-family: "Lato", sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
-  color: #333333;
+  color: #000;
   background-color: #ffffff;
 }
 input,
@@ -2333,7 +2333,7 @@ output {
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.42857143;
-  color: #555555;
+  color: #000;
   background-color: #ffffff;
   background-image: none;
   border: 1px solid #cccccc;
@@ -2422,7 +2422,7 @@ input[type="search"] {
 .radio-inline,
 .checkbox-inline {
   display: inline-block;
-  padding-left: 20px;
+  /*padding-left: 20px;*/
   margin-bottom: 0;
   vertical-align: middle;
   font-weight: normal;
@@ -5278,19 +5278,24 @@ button.close {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1040;
+  z-index: 1050;
   -webkit-overflow-scrolling: touch;
   outline: 0;
 }
 .modal.fade .modal-dialog {
+  -webkit-transition: -webkit-transform .3s ease-out;
+       -o-transition:      -o-transform .3s ease-out;
+          transition:         transform .3s ease-out;
   -webkit-transform: translate(0, -25%);
-  transform: translate(0, -25%);
-  transition: -webkit-transform 0.3s ease-out;
-  transition: transform 0.3s ease-out;
+      -ms-transform: translate(0, -25%);
+       -o-transform: translate(0, -25%);
+          transform: translate(0, -25%);
 }
 .modal.in .modal-dialog {
   -webkit-transform: translate(0, 0);
-  transform: translate(0, 0);
+      -ms-transform: translate(0, 0);
+       -o-transform: translate(0, 0);
+          transform: translate(0, 0);
 }
 .modal-open .modal {
   overflow-x: hidden;
@@ -5307,16 +5312,21 @@ button.close {
   border: 1px solid #999999;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 6px;
-  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-  background-clip: padding-box;
+  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+          box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+  -webkit-background-clip: padding-box;
+          background-clip: padding-box;
   outline: 0;
+
 }
 .modal-backdrop {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
+  bottom: 0;
   left: 0;
-  background-color: #000000;
+  z-index: 1040;
+  background-color: #000;
 }
 .modal-backdrop.fade {
   opacity: 0;
