@@ -14,26 +14,28 @@
 		<a href="{{route('hr.chart.calendars.create', ['chart_id' => $chart['id'], 'branch_id' => $branch['id'], 'org_id' => $data['id']])}}" class="btn btn-primary">Tambah</a>
 		@if(isset($FollowComposer['widget_data']['followlist']['follow']))
 			<div class="clearfix">&nbsp;</div>
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Kalender</th>
-						<th>&nbsp;</th>
-					</tr>
-				</thead>
-				@foreach($FollowComposer['widget_data']['followlist']['follow'] as $key => $value)
-					<tbody>
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
 						<tr>
-							<td>
-								{{$value['calendar']['name']}}
-							</td>
-							<td class="text-right">
-								<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.chart.calendars.delete', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id'], 'chart_id' => $chart['id']]) }}"><i class="fa fa-trash"></i></a>
-							</td>
+							<th>Kalender</th>
+							<th>&nbsp;</th>
 						</tr>
-					</tbody>
-				@endforeach
-			</table>
+					</thead>
+					@foreach($FollowComposer['widget_data']['followlist']['follow'] as $key => $value)
+						<tbody>
+							<tr>
+								<td>
+									{{$value['calendar']['name']}}
+								</td>
+								<td class="text-right">
+									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.chart.calendars.delete', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id'], 'chart_id' => $chart['id']]) }}"><i class="fa fa-trash"></i></a>
+								</td>
+							</tr>
+						</tbody>
+					@endforeach
+				</table>
+			</div>
 
 			<div class="row">
 				<div class="col-sm-12 text-center">

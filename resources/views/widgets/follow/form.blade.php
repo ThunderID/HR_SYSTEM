@@ -8,32 +8,27 @@
 
 	@section('widget_body')
 		<div class="clearfix">&nbsp;</div>
-		{!! Form::open(['url' => $FollowComposer['widget_data']['followlist']['form_url'], 'class' => 'form-horizontal no_enter']) !!}	
-			<div class="form-group">
-				<div class="col-md-2">
-					<label class="control-label">Kalender</label>
-				</div>	
-				<div class="col-md-10">
-					@include('widgets.calendar.select', [
-						'widget_options'		=> 	[
-														'calendarlist'			=>
-														[
-															'organisation_id'	=> $data['id'],
-															'search'			=> [],
-															'sort'				=> ['name' => 'asc'],
-															'page'				=> 1,
-															'per_page'			=> 100,
-															'calendar_id'		=> $FollowComposer['widget_data']['followlist']['follow']['calendar_id'],
-														]
+		{!! Form::open(['url' => $FollowComposer['widget_data']['followlist']['form_url'], 'class' => 'form no_enter']) !!}	
+			<div class="form-group">				
+				<label class="control-label">Kalender</label>
+				@include('widgets.calendar.select', [
+					'widget_options'		=> 	[
+													'calendarlist'			=>
+													[
+														'organisation_id'	=> $data['id'],
+														'search'			=> [],
+														'sort'				=> ['name' => 'asc'],
+														'page'				=> 1,
+														'per_page'			=> 100,
+														'calendar_id'		=> $FollowComposer['widget_data']['followlist']['follow']['calendar_id'],
+														'tabindex'			=> '1'
 													]
-					])
-				</div>
+												]
+				])				
 			</div>
-			<div class="form-group">
-				<div class="col-md-12 text-right">
-					<a href="{{ $FollowComposer['widget_data']['followlist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
-					<input type="submit" class="btn btn-primary" value="Simpan">
-				</div>
+			<div class="form-group text-right">				
+				<a href="{{ $FollowComposer['widget_data']['followlist']['route_back'] }}" class="btn btn-default mr-5" tabindex="3">Batal</a>
+				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="2">
 			</div>
 		{!! Form::close() !!}
 	@overwrite	

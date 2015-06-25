@@ -8,7 +8,7 @@
 @overwrite
 
 @section('widget_body')
-    <ul class="nav" id="side-menu">
+    <ul class="nav in" id="side-menu">
         <li>
             <a href="{{route('hr.organisations.create')}}"><i class="fa fa-plus-circle fa-fw"></i> Tambah Organisasi</a>
         </li>
@@ -19,10 +19,10 @@
                     <ul class="nav nav-second-level">
                         {{-- <li><a href="{{route('hr.organisations.show', $value['id'])}}"><i class="fa fa-eye fa-fw"></i> Show</a></li> --}}
                         <li><a href="{{route('hr.organisations.edit', $value['id'])}}"><i class="fa fa-pencil fa-fw"></i> Ubah</a></li>
-                        <li><a href="javascript:;" data-toggle="modal" data-target="#deleteorg" data-delete-action="{{ route('hr.organisations.delete', [$value['id'], 'org_id' => $value['id']]) }}"><i class="fa fa-trash"></i> Hapus</a>
+                        <li><a href="javascript:;" data-toggle="modal" data-target="#deleteorg" data-delete-action="{{ route('hr.organisations.delete', [$value['id'], 'org_id' => $value['id']]) }}"><i class="fa fa-trash fa-fw"></i> Hapus</a>
                         <li><a href="{{route('hr.organisations.show', [$value['id'], 'org_id' => $value['id']])}}"><i class="fa fa-tachometer fa-fw"></i> Dashboard</a></li>
                         <li>
-                            <a href="javascript"><i class="fa fa-cog"></i> Pengaturan <span class="fa arrow"></span></a>
+                            <a href="javascript"><i class="fa fa-cog fa-fw"></i> Pengaturan <span class="fa arrow"></span></a>
                             <ul class="nav nav-third-level">
                                 <li>
                                     @if ((!isset($value['branches']))|(!Input::get('branch_id')))
@@ -73,7 +73,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="javascript:;"><i class="fa fa-briefcase"></i> Data<span class="fa arrow"></span></a>
+                            <a href="javascript:;"><i class="fa fa-briefcase fa-fw"></i> Data<span class="fa arrow"></span></a>
                             <ul class="nav nav-third-level">
                                 <li>
                                     <a href="javascript:;"><i class="fa fa-users fa-fw"></i> Data Karyawan <span class="fa arrow"></span></a>
@@ -125,11 +125,4 @@
             @endforeach
         @endif
     </ul>
-
-    {!! Form::open(array('route' => array('hr.organisations.delete', 0),'method' => 'DELETE')) !!}
-        @include('widgets.modal.delete', [
-            'widget_template'       => 'plain_no_title',
-            'modal'                 => 'deleteorg'
-        ])
-    {!! Form::close() !!}
 @overwrite

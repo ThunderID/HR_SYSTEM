@@ -12,8 +12,9 @@
 	 		tokenSeparators: [",", " ", "_", "-"],
 			tags: ['alamat', 'bbm', 'email', 'line', 'phone', 'whatsapp'],			
 			maximumSelectionSize: 1,
-			selectOnBlur: true
-	 	});
+			selectOnBlur: true,
+			multiple: false
+	 	});	 	
 
 	 	$('.select2-tag-document').select2({
 	 		tokenSeparators: [",", " ", "_", "-"],

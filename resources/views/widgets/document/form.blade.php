@@ -7,34 +7,21 @@
 
 	@section('widget_body')	  
 		<div class="clearfix">&nbsp;</div>
-		{!! Form::open(['url' => $DocumentComposer['widget_data']['documentlist']['form_url'], 'class' => 'form-horizontal no_enter']) !!}	
-			<div class="form-group">
-				<div class="col-md-2">
-					<label class="control-label">Nama</label>
-				</div>	
-				<div class="col-md-10">
-					{!!Form::input('text', 'name', $DocumentComposer['widget_data']['documentlist']['document']['name'], ['class' => 'form-control'])!!}
-				</div>
+		{!! Form::open(['url' => $DocumentComposer['widget_data']['documentlist']['form_url'], 'class' => 'form no_enter']) !!}	
+			<div class="form-group">				
+				<label class="control-label">Nama</label>				
+				{!!Form::input('text', 'name', $DocumentComposer['widget_data']['documentlist']['document']['name'], ['class' => 'form-control', 'tabindex' => '1'])!!}				
 			</div>
-			<div class="form-group">
-				<div class="col-md-2">
-					<label class="control-label">Kategori</label>
-				</div>	
-				<div class="col-md-10">
-					{!!Form::input('text', 'tag', $DocumentComposer['widget_data']['documentlist']['document']['tag'], ['class' => 'form-control select2-tag-document'])!!}
-				</div>
+			<div class="form-group">				
+				<label class="control-label">Kategori</label>				
+				{!!Form::input('text', 'tag', $DocumentComposer['widget_data']['documentlist']['document']['tag'], ['class' => 'form-control select2-tag-document', 'tabindex' => '2'])!!}
 			</div>
-			<div class="form-group">
-				<div class="col-md-2">
-					<label class="control-label">Wajib</label>
-				</div>	
-				<div class="col-md-10">
-					<div class="checkbox">
-						<label for="">
-							{!!Form::checkbox('is_required', '1', $DocumentComposer['widget_data']['documentlist']['document']['is_required'], ['class' => ''])!!}
-						</label>	
-					</div>				
-				</div>
+			<div class="form-group">										
+				<div class="checkbox">
+					<label for="">
+						{!!Form::checkbox('is_required', '1', $DocumentComposer['widget_data']['documentlist']['document']['is_required'], ['class' => ''])!!} Wajib
+					</label>	
+				</div>								
 			</div>
 
 			@if ($DocumentComposer['widget_data']['documentlist']['document']['templates'])
