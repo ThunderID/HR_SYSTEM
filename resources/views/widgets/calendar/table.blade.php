@@ -10,37 +10,39 @@
 		<a href="{{ $CalendarComposer['widget_data']['calendarlist']['route_create'] }}" class="btn btn-primary">Tambah</a>
 		@if(isset($CalendarComposer['widget_data']['calendarlist']['calendar']))
 			<div class="clearfix">&nbsp;</div>
-			<table class="table">
-				<thead>
-					<tr class="row">
-						<th class="col-sm-3">Nama Kalender</th>
-						<th class="col-sm-4">Hari Kerja</th>
-						<th class="col-sm-2">Jam Kerja</th>
-						<th class="col-sm-3">&nbsp;</th>
-					</tr>
-				</thead>
-				@foreach($CalendarComposer['widget_data']['calendarlist']['calendar'] as $key => $value)
-					<tbody>
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
 						<tr class="row">
-							<td>
-								{{$value['name']}}
-							</td>
-							<td>
-								{{str_replace(',', ', ', $value['workdays'])}}
-							</td>
-							<td>
-								@time_indo($value['start']) - 
-								@time_indo($value['end'])
-							</td>
-							<td class="text-right">
-								<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.calendars.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash"></i></a>
-								<a href="{{route('hr.calendars.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-								<a href="{{route('hr.calendars.show', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
-							</td>
+							<th class="col-sm-3">Nama Kalender</th>
+							<th class="col-sm-4">Hari Kerja</th>
+							<th class="col-sm-2">Jam Kerja</th>
+							<th class="col-sm-3">&nbsp;</th>
 						</tr>
-					</tbody>
-				@endforeach
-			</table>
+					</thead>
+					@foreach($CalendarComposer['widget_data']['calendarlist']['calendar'] as $key => $value)
+						<tbody>
+							<tr class="row">
+								<td>
+									{{$value['name']}}
+								</td>
+								<td>
+									{{str_replace(',', ', ', $value['workdays'])}}
+								</td>
+								<td>
+									@time_indo($value['start']) - 
+									@time_indo($value['end'])
+								</td>
+								<td class="text-right">
+									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.calendars.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash"></i></a>
+									<a href="{{route('hr.calendars.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									<a href="{{route('hr.calendars.show', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
+								</td>
+							</tr>
+						</tbody>
+					@endforeach
+				</table>
+			</div>
 
 			<div class="row">
 				<div class="col-sm-12 text-center">

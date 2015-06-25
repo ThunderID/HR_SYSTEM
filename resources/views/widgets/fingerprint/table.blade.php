@@ -6,21 +6,22 @@
 	@overwrite
 
 	@section('widget_body')
-			<table class="table">
-				<thead>
-					<tr>
-						<th class="text-center">Jempol Kiri</th>
-						<th class="text-center">Telunjuk Kiri</th>
-						<th class="text-center">Tengah Kiri</th>
-						<th class="text-center">Manis Kiri</th>
-						<th class="text-center">Kelingking Kiri</th>
-						<th class="text-center">Jempol Kanan</th>
-						<th class="text-center">Telunjuk Kanan</th>
-						<th class="text-center">Tengah Kanan</th>
-						<th class="text-center">Manis Kanan</th>
-						<th class="text-center">Kelingking Kanan</th>
-					</tr>
-				</thead>
+			<div class="table-responsive">
+				<table class="table table-bordered text-center">
+					<thead>
+						<tr>
+							<th class="text-center">Jempol Kiri</th>
+							<th class="text-center">Telunjuk Kiri</th>
+							<th class="text-center">Tengah Kiri</th>
+							<th class="text-center">Manis Kiri</th>
+							<th class="text-center">Kelingking Kiri</th>
+							<th class="text-center">Jempol Kanan</th>
+							<th class="text-center">Telunjuk Kanan</th>
+							<th class="text-center">Tengah Kanan</th>
+							<th class="text-center">Manis Kanan</th>
+							<th class="text-center">Kelingking Kanan</th>
+						</tr>
+					</thead>
 					<tbody>
 						<tr>
 							<form action="" class="check" method="post">
@@ -98,7 +99,8 @@
 						</form> 
 						</tr>
 					</tbody>
-			</table>
+				</table>
+			</div>
 		<div class="clearfix">&nbsp;</div>
 	@overwrite	
 @else
