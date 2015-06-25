@@ -45,7 +45,7 @@ class AttendanceController extends BaseController
 		}
 		else
 		{
-			$end 									= date('Y-m-d', strtotime('first day of next month'));
+			$end 									= date('Y-m-d', strtotime('last day of next month'));
 		}
 
 		if(!in_array($org_id, Config::get('user.orgids')))

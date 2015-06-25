@@ -143,6 +143,7 @@ class Person extends BaseModel {
 											'displayupdatedfinger'			=> 'DisplayUpdatedFinger',
 
 											'globalattendance'	 			=> 'GlobalAttendance',
+											'globalwage'	 				=> 'GlobalWage',
 										];
 
 
@@ -159,6 +160,7 @@ class Person extends BaseModel {
 											'gender' 						=> 'Must be male or female', 
 											'checkcreate' 					=> 'Could be array or string (date)',
 											'globalattendance'	 			=> 'Must be array of string and or case and or sort',
+											'globalwage'	 				=> 'Must be array of string and or case and or sort',
 											'withattributes' 				=> 'Must be array of relationship',
 											
 											'contactid' 					=> 'ID of contact',
@@ -353,32 +355,13 @@ class Person extends BaseModel {
 	{
 		$query =  $query->selectraw('persons.*')
 					->currentwork($variable['organisationid'])
-					// ->globalattendancereport($variable);
 					->selectraw('charts.name as position')
 					->selectraw('charts.tag as department')
 					->selectraw('sum(TIME_TO_SEC(schedule_start) - TIME_TO_SEC(schedule_end)) as possible_total_effective')
 					->selectraw('sum(if(modified_status="HC" || modified_status="AS" || modified_status="UL" || modified_status="SS" || modified_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_start), 0), if(actual_status="HC" || actual_status="AS" || actual_status="UL" || actual_status="SS" || actual_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_start), 0), 0) )) as total_absence')
-					// ->selectraw('avg(margin_start) as margin_start')
-					// ->selectraw('avg(margin_end) as margin_end')
-					// ->selectraw('avg(TIME_TO_SEC(start)) as avg_start')
-					// ->selectraw('avg(TIME_TO_SEC(end)) as avg_end')
-					// ->selectraw('avg(TIME_TO_SEC(fp_start)) as avg_fp_start')
-					// ->selectraw('avg(TIME_TO_SEC(fp_end)) as avg_fp_end')
-					// ->selectraw('avg(total_idle) as avg_idle')
-					// ->selectraw('avg(total_idle_1) as avg_idle_1')
-					// ->selectraw('avg(total_idle_2) as avg_idle_2')
-					// ->selectraw('avg(total_idle_3) as avg_idle_3')
-					// ->selectraw('avg(total_sleep) as avg_sleep')
-					// ->selectraw('avg(total_active) as avg_active')
-					// ->selectraw('sum(TIME_TO_SEC(start)) as start')
-					// ->selectraw('sum(TIME_TO_SEC(end)) as end')
-					// ->selectraw('sum(TIME_TO_SEC(fp_start)) as fp_start')
-					// ->selectraw('sum(TIME_TO_SEC(fp_end)) as fp_end')
-					// ->selectraw('sum(total_idle) as total_idle')
 					->selectraw('sum(total_idle_1) as total_idle_1')
 					->selectraw('sum(total_idle_2) as total_idle_2')
 					->selectraw('sum(total_idle_3) as total_idle_3')
-					// ->selectraw('sum(total_sleep) as total_sleep')
 					->selectraw('sum(total_active) as total_active')
 					->leftjoin('process_logs', 'process_logs.person_id', '=', 'persons.id')
 					->leftjoin('works', 'process_logs.work_id', '=', 'works.id')
@@ -432,6 +415,78 @@ class Person extends BaseModel {
 					;
 	}
 
+	public function scopeGlobalWage($query, $variable)
+	{
+			// $query =  $query->selectraw('persons.*')
+			// 		->currentwork($variable['organisationid'])
+			// 		->selectraw('(SELECT sum(if(modified_status="SS" || modified_status="SL" || modified_status="CN" || modified_status="CB" || modified_status="CI" || modified_status="UL" || modified_status="AS", 1, if(actual_status="AS", 1, 0 ))) FROM process_logs WHERE process_logs.person_id = persons.id ) as minus_quotas')
+			// 		->selectraw('sum(if(persons_workleaves.is_default = true, quota, 0)) as quotas')
+			// 		->selectraw('sum(if(persons_workleaves.is_default = false, quota, 0)) as plus_quotas')
+			// 		->leftjoin('persons_workleaves', 'persons_workleaves.person_id', '=', 'persons.id')
+			// 		->leftjoin('tmp_workleaves', 'persons_workleaves.workleave_id', '=', 'tmp_workleaves.id')
+			// 		;
+		$query =  $query->selectraw('persons.*')
+					->currentwork($variable['organisationid'])
+					->selectraw('(SELECT sum(if(persons_workleaves.is_default=true, quota, 0)) FROM persons_workleaves join tmp_workleaves on tmp_workleaves.id = persons_workleaves.workleave_id WHERE persons_workleaves.person_id = persons.id and date_format(date(persons_workleaves.start),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).' and date_format(date(persons_workleaves.end),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][1])).') as quotas')
+					->selectraw('(SELECT sum(if(persons_workleaves.is_default=false, quota, 0)) FROM persons_workleaves join tmp_workleaves on tmp_workleaves.id = persons_workleaves.workleave_id WHERE persons_workleaves.person_id = persons.id and date_format(date(persons_workleaves.start),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).' and date_format(date(persons_workleaves.end),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).') as plus_quotas')
+					->selectraw('charts.name as position')
+					->selectraw('charts.tag as department')
+					->selectraw('sum(
+									if(modified_status="SS" || modified_status="SL" || modified_status="CN" || modified_status="CB" || modified_status="CI" || modified_status="UL" || modified_status="AS", 
+										1, if(actual_status="AS", 1, 0 ))) as minus_quotas')
+					->leftjoin('process_logs', 'process_logs.person_id', '=', 'persons.id')
+					->leftjoin('works', 'process_logs.work_id', '=', 'works.id')
+					->leftjoin('charts', 'works.chart_id', '=', 'charts.id')
+					;
+
+		if(is_array($variable['on']))
+		{
+			if(!is_null($variable['on'][1]))
+			{
+				$query =  $query->where('on', '<=', date('Y-m-d', strtotime($variable['on'][1])))
+							 ->where('on', '>=', date('Y-m-d', strtotime($variable['on'][0])));
+			}
+			elseif(!is_null($variable['on'][0]))
+			{
+				$query =  $query->where('on', '>=', date('Y-m-d', strtotime($variable['on'][0])));
+			}
+			else
+			{
+				$query =  $query->where('on', '>=', date('Y-m-d'));
+			}
+		}
+
+		if(isset($variable['case']))
+		{
+			switch ($variable['case']) 
+			{
+				case 'late':
+					$query = $query->where('margin_start', '<', 0);
+					break;
+				case 'ontime':
+					$query = $query->where('margin_start', '>=', 0);
+					break;
+				
+				case 'earlier':
+					$query = $query->where('margin_end', '<', 0);
+					break;
+				case 'overtime':
+					$query = $query->where('margin_start', '>', 0);
+					break;
+				default:
+					$query;
+					break;
+			}
+		}
+
+		if(isset($variable['sort']))
+		{
+			$query = $query->orderBy($variable['sort'][0], $variable['sort'][1]);
+		}
+
+		return $query->groupBy('persons.id')
+					;
+	}
 
 	public function scopeCheckCreate($query, $variable)
 	{
