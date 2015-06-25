@@ -24,7 +24,7 @@ class LogTableSeeder extends Seeder
 			{
 				$person 							= Person::find($index);
 				$rand 								= rand(0,2);
-				$begin 								= new DateTime( 'first day of january 2015' );
+				$begin 								= new DateTime( 'first day of june 2015' );
 				$ended 								= new DateTime( 'last day of june 2015'  );
 
 				$interval 							= DateInterval::createFromDateString('1 day');
@@ -32,7 +32,7 @@ class LogTableSeeder extends Seeder
 
 				foreach ( $periods as $period )
 				{
-					foreach(range(1, 8) as $index2)
+					foreach(range(8, 16) as $index2)
 					{
 						if($index2==1)
 						{
@@ -77,6 +77,8 @@ class LogTableSeeder extends Seeder
 		}
 		catch (Exception $e) 
 		{
+    		echo 'Caught exception: ',  $e->getLine(), "\n";
+    		echo 'Caught exception: ',  $e->getFile(), "\n";
     		echo 'Caught exception: ',  $e->getMessage(), "\n";
 		}	
 	}

@@ -95,7 +95,7 @@ class ScheduleObserver
 
 					if($model['attributes']['status']=='presence_outdoor')
 					{
-						$data->fill(['modified_start_at' => date('Y-m-d H:i:s', strtotime('now')), 'modified_end_at' => date('Y-m-d H:i:s', strtotime('now')), 'modified_start_by' => $model['attributes']['created_by'], 'modified_end_by' => $model['attributes']['created_by']]);
+						$data->fill(['modified_at' => date('Y-m-d H:i:s', strtotime('now')), 'modified_by' => $model['attributes']['created_by']]);
 					}
 
 					if(!$data->save())

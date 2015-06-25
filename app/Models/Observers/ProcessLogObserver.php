@@ -20,54 +20,40 @@ class ProcessLogObserver
 		if ($validator->passes())
 		{
 			//save actual status for both start and end
-			$actual_start_status 		= '';
-			$actual_end_status 			= '';
+			$actual_status 				= '';
 
 			if($model->margin_start==0 && $model->margin_end==0)
 			{
-				$actual_start_status 	= 'AS';
+				$actual_status 			= 'AS';
 			}
-			elseif($model->margin_start>=0)
+			elseif($model->margin_start>=0 && $model->margin_end>=0)
 			{
-				$actual_start_status 	= 'HB';
-			}
-			else
-			{
-				$actual_start_status 	= 'HC';
-			}
-			
-			if($model->margin_start==0 && $model->margin_end==0)
-			{
-				$actual_end_status 		= 'AS';
-			}
-			elseif($model->margin_end>=0)
-			{
-				$actual_end_status 		= 'HB';
+				$actual_status 			= 'HB';
 			}
 			else
 			{
-				$actual_end_status 		= 'HC';
+				$actual_status 			= 'HC';
 			}
 
-			$model->fill(['actual_end_status' => $actual_end_status, 'actual_start_status' => $actual_start_status]);
+			$model->fill(['actual_status' => $actual_status]);
 
 
 			//save modfied status
-			if(isset($model->getDirty()['modified_start_status']))
+			if(isset($model->getDirty()['modified_status']))
 			{
-				if(strtoupper($model->actual_start_status)=='HB')
+				if(strtoupper($model->actual_status)=='HB')
 				{
 					$errors->add('modified', 'Tidak dapat mengubah status HB kedatangan karyawan');
 					
 					return false;
 				}
-				elseif(strtoupper($model->actual_start_status)=='HC' && !in_array(strtoupper($model->modified_start_status), ['HT', 'HD', 'HC']))
+				elseif(strtoupper($model->actual_status)=='HC' && !in_array(strtoupper($model->modified_status), ['HT', 'HD', 'HC', 'HP']))
 				{
 					$errors->add('modified', 'Status untuk kedatangan cacat tidak valid.');
 					
 					return false;
 				}
-				elseif(strtoupper($model->actual_start_status)=='AS' && !in_array(strtoupper($model->modified_start_status), ['DN', 'SS', 'SL', 'CN', 'CB', 'CI', 'UL', 'AS']))
+				elseif(strtoupper($model->actual_status)=='AS' && !in_array(strtoupper($model->modified_status), ['DN', 'SS', 'SL', 'CN', 'CB', 'CI', 'UL', 'AS']))
 				{
 					$errors->add('modified', 'Status untuk absensi tidak valid.');
 					
@@ -75,30 +61,6 @@ class ProcessLogObserver
 				}
 			
 				$model->fill(['modified_start_at' => date('Y-m-d H:i:s', strtotime('now'))]);
-			}
-
-			if(isset($model->getDirty()['modified_end_status']))
-			{
-				if(strtoupper($model->actual_end_status)=='HB')
-				{
-					$errors->add('modified', 'Tidak dapat mengubah status HB kepulangan karyawan');
-
-					return false;
-				}
-				elseif(strtoupper($model->actual_end_status)=='HC' && !in_array(strtoupper($model->modified_end_status), ['HP', 'HD', 'HC']))
-				{
-					$errors->add('modified', 'Status untuk kepulangan cacat tidak valid.');
-					
-					return false;
-				}
-				elseif(strtoupper($model->actual_end_status)=='AS' && !in_array(strtoupper($model->modified_end_status), ['DN', 'SS', 'SL', 'CN', 'CB', 'CI', 'UL', 'AS']))
-				{
-					$errors->add('modified', 'Status untuk absensi tidak valid.');
-					
-					return false;
-				}
-			
-				$model->fill(['modified_end_at' => date('Y-m-d H:i:s', strtotime('now'))]);
 			}
 
 			return true;

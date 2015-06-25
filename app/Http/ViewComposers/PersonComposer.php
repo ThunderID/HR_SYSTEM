@@ -52,7 +52,7 @@ class PersonComposer extends WidgetComposer
 		{
 			$page 								= json_decode(json_encode($contents->pagination), true);
 			$widget_data['person'] 				= json_decode(json_encode($contents->data), true);
-			$widget_data['person-pagination'] 	= new Paginator($page['total_data'], $page['total_data'], $page['per_page'], $page['page']);
+			$widget_data['person-pagination'] 	= new Paginator(($page['total_data']), $page['total_data'], $page['per_page'], $page['page']);
 			$widget_data['person-pagination']->setPath(route('hr.persons.index'));
 			$widget_data['person-display'] 		= $page;
 		}

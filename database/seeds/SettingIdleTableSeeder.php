@@ -20,8 +20,7 @@ class SettingIdleTableSeeder extends Seeder
 				$data->fill([
 					'start'							=>date('Y-m-d', strtotime('now')),
 					'idle_1'						=> 900,
-					'idle_2'						=> 1800,
-					'idle_3'						=> 3600,
+					'idle_2'						=> 3600,
 				]);
 
 				$data->organisation()->associate(Organisation::find($index+1));

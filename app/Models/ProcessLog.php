@@ -8,8 +8,7 @@ use DB;
  * 	ID 								: Auto Increment, Integer, PK
  * 	person_id 						: Foreign Key From Person, Integer, Required
  * 	work_id 						: Foreign Key From Work, Integer, Required
- * 	modified_start_by 				: Foreign Key From Person, Integer, Required
- * 	modified_end_by 				: Foreign Key From Person, Integer, Required
+ * 	modified_by 					: Foreign Key From Person, Integer, Required
  * 	name 		 					: Required max 255
  * 	on 		 						: Required, Date
  * 	start 		 					: Required, Time
@@ -26,14 +25,10 @@ use DB;
  * 	total_idle_3 	 				: Double
  * 	total_sleep 					: Double
  * 	total_active 					: Double
- * 	actual_start_status 		 	: Required max 255
- * 	actual_end_status 		 		: Required max 255
- * 	modified_start_status 		 	: Required max 255
- * 	modified_end_status 		 	: Required max 255
- * 	tolerance_start_time 			: Double
- * 	tolerance_end_time 				: Double
- *	modified_start_at				: Timestamp
- *	modified_end_at					: Timestamp
+ * 	actual_status		 		 	: Required max 255
+ * 	modified_status		 		 	: Required max 255
+ * 	tolerance_time 					: Double
+ *	modified_at						: Timestamp
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -62,8 +57,7 @@ class ProcessLog extends BaseModel {
 	protected 	$table 				= 	'process_logs';
 	
 	protected 	$fillable			= 	[
-											'modified_start_by' 			,
-											'modified_end_by' 				,
+											'modified_by' 					,
 											'name' 							,
 											'on' 							,
 											'start' 						,
@@ -88,8 +82,7 @@ class ProcessLog extends BaseModel {
 										];
 
 	protected 	$rules				= 	[
-											'modified_start_by'			=> 'exists:persons,id|required_with:modified_start_status',
-											'modified_end_by'			=> 'exists:persons,id|required_with:modified_end_status',
+											'modified_by'				=> 'exists:persons,id|required_with:modified_status',
 											'name'						=> 'required|max:255',
 											'on'						=> 'required|date_format:"Y-m-d"',
 											'start'						=> 'date_format:"H:i:s"',
@@ -106,14 +99,10 @@ class ProcessLog extends BaseModel {
 											'total_idle_3'				=> 'numeric',
 											'total_sleep'				=> 'numeric',
 											'total_active'				=> 'numeric',
-											'actual_start_status'	 	=> 'required|max:255|in:HB,HC,AS',
-											'actual_end_status'	 		=> 'required|max:255|in:HB,HC,AS',
-											'modified_start_status'	 	=> 'max:255|in:HC,HT,HD,DN,SS,SL,CN,CB,CI,UL,AS',
-											'modified_end_status'	 	=> 'max:255|in:HC,HP,HD,DN,SS,SL,CN,CB,CI,UL,AS',
-											'modified_start_at'			=> 'date_format:"H:i:s"|required_with:modified_start_status',
-											'modified_end_at'			=> 'date_format:"H:i:s"|required_with:modified_end_status',
-											'tolerance_start_time'		=> 'numeric|required_with:modified_start_status',
-											'tolerance_end_time'		=> 'numeric|required_with:modified_end_status',
+											'actual_status'	 			=> 'required|max:255',
+											'modified_status'	 		=> 'max:255',
+											'modified_at'				=> 'date_format:"H:i:s"|required_with:modified_status',
+											'tolerance_time'			=> 'numeric|required_with:modified_status',
 										];
 
 	public $searchable 				= 	[
@@ -125,10 +114,6 @@ class ProcessLog extends BaseModel {
 											'charttag' 					=> 'ChartTag', 
 											
 											'ondate' 					=> 'OnDate', 
-											'late' 						=> 'Late', 
-											'ontime' 					=> 'OnTime', 
-											'earlier' 					=> 'Earlier', 
-											'overtime' 					=> 'Overtime', 
 											'global' 					=> 'Global', 
 											'local' 					=> 'Local', 
 											'orderworkhour' 			=> 'OrderWorkHour', 
@@ -143,10 +128,6 @@ class ProcessLog extends BaseModel {
 											'branchid' 					=> 'Could be array or integer', 
 											'charttag' 					=> 'Must be string', 
 											'ondate' 					=> 'Could be array or string (date)', 
-											'late' 						=> 'Null', 
-											'ontime' 					=> 'Null', 
-											'earlier' 					=> 'Null', 
-											'overtime' 					=> 'Null', 
 											'global' 					=> 'Null', 
 											'local' 					=> 'Null', 
 											'orderworkhour' 			=> 'Null', 

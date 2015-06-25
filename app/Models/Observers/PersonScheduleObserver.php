@@ -146,7 +146,7 @@ class PersonScheduleObserver
 
 					$margin_end				= $schedule_end - $end;
 
-					$data->fill(['modified_start_at' => date('Y-m-d H:i:s', strtotime('now')), 'modified_end_at' => date('Y-m-d H:i:s', strtotime('now')), 'modified_start_by' => $model['attributes']['created_by'], 'modified_end_by' => $model['attributes']['created_by'], 'modified_start_status' => 'DN', 'modified_end_status' => 'DN', 'schedule_start' => gmdate('H:i:s', $schedule_start), 'schedule_end' => gmdate('H:i:s', $schedule_end), 'margin_end' => $margin_end, 'margin_start' => $margin_start, 'tooltip' => json_encode($tooltip)]);
+					$data->fill(['modified_at' => date('Y-m-d H:i:s', strtotime('now')), 'modified_by' => $model['attributes']['created_by'], 'modified_status' => 'DN', 'schedule_start' => gmdate('H:i:s', $schedule_start), 'schedule_end' => gmdate('H:i:s', $schedule_end), 'margin_end' => $margin_end, 'margin_start' => $margin_start, 'tooltip' => json_encode($tooltip)]);
 					if(!$data->save())
 					{
 						$model['errors']	= $data->getError();

@@ -189,7 +189,7 @@ class Person extends BaseModel {
 											'displayupdatedfinger'			=> 'Must be string (datetime)',
 										];
 
-	public $sortable 				= 	['name', 'prefix_title', 'suffix_title', 'date_of_birth', 'created_at', 'persons.created_at', 'persons.id'];
+	public $sortable 				= 	['name', 'prefix_title', 'suffix_title', 'date_of_birth', 'created_at', 'persons.created_at', 'persons.id', 'persons.name'];
 	
 	protected $appends				= 	['has_relatives', 'has_works', 'has_contacts', 'log_notes'];
 
@@ -351,34 +351,39 @@ class Person extends BaseModel {
 
 	public function scopeGlobalAttendance($query, $variable)
 	{
-		$query =  $query->selectraw('hr_persons.*')
+		$query =  $query->selectraw('persons.*')
 					->currentwork($variable['organisationid'])
 					// ->globalattendancereport($variable);
-					->selectraw('count(person_id) as total_attendance')
-					->selectraw('avg(margin_start) as margin_start')
-					->selectraw('avg(margin_end) as margin_end')
-					->selectraw('avg(TIME_TO_SEC(start)) as avg_start')
-					->selectraw('avg(TIME_TO_SEC(end)) as avg_end')
-					->selectraw('avg(TIME_TO_SEC(fp_start)) as avg_fp_start')
-					->selectraw('avg(TIME_TO_SEC(fp_end)) as avg_fp_end')
-					->selectraw('avg(total_idle) as avg_idle')
-					->selectraw('avg(total_idle_1) as avg_idle_1')
-					->selectraw('avg(total_idle_2) as avg_idle_2')
-					->selectraw('avg(total_idle_3) as avg_idle_3')
-					->selectraw('avg(total_sleep) as avg_sleep')
-					->selectraw('avg(total_active) as avg_active')
-					->selectraw('sum(TIME_TO_SEC(start)) as start')
-					->selectraw('sum(TIME_TO_SEC(end)) as end')
-					->selectraw('sum(TIME_TO_SEC(fp_start)) as fp_start')
-					->selectraw('sum(TIME_TO_SEC(fp_end)) as fp_end')
-					->selectraw('sum(total_idle) as total_idle')
+					->selectraw('charts.name as position')
+					->selectraw('charts.tag as department')
+					->selectraw('sum(TIME_TO_SEC(schedule_start) - TIME_TO_SEC(schedule_end)) as possible_total_effective')
+					->selectraw('sum(if(modified_status="HC" || modified_status="AS" || modified_status="UL" || modified_status="SS" || modified_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_start), 0), if(actual_status="HC" || actual_status="AS" || actual_status="UL" || actual_status="SS" || actual_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_start), 0), 0) )) as total_absence')
+					// ->selectraw('avg(margin_start) as margin_start')
+					// ->selectraw('avg(margin_end) as margin_end')
+					// ->selectraw('avg(TIME_TO_SEC(start)) as avg_start')
+					// ->selectraw('avg(TIME_TO_SEC(end)) as avg_end')
+					// ->selectraw('avg(TIME_TO_SEC(fp_start)) as avg_fp_start')
+					// ->selectraw('avg(TIME_TO_SEC(fp_end)) as avg_fp_end')
+					// ->selectraw('avg(total_idle) as avg_idle')
+					// ->selectraw('avg(total_idle_1) as avg_idle_1')
+					// ->selectraw('avg(total_idle_2) as avg_idle_2')
+					// ->selectraw('avg(total_idle_3) as avg_idle_3')
+					// ->selectraw('avg(total_sleep) as avg_sleep')
+					// ->selectraw('avg(total_active) as avg_active')
+					// ->selectraw('sum(TIME_TO_SEC(start)) as start')
+					// ->selectraw('sum(TIME_TO_SEC(end)) as end')
+					// ->selectraw('sum(TIME_TO_SEC(fp_start)) as fp_start')
+					// ->selectraw('sum(TIME_TO_SEC(fp_end)) as fp_end')
+					// ->selectraw('sum(total_idle) as total_idle')
 					->selectraw('sum(total_idle_1) as total_idle_1')
 					->selectraw('sum(total_idle_2) as total_idle_2')
 					->selectraw('sum(total_idle_3) as total_idle_3')
-					->selectraw('sum(total_sleep) as total_sleep')
+					// ->selectraw('sum(total_sleep) as total_sleep')
 					->selectraw('sum(total_active) as total_active')
-					->leftjoin('process_logs', 'process_logs.person_id', '=', 'persons.id');
-		
+					->leftjoin('process_logs', 'process_logs.person_id', '=', 'persons.id')
+					->leftjoin('works', 'process_logs.work_id', '=', 'works.id')
+					->leftjoin('charts', 'works.chart_id', '=', 'charts.id');
+
 		if(is_array($variable['on']))
 		{
 			if(!is_null($variable['on'][1]))

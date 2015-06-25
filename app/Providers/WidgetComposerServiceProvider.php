@@ -72,7 +72,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// PERSON
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.person.table', 'widgets.person.form', 'widgets.person.select'], 	'App\Http\ViewComposers\PersonComposer');
+		View::composer(['widgets.person.table', 'widgets.person.form', 'widgets.person.select', 'widgets.report.attendance.table'], 	'App\Http\ViewComposers\PersonComposer');
 
 		// -----------------------------------------------------------------------------
 		// CONTACT

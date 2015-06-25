@@ -75,12 +75,6 @@ Route::group(['prefix' => ''], function()
 		// ------------------------------------------------------------------------------------		
 		Route::any('upload-image',				['uses' => 'PersonController@upload_image',			'as' => 'hr.upload.image']);
 
-		// ------------------------------------------------------------------------------------
-		// REPORTS RESOURCE
-		// ------------------------------------------------------------------------------------
-
-		Route::resource('reports',				'ReportController',									['names' => ['index' => 'hr.reports.index', 'create' => 'hr.reports.create', 'store' => 'hr.reports.store', 'show' => 'hr.reports.show', 'edit' => 'hr.reports.edit', 'update' => 'hr.reports.update', 'destroy' => 'hr.reports.delete']]);
-
 		Route::group(['namespace' => 'Branch\\', 'prefix' => 'branch'], function() 
 		{
 
@@ -204,6 +198,22 @@ Route::group(['prefix' => ''], function()
 		// ------------------------------------------------------------------------------------
 
 		Route::resource('documents',		'DocumentController',								['names' => ['index' => 'hr.person.documents.index', 'create' => 'hr.person.documents.create', 'store' => 'hr.person.documents.store', 'show' => 'hr.person.documents.show', 'edit' => 'hr.person.documents.edit', 'update' => 'hr.person.documents.update', 'destroy' => 'hr.person.documents.delete']]);
+	});
+
+
+	Route::group(['namespace' => 'Report\\', 'prefix' => 'report'], function() 
+	{
+		// ------------------------------------------------------------------------------------
+		// REPORT FOR ATTENDANCE (PROCESS LOG) RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('attendances',		'AttendanceController',								['names' => ['index' => 'hr.report.attendances.index', 'create' => 'hr.report.attendances.create', 'store' => 'hr.report.attendances.store', 'show' => 'hr.report.attendances.show', 'edit' => 'hr.report.attendances.edit', 'update' => 'hr.report.attendances.update', 'destroy' => 'hr.report.attendances.delete']]);
+
+		// ------------------------------------------------------------------------------------
+		// REPORT FOR WAGE (PROCESS LOG) RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('wages',			'WageController',									['names' => ['index' => 'hr.report.wages.index', 'create' => 'hr.report.wages.create', 'store' => 'hr.report.wages.store', 'show' => 'hr.report.wages.show', 'edit' => 'hr.report.wages.edit', 'update' => 'hr.report.wages.update', 'destroy' => 'hr.report.wages.delete']]);
 	});
 
 	});

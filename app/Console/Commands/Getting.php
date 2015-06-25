@@ -81,7 +81,7 @@ class Getting extends Command implements SelfHandling {
 			$data = $model->get();
 			$total_data = $model->count();
 
-			$page_info 	= ['page' => 1, 'per_page' => $total_data, 'from' => 1, 'to' => $total_data, 'total_page' => 1, 'total_data' => $total_data];
+			$page_info 	= ['page' => 1, 'per_page' => ($total_data!=0 ? $total_data : 1), 'from' => ($total_data!=0 ? 1 : 0), 'to' => $total_data, 'total_page' => 1, 'total_data' => $total_data];
 		}
 		elseif($this->per_page > 1)
 		{

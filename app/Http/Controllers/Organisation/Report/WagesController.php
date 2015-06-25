@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\Organisation;
+<?php namespace App\Http\Controllers\Organisation\Report;
 
 use Input, Session, App, Paginator, Redirect, DB, Config, Validator, Image;
 use App\Http\Controllers\BaseController;
@@ -15,10 +15,10 @@ use App\Models\DocumentDetail;
 use App\Models\Contact;
 use App\Models\PersonSchedule;
 
-class PersonController extends BaseController 
+class WagesController extends BaseController 
 {
 
-	protected $controller_name 						= 'personalia';
+	protected $controller_name 						= 'wages';
 
 	public function index()
 	{		

@@ -5,6 +5,7 @@ use App\Models\ProcessLog;
 use App\Models\Work;
 use App\Models\Log;
 use App\Models\Person;
+use App\Models\SettingIdle;
 use Illuminate\Support\MessageBag;
 
 /* ----------------------------------------------------------------------
@@ -26,7 +27,17 @@ class ProcessingLogObserver
 			$person 				= Person::find($model['attributes']['person_id']);
 			
 			$idle_rule 				= new SettingIdle;
-			$idle_rule 				= $idle_rule->organisationid($person->organisation_id)->start($on)->orderBy('start', 'desc')->first();
+			$idle_rule 				= $idle_rule->organisationid($person->organisation_id)->OnDate($on)->orderBy('start', 'desc')->first();
+			if($idle_rule)
+			{
+				$idle_1 			= $idle_rule->idle_1;
+				$idle_2 			= $idle_rule->idle_2;
+			}
+			else
+			{
+				$idle_1 			= 900;
+				$idle_2 			= 3600;
+			}
 
 			$workid 				= null;
 			$plog 					= new ProcessLog;
@@ -48,8 +59,7 @@ class ProcessingLogObserver
 			$total_sleep 			= 0;
 			$total_active 			= 0;
 
-			$actual_start_status 	= '';
-			$actual_end_status 		= '';
+			$actual_status 			= '';
 
 			$name 					= 'Attendance';
 			$tooltip 				= [];
@@ -97,7 +107,7 @@ class ProcessingLogObserver
 					{
 						$workid 	= $calendar->workscalendars[0]->id;
 						$workdays  	= explode(',', $calendar->workscalendars[0]->calendar->workdays);
-						$wd			= ['monday' => 'senin', 'tuesday' => 'selasa', 'wednesday' => 'rabu', 'thursday' => 'kamis', 'friday' => 'jumat', 'saturday' => 'sabtu', 'sunday' => 'minggu'];
+						$wd			= ['monday' => 'senin', 'tuesday' => 'selasa', 'wednesday' => 'rabu', 'thursday' => 'kamis', 'friday' => 'jumat', 'saturday' => 'sabtu', 'sunday' => 'minggu', 'senin' => 'monday', 'selasa' => 'tuesday', 'rabu' => 'wednesday', 'kamis' => 'thursday', 'jumat' => 'friday', 'sabtu' => 'saturday', 'minggu' => 'sunday'];
 						$day 		= date("l", strtotime($model['attributes']['on']));
 
 						if(isset($wd[strtolower($day)]) && in_array($wd[strtolower($day)], $workdays))
@@ -127,9 +137,9 @@ class ProcessingLogObserver
 				$start 				= $data->start;
 				$end 				= $data->end;
 
-				if(isset($data->created_by) && $data->created_by!=0)
+				if(isset($data->modified_by) && $data->modified_by!=0)
 				{
-					$modified_end_by= $data->created_by;
+					$modified_by 	= $data->modified_by;
 				}
 
 				$result 			= json_decode($data->tooltip);
@@ -160,17 +170,18 @@ class ProcessingLogObserver
 					{
 						$start 		= $time;
 					}
-					elseif(date('H:i:s',strtotime($data->end)) < $time)
+					
+					if(date('H:i:s',strtotime($data->end)) < $time)
 					{
-						$fp_end 	= $time;
+						$end 		= $time;
 					}
 				}
 			}
 			else
 			{
-				if(isset($data->created_by) && $data->created_by!=0)
+				if(isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0)
 				{
-					$modified_start_by= $data->created_by;
+					$modified_by	= $data->created_by;
 				}
 
 				if(strtolower($model['attributes']['name'])=='finger_print')
@@ -197,7 +208,14 @@ class ProcessingLogObserver
 				$minstart 			= min($start, $fp_start);
 			}
 
-			$maxend 				= max($end, $fp_end);
+			if($fp_end=='00:00:00')
+			{
+				$maxend 			= $end;
+			}
+			else
+			{
+				$maxend 				= max($end, $fp_end);
+			}
 
 			list($hours, $minutes, $seconds) = explode(":", $minstart);
 
@@ -217,10 +235,11 @@ class ProcessingLogObserver
 
 			$schedule_end_second	= $hours*3600+$minutes*60+$seconds;
 
-			$margin_end 			= $schedule_end_second - $schedule_end;
+			$margin_end 			= $schedule_end_second - $maxend;
 
 			$idle 					= Log::ondate($on)->personid($model['attributes']['person_id'])->orderBy('on', 'asc')->get();
-			$total_active 			= $maxend - $minstart;
+
+			$total_active 			= abs($maxend) - abs($minstart);
 
 			foreach ($idle as $key => $value) 
 			{
@@ -239,15 +258,15 @@ class ProcessingLogObserver
 					$new_idle 		= $hours*3600+$minutes*60+$seconds;
 
 					$total_idle		= $total_idle + $new_idle - $start_idle;
-					if($new_idle - $start_idle <= (int)$idle_rule->idle_1)
+					if($new_idle - $start_idle <= $idle_1)
 					{
 						$total_idle_1 	= $total_idle_1 + $new_idle - $start_idle;
 					}
-					elseif($new_idle - $start_idle > (int)$idle_rule->idle_1 && $new_idle - $start_idle < (int)$idle_rule->idle_2)
+					elseif($new_idle - $start_idle > $idle_1 && $new_idle - $start_idle < $idle_2)
 					{
 						$total_idle_2 	= $total_idle_2 + $new_idle - $start_idle;
 					}
-					elseif($new_idle - $start_idle >= (int)$idle_rule->idle_2)
+					elseif($new_idle - $start_idle >= $idle_2)
 					{
 						$total_idle_3 	= $total_idle_3 + $new_idle - $start_idle;
 					}
@@ -276,63 +295,48 @@ class ProcessingLogObserver
 
 			if($margin_start==0 && $margin_end==0)
 			{
-				$actual_start_status 	= 'AS';
+				$actual_status 			= 'AS';
 			}
-			elseif($margin_start>=0)
+			elseif($margin_start>=0 && $margin_end>=0)
 			{
-				$actual_start_status 	= 'HB';
-			}
-			else
-			{
-				$actual_start_status 	= 'HC';
-			}
-			
-			if($margin_start==0 && $margin_end==0)
-			{
-				$actual_end_status 		= 'AS';
-			}
-			elseif($margin_end>=0)
-			{
-				$actual_end_status 		= 'HB';
+				$actual_status 			= 'HB';
 			}
 			else
 			{
-				$actual_end_status 		= 'HC';
+				$actual_status 			= 'HC';
 			}
 
-			$total_active 				= $total_active - $total_sleep - $total_idle;
+			$total_active 				= abs($total_active) - abs($total_sleep) - abs($total_idle);
 
 			$plog->fill([
-										'name'					=> $name,
-										'on'					=> $on,
-										'schedule_start'		=> $schedule_start,
-										'schedule_end'			=> $schedule_end,										
-										'tooltip'				=> json_encode($tooltip),
-										'start'					=> $start,
-										'end'					=> $end,
-										'fp_start'				=> $fp_start,
-										'fp_end'				=> $fp_end,
-										'margin_start'			=> $margin_start,
-										'margin_end'			=> $margin_end,
-										'total_idle'			=> $total_idle,
-										'total_idle_1'			=> $total_idle_1,
-										'total_idle_2'			=> $total_idle_2,
-										'total_idle_3'			=> $total_idle_3,
-										'total_sleep'			=> $total_sleep,
-										'total_active'			=> $total_active,
-										'actual_start_status'	=> $actual_start_status,
-										'actual_end_status'		=> $actual_end_status,
-								]
-						);
+									'name'					=> $name,
+									'on'					=> $on,
+									'schedule_start'		=> $schedule_start,
+									'schedule_end'			=> $schedule_end,										
+									'tooltip'				=> json_encode($tooltip),
+									'start'					=> $start,
+									'end'					=> $end,
+									'fp_start'				=> $fp_start,
+									'fp_end'				=> $fp_end,
+									'margin_start'			=> $margin_start,
+									'margin_end'			=> $margin_end,
+									'total_idle'			=> $total_idle,
+									'total_idle_1'			=> $total_idle_1,
+									'total_idle_2'			=> $total_idle_2,
+									'total_idle_3'			=> $total_idle_3,
+									'total_sleep'			=> $total_sleep,
+									'total_active'			=> $total_active,
+									'actual_status'			=> $actual_status,
+							]
+					);
 
-			if(isset($modified_start_by))
+			if(isset($modified_by))
 			{
-				$plog->fill(['modified_start_by' 	=> $modified_start_by]);
+				$plog->fill(['modified_by' 					=> $modified_by]);
 			}
-
-			if(isset($modified_end_by))
+			else
 			{
-				$plog->fill(['modified_end_by' 		=> $modified_end_by]);
+				unset($plog->modified_by);
 			}
 
 			$plog->Person()->associate($person);
@@ -343,7 +347,7 @@ class ProcessingLogObserver
 				if($work)
 				{
 					$plog->Work()->associate($work);
-				} 		
+				} 	
 			}
 
 			if (!$plog->save())
