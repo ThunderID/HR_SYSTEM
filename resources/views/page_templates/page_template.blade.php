@@ -17,7 +17,7 @@
 		    @yield('nav_topbar', '[nav_topbar]')   
 		
 		    <div class="navbar-default sidebar" role="navigation">
-		        <div class="sidebar-nav navbar-collapse">
+		        <div class="sidebar-nav navbar-collapse collapse" aria-expanded="false">
 		        	<!-- sidebar -->
 		            @yield('nav_sidebar', '[nav_sidebar]')
 		        </div>		        
@@ -38,6 +38,15 @@
 			</div>
 
 			@yield('content_footer', '[content_footer]')
+
+			<!-- Model Organisation delete -->
+			{!! Form::open(array('route' => array('hr.organisations.delete', 0),'method' => 'DELETE')) !!}
+			    @include('widgets.modal.delete', [
+			        'widget_template'       => 'plain_no_title',
+			        'modal'                 => 'deleteorg'
+			    ])
+			{!! Form::close() !!}
+
 		</div>
 	</div>
 	{!! HTML::script('plugins/jquery/jquery-2.1.4.min.js') !!}
@@ -58,7 +67,26 @@
 	@include('plugins.no_enter_form')
 
 	<script>
-		$('#side-menu').metisMenu();
+		$(function() {
+
+		    $('#side-menu').metisMenu();
+
+		});
+
+		//Loads the correct sidebar on window load,
+		//collapses the sidebar on window resize.
+		// Sets the min-height of #page-wrapper to window size
+		$(function() {
+		    
+		    var url = window.location;
+		    var element = $('ul.nav a').filter(function() {
+		        return this.href == url || url.href.indexOf(this.href) == 0;
+		    }).addClass('active').parent().parent().addClass('in').parent();
+		    if (element.is('li')) {
+		        element.addClass('active');
+		    }
+		});
+
 	</script>
 </body>
 </html>
