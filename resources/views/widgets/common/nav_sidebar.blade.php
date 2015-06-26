@@ -7,7 +7,7 @@
 @overwrite
 
 @section('widget_body')
-    <ul class="nav in" id="side-menu">
+    <ul class="nav in" id="side-menu" style="margin-top:1px">
         <li>
             <a href="{{route('hr.organisations.create')}}"><i class="fa fa-plus-circle fa-fw"></i> Tambah Organisasi</a>
         </li>
@@ -20,42 +20,40 @@
                         <li><a href="{{route('hr.organisations.edit', $value)}}"><i class="fa fa-pencil fa-fw"></i> Ubah</a></li>
                         <li><a href="javascript:;" data-toggle="modal" data-target="#deleteorg" data-delete-action="{{ route('hr.organisations.delete', [$value, 'org_id' => $value]) }}"><i class="fa fa-trash fa-fw"></i> Hapus</a>
                         <li><a href="{{route('hr.organisations.show', [$value, 'org_id' => $value])}}"><i class="fa fa-tachometer fa-fw"></i> Dashboard</a></li>
-                        <li>
+                        <li @if(isset($branch['id'])||(Input::get('branch_id'))) class="active" @endif>
                             <a href="javascript"><i class="fa fa-cog fa-fw"></i> Pengaturan <span class="fa arrow"></span></a>
                             <ul class="nav nav-third-level">
-                                <li>
-                                    @if ((!isset($value['branches']))|(!Input::get('branch_id')))
-                                        <a href="{{route('hr.branches.index', ['org_id' => $value])}}"><i class="fa fa-building fa-fw"></i> Cabang <span class="fa arrow"></span></a>
-                                        <ul class="nav nav-fourty-level">
-                                            <li><a href="{{route('hr.branches.create', ['org_id' => $value, 'branch_id' => Input::get('branch_id')])}}">Tambah Cabang</a></li>
-                                            <li><a href="{{route('hr.branches.index', ['org_id' => $value])}}">Semua Cabang</a></li>
-                                        </ul>
-                                    @else
-                                        <a href="{{route('hr.branches.index', ['org_id' => $value])}}"><i class="fa fa-building fa-fw"></i> Cabang <span class="fa arrow"></span></a>
-                                        <ul class="nav nav-fourty-level">
-                                            <li><a href="{{route('hr.branches.create', ['org_id' => $value, 'branch_id' => Input::get('branch_id')])}}">Tambah Cabang</a></li>
-                                            <li><a href="{{route('hr.branches.index', ['org_id' => $value])}}">Semua Cabang</a></li>
-                                            @foreach($value['branches'] as $branch)
-                                                <li>
-                                                    <a href="">{{ $branch['name'] }} <span class="fa arrow"></span></a>
-                                                    <ul class="nav nav-fifty-level">
-                                                        <li>
-                                                            <a href="{{ route('hr.branch.contacts.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}">Kontak</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{{ route('hr.branch.charts.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}">Struktur Organisasi</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{{ route('hr.branch.apis.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}">API</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="{{ route('hr.branch.fingers.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}">Absen Sidik Jari</a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    @endif
+                                <li @if(isset($branch['id'])||(Input::get('branch_id'))) class="active" @endif>
+                                    <a href="javascript:;"><i class="fa fa-building fa-fw"></i> Cabang <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-fourty-level">
+                                        <li><a href="{{route('hr.branches.create', ['org_id' => $value])}}">Tambah Cabang</a></li>
+                                        <li><a href="{{route('hr.branches.index', ['org_id' => $value])}}">Semua Cabang</a></li>
+                                        @if (isset($branch['id'])||(Input::get('branch_id')))
+                                            <li @if(isset($branch['id'])||(Input::get('branch_id'))) class="active" @endif>
+                                                <a href="">{{ $branch['name'] }} <span class="fa arrow"></span></a>
+                                                <ul class="nav nav-fifty-level">
+                                                    <li>
+                                                        <a href="">Ubah</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" data-target="#deleteorg" data-toggle="modal" data-delete-action="{{ route('hr.branches.delete', [$branch['id'], 'org_id' => $value['id']]) }}" >Hapus</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('hr.branch.contacts.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}">Kontak</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('hr.branch.charts.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}">Struktur Organisasi</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('hr.branch.apis.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}">API</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ route('hr.branch.fingers.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}">Absen Sidik Jari</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        @endif
+                                    </ul>
                                 </li>
 								<li>
 								    <a href="{{route('hr.calendars.index', ['org_id' => $value])}}"><i class="fa fa-calendar fa-fw"></i> Kalender</a>
@@ -71,21 +69,24 @@
 								</li>
                             </ul>
                         </li>
-                        <li>
+                        <li @if(isset($person['id'])||(Input::get('person_id'))) class="active" @endif>
                             <a href="javascript:;"><i class="fa fa-briefcase fa-fw"></i> Data<span class="fa arrow"></span></a>
                             <ul class="nav nav-third-level">
-                                <li>
+                                <li @if(isset($person['id'])||(Input::get('person_id'))) class="active" @endif>
                                     <a href="javascript:;"><i class="fa fa-users fa-fw"></i> Data Karyawan <span class="fa arrow"></span></a>
                                     <ul class="nav nav-fourty-level">
+                                        <li>
+                                            <a href="{{route('hr.persons.create', ['org_id' => $value])}}">Tambah Karyawan</a>
+                                        </li>
                                         <li>
                                             <a href="{{route('hr.persons.index', ['org_id' => $value])}}">Semua Karyawan</a>
                                         </li>
                                         @if(isset($person['id']))
-                                            <li>
+                                            <li @if(isset($person['id'])||(Input::get('person_id'))) class="active active-person" @endif>
                                                 <a href="javascript:;">{{ $person['name'] }} <span class="fa arrow"></span></a>
                                                 <ul class="nav nav-fifty-level">
                                                     <li><a href="{{route('hr.persons.edit', [$person['id'], 'org_id' => $value, 'person_id' => $person['id']])}}">Ubah</a></li>
-                                                    <li><a href="">Hapus</a></li>
+                                                    <li><a href="javascript:;">Hapus</a></li>
                                                     <li>
                                                         <a href="{{ route('hr.person.contacts.index', ['org_id' => $value, 'person_id' => $person['id']]) }}">Kontak</a>
                                                     </li>    
