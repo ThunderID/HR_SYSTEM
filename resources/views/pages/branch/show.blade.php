@@ -10,17 +10,18 @@
 
 @section('nav_sidebar')
 	@include('widgets.common.nav_sidebar', [
-		'widget_template'		=> 'plain',
+		'widget_template'		=> 'plain_no_title',
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
+		'active_contact'		=> 'yes',
 		'widget_options'		=> 	[
 										'sidebar'				=> 
 										[
 											'search'			=> ['withattributes' => 'branches'],
 											'sort'				=> [],
 											'page'				=> 1,
-											'per_page'			=> 100
+											'per_page'			=> 100,
 										]
 									]
 	])

@@ -1,3 +1,11 @@
+<?php
+	if($id) {
+		$active = 'active_branch_edit';
+	} else {
+		$active = 'active_branch_add';
+	}
+?>
+
 @section('nav_topbar')
 	@include('widgets.common.nav_topbar', 
 		['breadcrumb' 			=> 	[
@@ -10,13 +18,14 @@
 
 @section('nav_sidebar')
 	@include('widgets.common.nav_sidebar', [
-		'widget_template'		=> 'plain',
+		'widget_template'		=> 'plain_no_title',
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
+		'active_branch'			=> $active,
 		'widget_options'		=> [ 'sidebar' 					=>
 										[
-											'search'			=> [],
+											'search'			=> ['withattributes' => 'branches'],
 											'sort'				=> [],
 											'page'				=> 1,
 											'per_page'			=> 100,
