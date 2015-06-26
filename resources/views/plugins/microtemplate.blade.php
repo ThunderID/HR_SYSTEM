@@ -1,23 +1,18 @@
 <script type="text/javascript">
 	$('.btn-delete-doc').on('click', function(){bind_delete($(this))});
-	$('.btn-add-doc').on('click', function(e){	
-		var tot = 0;
-		var x = $('.template > .form-group').length+1; 
-		
+	$('.btn-add-doc').bind('click', function(e){			
 		var template = '';		
 
-			template += '<div class="form-group"> \
-							<div class="col-md-2">&nbsp;</div> \
-							<div class="col-md-2">				\
+		template += '<div class="row"> \
+						<div class="col-sm-5"> \
+							<div class="form-group"> \
 								<label for="field[]" class="control-label">Nama Input</label> \
+								<input type="text" class="form-control no-enter" id="field[]" name="field[]"> \
 							</div> \
-							<div class="col-md-2"> \
-								<input type="text" class="form-control field" id="field[]" name="field[]"> \
-							</div> \
-							<div class="col-md-2"> \
+						</div> \
+						<div class="col-sm-5"> \
+							<div class="form-group"> \
 								<label for="" class="control-label">Tipe Input</label> \
-							</div> \
-							<div class="col-md-2"> \
 								<select id="Type" class="form-control form-control input-md type" name="type[]"> \
 									<option value="numeric">Angka</option> \
 									<option value="date">Tanggal</option> \
@@ -25,18 +20,29 @@
 									<option value="text">Teks Panjang</option> \
 								</select> \
 							</div> \
-							<div class="col-md-2"> \
-								<a href="javascript:;" class="btn-delete-doc" style="color:#666;" data-count="" data-total-count="'+x+'"><i class="fa fa-minus-circle fa-lg mt-10"></i></a> \
+						</div> \
+						<div class="col-sm-2"> \
+							<div class="form-group"> \
+								<a href="javascript:;" class="btn-delete-doc" style="color:#666;"><i class="fa fa-minus-circle fa-lg mt-30"></i></a> \
 							</div> \
 						</div> \
-						';	
-							
-			$("#template").append(template);
-			$('.btn-delete-doc').on('click', function(){bind_delete($(this))});			
+					</div> \
+					';	
+						
+		$("#template").append(template);
+		$('#template input, #template select').on("keyup keypress", function(e) {
+			var code = e.keyCode || e.which; 
+			if (code  == 13) 
+			{
+				e.preventDefault();
+				return false;
+			}
+		});
+		$('.btn-delete-doc').on('click', function(){bind_delete($(this))});			
 	});	
 		
 	function bind_delete(e) {		
-		$(e).parent().parent().remove();
+		$(e).parent().parent().parent().remove();
 		$('.btn-delete-doc').on('click', function(){bind_delete($(this))});		
 	}
 	
