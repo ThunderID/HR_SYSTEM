@@ -2404,7 +2404,7 @@ input[type="search"] {
   min-height: 20px;
   padding-left: 20px;
   margin-bottom: 0;
-  font-weight: normal;
+  font-weight: 300;
   cursor: pointer;
 }
 .radio input[type="radio"],

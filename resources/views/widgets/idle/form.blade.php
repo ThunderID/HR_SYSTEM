@@ -7,36 +7,28 @@
 
 	@section('widget_body')
 		<div class="clearfix">&nbsp;</div>
-		{!! Form::open(['url' => $IdleComposer['widget_data']['idlelist']['form_url'], 'class' => 'form-horizontal']) !!}	
-			<div class="form-group">
-				<div class="col-md-2">
-					<label class="control-label">Start</label>
-				</div>	
-				<div class="col-md-10">
-					{!!Form::input('text', 'start', $IdleComposer['widget_data']['idlelist']['idle']['start'], ['class' => 'form-control', 'placeholder' => 'Start'])!!}
-				</div>
+		{!! Form::open(['url' => $IdleComposer['widget_data']['idlelist']['form_url'], 'class' => 'form no-enter']) !!}	
+			<div class="form-group">				
+				<label class="control-label">Start</label>				
+				{!!Form::input('text', 'start', $IdleComposer['widget_data']['idlelist']['idle']['start'], ['class' => 'form-control', 'placeholder' => 'Start', 'tabindex' => '1'])!!}				
 			</div>
-			<div class="form-group">
-				<div class="col-md-2">
-					<label class="control-label">Flag Idle Pertama</label>
-				</div>	
-				<div class="col-md-10">
-					{!!Form::input('text', 'idle_1', $IdleComposer['widget_data']['idlelist']['idle']['idle_1'], ['class' => 'form-control', 'placeholder' => 'Idle Pertama'])!!}
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="control-label">Flag Idle Pertama</label>
+						{!!Form::input('text', 'idle_1', $IdleComposer['widget_data']['idlelist']['idle']['idle_1'], ['class' => 'form-control', 'placeholder' => 'Idle Pertama', 'tabindex' => '2'])!!}
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-md-2">
-					<label class="control-label">Flag Idle Kedua</label>
-				</div>	
-				<div class="col-md-10">
-					{!!Form::input('text', 'idle_2', $IdleComposer['widget_data']['idlelist']['idle']['idle_2'], ['class' => 'form-control', 'placeholder' => 'Idle Kedua'])!!}
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="control-label">Flag Idle Kedua</label>
+						{!!Form::input('text', 'idle_2', $IdleComposer['widget_data']['idlelist']['idle']['idle_2'], ['class' => 'form-control', 'placeholder' => 'Idle Kedua', 'tabindex' => '3'])!!}
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-md-12 text-right">
-					<a href="{{ $IdleComposer['widget_data']['idlelist']['route_edit'] }}" class="btn btn-default mr-5">Batal</a>
-					<input type="submit" class="btn btn-primary" value="Simpan">
-				</div>
+			</div>				
+			<div class="form-group text-right">				
+				<a href="{{ $IdleComposer['widget_data']['idlelist']['route_edit'] }}" class="btn btn-default mr-5" tabindex="5">Batal</a>
+				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="4">
 			</div>
 		{!! Form::close() !!}
 	@overwrite	
