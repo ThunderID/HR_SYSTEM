@@ -31,7 +31,7 @@ class OrganisationController extends BaseController
 		}
 		else
 		{
-			if(!in_array($id, Config::get('user.orgids')))
+			if(!in_array($id, Session::get('user.organisationids')))
 			{
 				App::abort(404);
 			}
@@ -151,7 +151,7 @@ class OrganisationController extends BaseController
 
 	public function show($id = null)
 	{
-		if(!in_array($id, Config::get('user.orgids')))
+		if(!in_array($id, Session::get('user.organisationids')))
 		{
 			App::abort(404);
 		}
@@ -174,7 +174,7 @@ class OrganisationController extends BaseController
 
 	public function edit($id)
 	{
-		if(!in_array($id, Config::get('user.orgids')))
+		if(!in_array($id, Session::get('user.organisationids')))
 		{
 			App::abort(404);
 		}
@@ -193,7 +193,7 @@ class OrganisationController extends BaseController
 			$id 							= Session::get('user.organisation');
 		}
 
-		$attributes 						= ['email' => Config::get('user.email'), 'password' => Input::get('password')];
+		$attributes 						= ['email' => Session::get('user.email'), 'password' => Input::get('password')];
 
 		$results 							= $this->dispatch(new Checking(new Person, $attributes));
 
@@ -201,7 +201,7 @@ class OrganisationController extends BaseController
 
 		if($content->meta->success)
 		{
-			if(!in_array($id, Config::get('user.orgids')))
+			if(!in_array($id, Session::get('user.organisationids')))
 			{
 				App::abort(404);
 			}

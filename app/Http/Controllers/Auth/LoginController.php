@@ -20,7 +20,7 @@ class LoginController extends BaseController {
 		$password 					= Input::get('password');
 		$results 					= $this->dispatch(new Checking(new Person, ['email' => $email, 'password' => $password]));
 		$content 					= json_decode($results);
-		
+
 		if($content->meta->success)
 		{
 			Session::put('loggedUser', $content->data->id);

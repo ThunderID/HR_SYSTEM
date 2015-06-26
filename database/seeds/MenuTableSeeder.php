@@ -17,14 +17,10 @@ class MenuTableSeeder extends Seeder
 		DB::table('authentications')->truncate();
 		$menus 										= 
 														[
-															'Applications',
-															'Organisations' , 
-															'Dashboard', 
-															'Branches', 
-															'Documents', 
-															'Calendars',
-															'Persons',
-															'Reports',
+															'Manage Organisasi',
+															'Manage HR Config',
+															'Manage HR Data' , 
+															'Manage Team', 
 														];
 
 		$trackermenu 								= 

@@ -33,7 +33,7 @@ class ChartController extends BaseController
 			App::abort(404);
 		}
 
-		if(!in_array($org_id, Config::get('user.orgids')))
+		if(!in_array($org_id, Session::get('user.organisationids')))
 		{
 			App::abort(404);
 		}

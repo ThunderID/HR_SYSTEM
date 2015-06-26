@@ -52,7 +52,7 @@ class ScheduleController extends BaseController
 			$end 								= date('Y-m-d', strtotime('First Day of next month'));
 		}
 
-		if(!in_array($org_id, Config::get('user.orgids')))
+		if(!in_array($org_id, Session::get('user.organisationids')))
 		{
 			App::abort(404);
 		}
@@ -208,7 +208,7 @@ class ScheduleController extends BaseController
 			App::abort(404);
 		}
 
-		if(!in_array($org_id, Config::get('user.orgids')))
+		if(!in_array($org_id, Session::get('user.organisationids')))
 		{
 			App::abort(404);
 		}
@@ -319,7 +319,7 @@ class ScheduleController extends BaseController
 
 	public function destroy($id)
 	{
-		$attributes 						= ['email' => Config::get('user.email'), 'password' => Input::get('password')];
+		$attributes 						= ['email' => Session::get('user.email'), 'password' => Input::get('password')];
 
 		$results 							= $this->dispatch(new Checking(new Person, $attributes));
 
@@ -345,7 +345,7 @@ class ScheduleController extends BaseController
 				App::abort(404);
 			}
 
-			if(!in_array($org_id, Config::get('user.orgids')))
+			if(!in_array($org_id, Session::get('user.organisationids')))
 			{
 				App::abort(404);
 			}

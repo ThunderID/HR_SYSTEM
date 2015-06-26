@@ -116,7 +116,7 @@ class Getting extends Command implements SelfHandling {
 		}
 		else
 		{
-			if(is_null($this->query['id']))
+			if(isset($this->query['id']) && is_null($this->query['id']))
 			{
 				$data 		= null;
 				$message	= null;

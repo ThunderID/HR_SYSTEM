@@ -26,7 +26,7 @@ class BranchController extends BaseController
 			$org_id 							= Session::get('user.organisation');
 		}
 
-		if(!in_array($org_id, Config::get('user.orgids')))
+		if(!in_array($org_id, Session::get('user.organisationids')))
 		{
 			App::abort(404);
 		}
@@ -62,7 +62,7 @@ class BranchController extends BaseController
 			$org_id 							= Session::get('user.organisation');
 		}
 
-		if(!in_array($org_id, Config::get('user.orgids')))
+		if(!in_array($org_id, Session::get('user.organisationids')))
 		{
 			App::abort(404);
 		}
@@ -150,7 +150,7 @@ class BranchController extends BaseController
 			$org_id 					= Session::get('user.organisation');
 		}
 
-		if(!in_array($org_id, Config::get('user.orgids')))
+		if(!in_array($org_id, Session::get('user.organisationids')))
 		{
 			App::abort(404);
 		}
@@ -183,7 +183,7 @@ class BranchController extends BaseController
 
 	public function destroy($id)
 	{
-		$attributes 						= ['email' => Config::get('user.email'), 'password' => Input::get('password')];
+		$attributes 						= ['email' => Session::get('user.email'), 'password' => Input::get('password')];
 
 		$results 							= $this->dispatch(new Checking(new Person, $attributes));
 
@@ -200,7 +200,7 @@ class BranchController extends BaseController
 				$org_id 					= Session::get('user.organisation');
 			}
 
-			if(!in_array($org_id, Config::get('user.orgids')))
+			if(!in_array($org_id, Session::get('user.organisationids')))
 			{
 				App::abort(404);
 			}
