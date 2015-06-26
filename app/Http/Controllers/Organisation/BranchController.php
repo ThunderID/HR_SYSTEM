@@ -140,11 +140,10 @@ class BranchController extends BaseController
 			App::abort(404);
 		}
 
-		$search['id'] 							= $org_id;
-		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Organisation, $search, $sort , 1, 1));
-		$contents 								= json_decode($results);
-
+		$search 						= ['id' => $id, 'organisationid' => $org_id, 'withattributes' => ['organisation']];
+		$results 						= $this->dispatch(new Getting(new Branch, $search, [] , 1, 1));
+		$contents 						= json_decode($results);
+		
 		if(!$contents->meta->success)
 		{
 			App::abort(404);
@@ -153,7 +152,12 @@ class BranchController extends BaseController
 		$data 									= json_decode(json_encode($contents->data), true);
 
 		// ---------------------- GENERATE CONTENT ----------------------
+<<<<<<< HEAD
+		$this->layout->pages 					= view('pages.branch.create', compact('id', 'data'));
+		$this->layout->pages->branch 			= $data;
+=======
 		$this->layout->pages 					= view('pages.organisation.branch.create', compact('id', 'data'));
+>>>>>>> 6ce3dca6a89212035af10e62ce545f32646f6d5c
 		return $this->layout;
 	}
 	

@@ -30,15 +30,15 @@
                                         <li><a href="{{route('hr.branches.index', ['org_id' => $value])}}">Semua Cabang</a></li>
                                         @if (isset($branch['id'])||(Input::get('branch_id')))
                                             <li @if(isset($branch['id'])||(Input::get('branch_id'))) class="active" @endif>
-                                                <a href="">{{ $branch['name'] }} <span class="fa arrow"></span></a>
+                                                <a href="javascript:;">{{ $branch['name'] }} <span class="fa arrow"></span></a>
                                                 <ul class="nav nav-fifty-level">
-                                                    <li>
-                                                        <a href="">Ubah</a>
+                                                    <li @if($active_branch=='active_branch_edit') class="active-li" @endif>
+                                                        <a href="{{ route('hr.branches.edit', [$branch['id'], 'org_id' => $value['id'], 'branch_id' => $branch['id']]) }}">Ubah</a>
                                                     </li>
                                                     <li>
                                                         <a href="javascript:;" data-target="#deleteorg" data-toggle="modal" data-delete-action="{{ route('hr.branches.delete', [$branch['id'], 'org_id' => $value['id']]) }}" >Hapus</a>
                                                     </li>
-                                                    <li>
+                                                    <li @if(isset($active_branch_contact)) class="active-li" @endif>
                                                         <a href="{{ route('hr.branch.contacts.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}">Kontak</a>
                                                     </li>
                                                     <li>

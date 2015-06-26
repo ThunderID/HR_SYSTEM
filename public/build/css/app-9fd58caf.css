@@ -6374,7 +6374,7 @@ label,
 @media (min-width: 768px) {
   #page-wrapper {
     position: inherit;
-    margin: 0 0 0 250px;
+    margin: 0 0 0 230px;
     padding: 0 30px;
     border-left: 1px solid #e7e7e7;
   }
@@ -6496,18 +6496,18 @@ label,
 .sidebar .nav-fourty-level li a {
   padding-left: 67px;
 }
-/*.sidebar .nav-fourty-level li.active-person {
-  background-color: #eee;
-}*/
 .sidebar .nav-fifty-level li a {
   padding-left: 80px;
+}
+.sidebar .nav-fifty-level li.active-li {
+  background-color: #e5e5e5;
 }
 
 @media (min-width: 768px) {
   .sidebar {
     z-index: 1;
     position: absolute;
-    width: 250px;
+    width: 230px;
     margin-top: 51px;
   }
   .navbar-top-links .dropdown-messages,
