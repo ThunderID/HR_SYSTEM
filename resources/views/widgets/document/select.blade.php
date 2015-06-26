@@ -7,27 +7,21 @@
 
 	@section('widget_body')	  
 		<div class="clearfix">&nbsp;</div>
-		{!! Form::open(['url' => $DocumentComposer['widget_data']['documentlist']['form_url'], 'class' => 'form-horizontal', 'method' => 'get']) !!}	
-			<div class="form-group">
-				<div class="col-md-2">
-					<label class="control-label">Jenis Dokumen</label>
-				</div>	
-				<div class="col-md-10">
-					<select name="doc_id" id="doc" class="form-control select2">
-						@if(isset($DocumentComposer['widget_data']['documentlist']['document']))
-							@foreach($DocumentComposer['widget_data']['documentlist']['document'] as $key => $value)
-								<option value="{{ $value['id'] }}">{{ $value['name'] }}</option>
-							@endforeach
-						@endif
-					</select>
-				</div>
+		{!! Form::open(['url' => $DocumentComposer['widget_data']['documentlist']['form_url'], 'class' => 'form', 'method' => 'get']) !!}	
+			<div class="form-group">				
+				<label class="control-label">Jenis Dokumen</label>				
+				<select name="doc_id" id="doc" class="form-control select2" tabindex="1">
+					@if(isset($DocumentComposer['widget_data']['documentlist']['document']))
+						@foreach($DocumentComposer['widget_data']['documentlist']['document'] as $key => $value)
+							<option value="{{ $value['id'] }}">{{ $value['name'] }}</option>
+						@endforeach
+					@endif
+				</select>				
 			</div>
 			<input type="hidden" class="form-control" id="org_id" name="org_id" value="{{$data['id']}}">
 			<input type="hidden" class="form-control" id="person_id" name="person_id" value="{{$person['id']}}">
-			<div class="form-group">
-				<div class="col-md-12 text-right">
-					<input type="submit" class="btn btn-primary" value="Pilih">
-				</div>
+			<div class="form-group text-right">
+				<input type="submit" class="btn btn-primary" value="Pilih" tabindex="2">				
 			</div>
 		{!! Form::close() !!}
 	@overwrite	
