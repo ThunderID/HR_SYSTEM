@@ -52,7 +52,6 @@ class BranchComposer extends WidgetComposer
 			$page 								= json_decode(json_encode($contents->pagination), true);
 			$widget_data['branch'] 				= json_decode(json_encode($contents->data), true);
 			$widget_data['branch-pagination'] 	= new Paginator($page['total_data'], $page['total_data'], $page['per_page'], $page['page']);
-			$widget_data['branch-pagination']->setPath(route('hr.branches.index'));
 			$widget_data['branch-display'] 		= $page;
 		}
 

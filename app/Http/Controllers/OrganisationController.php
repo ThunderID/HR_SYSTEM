@@ -235,7 +235,7 @@ class OrganisationController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.organisations.index')->with('local_msg', $errors)->with('alert_success', 'Organisasi "' . $contents->data->name. '" sudah dihapus');
+				return Redirect::route('hr.organisations.index')->with('alert_success', 'Organisasi "' . $contents->data->name. '" sudah dihapus');
 			}
 		}
 		else

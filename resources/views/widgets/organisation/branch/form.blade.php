@@ -2,7 +2,7 @@
 
 @if (!$widget_error_count)
 	@section('widget_title')	
-		<h1> {{ is_null($id) ? 'Tambah Cabang' : 'Ubah '. $BranchComposer['widget_data']['branchlist']['branch']['name']}} </h1> 
+		<h1> {{ is_null($id) ? 'Tambah Cabang' : 'Ubah Cabang "'. $BranchComposer['widget_data']['branchlist']['branch']['name'].'"'}} </h1> 
 	@overwrite
 
 	@section('widget_body')

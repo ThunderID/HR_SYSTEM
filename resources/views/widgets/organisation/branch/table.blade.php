@@ -5,6 +5,14 @@
 	@section('widget_title')
 	<h1> {!! $widget_title  or 'Cabang' !!} </h1>
 	<small>Total data {{$BranchComposer['widget_data']['branchlist']['branch-pagination']->total()}}</small>
+	<?php $BranchComposer['widget_data']['branchlist']['branch-pagination']->setPath(route('hr.branches.index')); ;?>
+
+	<div class="clearfix">&nbsp;</div>
+	@if(!is_null($BranchComposer['widget_data']['branchlist']['active_filter']))
+		@foreach($BranchComposer['widget_data']['branchlist']['active_filter'] as $key => $value)
+			<span class="active-filter">{{$value}}</span>
+		@endforeach
+	@endif
 	@overwrite
 
 	@section('widget_body')
@@ -15,15 +23,20 @@
 				<table class="table">
 					<thead>
 						<tr>
+							<th>No</th>
 							<th>Nama</th>
 							<th>Nomor Telepon</th>
 							<th>Alamat</th>
 							<th>&nbsp;</th>
 						</tr>
 					</thead>
+					<?php $i = $BranchComposer['widget_data']['branchlist']['branch-display']['from'];?>
 					@foreach($BranchComposer['widget_data']['branchlist']['branch'] as $key => $value)
 						<tbody>
 							<tr>
+								<td>
+									{{$i}}
+								</td>
 								<td>
 									{{$value['name']}}
 								</td>
@@ -48,14 +61,19 @@
 								</td>
 							</tr>
 						</tbody>
+						<?php $i++;?>
 					@endforeach
 				</table>
 			</div>
 
 			<div class="row">
 				<div class="col-sm-12 text-center">
-					<p>Menampilkan {!!$BranchComposer['widget_data']['branchlist']['branch-display']['from']!!} - {!!$BranchComposer['widget_data']['branchlist']['branch-display']['to']!!}</p>
-					{!!$BranchComposer['widget_data']['branchlist']['branch-pagination']->appends(Input::all())->render()!!}
+					@if($BranchComposer['widget_data']['branchlist']['branch-pagination']->total()>0)
+						<p>Menampilkan {!!$BranchComposer['widget_data']['branchlist']['branch-display']['from']!!} - {!!$BranchComposer['widget_data']['branchlist']['branch-display']['to']!!}</p>
+						{!!$BranchComposer['widget_data']['branchlist']['branch-pagination']->appends(Input::all())->render()!!}
+					@else
+						Tidak ada data
+					@endif
 				</div>
 			</div>
 

@@ -35,6 +35,7 @@
 				'widget_options'		=> 	[
 												'personlist'		=>
 												[
+													'title'				=> 'Total Karyawan "'.$data['name'].'"',
 													'organisation_id'	=> $data['id'],
 													'search'			=> ['currentwork' => null],
 													'sort'				=> [],
@@ -44,7 +45,7 @@
 											]
 			])
 			
-			@include('widgets.branch.stat.total_branch', [
+			@include('widgets.organisation.branch.stat.total_branch', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> 'Total Cabang '.$data['name'],
 				'widget_options'		=> 	[

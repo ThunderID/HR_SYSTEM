@@ -13,9 +13,6 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			@if (isset($route_back))
-				<a href="{{ $route_back }}" class="btn btn-default btn-back">Kembali</a>
-			@endif
 			<span class="breadcrumb">
 				<a class="" href="{{route('hr.organisations.index')}}">HR SYSTEM</a>
 				@forelse($breadcrumb as $key => $value)

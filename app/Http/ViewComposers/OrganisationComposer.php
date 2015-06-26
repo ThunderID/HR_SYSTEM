@@ -4,7 +4,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Getting;
 use App\Models\Organisation;
-use Input, Validator, App;
+use Input, Validator, App, Paginator;
 
 class OrganisationComposer extends WidgetComposer 
 {
@@ -21,9 +21,9 @@ class OrganisationComposer extends WidgetComposer
 
 	protected function setData($options)
 	{
-		$results 									=  $this->dispatch(new Getting(new Organisation, $options['search'], $options['sort'] , $options['page'], $options['per_page']));
+		$results 							=  $this->dispatch(new Getting(new Organisation, $options['search'], $options['sort'] , $options['page'], $options['per_page']));
 
-		$contents 									= json_decode($results);
+		$contents 							= json_decode($results);
 
 		if(!$contents->meta->success)
 		{
@@ -41,11 +41,15 @@ class OrganisationComposer extends WidgetComposer
 					$this->widget_errors->add('Organisation', $value);
 				}
 			}
-			$widget_data['organisation'] 	= null;
+			$widget_data['organisation'] 				= null;
+			$widget_data['organisation-pagination'] 	= null;
 		}
 		else
 		{
-			$widget_data['organisation'] 	= json_decode(json_encode($contents->data), true);
+			$page 										= json_decode(json_encode($contents->pagination), true);
+			$widget_data['organisation'] 				= json_decode(json_encode($contents->data), true);
+			$widget_data['organisation-pagination'] 	= new Paginator($page['total_data'], $page['total_data'], $page['per_page'], $page['page']);
+			$widget_data['organisation-display'] 		= $page;
 		}
 
 		return $widget_data;

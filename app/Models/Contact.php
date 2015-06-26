@@ -57,6 +57,8 @@ class Contact extends BaseModel {
 
 											'item' 						=> 'Item', 
 											'value' 					=> 'Value', 
+											'default' 					=> 'Default', 
+
 											'messageservices' 			=> 'MessageServices', 
 											'withattributes' 			=> 'WithAttributes'
 										];
@@ -68,6 +70,8 @@ class Contact extends BaseModel {
 
 											'item' 						=> 'Could be array or string', 
 											'value' 					=> 'Could be array or string', 
+											'default' 					=> 'Must be true or false', 
+
 											'messageservices' 			=> 'No Need', 
 											'withattributes' 			=> 'Must be array of relationship'
 										];
