@@ -313,6 +313,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 				Session::put('user.chartname', $contents->data->works[0]->name);
 				Session::put('user.organisationname', $contents->data->works[0]->branch->organisation->name);
 
+				Session::put('user.id', $contents->data->id);
 				Session::put('user.name', $contents->data->name);
 				Session::put('user.email', $contents->data->contacts[0]->value);
 				Session::put('user.gender', $contents->data->gender);

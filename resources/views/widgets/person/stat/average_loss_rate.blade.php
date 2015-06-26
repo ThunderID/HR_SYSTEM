@@ -16,7 +16,7 @@
 						$totalemployee = $totalemployee + 1;
 					?>
 				@endforeach
-				<strong class="text-xl">{{ abs($lossrate / ($totalemployee == 0 ? $totalemployee : 1) * 100 ) }} % </strong><br>
+				<strong class="text-xl">{{ abs(round($lossrate / ($totalemployee != 0 ? $totalemployee : 1) * 100, 2)) }} % </strong><br>
 				<span class="opacity-50">Rerata Time Loss "{{$data['name']}}" Bulan Ini</span>					
 			</div>
 		@endif

@@ -60,7 +60,7 @@ class OrganisationController extends BaseController
 		}
 
 		$attributes 							= Input::only('name');
-		$person 								= Config::get('user.id');
+		$person 								= Session::get('user.id');
 		
 		$errors 								= new MessageBag();
 		
