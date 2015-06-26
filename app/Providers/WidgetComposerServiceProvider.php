@@ -47,7 +47,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// BRANCH
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.branch.table', 'widgets.branch.form'], 	'App\Http\ViewComposers\BranchComposer');
+		View::composer(['widgets.branch.table', 'widgets.branch.form', 'widgets.branch.stat.total_branch'], 	'App\Http\ViewComposers\BranchComposer');
 
 		// -----------------------------------------------------------------------------
 		// CALENDAR
@@ -62,7 +62,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// DOCUMENT
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.document.table', 'widgets.document.form', 'widgets.document.select', 'widgets.person.document.form'], 	'App\Http\ViewComposers\DocumentComposer');
+		View::composer(['widgets.document.table', 'widgets.document.form', 'widgets.document.select', 'widgets.person.document.form', 'widgets.document.stat.total_document'], 	'App\Http\ViewComposers\DocumentComposer');
 
 		// -----------------------------------------------------------------------------
 		// IDLE
@@ -72,7 +72,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// PERSON
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.person.table', 'widgets.person.form', 'widgets.person.select', 'widgets.report.attendance.table', 'widgets.report.wage.table'], 	'App\Http\ViewComposers\PersonComposer');
+		View::composer(['widgets.person.table', 'widgets.person.form', 'widgets.person.select', 'widgets.report.attendance.table', 'widgets.report.wage.table', 'widgets.person.stat.total_employee', 'widgets.person.stat.average_loss_rate'], 	'App\Http\ViewComposers\PersonComposer');
 
 		// -----------------------------------------------------------------------------
 		// CONTACT

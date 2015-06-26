@@ -26,12 +26,14 @@
 		</div>
 		 
 		<ul class="nav navbar-top-links navbar-right">
-			<li>
-				<a href="javascript:;" class="open-filter"><i class="fa fa-search"></i></a>
-			</li>
+			@if(Session::has('allow.filter') && Session::get('allow.filter')==true)
+				<li>
+					<a href="javascript:;" class="open-filter"><i class="fa fa-search"></i></a>
+				</li>
+			@endif
 			<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-					{!! HTML::image('images/male.png', 'alt', array( 'width' => 32, 'height' => 32, 'class' => 'img-rounded' )) !!} Admin &nbsp;&nbsp; <i class="fa fa-caret-down"></i>
+					{!! HTML::image(Session::get('user.avatar'), '', array( 'width' => 32, 'height' => 32, 'class' => 'img-rounded' )) !!} {{Session::get('user.name')}} &nbsp;&nbsp; <i class="fa fa-caret-down"></i>
 				</a>
 				<ul class="dropdown-menu dropdown-user">					
 					<li><a href="#"><i class="fa fa-gear fa-fw"></i> Ganti Password</a></li>					

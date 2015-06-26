@@ -58,7 +58,7 @@ class OrganisationController extends BaseController
 		{
 			$id 								= Input::get('id');
 		}
-		
+
 		$attributes 							= Input::only('name');
 		$person 								= Config::get('user.id');
 		
@@ -87,53 +87,55 @@ class OrganisationController extends BaseController
 				}
 			}
 		}
-
-		if(is_null($id))
+		else
 		{
-			$content_2							= $this->dispatch(new Getting(new Organisation, ['ID' => $is_success->data->id, 'withattributes' => ['branches', 'branches.charts', 'branches.charts.calendars']], ['created_at' => 'asc'] ,1, 1));
-
-			$is_success_2 						= json_decode($content_2);
-
-			if(!$is_success_2->meta->success || !isset($is_success_2->data->branches[0]) || !isset($is_success_2->data->branches[0]->charts[0]))
+			if(is_null($id))
 			{
-				foreach ($is_success_2->meta->errors as $key => $value) 
+				$content_2							= $this->dispatch(new Getting(new Organisation, ['ID' => $is_success->data->id, 'withattributes' => ['branches', 'branches.charts', 'branches.charts.calendars']], ['created_at' => 'asc'] ,1, 1));
+
+				$is_success_2 						= json_decode($content_2);
+
+				if(!$is_success_2->meta->success || !isset($is_success_2->data->branches[0]) || !isset($is_success_2->data->branches[0]->charts[0]))
 				{
-					if(is_array($value))
+					foreach ($is_success_2->meta->errors as $key => $value) 
 					{
-						foreach ($value as $key2 => $value2) 
+						if(is_array($value))
 						{
-							$errors->add('Organisation', $value2);
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Organisation', $value2);
+							}
 						}
-					}
-					else
-					{
-						$errors->add('Organisation', $value);
+						else
+						{
+							$errors->add('Organisation', $value);
+						}
 					}
 				}
-			}
 
-			$work['chart_id'] 					= $is_success_2->data->branches[0]->charts[0]->id;
-			$work['status'] 					= 'admin';
-			$work['position'] 					= 'admin';
-			$work['start'] 						= date('Y-m-d');
+				$work['chart_id'] 					= $is_success_2->data->branches[0]->charts[0]->id;
+				$work['status'] 					= 'admin';
+				$work['position'] 					= 'admin';
+				$work['start'] 						= date('Y-m-d');
 
-			$saved_work 						= $this->dispatch(new Saving(new Work, $work, null, new Person, $person));
-			$is_success_3 						= json_decode($saved_work);
-			
-			if(!$is_success_3->meta->success)
-			{
-				foreach ($is_success_3->meta->errors as $key => $value) 
+				$saved_work 						= $this->dispatch(new Saving(new Work, $work, null, new Person, $person));
+				$is_success_3 						= json_decode($saved_work);
+				
+				if(!$is_success_3->meta->success)
 				{
-					if(is_array($value))
+					foreach ($is_success_3->meta->errors as $key => $value) 
 					{
-						foreach ($value as $key2 => $value2) 
+						if(is_array($value))
 						{
-							$errors->add('Organisation', $value2);
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Organisation', $value2);
+							}
 						}
-					}
-					else
-					{
-						$errors->add('Organisation', $value);
+						else
+						{
+							$errors->add('Organisation', $value);
+						}
 					}
 				}
 			}
@@ -165,9 +167,27 @@ class OrganisationController extends BaseController
 			App::abort(404);
 		}
 	
-		$organisation 				 		= json_decode(json_encode($content->data), true);
+		$data 				 				= json_decode(json_encode($content->data), true);
 
-		$this->layout->page 				= view('pages.organisation.show', compact('organisation', 'id'));
+		if(Input::has('start'))
+		{
+			$start 							= date('Y-m-d', strtotime(Input::get('start')));
+		}
+		else
+		{
+			$start 							= date('Y-m-d', strtotime('first day of this month'));
+		}
+
+		if(Input::has('end'))
+		{
+			$end 							= date('Y-m-d', strtotime(Input::get('end')));
+		}
+		else
+		{
+			$end 							= date('Y-m-d', strtotime('last day of next month'));
+		}
+
+		$this->layout->page 				= view('pages.organisation.show', compact('data', 'id', 'start', 'end'));
 
 		return $this->layout;
 	}

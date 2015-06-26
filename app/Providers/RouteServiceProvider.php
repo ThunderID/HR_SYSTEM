@@ -331,6 +331,15 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 					return Redirect::guest(route('hr.login.get'));
 				}
 
+				if(in_array(strtolower($menu[1]), ['create','update','delete']))
+				{
+					Session::put('allow.filter', false);
+				}
+				else
+				{
+					Session::put('allow.filter', true);
+				}
+
 				Session::put('user.menuid', $contents->data->menu_id);
 				Session::put('user.chartid', $contents->data->chart_id);
 			}
