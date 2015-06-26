@@ -53,7 +53,7 @@ class ContactController extends BaseController
 
 		$branch 								= json_decode(json_encode($contents->data), true);
 		$data 									= $branch['organisation'];
-		$this->layout->page 					= view('pages.branch.show');
+		$this->layout->page 					= view('pages.branch.contact.index');
 		$this->layout->page->controller_name 	= $this->controller_name;
 		$this->layout->page->data 				= $data;
 		$this->layout->page->branch 			= $branch;
