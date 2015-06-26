@@ -7,12 +7,10 @@
 
 	@section('widget_body')	  
 		<div class="clearfix">&nbsp;</div>
-		{!! Form::open(['url' => $DocumentComposer['widget_data']['documentlist']['form_url'], 'class' => 'form-horizontal no_enter']) !!}	
+		{!! Form::open(['url' => $DocumentComposer['widget_data']['documentlist']['form_url'], 'class' => 'form no_enter']) !!}	
 			@foreach($DocumentComposer['widget_data']['documentlist']['document']['templates'] as $key => $value)
 				<div class="form-group">
-					<div class="col-md-2">					
-						<label for="field" class="control-label">{{ucwords($value['field'])}}</label>
-					</div>
+					<label for="field" class="control-label">{{ucwords($value['field'])}}</label>					
 					<?php 
 						$content = null;
 						$detailid = null;
@@ -48,19 +46,15 @@
 								$form 		= '<input type="text" class="form-control" id="text" name="content[]" value="'.$content.'">';
 								break;
 						}
-					;?>
-					<div class="col-md-10">
-						{!!$form!!}
-					</div>
+					;?>					
+					{!!$form!!}					
 					<input type="hidden" class="form-control" id="text" name="template_id[]" value="{{$value['id']}}">
 					<input type="hidden" class="form-control" id="text" name="detail_id[]" value="{{$detailid}}">
 				</div>
 			@endforeach
-			<div class="form-group">
-				<div class="col-md-12 text-right">
-					<a href="{{ $DocumentComposer['widget_data']['documentlist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
-					<input type="submit" class="btn btn-primary" value="Simpan">
-				</div>
+			<div class="form-group text-right">				
+				<a href="{{ $DocumentComposer['widget_data']['documentlist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
+				<input type="submit" class="btn btn-primary" value="Simpan">				
 			</div>
 		{!! Form::close() !!}
 	@overwrite	
