@@ -28,21 +28,17 @@
 	])
 @overwrite
 
-@section('content_body')	
-	@section('content_body')
-	@include('widgets.branch.alert', [
-		'widget_template'		=> 'plain_no_title'
-	])
-
-	@include('widgets.branch.table', [
-		'widget_title'			=> 'Cabang '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
+@section('content_body')
+	@include('widgets.organisation.branch.table', [
+		'widget_title'			=> 'Cabang "'.$data['name'].'" '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_template'		=> 'panel',
 		'widget_options'		=> [ 'branchlist' 				=>
 										[
 											'form_url' 			=> null,
 											'organisation_id'	=> $data['id'],
-											'search'			=> ['defaultcontact' => true],
-											'sort'				=> [],
+											'search'			=> array_merge(['defaultcontact' => true], (isset($filtered['search']) ? $filtered['search'] : [])),
+											'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['name' => 'asc']),
+											'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
 											'per_page'			=> 12,
 											'route_create'		=> route('hr.branches.create', ['org_id' => $data['id']])

@@ -25,10 +25,12 @@
 
  * ---------------------------------------------------------------------- */
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Str, Validator, DateTime, Exception;
 
 class Organisation extends BaseModel {
 	
+	use SoftDeletes;
 	use \App\Models\Traits\HasMany\HasBranchesTrait;
 	use \App\Models\Traits\HasMany\HasDocumentsTrait;
 	use \App\Models\Traits\HasMany\HasPersonsTrait;
@@ -43,7 +45,7 @@ class Organisation extends BaseModel {
 											'name' 						,
 										];
 
-	protected	$dates 				= 	['created_at', 'updated_at', 'deleted_at'];
+	// protected	$dates 				= 	['created_at', 'updated_at', 'deleted_at'];
 
 	protected 	$rules				= 	[
 											'name' 						=> 'required|max:255',

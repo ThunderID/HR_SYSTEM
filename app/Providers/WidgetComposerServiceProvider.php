@@ -47,7 +47,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// BRANCH
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.branch.table', 'widgets.branch.form', 'widgets.branch.stat.total_branch'], 	'App\Http\ViewComposers\BranchComposer');
+		View::composer(['widgets.organisation.branch.table', 'widgets.organisation.branch.form', 'widgets.organisation.branch.stat.total_branch'], 	'App\Http\ViewComposers\BranchComposer');
 
 		// -----------------------------------------------------------------------------
 		// CALENDAR
@@ -92,7 +92,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// FINGERPRINT
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.fingerprint.table', 'widgets.fingerprint.form'], 	'App\Http\ViewComposers\FingerPrintComposer');
+		View::composer(['widgets.fingerprint.table', 'widgets.fingerprint.form', 'widgets.fingerprint.block'], 	'App\Http\ViewComposers\FingerPrintComposer');
 
 		// -----------------------------------------------------------------------------
 		// AUTHENTICATION

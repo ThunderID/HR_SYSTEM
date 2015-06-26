@@ -3,7 +3,7 @@
 		['breadcrumb' 			=> 	[
 										['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
 										['name' => 'Cabang', 'route' => route('hr.branches.index', ['org_id' => $data['id']]) ],
-										['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.branches.create', ['org_id' => $data['id']]) : route('hr.branches.edit', ['org_id' => $data['id'], 'id' => $id]) )]
+										['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.branches.create', ['org_id' => $data['id']]) : route('hr.branches.edit', ['id' => $id, 'org_id' => $data['id']]) )]
 									]
 		])
 @stop
@@ -31,7 +31,7 @@
 @section('content_body')	
 
 
-	@include('widgets.branch.form', [
+	@include('widgets.organisation.branch.form', [
 		'widget_template'		=> 'panel',
 		'widget_title'			=> 'Cabang',
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
