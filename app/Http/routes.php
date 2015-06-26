@@ -11,25 +11,35 @@
 |
 */
 
-Route::group(['prefix' => ''], function()
+// ------------------------------------------------------------------------------------
+// LOGIN PAGE
+// ------------------------------------------------------------------------------------
+
+Route::group(['namespace' => 'Auth\\'], function() 
+{
+	Route::get('/',		 					['uses' => 'LoginController@getLogin',				'as' => 'hr.login']);
+	
+	Route::get('/login', 					['uses' => 'LoginController@getLogin',				'as' => 'hr.login']);
+	
+	Route::post('/login',					['uses' => 'LoginController@postLogin',				'as' => 'hr.postlogin']);
+});
+
+Route::group(['before' => 'hr_acl'], function()
 {
 	// ------------------------------------------------------------------------------------
-	// LOGIN PAGE
+	// LOGOUT PAGE
 	// ------------------------------------------------------------------------------------
 
 	Route::group(['namespace' => 'Auth\\'], function() 
 	{
-		Route::get('/',		 				['uses' => 'LoginController@getLogin',				'as' => 'hr.login']);
-		Route::get('/login', 				['uses' => 'LoginController@getLogin',				'as' => 'hr.login']);
-		Route::post('/login',				['uses' => 'LoginController@postLogin',				'as' => 'hr.postlogin']);
-		Route::get('/logout',				['uses' => 'LoginController@getLogout',				'as' => 'hr.logout']);
+		Route::get('/logout',					['uses' => 'LoginController@getLogout',				'as' => 'hr.logout']);
 	});
 
 	// ------------------------------------------------------------------------------------
 	// LANDING PAGE (CHOOSE ORGANISATION OR CREATE ORGANISATION), SHOW ORGANISATION (STARTED WITH DASHBOARD)
 	// ------------------------------------------------------------------------------------
 
-	Route::resource('organisations',		'OrganisationController',							['names' => ['index' => 'hr.organisations.index', 'create' => 'hr.organisations.create', 'store' => 'hr.organisations.store', 'show' => 'hr.organisations.show', 'edit' => 'hr.organisations.edit', 'update' => 'hr.organisations.update', 'destroy' => 'hr.organisations.delete']]);
+	Route::resource('organisations',			'OrganisationController',							['names' => ['index' => 'hr.organisations.index', 'create' => 'hr.organisations.create', 'store' => 'hr.organisations.store', 'show' => 'hr.organisations.show', 'edit' => 'hr.organisations.edit', 'update' => 'hr.organisations.update', 'destroy' => 'hr.organisations.delete']]);
 
 	Route::group(['namespace' => 'Organisation\\'], function() 
 	{

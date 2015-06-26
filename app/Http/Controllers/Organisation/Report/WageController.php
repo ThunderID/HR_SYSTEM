@@ -49,7 +49,7 @@ class WageController extends BaseController
 			$end 									= date('Y-m-d', strtotime('last day of december '.date('Y')));
 		}
 
-		if(!in_array($org_id, Config::get('user.orgids')))
+		if(!in_array($org_id, Session::get('user.organisationids')))
 		{
 			App::abort(404);
 		}
@@ -82,7 +82,7 @@ class WageController extends BaseController
 			$org_id 							= Session::get('user.organisation');
 		}
 
-		if(!in_array($org_id, Config::get('user.orgids')))
+		if(!in_array($org_id, Session::get('user.organisationids')))
 		{
 			App::abort(404);
 		}

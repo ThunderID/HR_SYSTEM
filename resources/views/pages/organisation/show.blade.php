@@ -17,7 +17,7 @@
 		'widget_options'	=> [
 									'sidebar'				=>
 									[
-										'search'			=> ['id' => Config::get('user.orgids')],
+										'search'			=> ['id' => Session::get('user.organisationids')],
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 100,
