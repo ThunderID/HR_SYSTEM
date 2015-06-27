@@ -122,7 +122,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// PERSON DOCUMENT
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.person.document.table'], 	'App\Http\ViewComposers\PersonDocumentComposer');
+		View::composer(['widgets.common.persondocument.table'], 	'App\Http\ViewComposers\PersonDocumentComposer');
 
 		// -----------------------------------------------------------------------------
 		// RELATIVE

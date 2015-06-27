@@ -89,7 +89,8 @@ class CalendarController extends BaseController
 							$active = $active.'"'.$dirty_filter_value[$key].'"';
 							break;
 					}
-
+					
+					$filter['active'][$filter_search]	= $active;
 				}
 				if (str_is('sort_*', strtolower($value)))
 				{

@@ -46,7 +46,116 @@ class DocumentController extends BaseController
 
 		$data 										= json_decode(json_encode($contents->data), true);
 
-		$this->layout->page 						= view('pages.document.index', compact('data'));
+		$filter 									= [];
+
+		if(Input::has('q'))
+		{
+			$filter['search']['name']				= Input::get('q');
+			$filter['active']['q']					= 'Cari Nama "'.Input::get('q').'"';
+		}
+		if(Input::has('filter'))
+		{
+			$dirty_filter 							= Input::get('key');
+			$dirty_filter_value 					= Input::get('value');
+
+			foreach ($dirty_filter as $key => $value) 
+			{
+				if (str_is('search_*', strtolower($value)))
+				{
+					$filter_search 						= str_replace('search_', '', $value);
+					$filter['search'][$filter_search]	= $dirty_filter_value[$key];
+					$filter['active'][$filter_search]	= $dirty_filter_value[$key];
+					switch (strtolower($filter_search)) 
+					{
+						case 'name':
+							$active = 'Cari Nama ';
+							break;
+
+						case 'tag':
+							$active = 'Cari Kategori ';
+							break;
+						
+						default:
+							$active = 'Cari Nama ';
+							break;
+					}
+
+					switch (strtolower($dirty_filter_value[$key])) 
+					{
+						case 'asc':
+							$active = $active.'"'.$dirty_filter_value[$key].'"';
+							break;
+						
+						default:
+							$active = $active.'"'.$dirty_filter_value[$key].'"';
+							break;
+					}
+
+					$filter['active'][$filter_search]	= $active;
+
+				}
+				if (str_is('sort_*', strtolower($value)))
+				{
+					$filter_sort 						= str_replace('sort_', '', $value);
+					$filter['sort'][$filter_sort]		= $dirty_filter_value[$key];
+					switch (strtolower($filter_sort)) 
+					{
+						case 'name':
+							$active = 'Urutkan Nama';
+							break;
+						
+						default:
+							$active = 'Urutkan Nama';
+							break;
+					}
+
+					switch (strtolower($dirty_filter_value[$key])) 
+					{
+						case 'asc':
+							$active = $active.' (Z-A)';
+							break;
+						
+						default:
+							$active = $active.' (A-Z)';
+							break;
+					}
+
+					$filter['active'][$filter_sort]		= $active;
+				}
+			}
+		}
+
+		unset($search);
+		unset($sort);
+		
+		$search['organisationid']					= $org_id;
+		$search['grouptag']							= true;
+		$sort 										= ['tag' => 'asc'];
+		$results 									= $this->dispatch(new Getting(new Document, $search, $sort , 1, 100));
+		$contents 									= json_decode($results);		
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$doctags 									= json_decode(json_encode($contents->data), true);
+
+		$tags 										= [];
+		foreach ($doctags as $key => $value) 
+		{
+			$tags[$key]['key']						= $value['tag'];
+			$tags[$key]['value']					= $value['tag'];
+		}
+
+		$this->layout->page 						= view('pages.organisation.document.index', compact('data'));
+		$this->layout->page->filter 				= 	[
+															['prefix' => 'search', 'key' => 'tag', 'value' => 'Cari Kategori', 'values' => $tags],
+															['prefix' => 'sort', 'key' => 'name', 'value' => 'Urutkan Nama', 'values' => [['key' => 'asc', 'value' => 'A-Z'], ['key' => 'desc', 'value' => 'Z-A']]]
+														];
+		$this->layout->page->filtered 				= $filter;
+		$this->layout->page->default_filter  		= ['org_id' => $data['id']];
+
 
 		return $this->layout;
 	}
@@ -55,11 +164,11 @@ class DocumentController extends BaseController
 	{
 		if(Input::has('org_id'))
 		{
-			$org_id 							= Input::get('org_id');
+			$org_id 								= Input::get('org_id');
 		}
 		else
 		{
-			$org_id 							= Session::get('user.organisation');
+			$org_id 								= Session::get('user.organisation');
 		}
 
 		if(!in_array($org_id, Session::get('user.organisationids')))
@@ -67,19 +176,18 @@ class DocumentController extends BaseController
 			App::abort(404);
 		}
 
-		$search['id']							= $org_id;
-		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Organisation, $search, $sort , 1, 1));
-		$contents 								= json_decode($results);		
+		$search['id']								= $org_id;
+		$sort 										= ['name' => 'asc'];
+		$results 									= $this->dispatch(new Getting(new Organisation, $search, $sort , 1, 1));
+		$contents 									= json_decode($results);		
 
 		if(!$contents->meta->success)
 		{
 			App::abort(404);
 		}
 
-		$data 									= json_decode(json_encode($contents->data), true);
-
-		$this->layout->page 					= view('pages.document.create', compact('id', 'data'));
+		$data 										= json_decode(json_encode($contents->data), true);
+		$this->layout->page 						= view('pages.organisation.document.create', compact('data', 'id'));
 
 		return $this->layout;
 	}
@@ -109,6 +217,33 @@ class DocumentController extends BaseController
 
 		$errors 								= new MessageBag();
 
+		if(!is_null($id))
+		{
+			$content 							= $this->dispatch(new Getting(new Document, ['id' => $id, 'withattributes' => ['templates']], [], 1, 1));
+
+			$results 							= json_decode($content);
+			if(!$results->meta->success)
+			{
+				foreach ($results->meta->errors as $key => $value) 
+				{
+					if(is_array($value))
+					{
+						foreach ($value as $key2 => $value2) 
+						{
+							$errors->add('Document', $value2);
+						}
+					}
+					else
+					{
+						$errors->add('Document', $value);
+					}
+				}
+			}
+
+			$document 							= json_decode(json_encode($results->data), true);
+			$templates 							= $document['templates'];
+		}
+
 		DB::beginTransaction();
 		
 		$content 								= $this->dispatch(new Saving(new Document, $attributes, $id, new Organisation, $org_id));
@@ -132,42 +267,121 @@ class DocumentController extends BaseController
 			}
 		}
 
+		$ids 									= [];
+
 		if(Input::has('field'))
 		{
 			$fields 							= Input::get('field');
 			$types 								= Input::get('type');
 			$ids 								= Input::get('temp_id');
-
+			
 			foreach ($fields as $key => $value) 
 			{
-				$template['field']				= $value;
-				$template['type']				= $types[$key];
+				if($value!='' && !is_null($value) && $types[$key]!='' && !is_null($types[$key]))
+				{
+					$template['field']				= $value;
+					$template['type']				= $types[$key];
 
-				if(isset($ids[$key]) && $ids[$key]!='' && !is_null($ids[$key]) && (int)$ids[$key])
-				{
-					$template['id']				= $ids[$key];
-				}
-				else
-				{
-					$template['id']				= null;
-				}
-
-				$saved_template 				= $this->dispatch(new Saving(new Template, $template, $template['id'], new Document, $is_success->data->id));
-				$is_success_2 					= json_decode($saved_template);
-				if(!$is_success_2->meta->success)
-				{
-					foreach ($is_success_2->meta->errors as $key => $value) 
+					if(isset($ids[$key]) && $ids[$key]!='' && !is_null($ids[$key]) && (int)$ids[$key])
 					{
-						if(is_array($value))
+						$template['id']				= $ids[$key];
+					}
+					else
+					{
+						$template['id']				= null;
+					}
+
+					$saved_template 				= $this->dispatch(new Saving(new Template, $template, $template['id'], new Document, $is_success->data->id));
+					$is_success_2 					= json_decode($saved_template);
+					if(!$is_success_2->meta->success)
+					{
+						foreach ($is_success_2->meta->errors as $key => $value) 
 						{
-							foreach ($value as $key2 => $value2) 
+							if(is_array($value))
 							{
-								$errors->add('Document', $value2);
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Document', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Document', $value);
 							}
 						}
-						else
+					}
+				}
+			}
+		}
+
+		if(isset($templates))
+		{
+			foreach ($templates as $key => $value) 
+			{
+				if(!in_array($value['id'], $ids))
+				{
+					$search 						= ['organisationid' => $org_id, 'id' => $id];
+					$results 						= $this->dispatch(new Getting(new Document, $search, [] , 1, 1));
+					$contents 						= json_decode($results);
+					
+					if(!$contents->meta->success)
+					{
+						foreach ($contents->meta->errors as $key => $value) 
 						{
-							$errors->add('Document', $value);
+							if(is_array($value))
+							{
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Document', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Document', $value);
+							}
+						}
+					}
+
+					$search 						= ['id' => $value['id'], 'documentid' => $id];
+					$results 						= $this->dispatch(new Getting(new Template, $search, [] , 1, 1));
+					$contents 						= json_decode($results);
+					
+					if(!$contents->meta->success)
+					{
+						foreach ($contents->meta->errors as $key => $value) 
+						{
+							if(is_array($value))
+							{
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Document', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Document', $value);
+							}
+						}
+					}
+
+					$results 						= $this->dispatch(new Deleting(new Template, $value['id']));
+					$contents 						= json_decode($results);
+
+					if (!$contents->meta->success)
+					{
+						foreach ($contents->meta->errors as $key => $value) 
+						{
+							if(is_array($value))
+							{
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Document', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Document', $value);
+							}
 						}
 					}
 				}
@@ -213,7 +427,7 @@ class DocumentController extends BaseController
 		$data 									= $document['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.document.show', compact('id', 'data', 'document'));
+		$this->layout->pages 					= view('pages.organisation.document.show', compact('id', 'data', 'document'));
 		$this->layout->pages->data 				= $data;
 		$this->layout->pages->document 			= $document;
 		$this->layout->pages->route_back 		= route('hr.documents.index', ['org_id' => $org_id]);
@@ -268,7 +482,7 @@ class DocumentController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.documents.index', ['org_id' => $org_id])->with('local_msg', $errors)->with('alert_success', 'Cabang "' . $contents->data->name. '" sudah dihapus');
+				return Redirect::route('hr.documents.index', ['org_id' => $org_id])->with('alert_success', 'Cabang "' . $contents->data->name. '" sudah dihapus');
 			}
 		}
 		else

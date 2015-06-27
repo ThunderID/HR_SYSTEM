@@ -30,19 +30,19 @@
 				<div class="col-xs-12 col-sm-12 col-md-12">					
 					<div class="btn-group">
 						<select name="key[]" id="" class="form-control">
-							@foreach($filter as $key => $value)															
+							@foreach($filter as $key => $value)
 								<option value="{{ $value['prefix'].'_'.$value['key'] }}">{{ $value['value'] }}</option>
 							@endforeach							
 						</select>						
 					</div>
 					<div class="btn-group ml-10">
 						<select name="value[]" id="" class="form-control">
-							@foreach($filter as $key => $value)															
+							@foreach($filter as $key => $value)
 								@foreach($value['values'] as $value2)
 									<option value="{{ $value2['key'] }}">{{ $value2['value'] }}</option>
 								@endforeach
 							@endforeach
-						</select>						
+						</select>
 					</div>
 				</div>
 			</div>

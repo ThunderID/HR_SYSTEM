@@ -2,7 +2,14 @@
 
 @if (!$widget_error_count)
 	<?php
-		$PersonDocumentComposer['widget_data']['documentlist']['document-pagination']->setPath(route('hr.person.documents.index'));
+		if(isset($PersonDocumentComposer['widget_data']['documentlist']['route_read']))
+		{
+			$PersonDocumentComposer['widget_data']['documentlist']['document-pagination']->setPath($PersonDocumentComposer['widget_data']['documentlist']['route_read']);
+		}
+		else
+		{
+			$PersonDocumentComposer['widget_data']['documentlist']['document-pagination']->setPath(route('hr.person.documents.index'));
+		}
 	?>
 	@section('widget_title')
 	<h1> {!! $widget_title or 'Dokumen Karyawan'!!} </h1>
@@ -17,8 +24,8 @@
 				<table class="table">
 					<thead>
 						<tr class="row">
-							<th class="col-sm-2">Dokumen</th>
-							<th class="col-sm-4">Jenis</th>
+							<th class="col-sm-2">{{(isset($PersonDocumentComposer['widget_data']['documentlist']['document'][0]['document']) ? 'Dokumen' : 'Karyawan')}}</th>
+							<th class="col-sm-4">{{(isset($PersonDocumentComposer['widget_data']['documentlist']['document'][0]['document']) ? 'Jenis' : '')}}</th>
 							<th class="col-sm-4">Dikeluarkan Tanggal</th>
 							<th class="col-sm-2">&nbsp;</th>
 						</tr>
@@ -27,18 +34,18 @@
 						<tbody>
 							<tr class="row">
 								<td class="col-sm-2">
-									{{$value['document']['name']}}
+									{{(isset($value['document']['name']) ? $value['document']['name'] : $value['person']['name'])}}
 								</td>
 								<td class="col-sm-4">
-									{{$value['document']['tag']}}
+									{{(isset($value['document']['tag']) ? $value['document']['tag'] : '')}}
 								</td>
 								<td class="col-sm-2">
 									@date_indo($value['created_at'])
 								</td>
 								<td class="text-right col-sm-4">
-									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.documents.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']]) }}"><i class="fa fa-trash"></i></a>
-									<a href="{{route('hr.person.documents.edit', [$value['id'], 'doc_id' => $value['document_id'], 'org_id' => $data['id'], 'person_id' => $person['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-									<a href="{{route('hr.person.documents.show', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
+									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.documents.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $value['person_id']]) }}"><i class="fa fa-trash"></i></a>
+									<a href="{{route('hr.person.documents.edit', [$value['id'], 'doc_id' => $value['document_id'], 'org_id' => $data['id'], 'person_id' => $value['person_id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									<a href="{{route('hr.person.documents.show', [$value['id'], 'org_id' => $data['id'], 'person_id' => $value['person_id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
 								</td>
 							</tr>
 						</tbody>

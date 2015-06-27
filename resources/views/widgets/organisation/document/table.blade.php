@@ -4,6 +4,14 @@
 	@section('widget_title')
 	<h1> {!! $widget_title  or 'Template Dokumen' !!} </h1>
 	<small>Total data {{$DocumentComposer['widget_data']['documentlist']['document-pagination']->total()}}</small>
+	
+	<div class="clearfix">&nbsp;</div>
+	@if(!is_null($DocumentComposer['widget_data']['documentlist']['active_filter']))
+		@foreach($DocumentComposer['widget_data']['documentlist']['active_filter'] as $key => $value)
+			<span class="active-filter">{{$value}}</span>
+		@endforeach
+	@endif
+
 	@overwrite
 
 	@section('widget_body')
