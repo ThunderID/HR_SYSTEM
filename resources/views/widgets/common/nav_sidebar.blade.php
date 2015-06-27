@@ -32,7 +32,7 @@
                                             <li @if(isset($branch['id'])||(Input::get('branch_id'))) class="active" @endif>
                                                 <a href="javascript:;">{{ $branch['name'] }} <span class="fa arrow"></span></a>
                                                 <ul class="nav nav-fifty-level">
-                                                    <li @if($active_branch=='active_branch_edit') class="active-li" @endif>
+                                                    <li >
                                                         <a href="{{ route('hr.branches.edit', [$branch['id'], 'org_id' => $value['id'], 'branch_id' => $branch['id']]) }}">Ubah</a>
                                                     </li>
                                                     <li>
