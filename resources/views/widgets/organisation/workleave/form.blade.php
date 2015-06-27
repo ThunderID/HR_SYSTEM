@@ -2,7 +2,7 @@
 
 @if (!$widget_error_count)
 	@section('widget_title')
-		<h1> {{ is_null($id) ? 'Tambah Template Cuti' : 'Ubah Template Cuti '. $WorkleaveComposer['widget_data']['workleavelist']['workleave']['name']}} </h1> 
+		<h1> {{ is_null($id) ? 'Tambah Template Cuti' : 'Ubah Template Cuti "'. $WorkleaveComposer['widget_data']['workleavelist']['workleave']['name'].'"' }} </h1> 
 	@overwrite
 
 	@section('widget_body')
@@ -14,7 +14,7 @@
 			</div>
 			<div class="form-group">				
 				<label class="control-label">Quota</label>				
-				{!!Form::input('text', 'quota', $WorkleaveComposer['widget_data']['workleavelist']['workleave']['quota'], ['class' => 'form-control', 'tabindex' => '2'])!!}				
+				{!!Form::input('number', 'quota', $WorkleaveComposer['widget_data']['workleavelist']['workleave']['quota'], ['class' => 'form-control', 'tabindex' => '2'])!!}				
 			</div>
 			<div class="form-group text-right">				
 				<a href="{{ $WorkleaveComposer['widget_data']['workleavelist']['route_back'] }}" class="btn btn-default mr-5" tabindex="4">Batal</a>

@@ -46,10 +46,12 @@ class BranchController extends BaseController
 		if(Input::has('q'))
 		{
 			$filter['search']['name']			= Input::get('q');
+			$filter['active']['q']				= 'Cari Nama "'.Input::get('q').'"';
+		}
+		if(Input::has('filter'))
+		{
 			$dirty_filter 						= Input::get('key');
 			$dirty_filter_value 				= Input::get('value');
-			$filter['active']['q']				= 'Cari Nama "'.Input::get('q').'"';
-
 			foreach ($dirty_filter as $key => $value) 
 			{
 				if (str_is('search_*', strtolower($value)))
@@ -118,6 +120,7 @@ class BranchController extends BaseController
 		$this->layout->page->data 				= $data;
 		$this->layout->page->filter 			= [['prefix' => 'sort', 'key' => 'name', 'value' => 'Urutkan Nama', 'values' => [['key' => 'asc', 'value' => 'A-Z'], ['key' => 'desc', 'value' => 'Z-A']]]];
 		$this->layout->page->filtered 			= $filter;
+		$this->layout->page->default_filter 	= ['org_id' => $data['id']];
 
 		$this->layout->page->route_back 		= route('hr.organisations.show', $org_id);
 

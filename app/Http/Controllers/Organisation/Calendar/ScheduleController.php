@@ -158,7 +158,7 @@ class ScheduleController extends BaseController
 			{
 				if(in_array(strtolower($period->format('l')), $workdays))
 				{
-					$schedule[$k]['id']				= $sh['id'];
+					$schedule[$k]['id']				= $calendar['id'];
 					$schedule[$k]['title'] 			= 'Masuk Kerja';
 					$schedule[$k]['start']			= $period->format('Y-m-d').'T'.$calendar['start'];
 					$schedule[$k]['end']			= $period->format('Y-m-d').'T'.$calendar['end'];
