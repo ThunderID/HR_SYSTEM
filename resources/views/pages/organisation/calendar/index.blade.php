@@ -14,7 +14,8 @@
 										'search'			=> [],
 										'sort'				=> ['name' => 'asc'],
 										'page'				=> 1,
-										'per_page'			=> 100,
+										'per_page'			=> 20,
+										'active_calendar'	=> 'yes'
 									]
 								]
 	])

@@ -61,7 +61,7 @@ class AuthenticationController extends BaseController
 		$data 							= $chart['branch']['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 			= view('pages.authentication.index');
+		$this->layout->pages 			= view('pages.organisation.branch.chart.authentication.index');
 		$this->layout->pages->data 		= $data;
 		$this->layout->pages->branch 	= $branch;
 		$this->layout->pages->chart 	= $chart;

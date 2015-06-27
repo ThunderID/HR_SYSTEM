@@ -21,13 +21,14 @@
 											'sort'				=> [],
 											'page'				=> 1,
 											'per_page'			=> 100,
+											'active_api_branch'	=> 'yes'
 										]
 									]
 	])
 @overwrite
 
 @section('content_body')
-	@include('widgets.api.table', [
+	@include('widgets.organisation.branch.api.table', [
 		'widget_title'			=> 'API Cabang '.$branch['name'].((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_template'		=> 'panel',
 		'widget_options'		=> 	[

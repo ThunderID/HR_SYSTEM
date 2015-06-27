@@ -18,10 +18,11 @@
 		'widget_options'		=> 	[
 										'sidebar'				=> 
 										[
-											'search'			=> ['withattributes' => 'branches'],
-											'sort'				=> [],
-											'page'				=> 1,
-											'per_page'			=> 100,
+											'search'				=> ['withattributes' => 'branches'],
+											'sort'					=> [],
+											'page'					=> 1,
+											'per_page'				=> 100,
+											'active_contact_branch' => 'yes'
 										]
 									]
 	])
@@ -31,7 +32,7 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.contact.form', [
+	@include('widgets.common.contact.form', [
 		'widget_template'	=> 'panel',
 		'widget_options'	=> 	[
 									'contactlist'			=>

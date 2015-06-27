@@ -1,3 +1,11 @@
+<?php
+	if($id){
+		$active = 'active_edit_org';
+	} else {
+		$active = 'active_create_org';
+	}
+?>
+
 @section('nav_topbar')
 	@if(is_null($id))
 		@include('widgets.common.nav_topbar', 
@@ -23,13 +31,14 @@
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
-		'widget_options'	=> [
+		'widget_options'		=> [
 									'sidebar'				=>
 									[
 										'search'			=> ['id' => Session::get('user.organisationids')],
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 100,
+										'active_form'		=> $active
 									]
 								]
 	])
