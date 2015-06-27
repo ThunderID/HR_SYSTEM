@@ -21,10 +21,16 @@
 @overwrite
 
 @section('content_filter')
+	@include('widgets.common.filter', [
+		'widget_template'		=> 'plain_no_title',
+		'widget_options'		=> [
+									'form_url'	=> route('hr.persons.index', ['org_id' => $data['id'], 'page' => (Input::has('page') ? Input::get('page') : 1)])
+									],
+	])
 @overwrite
 
-@section('content_body')	
-	@include('widgets.person.table', [
+@section('content_body')
+	@include('widgets.organisation.person.table', [
 		'widget_template'		=> 'panel',
 		'widget_title'			=> 'Data Karyawan '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
@@ -33,8 +39,9 @@
 										'personlist'			=>
 										[
 											'organisation_id'	=> $data['id'],
-											'search'			=> ['currentwork' => null, 'defaultemail' => true, 'checkwork' => true, 'withattributes' => ['works.branch']],
-											'sort'				=> ['name' => 'asc'],
+											'search'			=> array_merge(['currentwork' => null, 'defaultemail' => true, 'checkwork' => true, 'withattributes' => ['works.branch']], (isset($filtered['search']) ? $filtered['search'] : [])),
+											'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['name' => 'asc']),
+											'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
 											'per_page'			=> 12,
 											'route_create'		=> route('hr.persons.create', ['org_id' => $data['id']])

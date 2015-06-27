@@ -2,8 +2,15 @@
 
 @if (!$widget_error_count)
 	@section('widget_title')
-	<h1> {!! $widget_title  or 'Data Karyawan' !!} </h1>
-	<small>Total data {{$PersonComposer['widget_data']['personlist']['person-pagination']->total()}}</small>
+		<h1> {!! $widget_title  or 'Data Karyawan' !!} </h1>
+		<small>Total data {{$PersonComposer['widget_data']['personlist']['person-pagination']->total()}}</small>
+
+		<div class="clearfix">&nbsp;</div>
+		@if(!is_null($PersonComposer['widget_data']['personlist']['active_filter']))
+			@foreach($PersonComposer['widget_data']['personlist']['active_filter'] as $key => $value)
+				<span class="active-filter">{{$value}}</span>
+			@endforeach
+		@endif
 	@overwrite
 
 	@section('widget_body')

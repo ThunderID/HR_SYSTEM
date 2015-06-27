@@ -30,7 +30,7 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.person.form', [
+	@include('widgets.organisation.person.form', [
 		'widget_template'		=> 'panel',
 		'widget_options'		=> 	[
 										'personlist'			=>

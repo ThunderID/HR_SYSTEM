@@ -19,7 +19,6 @@ class DocumentController extends BaseController
 
 	public function index()
 	{		
-
 		if(Input::has('org_id'))
 		{
 			$org_id 								= Input::get('org_id');

@@ -13,6 +13,7 @@ use App\Models\Work;
 use App\Models\PersonDocument;
 use App\Models\DocumentDetail;
 use App\Models\Contact;
+use App\Models\Branch;
 use App\Models\PersonSchedule;
 
 class PersonController extends BaseController 
@@ -48,7 +49,141 @@ class PersonController extends BaseController
 
 		$data 										= json_decode(json_encode($contents->data), true);
 
-		$this->layout->page 						= view('pages.person.index', compact('data'));
+		unset($search);
+		unset($sort);
+
+		$search 									= ['organisationid' => $org_id, 'withattributes' => ['charts']];
+		$results 									= $this->dispatch(new Getting(new Branch, $search, [] , 1, 100));
+		$contents 									= json_decode($results);
+		
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$branch 									= json_decode(json_encode($contents->data), true);
+
+		$tags 										= [];
+
+		foreach ($branch as $key => $value) 
+		{
+			$branches[$key]['key'] 					= $value['id'];
+			$branches[$key]['value'] 				= $value['name'];
+			if(isset($filter['search']['branchid']))
+			{
+				foreach ($value['charts'] as $key2 => $value2) 
+				{
+					if(!in_array($value2['tag'], $tags))
+					{
+						$charts[$key]['key'] 		= $value2['tag'];
+						$charts[$key]['value'] 		= $value2['tag'];
+						$tags[]						= $value2['tag'];
+					}
+				}
+			}
+		}
+
+		$filter 									= [];
+		if(Input::has('q'))
+		{
+			$filter['search']['name']				= Input::get('q');
+			$filter['active']['q']					= 'Cari Nama "'.Input::get('q').'"';
+		}
+		if(Input::has('filter'))
+		{
+			$dirty_filter 							= Input::get('key');
+			$dirty_filter_value 					= Input::get('value');
+
+			foreach ($dirty_filter as $key => $value) 
+			{
+				if (str_is('search_*', strtolower($value)))
+				{
+					$filter_search 						= str_replace('search_', '', $value);
+					$filter['search'][$filter_search]	= $dirty_filter_value[$key];
+					$filter['active'][$filter_search]	= $dirty_filter_value[$key];
+					switch (strtolower($filter_search)) 
+					{
+						case 'name':
+							$active = 'Cari Nama ';
+							break;
+
+						case 'branchid':
+							$active = 'Cari Cabang ';
+							break;
+
+						case 'charttag':
+							$active = 'Cari Departemen ';
+							break;
+						
+						default:
+							$active = 'Cari Nama ';
+							break;
+					}
+
+					switch (strtolower($dirty_filter_value[$key])) 
+					{
+						//need to enhance to get branch name
+						case 'asc':
+							$active = $active.'"'.$dirty_filter_value[$key].'"';
+							break;
+						
+						default:
+							$active = $active.'"'.$dirty_filter_value[$key].'"';
+							break;
+					}
+
+					$filter['active'][$filter_search]	= $active;
+
+				}
+				if (str_is('sort_*', strtolower($value)))
+				{
+					$filter_sort 						= str_replace('sort_', '', $value);
+					$filter['sort'][$filter_sort]		= $dirty_filter_value[$key];
+					switch (strtolower($filter_sort)) 
+					{
+						case 'name':
+							$active = 'Urutkan Nama';
+							break;
+						
+						default:
+							$active = 'Urutkan Nama';
+							break;
+					}
+
+					switch (strtolower($dirty_filter_value[$key])) 
+					{
+						case 'asc':
+							$active = $active.' (Z-A)';
+							break;
+						
+						default:
+							$active = $active.' (A-Z)';
+							break;
+					}
+
+					$filter['active'][$filter_sort]		= $active;
+				}
+			}
+		}
+
+		$this->layout->page 						= view('pages.organisation.person.index', compact('data'));
+		$filters 									= 	[
+															['prefix' => 'search', 'key' => 'gender', 'value' => 'Cari Gender', 'values' => [['key' => 'female', 'value' => 'Wanita'], ['key' => 'male', 'value' => 'Pria']]],
+															['prefix' => 'sort', 'key' => 'name', 'value' => 'Urutkan Nama', 'values' => [['key' => 'asc', 'value' => 'A-Z'], ['key' => 'desc', 'value' => 'Z-A']]]
+														];
+
+		if(isset($branches))
+		{
+			$filters[] 					 			= ['prefix' => 'search', 'key' => 'branchid', 'value' => 'Cari Di Cabang', 'values' => $branches];
+		}
+		if(isset($charts))
+		{
+			$filters[] 					 			= ['prefix' => 'search', 'key' => 'charttag', 'value' => 'Cari Di Departemen', 'values' => $charts];
+		}
+
+		$this->layout->page->filter 				= $filters;
+		$this->layout->page->filtered 				= $filter;
+		$this->layout->page->default_filter  		= ['org_id' => $data['id']];
 
 		return $this->layout;
 	}
@@ -81,7 +216,7 @@ class PersonController extends BaseController
 
 		$data 									= json_decode(json_encode($contents->data), true);
 
-		$this->layout->page 					= view('pages.person.create', compact('id', 'data'));
+		$this->layout->page 					= view('pages.organisation.person.create', compact('id', 'data'));
 
 		return $this->layout;
 	}
@@ -190,7 +325,7 @@ class PersonController extends BaseController
 
 		$person 								= json_decode(json_encode($contents->data), true);
 		$data 									= $person['organisation'];
-		$this->layout->page 					= view('pages.person.show');
+		$this->layout->page 					= view('pages.organisation.person.show');
 		$this->layout->page->controller_name 	= $this->controller_name;
 		$this->layout->page->data 				= $data;
 		$this->layout->page->person 			= $person;
