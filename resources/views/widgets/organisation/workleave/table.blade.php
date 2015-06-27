@@ -4,6 +4,14 @@
 	@section('widget_title')
 	<h1> {!! $widget_title  or 'Template Cuti' !!} </h1>
 	<small>Total data {{$WorkleaveComposer['widget_data']['workleavelist']['workleave-pagination']->total()}}</small>
+	
+	<div class="clearfix">&nbsp;</div>
+	@if(!is_null($WorkleaveComposer['widget_data']['workleavelist']['active_filter']))
+		@foreach($WorkleaveComposer['widget_data']['workleavelist']['active_filter'] as $key => $value)
+			<span class="active-filter">{{$value}}</span>
+		@endforeach
+	@endif
+
 	@overwrite
 
 	@section('widget_body')
@@ -14,14 +22,19 @@
 				<table class="table">
 					<thead>
 						<tr>
+							<th>No</th>
 							<th>Nama Cuti</th>
 							<th>Quota Cuti</th>
 							<th>&nbsp;</th>
 						</tr>
 					</thead>
+					<?php $i = $WorkleaveComposer['widget_data']['workleavelist']['workleave-display']['from'];?>
 					@foreach($WorkleaveComposer['widget_data']['workleavelist']['workleave'] as $key => $value)
 						<tbody>
 							<tr>
+								<td>
+									{{$i}}
+								</td>
 								<td>
 									{{$value['name']}}
 								</td>
@@ -31,11 +44,11 @@
 								<td class="text-right">
 									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.workleaves.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash"></i></a>
 									<a href="{{route('hr.workleaves.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-									<a href="{{route('hr.workleave.charts.create', ['workleave_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-plus"></i></a>
-									{{-- <a href="" class="btn btn-default"><i class="fa fa-eye"></i></a> --}}
+									<!-- <a href="{{route('hr.workleave.charts.create', ['workleave_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-plus"></i></a> -->
 								</td>
 							</tr>
 						</tbody>
+						<?php $i++;?>
 					@endforeach
 				</table>
 			</div>

@@ -22,15 +22,20 @@
 				<table class="table">
 					<thead>
 						<tr class="row">
+							<th class="col-sm-1">No</th>
 							<th class="col-sm-3">Nama Kalender</th>
 							<th class="col-sm-4">Hari Kerja</th>
 							<th class="col-sm-2">Jam Kerja</th>
-							<th class="col-sm-3">&nbsp;</th>
+							<th class="col-sm-2">&nbsp;</th>
 						</tr>
 					</thead>
+					<?php $i = $CalendarComposer['widget_data']['calendarlist']['calendar-display']['from'];?>
 					@foreach($CalendarComposer['widget_data']['calendarlist']['calendar'] as $key => $value)
 						<tbody>
 							<tr class="row">
+								<td>
+									{{$i}}
+								</td>
 								<td>
 									{{$value['name']}}
 								</td>
@@ -48,6 +53,7 @@
 								</td>
 							</tr>
 						</tbody>
+						<?php $i++;?>
 					@endforeach
 				</table>
 			</div>

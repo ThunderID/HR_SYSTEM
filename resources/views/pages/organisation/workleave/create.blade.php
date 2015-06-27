@@ -10,14 +10,13 @@
 
 @section('nav_sidebar')
 	@include('widgets.common.nav_sidebar', [
-		'widget_template'		=> 'plain',
+		'widget_template'		=> 'plain_no_title',
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
 										'sidebar'				=> 
 										[
-											'identifier'		=> 1,
 											'search'			=> [],
 											'sort'				=> [],
 											'page'				=> 1,
@@ -31,14 +30,13 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.workleave.form', [
+	@include('widgets.organisation.workleave.form', [
 		'widget_template'	=> 'panel',
 		'widget_options'	=> 	[
 									'workleavelist'			=>
 									[
 										'form_url'			=> route('hr.workleaves.store', ['id' => $id, 'org_id' => $data['id']]),
 										'organisation_id'	=> $data['id'],
-										'identifier'		=> 1,
 										'search'			=> ['id' => $id],
 										'sort'				=> [],
 										'page'				=> 1,

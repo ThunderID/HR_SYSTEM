@@ -17,7 +17,7 @@ use App\Models\Follow;
 class CalendarController extends BaseController 
 {
 
-	protected $controller_name 					= 'kalender';
+	protected $controller_name 						= 'kalender';
 
 	public function index()
 	{		
@@ -48,17 +48,17 @@ class CalendarController extends BaseController
 
 		$data 										= json_decode(json_encode($contents->data), true);
 
-		$filter 								= [];
+		$filter 									= [];
 
 		if(Input::has('q'))
 		{
-			$filter['search']['name']			= Input::get('q');
-			$filter['active']['q']				= 'Cari Nama "'.Input::get('q').'"';
+			$filter['search']['name']				= Input::get('q');
+			$filter['active']['q']					= 'Cari Nama "'.Input::get('q').'"';
 		}
 		if(Input::has('filter'))
 		{
-			$dirty_filter 						= Input::get('key');
-			$dirty_filter_value 				= Input::get('value');
+			$dirty_filter 							= Input::get('key');
+			$dirty_filter_value 					= Input::get('value');
 
 			foreach ($dirty_filter as $key => $value) 
 			{
@@ -121,7 +121,6 @@ class CalendarController extends BaseController
 				}
 			}
 		}
-
 
 		$this->layout->page 						= view('pages.organisation.calendar.index', compact('data'));
 		$this->layout->page->filter 				= [['prefix' => 'sort', 'key' => 'name', 'value' => 'Urutkan Nama', 'values' => [['key' => 'asc', 'value' => 'A-Z'], ['key' => 'desc', 'value' => 'Z-A']]]];

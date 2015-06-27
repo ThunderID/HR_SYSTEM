@@ -21,9 +21,6 @@
 @overwrite
 
 @section('content_filter')
-@overwrite
-
-@section('content_filter')
 	@include('widgets.common.filter', [
 		'widget_template'		=> 'plain_no_title',
 		'widget_options'		=> [
