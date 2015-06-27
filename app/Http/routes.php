@@ -15,6 +15,43 @@
 // LOGIN PAGE
 // ------------------------------------------------------------------------------------
 
+Route::get('/api/activity/logs/',['uses' => 'LoginController@getLogout','as' => 'hr.logout']);
+
+
+Route::get('test/presence', function()
+{
+	try
+	{
+		fsockopen('localhost', '8400', $errno, $errstr, 60);
+	}
+	catch (Exception $e) 
+	{
+		print_r($e);
+	}
+
+
+	// $api 										= new \App\APIConnector\OUTENGINE\API;
+	$json										= '{"method":"guru.test","id":123}';
+	$new 										= json_encode($json);
+	$input 										= json_decode($new, true);
+	// print_r($new . "</br>");
+	// print_r($input);
+
+
+	$curl 			= curl_init("http://localhost:8400/api/activity/logs/");
+		curl_setopt($curl, CURLOPT_HEADER, false);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_HTTPHEADER,
+			array("Content-type: application/json"));
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $new);
+		$results 		= curl_exec($curl);
+
+		dd($results);
+	exit;
+});
+
+
 Route::group(['namespace' => 'Auth\\'], function() 
 {
 	Route::get('/',		 					['uses' => 'LoginController@getLogin',				'as' => 'hr.login']);
@@ -228,6 +265,10 @@ Route::group(['before' => 'hr_acl'], function()
 
 	});
 });	
+
+
+
+
 
 Blade::extend(function ($value, $compiler)
 {
