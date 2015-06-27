@@ -23,10 +23,10 @@
 					<thead>
 						<tr class="row">
 							<th class="col-sm-1">No</th>
-							<th class="col-sm-3">Nama Kalender</th>
+							<th class="col-sm-2">Nama Kalender</th>
 							<th class="col-sm-4">Hari Kerja</th>
 							<th class="col-sm-2">Jam Kerja</th>
-							<th class="col-sm-2">&nbsp;</th>
+							<th class="col-sm-3">&nbsp;</th>
 						</tr>
 					</thead>
 					<?php $i = $CalendarComposer['widget_data']['calendarlist']['calendar-display']['from'];?>
@@ -50,6 +50,7 @@
 									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.calendars.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash"></i></a>
 									<a href="{{route('hr.calendars.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 									<a href="{{route('hr.calendars.show', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
+									<a href="{{route('hr.calendar.charts.index', ['cal_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-list"></i></a>
 								</td>
 							</tr>
 						</tbody>

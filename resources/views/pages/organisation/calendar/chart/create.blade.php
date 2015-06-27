@@ -1,17 +1,18 @@
 @section('nav_topbar')
 	@include('widgets.common.nav_topbar', 
-	['breadcrumb' => [
-						['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
-						['name' => $calendar['name'], 'route' => route('hr.calendars.show', ['id' => $calendar['id'], 'cal_id' => $calendar['id'],'org_id' => $data['id'] ])], 
-						['name' => 'Jabatan', 'route' => route('hr.calendar.charts.index', ['id' => $id, 'cal_id' => $calendar['id'], 'org_id' => $data['id'] ])], 
-						['name' => (is_null($id) ? 'Tambah' : 'Ubah '), 'route' => (is_null($id) ? route('hr.calendar.charts.create', ['org_id' => $data['id'], 'cal_id' => $calendar['id']]) : route('hr.calendar.charts.edit', ['org_id' => $data['id'], 'cal_id' => $calendar['id'], 'id' => $id]) )]
-					]
-	])
+		['breadcrumb' 		=> 	[
+									['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
+									['name' => 'Kalender', 'route' => route('hr.calendars.index', ['org_id' => $data['id']]) ],
+									['name' => $calendar['name'], 'route' => route('hr.calendars.show', ['id' => $calendar['id'], 'org_id' => $data['id']]) ],
+									['name' => 'Kalender Kerja', 'route' => route('hr.calendar.charts.index', ['org_id' => $data['id'], 'cal_id' => $calendar['id']]) ],
+									['name' => (is_null($id) ? 'Tambah' : 'Ubah '), 'route' => (is_null($id) ? route('hr.calendar.charts.create', ['org_id' => $data['id'], 'cal_id' => $calendar['id']]) : route('hr.calendar.charts.edit', ['org_id' => $data['id'], 'cal_id' => $calendar['id'], 'id' => $id]) )]
+								]
+		])
 @stop
 
 @section('nav_sidebar')
 	@include('widgets.common.nav_sidebar', [
-		'widget_template'		=> 'plain',
+		'widget_template'		=> 'plain_no_title',
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
@@ -31,7 +32,7 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.calendar.chart.form', [
+	@include('widgets.organisation.calendar.chart.form', [
 		'widget_template'	=> 'panel',
 		'widget_options'	=> 	[
 									'followlist'			=>
