@@ -54,7 +54,7 @@ class ChartController extends BaseController
 		$data 							= $calendar['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 			= view('pages.calendar.chart.index');
+		$this->layout->pages 			= view('pages.organisation.calendar.chart.index');
 		$this->layout->pages->data 		= $data;
 		$this->layout->pages->calendar 	= $calendar;
 		return $this->layout;
@@ -101,7 +101,7 @@ class ChartController extends BaseController
 		$data 									= $calendar['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.calendar.chart.create', compact('id', 'data', 'calendar'));
+		$this->layout->pages 					= view('pages.organisation.calendar.chart.create', compact('id', 'data', 'calendar'));
 
 		return $this->layout;
 	}

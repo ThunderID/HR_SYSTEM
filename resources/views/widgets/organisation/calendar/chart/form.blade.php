@@ -3,7 +3,7 @@
 @if (!$widget_error_count)
 
 	@section('widget_title')
-	<h1> {{ (is_null($id) ? 'Tambah Jabatan untuk Kalender ' : 'Ubah Jabatan untuk Kalender '). $calendar['name']}} </h1> 
+	<h1> {{ (is_null($id) ? 'Tambah Jabatan untuk Kalender Kerja ' : 'Ubah Jabatan untuk Kalender Kerja '). '"'.$calendar['name']. '"'}} </h1> 
 	@overwrite
 
 	@section('widget_body')
@@ -14,7 +14,7 @@
 					<label class="control-label">Jabatan</label>
 				</div>	
 				<div class="col-md-10">
-					@include('widgets.chart.select', [
+					@include('widgets.organisation.branch.chart.select', [
 						'widget_options'		=> 	[
 														'chartlist'			=>
 														[
@@ -24,6 +24,7 @@
 															'page'				=> 1,
 															'per_page'			=> 100,
 															'chart_id'			=> $FollowComposer['widget_data']['followlist']['follow']['chart_id'],
+															'tabindex'			=> 1,
 														]
 													]
 					])

@@ -106,7 +106,7 @@ class Person extends BaseModel {
 											'notid' 						=> 'NotID', 
 											'organisationid' 				=> 'OrganisationID', 
 											
-											'fullname' 						=> 'FullName', 
+											'name' 							=> 'Name', 
 											'prefixtitle' 					=> 'PrefixTitle', 
 											'suffixtitle' 					=> 'SuffixTitle', 
 											'dateofbirth' 					=> 'DateOfBirth', 
@@ -153,7 +153,7 @@ class Person extends BaseModel {
 											'notid' 						=> 'Must be integer', 
 											'organisationid' 				=> 'Could be array or integer', 
 											
-											'fullname' 						=> 'Must be string', 
+											'name' 							=> 'Must be string', 
 											'prefixtitle' 					=> 'Must be string', 
 											'suffixtitle' 					=> 'Must be string', 
 											'dateofbirth' 					=> 'Could be array or string (date)', 
@@ -311,7 +311,7 @@ class Person extends BaseModel {
 		return $query->where('persons.id', $variable);
 	}
 
-	public function scopeFullName($query, $variable)
+	public function scopeName($query, $variable)
 	{
 		return $query->where('name', 'like' ,'%'.$variable.'%');
 	}
