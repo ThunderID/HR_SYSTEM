@@ -82,6 +82,7 @@ class BranchController extends BaseController
 							break;
 					}
 
+					$filter['active'][$filter_search]	= $active;
 				}
 				if (str_is('sort_*', strtolower($value)))
 				{

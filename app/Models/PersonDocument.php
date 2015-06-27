@@ -53,6 +53,7 @@ class PersonDocument extends BaseModel {
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'documentid' 				=> 'DocumentID', 
+											'organisationid' 			=> 'OrganisationID', 
 											'personid' 					=> 'PersonID', 
 											
 											'documenttag' 				=> 'DocumentTag', 
@@ -65,6 +66,7 @@ class PersonDocument extends BaseModel {
 	public $searchableScope 		= 	[
 											'id' 						=> 'Could be array or integer', 
 											'documentid' 				=> 'Could be array or integer', 
+											'organisationid' 			=> 'Could be array or integer', 
 											'personid' 					=> 'Could be array or integer', 
 											'documenttag' 				=> 'Must be string', 
 											'branchid' 					=> 'Could be array or integer', 
