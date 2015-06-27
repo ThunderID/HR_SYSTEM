@@ -87,12 +87,12 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// API
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.branch.api.table', 'widgets.api.form'], 	'App\Http\ViewComposers\ApiComposer');
+		View::composer(['widgets.organisation.branch.api.table', 'widgets.organisation.branch.api.form'], 	'App\Http\ViewComposers\ApiComposer');
 
 		// -----------------------------------------------------------------------------
 		// FINGERPRINT
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.fingerprint.table', 'widgets.fingerprint.form', 'widgets.organisation.branch.fingerprint.block'], 	'App\Http\ViewComposers\FingerPrintComposer');
+		View::composer(['widgets.organisation.branch.fingerprint.table', 'widgets.fingerprint.form', 'widgets.organisation.branch.fingerprint.block'], 	'App\Http\ViewComposers\FingerPrintComposer');
 
 		// -----------------------------------------------------------------------------
 		// AUTHENTICATION

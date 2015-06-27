@@ -15,19 +15,20 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'sidebar'				=> 
+										'sidebar'					=> 
 										[
-											'search'			=> ['withattributes' => 'branches'],
-											'sort'				=> [],
-											'page'				=> 1,
-											'per_page'			=> 100,
+											'search'				=> ['withattributes' => 'branches'],
+											'sort'					=> [],
+											'page'					=> 1,
+											'per_page'				=> 100,
+											'active_finger_branch'	=> 'yes'
 										]
 									]
 	])
 @overwrite
 
 @section('content_body')
-	@include('widgets.fingerprint.table', [
+	@include('widgets.organisation.branch.fingerprint.table', [
 		'widget_template'		=> 'panel',
 		'widget_title'			=> 'Absen Sidik Jari Cabang '.$branch['name'],
 		'widget_options'		=> 	[

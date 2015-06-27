@@ -19,7 +19,7 @@
 		var edit 			= $(e.relatedTarget).attr('data-edit-action'); 
 		var del 			= $(e.relatedTarget).attr('data-delete-action');
 
-		if (id != 0) 
+		if ((id != 0)&&(typeof(id) != "undefined"))
 		{
 			$('.modal_schedule_id').val(id);
 			$('.schedule_label').val(title);
@@ -36,10 +36,10 @@
 		{
 			$('.modal_schedule_id').val(null);
 			$('.schedule_label').val('');
-			$('.schedule_on').val('');			
-			$('.schedule_start').val('');
-			$('.schedule_end').val('');
-			$('.schedule_status').val('');
+			$('.schedule_on').val(date_start);			
+			$('.schedule_start').val(start);
+			$('.schedule_end').val(end);
+			$('.schedule_status').val(status);
 			$('.schedule_delete').hide();
 			$('.schedule_title').text('Tambah Jadwal');
 			$(this).parent().attr('action', add);

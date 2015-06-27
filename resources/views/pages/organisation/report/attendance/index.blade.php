@@ -20,6 +20,8 @@
 										'sort'				=> ['name' => 'asc'],
 										'page'				=> 1,
 										'per_page'			=> 100,
+										'pengaturan'		=> 'yes',
+										'active_attendance_report'	=> 'yes'
 									]
 								]
 	])
@@ -29,7 +31,7 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.report.attendance.table', [
+	@include('widgets.organisation.report.attendance.table', [
 		'widget_template'		=> 'panel',
 		'widget_title'			=> 'Kehadiran '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',

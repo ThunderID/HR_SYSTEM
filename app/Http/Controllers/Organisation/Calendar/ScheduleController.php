@@ -116,6 +116,7 @@ class ScheduleController extends BaseController
 			{
 				if($period->format('Y-m-d') == date('Y-m-d', strtotime($sh['on'])))
 				{
+					$schedule[$k]['mode']		= 'edit';
 					$schedule[$k]['data_target']= '#modal_schedule';
 					$schedule[$k]['id']			= $sh['id'];
 					$schedule[$k]['title'] 		= $sh['name'];
@@ -156,6 +157,9 @@ class ScheduleController extends BaseController
 
 			if(!in_array($period->format('Y-m-d'), $date))
 			{
+				$schedule[$k]['mode']				= 'create';
+				$schedule[$k]['data_target']		= '#modal_schedule';
+				$schedule[$k]['add_action']			= route('hr.calendar.schedules.store', ['org_id' => $org_id, 'cal_id' => $cal_id]);				
 				if(in_array(strtolower($period->format('l')), $workdays))
 				{
 					$schedule[$k]['id']				= $calendar['id'];

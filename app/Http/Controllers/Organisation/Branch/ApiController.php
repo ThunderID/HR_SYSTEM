@@ -101,7 +101,7 @@ class ApiController extends BaseController
 		$data 									= $branch['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.api.create', compact('id', 'data', 'branch'));
+		$this->layout->pages 					= view('pages.organisation.branch.api.create', compact('id', 'data', 'branch'));
 
 		return $this->layout;
 	}

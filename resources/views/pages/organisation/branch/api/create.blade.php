@@ -23,6 +23,7 @@
 											'sort'				=> [],
 											'page'				=> 1,
 											'per_page'			=> 100,
+											'active_api_branch'	=> 'yes'
 										]
 									]
 	])
@@ -32,7 +33,7 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.api.form', [
+	@include('widgets.organisation.branch.api.form', [
 		'widget_template'	=> 'panel',
 		'widget_options'	=> 	[
 									'apilist'				=>

@@ -29,7 +29,7 @@
                             <a href="{{route('hr.organisations.show', [$value, 'org_id' => $value])}}"><i class="fa fa-tachometer fa-fw"></i> Dashboard</a>
                         </li>
 
-                        <li @if(isset($branch['id'])|(Input::has('branch_id'))) class="active" @endif>
+                        <li @if(isset($branch['id'])|(Input::has('branch_id'))|(isset($widget_options['sidebar']['pengaturan'])))class="active" @endif>
                             <a href="javascript"><i class="fa fa-cog fa-fw"></i> Pengaturan <span class="fa arrow"></span></a>
                             <ul class="nav nav-third-level">
                                 <li @if(isset($branch['id'])||(Input::get('branch_id'))) class="active" @endif>
@@ -53,15 +53,15 @@
                                                         <a href="javascript:;" data-target="#deleteorg" data-toggle="modal" data-delete-action="{{ route('hr.branches.delete', [$branch['id'], 'org_id' => $value]) }}" >Hapus</a>
                                                     </li>
                                                     <li @if(isset($widget_options['sidebar']['active_contact_branch'])) class="active-li" @endif>
-                                                        <a href="{{ route('hr.branch.contacts.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}">Kontak</a>
+                                                        <a href="{{ route('hr.branch.contacts.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}" @if(isset($widget_options['sidebar']['active_contact_branch'])) class="active" @endif>Kontak</a>
                                                     </li>
                                                     <li @if(isset($widget_options['sidebar']['active_chart_branch'])) class="active-li" @endif>
-                                                        <a href="{{ route('hr.branch.charts.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}">Struktur Organisasi</a>
+                                                        <a href="{{ route('hr.branch.charts.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}" @if(isset($widget_options['sidebar']['active_chart_branch'])) class="active" @endif>Struktur Organisasi</a>
                                                     </li>
-                                                    <li>
-                                                        <a href="{{ route('hr.branch.apis.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}">API</a>
+                                                    <li @if(isset($widget_options['sidebar']['active_api_branch'])) class="active-li" @endif>
+                                                        <a href="{{ route('hr.branch.apis.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}" @if(isset($widget_options['sidebar']['active_api_branch'])) class="active" @endif>API</a>
                                                     </li>
-                                                    <li>
+                                                    <li @if(isset($widget_options['sidebar']['active_finger_branch'])) class="active-li" @endif>
                                                         <a href="{{ route('hr.branch.fingers.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}">Absen Sidik Jari</a>
                                                     </li>
                                                 </ul>
@@ -70,16 +70,16 @@
                                     </ul>
                                 </li>
 								<li @if(isset($widget_options['sidebar']['active_calendar'])) class="active-li" @endif>
-								    <a href="{{route('hr.calendars.index', ['org_id' => $value])}}"><i class="fa fa-calendar fa-fw"></i> Kalender</a>
+								    <a href="{{route('hr.calendars.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_calendar'])) class="active" @endif><i class="fa fa-calendar fa-fw"></i> Kalender</a>
 								</li>
-                                <li>
-                                    <a href="{{route('hr.workleaves.index', ['org_id' => $value])}}"><i class="fa fa-calendar-o fa-fw"></i> Template Cuti</a>
+                                <li @if(isset($widget_options['sidebar']['active_cuti'])) class="active-li" @endif>
+                                    <a href="{{route('hr.workleaves.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_cuti'])) class="active" @endif><i class="fa fa-calendar-o fa-fw"></i> Template Cuti</a>
                                 </li>
-								<li>
-								    <a href="{{route('hr.documents.index', ['org_id' => $value])}}"><i class="fa fa-archive fa-fw"></i> Template Dokumen</a>
+								<li @if(isset($widget_options['sidebar']['active_document'])) class="active-li" @endif>
+								    <a href="{{route('hr.documents.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_document'])) class="active" @endif><i class="fa fa-archive fa-fw"></i> Template Dokumen</a>
 								</li>
-								<li>
-								    <a href="{{route('hr.idles.index', ['org_id' => $value])}}"><i class="fa fa-clock-o fa-fw"></i> Pengaturan Idle</a>
+								<li @if(isset($widget_options['sidebar']['active_idle'])) class="active-li" @endif>
+								    <a href="{{route('hr.idles.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_idle'])) class="active" @endif><i class="fa fa-clock-o fa-fw"></i> Pengaturan Idle</a>
 								</li>
                             </ul>
                         </li>

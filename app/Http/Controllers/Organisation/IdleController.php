@@ -41,7 +41,7 @@ class IdleController extends BaseController
 		}
 
 		$data 									= json_decode(json_encode($contents->data), true);
-		$this->layout->page 					= view('pages.idle.index');
+		$this->layout->page 					= view('pages.organisation.idle.index');
 		$this->layout->page->controller_name 	= $this->controller_name;
 		$this->layout->page->data 				= $data;
 		$this->layout->page->filter 			= [['filter' => 'urutkan','filters' => ['urutkan asc', 'urutkan desc']]];
@@ -79,7 +79,7 @@ class IdleController extends BaseController
 		$data 									= json_decode(json_encode($contents->data), true);
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.idle.create', compact('id', 'data'));
+		$this->layout->pages 					= view('pages.organisation.idle.create', compact('id', 'data'));
 		return $this->layout;
 	}
 	
@@ -167,10 +167,10 @@ class IdleController extends BaseController
 		$data 							= $idle['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 				= view('pages.idle.show');
+		$this->layout->pages 				= view('pages.organisation.idle.show');
 		$this->layout->pages->data 			= $data;
 		$this->layout->pages->idle 		= $idle;
-		$this->layout->pages->route_back 	= route('hr.idles.index', ['org_id' => $org_id]);
+		$this->layout->pages->route_back 	= route('hr.organisation.idles.index', ['org_id' => $org_id]);
 
 		return $this->layout;
 	}

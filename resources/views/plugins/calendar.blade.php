@@ -59,18 +59,22 @@
 				element.attr('href', 'javascript:;');
 			}
 
+			if (event.mode == 'create') {
+				element.attr('data-add-action', event.add_action);				
+			}
+			else {				
+				element.attr('data-id', event.id);
+				element.attr('data-title', event.title);
+				element.attr('data-edit-action', event.ed_action);
+				element.attr('data-delete-action', event.del_action);
+			}
 			element.find('#date-title').html(element.find('span.fc-event-title').text());			
 			element.find('.fc-title').append('<br>');			
-
-			element.attr('data-id', event.id);
-			element.attr('data-title', event.title);
-			element.attr('data-date', date_start);
 			element.attr('data-status', event.status);
+			element.attr('data-date', date_start);
 			element.attr('data-start', datetime_start[1]);
 			element.attr('data-end', datetime_end[1]);			
 			element.attr('data-is-affect-salary', event.affect_salary);			
-			element.attr('data-edit-action', event.ed_action);
-			element.attr('data-delete-action', event.del_action);
 		},
 		viewRender: function (view, element) {			
 	        //The title isn't rendered until after this callback, so we need to use a timeout.	        
