@@ -52,7 +52,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// CALENDAR
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.calendar.table', 'widgets.calendar.form', 'widgets.calendar.calendar', 'widgets.calendar.select'], 	'App\Http\ViewComposers\CalendarComposer');
+		View::composer(['widgets.organisation.calendar.table', 'widgets.organisation.calendar.form', 'widgets.organisation.calendar.calendar', 'widgets.organisation.calendar.select'], 	'App\Http\ViewComposers\CalendarComposer');
 
 		// -----------------------------------------------------------------------------
 		// WORKLEAVE
@@ -102,7 +102,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// FOLLOW
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.follow.table', 'widgets.follow.form', 'widgets.calendar.chart.table', 'widgets.calendar.chart.form'], 	'App\Http\ViewComposers\FollowComposer');
+		View::composer(['widgets.follow.table', 'widgets.follow.form', 'widgets.organisation.calendar.chart.table', 'widgets.organisation.calendar.chart.form'], 	'App\Http\ViewComposers\FollowComposer');
 
 		// -----------------------------------------------------------------------------
 		// SCHEDULE

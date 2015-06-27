@@ -4,6 +4,14 @@
 	@section('widget_title')
 	<h1> {!! $widget_title  or 'Kalender' !!} </h1>
 	<small>Total data {{$CalendarComposer['widget_data']['calendarlist']['calendar-pagination']->total()}}</small>
+	
+	<div class="clearfix">&nbsp;</div>
+	@if(!is_null($CalendarComposer['widget_data']['calendarlist']['active_filter']))
+		@foreach($CalendarComposer['widget_data']['calendarlist']['active_filter'] as $key => $value)
+			<span class="active-filter">{{$value}}</span>
+		@endforeach
+	@endif
+
 	@overwrite
 
 	@section('widget_body')

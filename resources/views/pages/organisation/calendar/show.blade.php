@@ -10,7 +10,7 @@
 
 @section('nav_sidebar')
 	@include('widgets.common.nav_sidebar', [
-		'widget_template'		=> 'plain',
+		'widget_template'		=> 'plain_no_title',
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
@@ -31,8 +31,9 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.calendar.calendar', [
+	@include('widgets.organisation.calendar.calendar', [
 		'widget_template'	=> 'panel',
+		'widget_title'			=> 'Kalender "'.$calendar['name'].'"',
 		'widget_options'	=> 	[
 									'calendarlist'			=>
 									[

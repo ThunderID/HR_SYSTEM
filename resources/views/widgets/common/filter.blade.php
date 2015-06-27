@@ -2,7 +2,7 @@
 
 @if ((isset($widget_errors) && !$widget_errors->count() || !isset($widget_errors)))
 	@section('widget_body')
-		{!! Form::open(['class' => 'form-horizontal pt-15 form_filter hide', 'method' => 'get']) !!}
+		{!! Form::open(['url' => $widget_options['form_url'], 'class' => 'form-horizontal pt-15 form_filter hide', 'method' => 'get']) !!}
 			<div class="form-group">
 				<div class="col-xs-11 colsm-11 col-md-11">
 					<div class="input-group">
@@ -14,12 +14,18 @@
 					<a href="" class="btn btn-filter-add"><i class="fa fa-plus"></i></a>
 				</div>
 			</div>
+			<input type="hidden" name="filter" value="apply">
 			<?php $input = Input::all();?>
-			@foreach($input as $key => $value)
+			<!-- @foreach($input as $key => $value)
 				@if(!is_array($key) && !is_array($value))
 					<input type="hidden" name="{{$key}}" value="{{$value}}">
 				@endif
-			@endforeach
+			@endforeach -->
+			@foreach($default_filter as $key => $value)
+				@if(!is_array($key) && !is_array($value))
+					<input type="hidden" name="{{$key}}" value="{{$value}}">
+				@endif
+			@endforeach 
 			<div class="form-group">
 				<div class="col-xs-12 col-sm-12 col-md-12">					
 					<div class="btn-group">

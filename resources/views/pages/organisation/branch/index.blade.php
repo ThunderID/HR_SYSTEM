@@ -23,8 +23,8 @@
 	@include('widgets.common.filter', [
 		'widget_template'		=> 'plain_no_title',
 		'widget_options'		=> [
-									'form_url'	=> ''
-									]
+									'form_url'	=> route('hr.branches.index', ['org_id' => $data['id'], 'page' => (Input::has('page') ? Input::get('page') : 1)])
+									],
 	])
 @overwrite
 

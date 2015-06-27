@@ -4,7 +4,7 @@
 
 @section('nav_sidebar')
 	@include('widgets.common.nav_sidebar', [
-		'widget_template'		=> 'plain',
+		'widget_template'		=> 'plain_no_title',
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
@@ -23,8 +23,17 @@
 @section('content_filter')
 @overwrite
 
+@section('content_filter')
+	@include('widgets.common.filter', [
+		'widget_template'		=> 'plain_no_title',
+		'widget_options'		=> [
+									'form_url'	=> route('hr.calendars.index', ['org_id' => $data['id'], 'page' => (Input::has('page') ? Input::get('page') : 1)])
+									],
+	])
+@overwrite
+
 @section('content_body')	
-	@include('widgets.calendar.table', [
+	@include('widgets.organisation.calendar.table', [
 		'widget_template'		=> 'panel',
 		'widget_title'			=> 'Kalender '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
@@ -33,8 +42,9 @@
 										'calendarlist'			=>
 										[
 											'organisation_id'	=> $data['id'],
-											'search'			=> [],
-											'sort'				=> ['name' => 'asc'],
+											'search'			=> array_merge([], (isset($filtered['search']) ? $filtered['search'] : [])),
+											'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['name' => 'asc']),
+											'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
 											'per_page'			=> 12,
 											'route_create'		=> route('hr.calendars.create', ['org_id' => $data['id']])
