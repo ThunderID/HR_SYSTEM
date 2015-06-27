@@ -36,7 +36,7 @@ class LogController extends BaseController
 		}		
 
 		//cek API key & secret
-		$organisationid 					= 1;
+		$organisationid 						= 1;
 
 
 		//cek apa ada data log
