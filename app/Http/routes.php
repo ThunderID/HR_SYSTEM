@@ -19,9 +19,9 @@ Route::group(['namespace' => 'Auth\\'], function()
 {
 	Route::get('/',		 					['uses' => 'LoginController@getLogin',				'as' => 'hr.login']);
 	
-	Route::get('/login', 					['uses' => 'LoginController@getLogin',				'as' => 'hr.login']);
+	Route::get('/login', 					['uses' => 'LoginController@getLogin',				'as' => 'hr.login.get']);
 	
-	Route::post('/login',					['uses' => 'LoginController@postLogin',				'as' => 'hr.postlogin']);
+	Route::post('/login',					['uses' => 'LoginController@postLogin',				'as' => 'hr.login.post']);
 });
 
 Route::group(['before' => 'hr_acl'], function()

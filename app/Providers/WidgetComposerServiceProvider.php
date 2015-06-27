@@ -62,7 +62,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// DOCUMENT
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.document.table', 'widgets.document.form', 'widgets.document.select', 'widgets.person.document.form', 'widgets.document.stat.total_document'], 	'App\Http\ViewComposers\DocumentComposer');
+		View::composer(['widgets.organisation.document.table', 'widgets.organisation.document.form', 'widgets.organisation.document.select', 'widgets.organisation.person.document.form', 'widgets.organisation.document.stat.total_document'], 	'App\Http\ViewComposers\DocumentComposer');
 
 		// -----------------------------------------------------------------------------
 		// IDLE
@@ -72,7 +72,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// PERSON
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.person.table', 'widgets.person.form', 'widgets.person.select', 'widgets.report.attendance.table', 'widgets.report.wage.table', 'widgets.person.stat.total_employee', 'widgets.person.stat.average_loss_rate'], 	'App\Http\ViewComposers\PersonComposer');
+		View::composer(['widgets.organisation.person.table', 'widgets.organisation.person.form', 'widgets.organisation.person.select', 'widgets.report.attendance.table', 'widgets.report.wage.table', 'widgets.organisation.person.stat.total_employee', 'widgets.organisation.person.stat.average_loss_rate'], 	'App\Http\ViewComposers\PersonComposer');
 
 		// -----------------------------------------------------------------------------
 		// CONTACT
@@ -117,22 +117,22 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// PERSON WORKLEAVE
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.person.workleave.table', 'widgets.person.workleave.form', 'widgets.workleave.chart.form'], 	'App\Http\ViewComposers\PersonWorkleaveComposer');
+		View::composer(['widgets.organisation.person.workleave.table', 'widgets.organisation.person.workleave.form', 'widgets.workleave.chart.form'], 	'App\Http\ViewComposers\PersonWorkleaveComposer');
 
 		// -----------------------------------------------------------------------------
 		// PERSON DOCUMENT
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.person.document.table'], 	'App\Http\ViewComposers\PersonDocumentComposer');
+		View::composer(['widgets.organisation.person.document.table'], 	'App\Http\ViewComposers\PersonDocumentComposer');
 
 		// -----------------------------------------------------------------------------
 		// RELATIVE
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.person.relative.table', 'widgets.person.relative.form', 'widgets.person.relative.employee.form'], 	'App\Http\ViewComposers\RelativeComposer');
+		View::composer(['widgets.organisation.person.relative.table', 'widgets.organisation.person.relative.form', 'widgets.organisation.person.relative.employee.form'], 	'App\Http\ViewComposers\RelativeComposer');
 
 		// -----------------------------------------------------------------------------
 		// TEMPLATE
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.document.template.table', 'widgets.document.template.form'], 	'App\Http\ViewComposers\TemplateComposer');
+		View::composer(['widgets.organisation.document.template.table', 'widgets.organisation.document.template.form'], 	'App\Http\ViewComposers\TemplateComposer');
 	}
 
 	private function web_widget()

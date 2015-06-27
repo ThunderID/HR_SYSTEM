@@ -5,7 +5,7 @@
 									'login' 				=> 
 									[
 										'widget_title'		=> 'HR System Login',
-										'form_url'			=> route('hr.postlogin'),
+										'form_url'			=> route('hr.login.post'),
 										'user_id'			=> 'email',
 										'user_id_label'		=> 'Email'
 									]

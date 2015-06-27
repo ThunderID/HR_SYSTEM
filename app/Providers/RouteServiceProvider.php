@@ -2,7 +2,7 @@
 
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Config, Session, App, View, Route;
+use Config, Session, App, View, Route, Redirect, Request;
 use App\Console\Commands\Checking;
 use App\Console\Commands\Getting;
 use App\Models\Authentication;

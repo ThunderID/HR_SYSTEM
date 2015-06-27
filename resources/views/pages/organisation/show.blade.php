@@ -29,7 +29,7 @@
 @section('content_body')
 	<div class="row">
 		<div class="col-sm-6">
-			@include('widgets.person.stat.total_employee', [
+			@include('widgets.organisation.person.stat.total_employee', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> 'Total Karyawan '.$data['name'],
 				'widget_options'		=> 	[
@@ -60,7 +60,7 @@
 											]
 			])
 		
-			@include('widgets.document.stat.total_document', [
+			@include('widgets.organisation.document.stat.total_document', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> 'Total Dokumen '.$data['name'],
 				'widget_options'		=> 	[
@@ -75,7 +75,7 @@
 											]
 			])
 
-			@include('widgets.person.stat.average_loss_rate', [
+			@include('widgets.organisation.person.stat.average_loss_rate', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> 'Average Loss Rate '.$data['name'],
 				'widget_options'		=> 	[
@@ -91,7 +91,7 @@
 			])
 		</div>
 		<div class="col-sm-6">
-			@include('widgets.person.table', [
+			@include('widgets.organisation.person.table', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> '<h4>Absen Karyawan "'.$data['name'].'" ('.date('d-m-Y', strtotime('- 1 day')).')</h4>',
 				'widget_options'		=> 	[
