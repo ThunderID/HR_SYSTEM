@@ -52,7 +52,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// CALENDAR
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.calendar.table', 'widgets.calendar.form', 'widgets.calendar.calendar', 'widgets.calendar.select'], 	'App\Http\ViewComposers\CalendarComposer');
+		View::composer(['widgets.organisation.calendar.table', 'widgets.organisation.calendar.form', 'widgets.organisation.calendar.calendar', 'widgets.organisation.calendar.select'], 	'App\Http\ViewComposers\CalendarComposer');
 
 		// -----------------------------------------------------------------------------
 		// WORKLEAVE
@@ -77,32 +77,32 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// CONTACT
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.contact.table', 'widgets.contact.form'], 	'App\Http\ViewComposers\ContactComposer');
+		View::composer(['widgets.common.contact.table', 'widgets.common.contact.form'], 	'App\Http\ViewComposers\ContactComposer');
 
 		// -----------------------------------------------------------------------------
 		// CHART
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.chart.list', 'widgets.chart.form', 'widgets.chart.stat', 'widgets.chart.select'], 	'App\Http\ViewComposers\ChartComposer');
+		View::composer(['widgets.organisation.branch.chart.list', 'widgets.organisation.branch.chart.form', 'widgets.organisation.branch.chart.stat', 'widgets.organisation.branch.chart.select'], 	'App\Http\ViewComposers\ChartComposer');
 
 		// -----------------------------------------------------------------------------
 		// API
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.api.table', 'widgets.api.form'], 	'App\Http\ViewComposers\ApiComposer');
+		View::composer(['widgets.organisation.branch.api.table', 'widgets.api.form'], 	'App\Http\ViewComposers\ApiComposer');
 
 		// -----------------------------------------------------------------------------
 		// FINGERPRINT
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.fingerprint.table', 'widgets.fingerprint.form', 'widgets.fingerprint.block'], 	'App\Http\ViewComposers\FingerPrintComposer');
+		View::composer(['widgets.fingerprint.table', 'widgets.fingerprint.form', 'widgets.organisation.branch.fingerprint.block'], 	'App\Http\ViewComposers\FingerPrintComposer');
 
 		// -----------------------------------------------------------------------------
 		// AUTHENTICATION
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.authentication.table', 'widgets.authentication.form'], 	'App\Http\ViewComposers\ApplicationComposer');
+		View::composer(['widgets.organisation.branch.chart.authentication.table', 'widgets.authentication.form'], 	'App\Http\ViewComposers\ApplicationComposer');
 
 		// -----------------------------------------------------------------------------
 		// FOLLOW
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.follow.table', 'widgets.follow.form', 'widgets.calendar.chart.table', 'widgets.calendar.chart.form'], 	'App\Http\ViewComposers\FollowComposer');
+		View::composer(['widgets.organisation.branch.chart.follow.table', 'widgets.organisation.branch.chart.follow.form', 'widgets.calendar.chart.table', 'widgets.calendar.chart.form'], 	'App\Http\ViewComposers\FollowComposer');
 
 		// -----------------------------------------------------------------------------
 		// SCHEDULE

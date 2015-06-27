@@ -16,20 +16,21 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'sidebar'				=> 
+										'sidebar'					=> 
 										[
-											'identifier'		=> 1,
-											'search'			=> ['withattributes' => 'branches'],
-											'sort'				=> [],
-											'page'				=> 1,
-											'per_page'			=> 100
+											'identifier'			=> 1,
+											'search'				=> ['withattributes' => 'branches'],
+											'sort'					=> [],
+											'page'					=> 1,
+											'per_page'				=> 100,
+											'active_chart_branch'	=> 'yes'
 										]
 									]
 	])
 @overwrite
 
 @section('content_body')
-			@include('widgets.authentication.table', [
+			@include('widgets.organisation.branch.chart.authentication.table', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> 'Otentikasi Jabatan '.$chart['name'],
 				'widget_options'		=> 	[

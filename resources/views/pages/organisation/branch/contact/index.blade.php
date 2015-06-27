@@ -16,19 +16,20 @@
 		'widget_body_class'		=> '',
 		'active_contact'		=> 'yes',
 		'widget_options'		=> 	[
-										'sidebar'				=> 
+										'sidebar'					=> 
 										[
-											'search'			=> ['withattributes' => 'branches'],
-											'sort'				=> [],
-											'page'				=> 1,
-											'per_page'			=> 100,
+											'search'				=> ['withattributes' => 'branches'],
+											'sort'					=> [],
+											'page'					=> 1,
+											'per_page'				=> 100,
+											'active_contact_branch'	=> 'yes'
 										]
 									]
 	])
 @overwrite
 
 @section('content_body')
-			@include('widgets.contact.table', [
+			@include('widgets.common.contact.table', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> 'Kontak Cabang '.$branch['name'].((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 				'widget_options'		=> 	[

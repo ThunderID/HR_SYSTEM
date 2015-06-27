@@ -25,7 +25,7 @@
 											'search'			=> [],
 											'sort'				=> [],
 											'page'				=> 1,
-											'per_page'			=> 100,
+											'per_page'			=> 100
 										]
 									]
 	])
@@ -35,7 +35,7 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.calendar.form', [
+	@include('widgets.organisation.calendar.form', [
 		'widget_template'	=> 'panel',
 		'widget_options'	=> 	[
 									'calendarlist'			=>

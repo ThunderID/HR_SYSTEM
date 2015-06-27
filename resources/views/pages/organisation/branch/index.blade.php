@@ -14,6 +14,7 @@
 											'sort'				=> [],
 											'page'				=> 1,
 											'per_page'			=> 100,
+											'active_all_branch'	=> 'yes'
 										]
 									]
 	])
@@ -41,7 +42,7 @@
 											'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
 											'per_page'			=> 12,
-											'route_create'		=> route('hr.branches.create', ['org_id' => $data['id']])
+											'route_create'		=> route('hr.branches.create', ['org_id' => $data['id'], 'branch_id' => 0])
 											]
 									]
 	])

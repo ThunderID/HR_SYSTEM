@@ -14,7 +14,8 @@
 										'search'			=> [],
 										'sort'				=> ['name' => 'asc'],
 										'page'				=> 1,
-										'per_page'			=> 100,
+										'per_page'			=> 20,
+										'active_calendar'	=> 'yes'
 									]
 								]
 	])
@@ -24,7 +25,7 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.calendar.table', [
+	@include('widgets.organisation.calendar.table', [
 		'widget_template'		=> 'panel',
 		'widget_title'			=> 'Kalender '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',

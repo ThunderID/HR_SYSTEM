@@ -31,7 +31,7 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.calendar.calendar', [
+	@include('widgets.organisation.calendar.calendar', [
 		'widget_template'	=> 'panel',
 		'widget_options'	=> 	[
 									'calendarlist'			=>

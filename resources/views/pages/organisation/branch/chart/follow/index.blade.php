@@ -16,12 +16,13 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'sidebar'				=> 
+										'sidebar'					=> 
 										[
-											'search'			=> ['withattributes' => 'branches'],
-											'sort'				=> [],
-											'page'				=> 1,
-											'per_page'			=> 100
+											'search'				=> ['withattributes' => 'branches'],
+											'sort'					=> [],
+											'page'					=> 1,
+											'per_page'				=> 100,
+											'active_chart_branch'	=> 'yes'
 										]
 									]
 	])
@@ -29,7 +30,7 @@
 
 @section('content_body')
 
-			@include('widgets.follow.table', [
+			@include('widgets.organisation.branch.chart.follow.table', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> 'Kalender Kerja '.$chart['name'].' '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 				'widget_options'		=> 	[

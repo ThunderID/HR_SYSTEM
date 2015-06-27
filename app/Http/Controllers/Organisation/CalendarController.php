@@ -48,7 +48,7 @@ class CalendarController extends BaseController
 
 		$data 										= json_decode(json_encode($contents->data), true);
 
-		$this->layout->page 						= view('pages.calendar.index', compact('data'));
+		$this->layout->page 						= view('pages.organisation.calendar.index', compact('data'));
 
 		return $this->layout;
 	}
@@ -81,7 +81,7 @@ class CalendarController extends BaseController
 
 		$data 									= json_decode(json_encode($contents->data), true);
 
-		$this->layout->page 					= view('pages.calendar.create', compact('id', 'data'));
+		$this->layout->page 					= view('pages.organisation.calendar.create', compact('id', 'data'));
 
 		return $this->layout;
 	}
@@ -180,7 +180,7 @@ class CalendarController extends BaseController
 		$data 									= $calendar['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.calendar.show', compact('id', 'data', 'calendar'));
+		$this->layout->pages 					= view('pages.organisation.calendar.show', compact('id', 'data', 'calendar'));
 		$this->layout->pages->data 				= $data;
 		$this->layout->pages->calendar 			= $calendar;
 		$this->layout->pages->route_back 		= route('hr.calendars.index', ['org_id' => $org_id]);

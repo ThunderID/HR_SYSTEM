@@ -55,7 +55,7 @@ return [
 		'mysql' => [
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'hr-system',
+			'database'  => 'system-hr-2',
 			'username'  => 'root',
 			'password'  => 'root',
 			'charset'   => 'utf8',

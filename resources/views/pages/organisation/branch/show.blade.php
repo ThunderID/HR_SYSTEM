@@ -29,7 +29,7 @@
 @section('content_body')
 	<div class="row">
 		<div class="col-sm-6">
-			@include('widgets.person.stat.total_employee', [
+			@include('widgets.organisation.person.stat.total_employee', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> 'Total Karyawan '.$data['name'],
 				'widget_options'		=> 	[
@@ -44,7 +44,9 @@
 												]
 											]
 			])
-			@include('widgets.fingerprint.block', [
+		</div>
+		<div class="col-sm-6">
+			@include('widgets.organisation.branch.fingerprint.block', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> '<h4>Absen Sidik Jari Hari Ini Cabang "'.$branch['name'].'"</h4>',
 				'widget_options'		=> 	[
@@ -59,8 +61,10 @@
 											]
 			])
 		</div>
-		<div class="col-sm-6">
-			@include('widgets.contact.table', [
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			@include('widgets.common.contact.table', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> '<h4>Kontak Aktif Cabang "'.$branch['name'].'"</h4>',
 				'widget_options'		=> 	[

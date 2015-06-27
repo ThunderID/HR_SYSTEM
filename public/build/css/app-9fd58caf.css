@@ -6467,10 +6467,7 @@ label,
   border-top: 1px solid #e7e7e7;
 }
 .sidebar ul li a.active {
-  background-color: white;
-}
-.sidebar ul li a.active.active-person {
-  background-color: #eee;
+  color: black;
 }
 .sidebar .arrow {
   float: right;
@@ -6499,8 +6496,26 @@ label,
 .sidebar .nav-fifty-level li a {
   padding-left: 80px;
 }
+.sidebar li.active-li,
+.sidebar .nav-second-level li.active-li,
+.sidebar .nav-third-level li.active-li, 
+.sidebar .nav-fourty-level li.active-li, 
 .sidebar .nav-fifty-level li.active-li {
   background-color: #e5e5e5;
+}
+.sidebar a.active-flag-show {
+  background-color: #428BCA;
+  color: #fff;
+}
+
+.sidebar li.active-li a:hover {
+  color: #428BCA;
+}
+.sidebar a.active-flag-show:hover {
+  color: #428BCA;
+}
+.sidebar li a:hover {
+  background-color: #FFFFC9;
 }
 
 @media (min-width: 768px) {

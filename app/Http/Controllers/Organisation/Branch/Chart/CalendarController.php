@@ -64,7 +64,7 @@ class CalendarController extends BaseController
 		$data 							= $chart['branch']['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 			= view('pages.follow.index');
+		$this->layout->pages 			= view('pages.organisation.branch.chart.follow.index');
 		$this->layout->pages->data 		= $data;
 		$this->layout->pages->branch 	= $branch;
 		$this->layout->pages->chart 	= $chart;
@@ -122,7 +122,7 @@ class CalendarController extends BaseController
 		$branch 								= $chart['branch'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.follow.create', compact('id', 'data', 'branch', 'chart'));
+		$this->layout->pages 					= view('pages.organisation.branch.chart.follow.create', compact('id', 'data', 'branch', 'chart'));
 
 		return $this->layout;
 	}

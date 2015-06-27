@@ -53,7 +53,7 @@ class ChartController extends BaseController
 
 		$branch 								= json_decode(json_encode($contents->data), true);
 		$data 									= $branch['organisation'];
-		$this->layout->page 					= view('pages.chart.index');
+		$this->layout->page 					= view('pages.organisation.branch.chart.index');
 		$this->layout->page->controller_name 	= $this->controller_name;
 		$this->layout->page->data 				= $data;
 		$this->layout->page->branch 			= $branch;
@@ -101,7 +101,7 @@ class ChartController extends BaseController
 		$data 									= $branch['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.chart.create', compact('id', 'data', 'branch'));
+		$this->layout->pages 					= view('pages.organisation.branch.chart.create', compact('id', 'data', 'branch'));
 
 		return $this->layout;
 	}
@@ -224,7 +224,7 @@ class ChartController extends BaseController
 		$data 							= $chart['branch']['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 			= view('pages.chart.show');
+		$this->layout->pages 			= view('pages.organisation.branch.chart.show');
 		$this->layout->pages->data 		= $data;
 		$this->layout->pages->branch 	= $branch;
 		$this->layout->pages->chart 	= $chart;

@@ -11,7 +11,7 @@
 		{!! Form::open(['url' => $FollowComposer['widget_data']['followlist']['form_url'], 'class' => 'form no_enter']) !!}	
 			<div class="form-group">				
 				<label class="control-label">Kalender</label>
-				@include('widgets.calendar.select', [
+				@include('widgets.organisation.calendar.select', [
 					'widget_options'		=> 	[
 													'calendarlist'			=>
 													[

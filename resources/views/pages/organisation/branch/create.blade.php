@@ -1,8 +1,8 @@
 <?php
 	if($id) {
-		$active = 'active_branch_edit';
+		$active = 'active_edit_branch';
 	} else {
-		$active = 'active_branch_add';
+		$active = 'active_create_branch';
 	}
 ?>
 
@@ -21,14 +21,14 @@
 		'widget_template'		=> 'plain_no_title',
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
-		'widget_body_class'		=> '',
-		'active_branch'			=> $active,
+		'widget_body_class'		=> '',		
 		'widget_options'		=> [ 'sidebar' 					=>
 										[
 											'search'			=> ['withattributes' => 'branches'],
 											'sort'				=> [],
 											'page'				=> 1,
 											'per_page'			=> 100,
+											'active_form'		=> $active,
 										]
 									]
 	])
@@ -54,7 +54,7 @@
 											'sort'				=> [],
 											'page'				=> 1,
 											'per_page'			=> 1,
-											'route_edit'		=> route('hr.branches.index', ['org_id' => $data['id']])
+											'route_edit'		=> route('hr.branches.index', ['org_id' => $data['id'], 'branch_id' => 0])
 										]
 									]
 	])
