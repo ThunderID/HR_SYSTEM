@@ -11,18 +11,18 @@
 |
 */
 
-// ------------------------------------------------------------------------------------
-// LOGIN PAGE
-// ------------------------------------------------------------------------------------
+//route client push log data
+Route::group(['namespace' => 'Organisation\\Person\\'], function() 
+{
+	Route::post('api/activity/logs/',			['uses' => 'LogController@store',				'as' => 'hr.log.store']);
+});
 
-Route::get('/api/activity/logs/',['uses' => 'LoginController@getLogout','as' => 'hr.logout']);
-
-
+//test log push
 Route::get('test/presence', function()
 {
 	try
 	{
-		fsockopen('localhost', '8400', $errno, $errstr, 60);
+		fsockopen('localhost', '8200', $errno, $errstr, 60);
 	}
 	catch (Exception $e) 
 	{
@@ -31,27 +31,27 @@ Route::get('test/presence', function()
 
 
 	// $api 										= new \App\APIConnector\OUTENGINE\API;
-	$json										= '{"method":"guru.test","id":123}';
-	$new 										= json_encode($json);
-	$input 										= json_decode($new, true);
-	// print_r($new . "</br>");
-	// print_r($input);
+	$json										= 	'{"application":{"api":{"client":"123456789","secret":"123456789"}},"person":{"id":"1","email":"hr@thunderid.com"},"log":[["budi2","Session Logon","28-05-2015 15:04:01","pc"]]}';
+	$new 										= 	json_encode($json);
+	$input 										= 	json_decode($new);
 
 
-	$curl 			= curl_init("http://localhost:8400/api/activity/logs/");
-		curl_setopt($curl, CURLOPT_HEADER, false);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_HTTPHEADER,
-			array("Content-type: application/json"));
-		curl_setopt($curl, CURLOPT_POST, true);
-		curl_setopt($curl, CURLOPT_POSTFIELDS, $new);
-		$results 		= curl_exec($curl);
-
-		dd($results);
+	$curl 										= 	curl_init("http://localhost:8200/api/activity/logs/");
+													curl_setopt($curl, CURLOPT_HEADER, false);
+													curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+													curl_setopt($curl, CURLOPT_HTTPHEADER,
+														array("Content-type: application/json"));
+													curl_setopt($curl, CURLOPT_POST, true);
+													curl_setopt($curl, CURLOPT_POSTFIELDS, $input);
+	$results 									= 	curl_exec($curl);
+	print_r($results);
 	exit;
 });
 
 
+// ------------------------------------------------------------------------------------
+// LOGIN PAGE
+// ------------------------------------------------------------------------------------
 Route::group(['namespace' => 'Auth\\'], function() 
 {
 	Route::get('/',		 					['uses' => 'LoginController@getLogin',				'as' => 'hr.login']);
