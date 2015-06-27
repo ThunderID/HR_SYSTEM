@@ -41,11 +41,84 @@ class BranchController extends BaseController
 			App::abort(404);
 		}
 
+		$filter 								= [];
+
+		if(Input::has('q'))
+		{
+			$filter['search']['name']			= Input::get('q');
+			$dirty_filter 						= Input::get('key');
+			$dirty_filter_value 				= Input::get('value');
+			$filter['active']['q']				= 'Cari Nama "'.Input::get('q').'"';
+
+			foreach ($dirty_filter as $key => $value) 
+			{
+				if (str_is('search_*', strtolower($value)))
+				{
+					$filter_search 						= str_replace('search_', '', $value);
+					$filter['search'][$filter_search]	= $dirty_filter_value[$key];
+					$filter['active'][$filter_search]	= $dirty_filter_value[$key];
+
+					switch (strtolower($filter_search)) 
+					{
+						case 'name':
+							$active = 'Cari Nama';
+							break;
+						
+						default:
+							$active = 'Cari Nama';
+							break;
+					}
+
+					switch (strtolower($dirty_filter_value[$key])) 
+					{
+						case 'asc':
+							$active = $active.'"'.$dirty_filter_value[$key].'"';
+							break;
+						
+						default:
+							$active = $active.'"'.$dirty_filter_value[$key].'"';
+							break;
+					}
+
+				}
+				if (str_is('sort_*', strtolower($value)))
+				{
+					$filter_sort 						= str_replace('sort_', '', $value);
+					$filter['sort'][$filter_sort]		= $dirty_filter_value[$key];
+					switch (strtolower($filter_sort)) 
+					{
+						case 'name':
+							$active = 'Urutkan Nama';
+							break;
+						
+						default:
+							$active = 'Urutkan Nama';
+							break;
+					}
+
+					switch (strtolower($dirty_filter_value[$key])) 
+					{
+						case 'asc':
+							$active = $active.' (Z-A)';
+							break;
+						
+						default:
+							$active = $active.' (A-Z)';
+							break;
+					}
+
+					$filter['active'][$filter_sort]		= $active;
+				}
+			}
+		}
+
 		$data 									= json_decode(json_encode($contents->data), true);
-		$this->layout->page 					= view('pages.branch.index');
+		$this->layout->page 					= view('pages.organisation.branch.index');
 		$this->layout->page->controller_name 	= $this->controller_name;
 		$this->layout->page->data 				= $data;
-		$this->layout->page->filter 			= [['filter' => 'urutkan','filters' => ['urutkan asc', 'urutkan desc']]];
+		$this->layout->page->filter 			= [['prefix' => 'sort', 'key' => 'name', 'value' => 'Urutkan Nama', 'values' => [['key' => 'asc', 'value' => 'A-Z'], ['key' => 'desc', 'value' => 'Z-A']]]];
+		$this->layout->page->filtered 			= $filter;
+
 		$this->layout->page->route_back 		= route('hr.organisations.show', $org_id);
 
 		return $this->layout;
@@ -67,11 +140,10 @@ class BranchController extends BaseController
 			App::abort(404);
 		}
 
-		$search['id'] 							= $org_id;
-		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Organisation, $search, $sort , 1, 1));
+		$search 								= ['id' => $org_id];
+		$results 								= $this->dispatch(new Getting(new Organisation, $search, [] , 1, 1));
 		$contents 								= json_decode($results);
-
+		
 		if(!$contents->meta->success)
 		{
 			App::abort(404);
@@ -80,7 +152,7 @@ class BranchController extends BaseController
 		$data 									= json_decode(json_encode($contents->data), true);
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.branch.create', compact('id', 'data'));
+		$this->layout->pages 					= view('pages.organisation.branch.create', compact('id', 'data'));
 		return $this->layout;
 	}
 	
@@ -131,7 +203,7 @@ class BranchController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.branches.show', [$is_success->data->id, 'org_id' => $is_success->data->id])->with('alert_success', 'Cabang "' . $is_success->data->name. '" sudah disimpan');
+			return Redirect::route('hr.branches.show', [$is_success->data->id, 'org_id' => $org_id])->with('alert_success', 'Cabang "' . $is_success->data->name. '" sudah disimpan');
 		}
 		
 		DB::rollback();
@@ -168,7 +240,7 @@ class BranchController extends BaseController
 		$data 							= $branch['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 				= view('pages.branch.show');
+		$this->layout->pages 				= view('pages.organisation.branch.show');
 		$this->layout->pages->data 			= $data;
 		$this->layout->pages->branch 		= $branch;
 		$this->layout->pages->route_back 	= route('hr.branches.index', ['org_id' => $org_id]);

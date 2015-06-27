@@ -36,6 +36,7 @@ class Log extends BaseModel {
 	protected 	$table 				= 	'logs';
 
 	protected 	$fillable			= 	[
+											'created_by' 				,
 											'name' 						,
 											'on' 						,
 											'pc' 						,

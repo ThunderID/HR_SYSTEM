@@ -5,8 +5,7 @@
 									'organisationlist'	=> 
 									[
 										'form_url'			=> route('hr.organisations.show', 1),
-										'identifier'		=> 1,
-										'search'			=> [],
+										'search'			=> ['id' => Session::get('user.organisationids')],
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 100,

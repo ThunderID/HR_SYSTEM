@@ -883,7 +883,7 @@ body {
   font-size: 14px;
   line-height: 1.42857143;
   color: #000;
-  background-color: #ffffff;
+  background-color: #f5f5f5;
 }
 input,
 button,
@@ -6374,7 +6374,7 @@ label,
 @media (min-width: 768px) {
   #page-wrapper {
     position: inherit;
-    margin: 0 0 0 250px;
+    margin: 0 0 0 230px;
     padding: 0 30px;
     border-left: 1px solid #e7e7e7;
   }
@@ -6463,8 +6463,14 @@ label,
 .sidebar ul li {
   border-bottom: 1px solid #e7e7e7;
 }
+.sidebar ul li:first-child {
+  border-top: 1px solid #e7e7e7;
+}
 .sidebar ul li a.active {
   background-color: white;
+}
+.sidebar ul li a.active.active-person {
+  background-color: #eee;
 }
 .sidebar .arrow {
   float: right;
@@ -6493,12 +6499,15 @@ label,
 .sidebar .nav-fifty-level li a {
   padding-left: 80px;
 }
+.sidebar .nav-fifty-level li.active-li {
+  background-color: #e5e5e5;
+}
 
 @media (min-width: 768px) {
   .sidebar {
     z-index: 1;
     position: absolute;
-    width: 250px;
+    width: 230px;
     margin-top: 51px;
   }
   .navbar-top-links .dropdown-messages,

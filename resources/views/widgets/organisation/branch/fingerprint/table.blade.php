@@ -2,7 +2,7 @@
 
 @if (!$widget_error_count)
 	@section('widget_title')
-		<h1> {{ $widget_title or 'Sidik Jari Hari Ini' }} </h1>
+		<h1> {!! $widget_title or 'Sidik Jari Hari Ini' !!} </h1>
 	@overwrite
 
 	@section('widget_body')

@@ -1,22 +1,31 @@
+<?php
+	if($id) {
+		$active = 'active_branch_edit';
+	} else {
+		$active = 'active_branch_add';
+	}
+?>
+
 @section('nav_topbar')
 	@include('widgets.common.nav_topbar', 
 		['breadcrumb' 			=> 	[
 										['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
 										['name' => 'Cabang', 'route' => route('hr.branches.index', ['org_id' => $data['id']]) ],
-										['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.branches.create', ['org_id' => $data['id']]) : route('hr.branches.edit', ['org_id' => $data['id'], 'id' => $id]) )]
+										['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.branches.create', ['org_id' => $data['id']]) : route('hr.branches.edit', ['id' => $id, 'org_id' => $data['id']]) )]
 									]
 		])
 @stop
 
 @section('nav_sidebar')
 	@include('widgets.common.nav_sidebar', [
-		'widget_template'		=> 'plain',
+		'widget_template'		=> 'plain_no_title',
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
+		'active_branch'			=> $active,
 		'widget_options'		=> [ 'sidebar' 					=>
 										[
-											'search'			=> [],
+											'search'			=> ['withattributes' => 'branches'],
 											'sort'				=> [],
 											'page'				=> 1,
 											'per_page'			=> 100,
@@ -31,7 +40,7 @@
 @section('content_body')	
 
 
-	@include('widgets.branch.form', [
+	@include('widgets.organisation.branch.form', [
 		'widget_template'		=> 'panel',
 		'widget_title'			=> 'Cabang',
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',

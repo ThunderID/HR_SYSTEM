@@ -25,7 +25,7 @@
 								<label for="password" class="control-label">Password</label>
 							</div>
 							<div class="col-sm-9">
-								<input type="password" name="password" id="password" class="form-control" placeholder="Password">
+								<input type="password" name="password" id="password" class="form-control input-delete" placeholder="Password" autofocus>
 							</div>
 						</div>					
 					</div>

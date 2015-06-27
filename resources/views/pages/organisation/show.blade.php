@@ -2,7 +2,7 @@
 	@include('widgets.common.nav_topbar', 
 	[
 		'breadcrumb' 	=> 	[
-								['name' => $organisation['name'], 'route' => route('hr.organisations.show', [$organisation['id'], 'org_id' => $organisation['id']])],
+								['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']])],
 								['name' => 'Dashboard', 'route' => null]
 							]
 	])
@@ -10,7 +10,7 @@
 
 @section('nav_sidebar')
 	@include('widgets.common.nav_sidebar', [
-		'widget_template'		=> 'plain',
+		'widget_template'		=> 'plain_no_title',
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
@@ -27,7 +27,87 @@
 @overwrite
 
 @section('content_body')
-	<p class="text-center font-34 " style="height:580px; margin-top:15%;">Under <br> Construction</p>
+	<div class="row">
+		<div class="col-sm-6">
+			@include('widgets.organisation.person.stat.total_employee', [
+				'widget_template'		=> 'panel',
+				'widget_title'			=> 'Total Karyawan '.$data['name'],
+				'widget_options'		=> 	[
+												'personlist'		=>
+												[
+													'title'				=> 'Total Karyawan "'.$data['name'].'"',
+													'organisation_id'	=> $data['id'],
+													'search'			=> ['currentwork' => null],
+													'sort'				=> [],
+													'page'				=> 1,
+													'per_page'			=> 100,
+												]
+											]
+			])
+			
+			@include('widgets.organisation.branch.stat.total_branch', [
+				'widget_template'		=> 'panel',
+				'widget_title'			=> 'Total Cabang '.$data['name'],
+				'widget_options'		=> 	[
+												'branchlist'		=>
+												[
+													'organisation_id'	=> $data['id'],
+													'search'			=> [],
+													'sort'				=> [],
+													'page'				=> 1,
+													'per_page'			=> 100,
+												]
+											]
+			])
+		
+			@include('widgets.organisation.document.stat.total_document', [
+				'widget_template'		=> 'panel',
+				'widget_title'			=> 'Total Dokumen '.$data['name'],
+				'widget_options'		=> 	[
+												'documentlist'		=>
+												[
+													'organisation_id'	=> $data['id'],
+													'search'			=> [],
+													'sort'				=> [],
+													'page'				=> 1,
+													'per_page'			=> 100,
+												]
+											]
+			])
+
+			@include('widgets.organisation.person.stat.average_loss_rate', [
+				'widget_template'		=> 'panel',
+				'widget_title'			=> 'Average Loss Rate '.$data['name'],
+				'widget_options'		=> 	[
+												'lossratelist'		=>
+												[
+													'organisation_id'	=> $data['id'],
+													'search'			=> ['globalattendance' => ['organisationid' => $data['id'], 'on' => [$start, $end]]],
+													'sort'				=> [],
+													'page'				=> 1,
+													'per_page'			=> 100,
+												]
+											]
+			])
+		</div>
+		<div class="col-sm-6">
+			@include('widgets.organisation.person.table', [
+				'widget_template'		=> 'panel',
+				'widget_title'			=> '<h4>Absen Karyawan "'.$data['name'].'" ('.date('d-m-Y', strtotime('- 1 day')).')</h4>',
+				'widget_options'		=> 	[
+												'personlist'		=>
+												[
+													'organisation_id'	=> $data['id'],
+													'search'			=> ['fullschedule' => date('Y-m-d', strtotime('- 1 day'))],
+													'sort'				=> [],
+													'page'				=> 1,
+													'per_page'			=> 100,
+													'route_create'		=> route('hr.persons.create', ['org_id' => $data['id']])
+												]
+											]
+			])
+		</div>
+	</div>
 @stop
 
 @section('content_filter')

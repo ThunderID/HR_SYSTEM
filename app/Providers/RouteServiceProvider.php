@@ -2,7 +2,7 @@
 
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Config, Session, App, View, Route;
+use Config, Session, App, View, Route, Redirect, Request;
 use App\Console\Commands\Checking;
 use App\Console\Commands\Getting;
 use App\Models\Authentication;
@@ -313,6 +313,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 				Session::put('user.chartname', $contents->data->works[0]->name);
 				Session::put('user.organisationname', $contents->data->works[0]->branch->organisation->name);
 
+				Session::put('user.id', $contents->data->id);
 				Session::put('user.name', $contents->data->name);
 				Session::put('user.email', $contents->data->contacts[0]->value);
 				Session::put('user.gender', $contents->data->gender);
@@ -329,6 +330,15 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 				{
 					Session::flush();
 					return Redirect::guest(route('hr.login.get'));
+				}
+
+				if(in_array(strtolower($menu[1]), ['create','update','delete']))
+				{
+					Session::put('allow.filter', false);
+				}
+				else
+				{
+					Session::put('allow.filter', true);
 				}
 
 				Session::put('user.menuid', $contents->data->menu_id);
