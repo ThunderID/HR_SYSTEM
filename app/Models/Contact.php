@@ -55,6 +55,8 @@ class Contact extends BaseModel {
 											'branchid' 					=> 'BranchID', 
 											'personid' 					=> 'PersonID', 
 
+											'groupitem' 				=> 'GroupItem', 
+
 											'item' 						=> 'Item', 
 											'value' 					=> 'Value', 
 											'default' 					=> 'Default', 
@@ -68,6 +70,7 @@ class Contact extends BaseModel {
 											'branchid' 					=> 'Could be array or integer', 
 											'personid' 					=> 'Could be array or integer', 
 
+											'groupitem'	 				=> 'Null',
 											'item' 						=> 'Could be array or string', 
 											'value' 					=> 'Could be array or string', 
 											'default' 					=> 'Must be true or false', 
@@ -76,7 +79,7 @@ class Contact extends BaseModel {
 											'withattributes' 			=> 'Must be array of relationship'
 										];
 
-	public $sortable 				= 	['created_at', 'is_default', 'item'];
+	public $sortable 				= 	['created_at', 'is_default', 'item', 'value'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**
@@ -132,6 +135,12 @@ class Contact extends BaseModel {
 	public function scopePersonID($query, $variable)
 	{
 		return $query->where('person_id', $variable);
+	}
+
+
+	public function scopeGroupItem($query, $variable)
+	{
+		return $query->groupBy('item');
 	}
 
 	public function scopeItem($query, $variable)

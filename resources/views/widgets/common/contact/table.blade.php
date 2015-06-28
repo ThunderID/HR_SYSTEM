@@ -7,6 +7,13 @@
 	<?php
 		$ContactComposer['widget_data']['contactlist']['contact-pagination']->setPath($ContactComposer['widget_data']['contactlist']['route']);
 	 ?>
+
+	 <div class="clearfix">&nbsp;</div>
+	@if(isset($ContactComposer['widget_data']['contactlist']['active_filter']) && !is_null($ContactComposer['widget_data']['contactlist']['active_filter']))
+		@foreach($ContactComposer['widget_data']['contactlist']['active_filter'] as $key => $value)
+			<span class="active-filter">{{$value}}</span>
+		@endforeach
+	@endif
 	@overwrite
 
 	@section('widget_body')
@@ -17,14 +24,19 @@
 					<table class="table">
 						<thead>
 							<tr>
+								<th>No</th>
 								<th colspan="2">Kontak</th>
 								<th>Aktif</th>
 								<th>&nbsp;</th>
 							</tr>
 						</thead>
+						<?php $i = $ContactComposer['widget_data']['contactlist']['contact-display']['from'];?>
 						@foreach($ContactComposer['widget_data']['contactlist']['contact'] as $key => $value)
 							<tbody>
 								<tr>
+									<td>
+										{{$i}}
+									</td>
 									<td>
 										{{$value['item']}}
 									</td>
@@ -44,6 +56,7 @@
 									</td>
 								</tr>
 							</tbody>
+							<?php $i++;?>
 						@endforeach
 					</table>
 				</div>
