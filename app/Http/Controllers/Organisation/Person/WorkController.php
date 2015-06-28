@@ -38,21 +38,22 @@ class WorkController extends BaseController
 			App::abort(404);
 		}
 
-		$search['id'] 							= $person_id;
-		$search['organisationid'] 				= $org_id;
-		$search['withattributes'] 				= ['organisation'];
-		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
-		$contents 								= json_decode($results);
+		$search['id'] 								= $person_id;
+		$search['organisationid'] 					= $org_id;
+		$search['withattributes'] 					= ['organisation'];
+		$sort 										= ['name' => 'asc'];
+		$results 									= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
+		$contents 									= json_decode($results);
 
 		if(!$contents->meta->success)
 		{
 			App::abort(404);
 		}
 
-		$person 								= json_decode(json_encode($contents->data), true);
-		$data 									= $person['organisation'];
-				$filter 									= [];
+		$person 									= json_decode(json_encode($contents->data), true);
+		$data 										= $person['organisation'];
+		
+		$filter 									= [];
 		if(Input::has('q'))
 		{
 			$filter['search']['status']				= Input::get('q');

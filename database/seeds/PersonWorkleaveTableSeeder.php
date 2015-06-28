@@ -25,6 +25,7 @@ class PersonWorkleaveTableSeeder extends Seeder
 
 				$data 								= new PersonWorkleave;
 				$data->fill([
+					'person_id'						=> 1,
 					'workleave_id'					=> $workleave,
 					'start'							=> date('Y-m-d',strtotime('first day of january 2015')),
 					'end'							=> date('Y-m-d',strtotime('last day of december 2015')),

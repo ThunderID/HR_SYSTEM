@@ -53,10 +53,105 @@ class WorkleaveController extends BaseController
 
 		$person 								= json_decode(json_encode($contents->data), true);
 		$data 									= $person['organisation'];
-		$this->layout->page 					= view('pages.person.workleave.index');
-		$this->layout->page->controller_name 	= $this->controller_name;
-		$this->layout->page->data 				= $data;
-		$this->layout->page->person 			= $person;
+
+
+		$filter 									= [];
+		if(Input::has('q'))
+		{
+			$ondate									= Input::get('q');
+			$ondates 								= explode(':', $ondate);
+			foreach ($ondates as $key => $value) 
+			{
+				$range[]							= date('Y-m-d', strtotime($value));						
+			}
+			$filter['search']['ondate']				= $range;
+			$filter['active']['q']					= 'Cari Tanggal "'.Input::get('q').'"';
+		}
+		
+		if(Input::has('filter'))
+		{
+			$dirty_filter 							= Input::get('key');
+			$dirty_filter_value 					= Input::get('value');
+
+			foreach ($dirty_filter as $key => $value) 
+			{
+				if (str_is('search_*', strtolower($value)))
+				{
+					$filter_search 						= str_replace('search_', '', $value);
+					$filter['search'][$filter_search]	= $dirty_filter_value[$key];
+					$filter['active'][$filter_search]	= $dirty_filter_value[$key];
+					switch (strtolower($filter_search)) 
+					{
+						case 'start':
+							$active = 'Cari Tanggal ';
+							break;
+
+						default:
+							$active = 'Cari Tanggal ';
+							break;
+					}
+
+					switch (strtolower($filter_search)) 
+					{
+						//need to enhance to get branch name
+						default:
+							$active = $active.'"'.$dirty_filter_value[$key].'"';
+							break;
+					}
+
+					$filter['active'][$filter_search]	= $active;
+
+				}
+				if (str_is('sort_*', strtolower($value)))
+				{
+					$filter_sort 						= str_replace('sort_', '', $value);
+					$filter['sort'][$filter_sort]		= $dirty_filter_value[$key];
+					switch (strtolower($filter_sort)) 
+					{
+						case 'start':
+							$active = 'Urutkan Tanggal Mulai Berlaku Cuti';
+							break;
+						
+						case 'end':
+							$active = 'Urutkan Tanggal Kadaluarsa Cuti';
+							break;
+
+						default:
+							$active = 'Urutkan Tanggal';
+							break;
+					}
+
+					switch (strtolower($dirty_filter_value[$key])) 
+					{
+						case 'asc':
+							$active = $active.' (Z-A)';
+							break;
+						
+						default:
+							$active = $active.' (A-Z)';
+							break;
+					}
+
+					$filter['active'][$filter_sort]		= $active;
+				}
+			}
+		}
+		
+		$this->layout->page 						= view('pages.organisation.person.workleave.index');
+		$this->layout->page->controller_name 		= $this->controller_name;
+		$this->layout->page->data 					= $data;
+		$this->layout->page->person 				= $person;
+
+		$filters 									= 	[
+															// ['prefix' => 'search', 'key' => 'status', 'value' => 'Cari Status ', 'values' => [['key' => 'contract', 'value' => 'Kontrak'], ['key' => 'trial', 'value' => 'Percobaan'], ['key' => 'internship', 'value' => 'Magang'], ['key' => 'permanent', 'value' => 'Tetap']]],
+															['prefix' => 'sort', 'key' => 'start', 'value' => 'Urutkan Tanggal Mulai Berlaku Cuti', 'values' => [['key' => 'asc', 'value' => 'A-Z'], ['key' => 'desc', 'value' => 'Z-A']]],
+															['prefix' => 'sort', 'key' => 'end', 'value' => 'Urutkan Tanggal Kadaluarsa Cuti', 'values' => [['key' => 'asc', 'value' => 'A-Z'], ['key' => 'desc', 'value' => 'Z-A']]]
+														];
+
+		$this->layout->page->filter 				= $filters;
+		$this->layout->page->filtered 				= $filter;
+		$this->layout->page->default_filter  		= ['org_id' => $data['id'], 'person_id' => $person['id']];
+
 		return $this->layout;
 	}
 	
@@ -101,7 +196,7 @@ class WorkleaveController extends BaseController
 		$data 									= $person['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.person.workleave.create', compact('id', 'data', 'person'));
+		$this->layout->pages 					= view('pages.organisation.person.workleave.create', compact('id', 'data', 'person'));
 
 		return $this->layout;
 	}
@@ -147,9 +242,26 @@ class WorkleaveController extends BaseController
 			App::abort(404);
 		}
 
-		$attributes 							= Input::only('workleave_id', 'is_default', 'start', 'end');
-		$attributes['start'] 					= date('Y-m-d', strtotime($attributes['start']));
-		$attributes['end'] 						= date('Y-m-d', strtotime($attributes['end']));
+		$attributes 							= Input::only('workleave_id', 'is_default');
+		if(Input::has('is_default'))
+		{
+			$attributes['is_default'] 			= true;
+		}
+		else
+		{
+			$attributes['is_default'] 			= false;
+		}
+
+		if(Input::has('start'))
+		{
+			$attributes['start'] 				= date('Y-m-d', strtotime(Input::get('start')));
+		}
+		if(Input::has('end'))
+		{
+			$attributes['end'] 					= date('Y-m-d', strtotime(Input::get('end')));
+		}
+
+		$attributes['created_by'] 				= Session::get('loggedUser');
 
 		$errors 								= new MessageBag();
 
@@ -289,7 +401,7 @@ class WorkleaveController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.person.workleaves.index', [$person_id, 'org_id' => $org_id, 'person_id' => $person_id])->with('alert_success', 'Kontak Personalia "' . $contents->data->item. '" sudah dihapus');
+				return Redirect::route('hr.person.workleaves.index', [$person_id, 'org_id' => $org_id, 'person_id' => $person_id])->with('alert_success', 'Jatah Cuti sudah dihapus');
 			}
 		}
 		else

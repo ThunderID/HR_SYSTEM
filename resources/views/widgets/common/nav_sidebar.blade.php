@@ -114,6 +114,9 @@
                                                         <a href="{{ route('hr.person.schedules.index', ['org_id' => $value, 'person_id' => $person['id']]) }}">Jadwal</a>
                                                     </li>
                                                     <li>
+                                                        <a href="{{ route('hr.person.workleaves.index', ['org_id' => $value, 'person_id' => $person['id']]) }}">Jatah Cuti</a>
+                                                    </li>
+                                                    <li>
                                                         <a href="{{ route('hr.person.documents.index', ['org_id' => $value, 'person_id' => $person['id']]) }}">Dokumen</a>
                                                     </li>
                                                 </ul>
