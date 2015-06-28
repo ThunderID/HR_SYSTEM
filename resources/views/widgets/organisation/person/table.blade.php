@@ -6,7 +6,7 @@
 		<small>Total data {{$PersonComposer['widget_data']['personlist']['person-pagination']->total()}}</small>
 
 		<div class="clearfix">&nbsp;</div>
-		@if(!is_null($PersonComposer['widget_data']['personlist']['active_filter']))
+		@if(isset($PersonComposer['widget_data']['personlist']['active_filter']) && !is_null($PersonComposer['widget_data']['personlist']['active_filter']))
 			@foreach($PersonComposer['widget_data']['personlist']['active_filter'] as $key => $value)
 				<span class="active-filter">{{$value}}</span>
 			@endforeach
@@ -21,31 +21,40 @@
 				<table class="table">
 					<thead>
 						<tr class="row">
-							<th class="col-sm-2">Nama</th>
-							<th class="col-sm-4">Posisi</th>
+							<th class="col-sm-1">No</th>
+							<th class="col-sm-3" colspan="2">Nama</th>
+							<th class="col-sm-3">Posisi</th>
 							<th class="col-sm-2">Email</th>
-							<th class="col-sm-4">&nbsp;</th>
+							<th class="col-sm-3">&nbsp;</th>
 						</tr>
 					</thead>
+					<?php $i = $PersonComposer['widget_data']['personlist']['person-display']['from'];?>
 					@foreach($PersonComposer['widget_data']['personlist']['person'] as $key => $value)
 						<tbody>
 							<tr class="row">
-								<td class="col-sm-2">
+								<td>
+									{{$i}}
+								</td>
+								<td class="col-sm-1">
+									{!! HTML::image($value['avatar'], '', array( 'width' => 64, 'height' => 64, 'class' => 'img-rounded' )) !!} 
+								</td>
+								<td class="col-sm-3">
 									{{$value['name']}}
 								</td>
-								<td class="col-sm-4">
+								<td class="col-sm-3">
 									{{$value['works'][0]['name']}} departemen {{$value['works'][0]['tag']}} cabang {{$value['works'][0]['branch']['name']}}
 								</td>
 								<td class="col-sm-2">
 									{{$value['contacts'][0]['value']}}
 								</td>
-								<td class="text-right col-sm-4">
+								<td class="text-right col-sm-3">
 									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.persons.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash"></i></a>
 									<a href="{{route('hr.persons.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 									<a href="{{route('hr.persons.show', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
 								</td>
 							</tr>
 						</tbody>
+						<?php $i++;?>
 					@endforeach
 				</table>
 			</div>

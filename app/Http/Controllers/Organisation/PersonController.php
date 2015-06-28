@@ -69,6 +69,16 @@ class PersonController extends BaseController
 		{
 			$branches[$key]['key'] 					= $value['id'];
 			$branches[$key]['value'] 				= $value['name'];
+			if(Input::has('key'))
+			{
+				foreach (Input::get('key') as $key2 => $value2) 
+				{
+					if(strtolower($value2)=='search_branchid' && (int)Input::get('value')[$key2]==(int)$value['id'])
+					{
+						$branchname 				= $value['name'];
+					}
+				}
+			}
 			if(isset($filter['search']['branchid']))
 			{
 				foreach ($value['charts'] as $key2 => $value2) 
@@ -114,17 +124,28 @@ class PersonController extends BaseController
 						case 'charttag':
 							$active = 'Cari Departemen ';
 							break;
-						
+
+						case 'gender':
+							$active = 'Cari Gender ';
+							break;
+
 						default:
 							$active = 'Cari Nama ';
 							break;
 					}
 
-					switch (strtolower($dirty_filter_value[$key])) 
+					switch (strtolower($filter_search)) 
 					{
 						//need to enhance to get branch name
-						case 'asc':
-							$active = $active.'"'.$dirty_filter_value[$key].'"';
+						case 'branchid':
+							if(isset($branchname))
+							{
+								$active = $active.'"'.$branchname.'"';
+							}
+							else
+							{
+								$active = $active.'"'.$dirty_filter_value[$key].'"';
+							}
 							break;
 						
 						default:
@@ -229,8 +250,12 @@ class PersonController extends BaseController
 			$id 								= Input::get('id');
 		}
 
-		$attributes 							= Input::only('uniqid','name', 'prefix_title', 'suffix_title', 'gender', 'date_of_birth', 'place_of_birth');
-		$attributes['date_of_birth'] 			= date('Y-m-d', strtotime($attributes['date_of_birth']));
+		$attributes 							= Input::only('uniqid','name', 'prefix_title', 'suffix_title', 'gender', 'place_of_birth');
+		
+		if (Input::has('date_of_birth'))
+		{
+			$attributes['date_of_birth'] 		= date('Y-m-d', strtotime(Input::get('date_of_birth')));
+		}
 
 		if (Input::hasFile('link_profile_picture'))
 		{

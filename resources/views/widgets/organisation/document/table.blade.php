@@ -22,14 +22,19 @@
 				<table class="table">
 					<thead>
 						<tr>
+							<th>No</th>
 							<th>Nama Dokumen</th>
 							<th>Kategori</th>
 							<th>&nbsp;</th>
 						</tr>
 					</thead>
+					<?php $i = $DocumentComposer['widget_data']['documentlist']['document-display']['from'];?>
 					@foreach($DocumentComposer['widget_data']['documentlist']['document'] as $key => $value)
 						<tbody>
 							<tr>
+								<td>
+									{{$i}}
+								</td>
 								<td>
 									{{$value['name']}}
 								</td>
@@ -43,6 +48,7 @@
 								</td>
 							</tr>
 						</tbody>
+						<?php $i++;?>
 					@endforeach
 				</table>
 			</div>
