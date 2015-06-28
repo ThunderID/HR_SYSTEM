@@ -2,7 +2,7 @@
 
 @if (!$widget_error_count)
 	@section('widget_title')
-	<h1> Karir </h1>
+		<h1> {{ is_null($id) ? 'Tambah Karir ' : 'Ubah Karir '}} "{{$person['name']}}" </h1> 
 	@overwrite
 
 	@section('widget_body')
@@ -13,7 +13,7 @@
 					<label class="control-label">Posisi</label>
 				</div>	
 				<div class="col-md-10">
-					@include('widgets.chart.select', [
+					@include('widgets.organisation.branch.chart.select', [
 						'widget_options'		=> 	[
 														'chartlist'			=>
 														[
@@ -23,6 +23,7 @@
 															'page'				=> 1,
 															'per_page'			=> 100,
 															'chart_id'			=> $WorkComposer['widget_data']['worklist']['work']['chart_id'],
+															'tabindex'			=> 1,
 														]
 													]
 					])
@@ -33,7 +34,7 @@
 					<label class="control-label">Calendar</label>
 				</div>	
 				<div class="col-md-10">
-					@include('widgets.calendar.select', [
+					@include('widgets.organisation.calendar.select', [
 						'widget_options'		=> 	[
 														'calendarlist'			=>
 														[
@@ -43,6 +44,7 @@
 															'page'				=> 1,
 															'per_page'			=> 100,
 															'calendar_id'		=> $WorkComposer['widget_data']['worklist']['work']['calendar_id'],
+															'tabindex'			=> 2,
 														]
 													]
 					])
@@ -53,7 +55,7 @@
 					<label class="control-label">Status</label>
 				</div>	
 				<div class="col-md-10">
-					{!!Form::input('text', 'status', $WorkComposer['widget_data']['worklist']['work']['status'], ['class' => 'form-control'])!!}
+					{!!Form::input('text', 'status', $WorkComposer['widget_data']['worklist']['work']['status'], ['class' => 'form-control', 'tabindex' => 3])!!}
 				</div>
 			</div>
 			<div class="form-group">
@@ -61,13 +63,13 @@
 					<label class="control-label">Start</label>
 				</div>	
 				<div class="col-md-4">
-					{!!Form::input('text', 'start', $WorkComposer['widget_data']['worklist']['work']['start'], ['class' => 'form-control'])!!}
+					{!!Form::input('text', 'start', $WorkComposer['widget_data']['worklist']['work']['start'], ['class' => 'form-control date-mask', 'tabindex' => 4])!!}
 				</div>
 				<div class="col-md-1 col-md-offset-1">
 					<label class="control-label">End</label>
 				</div>	
 				<div class="col-md-4">
-					{!!Form::input('text', 'end', $WorkComposer['widget_data']['worklist']['work']['end'], ['class' => 'form-control'])!!}
+					{!!Form::input('text', 'end', $WorkComposer['widget_data']['worklist']['work']['end'], ['class' => 'form-control date-mask', 'tabindex' => 5])!!}
 				</div>
 			</div>
 			<div class="form-group">
@@ -75,7 +77,7 @@
 					<label class="control-label">Alasan Berhenti</label>
 				</div>	
 				<div class="col-md-10">
-					{!!Form::textarea('reason_end_job', $WorkComposer['widget_data']['worklist']['work']['reason_end_job'], ['class' => 'form-control'])!!}
+					{!!Form::textarea('reason_end_job', $WorkComposer['widget_data']['worklist']['work']['reason_end_job'], ['class' => 'form-control', 'tabindex' => 6])!!}
 				</div>
 			</div>
 			<div class="form-group">
