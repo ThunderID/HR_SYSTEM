@@ -57,7 +57,7 @@ class ScheduleController extends BaseController
 		$data 									= $person['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.person.schedule.index', compact('id', 'data', 'person'));
+		$this->layout->pages 					= view('pages.organisation.person.schedule.index', compact('id', 'data', 'person'));
 
 		return $this->layout;	
 	}
@@ -103,7 +103,7 @@ class ScheduleController extends BaseController
 		$data 									= $calendar['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.person.schedule.create', compact('id', 'data', 'calendar'));
+		$this->layout->pages 					= view('pages.organisation.person.schedule.create', compact('id', 'data', 'calendar'));
 
 		return $this->layout;
 	}
@@ -386,6 +386,9 @@ class ScheduleController extends BaseController
 						$schedule[$k]['start']			= $sh['on'].'T'.$sh['start'];
 						$schedule[$k]['end']			= $sh['on'].'T'.$sh['end'];
 						$schedule[$k]['status']			= $sh['status'];
+
+						$schedule[$k]['data_target']	= '#modal_schedule';
+						$schedule[$k]['ed_action']		= route('hr.person.schedules.store', ['id' => null, 'org_id' => $org_id, 'person_id' => $person_id]);
 										
 						switch (strtolower($sh['status'])) 
 						{
@@ -427,6 +430,8 @@ class ScheduleController extends BaseController
 						$schedule[$k]['status']			= 'presence_indoor';
 						$schedule[$k]['backgroundColor']= '#31708F';
 						$schedule[$k]['color']			= '#31708F';
+						$schedule[$k]['data_target']	= '#modal_schedule';
+						$schedule[$k]['ed_action']		= route('hr.person.schedules.store', ['id' => null, 'org_id' => $org_id, 'person_id' => $person_id]);
 
 						$date[]							= $period->format('Y-m-d');
 						$k++;
@@ -440,6 +445,8 @@ class ScheduleController extends BaseController
 						$schedule[$k]['status']			= 'absence_not_workleave';
 						$schedule[$k]['backgroundColor']= '#D78409';
 						$schedule[$k]['color']			= '#D78409';
+						$schedule[$k]['data_target']	= '#modal_schedule';
+						$schedule[$k]['ed_action']		= route('hr.person.schedules.store', ['id' => null, 'org_id' => $org_id, 'person_id' => $person_id]);
 
 						$date[]							= $period->format('Y-m-d');
 						$k++;

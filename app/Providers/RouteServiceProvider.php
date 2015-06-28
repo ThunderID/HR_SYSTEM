@@ -195,6 +195,8 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.person.schedules.edit'						=> [['1','2','3','4'], 'update'],
 							'hr.person.schedules.update'					=> [['1','2','3','4'], 'update'],
 							'hr.person.schedules.delete'					=> [['1','2','3','4'], 'delete'],
+							
+							'hr.person.schedule.ajax'						=> [['1','2','3','4'], 'read'],
 
 							'hr.person.workleaves.index'					=> [['1','2','3','4'], 'read'],
 							'hr.person.workleaves.show'						=> [['1','2','3','4'], 'read'],
