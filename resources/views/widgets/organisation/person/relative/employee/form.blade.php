@@ -2,7 +2,7 @@
 
 @if (!$widget_error_count)
 	@section('widget_title')
-		<h1> {{ is_null($id) ? 'Tambah Data Kerabat ' : 'Ubah Data Kerabat '}} </h1> 
+		<h1> {{ is_null($id) ? 'Tambah Data Kerabat ' : 'Ubah Data Kerabat '}} "{{$person['name']}}" </h1> 
 	@overwrite
 
 	@section('widget_body')
@@ -25,7 +25,7 @@
 					<label class="control-label">Karyawan</label>
 				</div>	
 				<div class="col-md-10">
-					@include('widgets.person.select', [
+					@include('widgets.organisation.person.select', [
 						'widget_options'		=> 	[
 														'personlist'			=>
 														[

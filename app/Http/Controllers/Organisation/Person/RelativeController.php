@@ -53,10 +53,92 @@ class RelativeController extends BaseController
 
 		$person 								= json_decode(json_encode($contents->data), true);
 		$data 									= $person['organisation'];
-		$this->layout->page 					= view('pages.person.relative.index');
-		$this->layout->page->controller_name 	= $this->controller_name;
-		$this->layout->page->data 				= $data;
-		$this->layout->page->person 			= $person;
+
+		$filter 									= [];
+		if(Input::has('q'))
+		{
+			$filter['search']['relationship']		= Input::get('q');
+			$filter['active']['q']					= 'Cari Kerabat "'.Input::get('q').'"';
+		}
+		if(Input::has('filter'))
+		{
+			$dirty_filter 							= Input::get('key');
+			$dirty_filter_value 					= Input::get('value');
+
+			foreach ($dirty_filter as $key => $value) 
+			{
+				if (str_is('search_*', strtolower($value)))
+				{
+					$filter_search 						= str_replace('search_', '', $value);
+					$filter['search'][$filter_search]	= $dirty_filter_value[$key];
+					$filter['active'][$filter_search]	= $dirty_filter_value[$key];
+					switch (strtolower($filter_search)) 
+					{
+						case 'relationship':
+							$active = 'Cari Kerabat ';
+							break;
+
+						default:
+							$active = 'Cari Kerabat ';
+							break;
+					}
+
+					switch (strtolower($filter_search)) 
+					{
+						//need to enhance to get branch name
+						default:
+							$active = $active.'"'.$dirty_filter_value[$key].'"';
+							break;
+					}
+
+					$filter['active'][$filter_search]	= $active;
+
+				}
+				if (str_is('sort_*', strtolower($value)))
+				{
+					$filter_sort 						= str_replace('sort_', '', $value);
+					$filter['sort'][$filter_sort]		= $dirty_filter_value[$key];
+					switch (strtolower($filter_sort)) 
+					{
+						case 'relationship':
+							$active = 'Urutkan Hubungan';
+							break;
+						
+						default:
+							$active = 'Urutkan Hubungan';
+							break;
+					}
+
+					switch (strtolower($dirty_filter_value[$key])) 
+					{
+						case 'asc':
+							$active = $active.' (Z-A)';
+							break;
+						
+						default:
+							$active = $active.' (A-Z)';
+							break;
+					}
+
+					$filter['active'][$filter_sort]		= $active;
+				}
+			}
+		}
+		
+		$this->layout->page 						= view('pages.organisation.person.relative.index');
+		$this->layout->page->controller_name 		= $this->controller_name;
+		$this->layout->page->data 					= $data;
+		$this->layout->page->person 				= $person;
+
+		$filters 									= 	[
+															['prefix' => 'search', 'key' => 'relationship', 'value' => 'Cari Kerabat', 'values' => [['key' => 'child', 'value' => 'Anak'], ['key' => 'parent', 'value' => 'Orang Tua'], ['key' => 'spouse', 'value' => 'Pasangan (Menikah)'], ['key' => 'partner', 'value' => 'Tidak Menikah']]],
+															// ['prefix' => 'sort', 'key' => 'name', 'value' => 'Urutkan Nama', 'values' => [['key' => 'asc', 'value' => 'A-Z'], ['key' => 'desc', 'value' => 'Z-A']]]
+														];
+
+		$this->layout->page->filter 				= $filters;
+		$this->layout->page->filtered 				= $filter;
+		$this->layout->page->default_filter  		= ['org_id' => $data['id'], 'person_id' => $person['id']];
+
 		return $this->layout;
 	}
 	
@@ -101,7 +183,7 @@ class RelativeController extends BaseController
 		$data 									= $person['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->page 					= view('pages.person.relative.create', compact('id', 'data', 'person'));
+		$this->layout->page 					= view('pages.organisation.person.relative.create', compact('id', 'data', 'person'));
 
 		return $this->layout;
 	}

@@ -4,6 +4,15 @@
 	@section('widget_title')
 	<h1> {!! $widget_title  or 'Data Kerabat' !!} </h1>
 	<small>Total data {{$RelativeComposer['widget_data']['relativelist']['relative-pagination']->total()}}</small>
+
+	<?php $relationship = ['child' => 'Anak', 'parent' => 'Orang Tua', 'spouse' => 'Pasangan (Menikah)', 'partner' => 'Pasangan (Tidak Menikah)'];?>
+
+	<div class="clearfix">&nbsp;</div>
+	@if(isset($RelativeComposer['widget_data']['relativelist']['active_filter']) && !is_null($RelativeComposer['widget_data']['relativelist']['active_filter']))
+		@foreach($RelativeComposer['widget_data']['relativelist']['active_filter'] as $key => $value)
+			<span class="active-filter">{{$value}}</span>
+		@endforeach
+	@endif
 	@overwrite
 
 	@section('widget_body')
@@ -14,32 +23,38 @@
 				<table class="table">
 					<thead>
 						<tr class="row">
+							<th class="col-sm-1">No</th>
 							<th class="col-sm-2">Nama</th>
 							<th class="col-sm-2">Hubungan</th>
-							<th class="col-sm-6">Kontak</th>
+							<th class="col-sm-5">Kontak</th>
 							<th class="col-sm-2">&nbsp;</th>
 						</tr>
 					</thead>
+					<?php $i = $RelativeComposer['widget_data']['relativelist']['relative-display']['from'];?>
 					@foreach($RelativeComposer['widget_data']['relativelist']['relative'] as $key => $value)
 						<tbody>
 							<tr class="row">
+								<td class="col-sm-1">
+									{{$i}}
+								</td>
 								<td class="col-sm-2">
 									{{$value['relative']['name']}}
 								</td>
 								<td class="col-sm-2">
-									{{$value['relationship']}}
+									{{$relationship[strtolower($value['relationship'])]}}
 								</td>
-								<td class="col-sm-6">
+								<td class="col-sm-5">
 									@foreach($value['relative']['contacts'] as $key2 => $value2)
 										{{ucwords($value2['item'])}} : {{$value2['value']}} <br/>
 									@endforeach
 								</td>
 								<td class="text-right col-sm-2">
 									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.relatives.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']]) }}"><i class="fa fa-trash"></i></a>
-									<a href="{{route('hr.person.relatives.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									<a href="{{route('hr.person.relatives.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'employee' => false])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 								</td>
 							</tr>
 						</tbody>
+						<?php $i++;?>
 					@endforeach
 				</table>
 			</div>

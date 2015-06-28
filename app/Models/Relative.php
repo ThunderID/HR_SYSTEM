@@ -45,6 +45,7 @@ class Relative extends BaseModel {
 											'relativeid' 				=> 'RelativeID', 
 											'personid' 					=> 'PersonID', 
 
+											'relationship' 				=> 'Relationship',
 											'relativeorganisationid' 	=> 'RelativeOrganisationID',
 											'defaultcontact' 			=> 'DefaultContact',
 
@@ -61,7 +62,7 @@ class Relative extends BaseModel {
 											'withattributes' 			=> 'Must be array of relationship',
 										];
 
-	public $sortable 				= 	['created_at'];
+	public $sortable 				= 	['created_at', 'relationship'];
 
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
@@ -125,5 +126,10 @@ class Relative extends BaseModel {
 	public function scopeRelativeID($query, $variable)
 	{
 		return $query->where('relative_id', $variable);
+	}
+
+	public function scopeRelationship($query, $variable)
+	{
+		return $query->where('relationship', $variable);
 	}
 }
