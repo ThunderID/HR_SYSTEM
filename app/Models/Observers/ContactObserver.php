@@ -7,6 +7,7 @@ use Illuminate\Support\MessageBag;
 /* ----------------------------------------------------------------------
  * Event:
  * 	Saving						
+ * 	Updating						
  * 	Saved						
  * 	Deleting						
  * ---------------------------------------------------------------------- */
@@ -51,6 +52,21 @@ class ContactObserver
 
 			return false;
 		}
+	}
+
+	public function updating($model)
+	{
+		//
+		if(isset($model->getDirty()['item']) && $model->getOriginal()['is_default']==true)
+		{
+			$errors 				= new MessageBag;
+
+			$errors->add('default', 'Tidak dapat mengubah kontak aktif');
+			$model['errors'] 		= $errors;
+
+			return false;
+		}
+		return true;
 	}
 
 	public function saved($model)
