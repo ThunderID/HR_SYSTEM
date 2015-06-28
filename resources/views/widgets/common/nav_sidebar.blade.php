@@ -117,16 +117,11 @@
                                                     <li @if(isset($widget_options['sidebar']['active_schedule_person'])) class="active-li" @endif>
                                                         <a href="{{ route('hr.person.schedules.index', ['org_id' => $value, 'person_id' => $person['id']]) }}" @if(isset($widget_options['sidebar']['active_schedule_person'])) class="active" @endif>Jadwal</a>
                                                     </li>
-<<<<<<< HEAD
+                                                    <li @if(isset($widget_options['sidebar']['active_workleave_person'])) class="active-li" @endif>
+                                                        <a href="{{ route('hr.person.workleaves.index', ['org_id' => $value, 'person_id' => $person['id']]) }}" @if(isset($widget_options['sidebar']['active_workleave_person'])) class="active" @endif>Jatah Cuti</a>
+                                                    </li>
                                                     <li @if(isset($widget_options['sidebar']['active_document_person'])) class="active-li" @endif>
                                                         <a href="{{ route('hr.person.documents.index', ['org_id' => $value, 'person_id' => $person['id']]) }}" @if(isset($widget_options['sidebar']['active_schedule_person'])) class="active" @endif>Dokumen</a>
-=======
-                                                    <li>
-                                                        <a href="{{ route('hr.person.workleaves.index', ['org_id' => $value, 'person_id' => $person['id']]) }}">Jatah Cuti</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{ route('hr.person.documents.index', ['org_id' => $value, 'person_id' => $person['id']]) }}">Dokumen</a>
->>>>>>> 026b721d0cc33a9226754cb20775736fee06ad1b
                                                     </li>
                                                 </ul>
                                             </li>
