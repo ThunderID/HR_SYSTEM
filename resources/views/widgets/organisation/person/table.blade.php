@@ -42,10 +42,14 @@
 									{{$value['name']}}
 								</td>
 								<td class="col-sm-3">
-									{{$value['works'][0]['name']}} departemen {{$value['works'][0]['tag']}} cabang {{$value['works'][0]['branch']['name']}}
+									@if(isset($value['works'][0]))
+										{{$value['works'][0]['name']}} departemen {{$value['works'][0]['tag']}} cabang {{$value['works'][0]['branch']['name']}}
+									@endif
 								</td>
 								<td class="col-sm-2">
-									{{$value['contacts'][0]['value']}}
+									@if(isset($value['contacts'][0]))
+										{{$value['contacts'][0]['value']}}
+									@endif
 								</td>
 								<td class="text-right col-sm-3">
 									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.persons.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash"></i></a>

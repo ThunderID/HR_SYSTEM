@@ -40,12 +40,13 @@ trait HasWorksOnTrait {
 
 	public function scopeCheckWork($query, $variable)
 	{
+		$bool 						= filter_var($variable, FILTER_VALIDATE_BOOLEAN);
 		if(strtotime($variable))
 		{
 			$days = new DateTime($variable);
 			return $query->whereHas('works', function($q)use($days){$q->where('start', '>=', $days->format('Y-m-d'));});
 		}
-		if($variable==false)
+		if($bool==false)
 		{
 			return $query->whereDoesntHave('works', function($q)use($variable){$q;});
 		}

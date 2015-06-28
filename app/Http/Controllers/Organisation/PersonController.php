@@ -129,6 +129,10 @@ class PersonController extends BaseController
 							$active = 'Cari Gender ';
 							break;
 
+						case 'checkwork':
+							$active = 'Cari Karyawan ';
+							break;
+
 						default:
 							$active = 'Cari Nama ';
 							break;
@@ -146,6 +150,8 @@ class PersonController extends BaseController
 							{
 								$active = $active.'"'.$dirty_filter_value[$key].'"';
 							}
+							break;
+						case 'checkwork':
 							break;
 						
 						default:
@@ -186,9 +192,19 @@ class PersonController extends BaseController
 				}
 			}
 		}
+		
+		if(!isset($filter['search']['checkwork']) || (isset($filter['search']['checkwork']) && $filter['search']['checkwork']==true))
+		{
+			$filter['search']['checkwork'] 			= true;
+		}
+		else
+		{
+			$filter['active']['checkwork'] 			= 'Cari Data Non Karyawan';
+		}
 
 		$this->layout->page 						= view('pages.organisation.person.index', compact('data'));
 		$filters 									= 	[
+															['prefix' => 'search', 'key' => 'checkwork', 'value' => 'Status', 'values' => [['key' => true, 'value' => 'Karyawan'], ['key' => false, 'value' => 'Non Karyawan']]],
 															['prefix' => 'search', 'key' => 'gender', 'value' => 'Cari Gender', 'values' => [['key' => 'female', 'value' => 'Wanita'], ['key' => 'male', 'value' => 'Pria']]],
 															['prefix' => 'sort', 'key' => 'name', 'value' => 'Urutkan Nama', 'values' => [['key' => 'asc', 'value' => 'A-Z'], ['key' => 'desc', 'value' => 'Z-A']]]
 														];
@@ -404,7 +420,7 @@ class PersonController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.persons.index', ['org_id' => $org_id])->with('local_msg', $errors)->with('alert_success', 'Data Personalia "' . $contents->data->name. '" sudah dihapus');
+				return Redirect::route('hr.persons.index', ['org_id' => $org_id])->with('alert_success', 'Data Personalia "' . $contents->data->name. '" sudah dihapus');
 			}
 		}
 		else

@@ -44,7 +44,7 @@
 										'personlist'			=>
 										[
 											'organisation_id'	=> $data['id'],
-											'search'			=> array_merge(['currentwork' => null, 'defaultemail' => true, 'checkwork' => true, 'withattributes' => ['works.branch']], (isset($filtered['search']) ? $filtered['search'] : [])),
+											'search'			=> array_merge(['currentwork' => null, 'defaultemail' => true, 'withattributes' => ['works.branch']], (isset($filtered['search']) ? $filtered['search'] : [])),
 											'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['name' => 'asc']),
 											'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
