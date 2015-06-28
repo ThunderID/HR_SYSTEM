@@ -8,8 +8,8 @@
 		$ContactComposer['widget_data']['contactlist']['contact-pagination']->setPath($ContactComposer['widget_data']['contactlist']['route']);
 	 ?>
 
-	 <div class="clearfix">&nbsp;</div>
 	@if(isset($ContactComposer['widget_data']['contactlist']['active_filter']) && !is_null($ContactComposer['widget_data']['contactlist']['active_filter']))
+		 <div class="clearfix">&nbsp;</div>
 		@foreach($ContactComposer['widget_data']['contactlist']['active_filter'] as $key => $value)
 			<span class="active-filter">{{$value}}</span>
 		@endforeach

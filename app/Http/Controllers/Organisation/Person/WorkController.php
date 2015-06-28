@@ -38,24 +38,111 @@ class WorkController extends BaseController
 			App::abort(404);
 		}
 
-		$search['id'] 							= $person_id;
-		$search['organisationid'] 				= $org_id;
-		$search['withattributes'] 				= ['organisation'];
-		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
-		$contents 								= json_decode($results);
+		$search['id'] 								= $person_id;
+		$search['organisationid'] 					= $org_id;
+		$search['withattributes'] 					= ['organisation'];
+		$sort 										= ['name' => 'asc'];
+		$results 									= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
+		$contents 									= json_decode($results);
 
 		if(!$contents->meta->success)
 		{
 			App::abort(404);
 		}
 
-		$person 								= json_decode(json_encode($contents->data), true);
-		$data 									= $person['organisation'];
-		$this->layout->page 					= view('pages.work.index');
-		$this->layout->page->controller_name 	= $this->controller_name;
-		$this->layout->page->data 				= $data;
-		$this->layout->page->person 			= $person;
+		$person 									= json_decode(json_encode($contents->data), true);
+		$data 										= $person['organisation'];
+		
+		$filter 									= [];
+		if(Input::has('q'))
+		{
+			$filter['search']['status']				= Input::get('q');
+			$filter['active']['q']					= 'Cari Status "'.Input::get('q').'"';
+		}
+		if(Input::has('filter'))
+		{
+			$dirty_filter 							= Input::get('key');
+			$dirty_filter_value 					= Input::get('value');
+
+			foreach ($dirty_filter as $key => $value) 
+			{
+				if (str_is('search_*', strtolower($value)))
+				{
+					$filter_search 						= str_replace('search_', '', $value);
+					$filter['search'][$filter_search]	= $dirty_filter_value[$key];
+					$filter['active'][$filter_search]	= $dirty_filter_value[$key];
+					switch (strtolower($filter_search)) 
+					{
+						case 'start':
+							$active = 'Cari Karir ';
+							break;
+
+						default:
+							$active = 'Cari Karir ';
+							break;
+					}
+
+					switch (strtolower($filter_search)) 
+					{
+						//need to enhance to get branch name
+						default:
+							$active = $active.'"'.$dirty_filter_value[$key].'"';
+							break;
+					}
+
+					$filter['active'][$filter_search]	= $active;
+
+				}
+				if (str_is('sort_*', strtolower($value)))
+				{
+					$filter_sort 						= str_replace('sort_', '', $value);
+					$filter['sort'][$filter_sort]		= $dirty_filter_value[$key];
+					switch (strtolower($filter_sort)) 
+					{
+						case 'start':
+							$active = 'Urutkan Tanggal Mulai Bekerja';
+							break;
+						
+						case 'end':
+							$active = 'Urutkan Tanggal Berhenti Bekerja';
+							break;
+
+						default:
+							$active = 'Urutkan Tanggal';
+							break;
+					}
+
+					switch (strtolower($dirty_filter_value[$key])) 
+					{
+						case 'asc':
+							$active = $active.' (Z-A)';
+							break;
+						
+						default:
+							$active = $active.' (A-Z)';
+							break;
+					}
+
+					$filter['active'][$filter_sort]		= $active;
+				}
+			}
+		}
+		
+		$this->layout->page 						= view('pages.organisation.person.work.index');
+		$this->layout->page->controller_name 		= $this->controller_name;
+		$this->layout->page->data 					= $data;
+		$this->layout->page->person 				= $person;
+
+		$filters 									= 	[
+															['prefix' => 'search', 'key' => 'status', 'value' => 'Cari Status ', 'values' => [['key' => 'contract', 'value' => 'Kontrak'], ['key' => 'trial', 'value' => 'Percobaan'], ['key' => 'internship', 'value' => 'Magang'], ['key' => 'permanent', 'value' => 'Tetap']]],
+															['prefix' => 'sort', 'key' => 'start', 'value' => 'Urutkan Tanggal Mulai Bekerja', 'values' => [['key' => 'asc', 'value' => 'A-Z'], ['key' => 'desc', 'value' => 'Z-A']]],
+															['prefix' => 'sort', 'key' => 'end', 'value' => 'Urutkan Tanggal Berhenti Bekerja', 'values' => [['key' => 'asc', 'value' => 'A-Z'], ['key' => 'desc', 'value' => 'Z-A']]]
+														];
+
+		$this->layout->page->filter 				= $filters;
+		$this->layout->page->filtered 				= $filter;
+		$this->layout->page->default_filter  		= ['org_id' => $data['id'], 'person_id' => $person['id']];
+
 		return $this->layout;
 	}
 	
@@ -100,7 +187,7 @@ class WorkController extends BaseController
 		$data 									= $person['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.work.create', compact('id', 'data', 'person'));
+		$this->layout->pages 					= view('pages.organisation.person.work.create', compact('id', 'data', 'person'));
 
 		return $this->layout;
 	}
@@ -159,7 +246,6 @@ class WorkController extends BaseController
 
 		if(Input::has('end') && !is_null(Input::get('end')))
 		{
-			dd(Input::all());
 			$attributes['end'] 					= date('Y-m-d', strtotime(Input::get('end')));
 		}
 
@@ -228,7 +314,7 @@ class WorkController extends BaseController
 		$data 							= $person['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 			= view('pages.work.show');
+		$this->layout->pages 			= view('pages.organisation.person.work.show');
 		$this->layout->pages->data 		= $data;
 		$this->layout->pages->person 	= $person;
 		return $this->layout;
@@ -299,7 +385,7 @@ class WorkController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.person.works.index', ['org_id' => $org_id, 'person_id' => $person_id])->with('alert_success', 'Karir "' . $contents->data->name. '" sudah dihapus');
+				return Redirect::route('hr.person.works.index', ['org_id' => $org_id, 'person_id' => $person_id])->with('alert_success', 'Karir sudah dihapus');
 			}
 		}
 		else

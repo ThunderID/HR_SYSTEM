@@ -2,15 +2,16 @@
 	@include('widgets.common.nav_topbar', 
 	['breadcrumb' => [
 						['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
+						['name' => 'Data Karyawan', 'route' => route('hr.persons.index', ['org_id' => $data['id']]) ],
 						['name' => $person['name'], 'route' => route('hr.persons.show', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
-						['name' => 'Jadwal', 'route' => route('hr.person.works.index', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
+						['name' => 'Jadwal Kerja', 'route' => route('hr.person.schedules.index', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
 					]
 	])
 @stop
 
 @section('nav_sidebar')
 	@include('widgets.common.nav_sidebar', [
-		'widget_template'		=> 'plain',
+		'widget_template'		=> 'plain_no_title',
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
@@ -30,9 +31,9 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.person.schedule.calendar', [
+	@include('widgets.organisation.person.schedule.calendar', [
 		'widget_template'		=> 'panel',
-		'widget_title'			=> 'Jadwal',		
+		'widget_title'			=> 'Jadwal Kerja "'.$person['name'].'"',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[

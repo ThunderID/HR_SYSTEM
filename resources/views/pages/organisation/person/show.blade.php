@@ -64,6 +64,7 @@
 													'sort'				=> ['end' => 'asc'],
 													'page'				=> (Input::has('page') ? Input::get('page') : 1),
 													'per_page'			=> 100,
+													'route_create'		=> route('hr.person.works.create', ['org_id' => $data['id'], 'person_id' => $person['id']]),
 												]
 											]
 			])

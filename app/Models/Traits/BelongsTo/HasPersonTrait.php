@@ -20,6 +20,11 @@ trait HasPersonTrait {
 		return $this->belongsTo('App\Models\Person');
 	}
 
+	public function CreatedBy()
+	{
+		return $this->belongsTo('App\Models\Person', 'created_by', 'id');
+	}
+
 	public function scopePersonID($query, $variable)
 	{
 		if(is_array($variable))

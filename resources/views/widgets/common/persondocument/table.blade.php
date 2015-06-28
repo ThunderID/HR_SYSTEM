@@ -12,8 +12,15 @@
 		}
 	?>
 	@section('widget_title')
-	<h1> {!! $widget_title or 'Dokumen Karyawan'!!} </h1>
-	<small>Total data {{$PersonDocumentComposer['widget_data']['documentlist']['document-pagination']->total()}}</small>
+		<h1> {!! $widget_title or 'Dokumen Karyawan'!!} </h1>
+		<small>Total data {{$PersonDocumentComposer['widget_data']['documentlist']['document-pagination']->total()}}</small>
+
+		@if(isset($PersonDocumentComposer['widget_data']['documentlist']['active_filter']) && !is_null($PersonDocumentComposer['widget_data']['documentlist']['active_filter']))
+			 <div class="clearfix">&nbsp;</div>
+			@foreach($PersonDocumentComposer['widget_data']['documentlist']['active_filter'] as $key => $value)
+				<span class="active-filter">{{$value}}</span>
+			@endforeach
+		@endif
 	@overwrite
 
 	@section('widget_body')
@@ -24,19 +31,24 @@
 				<table class="table">
 					<thead>
 						<tr class="row">
+							<th class="col-sm-1">No</th>
 							<th class="col-sm-2">{{(isset($PersonDocumentComposer['widget_data']['documentlist']['document'][0]['document']) ? 'Dokumen' : 'Karyawan')}}</th>
-							<th class="col-sm-4">{{(isset($PersonDocumentComposer['widget_data']['documentlist']['document'][0]['document']) ? 'Jenis' : '')}}</th>
-							<th class="col-sm-4">Dikeluarkan Tanggal</th>
-							<th class="col-sm-2">&nbsp;</th>
+							<th class="col-sm-3">{{(isset($PersonDocumentComposer['widget_data']['documentlist']['document'][0]['document']) ? 'Jenis' : '')}}</th>
+							<th class="col-sm-2">Dikeluarkan Tanggal</th>
+							<th class="col-sm-4">&nbsp;</th>
 						</tr>
 					</thead>
+					<?php $i = $PersonDocumentComposer['widget_data']['documentlist']['document-display']['from'];?>
 					@foreach($PersonDocumentComposer['widget_data']['documentlist']['document'] as $key => $value)
 						<tbody>
 							<tr class="row">
+								<td class="col-sm-1">
+									{{$i}}
+								</td>
 								<td class="col-sm-2">
 									{{(isset($value['document']['name']) ? $value['document']['name'] : $value['person']['name'])}}
 								</td>
-								<td class="col-sm-4">
+								<td class="col-sm-3">
 									{{(isset($value['document']['tag']) ? $value['document']['tag'] : '')}}
 								</td>
 								<td class="col-sm-2">
@@ -49,6 +61,7 @@
 								</td>
 							</tr>
 						</tbody>
+						<?php $i++;?>
 					@endforeach
 				</table>
 			</div>

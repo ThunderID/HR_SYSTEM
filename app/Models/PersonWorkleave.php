@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 	ID 								: Auto Increment, Integer, PK
  * 	person_id 						: Foreign Key From Person, Integer, Required
  * 	workleave_id 					: Foreign Key From Workleave, Integer, Required
+ * 	created_by 						: Foreign Key From Person, Integer, Required
  * 	start 		 					: Required, date
  * 	end  		 					: Required, date
  * 	is_default  		 			: Boolean
@@ -38,6 +39,7 @@ class PersonWorkleave extends BaseModel {
 
 	protected 	$fillable			= 	[
 											'workleave_id' 				,
+											'created_by' 				,
 											'start' 					,
 											'end' 						,
 											'is_default' 				,
@@ -45,6 +47,7 @@ class PersonWorkleave extends BaseModel {
 
 	protected 	$rules				= 	[
 											'workleave_id'				=> 'required|exists:tmp_workleaves,id',
+											'created_by'				=> 'required|exists:persons,id',
 											'start'						=> 'required|date_format:"Y-m-d"',
 											'end'						=> 'required|date_format:"Y-m-d"',
 											'is_default'				=> 'boolean',

@@ -2,7 +2,7 @@
 
 @if (!$widget_error_count)
 	@section('widget_title')
-	<h1> Pengalaman Kerja </h1>
+		<h1> {{ is_null($id) ? 'Tambah Karir ' : 'Ubah Karir '}} "{{$person['name']}}" </h1> 
 	@overwrite
 
 	@section('widget_body')
@@ -37,13 +37,13 @@
 					<label class="control-label">Start</label>
 				</div>	
 				<div class="col-md-4">
-					{!!Form::input('text', 'start', $WorkComposer['widget_data']['worklist']['work']['start'], ['class' => 'form-control'])!!}
+					{!!Form::input('text', 'start', $WorkComposer['widget_data']['worklist']['work']['start'], ['class' => 'form-control date-mask'])!!}
 				</div>
 				<div class="col-md-1 col-md-offset-1">
 					<label class="control-label">End</label>
 				</div>	
 				<div class="col-md-4">
-					{!!Form::input('text', 'end', $WorkComposer['widget_data']['worklist']['work']['end'], ['class' => 'form-control'])!!}
+					{!!Form::input('text', 'end', $WorkComposer['widget_data']['worklist']['work']['end'], ['class' => 'form-control date-mask'])!!}
 				</div>
 			</div>
 			<div class="form-group">

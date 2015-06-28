@@ -2,7 +2,7 @@
 
 @if (!$widget_error_count)
 	@section('widget_title')
-		<h1> {{ is_null($id) ? 'Tambah Dokumen Karyawan' : 'Ubah Dokumen Karyawan '. $DocumentComposer['widget_data']['documentlist']['document']['name']}} </h1> 
+		<h1> {{ is_null($id) ? 'Tambah Dokumen ' : 'Ubah Dokumen  '. $DocumentComposer['widget_data']['documentlist']['document']['name']}} "{{$person['name']}}"</h1> 
 	@overwrite
 
 	@section('widget_body')	  

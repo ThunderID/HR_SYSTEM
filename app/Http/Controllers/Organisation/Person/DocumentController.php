@@ -53,12 +53,119 @@ class DocumentController extends BaseController
 			App::abort(404);
 		}
 
-		$person 								= json_decode(json_encode($contents->data), true);
-		$data 									= $person['organisation'];
-		$this->layout->page 					= view('pages.person.document.index');
-		$this->layout->page->controller_name 	= $this->controller_name;
-		$this->layout->page->data 				= $data;
-		$this->layout->page->person 			= $person;
+		$person 									= json_decode(json_encode($contents->data), true);
+		$data 										= $person['organisation'];
+						$filter 									= [];
+
+		if(Input::has('q'))
+		{
+			$filter['search']['documenttag']		= Input::get('q');
+			$filter['active']['q']					= 'Cari Kategori "'.Input::get('q').'"';
+		}
+		if(Input::has('filter'))
+		{
+			$dirty_filter 							= Input::get('key');
+			$dirty_filter_value 					= Input::get('value');
+
+			foreach ($dirty_filter as $key => $value) 
+			{
+				if (str_is('search_*', strtolower($value)))
+				{
+					$filter_search 						= str_replace('search_', '', $value);
+					$filter['search'][$filter_search]	= $dirty_filter_value[$key];
+					$filter['active'][$filter_search]	= $dirty_filter_value[$key];
+					switch (strtolower($filter_search)) 
+					{
+						case 'documenttag':
+							$active = 'Cari Kategori ';
+							break;
+
+						default:
+							$active = 'Cari Kategori ';
+							break;
+					}
+
+					switch (strtolower($dirty_filter_value[$key])) 
+					{
+						case 'asc':
+							$active = $active.'"'.$dirty_filter_value[$key].'"';
+							break;
+						
+						default:
+							$active = $active.'"'.$dirty_filter_value[$key].'"';
+							break;
+					}
+
+					$filter['active'][$filter_search]	= $active;
+
+				}
+				if (str_is('sort_*', strtolower($value)))
+				{
+					$filter_sort 						= str_replace('sort_', '', $value);
+					$filter['sort'][$filter_sort]		= $dirty_filter_value[$key];
+					switch (strtolower($filter_sort)) 
+					{
+						case 'created_at':
+							$active = 'Urutkan Tanggal Pembuatan ';
+							break;
+						
+						default:
+							$active = 'Urutkan Tanggal Pembuatan ';
+							break;
+					}
+
+					switch (strtolower($dirty_filter_value[$key])) 
+					{
+						case 'asc':
+							$active = $active.' (Z-A)';
+							break;
+						
+						default:
+							$active = $active.' (A-Z)';
+							break;
+					}
+
+					$filter['active'][$filter_sort]		= $active;
+				}
+			}
+		}
+
+		unset($search);
+		unset($sort);
+		
+		$search['organisationid']					= $org_id;
+		$search['grouptag']							= true;
+		$sort 										= ['tag' => 'asc'];
+		$results 									= $this->dispatch(new Getting(new Document, $search, $sort , 1, 100));
+		$contents 									= json_decode($results);		
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$doctags 									= json_decode(json_encode($contents->data), true);
+
+		$tags 										= [];
+		foreach ($doctags as $key => $value) 
+		{
+			$tags[$key]['key']						= $value['tag'];
+			$tags[$key]['value']					= $value['tag'];
+		}
+
+		$this->layout->page 						= view('pages.organisation.person.document.index');
+		$this->layout->page->controller_name 		= $this->controller_name;
+		$this->layout->page->data 					= $data;
+		$this->layout->page->person 				= $person;
+
+		$this->layout->page->filter 				= 	[
+															['prefix' => 'search', 'key' => 'documenttag', 'value' => 'Cari Kategori', 'values' => $tags],
+															['prefix' => 'sort', 'key' => 'created_at', 'value' => 'Urutkan Tanggal Pembuatan', 'values' => [['key' => 'asc', 'value' => 'A-Z'], ['key' => 'desc', 'value' => 'Z-A']]]
+														];
+														
+		$this->layout->page->filtered 				= $filter;
+		$this->layout->page->default_filter  		= ['org_id' => $data['id'], 'person_id' => $person['id']];
+
 		return $this->layout;
 	}
 	
@@ -120,7 +227,7 @@ class DocumentController extends BaseController
 		$persondocument 						= json_decode(json_encode($contents->data), true);
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.person.document.create', compact('id', 'data', 'person', 'persondocument'));
+		$this->layout->pages 						= view('pages.organisation.person.document.create', compact('id', 'data', 'person', 'persondocument'));
 
 		return $this->layout;
 	}

@@ -17,6 +17,7 @@ class CreatePersonsWorkleavesTable extends Migration {
 			$table->increments('id');
 			$table->integer('person_id')->unsigned()->index();
 			$table->integer('workleave_id')->unsigned()->index();
+			$table->integer('created_by')->unsigned()->index();
 			$table->date('start');
 			$table->date('end');
 			$table->boolean('is_default');
