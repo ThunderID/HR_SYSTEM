@@ -27,8 +27,8 @@
 @overwrite
 
 @section('content_body')
-			<div class="row">
-		<div class="col-sm-6">
+	<div class="row">
+		<div class="col-sm-12">
 			@include('widgets.common.contact.table', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> '<h4>Kontak "'.$person['name'].'"'.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small></h4>' : null),
@@ -50,7 +50,7 @@
 											]
 			])
 		</div>
-		<div class="col-sm-6">
+		<div class="col-sm-12">
 			@include('widgets.organisation.person.work.table', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> '<h4>Pekerjaan Saat Ini "'.$person['name'].'"'.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small></h4>' : null),

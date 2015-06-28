@@ -53,7 +53,7 @@
 						<div class="col-sm-6">
 							<div class="form-group">
 								<label class="control-label">Tanggal Lahir</label>
-								{!!Form::input('date', 'date_of_birth', $PersonComposer['widget_data']['personlist']['person']['date_of_birth'], ['class' => 'form-control date-mask'])!!}
+								{!!Form::input('text', 'date_of_birth', date('d-m-Y', strtotime($PersonComposer['widget_data']['personlist']['person']['date_of_birth'])), ['class' => 'form-control date-mask'])!!}
 							</div>	
 						</div>
 					</div>

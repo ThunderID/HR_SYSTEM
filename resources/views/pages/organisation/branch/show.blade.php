@@ -10,7 +10,7 @@
 
 @section('nav_sidebar')
 	@include('widgets.common.nav_sidebar', [
-		'widget_template'		=> 'plain',
+		'widget_template'		=> 'plain_no_title',
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
@@ -30,7 +30,7 @@
 	<div class="row">
 		<div class="col-sm-6">
 			@include('widgets.organisation.person.stat.total_employee', [
-				'widget_template'		=> 'panel',
+				'widget_template'		=> 'plain',
 				'widget_title'			=> 'Total Karyawan '.$data['name'],
 				'widget_options'		=> 	[
 												'personlist'		=>

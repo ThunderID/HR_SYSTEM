@@ -6517,7 +6517,32 @@ label,
 .sidebar li a:hover {
   background-color: #FFFFC9;
 }
+.sidebar li.active-li a.active {
+  color: black;
+}
+.sidebar li.active a.top-level {
+  color: #428BCA;
+}
+.label-dark-blue {
+  background-color: #779ecb;
+}
+.label-blue {
+  background-color: #aec6cf;
+}
+.label-green-young {
+  background-color: #7FC7AF;
+}
+.label-green {
+  background-color: #29856e;
+}
+.label-gray {
+  background-color: #cfcfc4;
+}
+.label-magenta {
+  background-color: #F49AC2;
+}
 
+/* fullcalendar custom */
 @media (min-width: 768px) {
   .sidebar {
     z-index: 1;
