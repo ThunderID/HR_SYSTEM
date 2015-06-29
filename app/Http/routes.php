@@ -11,44 +11,6 @@
 |
 */
 
-//route client push log data
-Route::group(['namespace' => 'Organisation\\Person\\'], function() 
-{
-	Route::post('api/activity/logs/',			['uses' => 'LogController@store',				'as' => 'hr.log.store']);
-});
-
-//test log push
-Route::get('test/presence', function()
-{
-	try
-	{
-		fsockopen('localhost', '8200', $errno, $errstr, 60);
-	}
-	catch (Exception $e) 
-	{
-		print_r($e);
-	}
-
-
-	// $api 										= new \App\APIConnector\OUTENGINE\API;
-	$json										= 	'{"application":{"api":{"client":"123456789","secret":"123456789"}},"person":{"id":"1","email":"hr@thunderid.com"},"log":[["budi2","Session Logon","28-05-2015 15:04:01","pc"]]}';
-	$new 										= 	json_encode($json);
-	$input 										= 	json_decode($new);
-
-
-	$curl 										= 	curl_init("http://localhost:8200/api/activity/logs/");
-													curl_setopt($curl, CURLOPT_HEADER, false);
-													curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-													curl_setopt($curl, CURLOPT_HTTPHEADER,
-														array("Content-type: application/json"));
-													curl_setopt($curl, CURLOPT_POST, true);
-													curl_setopt($curl, CURLOPT_POSTFIELDS, $input);
-	$results 									= 	curl_exec($curl);
-	print_r($results);
-	exit;
-});
-
-
 // ------------------------------------------------------------------------------------
 // LOGIN PAGE
 // ------------------------------------------------------------------------------------
@@ -64,12 +26,16 @@ Route::group(['namespace' => 'Auth\\'], function()
 Route::group(['before' => 'hr_acl'], function()
 {
 	// ------------------------------------------------------------------------------------
-	// LOGOUT PAGE
+	// LOGOUT AND PASSWORD PAGE
 	// ------------------------------------------------------------------------------------
 
 	Route::group(['namespace' => 'Auth\\'], function() 
 	{
-		Route::get('/logout',					['uses' => 'LoginController@getLogout',				'as' => 'hr.logout']);
+		Route::get('/password',				['uses' => 'PasswordController@getPassword',		'as' => 'hr.password.get']);
+		
+		Route::post('/password',			['uses' => 'PasswordController@postPassword',		'as' => 'hr.password.post']);
+		
+		Route::get('/logout',				['uses' => 'LoginController@getLogout',				'as' => 'hr.logout.get']);
 	});
 
 	// ------------------------------------------------------------------------------------
@@ -256,6 +222,16 @@ Route::group(['before' => 'hr_acl'], function()
 
 		Route::resource('attendances',		'AttendanceController',								['names' => ['index' => 'hr.report.attendances.index', 'create' => 'hr.report.attendances.create', 'store' => 'hr.report.attendances.store', 'show' => 'hr.report.attendances.show', 'edit' => 'hr.report.attendances.edit', 'update' => 'hr.report.attendances.update', 'destroy' => 'hr.report.attendances.delete']]);
 
+		Route::group(['namespace' => 'Attendance\\', 'prefix' => 'attendance'], function() 
+		{
+			// ------------------------------------------------------------------------------------
+			// REPORT FOR ATTENDANCE (PROCESS LOG PER PERSON) RESOURCE
+			// ------------------------------------------------------------------------------------
+
+			Route::resource('persons',		'PersonController',									['names' => ['index' => 'hr.attendance.persons.index', 'create' => 'hr.attendance.persons.create', 'store' => 'hr.attendance.persons.store', 'show' => 'hr.attendance.persons.show', 'edit' => 'hr.attendance.persons.edit', 'update' => 'hr.attendance.persons.update', 'destroy' => 'hr.attendance.persons.delete']]);
+		});
+
+
 		// ------------------------------------------------------------------------------------
 		// REPORT FOR WAGE (PROCESS LOG) RESOURCE
 		// ------------------------------------------------------------------------------------
@@ -266,8 +242,18 @@ Route::group(['before' => 'hr_acl'], function()
 	});
 });	
 
+// ------------------------------------------------------------------------------------
+// API ROUTE
+// ------------------------------------------------------------------------------------
+Route::group(['namespace' => 'Organisation\\Person\\'], function() 
+{
+	Route::post('api/activity/logs/',		['uses' => 'LogController@store',					'as' => 'hr.log.store']);
+});
 
-
+Route::group(['namespace' => 'Auth\\'], function() 
+{
+	Route::post('api/tracker/setting/',			['uses' => 'TrackerController@postlogin',			'as' => 'hr.tracker.post']);
+});
 
 
 Blade::extend(function ($value, $compiler)

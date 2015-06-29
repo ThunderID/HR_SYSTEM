@@ -59,7 +59,7 @@ class Calendar extends BaseModel {
 	protected 	$rules				= 	[
 											'name'						=> 'required|max:255',
 											'start'						=> 'required|date_format:"H:i:s"',
-											'end'						=> 'required|date_format:"H:i:s"',
+											'end'						=> 'required|date_format:"H:i:s"|after:start',
 										];
 
 	public $searchable 				= 	[

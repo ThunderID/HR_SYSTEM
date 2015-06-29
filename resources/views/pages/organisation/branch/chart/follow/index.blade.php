@@ -2,7 +2,9 @@
 	@include('widgets.common.nav_topbar', 
 	['breadcrumb' => [
 						['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
+						['name' => 'Cabang', 'route' => route('hr.branches.index', ['org_id' => $data['id'] ])], 
 						['name' => $branch['name'], 'route' => route('hr.branches.show', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
+						['name' => 'Struktur Organisasi', 'route' => route('hr.branch.charts.index', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
 						['name' => $chart['name'], 'route' => route('hr.branch.charts.index', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
 						['name' => 'Kalender Kerja', 'route' => route('hr.chart.calendars.index', ['id' => $branch['id'], 'branch_id' => $branch['id'],'org_id' => $data['id'] ])], 
 					]
@@ -32,7 +34,7 @@
 
 			@include('widgets.organisation.branch.chart.follow.table', [
 				'widget_template'		=> 'panel',
-				'widget_title'			=> 'Kalender Kerja '.$chart['name'].' '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
+				'widget_title'			=> 'Kalender Kerja "'.$chart['name'].'"" '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 				'widget_options'		=> 	[
 												'followlist'		=>
 												[

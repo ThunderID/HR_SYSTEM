@@ -31,11 +31,14 @@ class SettingIdleObserver
 	public function updating($model)
 	{
 		//
-		$errors 				= new MessageBag;
+		if(isset($model->getDirty()['start']) || isset($model->getDirty()['idle_1']) || isset($model->getDirty()['idle_2']))
+		{
+			$errors 			= new MessageBag;
 
-		$errors->add('idleupdate', 'Tidak dapat mengubah pengaturan idle. Silahkan Buat aturan yang baru.');
-		
-		return false;
+			$errors->add('idleupdate', 'Tidak dapat mengubah pengaturan idle. Silahkan Buat aturan yang baru.');
+			
+			return false;
+		}
 	}
 
 	public function deleting($model)

@@ -4,6 +4,12 @@
 	@section('widget_title')
 		<h1> {{ $widget_title or 'Jabatan' }} </h1>
 		<small>Total data {{$ChartComposer['widget_data']['chartlist']['chart-pagination']->total()}}</small>
+		@if(isset($ChartComposer['widget_data']['chartlist']['active_filter']) && !is_null($ChartComposer['widget_data']['chartlist']['active_filter']))
+			 <div class="clearfix">&nbsp;</div>
+			@foreach($ChartComposer['widget_data']['chartlist']['active_filter'] as $key => $value)
+				<span class="active-filter">{{$value}}</span>
+			@endforeach
+		@endif
 	@overwrite
 
 	@section('widget_body')

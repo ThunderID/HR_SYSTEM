@@ -119,7 +119,9 @@ class BranchController extends BaseController
 		$this->layout->page 					= view('pages.organisation.branch.index');
 		$this->layout->page->controller_name 	= $this->controller_name;
 		$this->layout->page->data 				= $data;
-		$this->layout->page->filter 			= [['prefix' => 'sort', 'key' => 'name', 'value' => 'Urutkan Nama', 'values' => [['key' => 'asc', 'value' => 'A-Z'], ['key' => 'desc', 'value' => 'Z-A']]]];
+		$this->layout->page->filter 			= 	[
+														['prefix' => 'sort', 'key' => 'name', 'value' => 'Urutkan Nama', 'values' => [['key' => 'asc', 'value' => 'A-Z'], ['key' => 'desc', 'value' => 'Z-A']]]
+													];
 		$this->layout->page->filtered 			= $filter;
 		$this->layout->page->default_filter 	= ['org_id' => $data['id']];
 

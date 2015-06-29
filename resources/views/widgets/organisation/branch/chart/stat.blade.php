@@ -8,7 +8,6 @@
 
 	@section('widget_title')
 		<h1> {{ $widget_title or 'Struktur Organisasi' }} </h1>
-		<small>Total data {{$ChartComposer['widget_data']['chartlist']['chart-pagination']->total()}}</small>
 	@overwrite
 
 	@section('widget_body')

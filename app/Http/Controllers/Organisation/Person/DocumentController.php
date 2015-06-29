@@ -55,7 +55,8 @@ class DocumentController extends BaseController
 
 		$person 									= json_decode(json_encode($contents->data), true);
 		$data 										= $person['organisation'];
-						$filter 									= [];
+		
+		$filter 									= [];
 
 		if(Input::has('q'))
 		{
@@ -282,7 +283,10 @@ class DocumentController extends BaseController
 			App::abort(404);
 		}
 
-		$search['id'] 							= $person_id;
+		unset($search);
+		unset($sort);
+
+		$search['id'] 							= $doc_id;
 		$search['organisationid'] 				= $org_id;
 		$sort 									= ['name' => 'asc'];
 		$results 								= $this->dispatch(new Getting(new Document, $search, $sort , 1, 1));
@@ -391,22 +395,22 @@ class DocumentController extends BaseController
 			$org_id 					= Session::get('user.organisation');
 		}
 
-		if(Input::has('branch_id'))
+		if(Input::has('person_id'))
 		{
-			$branch_id 					= Input::get('branch_id');
+			$person_id 					= Input::get('person_id');
 		}
 		else
 		{
 			App::abort(404);
 		}
 
-		// if(!in_array($org_id, Session::get('user.organisationids')))
-		// {
-		// App::abort(404);
-		// }
-		
-		$search 						= ['id' => $id, 'branchid' => $branch_id, 'organisationid' => $org_id, 'withattributes' => ['branch', 'branch.organisation']];
-		$results 						= $this->dispatch(new Getting(new Chart, $search, [] , 1, 1));
+		if(!in_array($org_id, Session::get('user.organisationids')))
+		{
+			App::abort(404);
+		}
+
+		$search 						= ['id' => $id, 'organisationid' => $org_id, 'personid' => $person_id, 'withattributes' => ['document.organisation', 'document', 'details', 'details.template']];
+		$results 						= $this->dispatch(new Getting(new PersonDocument, $search, [] , 1, 1));
 		$contents 						= json_decode($results);
 		
 		if(!$contents->meta->success)
@@ -414,15 +418,41 @@ class DocumentController extends BaseController
 			App::abort(404);
 		}
 
-		$chart 							= json_decode(json_encode($contents->data), true);
-		$branch 						= $chart['branch'];
-		$data 							= $chart['branch']['organisation'];
+		$persondocument 				= json_decode(json_encode($contents->data), true);
+		
+		unset($search);
+		unset($sort);
+		$search 						= ['id' => $person_id, 'organisationid' => $org_id, 'currentwork' => true];
+		$results 						= $this->dispatch(new Getting(new Person, $search, [] , 1, 1));
+		$contents 						= json_decode($results);
+		
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$person 						= json_decode(json_encode($contents->data), true);
+
+		$data 							= $persondocument['document']['organisation'];
+		$document 						= $persondocument['document'];
+
+		$template						= $persondocument['document']['template'];
+		$template						= str_replace("//name//", $person['name'], $template);
+		$template						= str_replace("//position//", ($person['works'] ? $data['works'][0]['name'] : ''), $template);
+		
+		foreach ($persondocument['details'] as $key => $value) 
+		{
+			$template					= str_replace("//".strtolower($value['template']['field'])."//", ($value['numeric'] ? $value['numeric'] : $value['text']), $template);
+		}
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 			= view('pages.chart.show');
-		$this->layout->pages->data 		= $data;
-		$this->layout->pages->branch 	= $branch;
-		$this->layout->pages->chart 	= $chart;
+		$this->layout->pages 					= view('pages.organisation.person.document.show', compact('id'));
+		$this->layout->pages->data 				= $data;
+		$this->layout->pages->person 			= $person;
+		$this->layout->pages->document 			= $document;
+		$this->layout->pages->template 			= $template;
+		$this->layout->pages->persondocument 	= $persondocument;
+
 		return $this->layout;
 	}
 
