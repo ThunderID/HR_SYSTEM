@@ -7,7 +7,7 @@
 @overwrite
 
 @section('widget_body')
-    <ul class="nav in" id="side-menu" style="margin-top:1px">
+    <ul class="nav in" id="side-menu" style="margin-top:11px">
         <li @if(isset($widget_options['sidebar']['active_form'])&&($widget_options['sidebar']['active_form']=='active_create_org')) class="active-li" @endif>
             <a href="{{route('hr.organisations.create')}}"><i class="fa fa-plus-circle fa-fw"></i> Tambah Organisasi</a>
         </li>
@@ -83,17 +83,17 @@
 								</li>
                             </ul>
                         </li>
-                        <li @if(isset($person['id'])||(Input::get('person_id'))) class="active" @endif>
+                        <li @if(isset($person['id'])|(Input::get('person_id'))) class="active" @endif>
                             <a href="javascript:;"><i class="fa fa-briefcase fa-fw"></i> Data<span class="fa arrow"></span></a>
                             <ul class="nav nav-third-level">
-                                <li @if(isset($person['id'])||(Input::get('person_id'))) class="active" @endif>
+                                <li @if(isset($person['id'])|(Input::get('person_id'))) class="active" @endif>
                                     <a href="javascript:;"><i class="fa fa-users fa-fw"></i> Data Karyawan <span class="fa arrow"></span></a>
                                     <ul class="nav nav-fourty-level">
                                         <li @if(isset($widget_options['sidebar']['active_form'])&&($widget_options['sidebar']['active_form']=='active_add_person')) class="active-li" @endif>
-                                            <a href="{{route('hr.persons.create', ['org_id' => $value])}}">Tambah Karyawan</a>
+                                            <a href="{{route('hr.persons.create', ['org_id' => $value, 'person_id' => 0])}}">Tambah Karyawan</a>
                                         </li>
                                         <li @if(isset($widget_options['sidebar']['active_all_person'])) class="active-li" @endif>
-                                            <a href="{{route('hr.persons.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_all_person'])) class="active" @endif>Semua Karyawan</a>
+                                            <a href="{{route('hr.persons.index', ['org_id' => $value, 'person_id' => 0])}}" @if(isset($widget_options['sidebar']['active_all_person'])) class="active" @endif>Semua Karyawan</a>
                                         </li>
                                         @if(isset($person['id']))
                                             <li @if(isset($person['id'])||(Input::get('person_id'))) class="active" @endif>

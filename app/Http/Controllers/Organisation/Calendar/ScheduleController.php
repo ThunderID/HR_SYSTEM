@@ -117,15 +117,15 @@ class ScheduleController extends BaseController
 				if($period->format('Y-m-d') == date('Y-m-d', strtotime($sh['on'])))
 				{
 				
-						$schedule[$k]['mode']		= 'edit';
-						$schedule[$k]['data_target']= '#modal_schedule';
-						$schedule[$k]['id']			= $sh['id'];
-						$schedule[$k]['title'] 		= $sh['name'];
-						$schedule[$k]['start']		= $sh['on'].'T'.$sh['start'];
-						$schedule[$k]['end']		= $sh['on'].'T'.$sh['end'];
-						$schedule[$k]['status']		= $sh['status'];					
-						$schedule[$k]['ed_action']	= route('hr.calendar.schedules.store', ['id' => $sh['id'], 'org_id' => $org_id, 'cal_id' => $cal_id]);
-						$schedule[$k]['del_action']	= route('hr.calendar.schedules.delete', ['id' => $sh['id'], 'org_id' => $org_id, 'cal_id' => $cal_id]);
+						$schedule[$k]['mode']			= 'edit';
+						$schedule[$k]['data_target']	= '#modal_schedule';
+						$schedule[$k]['id']				= $sh['id'];
+						$schedule[$k]['title'] 			= $sh['name'];
+						$schedule[$k]['start']			= $sh['on'].'T'.$sh['start'];
+						$schedule[$k]['end']			= $sh['on'].'T'.$sh['end'];
+						$schedule[$k]['status']			= $sh['status'];					
+						$schedule[$k]['ed_action']		= route('hr.calendar.schedules.store', ['id' => $sh['id'], 'org_id' => $org_id, 'cal_id' => $cal_id]);
+						$schedule[$k]['del_action']		= route('hr.calendar.schedules.delete', ['id' => $sh['id'], 'org_id' => $org_id, 'cal_id' => $cal_id]);
 
 						switch (strtolower($sh['status'])) 
 						{
@@ -145,15 +145,15 @@ class ScheduleController extends BaseController
 								$schedule[$k]['label']= 'absence_not_workleave';
 								break;
 						}					
-						$k++;
-						$schedule[$k]['mode']			= 'create';
-						$schedule[$k]['data_target']	= '#modal_schedule';
-						$schedule[$k]['title'] 			= 'Tambah Jadwal';
-						$schedule[$k]['start']			= $sh['on'];
-						$schedule[$k]['end']			= $sh['on'];
-						$schedule[$k]['status']			= $sh['status'];
-						$schedule[$k]['add_action']		= route('hr.calendar.schedules.store', ['org_id' => $org_id, 'cal_id' => $cal_id]);	
-						$schedule[$k]['label']			= 'primary';
+						// $k++;
+						// $schedule[$k]['mode']			= 'create';
+						// $schedule[$k]['data_target']	= '#modal_schedule';
+						// $schedule[$k]['title'] 			= 'Tambah Jadwal';
+						// $schedule[$k]['start']			= $sh['on'];
+						// $schedule[$k]['end']			= $sh['on'];
+						// $schedule[$k]['status']			= $sh['status'];
+						// $schedule[$k]['add_action']		= route('hr.calendar.schedules.store', ['org_id' => $org_id, 'cal_id' => $cal_id]);	
+						// $schedule[$k]['label']			= 'primary';
 					
 
 					$date[]							= $period->format('Y-m-d');
