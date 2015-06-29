@@ -33,8 +33,8 @@
 					{!! HTML::image(Session::get('user.avatar'), '', array( 'width' => 32, 'height' => 32, 'class' => 'img-rounded' )) !!} {{Session::get('user.name')}} &nbsp;&nbsp; <i class="fa fa-caret-down"></i>
 				</a>
 				<ul class="dropdown-menu dropdown-user">					
-					<li><a href="#"><i class="fa fa-gear fa-fw"></i> Ganti Password</a></li>					
-					<li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+					<li><a href="{{route('hr.password.get')}}"><i class="fa fa-gear fa-fw"></i> Ganti Password</a></li>					
+					<li><a href="{{route('hr.logout.get')}}"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
 				</ul>	            
 			</li>	        
 		</ul>		 
