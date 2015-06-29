@@ -257,7 +257,12 @@ class ChartController extends BaseController
 			App::abort(404);
 		}
 
-		$attributes 							= Input::only('name', 'tag', 'grade', 'min_employee', 'max_employee', 'ideal_employee', 'path');
+		$attributes 							= Input::only('name', 'tag', 'grade', 'min_employee', 'max_employee', 'ideal_employee');
+
+		if(Input::has('path'))
+		{
+			$attributes['path']					= Input::get('path');
+		}
 
 		$errors 								= new MessageBag();
 
