@@ -29,9 +29,9 @@
 
 @section('content_body')
 	<div class="row">
-		<div class="col-sm-6">
+		<div class="col-sm-6 col-md-6">
 			@include('widgets.organisation.person.stat.total_employee', [
-				'widget_template'		=> 'panel',
+				'widget_template'		=> 'plain',
 				'widget_title'			=> 'Total Karyawan '.$data['name'],
 				'widget_options'		=> 	[
 												'personlist'		=>
@@ -45,9 +45,10 @@
 												]
 											]
 			])
-			
+		</div>
+		<div class="col-sm-6 col-md-6">
 			@include('widgets.organisation.branch.stat.total_branch', [
-				'widget_template'		=> 'panel',
+				'widget_template'		=> 'plain',
 				'widget_title'			=> 'Total Cabang '.$data['name'],
 				'widget_options'		=> 	[
 												'branchlist'		=>
@@ -60,9 +61,10 @@
 												]
 											]
 			])
-		
+		</div>
+		<div class="col-sm-6 col-md-6">
 			@include('widgets.organisation.document.stat.total_document', [
-				'widget_template'		=> 'panel',
+				'widget_template'		=> 'plain',
 				'widget_title'			=> 'Total Dokumen '.$data['name'],
 				'widget_options'		=> 	[
 												'documentlist'		=>
@@ -75,9 +77,10 @@
 												]
 											]
 			])
-
+		</div>
+		<div class="col-sm-6 col-md-6">
 			@include('widgets.organisation.person.stat.average_loss_rate', [
-				'widget_template'		=> 'panel',
+				'widget_template'		=> 'plain',
 				'widget_title'			=> 'Average Loss Rate '.$data['name'],
 				'widget_options'		=> 	[
 												'lossratelist'		=>
@@ -91,7 +94,9 @@
 											]
 			])
 		</div>
-		<div class="col-sm-6">
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
 			@include('widgets.organisation.person.table', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> '<h4>Absen Karyawan "'.$data['name'].'" ('.date('d-m-Y', strtotime('- 1 day')).')</h4>',

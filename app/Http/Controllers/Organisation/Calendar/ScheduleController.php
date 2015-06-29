@@ -116,39 +116,45 @@ class ScheduleController extends BaseController
 			{
 				if($period->format('Y-m-d') == date('Y-m-d', strtotime($sh['on'])))
 				{
-					$schedule[$k]['mode']		= 'edit';
-					$schedule[$k]['data_target']= '#modal_schedule';
-					$schedule[$k]['id']			= $sh['id'];
-					$schedule[$k]['title'] 		= $sh['name'];
-					$schedule[$k]['start']		= $sh['on'].'T'.$sh['start'];
-					$schedule[$k]['end']		= $sh['on'].'T'.$sh['end'];
-					$schedule[$k]['status']		= $sh['status'];					
-					$schedule[$k]['ed_action']	= route('hr.calendar.schedules.store', ['id' => $sh['id'], 'org_id' => $org_id, 'cal_id' => $cal_id]);
-					$schedule[$k]['del_action']	= route('hr.calendar.schedules.delete', ['id' => $sh['id'], 'org_id' => $org_id, 'cal_id' => $cal_id]);
+				
+						$schedule[$k]['mode']		= 'edit';
+						$schedule[$k]['data_target']= '#modal_schedule';
+						$schedule[$k]['id']			= $sh['id'];
+						$schedule[$k]['title'] 		= $sh['name'];
+						$schedule[$k]['start']		= $sh['on'].'T'.$sh['start'];
+						$schedule[$k]['end']		= $sh['on'].'T'.$sh['end'];
+						$schedule[$k]['status']		= $sh['status'];					
+						$schedule[$k]['ed_action']	= route('hr.calendar.schedules.store', ['id' => $sh['id'], 'org_id' => $org_id, 'cal_id' => $cal_id]);
+						$schedule[$k]['del_action']	= route('hr.calendar.schedules.delete', ['id' => $sh['id'], 'org_id' => $org_id, 'cal_id' => $cal_id]);
 
-					switch (strtolower($sh['status'])) 
-					{
-						case 'presence_indoor':
-							$schedule[$k]['backgroundColor']= '#31708f';
-							$schedule[$k]['color']			= '#31708f';
+						switch (strtolower($sh['status'])) 
+						{
+							case 'presence_indoor':
+								$schedule[$k]['label']= 'dark-blue';
+								break;
+							case 'presence_outdoor':
+								$schedule[$k]['label']= 'blue';
+								break;
+							case 'absence_workleave':
+								$schedule[$k]['label']= 'green-young';
 							break;
-						case 'presence_outdoor':
-							$schedule[$k]['backgroundColor']= '#ag4442';
-							$schedule[$k]['color']			= '#ag4442';
-							break;
-						case 'absence_workleave':
-							$schedule[$k]['backgroundColor']= '#00B10F';
-							$schedule[$k]['color']			= '#00B10F';
-						break;
-						case 'absence_not_workleave':
-							$schedule[$k]['backgroundColor']= '#3C763D';
-							$schedule[$k]['color']			= '#3C763D';
-							break;
-						default:
-							$schedule[$k]['backgroundColor']= '#8abd3b';
-							$schedule[$k]['color']			= '#8abd3b';
-							break;
-					}					
+							case 'absence_not_workleave':
+								$schedule[$k]['label']= 'green';
+								break;
+							default:
+								$schedule[$k]['label']= 'absence_not_workleave';
+								break;
+						}					
+						$k++;
+						$schedule[$k]['mode']			= 'create';
+						$schedule[$k]['data_target']	= '#modal_schedule';
+						$schedule[$k]['title'] 			= 'Tambah Jadwal';
+						$schedule[$k]['start']			= $sh['on'];
+						$schedule[$k]['end']			= $sh['on'];
+						$schedule[$k]['status']			= $sh['status'];
+						$schedule[$k]['add_action']		= route('hr.calendar.schedules.store', ['org_id' => $org_id, 'cal_id' => $cal_id]);	
+						$schedule[$k]['label']			= 'primary';
+					
 
 					$date[]							= $period->format('Y-m-d');
 					$k++;
@@ -167,8 +173,7 @@ class ScheduleController extends BaseController
 					$schedule[$k]['start']			= $period->format('Y-m-d').'T'.$calendar['start'];
 					$schedule[$k]['end']			= $period->format('Y-m-d').'T'.$calendar['end'];
 					$schedule[$k]['status']			= 'presence_indoor';
-					$schedule[$k]['backgroundColor']= '#31708F';
-					$schedule[$k]['color']			= '#31708F';
+					$schedule[$k]['label']			= 'gray';
 
 					$date[]							= $period->format('Y-m-d');
 					$k++;
@@ -180,8 +185,7 @@ class ScheduleController extends BaseController
 					$schedule[$k]['start']			= $period->format('Y-m-d').'T'.'00:00:00';
 					$schedule[$k]['end']			= $period->format('Y-m-d').'T'.'00:00:00';
 					$schedule[$k]['status']			= 'absence_not_workleave';
-					$schedule[$k]['backgroundColor']= '#D78409';
-					$schedule[$k]['color']			= '#D78409';
+					$schedule[$k]['label']			= 'magenta';
 
 					$date[]							= $period->format('Y-m-d');
 					$k++;

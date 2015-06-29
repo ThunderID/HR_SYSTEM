@@ -16,12 +16,13 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
-										'sidebar'				=> 
+										'sidebar'					=> 
 										[
-											'search'			=> [],
-											'sort'				=> [],
-											'page'				=> 1,
-											'per_page'			=> 100
+											'search'				=> [],
+											'sort'					=> [],
+											'page'					=> 1,
+											'per_page'				=> 100,
+											'active_contact_person' => 'yes'
 										]
 									]
 	])
