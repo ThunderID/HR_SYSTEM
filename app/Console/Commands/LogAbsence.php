@@ -92,7 +92,7 @@ class LogAbsence extends Command {
 		{
 			$search['fullschedule']			= $value->format('Y-m-d');
 			$sort 							= ['created_at' => 'desc'];
-			$results 						= $this->dispatch(new Getting(new Person, $search, $sort ,(int)$page, $per_page));
+			$results 						= $this->dispatch(new Getting(new Person, $search, $sort ,(int)$page, (int)$per_page));
 			$contents 						= json_decode($results);
 
 			if(!$contents->meta->success)

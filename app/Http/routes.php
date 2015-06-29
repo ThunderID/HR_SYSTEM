@@ -250,6 +250,11 @@ Route::group(['namespace' => 'Organisation\\Person\\'], function()
 	Route::post('api/activity/logs/',		['uses' => 'LogController@store',					'as' => 'hr.log.store']);
 });
 
+Route::group(['namespace' => 'Auth\\'], function() 
+{
+	Route::post('tracker/login/',			['uses' => 'TrackerController@postlogin',			'as' => 'hr.tracker.post']);
+});
+
 
 Blade::extend(function ($value, $compiler)
 {
