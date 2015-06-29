@@ -1,10 +1,15 @@
 @section('nav_topbar')
-	@include('widgets.common.nav_topbar', ['breadcrumb' => [['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], ['name' => 'Pengaturan Idle', 'route' => route('hr.idles.index', ['org_id' => $data['id']]) ]]])
+	@include('widgets.common.nav_topbar', 
+	['breadcrumb' => 	[
+							['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
+							['name' => 'Pengaturan Idle', 'route' => route('hr.idles.index', ['org_id' => $data['id']]) ]
+						]
+	])
 @stop
 
 @section('nav_sidebar')
 	@include('widgets.common.nav_sidebar', [
-		'widget_template'		=> 'plain',
+		'widget_template'		=> 'plain_no_title',
 		'widget_title'			=> 'Structure',		
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
@@ -23,26 +28,22 @@
 	@include('widgets.common.filter', [
 		'widget_template'		=> 'plain_no_title',
 		'widget_options'		=> [
-									'form_url'	=> ''
+									'form_url'	=> route('hr.idles.index', ['org_id' => $data['id'], 'page' => (Input::has('page') ? Input::get('page') : 1)])
 									]
 	])
 @overwrite
 
 @section('content_body')	
-	@section('content_body')
-	@include('widgets.branch.alert', [
-		'widget_template'		=> 'plain_no_title'
-	])
-
-	@include('widgets.idle.table', [
-		'widget_title'			=> 'Idle '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
+	@include('widgets.organisation.idle.table', [
+		'widget_title'			=> 'Pengaturan Idle '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_template'		=> 'panel',
 		'widget_options'		=> [ 'idlelist' 				=>
 										[
 											'form_url' 			=> null,
 											'organisation_id'	=> $data['id'],
-											'search'			=> [],
-											'sort'				=> [],
+											'search'			=> array_merge(['withattributes' => ['createdby']], (isset($filtered['search']) ? $filtered['search'] : [])),
+											'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['start' => 'asc']),
+											'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
 											'per_page'			=> 12,
 											'route_create'		=> route('hr.idles.create', ['org_id' => $data['id']])
