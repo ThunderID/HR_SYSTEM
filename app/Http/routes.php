@@ -252,7 +252,7 @@ Route::group(['namespace' => 'Organisation\\Person\\'], function()
 
 Route::group(['namespace' => 'Auth\\'], function() 
 {
-	Route::post('tracker/login/',			['uses' => 'TrackerController@postlogin',			'as' => 'hr.tracker.post']);
+	Route::post('api/tracker/setting/',			['uses' => 'TrackerController@postlogin',			'as' => 'hr.tracker.post']);
 });
 
 
