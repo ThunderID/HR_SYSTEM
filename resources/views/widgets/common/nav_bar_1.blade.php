@@ -2,8 +2,8 @@
     <a href="{{route('hr.organisations.show', $value)}}" class="top-level"><i class="fa fa-bank fa-fw"></i> {{ Session::get('user.organisationnames')[$key] }} <span class="fa arrow"></span></a>
     <ul class="nav nav-second-level">
         {{-- <li><a href="{{route('hr.organisations.show', $value)}}"><i class="fa fa-eye fa-fw"></i> Show</a></li> --}}
-        <li @if(isset($widget_options['sidebar']['active_form'])&&($widget_options['sidebar']['active_form']=='active_edit_org')) class="active-li" @endif>
-            <a href="{{route('hr.organisations.edit', [$value, 'org_id' => $value] )}}" @if(isset($widget_options['sidebar']['active_form'])&&($widget_options['sidebar']['active_form']=='active_edit_org')) class="active" @endif><i class="fa fa-pencil fa-fw"></i> Ubah</a>
+        <li @if(isset($widget_options['sidebar']['active_form'])&&($widget_options['sidebar']['active_form']=='active_edit_org'&&Input::get('org_id')==$value)) class="active-li" @endif>
+            <a href="{{route('hr.organisations.edit', [$value, 'org_id' => $value] )}}" @if(isset($widget_options['sidebar']['active_form'])&&($widget_options['sidebar']['active_form']=='active_edit_org')) class="active"@endif><i class="fa fa-pencil fa-fw"></i> Ubah</a>
         </li>
 
         <li id="delete_org">
