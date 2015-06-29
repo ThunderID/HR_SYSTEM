@@ -39,6 +39,7 @@
 									'processlogslist'			=>
 									[
 										'form_url'			=> route('hr.attendance.persons.store', ['id' => $id, 'org_id' => $data['id'], 'person_id' => $person['id']]),
+										'new'				=> (is_null($id) ? true : false),
 										'organisation_id'	=> $data['id'],
 										'search'			=> ['id' => $id],
 										'sort'				=> [],

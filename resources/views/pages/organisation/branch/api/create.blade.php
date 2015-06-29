@@ -43,6 +43,7 @@
 										'branch_id'			=> $branch['id'],
 										'identifier'		=> 1,
 										'search'			=> ['id' => $id],
+										'new'				=> (is_null($id) ? true : false),
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 1,

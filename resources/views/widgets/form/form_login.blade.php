@@ -4,8 +4,16 @@
 	{{ $LoginFormComposer['widget_data']['login']['widget_title'] }}
 @overwrite
 
+
 @section('widget_body')
-	<br/>
+	@if($errors->count())
+		@include('widgets.common.alert', [
+			'widget_template'	=> 'plain_no_title',
+			'errors' => $errors
+		])
+	@else
+		<br/>
+	@endif
 	{!! Form::open(['url' => $LoginFormComposer['widget_data']['login']['form_url'], 'method' => 'post', 'class' => 'form']) !!}	
 		<div class="form-group">
 			<label class="control-label">{{ $LoginFormComposer['widget_data']['login']['user_id_label'] }}</label>

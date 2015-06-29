@@ -39,6 +39,7 @@
 											'organisation_id'	=> $data['id'],
 											'search'			=> ['id' => $id],
 											'sort'				=> [],
+											'new'				=> (is_null($id) ? true : false),
 											'page'				=> 1,
 											'per_page'			=> 1,
 											'route_back'		=> route('hr.persons.index', ['org_id' => $data['id']])

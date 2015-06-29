@@ -41,6 +41,7 @@
 										'form_url'			=> route('hr.branch.charts.store', ['id' => $id, 'branch_id' => $branch['id'], 'org_id' => $data['id']]),
 										'organisation_id'	=> $data['id'],
 										'search'			=> ['branchid' => $branch['id'], 'id' => $id],
+										'new'				=> (is_null($id) ? true : false),
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 1,

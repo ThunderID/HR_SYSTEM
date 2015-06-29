@@ -23,7 +23,7 @@
 		</div>
 		 
 		<ul class="nav navbar-top-links navbar-right">
-			@if((Session::has('allow.filter') && Session::get('allow.filter')==true ) && isset($filter))
+			@if(isset($filter))
 				<li>
 					<a href="javascript:;" class="open-filter"><i class="fa fa-search"></i></a>
 				</li>

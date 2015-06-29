@@ -44,6 +44,7 @@
 											'search'			=> ['id' => $id],
 											'sort'				=> [],
 											'page'				=> 1,
+											'new'				=> (is_null($id) ? true : false),
 											'per_page'			=> 1,
 											'route_edit'		=> route('hr.idles.index', ['org_id' => $data['id']])
 										]
