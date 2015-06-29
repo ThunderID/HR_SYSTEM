@@ -116,16 +116,16 @@ class Getting extends Command implements SelfHandling {
 		}
 		else
 		{
-			if(isset($this->query['id']) && is_null($this->query['id']) && !is_array($this->query['id']) || is_null($this->query['id']))
+			if(isset($this->query['id']) && !is_null($this->query['id']))
 			{
-				$data 		= null;
-				$message	= null;
+				$data 		= [$this->model];
+				$message	= ['Data not exists'];
 				$page_info 	= ['page' => $this->page, 'per_page' => $this->per_page, 'total_data' => 0];
 			}
 			else
 			{
-				$data 		= [$this->model];
-				$message	= ['Data not exists'];
+				$data 		= null;
+				$message	= null;
 				$page_info 	= ['page' => $this->page, 'per_page' => $this->per_page, 'total_data' => 0];
 			}
 		}

@@ -37,7 +37,7 @@ class TrackerController extends BaseController {
 
 		if($content->meta->success)
 		{
-			return Response::json(['message' => 'Success'], 200);
+			return Response::json(['message' => 'Sukses'], 200);
 		}
 		
 		return Response::json(['message' => 'Server Error'], 500);

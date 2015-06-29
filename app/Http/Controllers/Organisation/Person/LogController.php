@@ -73,7 +73,6 @@ class LogController extends BaseController
 				}
 				else
 				{
-					return Response::json(['message' => $person], 404);
 					$saved_log 					= $this->dispatch(new Saving(new Log, $log, null, new Person, $person->data->id));
 					$is_success_2 				= json_decode($saved_log);
 					if(!$is_success_2->meta->success)
