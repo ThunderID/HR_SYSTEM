@@ -3,7 +3,7 @@
 @if (!$widget_error_count)
 
 	@section('widget_title')
-	<h1> {{ (is_null($id) ? 'Tambah Kalender Kerja Posisi ' : 'Ubah Kalender Kerja Posisi '). $branch['name']}} </h1> 
+	<h1> {{ (is_null($id) ? 'Tambah Kalender Kerja ' : 'Ubah Kalender Kerja '). '"'.$chart['name'].'"'}} </h1> 
 	@overwrite
 
 	@section('widget_body')
