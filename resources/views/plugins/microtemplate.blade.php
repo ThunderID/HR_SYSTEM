@@ -1,4 +1,5 @@
 <script type="text/javascript">
+	/* delete document */
 	$('.btn-delete-doc').on('click', function(){bind_delete($(this))});
 	$('.btn-add-doc').bind('click', function(e){			
 		var template = '';		
@@ -45,5 +46,28 @@
 		$(e).parent().parent().parent().remove();
 		$('.btn-delete-doc').on('click', function(){bind_delete($(this))});		
 	}
-	
+
+	/* delete filter */
+	$('.btn-delete-filter').on('click', function(){bind_delete_filter($(this))});
+	$('.btn-add-filter').bind('click', function()
+	{
+		var template = '';
+
+		template += '<div class="btn-group ml-10"> \
+							<select name="key[]" id="" class="form-control"> \
+								<option value=""></option> \
+							</select> \
+						</div> \
+						<div class="btn-group ml-10"> \
+							<select name="value[]" id="" class="form-control"> \
+								<option value=""></option> \
+							</select> \
+						</div> \
+					';
+		$('.filter-add').append(template);
+		$('.btn-delete-filter').on('click', function(){bind_delete_filter($(this))});
+	});	
+	function bind_delete_filter(e) {
+
+	}
 </script>

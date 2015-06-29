@@ -4,14 +4,14 @@
 	@section('widget_body')
 		{!! Form::open(['url' => $widget_options['form_url'], 'class' => 'form-horizontal pt-15 form_filter hide', 'method' => 'get']) !!}
 			<div class="form-group">
-				<div class="col-xs-11 colsm-11 col-md-11">
+				<div class="col-xs-11 col-sm-11 col-md-11">
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-search"></i></span>
 						<input type="text" class="form-control" name="q">
 					</div>
 				</div>
-				<div class="col-xs-1 col-sm-1 colcol-md-1">
-					<a href="" class="btn btn-filter-add"><i class="fa fa-plus"></i></a>
+				<div class="col-xs-1 col-sm-1 col-md-1">
+					<a href="javascript:;" class="btn btn-filter-add"><i class="fa fa-search"></i></a>
 				</div>
 			</div>
 			<input type="hidden" name="filter" value="apply">
@@ -28,22 +28,25 @@
 			@endforeach 
 			<div class="form-group">
 				<div class="col-xs-12 col-sm-12 col-md-12">					
-					<div class="btn-group">
-						<select name="key[]" id="" class="form-control">
-							@foreach($filter as $key => $value)
-								<option value="{{ $value['prefix'].'_'.$value['key'] }}">{{ $value['value'] }}</option>
-							@endforeach							
-						</select>						
-					</div>
-					<div class="btn-group ml-10">
-						<select name="value[]" id="" class="form-control">
-							@foreach($filter as $key => $value)
-								@foreach($value['values'] as $value2)
-									<option value="{{ $value2['key'] }}">{{ $value2['value'] }}</option>
+					<span class="filter-add">
+						<div class="btn-group">
+							<select name="key[]" id="" class="form-control">
+								@foreach($filter as $key => $value)
+									<option value="{{ $value['prefix'].'_'.$value['key'] }}">{{ $value['value'] }}</option>
+								@endforeach							
+							</select>						
+						</div>
+						<div class="btn-group ml-10">
+							<select name="value[]" id="" class="form-control">
+								@foreach($filter as $key => $value)
+									@foreach($value['values'] as $value2)
+										<option value="{{ $value2['key'] }}">{{ $value2['value'] }}</option>
+									@endforeach
 								@endforeach
-							@endforeach
-						</select>
-					</div>
+							</select>
+						</div>
+					</span>
+					<a href="javascript:;" class="btn btn-add-filter ml-10"><i class="fa fa-plus"></i></a>
 				</div>
 			</div>
 		{!! Form::close() !!}

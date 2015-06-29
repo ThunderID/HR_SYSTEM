@@ -6541,6 +6541,9 @@ label,
 .label-magenta {
   background-color: #F49AC2;
 }
+.label-pink {
+  background-color: #dea5a4;
+}
 
 /* fullcalendar custom */
 @media (min-width: 768px) {
