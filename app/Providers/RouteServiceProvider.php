@@ -28,7 +28,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 		App::singleton('hr_acl', function()
 		{
 			$routes_acl = [
-							'hr.organisations.index'						=> [['1'], 'read'],
+							'hr.organisations.index'						=> [['1','2','3','4'], 'read'],
 							'hr.organisations.show'							=> [['1'], 'read'],
 							'hr.organisations.create'						=> [['1'], 'create'],
 							'hr.organisations.store'						=> [['1'], 'create'],
@@ -290,6 +290,8 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 				{
 					Session::put('user.organisationid', $contents->data->works[0]->branch->organisation->id);
 					Session::put('user.chartname', $contents->data->works[0]->name);
+					Session::put('user.chartpath', $contents->data->works[0]->path);
+					Session::put('user.organisationname', $contents->data->works[0]->branch->organisation->name);
 				}
 
 				$chartids									= [];
@@ -324,9 +326,6 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 				Session::put('user.organisationnames', $organisationnames);
 				Session::put('user.chartnames', $chartnames);
 
-				Session::put('user.chartname', $contents->data->works[0]->name);
-				Session::put('user.organisationname', $contents->data->works[0]->branch->organisation->name);
-
 				Session::put('user.id', $contents->data->id);
 				Session::put('user.name', $contents->data->name);
 				Session::put('user.email', $contents->data->contacts[0]->value);
@@ -336,7 +335,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 				//check access
 				$menu 											= app('hr_acl')[Route::currentRouteName()];
 
-				$results 										= $this->dispatch(new Getting(new Authentication, ['chartid' => $chartids], ['chart_id' => 'asc'],1, 1));
+				$results 										= $this->dispatch(new Getting(new Authentication, ['menuid' => $menu[0],'chartid' => $chartids, 'access' => $menu[1]], ['chart_id' => 'asc'],1, 1));
 
 				$contents 										= json_decode($results);
 
