@@ -37,6 +37,7 @@
 										'search'			=> ['id' => Session::get('user.organisationids')],
 										'sort'				=> [],
 										'page'				=> 1,
+										'new'				=> (is_null($id) ? true : false),
 										'per_page'			=> 100,
 										'active_form'		=> $active
 									]
@@ -54,6 +55,7 @@
 										'search'			=> ['id' => $id],
 										'sort'				=> [],
 										'page'				=> 1,
+										'new'				=> (is_null($id) ? true : false),
 										'per_page'			=> 1,
 										'route_back'		=> route('hr.organisations.show', ['id' => $id, 'org_id' => $id])
 									]

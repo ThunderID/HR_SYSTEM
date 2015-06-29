@@ -40,6 +40,7 @@
 									'templatelist'			=>
 									[
 										'form_url'			=> route('hr.document.templates.store', ['id' => $id, 'org_id' => $data['id'], 'doc_id' => $document['id']]),
+										'new'				=> (is_null($id) ? true : false),
 										'organisation_id'	=> $data['id'],
 										'document_id'		=> $document['id'],
 										'search'			=> ['id' => $id],

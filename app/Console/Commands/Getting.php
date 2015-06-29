@@ -13,7 +13,7 @@ class Getting extends Command implements SelfHandling {
 	 *
 	 * @return void
 	 */
-	public function __construct($model, $query, $sortby, $page = 1, $per_page = 10)
+	public function __construct($model, $query, $sortby, $page = 1, $per_page = 10, $new = false)
 	{
 		$this->errors = new MessageBag();
 		
@@ -47,6 +47,7 @@ class Getting extends Command implements SelfHandling {
 		$this->per_page = $per_page;
 		$this->validate_perpage($per_page);
 
+		$this->new = $new;
 	}
 
 	/**
@@ -116,7 +117,7 @@ class Getting extends Command implements SelfHandling {
 		}
 		else
 		{
-			if(!isset($this->query['id']) && empty($this->query['id']) && !is_array($this->query['id']))
+			if(isset($this->new) && $this->new)
 			{
 				$data 		= null;
 				$message	= null;

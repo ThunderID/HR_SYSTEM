@@ -41,6 +41,7 @@
 										'form_url'			=> route('hr.documents.store', ['id' => $id, 'org_id' => $data['id']]),
 										'organisation_id'	=> $data['id'],
 										'search'			=> ['id' => $id, 'withattributes' => ['templates']],
+										'new'				=> (is_null($id) ? true : false),
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 1,

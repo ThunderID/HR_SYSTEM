@@ -37,6 +37,7 @@
 									[
 										'form_url'			=> route('hr.workleave.charts.store', ['id' => $id, 'workleave_id' => $workleave['id'], 'org_id' => $data['id']]),
 										'organisation_id'	=> $data['id'],
+										'new'				=> (is_null($id) ? true : false),
 										'search'			=> ['id' => $id ,'withattributes' => ['workleave']],
 										'sort'				=> [],
 										'page'				=> 1,

@@ -42,6 +42,7 @@
 									[
 										'form_url'			=> route('hr.chart.calendars.store', ['id' => $id, 'chart_id' => $chart['id'], 'branch_id' => $branch['id'], 'org_id' => $data['id']]),
 										'organisation_id'	=> $data['id'],
+										'new'				=> (is_null($id) ? true : false),
 										'search'			=> ['id' => $id ,'withattributes' => ['chart']],
 										'sort'				=> [],
 										'page'				=> 1,

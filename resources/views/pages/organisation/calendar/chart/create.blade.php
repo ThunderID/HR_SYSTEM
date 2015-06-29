@@ -43,6 +43,7 @@
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 1,
+										'new'				=> (is_null($id) ? true : false),
 										'route_back'	 	=> route('hr.calendar.charts.show', ['chart_id' => $id, 'org_id' => $data['id'], 'cal_id' => $calendar['id']])
 									]
 								]
