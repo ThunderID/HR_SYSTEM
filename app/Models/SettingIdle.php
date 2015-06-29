@@ -5,6 +5,7 @@
  * Document Model:
  * 	ID 								: Auto Increment, Integer, PK
  * 	organisation_id 				: Required, Integer, FK from Organisation
+ * 	created_by 						: Required, Integer, FK from Person
  * 	start 			 				: Required, date
  * 	idle_1 			 				: Required, numeric
  * 	idle_2 			 				: Required, numeric
@@ -34,13 +35,15 @@ class SettingIdle extends BaseModel {
 	protected 	$table 				= 	'setting_idles';
 
 	protected 	$fillable			= 	[
+											'created_by' 						,
 											'start' 							,
 											'idle_1' 							,
 											'idle_2' 							,
 										];
 
 	protected 	$rules				= 	[
-											'start' 							=> 'required|required|date_format:"Y-m-d"',
+											'created_by' 						=> 'required|exists:persons,id',
+											'start' 							=> 'required|date_format:"Y-m-d"',
 											'idle_1' 							=> 'required|numeric',
 											'idle_2' 							=> 'required|numeric',
 										];
@@ -140,5 +143,10 @@ class SettingIdle extends BaseModel {
 			}
 		}
 		return $query->where('start', '>=', date('Y-m-d', strtotime($variable)));
+	}
+
+	public function CreatedBy()
+	{
+		return $this->belongsTo('App\Models\Person', 'created_by', 'id');
 	}
 }
