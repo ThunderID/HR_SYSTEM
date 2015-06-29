@@ -8,6 +8,13 @@
 	@section('widget_title')
 		<h1> {!! $widget_title or 'Api' !!} </h1>
 		<small>Total data {{$ApiComposer['widget_data']['apilist']['api-pagination']->total()}}</small>
+	
+		@if(isset($ApiComposer['widget_data']['apilist']['active_filter']) && !is_null($ApiComposer['widget_data']['apilist']['active_filter']))
+			 <div class="clearfix">&nbsp;</div>
+			@foreach($ApiComposer['widget_data']['apilist']['active_filter'] as $key => $value)
+				<span class="active-filter">{{$value}}</span>
+			@endforeach
+		@endif
 	@overwrite
 
 	@section('widget_body')
@@ -17,14 +24,19 @@
 			<table class="table">
 				<thead>
 					<tr>
+						<th>No</th>
 						<th>CLIENT</th>
 						<th>SECRET</th>
 						<th>&nbsp;</th>
 					</tr>
 				</thead>
+				<?php $i = $ApiComposer['widget_data']['apilist']['api-display']['from'];?>
 				@foreach($ApiComposer['widget_data']['apilist']['api'] as $key => $value)
 					<tbody>
 						<tr>
+							<td>
+								{{$i}}
+							</td>
 							<td>
 								{{$value['client']}}
 							</td>
@@ -37,6 +49,7 @@
 							</td>
 						</tr>
 					</tbody>
+					<?php $i++;?>
 				@endforeach
 			</table>
 
