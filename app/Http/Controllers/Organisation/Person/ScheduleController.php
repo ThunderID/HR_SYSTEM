@@ -349,24 +349,29 @@ class ScheduleController extends BaseController
 					switch (strtolower($sh['status'])) 
 					{
 						case 'presence_indoor':
-							$schedule[$k]['backgroundColor']= '#6D7DDA';
-							$schedule[$k]['color']			= '#6D7DDA';
+							$schedule[$k]['label']			= 'dark-blue';
+							// $schedule[$k]['backgroundColor']= '#6D7DDA';
+							// $schedule[$k]['color']			= '#6D7DDA';
 							break;
 						case 'presence_outdoor':
-							$schedule[$k]['backgroundColor']= '#dgedf7';
-							$schedule[$k]['color']			= '#31708f';
+							$schedule[$k]['label']			= 'blue';
+							// $schedule[$k]['backgroundColor']= '#dgedf7';
+							// $schedule[$k]['color']			= '#31708f';
 							break;
 						case 'absence_workleave':
-							$schedule[$k]['backgroundColor']= '#EDA7A7';
-							$schedule[$k]['color']			= '#EDA7A7';
+							$schedule[$k]['label']			= 'green-young';
+							// $schedule[$k]['backgroundColor']= '#EDA7A7';
+							// $schedule[$k]['color']			= '#EDA7A7';
 						break;
 						case 'absence_not_workleave':
-							$schedule[$k]['backgroundColor']= '#9E998A';
-							$schedule[$k]['color']			= '#9E998A';
+							$schedule[$k]['label']			= 'green';
+							// $schedule[$k]['backgroundColor']= '#9E998A';
+							// $schedule[$k]['color']			= '#9E998A';
 							break;
 						default:
-							$schedule[$k]['backgroundColor']= '#fef8e3';
-							$schedule[$k]['color']			= '#8abd3b';
+							$schedule[$k]['label']			= 'green';
+							// $schedule[$k]['backgroundColor']= '#fef8e3';
+							// $schedule[$k]['color']			= '#8abd3b';
 							break;
 					}
 
@@ -393,24 +398,29 @@ class ScheduleController extends BaseController
 						switch (strtolower($sh['status'])) 
 						{
 							case 'presence_indoor':
-								$schedule[$k]['backgroundColor']= '#31708f';
-								$schedule[$k]['color']			= '#31708f';
+								$schedule[$k]['label']			= 'dark-blue';
+								// $schedule[$k]['backgroundColor']= '#31708f';
+								// $schedule[$k]['color']			= '#31708f';
 								break;
 							case 'presence_outdoor':
-								$schedule[$k]['backgroundColor']= '#ag4442';
-								$schedule[$k]['color']			= '#ag4442';
+								$schedule[$k]['label']			= 'blue';
+								// $schedule[$k]['backgroundColor']= '#ag4442';
+								// $schedule[$k]['color']			= '#ag4442';
 								break;
 							case 'absence_workleave':
-								$schedule[$k]['backgroundColor']= '#23AB2F';
-								$schedule[$k]['color']			= '#23AB2F';
+								$schedule[$k]['label']			= 'green-young';
+								// $schedule[$k]['backgroundColor']= '#23AB2F';
+								// $schedule[$k]['color']			= '#23AB2F';
 							break;
 							case 'absence_not_workleave':
-								$schedule[$k]['backgroundColor']= '#3C763D';
-								$schedule[$k]['color']			= '#3C763D';
+								$schedule[$k]['label']			= 'green';
+								// $schedule[$k]['backgroundColor']= '#3C763D';
+								// $schedule[$k]['color']			= '#3C763D';
 								break;
 							default:
-								$schedule[$k]['backgroundColor']= '#8abd3b';
-								$schedule[$k]['color']			= '#8abd3b';
+								$schedule[$k]['label']			= 'green';	
+								// $schedule[$k]['backgroundColor']= '#8abd3b';
+								// $schedule[$k]['color']			= '#8abd3b';
 								break;
 						}
 
@@ -428,8 +438,9 @@ class ScheduleController extends BaseController
 						$schedule[$k]['start']			= $period->format('Y-m-d').'T'.$sh['start'];
 						$schedule[$k]['end']			= $period->format('Y-m-d').'T'.$sh['end'];
 						$schedule[$k]['status']			= 'presence_indoor';
-						$schedule[$k]['backgroundColor']= '#31708F';
-						$schedule[$k]['color']			= '#31708F';
+						$schedule[$k]['label']			= 'blue';
+						// $schedule[$k]['backgroundColor']= '#31708F';
+						// $schedule[$k]['color']			= '#31708F';
 						$schedule[$k]['data_target']	= '#modal_schedule';
 						$schedule[$k]['ed_action']		= route('hr.person.schedules.store', ['id' => null, 'org_id' => $org_id, 'person_id' => $person_id]);
 
@@ -443,8 +454,9 @@ class ScheduleController extends BaseController
 						$schedule[$k]['start']			= $period->format('Y-m-d').'T'.'00:00:00';
 						$schedule[$k]['end']			= $period->format('Y-m-d').'T'.'00:00:00';
 						$schedule[$k]['status']			= 'absence_not_workleave';
-						$schedule[$k]['backgroundColor']= '#D78409';
-						$schedule[$k]['color']			= '#D78409';
+						$schedule[$k]['label']			= 'blue';
+						// $schedule[$k]['backgroundColor']= '#D78409';
+						// $schedule[$k]['color']			= '#D78409';
 						$schedule[$k]['data_target']	= '#modal_schedule';
 						$schedule[$k]['ed_action']		= route('hr.person.schedules.store', ['id' => null, 'org_id' => $org_id, 'person_id' => $person_id]);
 
@@ -491,8 +503,9 @@ class ScheduleController extends BaseController
 			}
 
 			$schedule[$k]['status']			= $log['tooltip'];
-			$schedule[$k]['backgroundColor']= '#9c27b0';
-			$schedule[$k]['mode']			= 'log';				
+			$schedule[$k]['label']			= 'blue';
+			// $schedule[$k]['backgroundColor']= '#9c27b0';
+			// $schedule[$k]['mode']			= 'log';				
 			$k++;
 		}
 		return Response::json($schedule);

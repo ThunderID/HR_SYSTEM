@@ -68,7 +68,6 @@
 				element.attr('data-edit-action', event.ed_action);
 				element.attr('data-delete-action', event.del_action);
 			}
-			console.log(event.label);
 			element.find('#date-title').html(element.find('span.fc-event-title').text());			
 			element.find('.fc-title').append('<br>');
 			element.find('.fc-title').addClass('label label-'+event.label+' font-10');
