@@ -2,7 +2,8 @@
 	@include('widgets.common.nav_topbar', 
 	['breadcrumb' 	=> 	[	
 							['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
-							['name' => 'Laporan Aktivitas', 'route' => route('hr.report.attendances.index', ['org_id' => $data['id']]) ]
+							['name' => 'Laporan Aktivitas', 'route' => route('hr.report.attendances.index', ['org_id' => $data['id']]) ],
+							['name' => $person['name'], 'route' => route('hr.attendance.persons.index', ['org_id' => $data['id'], 'person_id' => $person['id']]) ]
 						]
 	])
 @stop
@@ -31,19 +32,19 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.organisation.report.attendance.table', [
+	@include('widgets.organisation.report.attendance.person.table', [
 		'widget_template'		=> 'panel',
-		'widget_title'			=> 'Laporan Aktivitas '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
+		'widget_title'			=> 'Laporan Aktivitas "'.$person['name'].'"',
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
 										'personlist'			=>
 										[
 											'organisation_id'	=> $data['id'],
-											'search'			=> ['globalattendance' => ['organisationid' => $data['id'], 'on' => [$start, $end]]],
+											'search'			=> ['id' => $person['id'], 'processlogsondate' => ['on' => [$start, $end]]],
 											'sort'				=> ['persons.name' => 'asc'],
-											'page'				=> (Input::has('page') ? Input::get('page') : 1),
-											'per_page'			=> 100,
+											'page'				=> 1,
+											'per_page'			=> 1,
 											'route_create'		=> route('hr.calendars.create', ['org_id' => $data['id']])
 										]
 									]

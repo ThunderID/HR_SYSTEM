@@ -11,6 +11,7 @@ use App\Models\Organisation;
 use App\Models\Log;
 use App\Models\Person;
 use App\Models\ErrorLog;
+use App\Models\Api;
 
 class LogController extends BaseController 
 {
@@ -26,7 +27,6 @@ class LogController extends BaseController
 
 	public function store()
 	{		
-		// print_r(1);exit;
 		$attributes 							= Input::only('application', 'log');
 
 		//cek apa ada aplication
@@ -36,8 +36,15 @@ class LogController extends BaseController
 		}		
 
 		//cek API key & secret
-		$organisationid 						= 1;
+		$results 								= $this->dispatch(new Getting(new API, ['client' => $attributes['application']['api']['client'], 'secret' => $attributes['application']['api']['secret'], 'withattributes' => ['branch']], [], 1, 1));
+		
+		$content 								= json_decode($results);
+		if(!$content->meta->success)
+		{
+			return Response::json(['message' => 'Server Error'], 500);
+		}
 
+		$organisationid 						= $content->data->branch->organisation_id;
 
 		//cek apa ada data log
 		if(!$attributes['log'])

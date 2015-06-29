@@ -70,6 +70,7 @@ class Person extends BaseModel {
 	use \App\Models\Traits\BelongsToMany\HasCalendarsTrait;
 	use \App\Models\Traits\HasMany\HasWidgetsTrait;
 	use \App\Models\Traits\HasMany\HasProcessLogsTrait;
+	use \App\Models\Traits\HasMany\HasLogsTrait;
 	use \App\Models\Traits\HasOne\HasFingerTrait;
 
 	public 		$timestamps 		= 	true;
@@ -144,6 +145,9 @@ class Person extends BaseModel {
 
 											'globalattendance'	 			=> 'GlobalAttendance',
 											'globalwage'	 				=> 'GlobalWage',
+											
+											'processlogsondate'	 			=> 'ProcessLogsOndate',
+											'logsondate'	 				=> 'LogsOndate',
 										];
 
 
@@ -189,6 +193,8 @@ class Person extends BaseModel {
 											'previouswork' 					=> 'Null',
 
 											'displayupdatedfinger'			=> 'Must be string (datetime)',
+											'processlogsondate'	 			=> 'Could be array or string (date)',
+											'logsondate'	 				=> 'Could be array or string (date)',
 										];
 
 	public $sortable 				= 	['name', 'prefix_title', 'suffix_title', 'date_of_birth', 'created_at', 'persons.created_at', 'persons.id', 'persons.name'];

@@ -66,7 +66,7 @@ class WageController extends BaseController
 
 		$data 										= json_decode(json_encode($contents->data), true);
 
-		$this->layout->page 						= view('pages.report.wage.index', compact('data', 'start', 'end'));
+		$this->layout->page 						= view('pages.organisation.report.wage.index', compact('data', 'start', 'end'));
 
 		return $this->layout;
 	}

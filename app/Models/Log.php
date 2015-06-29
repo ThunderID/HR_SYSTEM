@@ -129,7 +129,7 @@ class Log extends BaseModel {
 		{
 			if(!is_null($variable[1]))
 			{
-				return $query->where('on', '<=', date('Y-m-d', strtotime($variable[1])))
+				return  $query->where('on', '<=', date('Y-m-d', strtotime($variable[1])))
 							 ->where('on', '>=', date('Y-m-d', strtotime($variable[0])));
 			}
 			elseif(!is_null($variable[0]))
@@ -141,6 +141,7 @@ class Log extends BaseModel {
 				return $query->where('on', '>=', date('Y-m-d'));
 			}
 		}
+
 		return $query->where('on', '>=', date('Y-m-d', strtotime($variable)));
 	}
 

@@ -101,7 +101,7 @@ class ProcessLog extends BaseModel {
 											'total_active'				=> 'numeric',
 											'actual_status'	 			=> 'required|max:255',
 											'modified_status'	 		=> 'max:255',
-											'modified_at'				=> 'date_format:"H:i:s"|required_with:modified_status',
+											'modified_at'				=> 'date_format:"Y-m-d H:i:s"|required_with:modified_status',
 											'tolerance_time'			=> 'numeric|required_with:modified_status',
 										];
 

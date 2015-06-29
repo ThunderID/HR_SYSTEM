@@ -60,7 +60,7 @@ class ProcessLogObserver
 					return false;
 				}
 			
-				$model->fill(['modified_start_at' => date('Y-m-d H:i:s', strtotime('now'))]);
+				$model->fill(['modified_at' => date('Y-m-d H:i:s', strtotime('now'))]);
 			}
 
 			return true;

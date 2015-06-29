@@ -23,8 +23,8 @@ trait HasProcessLogsTrait {
 		return $this->hasMany('App\Models\ProcessLog');
 	}
 
-	public function ScopeGlobalAttendanceReport($query, $variable)
+	public function ScopeProcessLogsOndate($query, $variable)
 	{
-		return $query->with(['processlogs' => function($q)use($variable){$q->ondate($variable['on'])->global(true);}]);
+		return $query->with(['processlogs' => function($q)use($variable){$q->ondate($variable['on']);}, 'processlogs.modifiedby']);
 	}
 }

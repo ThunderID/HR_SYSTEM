@@ -14,6 +14,7 @@
 				<table class="table">
 					<thead>
 						<tr>
+							<th>No</th>
 							<th>Nama</th>
 							<th>Jabatan</th>
 							<th>Total Aktif</th>
@@ -29,6 +30,9 @@
 					@foreach($PersonComposer['widget_data']['personlist']['person'] as $key => $value)
 						<tbody>
 							<tr>
+								<td>
+									{{$key+1}}
+								</td>
 								<td>
 									{{$value['name']}}
 								</td>
@@ -58,6 +62,7 @@
 									{{round(abs($tlr) * 100, 2)}} %
 								</td>
 								<td class="text-right">
+									<a href="{{route('hr.attendance.persons.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
 								</td>
 							</tr>
 						</tbody>
