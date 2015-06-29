@@ -222,6 +222,14 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.report.attendances.update'					=> [['1','2','3','4'], 'update'],
 							'hr.report.attendances.delete'					=> [['1','2','3','4'], 'delete'],
 
+							'hr.attendance.persons.index'					=> [['1','2','3','4'], 'read'],
+							'hr.attendance.persons.show'					=> [['1','2','3','4'], 'read'],
+							'hr.attendance.persons.create'					=> [['1','2','3','4'], 'create'],
+							'hr.attendance.persons.store'					=> [['1','2','3','4'], 'create'],
+							'hr.attendance.persons.edit'					=> [['1','2','3','4'], 'update'],
+							'hr.attendance.persons.update'					=> [['1','2','3','4'], 'update'],
+							'hr.attendance.persons.delete'					=> [['1','2','3','4'], 'delete'],
+
 							'hr.report.wages.index'							=> [['1','2','3','4'], 'read'],
 							'hr.report.wages.show'							=> [['1','2','3','4'], 'read'],
 							'hr.report.wages.create'						=> [['1','2','3','4'], 'create'],
@@ -229,6 +237,10 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.report.wages.edit'							=> [['1','2','3','4'], 'update'],
 							'hr.report.wages.update'						=> [['1','2','3','4'], 'update'],
 							'hr.report.wages.delete'						=> [['1','2','3','4'], 'delete'],
+							
+							'hr.password.get'								=> [['1','2','3','4'], 'delete'],
+							'hr.password.post'								=> [['1','2','3','4'], 'delete'],
+							'hr.logout.get'									=> [['1','2','3','4'], 'delete'],
 				];
 			return $routes_acl;
 		});

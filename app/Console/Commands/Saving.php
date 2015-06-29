@@ -89,6 +89,7 @@ class Saving extends Command implements SelfHandling {
 				{
 					$this->syncModel = $this->syncModel->findorfail($this->syncid);
 					$this->model->Organisation()->associate($this->syncModel);
+					// dd($this->model->Organisation()->associate($this->syncModel));
 				}
 				elseif($this->syncModel == new \App\Models\Person)
 				{

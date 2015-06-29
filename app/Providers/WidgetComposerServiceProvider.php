@@ -67,12 +67,12 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// IDLE
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.idle.table', 'widgets.idle.form'], 	'App\Http\ViewComposers\IdleComposer');
+		View::composer(['widgets.organisation.idle.table', 'widgets.organisation.idle.form'], 	'App\Http\ViewComposers\IdleComposer');
 
 		// -----------------------------------------------------------------------------
 		// PERSON
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.person.table', 'widgets.organisation.person.form', 'widgets.organisation.person.select', 'widgets.report.attendance.table', 'widgets.report.wage.table', 'widgets.organisation.person.stat.total_employee', 'widgets.organisation.person.stat.average_loss_rate'], 	'App\Http\ViewComposers\PersonComposer');
+		View::composer(['widgets.organisation.person.table', 'widgets.organisation.person.form', 'widgets.organisation.person.select', 'widgets.organisation.report.attendance.table', 'widgets.organisation.report.wage.table', 'widgets.organisation.person.stat.total_employee', 'widgets.organisation.person.stat.average_loss_rate','widgets.organisation.report.attendance.person.table','widgets.organisation.report.attendance.person.log.table'], 	'App\Http\ViewComposers\PersonComposer');
 
 		// -----------------------------------------------------------------------------
 		// CONTACT
@@ -102,7 +102,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// FOLLOW
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.branch.chart.follow.table', 'widgets.organisation.branch.chart.follow.form', 'widgets.calendar.chart.table', 'widgets.calendar.chart.form'], 	'App\Http\ViewComposers\FollowComposer');
+		View::composer(['widgets.organisation.branch.chart.follow.table', 'widgets.organisation.branch.chart.follow.form', 'widgets.organisation.calendar.chart.table', 'widgets.organisation.calendar.chart.form'], 	'App\Http\ViewComposers\FollowComposer');
 
 		// -----------------------------------------------------------------------------
 		// SCHEDULE
@@ -133,6 +133,11 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// TEMPLATE
 		// -----------------------------------------------------------------------------
 		View::composer(['widgets.organisation.document.template.table', 'widgets.organisation.document.template.form'], 	'App\Http\ViewComposers\TemplateComposer');
+
+		// -----------------------------------------------------------------------------
+		// PROCESS LOG
+		// -----------------------------------------------------------------------------
+		View::composer(['widgets.organisation.report.attendance.person.form'], 	'App\Http\ViewComposers\ProcessLogComposer');
 	}
 
 	private function web_widget()
