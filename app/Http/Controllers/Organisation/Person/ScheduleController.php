@@ -375,6 +375,17 @@ class ScheduleController extends BaseController
 							break;
 					}
 
+					$k++;
+					$schedule[$k]['mode']			= 'create';
+					$schedule[$k]['data_target']	= '#modal_schedule';
+					$schedule[$k]['title'] 			= 'Tambah Jadwal';
+					$schedule[$k]['start']			= $sh['on'];
+					$schedule[$k]['end']			= $sh['on'];
+					$schedule[$k]['status']			= $sh['status'];
+					$schedule[$k]['add_action']		= route('hr.person.schedules.store', ['org_id' => $org_id, 'person_id' => $person_id]);
+					$schedule[$k]['label']			= 'primary';
+
+
 					$date[]							= $period->format('Y-m-d');
 					$k++;
 				}
@@ -424,6 +435,16 @@ class ScheduleController extends BaseController
 								break;
 						}
 
+						$k++;
+						$schedule[$k]['mode']			= 'create';
+						$schedule[$k]['data_target']	= '#modal_schedule';
+						$schedule[$k]['title'] 			= 'Tambah Jadwal';
+						$schedule[$k]['start']			= $sh['on'];
+						$schedule[$k]['end']			= $sh['on'];
+						$schedule[$k]['status']			= $sh['status'];
+						$schedule[$k]['add_action']		= route('hr.person.schedules.store', ['org_id' => $org_id, 'person_id' => $person_id]);
+						$schedule[$k]['label']			= 'primary';
+
 						$date[]							= $period->format('Y-m-d');
 						$k++;
 					}
@@ -431,6 +452,7 @@ class ScheduleController extends BaseController
 
 				if(!in_array($period->format('Y-m-d'), $date))
 				{
+					$schedule[$k]['mode']				= 'create';
 					if(in_array(strtolower($period->format('l')), $workdays))
 					{
 						$schedule[$k]['id']				= $k;
@@ -438,7 +460,7 @@ class ScheduleController extends BaseController
 						$schedule[$k]['start']			= $period->format('Y-m-d').'T'.$sh['start'];
 						$schedule[$k]['end']			= $period->format('Y-m-d').'T'.$sh['end'];
 						$schedule[$k]['status']			= 'presence_indoor';
-						$schedule[$k]['label']			= 'blue';
+						$schedule[$k]['label']			= 'gray';
 						// $schedule[$k]['backgroundColor']= '#31708F';
 						// $schedule[$k]['color']			= '#31708F';
 						$schedule[$k]['data_target']	= '#modal_schedule';
@@ -454,7 +476,7 @@ class ScheduleController extends BaseController
 						$schedule[$k]['start']			= $period->format('Y-m-d').'T'.'00:00:00';
 						$schedule[$k]['end']			= $period->format('Y-m-d').'T'.'00:00:00';
 						$schedule[$k]['status']			= 'absence_not_workleave';
-						$schedule[$k]['label']			= 'blue';
+						$schedule[$k]['label']			= 'magenta';
 						// $schedule[$k]['backgroundColor']= '#D78409';
 						// $schedule[$k]['color']			= '#D78409';
 						$schedule[$k]['data_target']	= '#modal_schedule';
@@ -503,7 +525,7 @@ class ScheduleController extends BaseController
 			}
 
 			$schedule[$k]['status']			= $log['tooltip'];
-			$schedule[$k]['label']			= 'blue';
+			$schedule[$k]['label']			= 'pink';
 			// $schedule[$k]['backgroundColor']= '#9c27b0';
 			// $schedule[$k]['mode']			= 'log';				
 			$k++;
