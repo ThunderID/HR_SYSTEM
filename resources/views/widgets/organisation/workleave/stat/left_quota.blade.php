@@ -1,0 +1,20 @@
+@extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
+
+@if (!$widget_error_count)
+	@section('widget_body')
+		@if(isset($PersonComposer['widget_data']['personlist']['person']))
+			<div class="alert alert-callout alert-info no-margin">
+				<strong class="pull-right text-info text-lg"><i class="fa fa-bed fa-2x"></i></strong>
+				<strong class="text-xl">{{($PersonComposer['widget_data']['personlist']['person']['quotas'] + $PersonComposer['widget_data']['personlist']['person']['plus_quotas'] - $PersonComposer['widget_data']['personlist']['person']['minus_quotas'] >= 0 ? abs($PersonComposer['widget_data']['personlist']['person']['quotas'] + $PersonComposer['widget_data']['personlist']['person']['plus_quotas'] - $PersonComposer['widget_data']['personlist']['person']['minus_quotas']) : 0)}}
+				</strong><br>
+				<span class="opacity-50">Sisa Cuti "{{$data['name']}}"</span>					
+			</div>
+		@endif
+	@overwrite	
+@else
+	@section('widget_title')
+	@overwrite
+
+	@section('widget_body')
+	@overwrite
+@endif

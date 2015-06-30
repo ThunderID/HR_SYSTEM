@@ -29,6 +29,27 @@
 @section('content_body')
 	<div class="row">
 		<div class="col-sm-12">
+			@include('widgets.organisation.workleave.stat.left_quota', [
+				'widget_template'		=> 'panel',
+				'widget_title'			=> '<h4>Sisa Cuti "'.$person['name'].'"</h4>',
+				'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
+				'widget_body_class'		=> '',
+				'widget_options'		=> 	[
+												'personlist'			=>
+												[
+													'organisation_id'	=> $data['id'],
+													'search'			=> ['id' => $person['id'], 'globalwage' => array_merge(['organisationid' => $data['id'], 'on' => date('Y-m-d')], (isset($filtered['search']) ? $filtered['search'] : []))],
+													'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']),
+													'page'				=> 1,
+													'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
+													'per_page'			=> 1,
+												]
+											]
+			])
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
 			@include('widgets.common.contact.table', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> '<h4>Kontak "'.$person['name'].'"'.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small></h4>' : null),

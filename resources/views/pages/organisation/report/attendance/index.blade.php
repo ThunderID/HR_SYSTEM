@@ -24,9 +24,8 @@
 										'sort'				=> ['name' => 'asc'],
 										'page'				=> 1,
 										'per_page'			=> 100,
-										'laporan'			=> 'yes',
-										'active_attendance_report'	=> 'yes',
-										'active_report_attendances' => 'yes'
+										'pengaturan'		=> 'yes',
+										'active_attendance_report'	=> 'yes'
 									]
 								]
 	])
@@ -54,7 +53,7 @@
 												'organisation_id'	=> $data['id'],
 												'search'			=> ['globalattendance' => array_merge(['organisationid' => $data['id'], 'on' => [$start, $end]], (isset($filtered['search']) ? $filtered['search'] : []))],
 												'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']),
-												'page'				=> (Input::has('page') ? Input::get('page') : 1),
+												'page'				=> 1,
 												'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 												'per_page'			=> 100,
 												'route_create'		=> route('hr.calendars.create', ['org_id' => $data['id']])
