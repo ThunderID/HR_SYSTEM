@@ -58,6 +58,10 @@
 									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.branches.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash"></i></a>
 									<a href="{{route('hr.branches.edit', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 									<a href="{{route('hr.branches.show', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
+									<a href="{{route('hr.branch.charts.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" class="btn btn-default"><i class="fa fa-sitemap"></i></a>
+									<a href="{{route('hr.branch.contacts.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" class="btn btn-default"><i class="fa fa-phone"></i></a>
+									<a href="{{route('hr.branch.apis.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" class="btn btn-default"><i class="fa fa-key"></i></a>
+									<!-- <a href="{{route('hr.branch.fingers.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a> -->
 								</td>
 							</tr>
 						</tbody>

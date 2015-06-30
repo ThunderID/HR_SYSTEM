@@ -55,6 +55,14 @@
 									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.persons.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash"></i></a>
 									<a href="{{route('hr.persons.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 									<a href="{{route('hr.persons.show', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
+									
+									<a href="{{route('hr.person.contacts.index', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-phone"></i></a>
+									<a href="{{route('hr.person.works.index', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-building"></i></a>
+									<a href="{{route('hr.person.schedules.index', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-calendar"></i></a>
+									
+									<a href="{{route('hr.person.documents.index', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-file"></i></a>
+									<a href="{{route('hr.person.workleaves.index', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-bed"></i></a>
+									<a href="{{route('hr.person.relatives.index', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-child"></i></a>
 								</td>
 							</tr>
 						</tbody>
