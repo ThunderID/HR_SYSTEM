@@ -28,9 +28,9 @@
 
 @section('content_body')
 	<div class="row">
-		<div class="col-sm-12">
+		<div class="col-sm-6">
 			@include('widgets.organisation.workleave.stat.left_quota', [
-				'widget_template'		=> 'panel',
+				'widget_template'		=> 'plain',
 				'widget_title'			=> '<h4>Sisa Cuti "'.$person['name'].'"</h4>',
 				'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 				'widget_body_class'		=> '',
@@ -47,30 +47,23 @@
 											]
 			])
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-sm-12">
-			@include('widgets.common.contact.table', [
-				'widget_template'		=> 'panel',
-				'widget_title'			=> '<h4>Kontak "'.$person['name'].'"'.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small></h4>' : null),
+		<div class="col-sm-6">
+			@include('widgets.organisation.person.stat.average_loss_rate', [
+				'widget_template'		=> 'plain',
+				'widget_title'			=> 'Average Loss Rate "'.$person['name'].'"',
 				'widget_options'		=> 	[
-												'contactlist'			=>
+												'lossratelist'		=>
 												[
-													'search'			=> ['personid' => $person['id'], 'default' => true],
-													'sort'				=> ['is_default' => 'desc'],
+													'organisation_id'	=> $data['id'],
+													'search'			=> ['id' => $person['id'], 'globalattendance' => ['organisationid' => $data['id'], 'on' => date('Y-m-d')]],
+													'sort'				=> [],
 													'page'				=> 1,
 													'per_page'			=> 100,
-													'route'				=> route('hr.person.contacts.index'),
-													'route_create'		=> route('hr.person.contacts.create', ['org_id' => $data['id'], 'person_id' => $person['id']]),
-													'route_edit'		=> 'hr.person.contacts.edit',
-													'route_delete'		=> 'hr.person.contacts.delete',
-													'next'				=> 'person_id',
-													'nextid'			=> $person['id']
-
 												]
 											]
 			])
-		</div>
+	</div>
+	<div class="row">
 		<div class="col-sm-12">
 			@include('widgets.organisation.person.work.table', [
 				'widget_template'		=> 'panel',
@@ -92,7 +85,7 @@
 		</div>
 	</div>
 
-	{!! Form::open(array('route' => array('hr.person.contacts.delete', 0),'method' => 'DELETE')) !!}
+	{!! Form::open(array('route' => array('hr.person.works.delete', 0),'method' => 'DELETE')) !!}
 		@include('widgets.modal.delete', [
 			'widget_template'		=> 'plain_no_title'
 		])
