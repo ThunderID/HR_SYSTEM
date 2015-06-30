@@ -359,6 +359,11 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 
 					Session::put('user.menuid', $contents->data->menu_id);
 				}
+				elseif(Route::currentRouteName()=='hr.logout.get')
+				{
+					Session::flush();
+					return Redirect::guest(route('hr.login.get'));
+				}
 				elseif(Route::currentRouteName()!='hr.organisations.create')
 				{
 					$results 										= $this->dispatch(new Getting(new Person, ['id' => Session::get('loggedUser'), 'defaultemail' => true], ['created_at' => 'asc'],1, 1));
