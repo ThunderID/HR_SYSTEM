@@ -333,6 +333,7 @@ class ScheduleController extends BaseController
 
 		$schedule 								= [];
 		$date 									= [];
+		$adddate 								= [];
 		$k 										= 0;
 
 		foreach ( $periods as $period )
@@ -380,18 +381,20 @@ class ScheduleController extends BaseController
 					}
 
 					$k++;
-					$schedule[$k]['mode']			= 'create';
-					$schedule[$k]['data_target']	= '#modal_schedule';
-					$schedule[$k]['title'] 			= 'Tambah Jadwal';
-					$schedule[$k]['start']			= $sh['on'];
-					$schedule[$k]['end']			= $sh['on'];
-					$schedule[$k]['status']			= $sh['status'];
-					$schedule[$k]['add_action']		= route('hr.person.schedules.store', ['org_id' => $org_id, 'person_id' => $person_id]);
-					$schedule[$k]['label']			= 'primary';
-
-
-					$date[]							= $period->format('Y-m-d');
-					$k++;
+					if(!in_array($period->format('Y-m-d'), $adddate))
+					{
+						$schedule[$k]['mode']			= 'create';
+						$schedule[$k]['data_target']	= '#modal_schedule';
+						$schedule[$k]['title'] 			= 'Tambah Jadwal';
+						$schedule[$k]['start']			= $sh['on'];
+						$schedule[$k]['end']			= $sh['on'];
+						$schedule[$k]['status']			= $sh['status'];
+						$schedule[$k]['add_action']		= route('hr.person.schedules.store', ['org_id' => $org_id, 'person_id' => $person_id]);
+						$schedule[$k]['label']			= 'primary';
+						$adddate[]						= $period->format('Y-m-d');
+						$k++;
+					}
+					$date[]								= $period->format('Y-m-d');
 				}
 			}
 
@@ -440,17 +443,21 @@ class ScheduleController extends BaseController
 						}
 
 						$k++;
-						$schedule[$k]['mode']			= 'create';
-						$schedule[$k]['data_target']	= '#modal_schedule';
-						$schedule[$k]['title'] 			= 'Tambah Jadwal';
-						$schedule[$k]['start']			= $sh['on'];
-						$schedule[$k]['end']			= $sh['on'];
-						$schedule[$k]['status']			= $sh['status'];
-						$schedule[$k]['add_action']		= route('hr.person.schedules.store', ['org_id' => $org_id, 'person_id' => $person_id]);
-						$schedule[$k]['label']			= 'primary';
+						if(!in_array($period->format('Y-m-d'), $adddate))
+						{
+							$schedule[$k]['mode']			= 'create';
+							$schedule[$k]['data_target']	= '#modal_schedule';
+							$schedule[$k]['title'] 			= 'Tambah Jadwal';
+							$schedule[$k]['start']			= $sh['on'];
+							$schedule[$k]['end']			= $sh['on'];
+							$schedule[$k]['status']			= $sh['status'];
+							$schedule[$k]['add_action']		= route('hr.person.schedules.store', ['org_id' => $org_id, 'person_id' => $person_id]);
+							$schedule[$k]['label']			= 'primary';
 
-						$date[]							= $period->format('Y-m-d');
-						$k++;
+							$adddate[]						= $period->format('Y-m-d');
+							$k++;
+						}
+						$date[]								= $period->format('Y-m-d');
 					}
 				}
 
