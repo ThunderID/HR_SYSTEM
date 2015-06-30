@@ -1,3 +1,10 @@
+<?php
+	if($id) {
+		$active_form = 'active_edit_person';
+	} else {
+		$active_form = 'active_add_person';
+	}
+?>
 @section('nav_topbar')
 	@include('widgets.common.nav_topbar', 
 		['breadcrumb' => 	[
@@ -21,6 +28,7 @@
 											'sort'				=> [],
 											'page'				=> 1,
 											'per_page'			=> 100,
+											'active_form'		=> $active_form
 										]
 									]
 	])
