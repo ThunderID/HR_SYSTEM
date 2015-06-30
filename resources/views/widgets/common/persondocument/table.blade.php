@@ -58,7 +58,7 @@
 									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.documents.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $value['person_id']]) }}"><i class="fa fa-trash"></i></a>
 									<a href="{{route('hr.person.documents.edit', [$value['id'], 'doc_id' => $value['document_id'], 'org_id' => $data['id'], 'person_id' => $value['person_id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 									<a href="{{route('hr.person.documents.show', [$value['id'], 'org_id' => $data['id'], 'person_id' => $value['person_id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
-									<a href="" class="btn btn-default"><i class="fa fa-print"></i></a>
+									<a href="{{route('hr.person.documents.show', [$value['id'], 'org_id' => $data['id'], 'person_id' => $value['person_id'], 'pdf' =>'yes'])}}" class="btn btn-default"><i class="fa fa-file-pdf-o"></i></a>
 								</td>
 							</tr>
 						</tbody>

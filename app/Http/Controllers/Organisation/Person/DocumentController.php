@@ -1,5 +1,5 @@
 <?php namespace App\Http\Controllers\Organisation\Person;
-use Input, Session, App, Paginator, Redirect, DB, Config;
+use Input, Session, App, Paginator, Redirect, DB, Config, PDF;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -456,6 +456,15 @@ class DocumentController extends BaseController
 		$this->layout->pages->document 			= $document;
 		$this->layout->pages->template 			= $template;
 		$this->layout->pages->persondocument 	= $persondocument;
+		// dd($data);
+
+		if(Input::has('pdf'))
+		{
+			$pdf = PDF::loadView('widgets.common.persondocument.print_pdf', ['data' => $data, 'document' => $persondocument, 'template' => $template])->setPaper('a4');
+
+			return $pdf->stream();
+			
+		}
 
 		return $this->layout;
 	}
