@@ -119,10 +119,10 @@
             <a href="javascript:;"><i class="fa fa-database"></i> Laporan <span class="fa arrow"></span></a>
             <ul class="nav nav-third-level">
                 <li>
-                    <a href="{{route('hr.report.attendances.index', ['org_id' => $value])}}"><i class="fa fa-file-text-o fa-fw"></i> Laporan Kehadiran</a>
+                    <a href="{{route('hr.report.attendances.index', ['org_id' => $value])}}"><i class="fa fa-file-text-o fa-fw"></i> Laporan Aktivitas</a>
                 </li>
                 <li>
-                    <a href="{{route('hr.report.wages.index', ['org_id' => $value])}}"><i class="fa fa-file-text-o fa-fw"></i> Laporan Aktivitas</a>
+                    <a href="{{route('hr.report.wages.index', ['org_id' => $value])}}"><i class="fa fa-file-text-o fa-fw"></i> Laporan Kehadiran</a>
                 </li>
             </ul>
         </li>

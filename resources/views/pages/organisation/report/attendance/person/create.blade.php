@@ -32,7 +32,7 @@
 @section('content_filter')
 @overwrite
 
-@section('content_body')	
+@section('content_body')
 	@include('widgets.organisation.report.attendance.person.form', [
 		'widget_template'	=> 'panel',
 		'widget_options'	=> 	[
@@ -49,6 +49,7 @@
 									]
 								]
 	])
+	
 
 @overwrite
 
