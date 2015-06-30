@@ -24,8 +24,9 @@
 										'sort'				=> ['name' => 'asc'],
 										'page'				=> 1,
 										'per_page'			=> 100,
-										'pengaturan'		=> 'yes',
-										'active_attendance_report'	=> 'yes'
+										'laporan'			=> 'yes',
+										'active_attendance_report'	=> 'yes',
+										'active_report_attendances' => 'yes'
 									]
 								]
 	])

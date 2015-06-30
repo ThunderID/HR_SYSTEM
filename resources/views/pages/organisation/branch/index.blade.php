@@ -14,7 +14,8 @@
 											'sort'				=> [],
 											'page'				=> 1,
 											'per_page'			=> 100,
-											'active_all_branch'	=> 'yes'
+											'active_all_branch'	=> 'yes',
+											'pengaturan'		=> 'yes'
 										]
 									]
 	])
