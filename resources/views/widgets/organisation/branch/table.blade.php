@@ -54,7 +54,7 @@
 										@endif
 									@endforeach
 								</td>
-								<td class="text-right" style="max-width: 45px;">
+								<td class="text-right" style="max-width: 104px;">
 									<a href="javascript:;" class="btn btn-default crowd-buttons text-right" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.branches.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash"></i></a>
 									<a href="{{route('hr.branches.edit', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" class="btn btn-default crowd-buttons text-right" title="ubah"><i class="fa fa-pencil"></i></a>
 									<a href="{{route('hr.branches.show', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" class="btn btn-default crowd-buttons text-right" title="lihat"><i class="fa fa-eye"></i></a>
