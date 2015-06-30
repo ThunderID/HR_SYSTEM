@@ -5,8 +5,8 @@
 		<h1> {!! $widget_title  or 'Data Karyawan' !!} </h1>
 		<small>Total data {{$PersonComposer['widget_data']['personlist']['person-pagination']->total()}}</small>
 
-		<div class="clearfix">&nbsp;</div>
 		@if(isset($PersonComposer['widget_data']['personlist']['active_filter']) && !is_null($PersonComposer['widget_data']['personlist']['active_filter']))
+			<div class="clearfix">&nbsp;</div>
 			@foreach($PersonComposer['widget_data']['personlist']['active_filter'] as $key => $value)
 				<span class="active-filter">{{$value}}</span>
 			@endforeach

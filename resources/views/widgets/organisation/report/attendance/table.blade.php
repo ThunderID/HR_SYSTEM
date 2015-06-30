@@ -7,6 +7,13 @@
 	<?php
 		$PersonComposer['widget_data']['personlist']['person-pagination']->setPath('hr.report.attendances.index');
 	 ?>
+
+	 @if(isset($PersonComposer['widget_data']['personlist']['active_filter']) && !is_null($PersonComposer['widget_data']['personlist']['active_filter']))
+		<div class="clearfix">&nbsp;</div>
+		@foreach($PersonComposer['widget_data']['personlist']['active_filter'] as $key => $value)
+			<span class="active-filter">{{$value}}</span>
+		@endforeach
+	@endif
 	@overwrite
 
 	@section('widget_body')
@@ -37,7 +44,7 @@
 									{{$value['name']}}
 								</td>
 								<td>
-									{{$value['position']}} di departemen {{$value['department']}}
+									{{$value['position']}} di departemen {{$value['department']}} cabang {{$value['branch']}}
 								</td>
 								<td>
 									{{gmdate('H:i:s', $value['total_active'])}}
@@ -62,7 +69,7 @@
 									{{round(abs($tlr) * 100, 2)}} %
 								</td>
 								<td class="text-right">
-									<a href="{{route('hr.attendance.persons.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
+									<a href="{{route('hr.attendance.persons.index', ['person_id' => $value['id'], 'org_id' => $data['id'], 'start' => $start, 'end' => $end])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
 								</td>
 							</tr>
 						</tbody>
@@ -71,7 +78,7 @@
 
 				<div class="row">
 					<div class="col-sm-12 text-center">
-						<p>Menampilkan {!! $PersonComposer['widget_data']['personlist']['person-display']['from']!!} - {!! $PersonComposer['widget_data']['personlist']['person-display']['to']!!}</p>
+						<p>Menampilkan {!! $PersonComposer['widget_data']['personlist']['person-display']['from']!!} - {!! count($PersonComposer['widget_data']['personlist']['person']) !!}</p>
 						{!! $PersonComposer['widget_data']['personlist']['person-pagination']->appends(Input::all())->render()!!}
 					</div>
 				</div>

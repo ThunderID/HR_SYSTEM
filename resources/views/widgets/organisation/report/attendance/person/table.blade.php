@@ -4,6 +4,7 @@
 	@section('widget_title')
 	<h1> {!! $widget_title or 'Laporan Akivitas' !!} </h1>
 	<small>Total data {{ count($PersonComposer['widget_data']['personlist']['person']['processlogs']) }}</small>
+	
 	@overwrite
 
 	@section('widget_body')
@@ -77,7 +78,7 @@
 								</td>
 								<td class="text-right">
 									<a href="{{route('hr.attendance.persons.edit', ['id' => $value['id'], 'person_id' => $person['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-									<a href="{{route('hr.attendance.persons.show', ['id' => $person['id'], 'person_id' => $person['id'], 'org_id' => $data['id'], 'ondate' => $value['on']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
+									<a href="{{route('hr.attendance.persons.show', ['id' => $person['id'], 'person_id' => $person['id'], 'org_id' => $data['id'], 'ondate' => $value['on'], 'start' => $start, 'end' => $end])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
 								</td>
 							</tr>
 						</tbody>

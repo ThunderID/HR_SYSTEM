@@ -363,6 +363,7 @@ class Person extends BaseModel {
 	{
 		$query =  $query->selectraw('persons.*')
 					->currentwork($variable['organisationid'])
+					->selectraw('branches.name as branch')
 					->selectraw('charts.name as position')
 					->selectraw('charts.tag as department')
 					->selectraw('sum(TIME_TO_SEC(schedule_start) - TIME_TO_SEC(schedule_end)) as possible_total_effective')
@@ -373,7 +374,8 @@ class Person extends BaseModel {
 					->selectraw('sum(total_active) as total_active')
 					->leftjoin('process_logs', 'process_logs.person_id', '=', 'persons.id')
 					->leftjoin('works', 'process_logs.work_id', '=', 'works.id')
-					->leftjoin('charts', 'works.chart_id', '=', 'charts.id');
+					->leftjoin('charts', 'works.chart_id', '=', 'charts.id')
+					->leftjoin('branches', 'charts.branch_id', '=', 'branches.id');
 
 		if(is_array($variable['on']))
 		{
@@ -391,7 +393,30 @@ class Person extends BaseModel {
 				$query =  $query->where('on', '>=', date('Y-m-d'));
 			}
 		}
+		if(isset($variable['name']))
+		{
+			$query =  $query->where('persons.name', 'like', '%'.$variable['name'].'%');
+		}
 
+		if(isset($variable['branchid']))
+		{
+			$query =  $query->where('branches.id', $variable['branchid']);
+		}
+
+		if(isset($variable['chartchild']))
+		{
+			$query =  $query->where('charts.path', 'like', $variable.'%');
+		}
+
+		if(isset($variable['charttag']))
+		{
+			$query =  $query->where('charts.tag', $variable);
+		}
+
+		if(isset($variable['chartid']))
+		{
+			$query =  $query->where('charts.id', $variable);
+		}
 		if(isset($variable['case']))
 		{
 			switch ($variable['case']) 
@@ -435,6 +460,7 @@ class Person extends BaseModel {
 			// 		;
 		$query =  $query->selectraw('persons.*')
 					->currentwork($variable['organisationid'])
+					->selectraw('branches.name as branch')
 					->selectraw('(SELECT sum(if(persons_workleaves.is_default=true, quota, 0)) FROM persons_workleaves join tmp_workleaves on tmp_workleaves.id = persons_workleaves.workleave_id WHERE persons_workleaves.person_id = persons.id and date_format(date(persons_workleaves.start),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).' and date_format(date(persons_workleaves.end),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][1])).') as quotas')
 					->selectraw('(SELECT sum(if(persons_workleaves.is_default=false, quota, 0)) FROM persons_workleaves join tmp_workleaves on tmp_workleaves.id = persons_workleaves.workleave_id WHERE persons_workleaves.person_id = persons.id and date_format(date(persons_workleaves.start),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).' and date_format(date(persons_workleaves.end),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).') as plus_quotas')
 					->selectraw('charts.name as position')
@@ -445,6 +471,7 @@ class Person extends BaseModel {
 					->leftjoin('process_logs', 'process_logs.person_id', '=', 'persons.id')
 					->leftjoin('works', 'process_logs.work_id', '=', 'works.id')
 					->leftjoin('charts', 'works.chart_id', '=', 'charts.id')
+					->leftjoin('branches', 'charts.branch_id', '=', 'branches.id')
 					;
 
 		if(is_array($variable['on']))
@@ -462,6 +489,31 @@ class Person extends BaseModel {
 			{
 				$query =  $query->where('on', '>=', date('Y-m-d'));
 			}
+		}
+
+		if(isset($variable['name']))
+		{
+			$query =  $query->where('persons.name', 'like', '%'.$variable['name'].'%');
+		}
+
+		if(isset($variable['branchid']))
+		{
+			$query =  $query->where('branches.id', $variable['branchid']);
+		}
+
+		if(isset($variable['chartchild']))
+		{
+			$query =  $query->where('charts.path', 'like', $variable.'%');
+		}
+
+		if(isset($variable['charttag']))
+		{
+			$query =  $query->where('charts.tag', $variable);
+		}
+
+		if(isset($variable['chartid']))
+		{
+			$query =  $query->where('charts.id', $variable);
 		}
 
 		if(isset($variable['case']))

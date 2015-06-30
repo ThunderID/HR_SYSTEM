@@ -2,7 +2,11 @@
 	@include('widgets.common.nav_topbar', 
 	['breadcrumb' 	=> 	[	
 							['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
+							(Input::has('start') ? 
+							['name' => 'Laporan Kehadiran', 'route' => route('hr.report.wages.index', ['org_id' => $data['id'], 'start' => $start, 'end' => $end]) ]
+							:
 							['name' => 'Laporan Kehadiran', 'route' => route('hr.report.wages.index', ['org_id' => $data['id']]) ]
+							)
 						]
 	])
 @stop
@@ -26,6 +30,12 @@
 @overwrite
 
 @section('content_filter')
+	@include('widgets.common.filter', [
+		'widget_template'		=> 'plain_no_title',
+		'widget_options'		=> [
+									'form_url'	=> route('hr.report.wages.index', ['org_id' => $data['id'], 'start' => $start, 'end' => $end, 'page' => (Input::has('page') ? Input::get('page') : 1)])
+									],
+	])
 @overwrite
 
 @section('content_body')	
@@ -39,9 +49,10 @@
 											'personlist'			=>
 											[
 												'organisation_id'	=> $data['id'],
-												'search'			=> ['globalwage' => ['organisationid' => $data['id'], 'on' => [$start, $end]]],
-												'sort'				=> ['persons.name' => 'asc'],
+												'search'			=> ['globalwage' => array_merge(['organisationid' => $data['id'], 'on' => [$start, $end]], (isset($filtered['search']) ? $filtered['search'] : []))],
+												'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']),
 												'page'				=> 1,
+												'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 												'per_page'			=> 100,
 											]
 										]

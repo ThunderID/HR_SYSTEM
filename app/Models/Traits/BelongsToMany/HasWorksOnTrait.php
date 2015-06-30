@@ -30,12 +30,12 @@ trait HasWorksOnTrait {
 
 	public function scopeBranchID($query, $variable)
 	{
-		return $query->whereHas('works', function($q)use($variable){$q->branchid($variable);});
+		return $query->whereHas('works', function($q)use($variable){$q->branchid($variable)->wherenull('end');});
 	}
 
 	public function scopeChartID($query, $variable)
 	{
-		return $query->whereHas('works', function($q)use($variable){$q->id($variable);});
+		return $query->whereHas('works', function($q)use($variable){$q->id($variable)->wherenull('end');});
 	}
 
 	public function scopeCheckWork($query, $variable)
@@ -71,7 +71,7 @@ trait HasWorksOnTrait {
 
 	public function scopeChartTag($query, $variable)
 	{
-		return $query->WhereHas('works', function($q)use($variable){$q->tag($variable);});
+		return $query->WhereHas('works', function($q)use($variable){$q->tag($variable)->wherenull('end');});
 	}
 
 	public function scopeChartChild($query, $variable)

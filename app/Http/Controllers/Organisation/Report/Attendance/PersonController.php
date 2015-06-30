@@ -62,6 +62,10 @@ class PersonController extends BaseController
 		$search['organisationid']					= $org_id;
 		$search['withattributes']					= ['organisation'];
 		$sort 										= ['name' => 'asc'];
+		if(Session::get('user.menuid')==4)
+		{
+			$search['chartchild'] 					= Session::get('user.chartpath');
+		}
 		$results 									= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 									= json_decode($results);		
 
@@ -156,6 +160,10 @@ class PersonController extends BaseController
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
 		$sort 									= ['name' => 'asc'];
+		if(Session::get('user.menuid')==4)
+		{
+			$search['chartchild'] 				= Session::get('user.chartpath');
+		}
 		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
 
@@ -242,10 +250,37 @@ class PersonController extends BaseController
 			App::abort(404);
 		}
 
+		if(Input::has('start'))
+		{
+			$start 									= date('Y-m-d', strtotime(Input::get('start')));
+		}
+		else
+		{
+			$start 									= date('Y-m-d', strtotime('first day of this month'));
+		}
+
+		if(Input::has('end'))
+		{
+			$end 									= date('Y-m-d', strtotime(Input::get('end')));
+		}
+		else
+		{
+			$end 									= date('Y-m-d', strtotime('last day of next month'));
+		}
+
+		if(Session::get('user.menuid')==4)
+		{
+			$search['chartchild'] 					= Session::get('user.chartpath');
+		}
+
 		$search['id']								= $person_id;
 		$search['organisationid']					= $org_id;
 		$search['withattributes']					= ['organisation'];
 		$sort 										= ['name' => 'asc'];
+		if(Session::get('user.menuid')==4)
+		{
+			$search['chartchild'] 					= Session::get('user.chartpath');
+		}
 		$results 									= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 									= json_decode($results);		
 
@@ -257,7 +292,7 @@ class PersonController extends BaseController
 		$person 									= json_decode(json_encode($contents->data), true);
 		$data 										= $person['organisation'];
 
-		$this->layout->page 						= view('pages.organisation.report.attendance.person.log.index', compact('data', 'ondate', 'person'));
+		$this->layout->page 						= view('pages.organisation.report.attendance.person.log.index', compact('data', 'ondate', 'person', 'start', 'end'));
 
 		return $this->layout;
 	}

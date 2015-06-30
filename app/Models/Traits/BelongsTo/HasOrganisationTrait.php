@@ -24,6 +24,10 @@ trait HasOrganisationTrait {
 	{
 		if(is_array($variable))
 		{
+			if(isset($variable['fieldname']))
+			{
+				return $query->where($variable['fieldname'], $variable['variable']);
+			}
 			return $query->wherein('organisation_id', $variable);
 		}
 

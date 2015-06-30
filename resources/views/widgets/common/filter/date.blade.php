@@ -18,7 +18,7 @@
 			<div class="form-group">
 				<div class="col-xs-12 col-sm-12 col-md-12">
 					<label class="control-label">End</label>
-					{!!Form::input('date', 'start', null , ['class' => 'form-control date-mask'])!!}							
+					{!!Form::input('date', 'end', null , ['class' => 'form-control date-mask'])!!}							
 				</div>
 			</div>
 			<input type="hidden" class="form-control" id="text" name="org_id" value="{{$data['id']}}">

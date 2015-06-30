@@ -31,7 +31,7 @@
 									{{$value['name']}}
 								</td>
 								<td>
-									{{$value['position']}} di departemen {{$value['department']}}
+									{{$value['position']}} di departemen {{$value['department']}} cabang {{$value['branch']}}
 								</td>
 								<td>
 									{{$value['quotas']}}

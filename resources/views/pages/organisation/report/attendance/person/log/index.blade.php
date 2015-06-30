@@ -2,8 +2,8 @@
 	@include('widgets.common.nav_topbar', 
 	['breadcrumb' 	=> 	[	
 							['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
-							['name' => 'Laporan Aktivitas', 'route' => route('hr.report.attendances.index', ['org_id' => $data['id']]) ],
-							['name' => $person['name'], 'route' => route('hr.attendance.persons.index', ['org_id' => $data['id'], 'person_id' => $person['id']]) ],
+							['name' => 'Laporan Aktivitas', 'route' => route('hr.report.attendances.index', ['org_id' => $data['id'], 'start' => $start, 'end' => $end]) ],
+							['name' => $person['name'], 'route' => route('hr.attendance.persons.index', ['org_id' => $data['id'], 'person_id' => $person['id'], 'start' => $start, 'end' => $end]) ],
 							['name' => date('d-m-Y', strtotime($ondate)), 'route' => route('hr.attendance.persons.show', ['person_id' => $person['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'ondate' => $ondate]) ]
 						]
 	])
@@ -35,7 +35,7 @@
 @section('content_body')	
 	@include('widgets.organisation.report.attendance.person.log.table', [
 		'widget_template'		=> 'panel',
-		'widget_title'			=> 'Laporan Aktivitas "'.$person['name'].'" Pada '.date('d-m-Y', strtotime($ondate)),
+		'widget_title'			=> 'Laporan Aktivitas "'.$person['name'].'" <br/> Tanggal '.date('d-m-Y', strtotime($ondate)),
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[

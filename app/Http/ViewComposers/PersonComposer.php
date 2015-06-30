@@ -23,8 +23,8 @@ class PersonComposer extends WidgetComposer
 
 	protected function setData($options)
 	{
-		$options['search']['organisationid'] 		= $options['organisation_id'];
-		$results 									=  $this->dispatch(new Getting(new Person, $options['search'], $options['sort'] , (int)$options['page'], (int)$options['per_page'], isset($options['new']) ? $options['new'] : false));
+		$options['search']['organisationid'] 		= ['fieldname' => 'persons.organisation_id', 'variable' => $options['organisation_id']];
+		$results 									= $this->dispatch(new Getting(new Person, $options['search'], $options['sort'] , (int)$options['page'], (int)$options['per_page'], isset($options['new']) ? $options['new'] : false));
 
 		$contents 									= json_decode($results);
 
