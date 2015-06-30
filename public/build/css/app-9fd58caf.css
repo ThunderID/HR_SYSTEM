@@ -6731,3 +6731,11 @@ label,
 
   40% {
     opacity: 1; } }
+
+.crowd-buttons{
+  width: 35px;
+  height: 35px;
+  margin-bottom: 5px;
+  margin-right: 1px;
+  margin-left: 1px;
+}
