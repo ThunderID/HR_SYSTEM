@@ -15,7 +15,8 @@
 										'sort'				=> ['name' => 'asc'],
 										'page'				=> 1,
 										'per_page'			=> 20,
-										'active_calendar'	=> 'yes'
+										'active_calendar'	=> 'yes',
+										'pengaturan'		=> 'yes'
 									]
 								]
 	])

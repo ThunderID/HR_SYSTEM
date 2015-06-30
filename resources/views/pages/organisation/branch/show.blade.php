@@ -20,7 +20,8 @@
 											'search'			=> ['withattributes' => 'branches'],
 											'sort'				=> [],
 											'page'				=> 1,
-											'per_page'			=> 100
+											'per_page'			=> 100,
+											'pengaturan'		=> 'yes'
 										]
 									]
 	])

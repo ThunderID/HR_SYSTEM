@@ -20,6 +20,7 @@
 				{!!Form::input('date', 'end', null , ['class' => 'form-control date-mask'])!!}		
 			</div>
 			<input type="hidden" class="form-control" id="text" name="org_id" value="{{$data['id']}}">
+			<div class="clearfix">&nbsp;</div>
 			<div class="form-group text-right">
 				<input type="submit" class="btn btn-primary" value="Generate">
 			</div>
