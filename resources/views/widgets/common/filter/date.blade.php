@@ -22,6 +22,7 @@
 				</div>
 			</div>
 			<input type="hidden" class="form-control" id="text" name="org_id" value="{{$data['id']}}">
+			<div class="clearfix">&nbsp;</div>
 			<div class="form-group text-right">
 				<input type="submit" class="btn btn-primary" value="Generate">
 			</div>

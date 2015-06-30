@@ -43,19 +43,23 @@ class ProcessLogObserver
 			{
 				if(strtoupper($model->actual_status)=='HB')
 				{
-					$errors->add('modified', 'Tidak dapat mengubah status HB kedatangan karyawan');
+					$errors->add('modified', 'Tidak dapat mengubah status dengan status awal HB');
+					$model['errors'] 	= $errors;
 					
 					return false;
 				}
 				elseif(strtoupper($model->actual_status)=='HC' && !in_array(strtoupper($model->modified_status), ['HT', 'HD', 'HC', 'HP']))
 				{
-					$errors->add('modified', 'Status untuk kedatangan cacat tidak valid.');
+					$errors->add('modified', 'Status untuk kedatangan cacat tidak valid. Pilih diantara status berikut : HT, HD, HC, HP');
+					$model['errors'] 	= $errors;
 					
 					return false;
 				}
 				elseif(strtoupper($model->actual_status)=='AS' && !in_array(strtoupper($model->modified_status), ['DN', 'SS', 'SL', 'CN', 'CB', 'CI', 'UL', 'AS']))
 				{
-					$errors->add('modified', 'Status untuk absensi tidak valid.');
+					$errors->add('modified', 'Status untuk absensi tidak valid. Pilih diantara status berikut : DN, SS, SL, CN, CB, CI, UL, AS');
+					
+					$model['errors'] 	= $errors;
 					
 					return false;
 				}
