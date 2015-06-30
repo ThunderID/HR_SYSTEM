@@ -330,6 +330,9 @@ class ScheduleController extends BaseController
 		$schedule 								= [];
 		$date 									= [];
 		$k 										= 0;
+		$flag 									= 0;
+		$flag2 									= 0;
+		$flag_date 								= 0;
 
 		foreach ( $periods as $period )
 		{
@@ -374,7 +377,8 @@ class ScheduleController extends BaseController
 							// $schedule[$k]['color']			= '#8abd3b';
 							break;
 					}
-
+					// $flag_date = $sh['on'];
+					// if ($flag!=1&&($flag_date!=$sh['on'])) {
 					$k++;
 					$schedule[$k]['mode']			= 'create';
 					$schedule[$k]['data_target']	= '#modal_schedule';
@@ -384,6 +388,8 @@ class ScheduleController extends BaseController
 					$schedule[$k]['status']			= $sh['status'];
 					$schedule[$k]['add_action']		= route('hr.person.schedules.store', ['org_id' => $org_id, 'person_id' => $person_id]);
 					$schedule[$k]['label']			= 'primary';
+					$flag2 = 1;	
+					// }
 
 
 					$date[]							= $period->format('Y-m-d');
@@ -435,15 +441,19 @@ class ScheduleController extends BaseController
 								break;
 						}
 
-						$k++;
-						$schedule[$k]['mode']			= 'create';
-						$schedule[$k]['data_target']	= '#modal_schedule';
-						$schedule[$k]['title'] 			= 'Tambah Jadwal';
-						$schedule[$k]['start']			= $sh['on'];
-						$schedule[$k]['end']			= $sh['on'];
-						$schedule[$k]['status']			= $sh['status'];
-						$schedule[$k]['add_action']		= route('hr.person.schedules.store', ['org_id' => $org_id, 'person_id' => $person_id]);
-						$schedule[$k]['label']			= 'primary';
+						// if($flag2!=1&&($flag_date!=$sh['on']))
+						// {
+							$k++;
+							$schedule[$k]['mode']			= 'create';
+							$schedule[$k]['data_target']	= '#modal_schedule';
+							$schedule[$k]['title'] 			= 'Tambah Jadwal';
+							$schedule[$k]['start']			= $sh['on'];
+							$schedule[$k]['end']			= $sh['on'];
+							$schedule[$k]['status']			= $sh['status'];
+							$schedule[$k]['add_action']		= route('hr.person.schedules.store', ['org_id' => $org_id, 'person_id' => $person_id]);
+							$schedule[$k]['label']			= 'primary';
+							$flag = 1;
+						// }
 
 						$date[]							= $period->format('Y-m-d');
 						$k++;
@@ -486,6 +496,8 @@ class ScheduleController extends BaseController
 						$k++;
 					}
 				}
+
+				// if(($period->format('Y-m-d') == date('Y-m-d', strtotime($sh['on'])))&&(!in_array($period->format('Y-m-d'), $date)))
 			}
 		}
 
