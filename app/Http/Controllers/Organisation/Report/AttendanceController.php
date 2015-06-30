@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers\Organisation\Report;
 
-use Input, Session, App, Paginator, Redirect, DB, Config, Validator, Image;
+use Input, Session, App, Paginator, Redirect, DB, Config, Validator, Image, Excel;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -238,7 +238,7 @@ class AttendanceController extends BaseController
 			$page 									= 1;
 			$per_page 								= 100;
 			$search['organisationid'] 				= ['fieldname' => 'persons.organisation_id', 'variable' => $data['id']];
-			$results 									= $this->dispatch(new Getting(new Person, $options['search'], $options['sort'] , (int)$options['page'], (int)$options['per_page'], isset($options['new']) ? $options['new'] : false));
+			$results 									= $this->dispatch(new Getting(new Person, $search, $sort , (int)$page, (int)$per_page, isset($new) ? $new : false));
 
 			$contents 									= json_decode($results);
 
@@ -247,7 +247,21 @@ class AttendanceController extends BaseController
 				App::abort(404);	
 			}
 			$report 								= json_decode(json_encode($contents->data), true);
-			dD($report);
+
+			// $case = Input::get('case');
+			Excel::create('Laporan Aktivitas ( '.$start.' s.d '.$end.' )', function($excel) use ($report, $start, $end) 
+			{
+				// Set the title
+				$excel->setTitle('Laporan Aktivitas');
+				// Call them separately
+				$excel->setDescription('Laporan Aktivitas');
+				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end) 
+				{
+					$c 									= count($report);
+					$sheet->loadView('widgets.organisation.report.attendance.table_csv')->with('data', $report)->with('start', $start)->with('end', $end);
+				});
+			})->export(Input::get('mode'));
+			// dD($report
 			///nama viewnya			
 		}
 

@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers\Organisation\Report;
 
-use Input, Session, App, Paginator, Redirect, DB, Config, Validator, Image;
+use Input, Session, App, Paginator, Redirect, DB, Config, Validator, Image, Excel;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -230,6 +230,40 @@ class WageController extends BaseController
 		$this->layout->page->filter 				= $filters;
 		$this->layout->page->filtered 				= $filter;
 		$this->layout->page->default_filter  		= ['org_id' => $data['id'], 'start' => $start, 'end' => $end];
+
+		if(Input::has('print'))
+		{
+			$search 								= ['globalwage' => array_merge(['organisationid' => $data['id'], 'on' => [$start, $end]], (isset($filtered['search']) ? $filtered['search'] : []))];
+			$sort 									= (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']);
+			$page 									= 1;
+			$per_page 								= 100;
+			$search['organisationid'] 				= ['fieldname' => 'persons.organisation_id', 'variable' => $data['id']];
+			$results 									= $this->dispatch(new Getting(new Person, $search, $sort , (int)$page, (int)$per_page, isset($new) ? $new : false));
+
+			$contents 									= json_decode($results);
+
+			if(!$contents->meta->success)
+			{	
+				App::abort(404);	
+			}
+			$report 								= json_decode(json_encode($contents->data), true);
+
+			// $case = Input::get('case');
+			Excel::create('Laporan Cuti ( '.$start.' s.d '.$end.' )', function($excel) use ($report, $start, $end) 
+			{
+				// Set the title
+				$excel->setTitle('Laporan Cuti');
+				// Call them separately
+				$excel->setDescription('Laporan Cuti');
+				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end) 
+				{
+					$c 									= count($report);
+					$sheet->loadView('widgets.organisation.report.wage.table_csv')->with('data', $report)->with('start', $start)->with('end', $end);
+				});
+			})->export(Input::get('mode'));
+			// dD($report
+			///nama viewnya			
+		}
 
 		return $this->layout;
 	}
