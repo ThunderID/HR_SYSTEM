@@ -28,7 +28,7 @@
 
 @section('content_body')
 	<div class="row">
-		<div class="col-sm-6">
+		<div class="col-sm-12">
 			@include('widgets.organisation.person.stat.total_employee', [
 				'widget_template'		=> 'plain',
 				'widget_title'			=> 'Total Karyawan '.$data['name'],
@@ -45,8 +45,8 @@
 											]
 			])
 		</div>
-		<div class="col-sm-6">
-			@include('widgets.organisation.branch.fingerprint.block', [
+		<!-- <div class="col-sm-6"> -->
+			<!-- @include('widgets.organisation.branch.fingerprint.block', [
 				'widget_template'		=> 'panel',
 				'widget_title'			=> '<h4>Absen Sidik Jari Hari Ini Cabang "'.$branch['name'].'"</h4>',
 				'widget_options'		=> 	[
@@ -59,8 +59,8 @@
 													'per_page'			=> 1,
 												]
 											]
-			])
-		</div>
+			]) -->
+		<!-- </div> -->
 	</div>
 	<div class="row">
 		<div class="col-sm-12">
