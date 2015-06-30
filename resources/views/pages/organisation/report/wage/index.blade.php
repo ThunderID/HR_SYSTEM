@@ -24,6 +24,7 @@
 										'sort'				=> ['name' => 'asc'],
 										'page'				=> 1,
 										'per_page'			=> 100,
+										'active_wages_report' => 'yes'
 									]
 								]
 	])

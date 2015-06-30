@@ -335,6 +335,9 @@ class ScheduleController extends BaseController
 		$date 									= [];
 		$adddate 								= [];
 		$k 										= 0;
+		$flag 									= 0;
+		$flag2 									= 0;
+		$flag_date 								= 0;
 
 		foreach ( $periods as $period )
 		{
@@ -379,7 +382,8 @@ class ScheduleController extends BaseController
 							// $schedule[$k]['color']			= '#8abd3b';
 							break;
 					}
-
+					// $flag_date = $sh['on'];
+					// if ($flag!=1&&($flag_date!=$sh['on'])) {
 					$k++;
 					if(!in_array($period->format('Y-m-d'), $adddate))
 					{
@@ -497,6 +501,8 @@ class ScheduleController extends BaseController
 						$k++;
 					}
 				}
+
+				// if(($period->format('Y-m-d') == date('Y-m-d', strtotime($sh['on'])))&&(!in_array($period->format('Y-m-d'), $date)))
 			}
 		}
 

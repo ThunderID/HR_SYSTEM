@@ -7,6 +7,17 @@
 	<?php
 		$PersonComposer['widget_data']['personlist']['person-pagination']->setPath('hr.report.attendances.index');
 	 ?>
+
+	 <div class="btn-group pull-right">
+		<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<i class="fa fa-file"></i> Export to <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+			<li><a href="#">CSV</a></li>
+			<li><a href="#">XLS</a></li>
+		</ul>
+	</div>
+	
 	@overwrite
 
 	@section('widget_body')
