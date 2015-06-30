@@ -17,8 +17,8 @@ class DatabaseSeeder extends Seeder {
 		// $this->call('FingerTableSeeder');
 		// $this->call('FingerPrintTableSeeder');
 
-		// $this->call('ApplicationTableSeeder');
-		// $this->call('MenuTableSeeder');
+		$this->call('ApplicationTableSeeder');
+		$this->call('MenuTableSeeder');
 
 		// $this->call('OrganisationTableSeeder');
 		// $this->call('BranchTableSeeder');

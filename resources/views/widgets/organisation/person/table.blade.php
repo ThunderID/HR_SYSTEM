@@ -52,17 +52,17 @@
 									@endif
 								</td>
 								<td class="text-right col-sm-3">
-									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.persons.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash"></i></a>
-									<a href="{{route('hr.persons.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default" title="ubah"><i class="fa fa-pencil"></i></a>
-									<a href="{{route('hr.persons.show', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default" title="lihat"><i class="fa fa-eye"></i></a>
+									<a href="javascript:;" class="btn btn-default crowd-buttons text-right" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.persons.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash"></i></a>
+									<a href="{{route('hr.persons.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default crowd-buttons text-right" title="ubah"><i class="fa fa-pencil"></i></a>
+									<a href="{{route('hr.persons.show', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default crowd-buttons text-right" title="lihat"><i class="fa fa-eye"></i></a>
+
+									<a href="{{route('hr.person.workleaves.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default crowd-buttons text-right" title="jatah cuti"><i class="fa fa-bed"></i></a>
+									<a href="{{route('hr.person.works.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default crowd-buttons text-right" title="karir"><i class="fa fa-building"></i></a>
+									<a href="{{route('hr.person.schedules.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default crowd-buttons text-right" title="jadwal"><i class="fa fa-calendar"></i></a>
 									
-									<a href="{{route('hr.person.contacts.index', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default" title="kontak"><i class="fa fa-phone"></i></a>
-									<a href="{{route('hr.person.works.index', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default" title="karir"><i class="fa fa-building"></i></a>
-									<a href="{{route('hr.person.schedules.index', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default" title="jadwal"><i class="fa fa-calendar"></i></a>
-									
-									<a href="{{route('hr.person.documents.index', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default" title="dokumen"><i class="fa fa-file"></i></a>
-									<a href="{{route('hr.person.workleaves.index', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default" title="jatah cuti"><i class="fa fa-bed"></i></a>
-									<a href="{{route('hr.person.relatives.index', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default" title="kerabat"><i class="fa fa-child"></i></a>
+									<a href="{{route('hr.person.contacts.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default crowd-buttons text-right" title="kontak"><i class="fa fa-phone"></i></a>
+									<a href="{{route('hr.person.documents.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default crowd-buttons text-right" title="dokumen"><i class="fa fa-file"></i></a>
+									<a href="{{route('hr.person.relatives.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default crowd-buttons text-right" title="kerabat"><i class="fa fa-child"></i></a>
 								</td>
 							</tr>
 						</tbody>

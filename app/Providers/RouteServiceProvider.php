@@ -277,8 +277,8 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 			}
 			else
 			{
-				$total_orgs 								= $this->dispatch(new Getting(new Organisation, [], [],1, 100));
-				$count_orgs 								= json_decode($total_orgs);
+				$total_orgs 									= $this->dispatch(new Getting(new Organisation, [], [],1, 100));
+				$count_orgs 									= json_decode($total_orgs);
 				
 				if(!$count_orgs->meta->success)
 				{
@@ -358,6 +358,16 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 					}
 
 					Session::put('user.menuid', $contents->data->menu_id);
+				}
+				elseif(Route::currentRouteName()=='hr.logout.get')
+				{
+					Session::flush();
+					return Redirect::guest(route('hr.login.get'));
+				}
+				elseif(Route::currentRouteName()=='hr.organisations.store')
+				{
+					// Session::flush();
+					// return Redirect::guest(route('hr.login.get'));
 				}
 				elseif(Route::currentRouteName()!='hr.organisations.create')
 				{

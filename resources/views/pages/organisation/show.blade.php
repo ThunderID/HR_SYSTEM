@@ -104,7 +104,7 @@
 												'personlist'		=>
 												[
 													'organisation_id'	=> $data['id'],
-													'search'			=> ['fullschedule' => date('Y-m-d', strtotime('- 1 day'))],
+													'search'			=> ['fullschedule' => date('Y-m-d', strtotime('- 1 day')), 'withattributes' => ['works.branch']],
 													'sort'				=> [],
 													'page'				=> 1,
 													'per_page'			=> 100,

@@ -65,7 +65,16 @@ class OrganisationController extends BaseController
 		$errors 								= new MessageBag();
 		
 		DB::beginTransaction();
+
+		$total_orgs 							= $this->dispatch(new Getting(new Organisation, [], [],1, 100));
+		$count_orgs 							= json_decode($total_orgs);
 		
+		if(!$count_orgs->meta->success)
+		{
+			App::abort(404);
+		}
+
+
 		$content 								= $this->dispatch(new Saving(new Organisation, $attributes, $id));
 
 		$is_success 							= json_decode($content);
@@ -144,6 +153,43 @@ class OrganisationController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
+			if($count_orgs->pagination->total_data==0)
+			{
+				$persons 							= $this->dispatch(new Getting(new Person, ['id' => Session::get('loggedUser')], [], 1, 1 ));
+
+				$person 							= json_decode($persons);
+
+				if(!$person->meta->success)
+				{
+					App::abort(404);
+				}
+				$attribute 		 					= json_decode(json_encode($person->data), true);
+
+				$content 							= $this->dispatch(new Saving(new Person, $attribute, $attribute['id'], new Organisation, $is_success->data->id));
+				$is_success_person 					= json_decode($content);
+
+				if(!$is_success_person->meta->success)
+				{
+					foreach ($is_success_person->meta->errors as $key => $value) 
+					{
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Organisation', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Organisation', $value);
+						}
+
+						return Redirect::back()->withErrors($errors)->withInput();
+					}
+				}
+				unset($attribute);
+			}
+
 			return Redirect::route('hr.organisations.show', [$is_success->data->id, 'org_id' => $is_success->data->id])->with('local_msg', $errors)->with('alert_success', 'organisasi "' . $is_success->data->name. '" sudah disimpan');
 		}
 

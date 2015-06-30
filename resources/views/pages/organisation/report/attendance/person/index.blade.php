@@ -50,6 +50,9 @@
 									]
 	])
 
+	@include('widgets.common.absenceLegend')
+
+
 	@include('widgets.organisation.idle.table', [
 		'widget_template'		=> 'panel',
 		'widget_title'			=> '<h4>Catatan Perubahan Waktu Idle</h4>',
