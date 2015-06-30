@@ -142,7 +142,7 @@ class ScheduleController extends BaseController
 								$schedule[$k]['label']= 'green';
 								break;
 							default:
-								$schedule[$k]['label']= 'absence_not_workleave';
+								$schedule[$k]['label']= 'green';
 								break;
 						}					
 						// $k++;

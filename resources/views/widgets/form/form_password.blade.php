@@ -20,7 +20,7 @@
 			<input name="password_confirmation" type="password" class="form-control" placeholder="Konfirmasi Password Baru">			
 		</div>
 		<div class="form-group text-right">
-			<input type="submit" class="btn btn-primary" value="Login">
+			<input type="submit" class="btn btn-primary" value="Simpan">
 		</div>
 		
 	{!! Form::close() !!}
