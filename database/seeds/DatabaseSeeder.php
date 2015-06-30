@@ -25,10 +25,10 @@ class DatabaseSeeder extends Seeder {
 		// $this->call('ChartTableSeeder');
 		// $this->call('ApiTableSeeder');
 
-		// $this->call('PersonTableSeeder');
+		$this->call('PersonTableSeeder');
 		// $this->call('RelativeTableSeeder');
 
-		// $this->call('ContactTableSeeder');
+		$this->call('ContactTableSeeder');
 
 		// $this->call('CalendarTableSeeder');
 		// $this->call('ScheduleTableSeeder');
@@ -46,7 +46,7 @@ class DatabaseSeeder extends Seeder {
 		// $this->call('PersonWorkleaveTableSeeder');
 
 		// $this->call('SettingIdleTableSeeder');
-		$this->call('LogTableSeeder');
+		// $this->call('LogTableSeeder');
 	}
 
 }

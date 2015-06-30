@@ -7,6 +7,7 @@ use App\Console\Commands\Checking;
 use App\Console\Commands\Getting;
 use App\Models\Authentication;
 use App\Models\Person;
+use App\Models\Organisation;
 
 class RouteServiceProvider extends ServiceProvider {
 
@@ -276,77 +277,108 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 			}
 			else
 			{
-				//check user logged in 
-				$results 									= $this->dispatch(new Getting(new Person, ['id' => Session::get('loggedUser'), 'CurrentWork' => true, 'withattributes' => ['works.branch', 'works.branch.organisation'], 'defaultemail' => true], ['created_at' => 'asc'],1, 1));
-
-				$contents 									= json_decode($results);
-
-				if(!$contents->meta->success || !count($contents->data->works))
+				$total_orgs 								= $this->dispatch(new Getting(new Organisation, [], [],1, 100));
+				$count_orgs 								= json_decode($total_orgs);
+				
+				if(!$count_orgs->meta->success)
 				{
 					App::abort(404);
 				}
 
-				if(!Session::has('user.organisationid'))
+				if($count_orgs->pagination->total_data>0)
 				{
-					Session::put('user.organisationid', $contents->data->works[0]->branch->organisation->id);
-					Session::put('user.chartname', $contents->data->works[0]->name);
-					Session::put('user.chartpath', $contents->data->works[0]->path);
-					Session::put('user.branchid', $contents->data->works[0]->branch_id);
-					Session::put('user.organisationname', $contents->data->works[0]->branch->organisation->name);
+					//check user logged in 
+					$results 									= $this->dispatch(new Getting(new Person, ['id' => Session::get('loggedUser'), 'CurrentWork' => true, 'withattributes' => ['works.branch', 'works.branch.organisation'], 'defaultemail' => true], ['created_at' => 'asc'],1, 1));
+
+					$contents 									= json_decode($results);
+
+					if(!$contents->meta->success || !count($contents->data->works))
+					{
+						App::abort(404);
+					}
+
+					if(!Session::has('user.organisationid'))
+					{
+						Session::put('user.organisationid', $contents->data->works[0]->branch->organisation->id);
+						Session::put('user.chartname', $contents->data->works[0]->name);
+						Session::put('user.chartpath', $contents->data->works[0]->path);
+						Session::put('user.branchid', $contents->data->works[0]->branch_id);
+						Session::put('user.organisationname', $contents->data->works[0]->branch->organisation->name);
+					}
+
+					$chartids									= [];
+					$chartnames									= [];
+					$organisationids							= [];
+					$organisationnames							= [];
+					
+					foreach ($contents->data->works as $key => $value) 
+					{
+						if(!in_array($value->id, $chartids))
+						{
+							$chartids[]							= $value->id;
+						}
+
+						if(!in_array($value->name, $chartnames))
+						{
+							$chartnames[]						= $value->name;
+						}
+
+						if(!in_array($value->branch->organisation->name, $organisationnames))
+						{
+							$organisationnames[]				= $value->branch->organisation->name;
+						}
+
+						if(!in_array($value->branch->organisation->id, $organisationids))
+						{
+							$organisationids[]					= $value->branch->organisation->id;
+						}
+					}
+
+					Session::put('user.organisationids', $organisationids);
+					Session::put('user.organisationnames', $organisationnames);
+					Session::put('user.chartnames', $chartnames);
+
+					Session::put('user.id', $contents->data->id);
+					Session::put('user.name', $contents->data->name);
+					Session::put('user.email', $contents->data->contacts[0]->value);
+					Session::put('user.gender', $contents->data->gender);
+					Session::put('user.avatar', $contents->data->avatar);
+					
+					//check access
+					$menu 											= app('hr_acl')[Route::currentRouteName()];
+
+					$results 										= $this->dispatch(new Getting(new Authentication, ['menuid' => $menu[0],'chartid' => $chartids, 'access' => $menu[1]], ['menu_id' => 'asc'],1, 1));
+
+					$contents 										= json_decode($results);
+
+					if(!$contents->meta->success)
+					{
+						Session::flush();
+						return Redirect::guest(route('hr.login.get'));
+					}
+
+					Session::put('user.menuid', $contents->data->menu_id);
+				}
+				elseif(Route::currentRouteName()!='hr.organisations.create')
+				{
+					$results 										= $this->dispatch(new Getting(new Person, ['id' => Session::get('loggedUser'), 'defaultemail' => true], ['created_at' => 'asc'],1, 1));
+
+					$contents 										= json_decode($results);
+
+					if(!$contents->meta->success)
+					{
+						App::abort(404);
+					}
+
+					Session::put('user.id', $contents->data->id);
+					Session::put('user.name', $contents->data->name);
+					Session::put('user.email', $contents->data->contacts[0]->value);
+					Session::put('user.gender', $contents->data->gender);
+					Session::put('user.avatar', $contents->data->avatar);
+
+					return Redirect::route('hr.organisations.create');
 				}
 
-				$chartids									= [];
-				$chartnames									= [];
-				$organisationids							= [];
-				$organisationnames							= [];
-				
-				foreach ($contents->data->works as $key => $value) 
-				{
-					if(!in_array($value->id, $chartids))
-					{
-						$chartids[]							= $value->id;
-					}
-
-					if(!in_array($value->name, $chartnames))
-					{
-						$chartnames[]						= $value->name;
-					}
-
-					if(!in_array($value->branch->organisation->name, $organisationnames))
-					{
-						$organisationnames[]				= $value->branch->organisation->name;
-					}
-
-					if(!in_array($value->branch->organisation->id, $organisationids))
-					{
-						$organisationids[]					= $value->branch->organisation->id;
-					}
-				}
-
-				Session::put('user.organisationids', $organisationids);
-				Session::put('user.organisationnames', $organisationnames);
-				Session::put('user.chartnames', $chartnames);
-
-				Session::put('user.id', $contents->data->id);
-				Session::put('user.name', $contents->data->name);
-				Session::put('user.email', $contents->data->contacts[0]->value);
-				Session::put('user.gender', $contents->data->gender);
-				Session::put('user.avatar', $contents->data->avatar);
-				
-				//check access
-				$menu 											= app('hr_acl')[Route::currentRouteName()];
-
-				$results 										= $this->dispatch(new Getting(new Authentication, ['menuid' => $menu[0],'chartid' => $chartids, 'access' => $menu[1]], ['menu_id' => 'asc'],1, 1));
-
-				$contents 										= json_decode($results);
-
-				if(!$contents->meta->success)
-				{
-					Session::flush();
-					return Redirect::guest(route('hr.login.get'));
-				}
-
-				Session::put('user.menuid', $contents->data->menu_id);
 			}
 		});
 	}
