@@ -85,7 +85,7 @@ class ContactTableSeeder extends Seeder
 
 				// $data->save();
 				// $data->Person()->associate($person);
-				$data->save();
+				// $data->save();
 
 				if($index==1)
 				{

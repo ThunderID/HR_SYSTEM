@@ -34,9 +34,9 @@ class PersonTableSeeder extends Seeder
 					'password'						=> Hash::make('admin'),
 				]);
 
-				$organisation 						= Organisation::find(rand(1,$total_orgs));
+				// $organisation 						= Organisation::find(rand(1,$total_orgs));
 				
-				$data->organisation()->associate($organisation);
+				// $data->organisation()->associate($organisation);
 
 				if (!$data->save())
 				{
