@@ -532,7 +532,8 @@ class ScheduleController extends BaseController
 			}
 			else 
 			{
-				$schedule[$k]['start']		= $log['on'].'T'.$log['fp_start'];
+				$schedule[$k]['start']		= $log['on'].'T'.$log['start'];
+				$schedule[$k]['end']		= $log['on'].'T'.$log['end'];
 			}
 
 			$schedule[$k]['status']			= $log['tooltip'];
