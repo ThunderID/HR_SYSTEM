@@ -46,9 +46,9 @@
                                     <li @if(isset($widget_options['sidebar']['active_api_branch'])&&Input::get('org_id')==$value) class="active-li" @endif>
                                         <a href="{{ route('hr.branch.apis.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}" @if(isset($widget_options['sidebar']['active_api_branch'])&&Input::get('org_id')==$value) class="active" @endif>API</a>
                                     </li>
-                                    <li @if(isset($widget_options['sidebar']['active_finger_branch'])&&Input::get('org_id')==$value) class="active-li" @endif>
-                                        <a href="{{ route('hr.branch.fingers.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}">Absen Sidik Jari</a>
-                                    </li> -->
+                                    <!-- <li @if(isset($widget_options['sidebar']['active_finger_branch'])&&Input::get('org_id')==$value) class="active-li" @endif> -->
+                                    <!--     <a href="{{ route('hr.branch.fingers.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}">Absen Sidik Jari</a>
+                                    </li>  -->
                                 </ul>
                             </li>
                         @endif
