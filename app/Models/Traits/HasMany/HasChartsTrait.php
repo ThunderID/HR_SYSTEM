@@ -22,4 +22,9 @@ trait HasChartsTrait {
 	{
 		return $this->hasMany('App\Models\Chart');
 	}
+
+	public function scopeChartChild($query, $variable)
+	{
+		return $query->with(['charts' => function($q)use($variable){$q->child($variable);}]);
+	}
 }

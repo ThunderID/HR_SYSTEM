@@ -31,41 +31,51 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.organisation.report.attendance.table', [
-		'widget_template'		=> 'panel',
-		'widget_title'			=> 'Laporan Aktivitas '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
-		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
-		'widget_body_class'		=> '',
-		'widget_options'		=> 	[
-										'personlist'			=>
-										[
-											'organisation_id'	=> $data['id'],
-											'search'			=> ['globalattendance' => ['organisationid' => $data['id'], 'on' => [$start, $end]]],
-											'sort'				=> ['persons.name' => 'asc'],
-											'page'				=> (Input::has('page') ? Input::get('page') : 1),
-											'per_page'			=> 100,
-											'route_create'		=> route('hr.calendars.create', ['org_id' => $data['id']])
+	@if(Input::has('start'))
+		@include('widgets.organisation.report.attendance.table', [
+			'widget_template'		=> 'panel',
+			'widget_title'			=> 'Laporan Aktivitas "'.date('d-m-Y',strtotime($start)).' - '.date('d-m-Y',strtotime($end)).'"'.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
+			'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
+			'widget_body_class'		=> '',
+			'widget_options'		=> 	[
+											'personlist'			=>
+											[
+												'organisation_id'	=> $data['id'],
+												'search'			=> ['globalattendance' => ['organisationid' => $data['id'], 'on' => [$start, $end]]],
+												'sort'				=> ['persons.name' => 'asc'],
+												'page'				=> (Input::has('page') ? Input::get('page') : 1),
+												'per_page'			=> 100,
+												'route_create'		=> route('hr.calendars.create', ['org_id' => $data['id']])
+											]
 										]
-									]
-	])
+		])
 
-	@include('widgets.organisation.idle.table', [
-		'widget_template'		=> 'panel',
-		'widget_title'			=> '<h4>Catatan Perubahan Waktu Idle</h4>',
-		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
-		'widget_body_class'		=> '',
-		'widget_options'		=> 	[
-										'idlelist'			=>
-										[
-											'organisation_id'	=> $data['id'],
-											'search'			=> ['ondate' => [$start, $end], 'withattributes' => ['createdby']],
-											'sort'				=> ['start' => 'asc'],
-											'page'				=> 1,
-											'per_page'			=> 100,
-											'route_create'		=> route('hr.idles.create', ['org_id' => $data['id']])
+		@include('widgets.organisation.idle.table', [
+			'widget_template'		=> 'panel',
+			'widget_title'			=> '<h4>Catatan Perubahan Waktu Idle</h4>',
+			'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
+			'widget_body_class'		=> '',
+			'widget_options'		=> 	[
+											'idlelist'			=>
+											[
+												'organisation_id'	=> $data['id'],
+												'search'			=> ['ondate' => [$start, $end], 'withattributes' => ['createdby']],
+												'sort'				=> ['start' => 'asc'],
+												'page'				=> 1,
+												'per_page'			=> 100,
+												'route_create'		=> route('hr.idles.create', ['org_id' => $data['id']])
+											]
 										]
-									]
-	])
+		])
+	@else
+		@include('widgets.common.filter.date', [
+		'widget_template'		=> 'panel',
+		'widget_title'			=> 'Tanggal Laporan Aktivitas',
+		'widget_options'		=> [
+									'form_url'	=> route('hr.report.attendances.index', ['org_id' => $data['id'], 'page' => (Input::has('page') ? Input::get('page') : 1)])
+									],
+		])
+	@endif
 @overwrite
 
 @section('content_footer')

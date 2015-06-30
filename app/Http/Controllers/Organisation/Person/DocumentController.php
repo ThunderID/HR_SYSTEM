@@ -45,6 +45,10 @@ class DocumentController extends BaseController
 		$search['withattributes'] 				= ['organisation'];
 		$search['checkwork'] 					= true;
 		$sort 									= ['name' => 'asc'];
+		if(Session::get('user.menuid')==4)
+		{
+			$search['chartchild'] 				= Session::get('user.chartpath');
+		}
 		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
 
@@ -438,7 +442,7 @@ class DocumentController extends BaseController
 
 		$template						= $persondocument['document']['template'];
 		$template						= str_replace("//name//", $person['name'], $template);
-		$template						= str_replace("//position//", ($person['works'] ? $data['works'][0]['name'] : ''), $template);
+		$template						= str_replace("//position//", ($person['works'] ? $person['works'][0]['name'] : ''), $template);
 		
 		foreach ($persondocument['details'] as $key => $value) 
 		{

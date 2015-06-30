@@ -63,6 +63,7 @@ class Branch extends BaseModel {
 											
 											'contactid' 					=> 'ContactID',
 											'apiid' 						=> 'ApiID',
+											'chartchild' 					=> 'ChartChild',
 											'defaultcontact' 				=> 'DefaultContact'
 										];
 

@@ -43,6 +43,10 @@ class WorkleaveController extends BaseController
 		$search['withattributes'] 				= ['organisation'];
 		$search['checkwork'] 					= true;
 		$sort 									= ['name' => 'asc'];
+		if(Session::get('user.menuid')==4)
+		{
+			$search['chartchild'] 				= Session::get('user.chartpath');
+		}
 		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
 

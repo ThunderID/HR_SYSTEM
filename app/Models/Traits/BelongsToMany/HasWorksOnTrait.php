@@ -74,6 +74,11 @@ trait HasWorksOnTrait {
 		return $query->WhereHas('works', function($q)use($variable){$q->tag($variable);});
 	}
 
+	public function scopeChartChild($query, $variable)
+	{
+		return $query->WhereHas('works', function($q)use($variable){$q->child($variable);});
+	}
+
 	public function ScopeWorkCalendar($query, $variable)
 	{
 		if(isset($variable['id']))

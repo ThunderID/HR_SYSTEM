@@ -1,5 +1,4 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
-
 @if (!$widget_error_count)
 	@section('widget_title')
 		<h1> {{ is_null($id) ? 'Tambah Karir ' : 'Ubah Karir '}} "{{$person['name']}}" </h1> 
@@ -15,7 +14,7 @@
 													'chartlist'			=>
 													[
 														'organisation_id'	=> $data['id'],
-														'search'			=> ['withattributes' => ['branch']],
+														'search'			=> ['withattributes' => ['branch'], 'child' => (Session::get('user.menuid')==4 ? Session::get('user.chartpath') : '' )],
 														'sort'				=> ['name' => 'asc'],
 														'page'				=> 1,
 														'per_page'			=> 100,

@@ -45,6 +45,10 @@ class ScheduleController extends BaseController
 		$search['organisationid'] 				= $org_id;
 		$search['withattributes'] 				= ['organisation'];
 		$sort 									= ['name' => 'asc'];
+		if(Session::get('user.menuid')==4)
+		{
+			$search['chartchild'] 				= Session::get('user.chartpath');
+		}
 		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
 
