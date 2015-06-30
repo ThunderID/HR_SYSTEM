@@ -9,9 +9,12 @@
 	@section('widget_body')
 		{!! Form::open(['url' => $widget_options['form_url'], 'class' => 'form pt-15 no_enter ', 'method' => 'get']) !!}
 			<div class="form-group">
-				<label>Start</label>
-				{!!Form::input('text', 'start', null , ['class' => 'form-control date-mask'])!!}							
+				<div class="col-xs-12 col-sm-12 col-md-12">
+					<label>Start</label>
+					{!!Form::input('text', 'start', null , ['class' => 'form-control date-mask'])!!}							
+				</div>
 			</div>
+			<div class="clearfix">&nbsp;</div>
 			<div class="form-group">
 				<div class="col-xs-12 col-sm-12 col-md-12">
 					<label class="control-label">End</label>
