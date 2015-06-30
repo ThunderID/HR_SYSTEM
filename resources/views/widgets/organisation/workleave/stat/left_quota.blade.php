@@ -7,7 +7,7 @@
 				<strong class="pull-right text-info text-lg"><i class="fa fa-bed fa-2x"></i></strong>
 				<strong class="text-xl">{{($PersonComposer['widget_data']['personlist']['person']['quotas'] + $PersonComposer['widget_data']['personlist']['person']['plus_quotas'] - $PersonComposer['widget_data']['personlist']['person']['minus_quotas'] >= 0 ? abs($PersonComposer['widget_data']['personlist']['person']['quotas'] + $PersonComposer['widget_data']['personlist']['person']['plus_quotas'] - $PersonComposer['widget_data']['personlist']['person']['minus_quotas']) : 0)}}
 				</strong><br>
-				<span class="opacity-50">Sisa Cuti "{{$data['name']}}"</span>					
+				<span class="opacity-50">{!! $widget_title  or 'Sisa Cuti "'.$data['name'].'" Bulan Ini' !!} </span>					
 			</div>
 		@endif
 	@overwrite	

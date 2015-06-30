@@ -31,7 +31,7 @@
 		<div class="col-sm-6">
 			@include('widgets.organisation.workleave.stat.left_quota', [
 				'widget_template'		=> 'plain',
-				'widget_title'			=> '<h4>Sisa Cuti "'.$person['name'].'"</h4>',
+				'widget_title'			=> 'Sisa Cuti "'.$person['name'].'"',
 				'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 				'widget_body_class'		=> '',
 				'widget_options'		=> 	[
