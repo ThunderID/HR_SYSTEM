@@ -80,7 +80,7 @@ class Authentication extends BaseModel {
 											'withattributes' 					=> 'Must be array of relationship',
 										];
 
-	public $sortable 				= 	['chart_id', 'created_at'];
+	public $sortable 				= 	['chart_id', 'created_at', 'menu_id'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**

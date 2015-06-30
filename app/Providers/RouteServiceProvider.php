@@ -291,6 +291,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 					Session::put('user.organisationid', $contents->data->works[0]->branch->organisation->id);
 					Session::put('user.chartname', $contents->data->works[0]->name);
 					Session::put('user.chartpath', $contents->data->works[0]->path);
+					Session::put('user.branchid', $contents->data->works[0]->branch_id);
 					Session::put('user.organisationname', $contents->data->works[0]->branch->organisation->name);
 				}
 
@@ -335,7 +336,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 				//check access
 				$menu 											= app('hr_acl')[Route::currentRouteName()];
 
-				$results 										= $this->dispatch(new Getting(new Authentication, ['menuid' => $menu[0],'chartid' => $chartids, 'access' => $menu[1]], ['chart_id' => 'asc'],1, 1));
+				$results 										= $this->dispatch(new Getting(new Authentication, ['menuid' => $menu[0],'chartid' => $chartids, 'access' => $menu[1]], ['menu_id' => 'asc'],1, 1));
 
 				$contents 										= json_decode($results);
 

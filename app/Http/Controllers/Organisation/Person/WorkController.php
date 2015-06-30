@@ -41,6 +41,10 @@ class WorkController extends BaseController
 		$search['id'] 								= $person_id;
 		$search['organisationid'] 					= $org_id;
 		$search['withattributes'] 					= ['organisation'];
+		if(Session::get('user.menuid')==4)
+		{
+			$search['chartchild'] 				= Session::get('user.chartpath');
+		}
 		$sort 										= ['name' => 'asc'];
 		$results 									= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 									= json_decode($results);

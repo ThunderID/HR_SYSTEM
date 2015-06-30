@@ -52,10 +52,19 @@ class PersonController extends BaseController
 		unset($search);
 		unset($sort);
 
-		$search 									= ['organisationid' => $org_id, 'withattributes' => ['charts']];
+		$search 									= ['organisationid' => $org_id];
+		if(Session::get('user.menuid')==4)
+		{
+			$search['id'] 							= Session::get('user.branchid');
+			$search['chartchild'] 					= Session::get('user.chartpath');
+		}
+		else
+		{
+			$search['withattributes'] 				= ['charts'];
+		}
 		$results 									= $this->dispatch(new Getting(new Branch, $search, [] , 1, 100));
 		$contents 									= json_decode($results);
-		
+
 		if(!$contents->meta->success)
 		{
 			App::abort(404);
@@ -195,6 +204,12 @@ class PersonController extends BaseController
 		
 		if(!isset($filter['search']['checkwork']) || (isset($filter['search']['checkwork']) && $filter['search']['checkwork']==true))
 		{
+			if(Session::get('user.menuid')==4)
+			{
+				$filter['search']['chartchild'] 		= Session::get('user.chartpath');
+				$filter['active']['chartchild'] 		= 'Lihat Sebagai "'.Session::get('user.chartname').'"';
+			}
+		
 			$filter['search']['checkwork'] 			= true;
 		}
 		else
