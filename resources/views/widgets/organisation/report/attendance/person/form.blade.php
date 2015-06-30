@@ -14,18 +14,18 @@
 				</div>	
 				<div class="col-md-10">
 					<select name="modified_status" class="form-control select2">
-						<option value="DN">DN</option>
-						<option value="SS">SS</option>
-						<option value="SL">SL</option>
-						<option value="CN">CN</option>
-						<option value="CB">CB</option>
-						<option value="CI">CI</option>
-						<option value="UL">UL</option>
-						<option value="AS">AS</option>
-						<option value="HT">HT</option>
-						<option value="HP">HP</option>
-						<option value="HD">HD</option>
-						<option value="HC">HC</option>
+						<option value="SS">SS - Sakit Jangka Pendek</option>
+						<option value="SL">SL - Sakit Berkepanjangan</option>
+						<option value="HT">HT - Hadir Cacat Dengan Ijin Datang Terlambat</option>
+						<option value="HP">HP - Hadir Cacat Dengan Ijin Pulang Cepat</option>
+						<option value="HD">HD - Hadir Cacat Dengan Ijin Dinas</option>
+						<option value="DN">DN - Keperluan Dinas</option>
+						<option value="CN">CN - Cuti Untuk Keperluan Pribadi</option>
+						<option value="CB">CB - Cuti Bersama</option>
+						<option value="CI">CI - Cuti Istimewa</option>
+						<option value="UL">UL - Ketidakhadiran Dengan Ijin Namun Cuti Tidak Tersedia</option>
+						<option value="HC">HC - Hadir Cacat Tanpa Penjelasan</option>
+						<option value="AS">AS - Ketidakhadiran Tanpa Penjelasan</option>
 					</select>
 				</div>
 			</div>

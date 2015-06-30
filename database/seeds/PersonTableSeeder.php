@@ -20,7 +20,7 @@ class PersonTableSeeder extends Seeder
 		$suffix 									= ['MT.', 'MSc.', 'BSc.', 'MSi.', 'BSi.', 'SE.', 'PhD.', 'SH.', 'SKom.', 'ST.', 'BA.'];
 		try
 		{
-			foreach(range(1, 50) as $index)
+			foreach(range(1, 1) as $index)
 			{
 				$data = new Person;
 				$data->fill([
@@ -34,9 +34,9 @@ class PersonTableSeeder extends Seeder
 					'password'						=> Hash::make('admin'),
 				]);
 
-				$organisation 						= Organisation::find(rand(1,$total_orgs));
+				// $organisation 						= Organisation::find(rand(1,$total_orgs));
 				
-				$data->organisation()->associate($organisation);
+				// $data->organisation()->associate($organisation);
 
 				if (!$data->save())
 				{

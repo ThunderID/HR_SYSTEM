@@ -231,6 +231,26 @@ class AttendanceController extends BaseController
 		$this->layout->page->filtered 				= $filter;
 		$this->layout->page->default_filter  		= ['org_id' => $data['id'], 'start' => $start, 'end' => $end];
 
+		if(Input::has('print'))
+		{
+			$search 								= ['globalattendance' => array_merge(['organisationid' => $data['id'], 'on' => [$start, $end]], (isset($filter['search']) ? $filter['search'] : []))];
+			$sort 									= (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']);
+			$page 									= 1;
+			$per_page 								= 100;
+			$search['organisationid'] 				= ['fieldname' => 'persons.organisation_id', 'variable' => $data['id']];
+			$results 									= $this->dispatch(new Getting(new Person, $options['search'], $options['sort'] , (int)$options['page'], (int)$options['per_page'], isset($options['new']) ? $options['new'] : false));
+
+			$contents 									= json_decode($results);
+
+			if(!$contents->meta->success)
+			{	
+				App::abort(404);	
+			}
+			$report 								= json_decode(json_encode($contents->data), true);
+			dD($report);
+			///nama viewnya			
+		}
+
 		return $this->layout;
 	}
 
