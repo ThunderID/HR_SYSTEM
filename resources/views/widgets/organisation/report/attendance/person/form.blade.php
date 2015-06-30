@@ -13,7 +13,7 @@
 					<label class="control-label">Modifikasi Status</label>
 				</div>	
 				<div class="col-md-10">
-					<select name="modified_status" class="form-control">
+					<select name="modified_status" class="form-control select2">
 						<option value="DN">DN</option>
 						<option value="SS">SS</option>
 						<option value="SL">SL</option>

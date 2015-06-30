@@ -17,7 +17,7 @@
 			<div class="clearfix">&nbsp;</div>
 			<div class="form-group">
 				<label class="control-label">End</label>
-				{!!Form::input('date', 'end', null , ['class' => 'form-control date-mask'])!!}		
+				{!!Form::input('text', 'end', null , ['class' => 'form-control date-mask'])!!}		
 			</div>
 			<input type="hidden" class="form-control" id="text" name="org_id" value="{{$data['id']}}">
 			<div class="clearfix">&nbsp;</div>
