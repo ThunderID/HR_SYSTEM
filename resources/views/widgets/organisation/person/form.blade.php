@@ -89,7 +89,15 @@
 								</label>
 							</div>
 						</div>
-					</div>					
+					</div>	
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label class="control-label">Password</label>
+								{!!Form::input('password', 'password', null, ['class' => 'form-control date-mask']) !!}
+							</div>	
+						</div>
+					</div>
 					<div class="form-group">
 						<div class="col-md-12 text-right">
 							<a href="{{ $PersonComposer['widget_data']['personlist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
