@@ -102,7 +102,7 @@
 						<div class="col-sm-12">
 							<div class="form-group">
 								<label class="control-label">Password</label>
-								{!!Form::input('password', 'password', null, ['class' => 'form-control date-mask']) !!}
+								{!!Form::input('password', 'password', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
 							</div>	
 						</div>
 					</div>
