@@ -45,7 +45,7 @@
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 1,
-										'route_back'		=> route('hr.attendance.persons.index', ['org_id' => $data['id'], 'person_id' => $person['id']])
+										'route_back'		=> route('hr.attendance.persons.index', array_merge(['org_id' => $data['id'], 'person_id' => $person['id']], Input::all()))
 									]
 								]
 	])

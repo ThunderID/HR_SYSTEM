@@ -28,8 +28,8 @@
 							<div class="form-group">						
 								<label class="control-label">Status</label>
 								<select name="status" class="form-control schedule_status" tabindex="2">
-									<option value="presence_indoor">Masuk, Dalam Ruangan</option>
-									<option value="presence_outdoor">Masuk, Luar Ruangan</option>
+									<option value="presence_indoor">Hadir</option>
+									<option value="presence_outdoor">Dinas Luar</option>
 									<option value="absence_not_workleave">Absen, Tidak Mengurangi Cuti</option>
 									<option value="absence_workleave" >Absen, Mengurangi Cuti</option>
 								</select>						

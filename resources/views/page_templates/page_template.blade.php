@@ -31,9 +31,11 @@
 				@include('widgets.common.alert', ['errors' => $errors])
 			@endif
 
-			<div class="row">	
-				<div class="col-xs-12 col-sm-12 col-md-12">
-					@yield('content_body', '[content_body]')
+			<div class="container-fluid">
+				<div class="row">	
+					<div class="col-xs-12 col-sm-12 col-md-12">
+						@yield('content_body', '[content_body]')
+					</div>
 				</div>
 			</div>
 
