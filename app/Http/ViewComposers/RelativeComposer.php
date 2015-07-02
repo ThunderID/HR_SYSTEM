@@ -34,12 +34,12 @@ class RelativeComposer extends WidgetComposer
 				{
 					foreach ($value as $key2 => $value2) 
 					{
-						$widget_errors->add('Relative', $value2);
+						$this->widget_errors->add('Relative', $value2);
 					}
 				}
 				else
 				{
-					$widget_errors->add('Relative', $value);
+					$this->widget_errors->add('Relative', $value);
 				}
 			}
 
