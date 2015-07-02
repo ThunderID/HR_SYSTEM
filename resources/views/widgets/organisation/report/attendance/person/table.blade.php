@@ -23,7 +23,6 @@
 						<tr>
 							<th>No</th>
 							<th>Tanggal</th>
-							
 							<th>Time Loss Rate</th>
 							<th>Status Awal</th>
 							<th>Status Modifikasi</th>
@@ -45,16 +44,24 @@
 									<?php
 										$margin_start = 0;
 										$margin_end = 0;
-										if(in_array($value['modified_status'], ['HC', 'AS', 'UL', 'SS', 'LL']) || in_array($value['actual_status'], ['HC', 'AS']))
+										if(in_array($value['modified_status'], ['HC', 'AS', 'UL', 'SS', 'LL']) || ($value['modified_status']=='' && in_array($value['actual_status'], ['HC', 'AS'])))
 										{
 											if($value['margin_start']<0)
 											{
 												$margin_start=abs($value['margin_start']);
 											}
+											// else
+											// {
+											// 	$margin_start=($value['margin_start']);
+											// }
 											if($value['margin_end']<0)
 											{
 												$margin_end=abs($value['margin_end']);
 											}
+											// else
+											// {
+											// 	$margin_end=($value['margin_end']);
+											// }
 										}
 
 										$total_absence = $margin_end + $margin_start;

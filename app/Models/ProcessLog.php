@@ -28,6 +28,9 @@ use DB;
  * 	actual_status		 		 	: Required max 255
  * 	modified_status		 		 	: Required max 255
  * 	tolerance_time 					: Double
+ * 	frequency_idle_1 	 			: Integer
+ * 	frequency_idle_2 	 			: Integer
+ * 	frequency_idle_3 	 			: Integer
  *	modified_at						: Timestamp
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
@@ -97,6 +100,9 @@ class ProcessLog extends BaseModel {
 											'total_idle_1'				=> 'numeric',
 											'total_idle_2'				=> 'numeric',
 											'total_idle_3'				=> 'numeric',
+											'frequency_idle_1'			=> 'numeric',
+											'frequency_idle_2'			=> 'numeric',
+											'frequency_idle_3'			=> 'numeric',
 											'total_sleep'				=> 'numeric',
 											'total_active'				=> 'numeric',
 											'actual_status'	 			=> 'required|max:255',

@@ -24,9 +24,42 @@
 							@date_indo($value['on'])
 						</td>
 						<td>
-							
-						</td>
+							<?php
+								$margin_start = 0;
+								$margin_end = 0;
+								if(in_array($value['modified_status'], ['HC', 'AS', 'UL', 'SS', 'LL']) || ($value['modified_status']=='' && in_array($value['actual_status'], ['HC', 'AS'])))
+								{
+									if($value['margin_start']<0)
+									{
+										$margin_start=abs($value['margin_start']);
+									}
+									// else
+									// {
+									// 	$margin_start=($value['margin_start']);
+									// }
+									if($value['margin_end']<0)
+									{
+										$margin_end=abs($value['margin_end']);
+									}
+									// else
+									// {
+									// 	$margin_end=($value['margin_end']);
+									// }
+								}
 
+								$total_absence = $margin_end + $margin_start;
+
+								list($hours, $minutes, $seconds) = explode(":", $value['schedule_end']);
+
+								$schedule_end_second	= $hours*3600+$minutes*60+$seconds;
+
+								list($hours, $minutes, $seconds) = explode(":", $value['schedule_start']);
+
+								$schedule_start_second	= $hours*3600+$minutes*60+$seconds;
+
+								$tlr = ($total_absence!=0 ? $total_absence : 1) / (abs($schedule_end_second - $schedule_start_second)!=0 ? abs($schedule_end_second - $schedule_start_second) : 1);?>
+							{{round(abs($tlr) * 100, 2)}} %
+						</td>
 						<td>
 							{{$value['actual_status']}}
 						</td>

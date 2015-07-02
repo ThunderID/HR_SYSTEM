@@ -8,6 +8,7 @@ use DB;
  * 	ID 								: Auto Increment, Integer, PK
  * 	organisation id 	 			: Required, Foreign key Organisation, integer
  * 	uniqid 	 						: Varchar, 255, Required
+ * 	username  						: Varchar, 255, Required
  * 	name 	 						: Varchar, 255, Required
  * 	prefix_title 					: Varchar, 255, Required
  * 	suffix_title 					: Varchar, 255, Required
@@ -79,6 +80,7 @@ class Person extends BaseModel {
 
 	protected 	$fillable			= 	[
 											'uniqid' 						,
+											'username' 						,
 											'name' 							,
 											'prefix_title' 					,
 											'suffix_title' 					,
@@ -93,6 +95,7 @@ class Person extends BaseModel {
 
 	protected 	$rules				= 	[
 											'uniqid' 						=> 'required|max:255',
+											'username' 						=> 'required|max:255',
 											'name' 							=> 'required|max:255',
 											'prefix_title' 					=> 'max:255',
 											'suffix_title' 					=> 'max:255',
@@ -108,6 +111,7 @@ class Person extends BaseModel {
 											'organisationid' 				=> 'OrganisationID', 
 											
 											'name' 							=> 'Name', 
+											'username' 						=> 'Username', 
 											'prefixtitle' 					=> 'PrefixTitle', 
 											'suffixtitle' 					=> 'SuffixTitle', 
 											'dateofbirth' 					=> 'DateOfBirth', 
@@ -159,6 +163,7 @@ class Person extends BaseModel {
 											'organisationid' 				=> 'Could be array or integer', 
 											
 											'name' 							=> 'Must be string', 
+											'username' 						=> 'Must be string', 
 											'prefixtitle' 					=> 'Must be string', 
 											'suffixtitle' 					=> 'Must be string', 
 											'dateofbirth' 					=> 'Could be array or string (date)', 
@@ -318,6 +323,11 @@ class Person extends BaseModel {
 		}
 		return $query->where('persons.id', $variable);
 	}
+	
+	public function scopeUserName($query, $variable)
+	{
+		return $query->where('username');
+	}
 
 	public function scopeName($query, $variable)
 	{
@@ -366,8 +376,8 @@ class Person extends BaseModel {
 					->selectraw('branches.name as branch')
 					->selectraw('charts.name as position')
 					->selectraw('charts.tag as department')
-					->selectraw('sum(TIME_TO_SEC(schedule_start) - TIME_TO_SEC(schedule_end)) as possible_total_effective')
-					->selectraw('sum(if(modified_status="HC" || modified_status="AS" || modified_status="UL" || modified_status="SS" || modified_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_start), 0), if(actual_status="HC" || actual_status="AS" || actual_status="UL" || actual_status="SS" || actual_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_start), 0), 0) )) as total_absence')
+					->selectraw('sum(TIME_TO_SEC(schedule_end) - TIME_TO_SEC(schedule_start)) as possible_total_effective')
+					->selectraw('sum(if(modified_status="HC" || modified_status="AS" || modified_status="UL" || modified_status="SS" || modified_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_end), 0), if(modified_status=0, if(actual_status="HC" || actual_status="AS" || actual_status="UL" || actual_status="SS" || actual_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_end), 0), 0),0) )) as total_absence')
 					->selectraw('sum(total_idle_1) as total_idle_1')
 					->selectraw('sum(total_idle_2) as total_idle_2')
 					->selectraw('sum(total_idle_3) as total_idle_3')

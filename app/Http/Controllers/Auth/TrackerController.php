@@ -32,7 +32,7 @@ class TrackerController extends BaseController {
 
 		$email 									= $attributes['application']['api']['email'];
 		$password 								= $attributes['application']['api']['password'];
-		$results 								= $this->dispatch(new Checking(new Person, ['email' => $email, 'password' => $password]));
+		$results 								= $this->dispatch(new Checking(new Person, ['username' => $email, 'password' => $password]));
 		$content 								= json_decode($results);
 
 		if($content->meta->success)

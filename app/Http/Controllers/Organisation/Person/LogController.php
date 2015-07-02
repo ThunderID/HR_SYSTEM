@@ -62,7 +62,7 @@ class LogController extends BaseController
 				$log['name']					= strtolower($value[1]);
 				$log['on']						= date("Y-m-d H:i:s", strtotime($value[2]));
 				$log['pc']						= $value[3];
-				$data 							= $this->dispatch(new Getting(new Person, ['email' => $value[0]], [] , 1, 1), false);
+				$data 							= $this->dispatch(new Getting(new Person, ['username' => $value[0]], [] , 1, 1), false);
 				$person 						= json_decode($data);
 
 				if(!$person->meta->success)

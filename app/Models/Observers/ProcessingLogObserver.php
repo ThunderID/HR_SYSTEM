@@ -35,8 +35,8 @@ class ProcessingLogObserver
 			}
 			else
 			{
-				$idle_1 			= 900;
-				$idle_2 			= 3600;
+				$idle_1 			= 3600;
+				$idle_2 			= 7200;
 			}
 
 			$workid 				= null;
@@ -58,6 +58,10 @@ class ProcessingLogObserver
 			$total_idle_3 			= 0;
 			$total_sleep 			= 0;
 			$total_active 			= 0;
+
+			$frequency_idle_1 		= 0;
+			$frequency_idle_2 		= 0;
+			$frequency_idle_3 		= 0;
 
 			$actual_status 			= '';
 
@@ -261,14 +265,17 @@ class ProcessingLogObserver
 					if($new_idle - $start_idle <= $idle_1)
 					{
 						$total_idle_1 	= $total_idle_1 + $new_idle - $start_idle;
+						$frequency_idle_1++;
 					}
 					elseif($new_idle - $start_idle > $idle_1 && $new_idle - $start_idle < $idle_2)
 					{
 						$total_idle_2 	= $total_idle_2 + $new_idle - $start_idle;
+						$frequency_idle_2++;
 					}
 					elseif($new_idle - $start_idle >= $idle_2)
 					{
 						$total_idle_3 	= $total_idle_3 + $new_idle - $start_idle;
+						$frequency_idle_3++;
 					}
 					
 					unset($start_idle);
@@ -327,6 +334,10 @@ class ProcessingLogObserver
 									'total_sleep'			=> $total_sleep,
 									'total_active'			=> $total_active,
 									'actual_status'			=> $actual_status,
+									'total_idle_1'			=> $total_idle_1,
+									'frequency_idle_1'		=> $frequency_idle_1,
+									'frequency_idle_2'		=> $frequency_idle_2,
+									'frequency_idle_3'		=> $frequency_idle_3,
 							]
 					);
 
