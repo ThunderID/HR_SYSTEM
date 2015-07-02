@@ -192,6 +192,8 @@ class IdleController extends BaseController
 			$attributes['start'] 				= date('Y-m-d', strtotime(Input::get('start')));
 		}
 
+		$attributes['idle_1']					= (Input::get('idle_1')*60);
+		$attributes['idle_2']					= (Input::get('idle_2')*60);
 		$errors 								= new MessageBag();
 
 		DB::beginTransaction();

@@ -10,19 +10,19 @@
 		{!! Form::open(['url' => $IdleComposer['widget_data']['idlelist']['form_url'], 'class' => 'form no-enter']) !!}	
 			<div class="form-group">				
 				<label class="control-label">Start</label>				
-				{!!Form::input('text', 'start', $IdleComposer['widget_data']['idlelist']['idle']['start'], ['class' => 'form-control date-mask', 'placeholder' => 'Start', 'tabindex' => '1'])!!}				
+				{!!Form::input('text', 'start', date('d-m-Y', strtotime($IdleComposer['widget_data']['idlelist']['idle']['start'])), ['class' => 'form-control date-mask', 'placeholder' => 'Start', 'tabindex' => '1'])!!}				
 			</div>
 			<div class="row">
 				<div class="col-sm-6">
 					<div class="form-group">
-						<label class="control-label">Flag Idle Pertama (dalam detik)</label>
-						{!!Form::input('numeric', 'idle_1', $IdleComposer['widget_data']['idlelist']['idle']['idle_1'], ['class' => 'form-control', 'placeholder' => 'Idle Pertama', 'tabindex' => '2'])!!}
+						<label class="control-label">Flag Idle Pertama (dalam menit)</label>
+						{!!Form::input('number', 'idle_1', ($IdleComposer['widget_data']['idlelist']['idle']['idle_1']/60), ['class' => 'form-control', 'placeholder' => 'Idle Pertama', 'tabindex' => '2', 'min' => '0'])!!}
 					</div>
 				</div>
 				<div class="col-sm-6">
 					<div class="form-group">
-						<label class="control-label">Flag Idle Kedua (dalam detik)</label>
-						{!!Form::input('numeric', 'idle_2', $IdleComposer['widget_data']['idlelist']['idle']['idle_2'], ['class' => 'form-control', 'placeholder' => 'Idle Kedua', 'tabindex' => '3'])!!}
+						<label class="control-label">Flag Idle Kedua (dalam menit)</label>
+						{!!Form::input('number', 'idle_2', ($IdleComposer['widget_data']['idlelist']['idle']['idle_2']/60), ['class' => 'form-control', 'placeholder' => 'Idle Kedua', 'tabindex' => '3'])!!}
 					</div>
 				</div>
 			</div>				

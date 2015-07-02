@@ -11,6 +11,10 @@
 			<label class="control-label">Nama</label>
 			{!! Form::input('text', 'name', $OrganisationComposer['widget_data']['organisationlist']['organisation']['name'], ['class' => 'form-control', 'tabindex' => '1']) !!}
 		</div>
+		<div class="form-group">
+			<label class="control-label">Kode (Untuk NIK)</label>
+			{!! Form::input('text', 'code', $OrganisationComposer['widget_data']['organisationlist']['organisation']['code'], ['class' => 'form-control', 'tabindex' => '1']) !!}
+		</div>
 		<div class="form-group text-right">			
 			<a href="{{ $OrganisationComposer['widget_data']['organisationlist']['route_back'] }}" class="btn btn-default mr-5" tabindex="3">Batal</a>
 			<input type="submit" class="btn btn-primary" value="Simpan" tabindex="2">

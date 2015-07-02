@@ -4,6 +4,7 @@
  * Document Model:
  * 	ID 								: Auto Increment, Integer, PK
  * 	name 							: Varchar, 255, Required
+ * 	code 							: Varchar, 255, Required, Unique
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -43,12 +44,14 @@ class Organisation extends BaseModel {
 
 	protected 	$fillable			= 	[
 											'name' 						,
+											'code' 						,
 										];
 
 	// protected	$dates 				= 	['created_at', 'updated_at', 'deleted_at'];
 
 	protected 	$rules				= 	[
 											'name' 						=> 'required|max:255',
+											'code' 						=> 'required|max:255',
 										];
 
 	public $searchable 				= 	[

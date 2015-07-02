@@ -59,7 +59,7 @@ class OrganisationController extends BaseController
 			$id 								= Input::get('id');
 		}
 
-		$attributes 							= Input::only('name');
+		$attributes 							= Input::only('name', 'code');
 		$person 								= Session::get('user.id');
 		
 		$errors 								= new MessageBag();

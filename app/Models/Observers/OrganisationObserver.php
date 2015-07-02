@@ -74,7 +74,16 @@ class OrganisationObserver
 
 		if ($validator->passes())
 		{
-			return true;
+			$validator 			= Validator::make($model['attributes'], ['code' => 'unique:organisations,code,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : '')], ['code.unique' => 'Kode sudah terpakai']);
+
+			if ($validator->passes())
+			{
+				return true;
+			}
+			
+			$model['errors'] 	= $validator->errors();
+
+			return false;
 		}
 		else
 		{
