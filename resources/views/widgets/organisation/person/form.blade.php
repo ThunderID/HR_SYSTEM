@@ -22,6 +22,14 @@
 								{!!Form::input('text', 'uniqid', $PersonComposer['widget_data']['personlist']['person']['uniqid'], ['class' => 'form-control'])!!}							
 							</div>
 						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label class="control-label">Username</label>
+								{!!Form::input('text', 'username', $PersonComposer['widget_data']['personlist']['person']['username'], ['class' => 'form-control'])!!}							
+							</div>
+						</div>
 					</div>				
 					<div class="row">
 						<div class="col-sm-3">

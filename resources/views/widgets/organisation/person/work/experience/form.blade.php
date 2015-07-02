@@ -18,7 +18,7 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label">Status</label>
-				{!!Form::input('text', 'status', $WorkComposer['widget_data']['worklist']['work']['status'], ['class' => 'form-control'])!!}
+				{!!Form::select('status', ['contract' => 'Kontrak', 'internship' => 'Magang', 'trial' => 'Probation', 'permanent' => 'Tetap', 'others' => 'Lainnya'], $WorkComposer['widget_data']['worklist']['work']['status'], ['class' => 'form-control select2']) !!}
 			</div>
 			<div class="row">
 				<div class="col-sm-6">

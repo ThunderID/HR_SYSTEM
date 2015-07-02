@@ -15,13 +15,13 @@
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'	=> [
-									'sidebar'				=>
+									'sidebar'						=>
 									[
-										'search'			=> [],
-										'sort'				=> ['name' => 'asc'],
-										'page'				=> 1,
-										'per_page'			=> 100,
-										'pengaturan'		=> 'yes',
+										'search'					=> [],
+										'sort'						=> ['name' => 'asc'],
+										'page'						=> 1,
+										'per_page'					=> 100,
+										'laporan'					=> 'yes',
 										'active_attendance_report'	=> 'yes'
 									]
 								]

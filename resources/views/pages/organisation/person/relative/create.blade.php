@@ -60,6 +60,7 @@
 											'form_url'			=> route('hr.person.relatives.store', ['id' => $id, 'person_id' => $person['id'], 'org_id' => $data['id']]),
 											'organisation_id'	=> $data['id'],
 											'search'			=> ['id' => $id, 'personid' => $person['id'], 'relativeorganisationid' => $data['id']],
+											'new'				=> (is_null($id) ? true : false),
 											'sort'				=> [],
 											'page'				=> 1,
 											'per_page'			=> 1,

@@ -18,32 +18,37 @@
 		@if(isset($PersonComposer['widget_data']['personlist']['person']))
 			<div class="clearfix">&nbsp;</div>
 			<div class="table-responsive">
-				<table class="table">
+				<table class="table table-condensed">
 					<thead>
 						<tr class="row">
 							<th class="col-sm-1">No</th>
-							<th class="col-sm-3" colspan="2">Nama</th>
+							<th class="col-sm-1"></th>
+							<th class="col-sm-2">Nama</th>
 							<th class="col-sm-3">Posisi</th>
 							<th class="col-sm-2">Email</th>
 							<th class="col-sm-3">&nbsp;</th>
 						</tr>
 					</thead>
+				</table>
+			</div>
+			<div class="table-responsive div-table-content">
+				<table class="table table-condensed table-hover">
 					<?php $i = $PersonComposer['widget_data']['personlist']['person-display']['from'];?>
 					@foreach($PersonComposer['widget_data']['personlist']['person'] as $key => $value)
 						<tbody>
 							<tr class="row">
-								<td>
+								<td class="col-sm-1">
 									{{$i}}
 								</td>
 								<td class="col-sm-1">
 									{!! HTML::image($value['avatar'], '', array( 'width' => 64, 'height' => 64, 'class' => 'img-rounded' )) !!} 
 								</td>
-								<td class="col-sm-3">
+								<td class="col-sm-2">
 									{{$value['name']}}
 								</td>
 								<td class="col-sm-3">
 									@if(isset($value['works'][0]))
-										{{$value['works'][0]['name']}} departemen {{$value['works'][0]['tag']}} cabang {{$value['works'][0]['branch']['name']}}
+										{{$value['works'][0]['name']}} {{$value['works'][0]['tag']}} {{$value['works'][0]['branch']['name']}}
 									@endif
 								</td>
 								<td class="col-sm-2">
@@ -51,19 +56,41 @@
 										{{$value['contacts'][0]['value']}}
 									@endif
 								</td>
-								<td class="text-right col-sm-3">
-									<a href="javascript:;" class="btn btn-default crowd-buttons text-right" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.persons.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash"></i></a>
-									<a href="{{route('hr.persons.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default crowd-buttons text-right" title="ubah"><i class="fa fa-pencil"></i></a>
-									<a href="{{route('hr.persons.show', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default crowd-buttons text-right" title="lihat"><i class="fa fa-eye"></i></a>
-
-									<a href="{{route('hr.person.workleaves.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default crowd-buttons text-right" title="jatah cuti"><i class="fa fa-bed"></i></a>
-									<a href="{{route('hr.person.works.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default crowd-buttons text-right" title="karir"><i class="fa fa-building"></i></a>
-									<a href="{{route('hr.person.schedules.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default crowd-buttons text-right" title="jadwal"><i class="fa fa-calendar"></i></a>
-									
-									<a href="{{route('hr.person.contacts.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default crowd-buttons text-right" title="kontak"><i class="fa fa-phone"></i></a>
-									<a href="{{route('hr.person.documents.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default crowd-buttons text-right" title="dokumen"><i class="fa fa-file"></i></a>
-									<a href="{{route('hr.person.relatives.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default crowd-buttons text-right" title="kerabat"><i class="fa fa-child"></i></a>
+								<td class="text-right col-sm-2">
+									<div class="btn-group">
+										<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pengaturan <span class="caret"></span></button>
+										<ul class="dropdown-menu">
+											<li>
+												<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.persons.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash fa-fw"></i> Hapus</a>
+											</li>
+											<li>
+												<a href="{{route('hr.persons.edit', [$value['id'], 'org_id' => $data['id']])}}" title="ubah"><i class="fa fa-pencil fa-fw"></i> Ubah</a>
+											</li>
+											<li>
+												<a href="{{route('hr.persons.show', [$value['id'], 'org_id' => $data['id']])}}"  title="lihat"><i class="fa fa-eye fa-fw"></i> Detail</a>
+											</li>
+											<li>
+												<a href="{{route('hr.person.works.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="karir"><i class="fa fa-building fa-fw"></i> Karir</a>
+											</li>
+											<li>
+												<a href="{{route('hr.person.schedules.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="jadwal"><i class="fa fa-calendar"></i> Jadwal</a>
+											</li>
+											<li>
+												<a href="{{route('hr.person.workleaves.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="jatah cuti"><i class="fa fa-bed fa-fw"></i> Jatah Cuti</a>
+											</li>
+											<li>
+												<a href="{{route('hr.person.contacts.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="kontak"><i class="fa fa-phone"></i> Kontak</a>
+											</li>
+											<li>
+												<a href="{{route('hr.person.documents.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="dokumen"><i class="fa fa-file"></i> Dokumen</a>
+											</li>
+											<li>
+												<a href="{{route('hr.person.relatives.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="kerabat"><i class="fa fa-child"></i> Kerabat</a>
+											</li>
+										</ul>
+									</div>
 								</td>
+								<td class="col-sm-1">&nbsp;</td>
 							</tr>
 						</tbody>
 						<?php $i++;?>

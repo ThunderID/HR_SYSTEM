@@ -65,6 +65,7 @@
 	@include('plugins.imageupload')
 	@include('plugins.single_submit')
 	@include('plugins.no_enter_form')
+	@include('plugins.tablefixheader')
 
 	<script>
 		$(function() {
