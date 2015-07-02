@@ -32,6 +32,9 @@ class CreateProcessLogsTable extends Migration {
 			$table->double('total_idle_1');
 			$table->double('total_idle_2');
 			$table->double('total_idle_3');
+			$table->integer('frequency_idle_1');
+			$table->integer('frequency_idle_2');
+			$table->integer('frequency_idle_3');
 			$table->double('total_sleep');
 			$table->double('total_active');
 			$table->string('actual_status', 255);

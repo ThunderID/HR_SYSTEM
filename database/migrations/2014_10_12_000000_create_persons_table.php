@@ -23,6 +23,7 @@ class CreatePersonsTable extends Migration {
 			$table->string('place_of_birth', 255);
 			$table->date('date_of_birth');
 			$table->enum('gender', ['male', 'female']);
+			$table->string('username', 255);
 			$table->string('password', 255);
 			$table->text('avatar');
 			$table->timestamps();

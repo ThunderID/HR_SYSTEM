@@ -25,6 +25,7 @@ class PersonTableSeeder extends Seeder
 				$data = new Person;
 				$data->fill([
 					'uniqid'						=> $index,
+					'username'						=> 'root',
 					'name'							=> $faker->name,
 					'prefix_title'					=> $prefix[rand(0,2)],
 					'suffix_title'					=> $suffix[rand(0,10)],
