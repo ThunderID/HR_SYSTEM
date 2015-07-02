@@ -109,15 +109,20 @@ class ProcessingLogObserver
 					$calendar 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->withAttributes(['workscalendars','workscalendars.calendar'])->first();
 					if($calendar)
 					{
+						if(!isset($calendar->workscalendars[0]))
+						{
+							return true;
+						}
+						
 						$workid 	= $calendar->workscalendars[0]->id;
-						$workdays  	= explode(',', $calendar->workscalendars[0]->calendar->workdays);
+						$workdays  	= explode(',', $calendar->workscalendars[0]->workdays);
 						$wd			= ['monday' => 'senin', 'tuesday' => 'selasa', 'wednesday' => 'rabu', 'thursday' => 'kamis', 'friday' => 'jumat', 'saturday' => 'sabtu', 'sunday' => 'minggu', 'senin' => 'monday', 'selasa' => 'tuesday', 'rabu' => 'wednesday', 'kamis' => 'thursday', 'jumat' => 'friday', 'sabtu' => 'saturday', 'minggu' => 'sunday'];
 						$day 		= date("l", strtotime($model['attributes']['on']));
 
 						if(isset($wd[strtolower($day)]) && in_array($wd[strtolower($day)], $workdays))
 						{
-							$schedule_start = $calendar->workscalendars[0]->calendar->start;
-							$schedule_end 	= $calendar->workscalendars[0]->calendar->end;	
+							$schedule_start = $calendar->workscalendars[0]->start;
+							$schedule_end 	= $calendar->workscalendars[0]->end;	
 						}
 						else
 						{
