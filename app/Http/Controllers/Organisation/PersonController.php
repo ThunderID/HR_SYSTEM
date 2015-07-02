@@ -311,7 +311,7 @@ class PersonController extends BaseController
 
 		if(Input::has('password'))
 		{
-			$attributes['password']				= Hash::make($attributes['password']);
+			$attributes['password']				= Hash::make(Input::get('password'));
 		}
 
 		DB::beginTransaction();
