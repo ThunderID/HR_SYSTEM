@@ -324,9 +324,9 @@ class Person extends BaseModel {
 		return $query->where('persons.id', $variable);
 	}
 	
-	public function scopeUserName($query, $variable)
+	public function scopeUsername($query, $variable)
 	{
-		return $query->where('username');
+		return $query->where('username', $variable);
 	}
 
 	public function scopeName($query, $variable)
