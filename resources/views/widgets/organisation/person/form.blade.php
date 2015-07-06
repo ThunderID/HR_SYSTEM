@@ -3,10 +3,13 @@
 @if (!$widget_error_count)
 	@section('widget_title')
 	<h1> {{ is_null($id) ? 'Tambah Data Karyawan' : 'Ubah Data Karyawan "'. $PersonComposer['widget_data']['personlist']['person']['name'].'"'}} </h1> 
+		
+	<div class="text-right">
+	<a href="{{ route('hr.persons.create', ['org_id' => $data['id'], 'import' => 'yes']) }}" class="btn btn-primary text-right">Import CSV</a>	</div>
 	@overwrite
 
 	@section('widget_body')
-		{!! Form::open(['url' => $PersonComposer['widget_data']['personlist']['form_url'], 'class' => 'form no_enter', 'files' => true]) !!}	
+		{!! Form::open(['url' => $PersonComposer['widget_data']['personlist']['form_url'], 'class' => 'form no_enter', 'files' => true]) !!}				
 			<div class="clearfix">&nbsp;</div>
 			<div class="row">
 				<div class="col-sm-3">
