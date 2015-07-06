@@ -18,7 +18,7 @@ class CreateWorksTable extends Migration {
 			$table->integer('chart_id')->unsigned()->index();
 			$table->integer('person_id')->unsigned()->index();
 			$table->integer('calendar_id')->unsigned()->index();
-			$table->enum('status', ['contract', 'trial', 'internship', 'permanent', 'previous', 'admin']);
+			$table->enum('status', ['contract', 'probation', 'internship', 'permanent', 'others', 'previous', 'admin']);
 			$table->date('start');
 			$table->date('end')->nullable();
 			$table->string('position', 255);

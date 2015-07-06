@@ -6,7 +6,7 @@
 	?>
 
 	@section('widget_title')
-		<h1> {!! $widget_title or 'Karir' !!} </h1>
+		<h1> {!! $widget_title or 'Pekerjaan' !!} </h1>
 		<small>Total data {{$WorkComposer['widget_data']['worklist']['work-pagination']->total()}}</small>
 
 		@if(isset($WorkComposer['widget_data']['worklist']['active_filter']) && !is_null($WorkComposer['widget_data']['worklist']['active_filter']))

@@ -16,19 +16,34 @@ class WorkTableSeeder extends Seeder
 		$faker 										= Factory::create();
 		$total_persons  							= Person::count();
 		$total_positions 	 						= Chart::count();
-		$status 									= ['contract', 'trial', 'internship', 'permanent', 'previous'];
+		$status 									= ['contract', 'probation', 'internship', 'permanent', 'others', 'previous'];
 		$position 									= ['Manager', 'Staff'];
 		try
 		{
 			foreach(range(1, $total_positions) as $index)
 			{
+				$rand 								= rand(0,4);
+				$start 								= $faker->date($format = 'Y-m-d', $max = 'now');
+				if(in_array($status[$rand], ['contract', 'probation', 'internship']))
+				{
+					$end 							= date('Y-m-d', strtotime($start.' + 1 year'));
+					$reason_end_job 				= 'end of '.$status[$rand];
+				}
+				else
+				{
+					$end 							= null;
+					$reason_end_job 				= '';
+				}
+
 				$calendar 							= Chart::where('id', $index)->wherehas('calendars', function($q){$q;})->with('calendars')->first();
 				$data 								= new Work;
 				$data->fill([
 					'chart_id'						=> $index,
 					'calendar_id'					=> $calendar->calendars[rand(0, count($calendar->calendars)-1)]->id,
-					'status'						=> $status[rand(0,3)],
-					'start'							=> $faker->date($format = 'Y-m-d', $max = 'now'),
+					'status'						=> $status[$rand],
+					'start'							=> $start,
+					'end'							=> $end,
+					'reason_end_job'				=> $reason_end_job,
 				]);
 				if($index==1)
 				{

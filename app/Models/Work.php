@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 	chart_id 						: Foreign Key From Chart, Integer, Required if position and organisation not present
  * 	person_id 						: Foreign Key From Person, Integer, Required
  * 	calendar_id 					: Foreign Key From Calendar, Integer, Required
- * 	status 		 					: Enum contract or trial or internship or permanent or previous
+ * 	status 		 					: Enum contract or probation or internship or permanent or others or previous
  * 	start 							: Date, Y-m-d, Required
  * 	end 							: Date, Y-m-d
  * 	position 						: required if chart_id not present
@@ -56,9 +56,9 @@ class Work extends BaseModel {
 
 	protected 	$rules				= 	[
 											'chart_id'					=> 'required_without:position',
-											'status' 					=> 'required|in:contract,trial,internship,permanent,admin,previous',
+											'status' 					=> 'required|in:contract,probation,internship,permanent,others,admin,previous',
 											'start' 					=> 'required|date_format:"Y-m-d"',
-											'end' 						=> 'date_format:"Y-m-d"',
+											'end' 						=> 'required_if:status,contract,probation,internship,previous|date_format:"Y-m-d"',
 											'position' 					=> 'required_without:chart_id',
 											'organisation' 				=> 'required_without:chart_id',
 											'reason_end_job' 			=> 'required_with:end',

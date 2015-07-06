@@ -58,15 +58,15 @@ trait HasWorksOnTrait {
 	{
 		if(!is_null($variable))
 		{
-			return $query->with(['works' => function($q)use($variable){$q->whereNull('end')->orderBy('start', 'asc')->id($variable);}]);
+			return $query->with(['works' => function($q)use($variable){$q->whereNull('end')->orwhere('end', '>=', 'NOW()')->orderBy('start', 'asc')->id($variable);}]);
 		}
 
-		return $query->with(['works' => function($q){$q->whereNull('end')->orderBy('start', 'asc');}]);
+		return $query->with(['works' => function($q){$q->whereNull('end')->orwhere('end', '>=', 'NOW()')->orderBy('start', 'asc');}]);
 	}
 
 	public function scopePreviousWork($query, $variable)
 	{
-		return $query->with(['works' => function($q){$q->whereNotNull('end')->orderBy('start', 'asc');}]);
+		return $query->with(['works' => function($q){$q->whereNotNull('end')->orwhere('end', '<', 'NOW()')->orderBy('start', 'asc');}]);
 
 	}
 
