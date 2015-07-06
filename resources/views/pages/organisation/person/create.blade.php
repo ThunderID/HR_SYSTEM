@@ -38,22 +38,41 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.organisation.person.form', [
-		'widget_template'		=> 'panel',
-		'widget_options'		=> 	[
-										'personlist'			=>
-										[
-											'form_url'			=> route('hr.persons.store', ['id' => $id, 'org_id' => $data['id']]),
-											'organisation_id'	=> $data['id'],
-											'search'			=> ['id' => $id],
-											'sort'				=> [],
-											'new'				=> (is_null($id) ? true : false),
-											'page'				=> 1,
-											'per_page'			=> 1,
-											'route_back'		=> route('hr.persons.index', ['org_id' => $data['id']])
+	@if(!Input::has('import'))
+		@include('widgets.organisation.person.form', [
+			'widget_template'		=> 'panel',
+			'widget_options'		=> 	[
+											'personlist'			=>
+											[
+												'form_url'			=> route('hr.persons.store', ['id' => $id, 'org_id' => $data['id']]),
+												'organisation_id'	=> $data['id'],
+												'search'			=> ['id' => $id],
+												'sort'				=> [],
+												'new'				=> (is_null($id) ? true : false),
+												'page'				=> 1,
+												'per_page'			=> 1,
+												'route_back'		=> route('hr.persons.index', ['org_id' => $data['id']])
+											]
 										]
-									]
-	])
+		])
+	@else
+		@include('widgets.organisation.person.upload_csv', [
+			'widget_template'		=> 'panel',
+			'widget_options'		=> 	[
+											'personlist'			=>
+											[
+												'form_url'			=> route('hr.persons.store', ['id' => $id, 'org_id' => $data['id']]),
+												'organisation_id'	=> $data['id'],
+												'search'			=> ['id' => $id],
+												'sort'				=> [],
+												'new'				=> (is_null($id) ? true : false),
+												'page'				=> 1,
+												'per_page'			=> 1,
+												'route_back'		=> route('hr.persons.index', ['org_id' => $data['id']])
+											]
+										]
+		])
+	@endif
 
 @overwrite
 

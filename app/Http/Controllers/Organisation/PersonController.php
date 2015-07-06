@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers\Organisation;
 
-use Input, Session, App, Paginator, Redirect, DB, Config, Validator, Image, Hash;
+use Input, Session, App, Paginator, Redirect, DB, Config, Validator, Image, Hash, Excel;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -275,24 +275,6 @@ class PersonController extends BaseController
 
 	public function store($id = null)
 	{		
-		
-		if(Input::has('id'))
-		{
-			$id 								= Input::get('id');
-		}
-
-		$attributes 							= Input::only('uniqid', 'username', 'name', 'prefix_title', 'suffix_title', 'gender', 'place_of_birth');
-		
-		if (Input::has('date_of_birth'))
-		{
-			$attributes['date_of_birth'] 		= date('Y-m-d', strtotime(Input::get('date_of_birth')));
-		}
-
-		if (Input::hasFile('link_profile_picture'))
-		{
-			$upload 							= $this->upload_image(Input::file('link_profile_picture'));			
-			$attributes['avatar']				= $upload['ori'];
-		}
 		if(Input::has('org_id'))
 		{
 			$org_id 							= Input::get('org_id');
@@ -302,17 +284,58 @@ class PersonController extends BaseController
 			$org_id 							= Session::get('user.organisation');
 		}
 
-		if(!in_array($org_id, Session::get('user.organisationids')))
+		if (Input::has('import'))
 		{
-			App::abort(404);
+			if (Input::hasFile('file_csv')) 
+			{
+				$file_csv 		= Input::file('file_csv');
+				$attributes = [];				
+				$sheet = Excel::load($file_csv)->toArray();				
+				foreach($sheet as $i => $row)
+				{
+					$attributes[$i]['username']			= '';
+					$attributes[$i]['name']				= $row['nama'];
+					$attributes[$i]['place_of_birth']	= $row['tempatlahir'];
+					$attributes[$i]['uniqid']			= $row['nik'];
+					$attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime($row['tanggallahir']));
+					$attributes[$i]['gender']			= $row['kelamin']=='L' ? 'male' : 'female';
+					$attributes[$i]['org_id']			= $org_id;
+				}						
+			}
+		}
+		else
+		{
+			if(Input::has('id'))
+			{
+				$id 								= Input::get('id');
+			}
+
+			$attributes 							= Input::only('uniqid', 'username', 'name', 'prefix_title', 'suffix_title', 'gender', 'place_of_birth');
+			
+			if (Input::has('date_of_birth'))
+			{
+				$attributes['date_of_birth'] 		= date('Y-m-d', strtotime(Input::get('date_of_birth')));
+			}
+
+			if (Input::hasFile('link_profile_picture'))
+			{
+				$upload 							= $this->upload_image(Input::file('link_profile_picture'));			
+				$attributes['avatar']				= $upload['ori'];
+			}
+
+			if(!in_array($org_id, Session::get('user.organisationids')))
+			{
+				App::abort(404);
+			}
+
+			if(Input::has('password'))
+			{
+				$attributes['password']				= Hash::make(Input::get('password'));
+			}
 		}
 
 		$errors 								= new MessageBag();
 
-		if(Input::has('password'))
-		{
-			$attributes['password']				= Hash::make(Input::get('password'));
-		}
 
 		DB::beginTransaction();
 		$content 								= $this->dispatch(new Saving(new Person, $attributes, $id, new Organisation, $org_id));
