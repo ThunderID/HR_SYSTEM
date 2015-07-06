@@ -17,10 +17,11 @@ class MenuTableSeeder extends Seeder
 		DB::table('authentications')->truncate();
 		$menus 										= 
 														[
-															'Manage Organisasi',
-															'Manage HR Config',
-															'Manage HR Data' , 
-															'Manage Team', 
+															'Level Admin',
+															'Level HRM',
+															'Level Staff HR' , 
+															'Level Supervisor', 
+															'Level Subordinate', 
 														];
 
 		$trackermenu 								= 
@@ -51,41 +52,41 @@ class MenuTableSeeder extends Seeder
 				}
 			}
 
-			foreach(range(0, count($trackermenu)-1) as $index)
-			{
-				$data 								= new Menu;
-				$data->fill([
-					'name'							=> $trackermenu[$index],
-				]);
+			// foreach(range(0, count($trackermenu)-1) as $index)
+			// {
+			// 	$data 								= new Menu;
+			// 	$data->fill([
+			// 		'name'							=> $trackermenu[$index],
+			// 	]);
 
-				$app 								= Application::find(2);
+			// 	$app 								= Application::find(2);
 				
-				$data->application()->associate($app);
+			// 	$data->application()->associate($app);
 
-				if (!$data->save())
-				{
-					print_r($data->getError());
-					exit;
-				}
-			}
+			// 	if (!$data->save())
+			// 	{
+			// 		print_r($data->getError());
+			// 		exit;
+			// 	}
+			// }
 
-			foreach(range(0, count($fpmenu)-1) as $index)
-			{
-				$data 								= new Menu;
-				$data->fill([
-					'name'							=> $fpmenu[$index],
-				]);
+			// foreach(range(0, count($fpmenu)-1) as $index)
+			// {
+			// 	$data 								= new Menu;
+			// 	$data->fill([
+			// 		'name'							=> $fpmenu[$index],
+			// 	]);
 
-				$app 								= Application::find(3);
+			// 	$app 								= Application::find(3);
 				
-				$data->application()->associate($app);
+			// 	$data->application()->associate($app);
 
-				if (!$data->save())
-				{
-					print_r($data->getError());
-					exit;
-				}
-			}
+			// 	if (!$data->save())
+			// 	{
+			// 		print_r($data->getError());
+			// 		exit;
+			// 	}
+			// }
 		}
 		catch (Exception $e) 
 		{
