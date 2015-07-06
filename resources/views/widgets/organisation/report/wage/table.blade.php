@@ -22,53 +22,62 @@
 
 	@section('widget_body')
 			@if(isset($PersonComposer['widget_data']['personlist']['person']))
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Nama</th>
-							<th>Jabatan</th>
-							<!-- <th>Hak Cuti</th>
-							<th>Penambah Cuti</th>
-							<th>Pengurang Cuti</th>
-							<th>Sisa Cuti</th>
-							 -->
-							 <th>Jumlah Absen (hari)</th>
-							<th>&nbsp;</th>
-						</tr>
-					</thead>
-					@foreach($PersonComposer['widget_data']['personlist']['person'] as $key => $value)
-						<tbody>
+				<div class="table-responsive">
+					<table class="table table-condensed">
+						<thead>
 							<tr>
-								<td>
-									{{$value['name']}}
-								</td>
-								<td>
-									{{$value['position']}} di departemen {{$value['department']}} cabang {{$value['branch']}}
-								</td>
-								<!-- <td>
-									{{$value['quotas']}}
-								</td>
-								<td>
-									{{$value['plus_quotas']}}
-								</td> -->
-								<td>
-									{{$value['minus_quotas']}}
-								</td>
-								<!-- <td>
-									{{($value['quotas'] + $value['plus_quotas'] - $value['minus_quotas'] >= 0 ? abs($value['quotas'] + $value['plus_quotas'] - $value['minus_quotas']) : 0)}}
-								</td>
-								<td>
-									{{($value['quotas'] + $value['plus_quotas'] - $value['minus_quotas'] < 0 ? abs($value['quotas'] + $value['plus_quotas'] - $value['minus_quotas']) : 0)}}
-								</td> -->
-								<td class="text-right">
-								</td>
+								<th>No</th>
+								<th>Nama</th>
+								<th>Jabatan</th>
+								<!-- <th>Hak Cuti</th>
+								<th>Penambah Cuti</th>
+								<th>Pengurang Cuti</th>
+								<th>Sisa Cuti</th>
+								 -->
+								 <th>Jumlah Absen (hari)</th>
+								<!-- <th>&nbsp;</th> -->
 							</tr>
-						</tbody>
-					@endforeach
+						</thead>
+					</table>
+				</div>
+				<div class="table-responsive div-table-content">
+					<table class="table table-condensed table-hover">
+						@foreach($PersonComposer['widget_data']['personlist']['person'] as $key => $value)
+							<tbody>
+								<tr>
+									<td>{{$key+1}}</td>
+									<td>
+										{{$value['name']}}
+									</td>
+									<td>
+										{{$value['position']}} {{$value['department']}} {{$value['branch']}}
+									</td>
+									<!-- <td>
+										{{$value['quotas']}}
+									</td>
+									<td>
+										{{$value['plus_quotas']}}
+									</td> -->
+									<td>
+										{{$value['minus_quotas']}}
+									</td>
+									<!-- <td>
+										{{($value['quotas'] + $value['plus_quotas'] - $value['minus_quotas'] >= 0 ? abs($value['quotas'] + $value['plus_quotas'] - $value['minus_quotas']) : 0)}}
+									</td>
+									<td>
+										{{($value['quotas'] + $value['plus_quotas'] - $value['minus_quotas'] < 0 ? abs($value['quotas'] + $value['plus_quotas'] - $value['minus_quotas']) : 0)}}
+									</td> -->
+									<!-- <td class="text-right">
+									</td> -->
+								</tr>
+							</tbody>
+						@endforeach
+					</table>
+				</div>
 				</table>
 
 				<div class="row">
-					<div class="col-sm-12 text-center">
+					<div class="col-sm-12 text-center mt-10">
 						<p>Menampilkan {!! $PersonComposer['widget_data']['personlist']['person-display']['from']!!} - {!! $PersonComposer['widget_data']['personlist']['person-display']['to']!!}</p>
 						{!! $PersonComposer['widget_data']['personlist']['person-pagination']->appends(Input::all())->render()!!}
 					</div>

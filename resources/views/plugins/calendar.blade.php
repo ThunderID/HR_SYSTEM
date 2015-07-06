@@ -64,13 +64,34 @@
 			}
 			else {				
 				element.attr('data-id', event.id);
-				element.attr('data-title', event.title);
+				element.attr('data-title', event.title);				
+				element.attr('data-toggle-tooltip', 'tooltip');
+				element.attr('data-placement', 'bottom');
 				element.attr('data-edit-action', event.ed_action);
 				element.attr('data-delete-action', event.del_action);
+				element.find('.fc-title').parent().addClass('border-schedule');
+
+				if (event.status=="presence_indoor") {
+					event.status = 'Hadir';
+				} 
+				else if (event.status=="presence_outdoor") {
+					event.status = 'Dinas Luar';	
+				}
+				else if (event.status=="absence_not_workleave") {
+					event.status = 'Absen, Tidak Mengurangi Cuti';		
+				}
+				else if (event.status=="absence_workleave") {
+					event.status = 'Absen, Mengurangi Cuti';	
+				}
+				else {
+					event.status = '';		
+				}
+
+				element.attr('title', event.status);
 			}
 			element.find('#date-title').html(element.find('span.fc-event-title').text());			
 			element.find('.fc-title').append('<br>');
-			element.find('.fc-title').addClass('label label-'+event.label+' font-10');
+			element.find('.fc-title').addClass(event.label+' font-12');
 			element.find('.fc-time').addClass('pt-10');
 			element.attr('data-status', event.status);
 			element.attr('data-date', date_start);

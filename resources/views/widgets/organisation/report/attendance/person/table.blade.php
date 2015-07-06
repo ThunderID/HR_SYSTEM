@@ -84,10 +84,66 @@
 									</td>
 
 									<td>
-										{{$value['actual_status']}}
+										<a href="javascript:;" class="black cursor-text" data-toggle-tooltip="tooltip" data-placement="bottom" title="
+											@if ($value['actual_status']=='AS')
+												Ketidakhadiran Tanpa Penjelasan
+											@elseif ($value['actual_status']=='CB')
+												Cuti Bersama
+											@elseif ($value['actual_status']=='CI')
+												Cuti Istimewa
+											@elseif ($value['actual_status']=='CN')
+												Cuti Untuk Keperluan Pribadi
+											@elseif ($value['actual_status']=='DN')
+												Keperluan Dinas
+											@elseif ($value['actual_status']=='HC')
+												Hadir Cacat Tanpa Penjelasan
+											@elseif ($value['actual_status']=='HD')
+												Hadir Cacat Dengan Ijin Dinas
+											@elseif ($value['actual_status']=='HP')
+												Hadir Cacat Dengan Ijin Pulang Cepat
+											@elseif ($value['actual_status']=='HT')
+												Hadir Cacat Dengan Ijin Datang Terlambat
+											@elseif ($value['actual_status']=='SS')
+												Sakit Jangka Pendek
+											@elseif ($value['actual_status']=='SL')
+												Sakit Berkepanjangan
+											@elseif ($value['actual_status']=='UL')
+												Ketidakhadiran Dengan Ijin Namun Cuti Tidak Tersedia
+											@endif
+										">
+											{{$value['actual_status']}}
+										</a>
 									</td>
 									<td>
-										{{($value['modified_status']!='' ? $value['modified_status'] : '')}}
+										<a href="javascript:;" class="black cursor-text" data-toggle-tooltip="tooltip" data-placement="bottom" title="
+											@if ($value['modified_status']=='AS')
+												Ketidakhadiran Tanpa Penjelasan
+											@elseif ($value['modified_status']=='CB')
+												Cuti Bersama
+											@elseif ($value['modified_status']=='CI')
+												Cuti Istimewa
+											@elseif ($value['modified_status']=='CN')
+												Cuti Untuk Keperluan Pribadi
+											@elseif ($value['modified_status']=='DN')
+												Keperluan Dinas
+											@elseif ($value['modified_status']=='HC')
+												Hadir Cacat Tanpa Penjelasan
+											@elseif ($value['modified_status']=='HD')
+												Hadir Cacat Dengan Ijin Dinas
+											@elseif ($value['modified_status']=='HP')
+												Hadir Cacat Dengan Ijin Pulang Cepat
+											@elseif ($value['modified_status']=='HT')
+												Hadir Cacat Dengan Ijin Datang Terlambat
+											@elseif ($value['modified_status']=='SS')
+												Sakit Jangka Pendek
+											@elseif ($value['modified_status']=='SL')
+												Sakit Berkepanjangan
+											@elseif ($value['modified_status']=='UL')
+												Ketidakhadiran Dengan Ijin Namun Cuti Tidak Tersedia
+											@endif
+										">
+											{{($value['modified_status']!='' ? $value['modified_status'] : '')}}
+										</a>
 									</td>
 									<td>
 										{{($value['modified_status']!='' ? $value['modifiedby']['name'] : '')}}

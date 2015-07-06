@@ -181,7 +181,7 @@ class ScheduleController extends BaseController
 				else
 				{
 					$schedule[$k]['id']				= $period->format('Ymd');
-					$schedule[$k]['title'] 			= 'Libur';
+					$schedule[$k]['title'] 			= 'Tidak Masuk Kerja';
 					$schedule[$k]['start']			= $period->format('Y-m-d').'T'.'00:00:00';
 					$schedule[$k]['end']			= $period->format('Y-m-d').'T'.'00:00:00';
 					$schedule[$k]['status']			= 'absence_not_workleave';

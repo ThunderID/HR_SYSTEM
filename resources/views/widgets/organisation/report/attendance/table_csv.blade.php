@@ -8,7 +8,7 @@
 					<th>No</th>
 					<th>Nama</th>
 					<th>Jabatan</th>
-					<th>Total Aktif</th>
+					<th>Average Aktif</th>
 					<th>Total Idle I</th>
 					<th>Total Idle II</th>
 					<th>Total Idle III</th>
