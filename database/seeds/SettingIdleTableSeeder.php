@@ -18,7 +18,8 @@ class SettingIdleTableSeeder extends Seeder
 			{
 				$data 								= new SettingIdle;
 				$data->fill([
-					'start'							=>date('Y-m-d', strtotime('now')),
+					'created_by'					=> 1,
+					'start'							=> date('Y-m-d', strtotime('now')),
 					'idle_1'						=> 900,
 					'idle_2'						=> 3600,
 				]);

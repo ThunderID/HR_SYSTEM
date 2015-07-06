@@ -3,8 +3,10 @@
 use App\Http\Controllers\BaseController;
 use App\Console\Commands\Checking;
 use App\Console\Commands\Getting;
+use App\Console\Commands\Saving;
 use App\Models\Person;
 use App\Models\API;
+use App\Models\Branch;
 use Auth, Input, Session, Redirect, Response;
 
 class TrackerController extends BaseController {
@@ -19,7 +21,7 @@ class TrackerController extends BaseController {
 			return Response::json(['message' => 'Server Error'], 500);
 		}		
 
-		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['macaddress']) || !isset($attributes['application']['api']['email']) || !isset($attributes['application']['api']['password']))
+		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['tr_ver']) || !isset($attributes['application']['api']['macaddress']) || !isset($attributes['application']['api']['email']) || !isset($attributes['application']['api']['password']))
 		{
 			return Response::json(['message' => 'Server Error'], 500);
 		}
@@ -42,9 +44,65 @@ class TrackerController extends BaseController {
 
 		if($content->meta->success)
 		{
+			if(strtolower($attributes['application']['api']['tr_ver'])!=strtolower($content->data->tr_version))
+			{
+				$apiattributes 						= json_decode(json_encode($content->data), true);
+				$apiattributes['tr_version']		= strtolower($attributes['application']['api']['tr_ver']);
+
+				$content 							= $this->dispatch(new Saving(new API, $apiattributes, $apiattributes['id'], new Branch, $apiattributes['branch_id']));
+				$is_success 						= json_decode($content);
+				
+				if(!$is_success->meta->success)
+				{
+					return Response::json(['message' => 'Server Error'], 500);
+				}
+			}
+
 			return Response::json(['message' => 'Sukses'], 200);
 		}
 
 		return Response::json(['message' => 'Server Error'], 500);
+	}
+
+
+	function testLogin()
+	{
+		$attributes 							= Input::only('application');
+
+		//cek apa ada aplication
+		if(!$attributes['application'])
+		{
+			return Response::json(['message' => 'Server Error'], 500);
+		}		
+
+		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['tr_ver']) || !isset($attributes['application']['api']['macaddress']))
+		{
+			return Response::json(['message' => 'Server Error'], 500);
+		}
+
+		//cek API key & secret
+		$results 								= $this->dispatch(new Getting(new API, ['client' => $attributes['application']['api']['client'], 'secret' => $attributes['application']['api']['secret'], 'macaddress' => $attributes['application']['api']['macaddress'], 'withattributes' => ['branch']], [], 1, 1));
+		
+		$content 								= json_decode($results);
+		if(!$content->meta->success)
+		{
+			return Response::json(['message' => 'Server Error'], 500);
+		}
+
+		if(strtolower($attributes['application']['api']['tr_ver'])!=strtolower($content->data->tr_version))
+		{
+			$apiattributes 						= json_decode(json_encode($content->data), true);
+			$apiattributes['tr_version']		= strtolower($attributes['application']['api']['tr_ver']);
+
+			$content 							= $this->dispatch(new Saving(new API, $apiattributes, $apiattributes['id'], new Branch, $apiattributes['branch_id']));
+			$is_success 						= json_decode($content);
+			
+			if(!$is_success->meta->success)
+			{
+				return Response::json(['message' => 'Server Error'], 500);
+			}
+		}
+
+		return Response::json(['message' => 'Sukses'], 200);
 	}
 }

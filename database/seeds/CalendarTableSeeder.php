@@ -25,26 +25,27 @@ class CalendarTableSeeder extends Seeder
 		{
 			foreach(range(0, count($total_branches)-1) as $index)
 			{
+				
+				$start 								=  date('H:i:s', strtotime('+ '.rand(2,5).' hours'.' + '.rand(2,59).' minutes'.' + '.rand(2,59).' seconds'));
+				$data 								= new Calendar;
+				$data->fill([
+					'organisation_id'				=> rand(1, $total_orgs),
+					'name'							=> $faker->country,
+					'workdays'						=> 'monday,tuesday,wednesday,thursday,friday',
+					'start'							=> $start,
+					'end'							=> date('H:i:s', strtotime($start.' + 7 hours')),
+				]);
+
+
+				if (!$data->save())
+				{
+					print_r($data->getError());
+					exit;
+				}
+					
 				foreach(range(0, count($total_branches[$index]->charts)-1) as $index2)
 				{
-					$start 								=  date('H:i:s', strtotime('+ '.rand(2,5).' hours'.' + '.rand(2,59).' minutes'.' + '.rand(2,59).' seconds'));
-					$data 								= new Calendar;
-					$data->fill([
-						'organisation_id'				=> rand(1, $total_orgs),
-						'name'							=> $faker->country,
-						'workdays'						=> 'monday,tuesday,wednesday,thursday,friday',
-						'start'							=> $start,
-						'end'							=> date('H:i:s', strtotime($start.' + 7 hours')),
-					]);
-
 					$chart 								= $total_branches[$index]->charts[$index2]->id;
-
-					if (!$data->save())
-					{
-						print_r($data->getError());
-						exit;
-					}
-					
 					$data->Charts()->attach($chart);
 
 					if (!$data->save())

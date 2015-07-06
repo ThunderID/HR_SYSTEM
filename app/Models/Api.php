@@ -9,6 +9,7 @@
  * 	secret 			 				: Required, max : 255
  * 	macadress 			 			: Required, max : 255
  * 	pc_name 			 			: Required, max : 255
+ * 	tr_version 			 			: Required, max : 255
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -39,6 +40,7 @@ class Api extends BaseModel {
 											'secret' 							,
 											'macaddress' 						,
 											'pc_name' 							,
+											'tr_version' 						,
 										];
 
 	protected 	$rules				= 	[
@@ -46,6 +48,7 @@ class Api extends BaseModel {
 											'secret' 							=> 'required',
 											'macaddress' 						=> 'required',
 											'pc_name' 							=> 'required',
+											'tr_version' 						=> '',
 										];
 
 	public $searchable 				= 	[

@@ -20,24 +20,24 @@ class PersonTableSeeder extends Seeder
 		$suffix 									= ['MT.', 'MSc.', 'BSc.', 'MSi.', 'BSi.', 'SE.', 'PhD.', 'SH.', 'SKom.', 'ST.', 'BA.'];
 		try
 		{
-			foreach(range(1, 1) as $index)
+			foreach(range(1, 50) as $index)
 			{
 				$data = new Person;
 				$data->fill([
 					'uniqid'						=> $index,
-					'username'						=> 'root',
-					'name'							=> 'Superadmin', //$faker->name,
-					// 'prefix_title'					=> $prefix[rand(0,2)],
-					// 'suffix_title'					=> $suffix[rand(0,10)],
-					'place_of_birth'				=> 'Indonesia',//$faker->city,
-					'date_of_birth' 				=> date('Y-m-d', strtotime('4 years ago')),//$faker->date($format = 'Y-m-d', $max = 'now'), 
-					'gender' 						=> 'male',//$gender[rand ( 0 , 1 )],
+					'username'						=> 'user'.$index,
+					'name'							=> $faker->name,
+					'prefix_title'					=> $prefix[rand(0,2)],
+					'suffix_title'					=> $suffix[rand(0,10)],
+					'place_of_birth'				=> $faker->city,
+					'date_of_birth' 				=> $faker->date($format = 'Y-m-d', $max = 'now'), 
+					'gender' 						=> $gender[rand ( 0 , 1 )],
 					'password'						=> Hash::make('admin'),
 				]);
 
-				// $organisation 						= Organisation::find(rand(1,$total_orgs));
+				$organisation 						= Organisation::find(rand(1,$total_orgs));
 				
-				// $data->organisation()->associate($organisation);
+				$data->organisation()->associate($organisation);
 
 				if (!$data->save())
 				{

@@ -24,7 +24,7 @@ class ScheduleTableSeeder extends Seeder
 			foreach(range(1, $total_cals) as $index)
 			{
 				$rand 								= rand(0,3);
-				$begin 								= new DateTime( 'first day of may 2015' );
+				$begin 								= new DateTime( 'first day of july 2015' );
 				$ended 								= new DateTime( 'last day of july 2015'  );
 
 				$interval 							= DateInterval::createFromDateString('1 day');

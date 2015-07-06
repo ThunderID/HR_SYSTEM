@@ -11,6 +11,7 @@ use App\Models\Organisation;
 use App\Models\Log;
 use App\Models\Person;
 use App\Models\ErrorLog;
+use App\Models\Branch;
 use App\Models\Api;
 
 class LogController extends BaseController 
@@ -35,7 +36,7 @@ class LogController extends BaseController
 			return Response::json(['message' => 'Server Error'], 500);
 		}
 
-		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['macaddress']))
+		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['tr_ver']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['macaddress']))
 		{
 			return Response::json(['message' => 'Server Error'], 500);
 		}	
@@ -47,6 +48,20 @@ class LogController extends BaseController
 		if(!$content->meta->success)
 		{
 			return Response::json(['message' => 'Server Error'], 500);
+		}
+
+		if(strtolower($attributes['application']['api']['tr_ver'])!=strtolower($content->data->tr_version))
+		{
+			$apiattributes 						= json_decode(json_encode($content->data), true);
+			$apiattributes['tr_version']		= strtolower($attributes['application']['api']['tr_ver']);
+
+			$content 							= $this->dispatch(new Saving(new API, $apiattributes, $apiattributes['id'], new Branch, $apiattributes['branch_id']));
+			$is_success 						= json_decode($content);
+			
+			if(!$is_success->meta->success)
+			{
+				return Response::json(['message' => 'Server Error'], 500);
+			}
 		}
 
 		$organisationid 						= $content->data->branch->organisation_id;

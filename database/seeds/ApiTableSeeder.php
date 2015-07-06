@@ -24,6 +24,7 @@ class ApiTableSeeder extends Seeder
 					'secret'						=> '123456789',
 					'macaddress'					=> 'MACA-'.$index,
 					'pc_name'						=> 'CAB-'.$index,
+					'tr_version'					=> 'V1.0',
 				]);
 
 				$branch 							= Branch::find($index);
