@@ -33,10 +33,15 @@ class LogController extends BaseController
 		if(!$attributes['application'])
 		{
 			return Response::json(['message' => 'Server Error'], 500);
-		}		
+		}
+
+		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['macaddress']))
+		{
+			return Response::json(['message' => 'Server Error'], 500);
+		}	
 
 		//cek API key & secret
-		$results 								= $this->dispatch(new Getting(new API, ['client' => $attributes['application']['api']['client'], 'secret' => $attributes['application']['api']['secret'], 'withattributes' => ['branch']], [], 1, 1));
+		$results 								= $this->dispatch(new Getting(new API, ['client' => $attributes['application']['api']['client'], 'secret' => $attributes['application']['api']['secret'], 'macaddress' => $attributes['application']['api']['macaddress'], 'withattributes' => ['branch']], [], 1, 1));
 		
 		$content 								= json_decode($results);
 		if(!$content->meta->success)

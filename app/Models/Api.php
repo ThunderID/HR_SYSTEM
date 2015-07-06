@@ -7,6 +7,8 @@
  * 	branch_id 						: Required, Integer, FK from Branch
  * 	client 			 				: Required, unique, max : 255
  * 	secret 			 				: Required, max : 255
+ * 	macadress 			 			: Required, max : 255
+ * 	pc_name 			 			: Required, max : 255
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -35,11 +37,15 @@ class Api extends BaseModel {
 	protected 	$fillable			= 	[
 											'client' 							,
 											'secret' 							,
+											'macaddress' 						,
+											'pc_name' 							,
 										];
 
 	protected 	$rules				= 	[
 											'client' 							=> 'required',
 											'secret' 							=> 'required',
+											'macaddress' 						=> 'required',
+											'pc_name' 							=> 'required',
 										];
 
 	public $searchable 				= 	[
@@ -48,6 +54,7 @@ class Api extends BaseModel {
 											
 											'client' 							=> 'Client', 
 											'secret' 							=> 'Secret', 
+											'macaddress' 						=> 'MacAddress', 
 											'withattributes' 					=> 'WithAttributes',
 										];
 
@@ -57,6 +64,7 @@ class Api extends BaseModel {
 											
 											'client' 							=> 'Must be string', 
 											'secret' 							=> 'Must be string', 
+											'macadress' 						=> 'Must be string', 
 											'withattributes' 					=> 'Must be array of relationship',
 										];
 
@@ -120,6 +128,15 @@ class Api extends BaseModel {
 		return $query->where('apis.id', $variable);
 	}
 	
+	public function scopeMacAddress($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('apis.macaddress', $variable);
+		}
+		return $query->where('apis.macaddress', $variable);
+	}
+
 	public function scopeClient($query, $variable)
 	{
 		return $query->where('client', $variable);

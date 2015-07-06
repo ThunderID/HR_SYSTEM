@@ -18,6 +18,8 @@ class CreateApisTable extends Migration {
 			$table->integer('branch_id')->unsigned()->index();
 			$table->string('client', 255);
 			$table->string('secret', 255);
+			$table->string('macaddress', 255);
+			$table->string('pc_name', 255);
 			$table->timestamps();
 			$table->softDeletes();
 		});

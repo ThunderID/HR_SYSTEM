@@ -25,8 +25,22 @@ class ApiObserver
 
 					return false;
 				}
+
+				$validator 				= Validator::make($model['attributes'], ['macaddress' => 'unique:apis,macaddress,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : '')], ['macaddress.macaddress' => 'MacAddress sudah terdaftar']);
+
+				if ($validator->passes())
+				{
+					return true;
+				}
+				
+				$model['errors'] 		= $validator->errors();
+				
+				return false;
 			}
-			return true;
+			else
+			{
+				return true;
+			}
 		}
 		else
 		{
