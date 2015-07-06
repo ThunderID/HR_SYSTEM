@@ -226,7 +226,7 @@ class ApiController extends BaseController
 			App::abort(404);
 		}
 
-		$attributes 							= Input::only('client', 'secret');
+		$attributes 							= Input::only('client', 'secret', 'pc_name', 'macaddress');
 
 		$errors 								= new MessageBag();
 
