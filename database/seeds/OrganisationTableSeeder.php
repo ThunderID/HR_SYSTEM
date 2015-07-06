@@ -19,6 +19,7 @@ class OrganisationTableSeeder extends Seeder
 				$data = new Organisation;
 				$data->fill([
 					'name'							=> $faker->company,
+					'code'							=> 'TDR'.$index,
 				]);
 
 				if (!$data->save())
