@@ -6,11 +6,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Document Model:
  * 	ID 								: Auto Increment, Integer, PK
  * 	person_id 						: Foreign Key From Person, Integer, Required
- * 	workleave_id 					: Foreign Key From Workleave, Integer, Required
+ * 	work_id 						: Foreign Key From Work, Integer, Required
+ * 	person_workleave_id 			: Foreign Key From Person Workleave, Integer, Required
  * 	created_by 						: Foreign Key From Person, Integer, Required
+ * 	name 		 					: Required, max 255
+ * 	notes 		 					:
  * 	start 		 					: Required, date
  * 	end  		 					: Required, date
- * 	is_default  		 			: Boolean
+ * 	quota  		 					: Required, numeric
+ * 	status  		 				: Required, in offer, annual, special, confirmed
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -31,32 +35,40 @@ use Str, Validator, DateTime, Exception;
 class PersonWorkleave extends BaseModel {
 
 	use \App\Models\Traits\BelongsTo\HasPersonTrait;
-	use \App\Models\Traits\BelongsTo\HasWorkleaveTrait;
+	use \App\Models\Traits\BelongsTo\HasPersonWorkleaveTrait;
 
 	public 		$timestamps 		= 	true;
 
-	protected 	$table 				=	'persons_workleaves';
+	protected 	$table 				=	'person_workleaves';
 
 	protected 	$fillable			= 	[
-											'workleave_id' 				,
+											'work_id' 					,
+											'person_workleave_id' 		,
 											'created_by' 				,
+											'name' 						,
+											'notes' 					,
 											'start' 					,
 											'end' 						,
-											'is_default' 				,
+											'quota' 					,
+											'status' 					,
 										];
 
 	protected 	$rules				= 	[
-											'workleave_id'				=> 'required|exists:tmp_workleaves,id',
+											'work_id'					=> 'required|exists:works,id',
+											'person_workleave_id'		=> 'required_if:status,confirmed',
 											'created_by'				=> 'required|exists:persons,id',
+											'name'						=> 'required|max:255',
 											'start'						=> 'required|date_format:"Y-m-d"',
 											'end'						=> 'required|date_format:"Y-m-d"',
-											'is_default'				=> 'boolean',
+											'quota'						=> 'required|numeric',
+											'status'					=> 'required|in:offer,annual,special,confirmed',
 										];
 
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'personid' 					=> 'PersonID', 
 											'workleaveid' 				=> 'WorkleaveID',
+											'status' 					=> 'Status',
 											 
 											'ondate' 					=> 'OnDate', 
 											'withattributes' 			=> 'WithAttributes'
@@ -66,6 +78,8 @@ class PersonWorkleave extends BaseModel {
 											'id' 						=> 'Could be array or integer', 
 											'personid' 					=> 'Could be array or integer', 
 											'workleaveid' 				=> 'Could be array or integer', 
+											'status' 					=> 'Could be array or string',
+
 											'ondate' 					=> 'Could be array or string (date)', 
 											'withattributes' 			=> 'Must be array of relationship',
 										];
@@ -113,9 +127,27 @@ class PersonWorkleave extends BaseModel {
 	{
 		if(is_array($variable))
 		{
-			return $query->whereIn('persons_workleaves.id', $variable);
+			return $query->whereIn('person_workleaves.id', $variable);
 		}
-		return $query->where('persons_workleaves.id', $variable);
+		return $query->where('person_workleaves.id', $variable);
+	}
+
+	public function scopeStatus($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('person_workleaves.status', $variable);
+		}
+		return $query->where('person_workleaves.status', $variable);
+	}
+
+	public function scopeWorkleaveID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('person_workleaves.person_workleave_id', $variable);
+		}
+		return $query->where('person_workleaves.person_workleave_id', $variable);
 	}
 	
 	public function scopeOnDate($query, $variable)

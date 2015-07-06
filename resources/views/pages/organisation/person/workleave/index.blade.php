@@ -38,7 +38,7 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.organisation.workleave.stat.left_quota', [
+	@include('widgets.organisation.person.workleave.left_quota', [
 			'widget_template'		=> 'panel',
 			'widget_title'			=> '<h4>Sisa Cuti "'.$person['name'].'"</h4>',
 			'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
@@ -65,7 +65,7 @@
 										'workleavelist'			=>
 										[
 											'organisation_id'	=> $data['id'],
-											'search'			=> array_merge(['personid' => $person['id'], 'withattributes' => ['workleave', 'createdby']], (isset($filtered['search']) ? $filtered['search'] : [])),
+											'search'			=> array_merge(['personid' => $person['id'], 'withattributes' => ['createdby', 'parent']], (isset($filtered['search']) ? $filtered['search'] : [])),
 											'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['start' => 'asc']),
 											'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
@@ -75,7 +75,7 @@
 									]
 	])
 
-	{!! Form::open(array('route' => array('hr.workleaves.delete', 0),'method' => 'DELETE')) !!}
+	{!! Form::open(array('route' => array('hr.person.workleaves.delete', 0),'method' => 'DELETE')) !!}
 		@include('widgets.modal.delete', [
 			'widget_template'		=> 'plain_no_title'
 		])

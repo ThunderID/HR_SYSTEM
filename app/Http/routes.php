@@ -63,12 +63,6 @@ Route::group(['middleware' => 'csrfverify'], function()
 			Route::resource('calendars',			'CalendarController',								['names' => ['index' => 'hr.calendars.index', 'create' => 'hr.calendars.create', 'store' => 'hr.calendars.store', 'show' => 'hr.calendars.show', 'edit' => 'hr.calendars.edit', 'update' => 'hr.calendars.update', 'destroy' => 'hr.calendars.delete']]);
 
 			// ------------------------------------------------------------------------------------
-			// WORKLEAVES RESOURCE
-			// ------------------------------------------------------------------------------------
-
-			Route::resource('workleaves',			'WorkleaveController',								['names' => ['index' => 'hr.workleaves.index', 'create' => 'hr.workleaves.create', 'store' => 'hr.workleaves.store', 'show' => 'hr.workleaves.show', 'edit' => 'hr.workleaves.edit', 'update' => 'hr.workleaves.update', 'destroy' => 'hr.workleaves.delete']]);
-
-			// ------------------------------------------------------------------------------------
 			// DOCUMENTS RESOURCE
 			// ------------------------------------------------------------------------------------
 
@@ -143,15 +137,6 @@ Route::group(['middleware' => 'csrfverify'], function()
 			// ------------------------------------------------------------------------------------
 
 			Route::resource('charts',			'ChartController',										['names' => ['index' => 'hr.calendar.charts.index', 'create' => 'hr.calendar.charts.create', 'store' => 'hr.calendar.charts.store', 'show' => 'hr.calendar.charts.show', 'edit' => 'hr.calendar.charts.edit', 'update' => 'hr.calendar.charts.update', 'destroy' => 'hr.calendar.charts.delete']]);
-		});
-
-		Route::group(['namespace' => 'Workleave\\', 'prefix' => 'workleave'], function() 
-		{
-			// ------------------------------------------------------------------------------------
-			// CHARTS FOR WORKLEAVE RESOURCE
-			// ------------------------------------------------------------------------------------
-
-			Route::resource('charts',			'ChartController',										['names' => ['index' => 'hr.workleave.charts.index', 'create' => 'hr.workleave.charts.create', 'store' => 'hr.workleave.charts.store', 'show' => 'hr.workleave.charts.show', 'edit' => 'hr.workleave.charts.edit', 'update' => 'hr.workleave.charts.update', 'destroy' => 'hr.workleave.charts.delete']]);
 		});
 
 		Route::group(['namespace' => 'Document\\', 'prefix' => 'document'], function() 
@@ -253,7 +238,7 @@ Route::group(['namespace' => 'Organisation\\Branch\\Chart\\', 'prefix' => 'chart
 // ------------------------------------------------------------------------------------
 Route::group(['namespace' => 'Organisation\\Person\\'], function() 
 {
-	Route::post('api/activity/logs/',		['uses' => 'LogController@store',					'as' => 'hr.log.store']);
+	Route::post('api/activity/logs/',			['uses' => 'LogController@store',					'as' => 'hr.log.store']);
 });
 
 Route::group(['namespace' => 'Auth\\'], function() 
@@ -261,6 +246,10 @@ Route::group(['namespace' => 'Auth\\'], function()
 	Route::post('api/tracker/setting/',			['uses' => 'TrackerController@postlogin',			'as' => 'hr.tracker.post']);
 });
 
+Route::group(['namespace' => 'Auth\\'], function() 
+{
+	Route::post('api/tracker/test/',			['uses' => 'TrackerController@testlogin',			'as' => 'hr.tracker.test']);
+});
 
 Blade::extend(function ($value, $compiler)
 {

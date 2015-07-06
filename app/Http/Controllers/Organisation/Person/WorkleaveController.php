@@ -237,23 +237,44 @@ class WorkleaveController extends BaseController
 
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
+		$search['currentwork'] 					= null;
 		$sort 									= ['name' => 'asc'];
 		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
 
-		if(!$contents->meta->success)
+		if(!$contents->meta->success && !isset($contents->data->works[0]))
 		{
 			App::abort(404);
 		}
 
-		$attributes 							= Input::only('workleave_id', 'is_default');
-		if(Input::has('is_default'))
+		$attributes 							= Input::only('name', 'quota', 'status', 'notes');
+
+		if(strtolower($attributes['status'])=='confirmed')
 		{
-			$attributes['is_default'] 			= true;
+			$id 								= null;
+			if(Input::has('confirmed_id'))
+			{
+				$confirmed_id 					= Input::get('confirmed_id');
+			}
+			else
+			{
+				App::abort(404);
+			}
+
+			$old_offers 						= $this->dispatch(new Getting(new PersonWorkleave, ['id' => $confirmed_id], [], 1, 1));
+			$offered 							= json_decode($old_offers);
+		
+			if(!$offered->meta->success)
+			{
+				App::abort(404);
+			}
+
+			$offers 							= json_decode(json_encode($offered->data), true);
 		}
-		else
+
+		if(Input::has('person_workleave_id') && Input::get('person_workleave_id')!='')
 		{
-			$attributes['is_default'] 			= false;
+			$attributes['person_workleave_id'] 	= Input::get('person_workleave_id');
 		}
 
 		if(Input::has('start'))
@@ -265,6 +286,7 @@ class WorkleaveController extends BaseController
 			$attributes['end'] 					= date('Y-m-d', strtotime(Input::get('end')));
 		}
 
+		$attributes['work_id'] 					= $contents->data->works[0]->id;
 		$attributes['created_by'] 				= Session::get('loggedUser');
 
 		$errors 								= new MessageBag();
@@ -288,6 +310,34 @@ class WorkleaveController extends BaseController
 				else
 				{
 					$errors->add('Person', $value);
+				}
+			}
+		}
+		else
+		{
+			if(isset($offers))
+			{
+				$offers['person_workleave_id']	= $is_success->data->id;
+
+				$content 						= $this->dispatch(new Saving(new PersonWorkleave, $offers, $offers['id']));
+				$is_success_2 					= json_decode($content);
+
+				if(!$is_success_2->meta->success)
+				{
+					foreach ($is_success_2->meta->errors as $key => $value) 
+					{
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Person', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Person', $value);
+						}
+					}
 				}
 			}
 		}

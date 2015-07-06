@@ -4,7 +4,7 @@
         <li @if(Input::get('org_id')==$value) 
             @if(isset($person['id'])||(Input::has('person_id'))) class="active"  @endif 
         @endif >
-            <a href="javascript:;" @if(Input::get('org_id')==$value) @if(isset($person['id'])||(Input::has('person_id'))) class="active" @endif @endif><i class="fa fa-briefcase fa-fw"></i>Data<span class="fa arrow"></span></a>
+            <a href="javascript:;" @if(Input::get('org_id')==$value) @if(isset($person['id'])||(Input::has('person_id'))) class="active" @endif @endif><i class="fa fa-briefcase fa-fw"></i> Data<span class="fa arrow"></span></a>
             <ul class="nav nav-third-level">
                 <li @if(isset($person['id'])||(Input::get('person_id'))) class="active" @endif>
                     <a @if(Input::get('org_id')==$value) @if(Input::has('person_id')) class="active" @endif @endif href="javascript:;"><i class="fa fa-users fa-fw"></i> Data Karyawan <span class="fa arrow"></span></a>

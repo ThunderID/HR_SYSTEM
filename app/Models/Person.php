@@ -460,24 +460,19 @@ class Person extends BaseModel {
 
 	public function scopeGlobalWage($query, $variable)
 	{
-			// $query =  $query->selectraw('persons.*')
-			// 		->currentwork($variable['organisationid'])
-			// 		->selectraw('(SELECT sum(if(modified_status="SS" || modified_status="SL" || modified_status="CN" || modified_status="CB" || modified_status="CI" || modified_status="UL" || modified_status="AS", 1, if(actual_status="AS", 1, 0 ))) FROM process_logs WHERE process_logs.person_id = persons.id ) as minus_quotas')
-			// 		->selectraw('sum(if(persons_workleaves.is_default = true, quota, 0)) as quotas')
-			// 		->selectraw('sum(if(persons_workleaves.is_default = false, quota, 0)) as plus_quotas')
-			// 		->leftjoin('persons_workleaves', 'persons_workleaves.person_id', '=', 'persons.id')
-			// 		->leftjoin('tmp_workleaves', 'persons_workleaves.workleave_id', '=', 'tmp_workleaves.id')
-			// 		;
 		$query =  $query->selectraw('persons.*')
 					->currentwork($variable['organisationid'])
 					->selectraw('branches.name as branch')
-					->selectraw('(SELECT sum(if(persons_workleaves.is_default=true, quota, 0)) FROM persons_workleaves join tmp_workleaves on tmp_workleaves.id = persons_workleaves.workleave_id WHERE persons_workleaves.person_id = persons.id and date_format(date(persons_workleaves.start),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).' and date_format(date(persons_workleaves.end),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][1])).') as quotas')
-					->selectraw('(SELECT sum(if(persons_workleaves.is_default=false, quota, 0)) FROM persons_workleaves join tmp_workleaves on tmp_workleaves.id = persons_workleaves.workleave_id WHERE persons_workleaves.person_id = persons.id and date_format(date(persons_workleaves.start),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).' and date_format(date(persons_workleaves.end),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).') as plus_quotas')
+					->selectraw('(SELECT sum(if(person_workleaves.status="annual", abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][1])).') as quotas')
+					->selectraw('(SELECT sum(if(person_workleaves.status="special", abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][1])).') as plus_quotas')
+					->selectraw('(SELECT sum(if(person_workleaves.status="confirmed", abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][1])).') as minus_quotas')
+					// ->selectraw('sum(if(person_workleaves.status="annual", abs(person_workleaves.quota), 0)) as quotas')
+					// ->selectraw('sum(if(person_workleaves.status="special", abs(person_workleaves.quota), 0)) as plus_quotas')
 					->selectraw('charts.name as position')
 					->selectraw('charts.tag as department')
-					->selectraw('sum(
-									if(modified_status="SS" || modified_status="SL" || modified_status="CN" || modified_status="CB" || modified_status="CI" || modified_status="UL" || modified_status="AS", 
-										1, if(actual_status="AS", 1, 0 ))) as minus_quotas')
+					// ->selectraw('sum(
+					// 				if(modified_status="SS" || modified_status="SL" || modified_status="CN" || modified_status="CB" || modified_status="CI" || modified_status="UL" || modified_status="AS", 
+					// 					1, if(actual_status="AS", 1, 0 ))) as minus_quotas')
 					->leftjoin('process_logs', 'process_logs.person_id', '=', 'persons.id')
 					->leftjoin('works', 'process_logs.work_id', '=', 'works.id')
 					->leftjoin('charts', 'works.chart_id', '=', 'charts.id')

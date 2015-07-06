@@ -29,7 +29,7 @@
 @section('content_body')
 	<div class="row">
 		<div class="col-sm-6">
-			@include('widgets.organisation.workleave.stat.left_quota', [
+			@include('widgets.organisation.person.workleave.left_quota', [
 				'widget_template'		=> 'plain',
 				'widget_title'			=> 'Sisa Cuti "'.$person['name'].'"',
 				'widget_title_class'	=> 'text-uppercase ml-10 mt-20',

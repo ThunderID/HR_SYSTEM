@@ -12,32 +12,50 @@ class PersonWorkleaveTableSeeder extends Seeder
 	function run()
 	{
 
-		DB::table('persons_workleaves')->truncate();
+		DB::table('person_workleaves')->truncate();
 		$faker 										= Factory::create();
 		$persons 									= Person::count();
-		$workleaves 								= Workleave::count();
+		$status 									= ['offer', 'annual', 'special', 'confirmed'];
+		$quota 										= [2, 7, 14, 30];
 		try
 		{
-			foreach(range(1, $persons) as $index)
+			foreach(range(1, $persons * 2) as $index)
 			{
-				$workleave 							= rand(1, $workleaves);
-				$person 							= Person::find($index);
+				$rand 								= rand(0, 3);
+				$person 							= Person::where('id', ($index%50) + 1)->with(['works' => function($q){$q->wherenull('end');}])->first();
 
-				$data 								= new PersonWorkleave;
-				$data->fill([
-					'person_id'						=> 1,
-					'workleave_id'					=> $workleave,
-					'start'							=> date('Y-m-d',strtotime('first day of january 2015')),
-					'end'							=> date('Y-m-d',strtotime('last day of december 2015')),
-					'is_default'					=> true,
-				]);
-
-				$data->Person()->associate($person);
-
-				if (!$data->save())
+				if(isset($person->works[0]))
 				{
-					print_r($data->getError());
-					exit;
+					if($status[$rand]=='annual')
+					{
+						$start 						= date('Y-m-d',strtotime('first day of january 2015'));
+						$end 						= date('Y-m-d',strtotime('last day of december 2015'));
+					}
+					else
+					{
+						$start 						= date('Y-m-d',strtotime(rand(1,12).'-'.rand(1,28).'-2015'));
+						$end 						= date('Y-m-d',strtotime($start.' + '.$quota[$rand].' days'));
+					}
+
+					$data 								= new PersonWorkleave;
+					$data->fill([
+						'created_by'					=> 1,
+						'work_id'						=> $person->works[0]->id,
+						'name'							=> 'Cuti '.$status[$rand].' 2015',
+						'notes'							=> 'Cuti '.$status[$rand].' 2015',
+						'start'							=> $start,
+						'end'							=> $end,
+						'status'						=> $status[$rand],
+						'quota'							=> $quota[$rand],
+					]);
+
+					$data->Person()->associate($person);
+
+					if (!$data->save())
+					{
+						print_r($data->getError());
+						exit;
+					}
 				}
 			} 
 		}

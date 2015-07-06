@@ -8,9 +8,6 @@
                 <li @if(isset($widget_options['sidebar']['active_calendar'])&&Input::get('org_id')==$value) class="active-li" @endif>
                     <a href="{{route('hr.calendars.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_calendar'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-calendar fa-fw"></i> Kalender</a>
                 </li>
-                <li @if(isset($widget_options['sidebar']['active_cuti'])&&Input::get('org_id')==$value) class="active-li" @endif>
-                    <a href="{{route('hr.workleaves.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_cuti'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-calendar-o fa-fw"></i> Template Cuti</a>
-                </li>
                 <li @if(isset($widget_options['sidebar']['active_document'])&&Input::get('org_id')==$value) class="active-li" @endif>
                     <a href="{{route('hr.documents.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_document'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-archive fa-fw"></i> Template Dokumen</a>
                 </li>
@@ -22,7 +19,7 @@
         <li @if(Input::get('org_id')==$value) 
             @if(isset($person['id'])||(Input::has('person_id'))) class="active"  @endif 
         @endif >
-            <a href="javascript:;" @if(Input::get('org_id')==$value) @if(isset($person['id'])||(Input::has('person_id'))) class="active" @endif @endif><i class="fa fa-briefcase fa-fw"></i>Data<span class="fa arrow"></span></a>
+            <a href="javascript:;" @if(Input::get('org_id')==$value) @if(isset($person['id'])||(Input::has('person_id'))) class="active" @endif @endif><i class="fa fa-briefcase fa-fw"></i> Data<span class="fa arrow"></span></a>
             <ul class="nav nav-third-level">
                   <li @if(isset($person['id'])||(Input::get('person_id'))) class="active" @endif>
                     <a @if(Input::get('org_id')==$value) @if(Input::has('person_id')) class="active" @endif @endif href="javascript:;"><i class="fa fa-users fa-fw"></i> Data Karyawan <span class="fa arrow"></span></a>

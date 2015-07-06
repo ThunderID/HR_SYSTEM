@@ -50,6 +50,7 @@ trait HasWorksOnTrait {
 		{
 			return $query->whereDoesntHave('works', function($q)use($variable){$q;});
 		}
+		
 		return $query->whereHas('works', function($q)use($variable){$q;});
 	}
 

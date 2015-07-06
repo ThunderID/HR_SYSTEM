@@ -23,6 +23,11 @@ trait HasPersonWorkleavesTrait {
 		return $this->hasMany('App\Models\PersonWorkleave');
 	}
 
+	public function Childs()
+	{
+		return $this->hasMany('App\Models\PersonWorkleave');
+	}
+
 	public function ScopePersonWorkleaveID($query, $variable)
 	{
 		return $query->whereHas('personworkleaves', function($q)use($variable){$q->id($variable);});
