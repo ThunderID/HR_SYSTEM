@@ -63,10 +63,7 @@
 	
 	<script type="text/javascript">
 		var cal_link = "{!! route('hr.person.schedule.ajax',['org_id' => $data['id'],'person_id' => $person['id']]) !!}";
-	</script>
-
-	@include('widgets.common.kalenderLegend')
-
+	</script>	
 @overwrite
 
 @section('content_footer')

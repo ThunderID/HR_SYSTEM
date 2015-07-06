@@ -236,7 +236,7 @@ class PersonController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.attendance.persons.index', ['person_id' => $person_id, 'org_id' => $org_id])->with('alert_success', 'Karir karyawan "' . $contents->data->name. '" sudah disimpan');
+			return Redirect::route('hr.attendance.persons.index', array_merge(['person_id' => $person_id, 'org_id' => $org_id], Input::all()))->with('alert_success', 'Karir karyawan "' . $contents->data->name. '" sudah disimpan');
 		}
 		
 		DB::rollback();

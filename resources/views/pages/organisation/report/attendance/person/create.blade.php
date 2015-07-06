@@ -22,8 +22,8 @@
 											'sort'				=> [],
 											'page'				=> 1,
 											'per_page'			=> 100,
-											'pengaturan'		=> 'yes',
-											'active_attendance_report'	=> 'yes'
+											'laporan'			=> 'yes',
+											'active_report_attendances'	=> 'yes'
 										]
 									]
 	])
@@ -38,7 +38,7 @@
 		'widget_options'	=> 	[
 									'processlogslist'			=>
 									[
-										'form_url'			=> route('hr.attendance.persons.store', ['id' => $id, 'org_id' => $data['id'], 'person_id' => $person['id']]),
+										'form_url'			=> route('hr.attendance.persons.store', array_merge(['id' => $id, 'org_id' => $data['id'], 'person_id' => $person['id']], Input::all())),
 										'new'				=> (is_null($id) ? true : false),
 										'organisation_id'	=> $data['id'],
 										'search'			=> ['id' => $id],

@@ -24,8 +24,7 @@
 										'sort'				=> ['name' => 'asc'],
 										'page'				=> 1,
 										'per_page'			=> 100,
-										'laporan'			=> 'yes',
-										'active_wages_report' => 'yes',
+										'laporan'			=> 'yes',										
 										'active_report_wages' => 'yes'
 									]
 								]
