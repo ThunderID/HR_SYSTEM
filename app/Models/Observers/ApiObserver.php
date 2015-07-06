@@ -26,7 +26,7 @@ class ApiObserver
 					return false;
 				}
 
-				$validator 				= Validator::make($model['attributes'], ['macaddress' => 'unique:apis,macaddress,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : ''), 'pc_name' => 'unique:apis,pc_name,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : '')], ['macaddress.unique' => 'MacAddress sudah terdaftar', 'pc_name.unique' => 'Nama PC sudah terdaftar']);
+				$validator 				= Validator::make($model['attributes'], ['workstation_address' => 'unique:apis,workstation_address,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : ''), 'workstation_name' => 'unique:apis,workstation_name,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : '')], ['workstation_address.unique' => 'MacAddress sudah terdaftar', 'workstation_name.unique' => 'Nama PC sudah terdaftar']);
 
 				if ($validator->passes())
 				{

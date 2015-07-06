@@ -8,7 +8,7 @@
  * 	client 			 				: Required, unique, max : 255
  * 	secret 			 				: Required, max : 255
  * 	macadress 			 			: Required, max : 255
- * 	pc_name 			 			: Required, max : 255
+ * 	workstation_name 			 			: Required, max : 255
  * 	tr_version 			 			: Required, max : 255
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
@@ -38,16 +38,16 @@ class Api extends BaseModel {
 	protected 	$fillable			= 	[
 											'client' 							,
 											'secret' 							,
-											'macaddress' 						,
-											'pc_name' 							,
+											'workstation_address' 				,
+											'workstation_name' 					,
 											'tr_version' 						,
 										];
 
 	protected 	$rules				= 	[
 											'client' 							=> 'required',
 											'secret' 							=> 'required',
-											'macaddress' 						=> 'required',
-											'pc_name' 							=> 'required',
+											'workstation_address' 				=> 'required',
+											'workstation_name' 					=> 'required',
 											'tr_version' 						=> '',
 										];
 
@@ -57,7 +57,7 @@ class Api extends BaseModel {
 											
 											'client' 							=> 'Client', 
 											'secret' 							=> 'Secret', 
-											'macaddress' 						=> 'MacAddress', 
+											'workstationaddress' 				=> 'WorkstationAddress', 
 											'withattributes' 					=> 'WithAttributes',
 										];
 
@@ -131,13 +131,13 @@ class Api extends BaseModel {
 		return $query->where('apis.id', $variable);
 	}
 	
-	public function scopeMacAddress($query, $variable)
+	public function scopeWorkstationAddress($query, $variable)
 	{
 		if(is_array($variable))
 		{
-			return $query->whereIn('apis.macaddress', $variable);
+			return $query->whereIn('apis.workstation_address', $variable);
 		}
-		return $query->where('apis.macaddress', $variable);
+		return $query->where('apis.workstation_address', $variable);
 	}
 
 	public function scopeClient($query, $variable)

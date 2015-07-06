@@ -21,18 +21,32 @@ class TrackerController extends BaseController {
 			return Response::json(['message' => 'Server Error'], 500);
 		}		
 
-		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['tr_ver']) || !isset($attributes['application']['api']['macaddress']) || !isset($attributes['application']['api']['email']) || !isset($attributes['application']['api']['password']))
+		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['tr_ver']) || !isset($attributes['application']['api']['station_id']) || !isset($attributes['application']['api']['email']) || !isset($attributes['application']['api']['password']))
 		{
 			return Response::json(['message' => 'Server Error'], 500);
 		}
 
 		//cek API key & secret
-		$results 								= $this->dispatch(new Getting(new API, ['client' => $attributes['application']['api']['client'], 'secret' => $attributes['application']['api']['secret'], 'macaddress' => $attributes['application']['api']['macaddress'], 'withattributes' => ['branch']], [], 1, 1));
+		$results 								= $this->dispatch(new Getting(new API, ['client' => $attributes['application']['api']['client'], 'secret' => $attributes['application']['api']['secret'], 'workstationaddress' => $attributes['application']['api']['station_id'], 'withattributes' => ['branch']], [], 1, 1));
 		
 		$content 								= json_decode($results);
 		if(!$content->meta->success)
 		{
 			return Response::json(['message' => 'Server Error'], 500);
+		}
+
+		if(strtolower($attributes['application']['api']['tr_ver'])!=strtolower($content->data->tr_version))
+		{
+			$apiattributes 						= json_decode(json_encode($content->data), true);
+			$apiattributes['tr_version']		= strtolower($attributes['application']['api']['tr_ver']);
+
+			$contents 							= $this->dispatch(new Saving(new API, $apiattributes, $apiattributes['id'], new Branch, $apiattributes['branch_id']));
+			$is_success 						= json_decode($contents);
+			
+			if(!$is_success->meta->success)
+			{
+				return Response::json(['message' => 'Server Error'], 500);
+			}
 		}
 
 		$organisationid 						= $content->data->branch->organisation_id;
@@ -44,20 +58,6 @@ class TrackerController extends BaseController {
 
 		if($content->meta->success)
 		{
-			if(strtolower($attributes['application']['api']['tr_ver'])!=strtolower($content->data->tr_version))
-			{
-				$apiattributes 						= json_decode(json_encode($content->data), true);
-				$apiattributes['tr_version']		= strtolower($attributes['application']['api']['tr_ver']);
-
-				$content 							= $this->dispatch(new Saving(new API, $apiattributes, $apiattributes['id'], new Branch, $apiattributes['branch_id']));
-				$is_success 						= json_decode($content);
-				
-				if(!$is_success->meta->success)
-				{
-					return Response::json(['message' => 'Server Error'], 500);
-				}
-			}
-
 			return Response::json(['message' => 'Sukses'], 200);
 		}
 
@@ -75,13 +75,13 @@ class TrackerController extends BaseController {
 			return Response::json(['message' => 'Server Error'], 500);
 		}		
 
-		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['tr_ver']) || !isset($attributes['application']['api']['macaddress']))
+		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['tr_ver']) || !isset($attributes['application']['api']['station_id']))
 		{
 			return Response::json(['message' => 'Server Error'], 500);
 		}
 
 		//cek API key & secret
-		$results 								= $this->dispatch(new Getting(new API, ['client' => $attributes['application']['api']['client'], 'secret' => $attributes['application']['api']['secret'], 'macaddress' => $attributes['application']['api']['macaddress'], 'withattributes' => ['branch']], [], 1, 1));
+		$results 								= $this->dispatch(new Getting(new API, ['client' => $attributes['application']['api']['client'], 'secret' => $attributes['application']['api']['secret'], 'workstationaddress' => $attributes['application']['api']['station_id'], 'withattributes' => ['branch']], [], 1, 1));
 		
 		$content 								= json_decode($results);
 		if(!$content->meta->success)

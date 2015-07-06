@@ -22,8 +22,8 @@ class ApiTableSeeder extends Seeder
 				$data->fill([
 					'client'						=> '123456789-'.$index,
 					'secret'						=> '123456789',
-					'macaddress'					=> 'MACA-'.$index,
-					'pc_name'						=> 'CAB-'.$index,
+					'workstation_address'			=> 'MACA-'.$index,
+					'workstation_name'				=> 'CAB-'.$index,
 					'tr_version'					=> 'V1.0',
 				]);
 
