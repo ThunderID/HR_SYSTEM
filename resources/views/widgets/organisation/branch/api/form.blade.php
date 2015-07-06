@@ -23,6 +23,20 @@
 					</div>
 				</div>
 			</div>	
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="control-label">MAC ADDRESS</label>
+						{!!Form::input('text', 'macaddress', $ApiComposer['widget_data']['apilist']['api']['macaddress'], ['class' => 'form-control', 'tabindex' => '1'])!!}
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group">				
+						<label class="control-label">PC Name</label>
+						{!!Form::input('text', 'pc_name', $ApiComposer['widget_data']['apilist']['api']['pc_name'], ['class' => 'form-control', 'tabindex' => '2'])!!}
+					</div>
+				</div>
+			</div>	
 			<div class="form-group text-right">				
 				<a href="{{ $ApiComposer['widget_data']['apilist']['route_back'] }}" class="btn btn-default mr-5" tabindex="4">Batal</a>
 				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="3">
