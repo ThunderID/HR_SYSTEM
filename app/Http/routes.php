@@ -125,13 +125,6 @@ Route::group(['middleware' => 'csrfverify'], function()
 
 		Route::group(['namespace' => 'Calendar\\', 'prefix' => 'calendar'], function() 
 		{
-
-			// ------------------------------------------------------------------------------------
-			// SCHEDULES FOR CALENDAR RESOURCE
-			// ------------------------------------------------------------------------------------
-
-			Route::resource('schedules',		'ScheduleController',									['names' => ['index' => 'hr.calendar.schedules.index', 'create' => 'hr.calendar.schedules.create', 'store' => 'hr.calendar.schedules.store', 'show' => 'hr.calendar.schedules.show', 'edit' => 'hr.calendar.schedules.edit', 'update' => 'hr.calendar.schedules.update', 'destroy' => 'hr.calendar.schedules.delete']]);
-
 			// ------------------------------------------------------------------------------------
 			// CHARTS FOR CALENDAR RESOURCE
 			// ------------------------------------------------------------------------------------
@@ -174,12 +167,6 @@ Route::group(['middleware' => 'csrfverify'], function()
 			// ------------------------------------------------------------------------------------
 
 			Route::resource('schedules',		'ScheduleController',								['names' => ['index' => 'hr.person.schedules.index', 'create' => 'hr.person.schedules.create', 'store' => 'hr.person.schedules.store', 'show' => 'hr.person.schedules.show', 'edit' => 'hr.person.schedules.edit', 'update' => 'hr.person.schedules.update', 'destroy' => 'hr.person.schedules.delete']]);
-
-			// ------------------------------------------------------------------------------------
-			// AJAX SCHEDULES FOR PERSON
-			// ------------------------------------------------------------------------------------
-
-			Route::any('schedules-list',		['uses' => 'ScheduleController@ajax',				'as' => 'hr.person.schedule.ajax']);
 
 			// ------------------------------------------------------------------------------------
 			// WORKLEAVES FOR PERSON RESOURCE
@@ -231,6 +218,25 @@ Route::group(['namespace' => 'Organisation\\Branch\\Chart\\', 'prefix' => 'chart
 	// ------------------------------------------------------------------------------------
 
 	Route::resource('authentications',	'AuthenticationController',						['names' => ['index' => 'hr.chart.authentications.index', 'create' => 'hr.chart.authentications.create', 'store' => 'hr.chart.authentications.store', 'show' => 'hr.chart.authentications.show', 'edit' => 'hr.chart.authentications.edit', 'update' => 'hr.chart.authentications.update', 'destroy' => 'hr.chart.authentications.delete']]);
+});
+
+Route::group(['namespace' => 'Organisation\\Calendar\\', 'prefix' => 'calendar'], function() 
+{
+
+	// ------------------------------------------------------------------------------------
+	// SCHEDULES FOR CALENDAR RESOURCE
+	// ------------------------------------------------------------------------------------
+
+	Route::resource('schedules',		'ScheduleController',									['names' => ['index' => 'hr.calendar.schedules.index', 'create' => 'hr.calendar.schedules.create', 'store' => 'hr.calendar.schedules.store', 'show' => 'hr.calendar.schedules.show', 'edit' => 'hr.calendar.schedules.edit', 'update' => 'hr.calendar.schedules.update', 'destroy' => 'hr.calendar.schedules.delete']]);
+});
+
+Route::group(['namespace' => 'Organisation\\Person\\', 'prefix' => 'person'], function() 
+{
+	// ------------------------------------------------------------------------------------
+	// AJAX SCHEDULES FOR PERSON
+	// ------------------------------------------------------------------------------------
+
+	Route::any('schedules-list',		['uses' => 'ScheduleController@ajax',				'as' => 'hr.person.schedule.ajax']);
 });
 
 // ------------------------------------------------------------------------------------
