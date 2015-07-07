@@ -83,6 +83,12 @@ class TrackerController extends BaseController {
 		//cek apa ada aplication
 		if(!$attributes['application'])
 		{
+			$filename                       	= storage_path().'/logs/appid.log';
+			$fh                             	= fopen($filename, 'a+'); 
+			$template 							= date('Y-m-d H:i:s : No Log : ');
+	        fwrite($fh, $template); 
+	        fclose($fh);
+
 			return Response::json(['message' => 'Server Error'], 500);
 		}		
 
