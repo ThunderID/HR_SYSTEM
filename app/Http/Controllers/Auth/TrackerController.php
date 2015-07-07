@@ -113,6 +113,12 @@ class TrackerController extends BaseController {
 			}
 			else
 			{
+				$filename                       	= storage_path().'/logs/appid.log';
+				$fh                             	= fopen($filename, 'a+'); 
+				$template 							= date('Y-m-d H:i:s : First Konek : ').json_encode($attributes['application']['api'])."\n";
+		        fwrite($fh, $template); 
+		        fclose($fh);
+
 				return Response::json(['message' => 'Konek'], 200);
 			}
 		}
