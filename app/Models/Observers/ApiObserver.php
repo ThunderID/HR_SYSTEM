@@ -26,16 +26,16 @@ class ApiObserver
 					return false;
 				}
 
-				$validator 				= Validator::make($model['attributes'], ['workstation_address' => 'unique:apis,workstation_address,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : ''), 'workstation_name' => 'unique:apis,workstation_name,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : '')], ['workstation_address.unique' => 'MacAddress sudah terdaftar', 'workstation_name.unique' => 'Nama PC sudah terdaftar']);
+				// $validator 				= Validator::make($model['attributes'], ['workstation_address' => 'unique:apis,workstation_address,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : ''), 'workstation_name' => 'unique:apis,workstation_name,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : '')], ['workstation_address.unique' => 'MacAddress sudah terdaftar', 'workstation_name.unique' => 'Nama PC sudah terdaftar']);
 
-				if ($validator->passes())
-				{
-					return true;
-				}
+				// if ($validator->passes())
+				// {
+				// 	return true;
+				// }
 				
-				$model['errors'] 		= $validator->errors();
+				// $model['errors'] 		= $validator->errors();
 
-				return false;
+				// return false;
 			}
 			else
 			{
