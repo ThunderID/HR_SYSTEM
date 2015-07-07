@@ -78,12 +78,6 @@ class TrackerController extends BaseController {
 
 	function testLogin()
 	{
-		$filename                       	= storage_path().'/logs/appid.log';
-		$fh                             	= fopen($filename, 'a+'); 
-		$template 							= date('Y-m-d H:i:s : No Log : ');
-        fwrite($fh, $template); 
-        fclose($fh);
-
 		$attributes 							= Input::only('application');
 
 		//cek apa ada aplication
@@ -100,12 +94,6 @@ class TrackerController extends BaseController {
 
 		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['tr_ver']) || !isset($attributes['application']['api']['station_id']))
 		{
-			$filename                       	= storage_path().'/logs/appid.log';
-			$fh                             	= fopen($filename, 'a+'); 
-			$template 							= date('Y-m-d H:i:s : No Client or Secret or tr version or station id : ');
-	        fwrite($fh, $template); 
-	        fclose($fh);
-
 			return Response::json(['message' => 'Server Error'], 500);
 		}
 
@@ -131,12 +119,6 @@ class TrackerController extends BaseController {
 			}
 			else
 			{
-				$filename                       	= storage_path().'/logs/appid.log';
-				$fh                             	= fopen($filename, 'a+'); 
-				$template 							= date('Y-m-d H:i:s : First Konek : ').json_encode($attributes['application']['api'])."\n";
-		        fwrite($fh, $template); 
-		        fclose($fh);
-
 				return Response::json(['message' => 'Konek'], 200);
 			}
 		}
