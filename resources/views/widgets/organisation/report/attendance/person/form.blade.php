@@ -19,7 +19,7 @@
 							<option value="HD">HD - Hadir Cacat Dengan Ijin Dinas</option>
 							<option value="HP">HP - Hadir Cacat Dengan Ijin Pulang Cepat</option>
 							<option value="HT">HT - Hadir Cacat Dengan Ijin Datang Terlambat</option>
-						@elseif (($ProcessLogComposer['widget_data']['processlogslist']['processlog']['actual_status']=='AS'))
+						@elseif (($ProcessLogComposer['widget_data']['processlogslist']['processlog']['actual_status']=='AS')||($ProcessLogComposer['widget_data']['processlogslist']['processlog']['actual_status']=='CB')||($ProcessLogComposer['widget_data']['processlogslist']['processlog']['actual_status']=='CI')||($ProcessLogComposer['widget_data']['processlogslist']['processlog']['actual_status']=='CN')||($ProcessLogComposer['widget_data']['processlogslist']['processlog']['actual_status']=='DN')||($ProcessLogComposer['widget_data']['processlogslist']['processlog']['actual_status']=='SL')||($ProcessLogComposer['widget_data']['processlogslist']['processlog']['actual_status']=='SS')||($ProcessLogComposer['widget_data']['processlogslist']['processlog']['actual_status']=='UL'))
 							<option value="AS">AS - Ketidakhadiran Tanpa Penjelasan</option>
 							<option value="CB">CB - Cuti Bersama</option>
 							<option value="CI">CI - Cuti Istimewa</option>
