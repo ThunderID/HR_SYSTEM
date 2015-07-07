@@ -57,42 +57,48 @@
 				element.attr('data-target', event.data_target);
 				element.attr('data-toggle', 'modal');
 				element.attr('href', 'javascript:;');
+			} else if (event.mode_info) {
+				element.attr('href', 'javascript:;');
 			}
 
 			if (event.mode == 'create') {
-				element.attr('data-add-action', event.add_action);				
+				element.attr('data-add-action', event.add_action);		
 			}
 			else {				
+				if (event.mode_info != 'log') {
+					if (event.status=="presence_indoor") {
+						event.status = 'Hadir';
+					} 
+					else if (event.status=="presence_outdoor") {
+						event.status = 'Dinas Luar';	
+					}
+					else if (event.status=="absence_not_workleave") {
+						event.status = 'Absen, Tidak Mengurangi Cuti';		
+					}
+					else if (event.status=="absence_workleave") {
+						event.status = 'Absen, Mengurangi Cuti';	
+					}
+				}
+				else {
+					element.attr('style', 'cursor:text');
+				}
+
 				element.attr('data-id', event.id);
 				element.attr('data-title', event.title);				
 				element.attr('data-toggle-tooltip', 'tooltip');
 				element.attr('data-placement', 'bottom');
 				element.attr('data-edit-action', event.ed_action);
 				element.attr('data-delete-action', event.del_action);
-				element.find('.fc-title').parent().addClass('border-schedule');
+				// element.find('.fc-title').parent().addClass('border-schedule');
 
-				if (event.status=="presence_indoor") {
-					event.status = 'Hadir';
-				} 
-				else if (event.status=="presence_outdoor") {
-					event.status = 'Dinas Luar';	
-				}
-				else if (event.status=="absence_not_workleave") {
-					event.status = 'Absen, Tidak Mengurangi Cuti';		
-				}
-				else if (event.status=="absence_workleave") {
-					event.status = 'Absen, Mengurangi Cuti';	
-				}
-				else {
-					event.status = '';		
-				}
-
+				element.attr('data-original-title', event.status);
 				element.attr('title', event.status);
+				element.attr('data-show', 'tip');
 			}
+
 			element.find('#date-title').html(element.find('span.fc-event-title').text());			
 			element.find('.fc-title').append('<br>');
 			element.find('.fc-title').addClass(event.label+' font-12');
-			element.find('.fc-time').addClass('pt-10');
 			element.attr('data-status', event.status);
 			element.attr('data-date', date_start);
 			element.attr('data-start', datetime_start[1]);

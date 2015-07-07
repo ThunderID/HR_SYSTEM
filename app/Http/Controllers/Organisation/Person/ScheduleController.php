@@ -338,7 +338,6 @@ class ScheduleController extends BaseController
 		$flag 									= 0;
 		$flag2 									= 0;
 		$flag_date 								= 0;
-
 		foreach ( $periods as $period )
 		{
 			foreach($pschedule as $i => $sh)	
@@ -346,6 +345,7 @@ class ScheduleController extends BaseController
 				if($period->format('Y-m-d') == date('Y-m-d', strtotime($sh['on'])))
 				{
 					$schedule[$k]['id']				= $k;
+					$schedule[$k]['mode_info']		= 'schedule';
 					$schedule[$k]['title'] 			= $sh['name'];
 					$schedule[$k]['start']			= $sh['on'].'T'.$sh['start'];
 					$schedule[$k]['end']			= $sh['on'].'T'.$sh['end'];
@@ -409,6 +409,7 @@ class ScheduleController extends BaseController
 					if($period->format('Y-m-d') == date('Y-m-d', strtotime($sh['on'])) && !in_array($period->format('Y-m-d'), $date))
 					{
 						$schedule[$k]['id']				= $k;
+						$schedule[$k]['mode_info']		= 'schedule';
 						$schedule[$k]['title'] 			= $sh['name'];
 						$schedule[$k]['start']			= $sh['on'].'T'.$sh['start'];
 						$schedule[$k]['end']			= $sh['on'].'T'.$sh['end'];
@@ -530,7 +531,9 @@ class ScheduleController extends BaseController
 		foreach($logs as $i => $log)	
 		{
 			$schedule[$k]['id']				= $log['id'];
-			$schedule[$k]['title'] 			= $log['name'];
+			$schedule[$k]['mode']			= 'edit';
+			$schedule[$k]['title'] 			= $log['modified_status'] ? $log['modified_status'] : $log['actual_status'];
+			$schedule[$k]['mode_info']		= 'log';
 
 			if ((strtotime($log['fp_start']) < strtotime($log['fp_end'])) | (strtotime($log['fp_start']) != strtotime($log['fp_end'])))
 			{
@@ -543,10 +546,48 @@ class ScheduleController extends BaseController
 				$schedule[$k]['end']		= $log['on'].'T'.$log['end'];
 			}
 
-			$schedule[$k]['status']			= $log['tooltip'];
+			// $schedule[$k]['status']			= $log['tooltip'];
 			$schedule[$k]['label']			= 'pink';
 			// $schedule[$k]['backgroundColor']= '#9c27b0';
-			// $schedule[$k]['mode']			= 'log';				
+			// $schedule[$k]['mode']			= 'log';	
+
+			if ($schedule[$k]['title']=='AS') {
+				$schedule[$k]['status']	= 'Ketidakhadiran Tanpa Penjelasan';
+			}
+			elseif ($schedule[$k]['title']=='CB') {
+				$schedule[$k]['status']	=  'Cuti Bersama';
+			}
+			elseif ($schedule[$k]['title']=='CI') {
+				$schedule[$k]['status']	= 'Cuti Istimewa';
+			}
+			elseif ($schedule[$k]['title']=='CN') {
+				$schedule[$k]['status']	= 'Cuti Untuk Keperluan Pribadi';
+			}
+			elseif ($schedule[$k]['title']=='DN') {
+				$schedule[$k]['status']	= 'Keperluan Dinas';
+			}
+			elseif ($schedule[$k]['title']=='HC') {
+				$schedule[$k]['status']	= 'Hadir Cacat Tanpa Penjelasan';
+			}
+			elseif ($schedule[$k]['title']=='HD') {
+				$schedule[$k]['status']	= 'Hadir Cacat Dengan Ijin Dinas';
+			}
+			elseif ($schedule[$k]['title']=='HP') {
+				$schedule[$k]['status']	= 'Hadir Cacat Dengan Ijin Pulang Cepat';
+			}
+			elseif ($schedule[$k]['title']=='HT') {
+				$schedule[$k]['status']	=  'Hadir Cacat Dengan Ijin Datang Terlambat';
+			}
+			elseif ($schedule[$k]['title']=='SS') {
+				$schedule[$k]['status']	= 'Sakit Jangka Pendek';
+			}
+			elseif ($schedule[$k]['title']=='SL') {
+				$schedule[$k]['status']	= 'Sakit Berkepanjangan';
+			}
+			elseif ($schedule[$k]['title']=='UL') {
+				$schedule[$k]['status']	= 'Ketidakhadiran Dengan Ijin Namun Cuti Tidak Tersedia';
+			}
+
 			$k++;
 		}
 		return Response::json($schedule);
