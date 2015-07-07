@@ -15,7 +15,7 @@
 		@if(isset($FollowComposer['widget_data']['followlist']['follow']))
 			<div class="clearfix">&nbsp;</div>
 			<div class="table-responsive">
-				<table class="table">
+				<table class="table table-hover">
 					<thead>
 						<tr>
 							<th>Kalender</th>

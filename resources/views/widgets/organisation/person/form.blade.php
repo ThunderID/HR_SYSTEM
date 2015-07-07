@@ -21,7 +21,7 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="form-group">
-								<label class="control-label">ID</label>
+								<label class="control-label">N I K</label>
 								{!!Form::input('text', 'uniqid', $PersonComposer['widget_data']['personlist']['person']['uniqid'], ['class' => 'form-control'])!!}							
 							</div>
 						</div>
@@ -106,6 +106,15 @@
 							<div class="form-group">
 								<label class="control-label">Password</label>
 								{!!Form::input('password', 'password', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
+								<span id="helpBlock" class="help-block font-12">* Biarkan kosong jika tidak ingin mengubah password </span>
+							</div>	
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label class="control-label">Konfirmasi Password</label>
+								{!!Form::input('password', 'confirmed_password', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
 							</div>	
 						</div>
 					</div>

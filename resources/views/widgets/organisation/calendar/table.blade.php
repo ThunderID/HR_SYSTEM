@@ -19,7 +19,7 @@
 		@if(isset($CalendarComposer['widget_data']['calendarlist']['calendar']))
 			<div class="clearfix">&nbsp;</div>
 			<div class="table-responsive">
-				<table class="table">
+				<table class="table table-hover">
 					<thead>
 						<tr class="row">
 							<th class="col-sm-1">No</th>
@@ -46,10 +46,23 @@
 									{{ date('H:i', strtotime($value['start'])) }} -  {{ date('H:i', strtotime($value['end'])) }}
 								</td>
 								<td class="text-right">
-									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.calendars.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash"></i></a>
-									<a href="{{route('hr.calendars.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-									<a href="{{route('hr.calendars.show', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
-									<a href="{{route('hr.calendar.charts.index', ['cal_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-list"></i></a>
+									<div class="btn-group">
+										<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pengaturan <span class="caret"></span></button>
+										<ul class="dropdown-menu">
+											<li>
+												<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.calendars.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash fa-fw"></i> Hapus</a>
+											</li>
+											<li>
+												<a href="{{route('hr.calendars.edit', [$value['id'], 'org_id' => $data['id']])}}"><i class="fa fa-pencil fa-fw"></i> Ubah</a>
+											</li>
+											<li>
+												<a href="{{route('hr.calendars.show', [$value['id'], 'org_id' => $data['id']])}}"><i class="fa fa-eye fa-fw"></i> Detail</a>
+											</li>
+											<li>
+												<a href="{{route('hr.calendar.charts.index', ['cal_id' => $value['id'], 'org_id' => $data['id']])}}"><i class="fa fa-list fa-fw"></i> Kalendar Struktur Organisasi</a>
+											</li>
+										</ul>
+									</div>
 								</td>
 							</tr>
 						</tbody>

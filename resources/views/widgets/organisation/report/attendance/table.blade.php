@@ -30,10 +30,10 @@
 	@section('widget_body')
 			@if(isset($PersonComposer['widget_data']['personlist']['person']))
 				<div class="table-responsive">
-					<table class="table table-condensed">				
+					<table class="table table-condensed report">				
 						<thead>
 							<tr>
-								<th>No</th>
+								<th class="col-sm-1">No</th>
 								<th>Nama</th>
 								<th class="hidden-xs">Jabatan</th>
 								<th class="hidden-xs">Average Aktif</th>
@@ -42,18 +42,18 @@
 								<th class="hidden-xs">Total Idle III</th>
 								<!-- <th>Total Absence</th>
 								<th>Possible Total Effective</th> -->
-								<th>Time Loss Rate</th>
+								<th class="hidden-xs">Time Loss Rate</th>
 								<th>&nbsp;</th>
 							</tr>
 						</thead>
 					</table>
 				</div>
 				<div class="table-responsive div-table-content">
-					<table class="table table-condensed table-hover">
+					<table class="table table-condensed table-hover report">
 						@foreach($PersonComposer['widget_data']['personlist']['person'] as $key => $value)
 							<tbody>
 								<tr>
-									<td>
+									<td class="col-sm-1">
 										{{$key+1}}
 									</td>
 									<td>
@@ -88,7 +88,7 @@
 									<td>
 										{{gmdate('H:i:s', $value['possible_total_effective'])}}
 									</td> -->
-									<td>
+									<td class="hidden-xs">
 										<?php $tlr = ($value['total_absence']!=0 ? $value['total_absence'] : 1) / ($value['possible_total_effective']!=0 ? $value['possible_total_effective'] : 1);?>
 										{{round(abs($tlr) * 100, 2)}} %
 									</td>

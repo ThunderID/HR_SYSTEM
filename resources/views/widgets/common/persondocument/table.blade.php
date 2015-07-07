@@ -28,37 +28,50 @@
 		@if(isset($PersonDocumentComposer['widget_data']['documentlist']['document']))
 			<div class="clearfix">&nbsp;</div>
 			<div class="table-responsive">
-				<table class="table">
+				<table class="table table-hover">
 					<thead>
 						<tr class="row">
-							<th class="col-sm-1">No</th>
-							<th class="col-sm-2">{{(isset($PersonDocumentComposer['widget_data']['documentlist']['document'][0]['document']) ? 'Dokumen' : 'Karyawan')}}</th>
-							<th class="col-sm-3">{{(isset($PersonDocumentComposer['widget_data']['documentlist']['document'][0]['document']) ? 'Jenis' : '')}}</th>
-							<th class="col-sm-2">Dikeluarkan Tanggal</th>
-							<th class="col-sm-4">&nbsp;</th>
+							<th class="">No</th>
+							<th class="">{{(isset($PersonDocumentComposer['widget_data']['documentlist']['document'][0]['document']) ? 'Dokumen' : 'Karyawan')}}</th>
+							<th class="">{{(isset($PersonDocumentComposer['widget_data']['documentlist']['document'][0]['document']) ? 'Jenis' : '')}}</th>
+							<th class="">Dikeluarkan Tanggal</th>
+							<th class="">&nbsp;</th>
 						</tr>
 					</thead>
 					<?php $i = $PersonDocumentComposer['widget_data']['documentlist']['document-display']['from'];?>
 					@foreach($PersonDocumentComposer['widget_data']['documentlist']['document'] as $key => $value)
 						<tbody>
 							<tr class="row">
-								<td class="col-sm-1">
+								<td class="">
 									{{$i}}
 								</td>
-								<td class="col-sm-2">
+								<td class="">
 									{{(isset($value['document']['name']) ? $value['document']['name'] : $value['person']['name'])}}
 								</td>
-								<td class="col-sm-3">
+								<td class="">
 									{{(isset($value['document']['tag']) ? $value['document']['tag'] : '')}}
 								</td>
-								<td class="col-sm-2">
-									@date_indo($value['created_at'])
+								<td class="">
+									{{ date('d-m-Y', strtotime($value['created_at'])) }}
 								</td>
-								<td class="text-right col-sm-4">
-									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.documents.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $value['person_id']]) }}"><i class="fa fa-trash"></i></a>
-									<a href="{{route('hr.person.documents.edit', [$value['id'], 'doc_id' => $value['document_id'], 'org_id' => $data['id'], 'person_id' => $value['person_id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-									<a href="{{route('hr.person.documents.show', [$value['id'], 'org_id' => $data['id'], 'person_id' => $value['person_id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
-									<a href="{{route('hr.person.documents.show', [$value['id'], 'org_id' => $data['id'], 'person_id' => $value['person_id'], 'pdf' =>'yes'])}}" class="btn btn-default"><i class="fa fa-file-pdf-o"></i></a>
+								<td class="text-right ">
+									<div class="btn-group">
+										<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pengaturan <span class="caret"></span></button>
+										<ul class="dropdown-menu">
+											<li>
+												<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.documents.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $value['person_id']]) }}"><i class="fa fa-trash fa-fw"></i> Hapus</a>
+											</li>
+											<li>
+												<a href="{{route('hr.person.documents.edit', [$value['id'], 'doc_id' => $value['document_id'], 'org_id' => $data['id'], 'person_id' => $value['person_id']])}}"><i class="fa fa-pencil fa-fw"></i> Ubah</a>
+											</li>
+											<li>
+												<a href="{{route('hr.person.documents.show', [$value['id'], 'org_id' => $data['id'], 'person_id' => $value['person_id']])}}"><i class="fa fa-eye fa-fw"></i> Detail</a>
+											</li>
+											<li>
+												<a href="{{route('hr.person.documents.show', [$value['id'], 'org_id' => $data['id'], 'person_id' => $value['person_id'], 'pdf' =>'yes'])}}"><i class="fa fa-file-pdf-o fa-fw"></i> Export to PDF</a>
+											</li>
+										</ul>
+									</div>
 								</td>
 							</tr>
 						</tbody>

@@ -20,7 +20,7 @@
 		@if(isset($RelativeComposer['widget_data']['relativelist']['relative']))
 			<div class="clearfix">&nbsp;</div>
 			<div class="table-responsive">
-				<table class="table">
+				<table class="table table-hover">
 					<thead>
 						<tr class="row">
 							<th class="col-sm-1">No</th>

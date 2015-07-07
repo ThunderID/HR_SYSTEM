@@ -12,7 +12,7 @@
 					<th>Sisa Cuti</th>
 					 -->
 					 <th>Jumlah Absen (hari)</th>
-					<th>&nbsp;</th>
+					{{-- <th>&nbsp;</th> --}}
 				</tr>
 			</thead>
 			@foreach($PersonComposer['widget_data']['personlist']['person'] as $key => $value)
@@ -39,8 +39,8 @@
 						<td>
 							{{($value['quotas'] + $value['plus_quotas'] - $value['minus_quotas'] < 0 ? abs($value['quotas'] + $value['plus_quotas'] - $value['minus_quotas']) : 0)}}
 						</td> -->
-						<td class="text-right">
-						</td>
+						{{-- <td class="text-right">
+						</td> --}}
 					</tr>
 				</tbody>
 			@endforeach

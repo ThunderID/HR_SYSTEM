@@ -17,42 +17,42 @@
 		@if(isset($PersonWorkleaveComposer['widget_data']['workleavelist']['workleave']))
 			<div class="clearfix">&nbsp;</div>
 			<div class="table-responsive">
-				<table class="table">
+				<table class="table table-hover">
 					<thead>
 						<tr class="row">
-							<th class="col-sm-1">No</th>
-							<th class="col-sm-2">Cuti</th>
-							<th class="col-sm-1">Quota</th>
-							<th class="col-sm-2">Status</th>
-							<th class="col-sm-2">Diberikan Oleh</th>
-							<th class="col-sm-2">Masa Berlaku</th>
-							<th class="col-sm-2">&nbsp;</th>
+							<th class="">No</th>
+							<th class="">Cuti</th>
+							<th class="text-center">Quota</th>
+							<th class="">Status</th>
+							<th class="">Diberikan Oleh</th>
+							<th class="">Masa Berlaku</th>
+							<th class="">&nbsp;</th>
 						</tr>
 					</thead>
 					<?php $i = $PersonWorkleaveComposer['widget_data']['workleavelist']['workleave-display']['from'];?>
 					@foreach($PersonWorkleaveComposer['widget_data']['workleavelist']['workleave'] as $key => $value)
 						<tbody>
 							<tr class="row">
-								<td class="col-sm-1">
+								<td class="">
 									{{$i}}
 								</td>
-								<td class="col-sm-2">
+								<td class="">
 									{{$value['name']}}
 								</td>
-								<td class="col-sm-1">
+								<td class="text-center">
 									{{$value['quota']}}
 								</td>
-								<td class="col-sm-2">
+								<td class="">
 									{{$value['status']}}
 								</td>
-								<td class="col-sm-2">
+								<td class="">
 									{{$value['createdby']['name']}}
 								</td>
-								<td class="col-sm-2">
+								<td class="">
 									{{ date('d-m-Y', strtotime($value['start'])) }} - 
 									{{ date('d-m-Y', strtotime($value['end'])) }}
 								</td>
-								<td class="text-right col-sm-2">
+								<td class="text-right ">
 									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.workleaves.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']]) }}"><i class="fa fa-trash"></i></a>
 									@if(!isset($value['parent']['id']) && strtolower($value['status'])=='offer')
 										<a href="{{route('hr.person.workleaves.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'confirmed_id' => $value['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>

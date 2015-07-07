@@ -21,7 +21,7 @@
 		@if(isset($IdleComposer['widget_data']['idlelist']['idle']))
 			<div class="clearfix">&nbsp;</div>
 			<div class="table-responsive">
-				<table class="table">
+				<table class="table table-hover">
 					<thead>
 						<tr>
 							<th>No</th>
