@@ -47,6 +47,12 @@ class LogController extends BaseController
 		$content 								= json_decode($results);
 		if(!$content->meta->success)
 		{
+			$filename                       	= storage_path().'/logs/appid.log';
+			$fh                             	= fopen($filename, 'a+'); 
+			$template 							= date('Y-m-d H:i:s : Log : ').json_encode($attributes['application']['api'])."\n";
+	        fwrite($fh, $template); 
+	        fclose($fh);
+
 			return Response::json(['message' => 'Server Error'], 500);
 		}
 

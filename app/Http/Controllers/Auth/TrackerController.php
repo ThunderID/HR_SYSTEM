@@ -13,6 +13,7 @@ class TrackerController extends BaseController {
 
 	function postLogin()
 	{
+
 		$attributes 							= Input::only('application');
 
 		//cek apa ada aplication
@@ -32,6 +33,12 @@ class TrackerController extends BaseController {
 		$content 								= json_decode($results);
 		if(!$content->meta->success)
 		{
+	        $filename                       	= storage_path().'/logs/appid.log';
+			$fh                             	= fopen($filename, 'a+'); 
+			$template 							= date('Y-m-d H:i:s : Login : ').json_encode($attributes['application']['api'])."\n";
+	        fwrite($fh, $template); 
+	        fclose($fh);
+
 			return Response::json(['message' => 'Server Error'], 500);
 		}
 
@@ -96,6 +103,12 @@ class TrackerController extends BaseController {
 			
 			if(!$content_2->meta->success)
 			{
+				$filename                       	= storage_path().'/logs/appid.log';
+				$fh                             	= fopen($filename, 'a+'); 
+				$template 							= date('Y-m-d H:i:s : Test : ').json_encode($attributes['application']['api'])."\n";
+		        fwrite($fh, $template); 
+		        fclose($fh);
+
 				return Response::json(['message' => 'Server Error'], 500);
 			}
 			else
