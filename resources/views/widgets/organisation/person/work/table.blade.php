@@ -55,11 +55,11 @@
 									</td>
 								@endif
 								<td class="col-sm-3" colspan="2">
-									@date_indo($value['start']) - 
+									{{ date('d-m-Y', strtotime($value['start'])) }} - 
 									@if(is_null($value['end']))
 										Sekarang
 									@else
-										@date_indo($value['end'])
+										{{ date('d-m-Y', strtotime($value['end'])) }}
 									@endif
 								</td>
 								<td class="text-right col-sm-2">

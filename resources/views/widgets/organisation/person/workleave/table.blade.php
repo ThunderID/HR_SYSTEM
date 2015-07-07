@@ -49,8 +49,8 @@
 									{{$value['createdby']['name']}}
 								</td>
 								<td class="col-sm-2">
-									@date_indo($value['start']) - 
-									@date_indo($value['end'])
+									{{ date('d-m-Y', strtotime($value['start'])) }} - 
+									{{ date('d-m-Y', strtotime($value['end'])) }}
 								</td>
 								<td class="text-right col-sm-2">
 									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.workleaves.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']]) }}"><i class="fa fa-trash"></i></a>

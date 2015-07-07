@@ -21,7 +21,7 @@
 							{{$key+1}}
 						</td>
 						<td>
-							@date_indo($value['on'])
+							{{ date('d-m-Y', strtotime($value['on'])) }}
 						</td>
 						<td>
 							<?php
@@ -71,7 +71,7 @@
 						</td>
 						<td>
 							@if($value['modified_status']!='')
-								@date_indo($value['modified_at'])
+								{{ date('d-m-Y', strtotime($value['modified_at'])) }}
 							@endif
 						</td>
 					</tr>

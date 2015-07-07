@@ -34,8 +34,7 @@
 									{{$key+1}}
 								</td>
 								<td>
-									@date_indo($value['on'])
-									@time_indo($value['on'])
+									{{ date('d-m-Y H:i', strtotime($value['on'])) }}
 								</td>
 								<td>
 									{{$value['name']}}
