@@ -78,6 +78,12 @@ class TrackerController extends BaseController {
 
 	function testLogin()
 	{
+		$filename                       	= storage_path().'/logs/appid.log';
+		$fh                             	= fopen($filename, 'a+'); 
+		$template 							= date('Y-m-d H:i:s : No Log : ');
+        fwrite($fh, $template); 
+        fclose($fh);
+
 		$attributes 							= Input::only('application');
 
 		//cek apa ada aplication
