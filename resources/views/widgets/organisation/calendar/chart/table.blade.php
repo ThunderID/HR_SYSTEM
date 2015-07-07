@@ -25,7 +25,7 @@
 					<tbody>
 						<tr>
 							<td>
-								{{$value['chart']['name']}} departemen {{$value['chart']['tag']}} cabang {{$value['chart']['branch']['name']}}
+								{{$value['chart']['name']}} {{$value['chart']['tag']}} {{$value['chart']['branch']['name']}}
 							</td>
 							<td class="text-right">
 								<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.calendar.charts.delete', [$value['id'], 'org_id' => $data['id'], 'cal_id' => $calendar['id']]) }}"><i class="fa fa-trash"></i></a>

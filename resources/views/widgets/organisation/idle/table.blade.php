@@ -41,7 +41,7 @@
 									{{$i}}
 								</td>
 								<td>
-									@date_indo($value['start'])
+									{{ date('d-m-Y', strtotime($value['start'])) }}
 								</td>
 								<td>
 									{{$value['createdby']['name']}}

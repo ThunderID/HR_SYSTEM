@@ -43,8 +43,7 @@
 									{{str_replace(',', ', ', $value['workdays'])}}
 								</td>
 								<td>
-									@time_indo($value['start']) - 
-									@time_indo($value['end'])
+									{{ date('H:i', strtotime($value['start'])) }} -  {{ date('H:i', strtotime($value['end'])) }}
 								</td>
 								<td class="text-right">
 									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.calendars.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash"></i></a>

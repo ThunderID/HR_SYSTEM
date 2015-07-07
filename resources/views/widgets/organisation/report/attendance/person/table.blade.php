@@ -1,3 +1,6 @@
+<?php
+	ini_set('xdebug.max_nesting_level', 200);
+?>
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
 @if (!$widget_error_count)
@@ -43,7 +46,7 @@
 										{{$key+1}}
 									</td>
 									<td>
-										@date_indo($value['on'])
+										{{ date('d-m-Y', strtotime($value['on'])) }}
 									</td>
 									<td>
 										<?php
@@ -150,7 +153,7 @@
 									</td>
 									<td>
 										@if($value['modified_status']!='')
-											@date_indo($value['modified_at'])
+											{{ date('d-m-Y', strtotime($value['modified_at'])) }}
 										@endif
 									</td>
 									<td class="text-right">
