@@ -60,6 +60,10 @@ class TrackerController extends BaseController {
 		{
 			return Response::json(['message' => 'Sukses'], 200);
 		}
+		else
+		{
+			return Response::json(['message' => 'Gagal'], 200);
+		}
 
 		return Response::json(['message' => 'Server Error'], 500);
 	}
@@ -86,7 +90,18 @@ class TrackerController extends BaseController {
 		$content 								= json_decode($results);
 		if(!$content->meta->success)
 		{
-			return Response::json(['message' => 'Server Error'], 500);
+			$results_2 							= $this->dispatch(new Getting(new API, ['client' => $attributes['application']['api']['client'], 'secret' => $attributes['application']['api']['secret'], 'withattributes' => ['branch']], [], 1, 1));
+		
+			$content_2 							= json_decode($results_2);
+			
+			if(!$content_2->meta->success)
+			{
+				return Response::json(['message' => 'Server Error'], 500);
+			}
+			else
+			{
+				return Response::json(['message' => 'Konek'], 200);
+			}
 		}
 
 		if(strtolower($attributes['application']['api']['tr_ver'])!=strtolower($content->data->tr_version))

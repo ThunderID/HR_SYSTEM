@@ -16,7 +16,7 @@
 				<label class="control-label">Kontak</label>				
 				{!!Form::input('text', 'value', $ContactComposer['widget_data']['contactlist']['contact']['value'], ['class' => 'form-control val-contact', 'tabindex' => '2'])!!}				
 			</div>
-			<div class="form-group">				
+			<div class="form-group">
 				<div class="checkbox">
 					<label>
 						{!!Form::checkbox('is_default', '1', $ContactComposer['widget_data']['contactlist']['contact']['is_default'], ['class' => '', 'tabindex' => '3'])!!} Aktif

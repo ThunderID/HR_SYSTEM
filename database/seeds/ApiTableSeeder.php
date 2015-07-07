@@ -25,6 +25,7 @@ class ApiTableSeeder extends Seeder
 					'workstation_address'			=> 'MACA-'.$index,
 					'workstation_name'				=> 'CAB-'.$index,
 					'tr_version'					=> 'V1.0',
+					'is_active'						=>  true,
 				]);
 
 				$branch 							= Branch::find($index);

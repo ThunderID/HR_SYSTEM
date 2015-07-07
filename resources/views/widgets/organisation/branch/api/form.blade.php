@@ -27,16 +27,23 @@
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label class="control-label">MAC ADDRESS</label>
-						{!!Form::input('text', 'workstation_address', $ApiComposer['widget_data']['apilist']['api']['workstation_address'], ['class' => 'form-control', 'tabindex' => '1'])!!}
+						{!!Form::input('text', 'workstation_address', $ApiComposer['widget_data']['apilist']['api']['workstation_address'], ['class' => 'form-control', 'tabindex' => '3'])!!}
 					</div>
 				</div>
 				<div class="col-sm-6">
 					<div class="form-group">				
 						<label class="control-label">PC Name</label>
-						{!!Form::input('text', 'workstation_name', $ApiComposer['widget_data']['apilist']['api']['workstation_name'], ['class' => 'form-control', 'tabindex' => '2'])!!}
+						{!!Form::input('text', 'workstation_name', $ApiComposer['widget_data']['apilist']['api']['workstation_name'], ['class' => 'form-control', 'tabindex' => '4'])!!}
 					</div>
 				</div>
 			</div>	
+			<div class="form-group">				
+				<div class="checkbox">
+					<label>
+						{!!Form::checkbox('is_active', '1', $ApiComposer['widget_data']['apilist']['api']['is_active'], ['class' => '', 'tabindex' => '5'])!!} Aktif
+					</label>
+				</div>				
+			</div>
 			<div class="form-group text-right">				
 				<a href="{{ $ApiComposer['widget_data']['apilist']['route_back'] }}" class="btn btn-default mr-5" tabindex="4">Batal</a>
 				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="3">

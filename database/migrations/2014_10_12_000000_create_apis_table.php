@@ -21,6 +21,7 @@ class CreateApisTable extends Migration {
 			$table->string('workstation_address', 255);
 			$table->string('workstation_name', 255);
 			$table->string('tr_version', 255);
+			$table->boolean('is_active');
 			$table->timestamps();
 			$table->softDeletes();
 		});

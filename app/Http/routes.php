@@ -69,6 +69,12 @@ Route::group(['middleware' => 'csrfverify'], function()
 			Route::resource('documents',			'DocumentController',								['names' => ['index' => 'hr.documents.index', 'create' => 'hr.documents.create', 'store' => 'hr.documents.store', 'show' => 'hr.documents.show', 'edit' => 'hr.documents.edit', 'update' => 'hr.documents.update', 'destroy' => 'hr.documents.delete']]);
 
 			// ------------------------------------------------------------------------------------
+			// WORKLEAVES RESOURCE
+			// ------------------------------------------------------------------------------------
+
+			Route::resource('workleaves',			'WorkleaveController',								['names' => ['index' => 'hr.workleaves.index', 'create' => 'hr.workleaves.create', 'store' => 'hr.workleaves.store', 'show' => 'hr.workleaves.show', 'edit' => 'hr.workleaves.edit', 'update' => 'hr.workleaves.update', 'destroy' => 'hr.workleaves.delete']]);
+
+			// ------------------------------------------------------------------------------------
 			// IDLES RESOURCE
 			// ------------------------------------------------------------------------------------
 
@@ -217,7 +223,7 @@ Route::group(['namespace' => 'Organisation\\Branch\\Chart\\', 'prefix' => 'chart
 	// AUTHENTICATIONS FOR CHART RESOURCE
 	// ------------------------------------------------------------------------------------
 
-	Route::resource('authentications',	'AuthenticationController',						['names' => ['index' => 'hr.chart.authentications.index', 'create' => 'hr.chart.authentications.create', 'store' => 'hr.chart.authentications.store', 'show' => 'hr.chart.authentications.show', 'edit' => 'hr.chart.authentications.edit', 'update' => 'hr.chart.authentications.update', 'destroy' => 'hr.chart.authentications.delete']]);
+	Route::resource('authentications',	'AuthenticationController',									['names' => ['index' => 'hr.chart.authentications.index', 'create' => 'hr.chart.authentications.create', 'store' => 'hr.chart.authentications.store', 'show' => 'hr.chart.authentications.show', 'edit' => 'hr.chart.authentications.edit', 'update' => 'hr.chart.authentications.update', 'destroy' => 'hr.chart.authentications.delete']]);
 });
 
 Route::group(['namespace' => 'Organisation\\Calendar\\', 'prefix' => 'calendar'], function() 
@@ -227,7 +233,7 @@ Route::group(['namespace' => 'Organisation\\Calendar\\', 'prefix' => 'calendar']
 	// SCHEDULES FOR CALENDAR RESOURCE
 	// ------------------------------------------------------------------------------------
 
-	Route::resource('schedules',		'ScheduleController',									['names' => ['index' => 'hr.calendar.schedules.index', 'create' => 'hr.calendar.schedules.create', 'store' => 'hr.calendar.schedules.store', 'show' => 'hr.calendar.schedules.show', 'edit' => 'hr.calendar.schedules.edit', 'update' => 'hr.calendar.schedules.update', 'destroy' => 'hr.calendar.schedules.delete']]);
+	Route::resource('schedules',		'ScheduleController',										['names' => ['index' => 'hr.calendar.schedules.index', 'create' => 'hr.calendar.schedules.create', 'store' => 'hr.calendar.schedules.store', 'show' => 'hr.calendar.schedules.show', 'edit' => 'hr.calendar.schedules.edit', 'update' => 'hr.calendar.schedules.update', 'destroy' => 'hr.calendar.schedules.delete']]);
 });
 
 Route::group(['namespace' => 'Organisation\\Person\\', 'prefix' => 'person'], function() 
@@ -236,7 +242,7 @@ Route::group(['namespace' => 'Organisation\\Person\\', 'prefix' => 'person'], fu
 	// AJAX SCHEDULES FOR PERSON
 	// ------------------------------------------------------------------------------------
 
-	Route::any('schedules-list',		['uses' => 'ScheduleController@ajax',				'as' => 'hr.person.schedule.ajax']);
+	Route::any('schedules-list',		['uses' => 'ScheduleController@ajax',						'as' => 'hr.person.schedule.ajax']);
 });
 
 // ------------------------------------------------------------------------------------
@@ -256,6 +262,7 @@ Route::group(['namespace' => 'Auth\\'], function()
 {
 	Route::post('api/tracker/test/',			['uses' => 'TrackerController@testlogin',			'as' => 'hr.tracker.test']);
 });
+
 
 Blade::extend(function ($value, $compiler)
 {

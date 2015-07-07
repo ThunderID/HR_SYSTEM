@@ -65,6 +65,11 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		View::composer(['widgets.organisation.idle.table', 'widgets.organisation.idle.form'], 	'App\Http\ViewComposers\IdleComposer');
 
 		// -----------------------------------------------------------------------------
+		// WORKLEAVE
+		// -----------------------------------------------------------------------------
+		View::composer(['widgets.organisation.workleave.table', 'widgets.organisation.workleave.form'], 	'App\Http\ViewComposers\WorkleaveComposer');
+
+		// -----------------------------------------------------------------------------
 		// PERSON
 		// -----------------------------------------------------------------------------
 		View::composer(['widgets.organisation.person.table', 'widgets.organisation.person.form', 'widgets.organisation.person.select', 'widgets.organisation.report.attendance.table', 'widgets.organisation.report.wage.table', 'widgets.organisation.person.stat.total_employee', 'widgets.organisation.person.stat.average_loss_rate','widgets.organisation.report.attendance.person.table','widgets.organisation.report.attendance.person.log.table', 'widgets.organisation.report.attendance.table_csv', 'widgets.organisation.report.attendance.person.table_csv', 'widgets.organisation.report.attendance.person.log.table_csv', 'widgets.organisation.report.wage.table_csv', 'widgets.organisation.person.workleave.left_quota', 'widgets.organisation.person.upload_csv'], 	'App\Http\ViewComposers\PersonComposer');
