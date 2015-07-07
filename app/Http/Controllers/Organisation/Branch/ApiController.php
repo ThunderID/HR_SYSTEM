@@ -228,6 +228,15 @@ class ApiController extends BaseController
 
 		$attributes 							= Input::only('client', 'secret', 'workstation_name', 'workstation_address');
 
+		if(Input::has('is_active'))
+		{
+			$attributes['is_active'] 			= true;
+		}
+		else
+		{
+			$attributes['is_active'] 			= false;
+		}
+
 		$errors 								= new MessageBag();
 
 		DB::beginTransaction();

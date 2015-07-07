@@ -30,6 +30,7 @@
 							<th>SECRET</th>
 							<th>MAC ADDRESS</th>
 							<th>PC Name</th>
+							<th>Aktif</th>
 							<th>&nbsp;</th>
 						</tr>
 					</thead>
@@ -51,6 +52,13 @@
 								</td>
 								<td>
 									{{$value['workstation_name']}}
+								</td>
+								<td>
+									@if($value['is_active'])
+										<i class="fa fa-check"></i>
+									@else
+										<i class="fa fa-minus"></i>
+									@endif
 								</td>
 								<td class="text-right">
 									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.branch.apis.delete', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id'] ]) }}"><i class="fa fa-trash"></i></a>

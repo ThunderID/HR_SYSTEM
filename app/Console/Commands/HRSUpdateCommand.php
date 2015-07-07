@@ -84,6 +84,7 @@ class HRSUpdateCommand extends Command {
 		    $table->string('workstation_address', 255);
 			$table->string('workstation_name', 255);
 			$table->string('tr_version', 255);
+			$table->boolean('is_active');
 		});
 
 		$this->info("Add workstation address, workstation name and tracker version on apis table");

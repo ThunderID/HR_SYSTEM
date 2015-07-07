@@ -37,6 +37,13 @@
 					</div>
 				</div>
 			</div>	
+			<div class="form-group">				
+				<div class="checkbox">
+					<label>
+						{!!Form::checkbox('is_active', '1', $ApiComposer['widget_data']['apilist']['api']['is_active'], ['class' => '', 'tabindex' => '5'])!!} Aktif
+					</label>
+				</div>				
+			</div>
 			<div class="form-group text-right">				
 				<a href="{{ $ApiComposer['widget_data']['apilist']['route_back'] }}" class="btn btn-default mr-5" tabindex="4">Batal</a>
 				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="3">

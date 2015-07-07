@@ -7,9 +7,10 @@
  * 	branch_id 						: Required, Integer, FK from Branch
  * 	client 			 				: Required, unique, max : 255
  * 	secret 			 				: Required, max : 255
- * 	macadress 			 			: Required, max : 255
- * 	workstation_name 			 			: Required, max : 255
+ * 	workstation_address 			: Required, max : 255
+ * 	workstation_name 			 	: Required, max : 255
  * 	tr_version 			 			: Required, max : 255
+ * 	is_active 			 			: Boolean
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -41,6 +42,7 @@ class Api extends BaseModel {
 											'workstation_address' 				,
 											'workstation_name' 					,
 											'tr_version' 						,
+											'is_active' 						,
 										];
 
 	protected 	$rules				= 	[
@@ -48,7 +50,7 @@ class Api extends BaseModel {
 											'secret' 							=> 'required',
 											'workstation_address' 				=> 'required',
 											'workstation_name' 					=> 'required',
-											'tr_version' 						=> '',
+											'is_active' 						=> 'boolean',
 										];
 
 	public $searchable 				= 	[
