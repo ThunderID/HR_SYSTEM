@@ -83,11 +83,23 @@ class TrackerController extends BaseController {
 		//cek apa ada aplication
 		if(!$attributes['application'])
 		{
+			$filename                       	= storage_path().'/logs/appid.log';
+			$fh                             	= fopen($filename, 'a+'); 
+			$template 							= date('Y-m-d H:i:s : No Log : ');
+	        fwrite($fh, $template); 
+	        fclose($fh);
+
 			return Response::json(['message' => 'Server Error'], 500);
 		}		
 
 		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['tr_ver']) || !isset($attributes['application']['api']['station_id']))
 		{
+			$filename                       	= storage_path().'/logs/appid.log';
+			$fh                             	= fopen($filename, 'a+'); 
+			$template 							= date('Y-m-d H:i:s : No Client or Secret or tr version or station id : ');
+	        fwrite($fh, $template); 
+	        fclose($fh);
+
 			return Response::json(['message' => 'Server Error'], 500);
 		}
 
