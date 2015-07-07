@@ -2,7 +2,7 @@
 {!! HTML::script('plugins/table-fix-header/table-fixed-header.js') !!}
 
 <style>
-	table {
+	table.report {
 	    table-layout:fixed;
 	}
 	.div-table-content {
@@ -15,13 +15,15 @@
 <script>
 	$(document).ready(function()
 	{
-		var row = $('table#mytable > tbody > tr:first');
-		for (i=0; i<30; i++) {
-		  $('table#mytable > tbody').append(row.clone());
-		}
-
 		// make the header fixed on scroll
 		$('.table-fixed-header').fixedHeader();
+		// $('.table-responsive').on('show.bs.dropdown', function () {
+		// 	$('.table-responsive').css( "overflow", "inherit" );
+		// });
+
+		// $('.table-responsive').on('hide.bs.dropdown', function () {
+		// 	$('.table-responsive').css( "overflow", "auto" );
+		// })
 	});
 
 </script>

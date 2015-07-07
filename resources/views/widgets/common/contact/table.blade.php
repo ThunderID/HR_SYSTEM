@@ -21,7 +21,7 @@
 			@if(isset($ContactComposer['widget_data']['contactlist']['contact']))
 				<div class="clearfix">&nbsp;</div>
 				<div class="table-responsive">
-					<table class="table">
+					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th>No</th>

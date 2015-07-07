@@ -18,35 +18,41 @@
 
 	@section('widget_body')
 			@if(isset($PersonComposer['widget_data']['personlist']['person']['logs']))
-				<table class="table">
-					<thead>
-						<tr>
-							<th>No</th>
-							<th>Waktu</th>
-							<th>Aktivitas</th>
-							<th>PC</th>
-						</tr>
-					</thead>
-					@foreach($PersonComposer['widget_data']['personlist']['person']['logs'] as $key => $value)
-						<tbody>
+				<div class="table-responsive">
+					<table class="table table-condensed report">
+						<thead>
 							<tr>
-								<td>
-									{{$key+1}}
-								</td>
-								<td>
-									{{ date('d-m-Y H:i', strtotime($value['on'])) }}
-								</td>
-								<td>
-									{{$value['name']}}
-								</td>
-
-								<td>
-									{{$value['pc']}}
-								</td>
+								<th>No</th>
+								<th>Waktu</th>
+								<th>Aktivitas</th>
+								<th class="hidden-xs">PC</th>
 							</tr>
-						</tbody>
-					@endforeach
-				</table>
+						</thead>
+					</table>
+				</div>
+				<div class="table-responsive div-table-content">
+					<table class="table table-condensed table-hover report">
+						@foreach($PersonComposer['widget_data']['personlist']['person']['logs'] as $key => $value)
+							<tbody>
+								<tr>
+									<td>
+										{{$key+1}}
+									</td>
+									<td>
+										{{ date('d-m-Y H:i', strtotime($value['on'])) }}
+									</td>
+									<td>
+										{{$value['name']}}
+									</td>
+
+									<td class="hidden-xs">
+										{{$value['pc']}}
+									</td>
+								</tr>
+							</tbody>
+						@endforeach
+					</table>
+				</div>
 
 				<div class="clearfix">&nbsp;</div>
 			@endif

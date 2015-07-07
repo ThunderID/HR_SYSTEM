@@ -23,25 +23,25 @@
 	@section('widget_body')
 			@if(isset($PersonComposer['widget_data']['personlist']['person']))
 				<div class="table-responsive">
-					<table class="table table-condensed">
+					<table class="table report">
 						<thead>
 							<tr>
 								<th>No</th>
 								<th>Nama</th>
-								<th>Jabatan</th>
+								<th class="hidden-xs">Jabatan</th>
 								<!-- <th>Hak Cuti</th>
 								<th>Penambah Cuti</th>
 								<th>Pengurang Cuti</th>
 								<th>Sisa Cuti</th>
 								 -->
-								 <th>Jumlah Absen (hari)</th>
+								 <th class="hidden-xs">Jumlah Absen (hari)</th>
 								<!-- <th>&nbsp;</th> -->
 							</tr>
 						</thead>
 					</table>
 				</div>
 				<div class="table-responsive div-table-content">
-					<table class="table table-condensed table-hover">
+					<table class="table table-hover report">
 						@foreach($PersonComposer['widget_data']['personlist']['person'] as $key => $value)
 							<tbody>
 								<tr>
@@ -49,7 +49,7 @@
 									<td>
 										{{$value['name']}}
 									</td>
-									<td>
+									<td class="hidden-xs">
 										{{$value['position']}} {{$value['department']}} {{$value['branch']}}
 									</td>
 									<!-- <td>
@@ -58,7 +58,7 @@
 									<td>
 										{{$value['plus_quotas']}}
 									</td> -->
-									<td>
+									<td class="hidden-xs">
 										{{$value['minus_quotas']}}
 									</td>
 									<!-- <td>

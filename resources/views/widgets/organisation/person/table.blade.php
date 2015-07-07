@@ -18,48 +18,44 @@
 		@if(isset($PersonComposer['widget_data']['personlist']['person']))
 			<div class="clearfix">&nbsp;</div>
 			<div class="table-responsive">
-				<table class="table table-condensed">
+				<table class="table table-hover">
 					<thead>
 						<tr class="row">
-							<th class="col-sm-1">No</th>
-							<th class="col-sm-1"></th>
-							<th class="col-sm-2">Nama</th>
-							<th class="col-sm-3">Posisi</th>
-							<th class="col-sm-2">Email</th>
-							<th class="col-sm-3">&nbsp;</th>
+							<th class="">No</th>
+							<th class=""></th>
+							<th class="">Nama</th>
+							<th class="">Posisi</th>
+							<th class="">Email</th>
+							<th class="">&nbsp;</th>
 						</tr>
 					</thead>
-				</table>
-			</div>
-			<div class="table-responsive div-table-content">
-				<table class="table table-condensed table-hover">
 					<?php $i = $PersonComposer['widget_data']['personlist']['person-display']['from'];?>
 					@foreach($PersonComposer['widget_data']['personlist']['person'] as $key => $value)
 						<tbody>
 							<tr class="row">
-								<td class="col-sm-1">
+								<td class="">
 									{{$i}}
 								</td>
-								<td class="col-sm-1">
+								<td class="">
 									{!! HTML::image($value['avatar'], '', array( 'width' => 64, 'height' => 64, 'class' => 'img-rounded' )) !!} 
 								</td>
-								<td class="col-sm-2">
+								<td class="">
 									{{$value['name']}}
 								</td>
-								<td class="col-sm-3">
+								<td class="">
 									@if(isset($value['works'][0]))
 										{{$value['works'][0]['name']}} {{$value['works'][0]['tag']}} {{$value['works'][0]['branch']['name']}}
 									@endif
 								</td>
-								<td class="col-sm-2">
+								<td class="">
 									@if(isset($value['contacts'][0]))
 										{{$value['contacts'][0]['value']}}
 									@endif
 								</td>
-								<td class="text-right col-sm-2">
+								<td class="text-right">
 									<div class="btn-group">
 										<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pengaturan <span class="caret"></span></button>
-										<ul class="dropdown-menu">
+										<ul class="dropdown-menu dropdown-menu-right">
 											<li>
 												<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.persons.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash fa-fw"></i> Hapus</a>
 											</li>
@@ -73,24 +69,23 @@
 												<a href="{{route('hr.person.works.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="karir"><i class="fa fa-building fa-fw"></i> Pekerjaan</a>
 											</li>
 											<li>
-												<a href="{{route('hr.person.schedules.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="jadwal"><i class="fa fa-calendar"></i> Jadwal</a>
+												<a href="{{route('hr.person.schedules.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="jadwal"><i class="fa fa-calendar fa-fw"></i> Jadwal</a>
 											</li>
 											<li>
 												<a href="{{route('hr.person.workleaves.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="jatah cuti"><i class="fa fa-bed fa-fw"></i> Jatah Cuti</a>
 											</li>
 											<li>
-												<a href="{{route('hr.person.contacts.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="kontak"><i class="fa fa-phone"></i> Kontak</a>
+												<a href="{{route('hr.person.contacts.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="kontak"><i class="fa fa-phone fa-fw"></i> Kontak</a>
 											</li>
 											<li>
-												<a href="{{route('hr.person.documents.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="dokumen"><i class="fa fa-file"></i> Dokumen</a>
+												<a href="{{route('hr.person.documents.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="dokumen"><i class="fa fa-file fa-fw"></i> Dokumen</a>
 											</li>
 											<li>
-												<a href="{{route('hr.person.relatives.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="kerabat"><i class="fa fa-child"></i> Kerabat</a>
+												<a href="{{route('hr.person.relatives.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="kerabat"><i class="fa fa-child fa-fw"></i> Kerabat</a>
 											</li>
 										</ul>
 									</div>
 								</td>
-								<td class="col-sm-1">&nbsp;</td>
 							</tr>
 						</tbody>
 						<?php $i++;?>

@@ -20,65 +20,61 @@
 		@if(isset($BranchComposer['widget_data']['branchlist']['branch']))
 			<div class="clearfix">&nbsp;</div>
 			<div class="table-responsive">
-				<table class="table table-condensed">
+				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th class="col-sm-1">No</th>
-							<th class="col-sm-2">Nama</th>
-							<th class="col-sm-2">Nomor Telepon</th>
-							<th class="col-sm-4">Alamat</th>
-							<th class="col-sm-3">&nbsp;</th>
+							<th class="">No</th>
+							<th class="">Nama</th>
+							<th class="">Nomor Telepon</th>
+							<th class="">Alamat</th>
+							<th class="">&nbsp;</th>
 						</tr>
 					</thead>
-				</table>
-			</div>
-			<div class="table-responsive div-table-content">
-				<table class="table table-condensed table-hover">
 					<?php $i = $BranchComposer['widget_data']['branchlist']['branch-display']['from'];?>
 					@foreach($BranchComposer['widget_data']['branchlist']['branch'] as $key => $value)
 						<tbody>
 							<tr>
-								<td class="col-sm-1">
+								<td class="">
 									{{$i}}
 								</td>
-								<td class="col-sm-2">
+								<td class="">
 									{{$value['name']}}
 								</td>
-								<td class="col-sm-2">
+								<td class="">
 									@foreach($value['contacts'] as $key2 => $value2)
 										@if((strtolower($value2['item'])=='phone')||(strtolower($value2['item'])=='mobile'))
 											{{$value2['value']}}
 										@endif
 									@endforeach
 								</td>
-								<td class="col-sm-4">
+								<td class="">
 									@foreach($value['contacts'] as $key2 => $value2)
 										@if(strtolower($value2['item'])=='address')
 											{{$value2['value']}}
 										@endif
 									@endforeach
 								</td>
-								<td class="col-sm-3 text-center" style="padding-right:30px;">
+								<td class=" text-center">
 									<div class="btn-group">
 										<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pengaturan <span class="caret"></span></button>
 										<ul class="dropdown-menu">
 											<li>
-												<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.branches.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash"></i> Hapus</a>
+												<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.branches.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash fa-fw"></i> Hapus</a>
 											</li>
 											<li>
-												<a href="{{route('hr.branches.edit', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="ubah"><i class="fa fa-pencil"></i> Ubah</a>
+												<a href="{{route('hr.branches.edit', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="ubah"><i class="fa fa-pencil fa-fw"></i> Ubah</a>
 											</li>
 											<li>
-												<a href="{{route('hr.branches.show', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="lihat"><i class="fa fa-eye"></i> Detail</a>
+												<a href="{{route('hr.branches.show', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="lihat"><i class="fa fa-eye fa-fw"></i> Detail</a>
 											</li>
 											<li>
-												<a href="{{route('hr.branch.charts.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="struktur organisasi"><i class="fa fa-sitemap"></i> Struktur Organisasi</a>
+												<a href="{{route('hr.branch.charts.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="struktur organisasi"><i class="fa fa-sitemap fa-fw"></i> Struktur Organisasi</a>
 											</li>
 											<li>
-												<a href="{{route('hr.branch.apis.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="pengaturan api key"><i class="fa fa-key"></i> Pengaturan Api Key</a>
+												<a href="{{route('hr.branch.apis.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="pengaturan api key"><i class="fa fa-key fa-fw"></i> Pengaturan Api Key</a>
 											</li>
 											<li>
-												<a href="{{route('hr.branch.contacts.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="kontak"><i class="fa fa-phone"></i> Kontak</a>
+												<a href="{{route('hr.branch.contacts.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="kontak"><i class="fa fa-phone fa-fw"></i> Kontak</a>
 											</li>
 											{{-- <li>
 												<a href="{{route('hr.branch.fingers.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}"><i class="fa fa-eye"></i></a>
@@ -92,7 +88,7 @@
 					@endforeach
 				</table>
 			</div>
-
+		
 			<div class="row">
 				<div class="col-sm-12 text-center">
 					@if($BranchComposer['widget_data']['branchlist']['branch-pagination']->total()>0)

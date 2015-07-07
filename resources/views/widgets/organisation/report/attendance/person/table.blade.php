@@ -22,23 +22,23 @@
 	@section('widget_body')
 			@if(isset($PersonComposer['widget_data']['personlist']['person']['processlogs']))
 				<div class="table-responsive">
-					<table class="table table-condensed">
+					<table class="table table-condensed report">
 						<thead>
 							<tr>
 								<th>No</th>
 								<th>Tanggal</th>
 								<th>Time Loss Rate</th>
-								<th>Status Awal</th>
-								<th>Status Modifikasi</th>
-								<th class="text-center">Dimodifikasi Oleh</th>
-								<th class="text-center">Dimodifikasi Tanggal</th>
+								<th class="hidden-xs">Status Awal</th>
+								<th class="hidden-xs">Status Modifikasi</th>
+								<th class="hidden-xs text-center">Dimodifikasi Oleh</th>
+								<th class="hidden-xs text-center">Dimodifikasi Tanggal</th>
 								<th>&nbsp;</th>
 							</tr>
 						</thead>
 					</table>
 				</div>
 				<div class="table-responsive div-table-content">
-					<table class="table table-condensed table-hover">
+					<table class="table table-condensed table-hover report">
 						@foreach($PersonComposer['widget_data']['personlist']['person']['processlogs'] as $key => $value)
 							<tbody>
 								<tr>
@@ -86,7 +86,7 @@
 										{{round(abs($tlr) * 100, 2)}} %
 									</td>
 
-									<td>
+									<td class="hidden-xs">
 										<a href="javascript:;" class="black cursor-text" data-toggle-tooltip="tooltip" data-placement="bottom" title="
 											@if ($value['actual_status']=='AS')
 												Ketidakhadiran Tanpa Penjelasan
@@ -117,7 +117,7 @@
 											{{$value['actual_status']}}
 										</a>
 									</td>
-									<td>
+									<td class="hidden-xs">
 										<a href="javascript:;" class="black cursor-text" data-toggle-tooltip="tooltip" data-placement="bottom" title="
 											@if ($value['modified_status']=='AS')
 												Ketidakhadiran Tanpa Penjelasan
@@ -148,10 +148,10 @@
 											{{($value['modified_status']!='' ? $value['modified_status'] : '')}}
 										</a>
 									</td>
-									<td>
+									<td class="hidden-xs">
 										{{($value['modified_status']!='' ? $value['modifiedby']['name'] : '')}}
 									</td>
-									<td>
+									<td class="hidden-xs">
 										@if($value['modified_status']!='')
 											{{ date('d-m-Y', strtotime($value['modified_at'])) }}
 										@endif
