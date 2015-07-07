@@ -13,19 +13,22 @@
 					<label class="control-label">Modifikasi Status</label>
 				</div>	
 				<div class="col-md-10">
-					<select name="modified_status" class="form-control select2">
-						<option value="SS">SS - Sakit Jangka Pendek</option>
-						<option value="SL">SL - Sakit Berkepanjangan</option>
-						<option value="HT">HT - Hadir Cacat Dengan Ijin Datang Terlambat</option>
-						<option value="HP">HP - Hadir Cacat Dengan Ijin Pulang Cepat</option>
-						<option value="HD">HD - Hadir Cacat Dengan Ijin Dinas</option>
-						<option value="DN">DN - Keperluan Dinas</option>
-						<option value="CN">CN - Cuti Untuk Keperluan Pribadi</option>
-						<option value="CB">CB - Cuti Bersama</option>
-						<option value="CI">CI - Cuti Istimewa</option>
-						<option value="UL">UL - Ketidakhadiran Dengan Ijin Namun Cuti Tidak Tersedia</option>
-						<option value="HC">HC - Hadir Cacat Tanpa Penjelasan</option>
-						<option value="AS">AS - Ketidakhadiran Tanpa Penjelasan</option>
+					<select name="modified_status" class="form-control select2 modified_status_absen">
+						@if (($ProcessLogComposer['widget_data']['processlogslist']['processlog']['actual_status']=='HT')||($ProcessLogComposer['widget_data']['processlogslist']['processlog']['actual_status']=='HP')||($ProcessLogComposer['widget_data']['processlogslist']['processlog']['actual_status']=='HC')||($ProcessLogComposer['widget_data']['processlogslist']['processlog']['actual_status']=='HD'))
+							<option value="HC">HC - Hadir Cacat Tanpa Penjelasan</option>
+							<option value="HD">HD - Hadir Cacat Dengan Ijin Dinas</option>
+							<option value="HP">HP - Hadir Cacat Dengan Ijin Pulang Cepat</option>
+							<option value="HT">HT - Hadir Cacat Dengan Ijin Datang Terlambat</option>
+						@elseif (($ProcessLogComposer['widget_data']['processlogslist']['processlog']['actual_status']=='AS'))
+							<option value="AS">AS - Ketidakhadiran Tanpa Penjelasan</option>
+							<option value="CB">CB - Cuti Bersama</option>
+							<option value="CI">CI - Cuti Istimewa</option>
+							<option value="CN">CN - Cuti Untuk Keperluan Pribadi</option>
+							<option value="DN">DN - Keperluan Dinas</option>
+							<option value="SL">SL - Sakit Berkepanjangan</option>
+							<option value="SS">SS - Sakit Jangka Pendek</option>
+							<option value="UL">UL - Ketidakhadiran Dengan Ijin Namun Cuti Tidak Tersedia</option>
+						@endif
 					</select>
 				</div>
 			</div>
