@@ -3,6 +3,7 @@
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Illuminate\Database\Schema\Blueprint;
 use Schema;
 use DB;
 
@@ -41,6 +42,7 @@ class HRSUpdateCommand extends Command {
 	{
 		//
 		$result 		= $this->update772015();
+		
 		return true;
 	}
 
@@ -76,7 +78,12 @@ class HRSUpdateCommand extends Command {
 	 **/
 	public function update772015()
 	{
+		DB::statement("ALTER TABLE works MODIFY COLUMN status ENUM('contract', 'probation', 'internship', 'permanent', 'others')");
+
+		$this->info("Alter works status to 'contract', 'probation', 'internship', 'permanent', 'others'");
+
 		Schema::drop('persons_workleaves');
+
 		$this->info("Table Persons Workleaves removed");
 
 		Schema::table('apis', function($table)
@@ -110,8 +117,6 @@ class HRSUpdateCommand extends Command {
 
 		$this->info("Table Person Workleaves created");
 
-		DB::statement("ALTER TABLE works MODIFY COLUMN status ENUM('contract', 'probation', 'internship', 'permanent', 'others')");
-		
-		$this->info("Alter works status to 'contract', 'probation', 'internship', 'permanent', 'others'");
+		return true;
 	}
 }
