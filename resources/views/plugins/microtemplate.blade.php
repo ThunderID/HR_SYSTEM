@@ -47,9 +47,6 @@
 		$('.btn-delete-doc').on('click', function(){bind_delete($(this))});		
 	}
 
-		// 	console.log(val);
-		// 	console.log(val.key);
-		// });
 	/* delete filter */
 	$('.btn-delete-filter').on('click', function(){bind_delete_filter($(this))});
 	$('.filter-key').on('change', function(){create_o($(this))});
@@ -58,25 +55,19 @@
 		var fil = $(e).val().split('_');
 		var a 	= new Object();
 		var tmp = '';
-		
 		fil 	= fil[1];
+		
 		jQuery.each(x, function(i, val) {
 			a[val.key] = val.values;
 		});
-		// $(e).parent().html('');
-		// tmp 	+= '<div class="btn-group ml-10"> \
-		// 					<select name="key[]" id="" class="form-control filter-key"> \
-		// 			';
+
 		jQuery.each(a[fil], function(i, val) {
 			tmp +='<option value="'+val.key+'">'+val.value+'</option>';
 		});
-
-		// tmp += '</select></div>';
-
-		$('.filter-value').html(tmp);
+		// console.log($(e).parent().siblings().children());
+		$(e).parent().next().children().html(tmp);
 		$('.filter-key').on('change', function(){create_o($(this))});
 	}
-
 
 	$('.btn-add-filter').bind('click', function()
 	{
@@ -84,31 +75,22 @@
 		template += '<div class="btn-group ml-10"> \
 							<select name="key[]" id="" class="form-control filter-key"> \
 					';
-					jQuery.each(x, function(i, val)
-					{
-						template +='<option value="'+val.prefix+'_'+val.key+'">'+val.value+'</option>';
-					});
-		template +='</select> \
-						</div> \
-						<div class="btn-group ml-10"> \
-							<select name="value[]" id="" class="form-control filter-value"> \
-								<option value=""></option> \
-					';
+		jQuery.each(x, function(i, val)
+		{
+			template +='<option value="'+val.prefix+'_'+val.key+'">'+val.value+'</option>';
+		});
 
-					// for (var i=0; i<x.length; i++)
-					// {
-					// 	for (var j=0; i<x.length)
-					// 	$.each(x.value, function(j, val2)
-					// 	{
-					// 		template +='<option value="">'+val2.value+'</option>';
-					// 	});
-					// }
+		template 	+='</select> \
+							</div> \
+							<div class="btn-group ml-10"> \
+								<select name="value[]" id="" class="form-control filter-value"> \
+									<option value=""></option> ';
 
-		template +='</select> \
-						</div>\
-					';
-		$('.filter-add').parent().append(template);
-		$('.btn-delete-filter').on('click', function(){bind_delete_filter($(this))});
+		template 	+='</select> \
+						</div>';
+
+		$('.filter-add').append(template);
+		// $('.btn-delete-filter').on('click', function(){bind_delete_filter($(this))});
 		$('.filter-key').on('change', function(){create_o($(this))});
 	});	
 

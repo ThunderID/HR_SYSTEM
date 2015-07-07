@@ -30,7 +30,7 @@
 			<div class="form-group">
 				<div class="col-xs-12 col-sm-12 col-md-12">					
 					<span class="filter-add">
-						<div class="btn-group">
+						<div class="btn-group first">
 							<select name="key[]" id="" class="form-control filter-key">
 								@foreach($filter as $key => $value)
 									<option value="{{ $value['prefix'].'_'.$value['key'] }}">{{ $value['value'] }}</option>
@@ -38,16 +38,10 @@
 							</select>						
 						</div>
 						<div class="btn-group ml-10">
-							<select name="value[]" id="" class="form-control filter-value">
-								@foreach($filter as $key => $value)
-									@foreach($value['values'] as $value2)
-										<option value="{{ $value2['key'] }}">{{ $value2['value'] }}</option>
-									@endforeach
-								@endforeach
-							</select>
+							<select name="value[]" id="" class="form-control filter-value"></select>
 						</div>
 					</span>
-					{{-- <a href="javascript:;" class="btn btn-add-filter ml-10"><i class="fa fa-plus"></i></a> --}}
+					<a href="javascript:;" class="btn btn-add-filter ml-10"><i class="fa fa-plus"></i></a>
 				</div>
 			</div>
 		{!! Form::close() !!}
