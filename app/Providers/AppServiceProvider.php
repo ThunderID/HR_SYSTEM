@@ -45,6 +45,7 @@ class AppServiceProvider extends ServiceProvider {
 
 		\App\Models\PersonWidget::observe(new \App\Models\Observers\PersonWidgetObserver);
 
+		\App\Models\Workleave::observe(new \App\Models\Observers\WorkleaveObserver);
 		\App\Models\PersonWorkleave::observe(new \App\Models\Observers\PersonWorkleaveObserver);
 
 		\App\Models\Work::observe(new \App\Models\Observers\WorkObserver);
@@ -97,6 +98,7 @@ class AppServiceProvider extends ServiceProvider {
 
 		\App\Models\PersonWidget::observe(new \App\Models\Observers\PersonWidgetObserver);
 
+		\App\Models\Workleave::observe(new \App\Models\Observers\WorkleaveObserver);
 		\App\Models\PersonWorkleave::observe(new \App\Models\Observers\PersonWorkleaveObserver);
 
 		\App\Models\Work::observe(new \App\Models\Observers\WorkObserver);

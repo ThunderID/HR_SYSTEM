@@ -45,6 +45,14 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.idles.update'								=> [['1', '2'], 'update'],
 							'hr.idles.delete'								=> [['1', '2'], 'delete'],
 
+							'hr.workleaves.index'							=> [['1', '2'], 'read'],
+							'hr.workleaves.show'							=> [['1', '2'], 'read'],
+							'hr.workleaves.create'							=> [['1', '2'], 'create'],
+							'hr.workleaves.store'							=> [['1', '2'], 'create'],
+							'hr.workleaves.edit'							=> [['1', '2'], 'update'],
+							'hr.workleaves.update'							=> [['1', '2'], 'update'],
+							'hr.workleaves.delete'							=> [['1', '2'], 'delete'],
+
 							'hr.branches.index'								=> [['1', '2', '3'], 'read'],
 							'hr.branches.show'								=> [['1', '2', '3'], 'read'],
 							'hr.branches.create'							=> [['1', '2'], 'create'],

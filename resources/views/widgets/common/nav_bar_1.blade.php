@@ -57,6 +57,9 @@
 				<li @if(isset($widget_options['sidebar']['active_calendar'])&&Input::get('org_id')==$value) class="active-li" @endif>
 				    <a href="{{route('hr.calendars.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_calendar'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-calendar fa-fw"></i> Kalender</a>
 				</li>
+                <li @if(isset($widget_options['sidebar']['active_cuti'])) class="active-li" @endif>
+                    <a href="{{route('hr.workleaves.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_cuti'])) class="active" @endif><i class="fa fa-calendar-o fa-fw"></i> Template Cuti</a>
+                </li>
 				<li @if(isset($widget_options['sidebar']['active_document'])&&Input::get('org_id')==$value) class="active-li" @endif>
 				    <a href="{{route('hr.documents.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_document'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-archive fa-fw"></i> Template Dokumen</a>
 				</li>
