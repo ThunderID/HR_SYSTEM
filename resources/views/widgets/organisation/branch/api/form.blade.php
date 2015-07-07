@@ -27,13 +27,13 @@
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label class="control-label">MAC ADDRESS</label>
-						{!!Form::input('text', 'workstation_address', $ApiComposer['widget_data']['apilist']['api']['workstation_address'], ['class' => 'form-control', 'tabindex' => '1'])!!}
+						{!!Form::input('text', 'workstation_address', $ApiComposer['widget_data']['apilist']['api']['workstation_address'], ['class' => 'form-control', 'tabindex' => '3'])!!}
 					</div>
 				</div>
 				<div class="col-sm-6">
 					<div class="form-group">				
 						<label class="control-label">PC Name</label>
-						{!!Form::input('text', 'workstation_name', $ApiComposer['widget_data']['apilist']['api']['workstation_name'], ['class' => 'form-control', 'tabindex' => '2'])!!}
+						{!!Form::input('text', 'workstation_name', $ApiComposer['widget_data']['apilist']['api']['workstation_name'], ['class' => 'form-control', 'tabindex' => '4'])!!}
 					</div>
 				</div>
 			</div>	

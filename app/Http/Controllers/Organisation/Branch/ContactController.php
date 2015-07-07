@@ -142,7 +142,16 @@ class ContactController extends BaseController
 			App::abort(404);
 		}
 
-		$attributes 							= Input::only('item', 'value', 'is_default');
+		$attributes 							= Input::only('item', 'value');
+
+		if(Input::has('is_default'))
+		{
+			$attributes['is_default'] 			= true;
+		}
+		else
+		{
+			$attributes['is_default'] 			= false;
+		}
 
 		$errors 								= new MessageBag();
 
@@ -235,7 +244,7 @@ class ContactController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.branches.show', [$branch_id, 'org_id' => $org_id, 'branch_id' => $branch_id])->with('local_msg', $errors)->with('alert_success', 'Kontak Cabang "' . $contents->data->name. '" sudah dihapus');
+				return Redirect::route('hr.branches.show', [$branch_id, 'org_id' => $org_id, 'branch_id' => $branch_id])->with('alert_success', 'Kontak Cabang "' . $contents->data->item. '" sudah dihapus');
 			}
 		}
 		else

@@ -301,7 +301,7 @@ class BranchController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.branches.index', ['org_id' => $org_id])->with('local_msg', $errors)->with('alert_success', 'Cabang "' . $contents->data->name. '" sudah dihapus');
+				return Redirect::route('hr.branches.index', ['org_id' => $org_id])->with('alert_success', 'Cabang "' . $contents->data->name. '" sudah dihapus');
 			}
 		}
 		else
