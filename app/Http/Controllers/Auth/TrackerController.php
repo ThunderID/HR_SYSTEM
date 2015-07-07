@@ -60,6 +60,10 @@ class TrackerController extends BaseController {
 		{
 			return Response::json(['message' => 'Sukses'], 200);
 		}
+		else
+		{
+			return Response::json(['message' => 'Gagal'], 200);
+		}
 
 		return Response::json(['message' => 'Server Error'], 500);
 	}
