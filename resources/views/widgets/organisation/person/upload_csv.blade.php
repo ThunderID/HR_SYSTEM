@@ -12,6 +12,7 @@
 				<label>Browse CSV</label>
 				<input type="file" name="file_csv">
 				<input type="hidden" name="import" value="yes">
+				<span id="helpBlock" class="help-block font-12">* Masukkan dalam bentuk .csv</span>
 			</div>
 
 			<div class="form-group text-right">
