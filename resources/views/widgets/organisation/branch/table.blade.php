@@ -16,7 +16,9 @@
 	@overwrite
 
 	@section('widget_body')
-		<a href="{{ $BranchComposer['widget_data']['branchlist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
+		@if((int)Session::get('user.menuid')<=2)
+			<a href="{{ $BranchComposer['widget_data']['branchlist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
+		@endif
 		@if(isset($BranchComposer['widget_data']['branchlist']['branch']))
 			<div class="clearfix">&nbsp;</div>
 			<div class="table-responsive">
@@ -58,27 +60,29 @@
 									<div class="btn-group">
 										<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pengaturan <span class="caret"></span></button>
 										<ul class="dropdown-menu">
-											<li>
-												<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.branches.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash fa-fw"></i> Hapus</a>
-											</li>
-											<li>
-												<a href="{{route('hr.branches.edit', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="ubah"><i class="fa fa-pencil fa-fw"></i> Ubah</a>
-											</li>
+											@if((int)Session::get('user.menuid')<=2)
+												<li>
+													<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.branches.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash fa-fw"></i> Hapus</a>
+												</li>
+												<li>
+													<a href="{{route('hr.branches.edit', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="ubah"><i class="fa fa-pencil fa-fw"></i> Ubah</a>
+												</li>
+											@endif
 											<li>
 												<a href="{{route('hr.branches.show', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="lihat"><i class="fa fa-eye fa-fw"></i> Detail</a>
 											</li>
 											<li>
 												<a href="{{route('hr.branch.charts.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="struktur organisasi"><i class="fa fa-sitemap fa-fw"></i> Struktur Organisasi</a>
 											</li>
-											<li>
-												<a href="{{route('hr.branch.apis.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="pengaturan api key"><i class="fa fa-key fa-fw"></i> Pengaturan Api Key</a>
-											</li>
+											@if((int)Session::get('user.menuid')<=1)
+												<li>
+													<a href="{{route('hr.branch.apis.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="pengaturan api key"><i class="fa fa-key fa-fw"></i> Pengaturan Api Key</a>
+												</li>
+											@endif
 											<li>
 												<a href="{{route('hr.branch.contacts.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="kontak"><i class="fa fa-phone fa-fw"></i> Kontak</a>
 											</li>
-											{{-- <li>
-												<a href="{{route('hr.branch.fingers.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}"><i class="fa fa-eye"></i></a>
-											</li> --}}
+											
 										</ul>
 									</div>
 								</td>

@@ -30,7 +30,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 		{
 			$routes_acl = [
 							'hr.organisations.index'						=> [['1', '2', '3', '4', '5'], 'read'],
-							'hr.organisations.show'							=> [['1', '2'], 'read'],
+							'hr.organisations.show'							=> [['1', '2', '3'], 'read'],
 							'hr.organisations.create'						=> [['1'], 'create'],
 							'hr.organisations.store'						=> [['1'], 'create'],
 							'hr.organisations.edit'							=> [['1'], 'update'],
