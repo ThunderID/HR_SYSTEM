@@ -14,7 +14,9 @@
 	@overwrite
 
 	@section('widget_body')
-		<a href="{{ $PersonComposer['widget_data']['personlist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
+		@if((int)Session::get('user.menuid')<4)
+			<a href="{{ $PersonComposer['widget_data']['personlist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
+		@endif
 		@if(isset($PersonComposer['widget_data']['personlist']['person']))
 			<div class="clearfix">&nbsp;</div>
 			<div class="table-responsive">
@@ -56,15 +58,17 @@
 									<div class="btn-group">
 										<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pengaturan <span class="caret"></span></button>
 										<ul class="dropdown-menu dropdown-menu-right">
-											<li>
-												<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.persons.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash fa-fw"></i> Hapus</a>
-											</li>
-											<li>
-												<a href="{{route('hr.persons.edit', [$value['id'], 'org_id' => $data['id']])}}" title="ubah"><i class="fa fa-pencil fa-fw"></i> Ubah</a>
-											</li>
-											<li>
-												<a href="{{route('hr.persons.show', [$value['id'], 'org_id' => $data['id']])}}"  title="lihat"><i class="fa fa-eye fa-fw"></i> Detail</a>
-											</li>
+											@if((int)Session::get('user.menuid') <= 3)
+												<li>
+													<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.persons.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash fa-fw"></i> Hapus</a>
+												</li>
+												<li>
+													<a href="{{route('hr.persons.edit', [$value['id'], 'org_id' => $data['id']])}}" title="ubah"><i class="fa fa-pencil fa-fw"></i> Ubah</a>
+												</li>
+												<li>
+													<a href="{{route('hr.persons.show', [$value['id'], 'org_id' => $data['id']])}}"  title="lihat"><i class="fa fa-eye fa-fw"></i> Detail</a>
+												</li>
+											@endif
 											<li>
 												<a href="{{route('hr.person.works.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="karir"><i class="fa fa-building fa-fw"></i> Pekerjaan</a>
 											</li>

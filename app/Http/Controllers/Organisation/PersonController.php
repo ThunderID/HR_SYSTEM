@@ -53,7 +53,7 @@ class PersonController extends BaseController
 		unset($sort);
 
 		$search 									= ['organisationid' => $org_id];
-		if(Session::get('user.menuid')==4)
+		if(Session::get('user.menuid')>=4)
 		{
 			$search['id'] 							= Session::get('user.branchid');
 			$search['chartchild'] 					= Session::get('user.chartpath');
@@ -204,7 +204,7 @@ class PersonController extends BaseController
 		
 		if(!isset($filter['search']['checkwork']) || (isset($filter['search']['checkwork']) && $filter['search']['checkwork']==true))
 		{
-			if(Session::get('user.menuid')==4)
+			if(Session::get('user.menuid')>=4)
 			{
 				$filter['search']['chartchild'] 		= Session::get('user.chartpath');
 				$filter['active']['chartchild'] 		= 'Lihat Sebagai "'.Session::get('user.chartname').'"';

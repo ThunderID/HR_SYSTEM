@@ -31,7 +31,7 @@
 		'widget_options'	=> [
 									'organisationlist'	=> 
 									[
-										'form_url'			=> (Session::get('user.menuid')!=4 ? route('hr.organisations.show', 1) : route('hr.persons.index', 1)),
+										'form_url'			=> ((int)Session::get('user.menuid')<4 ? route('hr.organisations.show', 1) : route('hr.persons.index', 1)),
 										'search'			=> ['id' => Session::get('user.organisationids')],
 										'sort'				=> [],
 										'page'				=> 1,

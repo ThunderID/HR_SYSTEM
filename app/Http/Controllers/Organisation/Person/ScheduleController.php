@@ -45,7 +45,7 @@ class ScheduleController extends BaseController
 		$search['organisationid'] 				= $org_id;
 		$search['withattributes'] 				= ['organisation'];
 		$sort 									= ['name' => 'asc'];
-		if(Session::get('user.menuid')==4)
+		if(Session::get('user.menuid')>=4)
 		{
 			$search['chartchild'] 				= Session::get('user.chartpath');
 		}
@@ -357,8 +357,12 @@ class ScheduleController extends BaseController
 					$schedule[$k]['end']			= $sh['on'].'T'.$sh['end'];
 					$schedule[$k]['status']			= $sh['status'];
 					$schedule[$k]['data_target']	= '#modal_schedule';
-					$schedule[$k]['ed_action']		= route('hr.person.schedules.store', ['id' => $sh['id'], 'org_id' => $org_id, 'person_id' => $person_id]);
-					$schedule[$k]['del_action']		= route('hr.person.schedules.delete', ['id' => $sh['id'], 'org_id' => $org_id, 'person_id' => $person_id]);
+				
+					if((int)Session::get('user.menuid')<4)
+					{
+						$schedule[$k]['ed_action']	= route('hr.person.schedules.store', ['id' => $sh['id'], 'org_id' => $org_id, 'person_id' => $person_id]);
+						$schedule[$k]['del_action']	= route('hr.person.schedules.delete', ['id' => $sh['id'], 'org_id' => $org_id, 'person_id' => $person_id]);
+					}	
 
 					switch (strtolower($sh['status'])) 
 					{
@@ -391,7 +395,7 @@ class ScheduleController extends BaseController
 					// $flag_date = $sh['on'];
 					// if ($flag!=1&&($flag_date!=$sh['on'])) {
 					$k++;
-					if(!in_array($period->format('Y-m-d'), $adddate))
+					if(!in_array($period->format('Y-m-d'), $adddate) && (int)Session::get('user.menuid')<4)
 					{
 						$schedule[$k]['mode']			= 'create';
 						$schedule[$k]['data_target']	= '#modal_schedule';
@@ -421,9 +425,12 @@ class ScheduleController extends BaseController
 						$schedule[$k]['end']			= $sh['on'].'T'.$sh['end'];
 						$schedule[$k]['status']			= $sh['status'];
 
-						$schedule[$k]['data_target']	= '#modal_schedule';
-						$schedule[$k]['ed_action']		= route('hr.person.schedules.store', ['id' => null, 'org_id' => $org_id, 'person_id' => $person_id]);
-										
+						if((int)Session::get('user.menuid')<4)
+						{
+							$schedule[$k]['data_target']	= '#modal_schedule';
+							$schedule[$k]['ed_action']		= route('hr.person.schedules.store', ['id' => null, 'org_id' => $org_id, 'person_id' => $person_id]);
+						}
+
 						switch (strtolower($sh['status'])) 
 						{
 							case 'presence_indoor':
@@ -454,7 +461,7 @@ class ScheduleController extends BaseController
 						}
 
 						$k++;
-						if(!in_array($period->format('Y-m-d'), $adddate))
+						if(!in_array($period->format('Y-m-d'), $adddate) && (int)Session::get('user.menuid')<4)
 						{
 							$schedule[$k]['mode']			= 'create';
 							$schedule[$k]['data_target']	= '#modal_schedule';
@@ -486,8 +493,11 @@ class ScheduleController extends BaseController
 						$schedule[$k]['label']			= 'label label-gray';
 						// $schedule[$k]['backgroundColor']= '#31708F';
 						// $schedule[$k]['color']			= '#31708F';
-						$schedule[$k]['data_target']	= '#modal_schedule';
-						$schedule[$k]['ed_action']		= route('hr.person.schedules.store', ['id' => null, 'org_id' => $org_id, 'person_id' => $person_id]);
+						if((int)Session::get('user.menuid')<4)
+						{
+							$schedule[$k]['data_target']	= '#modal_schedule';
+							$schedule[$k]['ed_action']		= route('hr.person.schedules.store', ['id' => null, 'org_id' => $org_id, 'person_id' => $person_id]);
+						}
 
 						$date[]							= $period->format('Y-m-d');
 						$k++;
@@ -502,9 +512,12 @@ class ScheduleController extends BaseController
 						$schedule[$k]['label']			= 'label label-magenta';
 						// $schedule[$k]['backgroundColor']= '#D78409';
 						// $schedule[$k]['color']			= '#D78409';
-						$schedule[$k]['data_target']	= '#modal_schedule';
-						$schedule[$k]['ed_action']		= route('hr.person.schedules.store', ['id' => null, 'org_id' => $org_id, 'person_id' => $person_id]);
-
+						if((int)Session::get('user.menuid')<4)
+						{
+							$schedule[$k]['data_target']	= '#modal_schedule';
+							$schedule[$k]['ed_action']		= route('hr.person.schedules.store', ['id' => null, 'org_id' => $org_id, 'person_id' => $person_id]);
+						}
+						
 						$date[]							= $period->format('Y-m-d');
 						$k++;
 					}

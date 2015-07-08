@@ -204,7 +204,7 @@ class ProcessingLogObserver
 				{
 					$start 			= $time;
 					$end 			= $time;
-					$tooltip[]		= 'tracker';
+					$tooltip[]		= 'absencesystem';
 				}
 			}
 

@@ -18,7 +18,9 @@
 	@overwrite
 
 	@section('widget_body')
-		<a href="{{ $WorkComposer['widget_data']['worklist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
+		@if((int)Session::get('user.menuid') <= 3)
+			<a href="{{ $WorkComposer['widget_data']['worklist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
+		@endif
 		@if(isset($WorkComposer['widget_data']['worklist']['work']))
 			<div class="clearfix">&nbsp;</div>
 			<div class="table-responsive">
@@ -63,8 +65,10 @@
 									@endif
 								</td>
 								<td class="text-right">
-									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.works.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']]) }}"><i class="fa fa-trash"></i></a>
-									<a @if($value['chart']) href="{{route('hr.person.works.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'prev' => false])}}" @else href="{{route('hr.person.works.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'prev' => true])}}" @endif class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									@if((int)Session::get('user.menuid') <= 3)
+										<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.works.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']]) }}"><i class="fa fa-trash"></i></a>
+										<a @if($value['chart']) href="{{route('hr.person.works.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'prev' => false])}}" @else href="{{route('hr.person.works.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'prev' => true])}}" @endif class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									@endif
 									<!-- <a href="{{route('hr.person.works.show', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a> -->
 								</td>
 							</tr>
