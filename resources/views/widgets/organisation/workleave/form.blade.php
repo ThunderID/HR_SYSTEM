@@ -12,13 +12,33 @@
 				<label class="control-label">Nama</label>				
 				{!!Form::input('text', 'name', $WorkleaveComposer['widget_data']['workleavelist']['workleave']['name'], ['class' => 'form-control', 'tabindex' => 1])!!}				
 			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="control-label">Jenis</label>
+						<select name="status" class="form-control" tabindex="2">
+							<option value="annual" @if($WorkleaveComposer['widget_data']['workleavelist']['workleave']['status']=='annual') selected @endif>Cuti Tahunan</option>
+							<option value="special" @if($WorkleaveComposer['widget_data']['workleavelist']['workleave']['status']=='special') selected @endif>Cuti Istimewa</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group">				
+						<label class="control-label">Quota</label>				
+						{!!Form::input('number', 'quota', $WorkleaveComposer['widget_data']['workleavelist']['workleave']['quota'], ['class' => 'form-control', 'tabindex' => '3'])!!}				
+					</div>
+				</div>
+			</div>
 			<div class="form-group">				
-				<label class="control-label">Quota</label>				
-				{!!Form::input('number', 'quota', $WorkleaveComposer['widget_data']['workleavelist']['workleave']['quota'], ['class' => 'form-control', 'tabindex' => '2'])!!}				
+				<div class="checkbox">
+					<label>
+						{!!Form::checkbox('is_active', '1', $WorkleaveComposer['widget_data']['workleavelist']['workleave']['is_active'], ['class' => '', 'tabindex' => '4'])!!} Aktif
+					</label>
+				</div>				
 			</div>
 			<div class="form-group text-right">				
-				<a href="{{ $WorkleaveComposer['widget_data']['workleavelist']['route_back'] }}" class="btn btn-default mr-5" tabindex="4">Batal</a>
-				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="3">
+				<a href="{{ $WorkleaveComposer['widget_data']['workleavelist']['route_back'] }}" class="btn btn-default mr-5" tabindex="5">Batal</a>
+				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="6">
 			</div>
 		{!! Form::close() !!}
 	@overwrite	

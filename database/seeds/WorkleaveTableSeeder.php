@@ -15,6 +15,7 @@ class WorkleaveTableSeeder extends Seeder
 		$faker 										= Factory::create();
 		$organisation 								= Organisation::find(1);
 		$workleaves 								= ['Cuti Tahunan', 'Cuti Bersama', 'Cuti Melahirkan', 'Cuti Menikah'];
+		$status 									= ['annual', 'annual', 'special', 'special'];
 		$quota 										= ['12', '15', '18', '14', '21', '6'];
 		try
 		{
@@ -24,6 +25,8 @@ class WorkleaveTableSeeder extends Seeder
 				$data->fill([
 					'name'							=> $workleaves[$index],
 					'quota'							=> $quota[rand(0, count($quota)-1)],
+					'status'						=> $status[$index],
+					'is_active'						=> true,
 				]);
 
 				$data->Organisation()->associate($organisation);

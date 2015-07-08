@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 	organisation_id 				: Foreign Key From Organisation, Integer, Required
  * 	name 		 					: Required max 255
  * 	quota 			 				: Required, Integer
+ * 	status  		 				: Required, in offer, annual, special, confirmed
+ * 	is_active 			 			: Boolean
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -41,11 +43,15 @@ class Workleave extends BaseModel {
 	protected 	$fillable			= 	[
 											'name' 						,
 											'quota' 					,
+											'status' 					,
+											'is_active' 				,
 										];
 
 	protected 	$rules				= 	[
 											'name'						=> 'required|max:255',
 											'quota'						=> 'required|numeric',
+											'status'					=> 'required|in:annual,special',
+											'is_active'					=> 'boolean',
 										];
 
 	public $searchable 				= 	[
