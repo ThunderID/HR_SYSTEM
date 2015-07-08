@@ -268,7 +268,7 @@ class CalendarController extends BaseController
 
 	public function destroy($id)
 	{
-		$attributes 						= ['email' => Session::get('user.email'), 'password' => Input::get('password')];
+		$attributes 						= ['username' => Session::get('user.username'), 'password' => Input::get('password')];
 
 		$results 							= $this->dispatch(new Checking(new Person, $attributes));
 

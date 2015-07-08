@@ -259,7 +259,7 @@ class OrganisationController extends BaseController
 			$id 							= Session::get('user.organisation');
 		}
 
-		$attributes 						= ['email' => Session::get('user.email'), 'password' => Input::get('password')];
+		$attributes 						= ['username' => Session::get('user.username'), 'password' => Input::get('password')];
 
 		$results 							= $this->dispatch(new Checking(new Person, $attributes));
 
