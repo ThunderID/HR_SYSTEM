@@ -2,7 +2,7 @@
 
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Config, Session, App, View, Route, Redirect, Request;
+use Config, Session, App, View, Route, Redirect, Request, Input;
 use App\Console\Commands\Checking;
 use App\Console\Commands\Getting;
 use App\Models\Authentication;
@@ -299,20 +299,22 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 					}
 
 					$chartids									= [];
+					$chartsids									= [];
 					$chartnames									= [];
 					$organisationids							= [];
 					$organisationnames							= [];
 					
 					foreach ($contents->data->works as $key => $value) 
 					{
-						if(!in_array($value->id, $chartids))
+						if(!isset($chartids[$value->branch->organisation->id]) || !in_array($value->id, $chartids[$value->branch->organisation->id]))
 						{
-							$chartids[]							= $value->id;
+							$chartids[$value->branch->organisation->id][]			= $value->id;
+							$chartsids[]											= $value->id;
 						}
 
-						if(!in_array($value->name, $chartnames))
+						if(!isset($chartnames[$value->branch->organisation->id]) || !in_array($value->name, $chartnames[$value->branch->organisation->id]))
 						{
-							$chartnames[]						= $value->name;
+							$chartnames[$value->branch->organisation->id][]			= $value->name;
 						}
 
 						if(!in_array($value->branch->organisation->name, $organisationnames))
@@ -336,10 +338,19 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 					Session::put('user.gender', $contents->data->gender);
 					Session::put('user.avatar', $contents->data->avatar);
 
+					if(Input::has('org_id'))
+					{
+						$chartid[]									= $chartids[Input::get('org_id')];
+					}
+					else
+					{
+						$chartid[]									= $chartsids;
+					}
+
 					//check access
 					$menu 											= app('hr_acl')[Route::currentRouteName()];
 
-					$results 										= $this->dispatch(new Getting(new Authentication, ['menuid' => $menu[0],'chartid' => $chartids, 'access' => $menu[1]], ['menu_id' => 'asc'],1, 1));
+					$results 										= $this->dispatch(new Getting(new Authentication, ['menuid' => $menu[0],'chartid' => $chartid, 'access' => $menu[1]], ['menu_id' => 'asc'],1, 1));
 
 					$contents 										= json_decode($results);
 
