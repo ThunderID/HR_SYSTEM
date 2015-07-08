@@ -286,6 +286,40 @@ class ProcessingLogObserver
 					unset($start_idle);
 				}
 
+				if(strtolower($value['name']) == 'sessionlock')
+				{
+					$start_lock 	= date('H:i:s', strtotime($value['on']));
+					list($hours, $minutes, $seconds) = explode(":", $start_lock);
+
+					$start_lock 	= $hours*3600+$minutes*60+$seconds;
+				}
+				elseif(strtolower($value['name'] != 'sessionlock') && isset($start_lock))
+				{
+					$new_lock 		= date('H:i:s', strtotime($value['on']));
+					list($hours, $minutes, $seconds) = explode(":", $new_lock);
+
+					$new_lock 		= $hours*3600+$minutes*60+$seconds;
+
+					$total_idle		= $total_idle + $new_lock - $start_lock;
+					if($new_lock - $start_lock <= $idle_1)
+					{
+						$total_idle_1 	= $total_idle_1 + $new_lock - $start_lock;
+						$frequency_idle_1++;
+					}
+					elseif($new_lock - $start_lock > $idle_1 && $new_lock - $start_lock < $idle_2)
+					{
+						$total_idle_2 	= $total_idle_2 + $new_lock - $start_lock;
+						$frequency_idle_2++;
+					}
+					elseif($new_lock - $start_lock >= $idle_2)
+					{
+						$total_idle_3 	= $total_idle_3 + $new_lock - $start_lock;
+						$frequency_idle_3++;
+					}
+					
+					unset($start_lock);
+				}
+
 				if(strtolower($value['name']) == 'sleep')
 				{
 					$start_sleep 	= date('H:i:s', strtotime($value['on']));
