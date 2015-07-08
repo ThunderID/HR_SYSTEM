@@ -44,6 +44,7 @@ class Application extends BaseModel {
 	public $searchable 				= 	[
 											'id' 								=> 'ID', 
 											'chartid' 							=> 'ChartID', 
+											'level' 							=> 'Level', 
 											
 											'name' 								=> 'Name', 
 											'withattributes' 					=> 'WithAttributes',
@@ -52,6 +53,7 @@ class Application extends BaseModel {
 	public $searchableScope 		= 	[
 											'id' 								=> 'Could be array or integer', 
 											'chartid' 							=> 'Could be array or integer', 
+											'level' 							=> 'Must be integer', 
 											
 											'name' 								=> 'Must be string', 
 											'withattributes' 					=> 'Must be array of relationship',
@@ -120,5 +122,15 @@ class Application extends BaseModel {
 	public function scopeName($query, $variable)
 	{
 		return $query->where('name', 'like' ,'%'.$variable.'%');
+	}
+
+	public function scopeLevel($query, $variable)
+	{
+		if((int)$variable)
+		{
+			return $query->with(['menus' => function($q)use($variable){$q->level($variable);}]);
+		}
+
+		return $query;
 	}
 }

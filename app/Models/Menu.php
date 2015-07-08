@@ -55,16 +55,18 @@ class Menu extends BaseModel {
 										];
 
 	public $searchable 				= 	[
-											'id' 						=> 'ID', 
-											'applicationid' 			=> 'ApplicationID', 
-											'name' 						=> 'Name', 
-											'withattributes' 			=> 'WithAttributes',
+											'id' 							=> 'ID', 
+											'applicationid' 				=> 'ApplicationID', 
+											'name' 							=> 'Name', 
+											'level' 						=> 'Level', 
+											'withattributes' 				=> 'WithAttributes',
 										];
 
 	public $searchableScope 		= 	[
 											'id' 						=> 'Could be array or integer', 
 											'applicationid' 			=> 'Could be array or integer', 
 											'name' 						=> 'Must be string', 
+											'level' 					=> 'Must be integer', 
 											'withattributes' 			=> 'Must be array of relationship'
 										];
 
@@ -133,4 +135,13 @@ class Menu extends BaseModel {
 		return $query->where('name', 'like' ,'%'.$variable.'%');
 	}
 
+	public function scopeLevel($query, $variable)
+	{
+		if((int)$variable)
+		{
+			return $query->where('tmp_menus.id', '>=', $variable);
+		}
+
+		return $query;
+	}
 }

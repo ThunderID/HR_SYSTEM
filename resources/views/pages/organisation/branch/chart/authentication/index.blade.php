@@ -39,7 +39,7 @@
 												'applicationlist'		=>
 												[
 													'organisation_id'	=> $data['id'],
-													'search'			=> ['chartid' => $chart['id']],
+													'search'			=> ['chartid' => $chart['id'], 'level' => Session::get('user.menuid')],
 													'sort'				=> [],
 													'page'				=> 1,
 													'per_page'			=> 100,
