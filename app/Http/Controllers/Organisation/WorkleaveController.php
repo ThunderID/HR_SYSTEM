@@ -169,7 +169,16 @@ class WorkleaveController extends BaseController
 			$id 								= Input::get('id');
 		}
 		
-		$attributes 							= Input::only('name', 'quota');
+		$attributes 							= Input::only('name', 'quota', 'status');
+
+		if(Input::has('is_active'))
+		{
+			$attributes['is_active'] 			= true;
+		}
+		else
+		{
+			$attributes['is_active'] 			= false;
+		}
 
 		if(Input::has('org_id'))
 		{

@@ -15,15 +15,17 @@
             @foreach(Session::get('user.organisationids') as $key => $value)
                 <?php switch(strtolower(Session::get('user.menuid')))
                     {
-                    	case 1: case 2 :
+                    	case 1:
                     		?> @include('widgets.common.nav_bar_1') <?php
                     	break;
-                    	case 3:
+                    	case 2:
                     		?> @include('widgets.common.nav_bar_2') <?php
                     	break;
-
+                        case 3:
+                            ?> @include('widgets.common.nav_bar_3') <?php
+                        break;
                     	default :
-                    		?> @include('widgets.common.nav_bar_3') <?php
+                    		?> @include('widgets.common.nav_bar_4') <?php
                     	break;
                     }
                 ;?>

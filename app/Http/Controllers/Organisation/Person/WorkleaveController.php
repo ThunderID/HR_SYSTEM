@@ -7,6 +7,7 @@ use App\Console\Commands\Getting;
 use App\Console\Commands\Checking;
 use App\Console\Commands\Deleting;
 use App\Models\Person;
+use App\Models\Workleave;
 use App\Models\PersonWorkleave;
 
 class WorkleaveController extends BaseController
@@ -43,7 +44,7 @@ class WorkleaveController extends BaseController
 		$search['withattributes'] 				= ['organisation'];
 		$search['checkwork'] 					= true;
 		$sort 									= ['name' => 'asc'];
-		if(Session::get('user.menuid')==4)
+		if(Session::get('user.menuid')>=4)
 		{
 			$search['chartchild'] 				= Session::get('user.chartpath');
 		}
@@ -230,6 +231,15 @@ class WorkleaveController extends BaseController
 			App::abort(404);
 		}
 
+		if(Input::has('type') && in_array(strtolower(Input::get('type')), ['given', 'taken']))
+		{
+			$type 								= strtolower(Input::get('type'));
+		}
+		else
+		{
+			App::abort(404);
+		}
+
 		if(!in_array($org_id, Session::get('user.organisationids')))
 		{
 			App::abort(404);
@@ -242,39 +252,39 @@ class WorkleaveController extends BaseController
 		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
 
-		if(!$contents->meta->success && !isset($contents->data->works[0]))
+		if(!$contents->meta->success || !isset($contents->data->works[0]) || is_null($contents->data->works[0]) || $contents->data->works[0]=='')
 		{
 			App::abort(404);
 		}
 
-		$attributes 							= Input::only('name', 'quota', 'status', 'notes');
+		$attributes 							= Input::only('notes');
 
-		if(strtolower($attributes['status'])=='confirmed')
+		if(strtolower($type)=='given')
 		{
-			$id 								= null;
-			if(Input::has('confirmed_id'))
-			{
-				$confirmed_id 					= Input::get('confirmed_id');
-			}
-			else
+			unset($search);
+			unset($sort);
+
+			$search['organisationid']			= $org_id;
+			$search['id']						= Input::get('workleave_id');
+			$sort 								= ['name' => 'asc'];
+			$results_2 							= $this->dispatch(new Getting(new Workleave, $search, $sort , 1, 1));
+			$contents_2 						= json_decode($results_2);
+
+			if(!$contents_2->meta->success && !isset($contents_2->data->works[0]))
 			{
 				App::abort(404);
 			}
 
-			$old_offers 						= $this->dispatch(new Getting(new PersonWorkleave, ['id' => $confirmed_id], [], 1, 1));
-			$offered 							= json_decode($old_offers);
-		
-			if(!$offered->meta->success)
-			{
-				App::abort(404);
-			}
-
-			$offers 							= json_decode(json_encode($offered->data), true);
+			$attributes['name']					= $contents_2->data->name;
+			$attributes['status']				= $contents_2->data->status;
+			$attributes['quota']					= $contents_2->data->quota;
 		}
-
-		if(Input::has('person_workleave_id') && Input::get('person_workleave_id')!='')
+		elseif(strtolower($type)=='taken')
 		{
-			$attributes['person_workleave_id'] 	= Input::get('person_workleave_id');
+			$attributes['person_workleave_id']	= Input::get('person_workleave_id');
+			$attributes['name']					= Input::get('name');
+			$attributes['status']				= 'confirmed';
+			$attributes['quota']				= Input::get('quota');
 		}
 
 		if(Input::has('start'))
@@ -313,35 +323,7 @@ class WorkleaveController extends BaseController
 				}
 			}
 		}
-		else
-		{
-			if(isset($offers))
-			{
-				$offers['person_workleave_id']	= $is_success->data->id;
-
-				$content 						= $this->dispatch(new Saving(new PersonWorkleave, $offers, $offers['id']));
-				$is_success_2 					= json_decode($content);
-
-				if(!$is_success_2->meta->success)
-				{
-					foreach ($is_success_2->meta->errors as $key => $value) 
-					{
-						if(is_array($value))
-						{
-							foreach ($value as $key2 => $value2) 
-							{
-								$errors->add('Person', $value2);
-							}
-						}
-						else
-						{
-							$errors->add('Person', $value);
-						}
-					}
-				}
-			}
-		}
-
+	
 		if(!$errors->count())
 		{
 			DB::commit();

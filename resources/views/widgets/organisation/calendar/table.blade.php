@@ -15,7 +15,9 @@
 	@overwrite
 
 	@section('widget_body')
-		<a href="{{ $CalendarComposer['widget_data']['calendarlist']['route_create'] }}" class="btn btn-primary">Tambah</a>
+		@if((int)Session::get('user.menuid')<=2)
+			<a href="{{ $CalendarComposer['widget_data']['calendarlist']['route_create'] }}" class="btn btn-primary">Tambah</a>
+		@endif
 		@if(isset($CalendarComposer['widget_data']['calendarlist']['calendar']))
 			<div class="clearfix">&nbsp;</div>
 			<div class="table-responsive">
@@ -49,12 +51,14 @@
 									<div class="btn-group">
 										<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pengaturan <span class="caret"></span></button>
 										<ul class="dropdown-menu">
-											<li>
-												<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.calendars.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash fa-fw"></i> Hapus</a>
-											</li>
-											<li>
-												<a href="{{route('hr.calendars.edit', [$value['id'], 'org_id' => $data['id']])}}"><i class="fa fa-pencil fa-fw"></i> Ubah</a>
-											</li>
+											@if((int)Session::get('user.menuid')<=2)
+												<li>
+													<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.calendars.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash fa-fw"></i> Hapus</a>
+												</li>
+												<li>
+													<a href="{{route('hr.calendars.edit', [$value['id'], 'org_id' => $data['id']])}}"><i class="fa fa-pencil fa-fw"></i> Ubah</a>
+												</li>
+											@endif
 											<li>
 												<a href="{{route('hr.calendars.show', [$value['id'], 'org_id' => $data['id']])}}"><i class="fa fa-eye fa-fw"></i> Detail</a>
 											</li>

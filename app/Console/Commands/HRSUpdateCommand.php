@@ -78,44 +78,52 @@ class HRSUpdateCommand extends Command {
 	 **/
 	public function update772015()
 	{
-		DB::statement("ALTER TABLE works MODIFY COLUMN status ENUM('contract', 'probation', 'internship', 'permanent', 'others')");
-
-		$this->info("Alter works status to 'contract', 'probation', 'internship', 'permanent', 'others'");
-
-		Schema::drop('persons_workleaves');
-
-		$this->info("Table Persons Workleaves removed");
-
-		Schema::table('apis', function($table)
+		Schema::table('tmp_workleaves', function($table)
 		{
-		    $table->string('workstation_address', 255);
-			$table->string('workstation_name', 255);
-			$table->string('tr_version', 255);
+			$table->enum('status', ['annual', 'special']);
 			$table->boolean('is_active');
 		});
 
-		$this->info("Add workstation address, workstation name and tracker version on apis table");
+		$this->info("Add status, is active on tmp workleaves table");
 
-		Schema::create('person_workleaves', function(Blueprint $table)
-		{
-			$table->increments('id');
-			$table->integer('person_id')->unsigned()->index();
-			$table->integer('work_id')->unsigned()->index();
-			$table->integer('person_workleave_id')->unsigned()->index();
-			$table->integer('created_by')->unsigned()->index();
-			$table->string('name', 255);
-			$table->date('start');
-			$table->date('end');
-			$table->integer('quota');
-			$table->enum('status', ['offer', 'annual', 'special', 'confirmed']);
-			$table->text('notes');
-			$table->timestamps();
-			$table->softDeletes();
+		// DB::statement("ALTER TABLE works MODIFY COLUMN status ENUM('contract', 'probation', 'internship', 'permanent', 'others')");
+
+		// $this->info("Alter works status to 'contract', 'probation', 'internship', 'permanent', 'others'");
+
+		// Schema::drop('persons_workleaves');
+
+		// $this->info("Table Persons Workleaves removed");
+
+		// Schema::table('apis', function($table)
+		// {
+		//     $table->string('workstation_address', 255);
+		// 	$table->string('workstation_name', 255);
+		// 	$table->string('tr_version', 255);
+		// 	$table->boolean('is_active');
+		// });
+
+		// $this->info("Add workstation address, workstation name and tracker version on apis table");
+
+		// Schema::create('person_workleaves', function(Blueprint $table)
+		// {
+		// 	$table->increments('id');
+		// 	$table->integer('person_id')->unsigned()->index();
+		// 	$table->integer('work_id')->unsigned()->index();
+		// 	$table->integer('person_workleave_id')->unsigned()->index();
+		// 	$table->integer('created_by')->unsigned()->index();
+		// 	$table->string('name', 255);
+		// 	$table->date('start');
+		// 	$table->date('end');
+		// 	$table->integer('quota');
+		// 	$table->enum('status', ['offer', 'annual', 'special', 'confirmed']);
+		// 	$table->text('notes');
+		// 	$table->timestamps();
+		// 	$table->softDeletes();
 			
-			$table->index(['deleted_at', 'person_id', 'start']);
-		});
+		// 	$table->index(['deleted_at', 'person_id', 'start']);
+		// });
 
-		$this->info("Table Person Workleaves created");
+		// $this->info("Table Person Workleaves created");
 
 		return true;
 	}

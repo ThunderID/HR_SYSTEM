@@ -30,7 +30,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 		{
 			$routes_acl = [
 							'hr.organisations.index'						=> [['1', '2', '3', '4', '5'], 'read'],
-							'hr.organisations.show'							=> [['1', '2'], 'read'],
+							'hr.organisations.show'							=> [['1', '2', '3'], 'read'],
 							'hr.organisations.create'						=> [['1'], 'create'],
 							'hr.organisations.store'						=> [['1'], 'create'],
 							'hr.organisations.edit'							=> [['1'], 'update'],
@@ -231,9 +231,9 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.report.wages.update'						=> [['1', '2', '3'], 'update'],
 							'hr.report.wages.delete'						=> [['1', '2', '3'], 'delete'],
 							
-							'hr.password.get'								=> [['1', '2', '3'], 'delete'],
-							'hr.password.post'								=> [['1', '2', '3'], 'delete'],
-							'hr.logout.get'									=> [['1', '2', '3'], 'delete'],
+							'hr.password.get'								=> [['1', '2', '3', '4', '5'], 'update'],
+							'hr.password.post'								=> [['1', '2', '3', '4', '5'], 'update'],
+							'hr.logout.get'									=> [['1', '2', '3', '4', '5'], 'delete'],
 				];
 			return $routes_acl;
 		});

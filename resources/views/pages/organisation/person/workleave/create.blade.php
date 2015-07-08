@@ -33,22 +33,68 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.organisation.person.workleave.form', [
-		'widget_template'	=> 'panel',
-		'widget_options'	=> 	[
-									'personworkleavelist'			=>
-									[
-										'form_url'			=> route('hr.person.workleaves.store', ['id' => $id, 'person_id' => $person['id'], 'org_id' => $data['id']]),
-										'organisation_id'	=> $data['id'],
-										'search'			=> ['id' => $id ,'withattributes' => ['person']],
-										'sort'				=> [],
-										'new'				=> (is_null($id) ? true : false),
-										'page'				=> 1,
-										'per_page'			=> 1,
-										'route_back'	 	=> route('hr.person.workleaves.index', [$person['id'], 'org_id' => $data['id'], 'person_id' => $person['id']])
-									]
-								]
-	])
+	@if(Input::has('type'))
+		@if(strtolower(Input::get('type'))=='given')
+			@include('widgets.organisation.person.workleave.given.form', [
+				'widget_template'	=> 'panel',
+				'widget_options'	=> 	[
+											'personworkleavelist'			=>
+											[
+												'form_url'			=> route('hr.person.workleaves.store', ['id' => $id, 'person_id' => $person['id'], 'org_id' => $data['id']]),
+												'organisation_id'	=> $data['id'],
+												'search'			=> ['id' => $id ,'withattributes' => ['person']],
+												'sort'				=> [],
+												'new'				=> (is_null($id) ? true : false),
+												'page'				=> 1,
+												'per_page'			=> 1,
+												'route_back'	 	=> route('hr.person.workleaves.index', [$person['id'], 'org_id' => $data['id'], 'person_id' => $person['id']])
+											]
+										]
+			])
+		@elseif(strtolower(Input::get('type'))=='taken')
+			@include('widgets.organisation.person.workleave.taken.form', [
+				'widget_template'	=> 'panel',
+				'widget_options'	=> 	[
+											'personworkleavelist'			=>
+											[
+												'form_url'			=> route('hr.person.workleaves.store', ['id' => $id, 'person_id' => $person['id'], 'org_id' => $data['id']]),
+												'organisation_id'	=> $data['id'],
+												'search'			=> ['id' => $id ,'withattributes' => ['person']],
+												'sort'				=> [],
+												'new'				=> (is_null($id) ? true : false),
+												'page'				=> 1,
+												'per_page'			=> 1,
+												'route_back'	 	=> route('hr.person.workleaves.index', [$person['id'], 'org_id' => $data['id'], 'person_id' => $person['id']])
+											]
+										]
+			])
+		@else
+			@include('widgets.common.error', [
+				'error_code'		=> '404',
+				'error_msg'			=> 'Not Found',
+			])
+		@endif
+	@else
+		<div class="clearfix">&nbsp;</div>
+		<div class="clearfix">&nbsp;</div>
+		<div class="clearfix">&nbsp;</div>
+		<div class="clearfix">&nbsp;</div>
+		<div class="row">
+			<div class="col-sm-4 col-sm-offset-4">
+				@include('widgets.common.selectblock', [
+					'widget_title'			=> 'Pilih Data',
+					'widget_template'		=> 'panel',
+					'widget_options'		=> 	[
+													'url_old'		=> route('hr.person.workleaves.create', ['org_id' => $data['id'], 'person_id' => $person['id'], 'type' => 'given']),
+													'url_new'		=> route('hr.person.workleaves.create', ['org_id' => $data['id'], 'person_id' => $person['id'], 'type' => 'taken']),
+													'caption_old'	=> 'Pemberian Cuti',
+													'caption_new'	=> 'Pengambilan Cuti',
+												],
+					])
+			</div>
+		</div>
+	@endif
+	
 
 @overwrite
 

@@ -62,7 +62,7 @@ class PersonController extends BaseController
 		$search['organisationid']					= $org_id;
 		$search['withattributes']					= ['organisation'];
 		$sort 										= ['name' => 'asc'];
-		if(Session::get('user.menuid')==4)
+		if(Session::get('user.menuid')>=4)
 		{
 			$search['chartchild'] 					= Session::get('user.chartpath');
 		}
@@ -227,7 +227,7 @@ class PersonController extends BaseController
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
 		$sort 									= ['name' => 'asc'];
-		if(Session::get('user.menuid')==4)
+		if(Session::get('user.menuid')>=4)
 		{
 			$search['chartchild'] 				= Session::get('user.chartpath');
 		}
@@ -335,7 +335,7 @@ class PersonController extends BaseController
 			$end 									= date('Y-m-d', strtotime('last day of next month'));
 		}
 
-		if(Session::get('user.menuid')==4)
+		if(Session::get('user.menuid')>=4)
 		{
 			$search['chartchild'] 					= Session::get('user.chartpath');
 		}
@@ -344,7 +344,7 @@ class PersonController extends BaseController
 		$search['organisationid']					= $org_id;
 		$search['withattributes']					= ['organisation'];
 		$sort 										= ['name' => 'asc'];
-		if(Session::get('user.menuid')==4)
+		if(Session::get('user.menuid')>=4)
 		{
 			$search['chartchild'] 					= Session::get('user.chartpath');
 		}

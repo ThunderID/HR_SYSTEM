@@ -41,7 +41,7 @@ class WorkController extends BaseController
 		$search['id'] 								= $person_id;
 		$search['organisationid'] 					= $org_id;
 		$search['withattributes'] 					= ['organisation'];
-		if(Session::get('user.menuid')==4)
+		if(Session::get('user.menuid')>=4)
 		{
 			$search['chartchild'] 				= Session::get('user.chartpath');
 		}

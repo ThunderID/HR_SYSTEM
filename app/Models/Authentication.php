@@ -146,9 +146,9 @@ class Authentication extends BaseModel {
 		{
 			return $query;
 		}
-		if(in_array($variable, ['is_create', 'is_read', 'is_update', 'is_delete']))
+		if(in_array('is_'.$variable, ['is_create', 'is_read', 'is_update', 'is_delete']))
 		{
-			return $query->where($variable, true);
+			return $query->where('is_'.$variable, true);
 		}
 		
 		return $query;

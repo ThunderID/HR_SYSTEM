@@ -16,7 +16,9 @@
 	@overwrite
 
 	@section('widget_body')
-		<a href="{{ $RelativeComposer['widget_data']['relativelist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
+		@if((int)Session::get('user.menuid')<4)
+			<a href="{{ $RelativeComposer['widget_data']['relativelist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
+		@endif
 		@if(isset($RelativeComposer['widget_data']['relativelist']['relative']))
 			<div class="clearfix">&nbsp;</div>
 			<div class="table-responsive">
@@ -49,8 +51,10 @@
 									@endforeach
 								</td>
 								<td class="text-right col-sm-2">
-									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.relatives.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']]) }}"><i class="fa fa-trash"></i></a>
-									<a href="{{route('hr.person.relatives.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'employee' => false])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									@if((int)Session::get('user.menuid')<4)
+										<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.relatives.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']]) }}"><i class="fa fa-trash"></i></a>
+										<a href="{{route('hr.person.relatives.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'employee' => false])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									@endif
 								</td>
 							</tr>
 						</tbody>

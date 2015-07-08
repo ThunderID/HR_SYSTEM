@@ -25,6 +25,8 @@
 							<th>No</th>
 							<th>Nama Cuti</th>
 							<th>Quota Cuti</th>
+							<th>Jenis</th>
+							<th>Aktif</th>
 							<th>&nbsp;</th>
 						</tr>
 					</thead>
@@ -40,6 +42,16 @@
 								</td>
 								<td>
 									{{$value['quota']}}
+								</td>
+								<td>
+									{{$value['status']}}
+								</td>
+								<td>
+									@if($value['is_active'])
+										<i class="fa fa-check"></i>
+									@else
+										<i class="fa fa-minus"></i>
+									@endif
 								</td>
 								<td class="text-right">
 									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.workleaves.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash"></i></a>
