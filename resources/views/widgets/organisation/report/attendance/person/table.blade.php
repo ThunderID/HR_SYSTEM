@@ -157,7 +157,7 @@
 										@endif
 									</td>
 									<td class="text-right">
-										<a href="{{route('hr.attendance.persons.edit', array_merge(['id' => $value['id'], 'person_id' => $person['id'], 'org_id' => $data['id']], Input::all())) }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+										<a href="{{route('hr.attendance.persons.edit', array_merge(['id' => $value['id'], 'person_id' => $person['id'], 'org_id' => $data['id'], 'ondate' => $value['on']], Input::all())) }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 										<a href="{{route('hr.attendance.persons.show', ['id' => $person['id'], 'person_id' => $person['id'], 'org_id' => $data['id'], 'ondate' => $value['on'], 'start' => $start, 'end' => $end])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
 									</td>
 								</tr>

@@ -116,6 +116,8 @@ class PersonController extends BaseController
 
 	public function create($id = null)
 	{
+		$errors 								= new MessageBag();
+
 		if(Input::has('org_id'))
 		{
 			$org_id 							= Input::get('org_id');
@@ -153,6 +155,39 @@ class PersonController extends BaseController
 
 		$person 								= json_decode(json_encode($contents->data), true);
 		$data 									= $person['organisation'];
+
+		if(!is_null($id))
+		{
+			if(!Input::has('ondate'))
+			{
+				App::abort(404);
+			}
+
+			if((int)Session::Get('user.menuid')==2)
+			{
+				$dateline 						= date('Y-m-d', strtotime(Input::get('ondate'). ' + 2 months'));
+
+				if($dateline < date('Y-m-d'))
+				{
+					$errors->add('ProcessLog', 'Batas Akhir Perubahan Status adalah 2 Bulan');
+					
+					return Redirect::back()->withErrors($errors)->withInput();
+				}
+			}
+
+			if((int)Session::Get('user.menuid')==3)
+			{
+				$dateline 						= date('Y-m-d', strtotime(Input::get('ondate'). ' + 7 days'));
+
+				if($dateline < date('Y-m-d'))
+				{
+					$errors->add('ProcessLog', 'Batas Akhir Perubahan Status adalah 7 hari');
+					
+					return Redirect::back()->withErrors($errors)->withInput();
+				}
+			}
+
+		}
 
 		$this->layout->page 					= view('pages.organisation.report.attendance.person.create', compact('id', 'data', 'person'));
 

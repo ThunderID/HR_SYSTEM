@@ -350,7 +350,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 					//check access
 					$menu 											= app('hr_acl')[Route::currentRouteName()];
 
-					$results 										= $this->dispatch(new Getting(new Authentication, ['menuid' => $menu[0],'chartid' => $chartid, 'access' => $menu[1]], ['menu_id' => 'desc'],1, 1));
+					$results 										= $this->dispatch(new Getting(new Authentication, ['menuid' => $menu[0],'chartid' => $chartid, 'access' => $menu[1]], ['menu_id' => 'asc'],1, 1));
 
 					$contents 										= json_decode($results);
 

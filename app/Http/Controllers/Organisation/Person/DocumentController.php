@@ -217,22 +217,31 @@ class DocumentController extends BaseController
 		unset($search);
 		unset($sort);
 
-		$search['id'] 							= $id;
-		$search['personid'] 					= $person_id;
-		$search['withattributes'] 				= ['details'];
-		$sort 									= [];
-		$results 								= $this->dispatch(new Getting(new PersonDocument, $search, $sort , 1, 1));
-		$contents 								= json_decode($results);
-
-		if(!$contents->meta->success)
-		{
-			App::abort(404);
-		}
-
-		$persondocument 						= json_decode(json_encode($contents->data), true);
-
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 						= view('pages.organisation.person.document.create', compact('id', 'data', 'person', 'persondocument'));
+		if(Input::has('doc_id') && !is_null($id))
+		{
+			$doc_id 								= Input::get('doc_id');
+			$search['id'] 							= $id;
+			$search['personid'] 					= $person_id;
+			$search['withattributes'] 				= ['details'];
+			$sort 									= [];
+			$results 								= $this->dispatch(new Getting(new PersonDocument, $search, $sort , 1, 1));
+			$contents 								= json_decode($results);
+
+			if(!$contents->meta->success)
+			{
+				App::abort(404);
+			}
+
+			$persondocument 						= json_decode(json_encode($contents->data), true);
+
+		}
+		else
+		{
+			$persondocument 						= null;
+		}
+		
+		$this->layout->pages 					= view('pages.organisation.person.document.create', compact('id', 'data', 'person', 'persondocument'));
 
 		return $this->layout;
 	}
