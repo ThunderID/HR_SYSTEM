@@ -334,23 +334,23 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 
 					Session::put('user.id', $contents->data->id);
 					Session::put('user.name', $contents->data->name);
-					Session::put('user.email', $contents->data->contacts[0]->value);
+					Session::put('user.username', $contents->data->username);
 					Session::put('user.gender', $contents->data->gender);
 					Session::put('user.avatar', $contents->data->avatar);
 
 					if(Input::has('org_id'))
 					{
-						$chartid[]									= $chartids[Input::get('org_id')];
+						$chartid									= $chartids[Input::get('org_id')];
 					}
 					else
 					{
-						$chartid[]									= $chartsids;
+						$chartid									= $chartsids;
 					}
 
 					//check access
 					$menu 											= app('hr_acl')[Route::currentRouteName()];
 
-					$results 										= $this->dispatch(new Getting(new Authentication, ['menuid' => $menu[0],'chartid' => $chartid, 'access' => $menu[1]], ['menu_id' => 'asc'],1, 1));
+					$results 										= $this->dispatch(new Getting(new Authentication, ['menuid' => $menu[0],'chartid' => $chartid, 'access' => $menu[1]], ['menu_id' => 'desc'],1, 1));
 
 					$contents 										= json_decode($results);
 

@@ -212,12 +212,12 @@ class ScheduleController extends BaseController
 		}
 		else
 		{
-			App::abort(404);
+			return Response::json(['message' => 'Not Found'], 404);
 		}
 
 		if(!in_array($org_id, Session::get('user.organisationids')))
 		{
-			App::abort(404);
+			return Response::json(['message' => 'Not Found'], 404);
 		}
 
 		if(Input::has('start'))
@@ -256,11 +256,11 @@ class ScheduleController extends BaseController
 		unset($sort);
 
 		//look for person calendar via work
+		$search['active'] 						= $end;
 		$search['personid'] 					= $person_id;
-		$search['status'] 						= ['contract','trial','internship','permanent','previous'];
-		$search['active'] 						= true;
+		$search['status'] 						= ['contract','probation','internship','permanent','others'];
 		$search['withattributes'] 				= ['calendar'];
-		$sort 									= ['start' => 'asc'];
+		$sort 									= ['start' => 'desc'];
 		$results 								= $this->dispatch(new Getting(new Work, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
 
@@ -284,7 +284,6 @@ class ScheduleController extends BaseController
 
 		if(!$contents->meta->success)
 		{
-			dd($contents);
 			return Response::json(['message' => 'Not Found'], 404);
 		}
 
@@ -312,7 +311,14 @@ class ScheduleController extends BaseController
 		
 		//rebuild the schedule
 		$begin 									= new DateTime( $start );
-		$ended 									= new DateTime( $end  );
+		if(!is_null($work['end']))
+		{
+			$ended 								= new DateTime( min(date('Y-m-d', strtotime($end)), date('Y-m-d', strtotime($work['end'])) ) );
+		}
+		else
+		{
+			$ended 								= new DateTime( $end );
+		}
 
 		$interval 								= DateInterval::createFromDateString('1 day');
 		$periods 								= new DatePeriod($begin, $interval, $ended);
@@ -595,7 +601,7 @@ class ScheduleController extends BaseController
 
 	public function destroy($id)
 	{
-		$attributes 						= ['email' => Session::get('user.email'), 'password' => Input::get('password')];
+		$attributes 						= ['username' => Session::get('user.username'), 'password' => Input::get('password')];
 
 		$results 							= $this->dispatch(new Checking(new Person, $attributes));
 

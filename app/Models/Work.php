@@ -80,7 +80,7 @@ class Work extends BaseModel {
 											'chartid' 					=> 'Could be array or integer', 
 											'personid' 					=> 'Could be array or integer', 
 											'status' 					=> 'Could be array or string', 
-											'active' 					=> 'Need to be true', 
+											'active' 					=> 'Must be enddate of work', 
 											'withattributes' 			=> 'Must be array of relationship',
 										];
 
@@ -143,6 +143,6 @@ class Work extends BaseModel {
 
 	public function scopeActive($query, $variable)
 	{
-		return $query->wherenull('end');
+		return $query->whereHas('calendar', function($q){$q;});
 	}
 }
