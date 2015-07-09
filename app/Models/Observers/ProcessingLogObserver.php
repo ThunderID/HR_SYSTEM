@@ -147,341 +147,341 @@ class ProcessingLogObserver
 					}
 
 				}
-			// 	else
-			// 	{
-			// 		$calendar 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->withAttributes(['workscalendars','workscalendars.calendar'])->first();
-			// 		if($calendar)
-			// 		{
-			// 			if(!isset($calendar->workscalendars[0]))
-			// 			{
-			// 				return true;
-			// 			}
+				else
+				{
+					$calendar 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->withAttributes(['workscalendars','workscalendars.calendar'])->first();
+					if($calendar)
+					{
+						if(!isset($calendar->workscalendars[0]))
+						{
+							return true;
+						}
 						
-			// 			$workid 	= $calendar->workscalendars[0]->id;
-			// 			$workdays  	= explode(',', $calendar->workscalendars[0]->workdays);
-			// 			$wd			= ['monday' => 'senin', 'tuesday' => 'selasa', 'wednesday' => 'rabu', 'thursday' => 'kamis', 'friday' => 'jumat', 'saturday' => 'sabtu', 'sunday' => 'minggu', 'senin' => 'monday', 'selasa' => 'tuesday', 'rabu' => 'wednesday', 'kamis' => 'thursday', 'jumat' => 'friday', 'sabtu' => 'saturday', 'minggu' => 'sunday'];
-			// 			$day 		= date("l", strtotime($model['attributes']['on']));
+						$workid 	= $calendar->workscalendars[0]->id;
+						$workdays  	= explode(',', $calendar->workscalendars[0]->workdays);
+						$wd			= ['monday' => 'senin', 'tuesday' => 'selasa', 'wednesday' => 'rabu', 'thursday' => 'kamis', 'friday' => 'jumat', 'saturday' => 'sabtu', 'sunday' => 'minggu', 'senin' => 'monday', 'selasa' => 'tuesday', 'rabu' => 'wednesday', 'kamis' => 'thursday', 'jumat' => 'friday', 'sabtu' => 'saturday', 'minggu' => 'sunday'];
+						$day 		= date("l", strtotime($model['attributes']['on']));
 
-			// 			if(isset($wd[strtolower($day)]) && in_array($wd[strtolower($day)], $workdays))
-			// 			{
-			// 				$schedule_start = $calendar->workscalendars[0]->start;
-			// 				$schedule_end 	= $calendar->workscalendars[0]->end;	
+						if(isset($wd[strtolower($day)]) && in_array($wd[strtolower($day)], $workdays))
+						{
+							$schedule_start = $calendar->workscalendars[0]->start;
+							$schedule_end 	= $calendar->workscalendars[0]->end;	
 
-			// 				//sync schedule status with process log
-			// 				switch (strtolower($calendar->workscalendars[0]->status)) 
-			// 				{
-			// 					case 'dn':
-			// 						if(count($calendar->workscalendars) > 1)
-			// 						{
-			// 							$modified_status 		= 'DN';
-			// 						}
-			// 						else
-			// 						{
-			// 							$modified_status 		= 'HD';
-			// 						}
+							//sync schedule status with process log
+							switch (strtolower($calendar->workscalendars[0]->status)) 
+							{
+								case 'dn':
+									if(count($calendar->workscalendars) > 1)
+									{
+										$modified_status 		= 'DN';
+									}
+									else
+									{
+										$modified_status 		= 'HD';
+									}
 
-			// 						$modified_by 				= $calendar->workscalendars[0]->created_by;
-			// 						$modified_at 				= $calendar->workscalendars[0]->created_at;
-			// 						break;
+									$modified_by 				= $calendar->workscalendars[0]->created_by;
+									$modified_at 				= $calendar->workscalendars[0]->created_at;
+									break;
 
-			// 					case 'ss': case 'sl' : case 'cn' : case 'ci' : case 'cb' : case 'ul' :
-			// 						$modified_status 			= strtoupper($calendar->workscalendars[0]->status);
-			// 						$modified_by 				= $calendar->workscalendars[0]->created_by;
-			// 						$modified_at 				= $calendar->workscalendars[0]->created_at;
-			// 						break;
-			// 				}
-			// 			}
-			// 			else
-			// 			{
-			// 				$schedule_start = '00:00:00';
-			// 				$schedule_end 	= '00:00:00';
-			// 			}
-			// 		}
-			// 		else
-			// 		{
-			// 			$schedule_start = '00:00:00';
-			// 			$schedule_end 	= '00:00:00';
-			// 		}
-			// 	}
+								case 'ss': case 'sl' : case 'cn' : case 'ci' : case 'cb' : case 'ul' :
+									$modified_status 			= strtoupper($calendar->workscalendars[0]->status);
+									$modified_by 				= $calendar->workscalendars[0]->created_by;
+									$modified_at 				= $calendar->workscalendars[0]->created_at;
+									break;
+							}
+						}
+						else
+						{
+							$schedule_start = '00:00:00';
+							$schedule_end 	= '00:00:00';
+						}
+					}
+					else
+					{
+						$schedule_start = '00:00:00';
+						$schedule_end 	= '00:00:00';
+					}
+				}
 			}
 
-			// if(isset($data->id))
-			// {
-			// 	$plog 				= $data;
-			// 	$fp_start 			= $data->fp_start;
-			// 	$fp_end 			= $data->fp_end;
-			// 	$start 				= $data->start;
-			// 	$end 				= $data->end;
+			if(isset($data->id))
+			{
+				$plog 				= $data;
+				$fp_start 			= $data->fp_start;
+				$fp_end 			= $data->fp_end;
+				$start 				= $data->start;
+				$end 				= $data->end;
 
-			// 	if(isset($data->modified_by) && $data->modified_by!=0)
-			// 	{
-			// 		$modified_by 	= $data->modified_by;
-			// 	}
+				if(isset($data->modified_by) && $data->modified_by!=0)
+				{
+					$modified_by 	= $data->modified_by;
+				}
 
-			// 	$result 			= json_decode($data->tooltip);
-			// 	$tooltip 			= json_decode(json_encode($result), true);
+				$result 			= json_decode($data->tooltip);
+				$tooltip 			= json_decode(json_encode($result), true);
 
-			// 	if(strtolower($model['attributes']['name'])=='finger_print')
-			// 	{
-			// 		if(date('H:i:s',strtotime($data->fp_start)) < $time && $data->fp_start == '00:00:00')
-			// 		{
-			// 			$fp_start 	= $time;
-			// 		}
-			// 		elseif(date('H:i:s',strtotime($data->fp_start)) > $time)
-			// 		{
-			// 			$fp_start 	= $time;
-			// 		}
-			// 		elseif(date('H:i:s',strtotime($data->fp_end)) < $time)
-			// 		{
-			// 			$fp_end 	= $time;
-			// 		}
-			// 	}
-			// 	else
-			// 	{
-			// 		if(date('H:i:s',strtotime($data->start)) < $time && $data->start == '00:00:00')
-			// 		{
-			// 			$start 		= $time;
-			// 		}
-			// 		elseif(date('H:i:s',strtotime($data->start)) > $time)
-			// 		{
-			// 			$start 		= $time;
-			// 		}
+				if(strtolower($model['attributes']['name'])=='finger_print')
+				{
+					if(date('H:i:s',strtotime($data->fp_start)) < $time && $data->fp_start == '00:00:00')
+					{
+						$fp_start 	= $time;
+					}
+					elseif(date('H:i:s',strtotime($data->fp_start)) > $time)
+					{
+						$fp_start 	= $time;
+					}
+					elseif(date('H:i:s',strtotime($data->fp_end)) < $time)
+					{
+						$fp_end 	= $time;
+					}
+				}
+				else
+				{
+					if(date('H:i:s',strtotime($data->start)) < $time && $data->start == '00:00:00')
+					{
+						$start 		= $time;
+					}
+					elseif(date('H:i:s',strtotime($data->start)) > $time)
+					{
+						$start 		= $time;
+					}
 					
-			// 		if(date('H:i:s',strtotime($data->end)) < $time)
-			// 		{
-			// 			$end 		= $time;
-			// 		}
-			// 	}
-			// }
-			// else
-			// {
-			// 	if(isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0)
-			// 	{
-			// 		$modified_by	= $model['attributes']['created_by'];
-			// 	}
+					if(date('H:i:s',strtotime($data->end)) < $time)
+					{
+						$end 		= $time;
+					}
+				}
+			}
+			else
+			{
+				if(isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0)
+				{
+					$modified_by	= $model['attributes']['created_by'];
+				}
 
-			// 	if(strtolower($model['attributes']['name'])=='finger_print')
-			// 	{
-			// 		$fp_start 		= $time;
-			// 		$start 			= $time;
-			// 		$end 			= $time;
-			// 		$tooltip[]		= 'finger_print';
-			// 	}
-			// 	else
-			// 	{
-			// 		$start 			= $time;
-			// 		$end 			= $time;
-			// 		$tooltip[]		= 'absencesystem';
-			// 	}
-			// }
+				if(strtolower($model['attributes']['name'])=='finger_print')
+				{
+					$fp_start 		= $time;
+					$start 			= $time;
+					$end 			= $time;
+					$tooltip[]		= 'finger_print';
+				}
+				else
+				{
+					$start 			= $time;
+					$end 			= $time;
+					$tooltip[]		= 'absencesystem';
+				}
+			}
 
-			// if($fp_start=='00:00:00')
-			// {
-			// 	$minstart 			= $start;
-			// }
-			// else
-			// {
-			// 	$minstart 			= min($start, $fp_start);
-			// }
+			if($fp_start=='00:00:00')
+			{
+				$minstart 			= $start;
+			}
+			else
+			{
+				$minstart 			= min($start, $fp_start);
+			}
 
-			// if($fp_end=='00:00:00')
-			// {
-			// 	$maxend 			= $end;
-			// }
-			// else
-			// {
-			// 	$maxend 				= max($end, $fp_end);
-			// }
+			if($fp_end=='00:00:00')
+			{
+				$maxend 			= $end;
+			}
+			else
+			{
+				$maxend 				= max($end, $fp_end);
+			}
 
-			// list($hours, $minutes, $seconds) = explode(":", $minstart);
+			list($hours, $minutes, $seconds) = explode(":", $minstart);
 
-			// $minstart 				= $hours*3600+$minutes*60+$seconds;
+			$minstart 				= $hours*3600+$minutes*60+$seconds;
 
-			// list($hours, $minutes, $seconds) = explode(":", $schedule_start);
+			list($hours, $minutes, $seconds) = explode(":", $schedule_start);
 
-			// $schedule_start_second	= $hours*3600+$minutes*60+$seconds;
+			$schedule_start_second	= $hours*3600+$minutes*60+$seconds;
 
-			// $margin_start 			= $schedule_start_second - $minstart;
+			$margin_start 			= $schedule_start_second - $minstart;
 
-			// list($hours, $minutes, $seconds) = explode(":", $maxend);
+			list($hours, $minutes, $seconds) = explode(":", $maxend);
 
-			// $maxend 				= $hours*3600+$minutes*60+$seconds;
+			$maxend 				= $hours*3600+$minutes*60+$seconds;
 
-			// list($hours, $minutes, $seconds) = explode(":", $schedule_end);
+			list($hours, $minutes, $seconds) = explode(":", $schedule_end);
 
-			// $schedule_end_second	= $hours*3600+$minutes*60+$seconds;
+			$schedule_end_second	= $hours*3600+$minutes*60+$seconds;
 
-			// $margin_end 			= $maxend - $schedule_end_second;
+			$margin_end 			= $maxend - $schedule_end_second;
 
-			// $idle 					= Log::ondate($on)->personid($model['attributes']['person_id'])->orderBy('on', 'asc')->get();
+			$idle 					= Log::ondate($on)->personid($model['attributes']['person_id'])->orderBy('on', 'asc')->get();
 
-			// $total_active 			= abs($maxend) - abs($minstart);
+			$total_active 			= abs($maxend) - abs($minstart);
 
-			// foreach ($idle as $key => $value) 
-			// {
-			// 	if(strtolower($value['name']) == 'idle')
-			// 	{
-			// 		$start_idle 	= date('H:i:s', strtotime($value['on']));
-			// 		list($hours, $minutes, $seconds) = explode(":", $start_idle);
+			foreach ($idle as $key => $value) 
+			{
+				if(strtolower($value['name']) == 'idle')
+				{
+					$start_idle 	= date('H:i:s', strtotime($value['on']));
+					list($hours, $minutes, $seconds) = explode(":", $start_idle);
 
-			// 		$start_idle 	= $hours*3600+$minutes*60+$seconds;
-			// 	}
-			// 	elseif((strtolower($value['name']) != 'idle') && isset($start_idle))
-			// 	{
-			// 		$new_idle 		= date('H:i:s', strtotime($value['on']));
-			// 		list($hours, $minutes, $seconds) = explode(":", $new_idle);
+					$start_idle 	= $hours*3600+$minutes*60+$seconds;
+				}
+				elseif((strtolower($value['name']) != 'idle') && isset($start_idle))
+				{
+					$new_idle 		= date('H:i:s', strtotime($value['on']));
+					list($hours, $minutes, $seconds) = explode(":", $new_idle);
 
-			// 		$new_idle 		= $hours*3600+$minutes*60+$seconds;
+					$new_idle 		= $hours*3600+$minutes*60+$seconds;
 
-			// 		$total_idle		= $total_idle + $new_idle - $start_idle;
-			// 		if($new_idle - $start_idle <= $idle_1)
-			// 		{
-			// 			$total_idle_1 	= $total_idle_1 + $new_idle - $start_idle;
-			// 			$frequency_idle_1++;
-			// 		}
-			// 		elseif($new_idle - $start_idle > $idle_1 && $new_idle - $start_idle < $idle_2)
-			// 		{
-			// 			$total_idle_2 	= $total_idle_2 + $new_idle - $start_idle;
-			// 			$frequency_idle_2++;
-			// 		}
-			// 		elseif($new_idle - $start_idle >= $idle_2)
-			// 		{
-			// 			$total_idle_3 	= $total_idle_3 + $new_idle - $start_idle;
-			// 			$frequency_idle_3++;
-			// 		}
+					$total_idle		= $total_idle + $new_idle - $start_idle;
+					if($new_idle - $start_idle <= $idle_1)
+					{
+						$total_idle_1 	= $total_idle_1 + $new_idle - $start_idle;
+						$frequency_idle_1++;
+					}
+					elseif($new_idle - $start_idle > $idle_1 && $new_idle - $start_idle < $idle_2)
+					{
+						$total_idle_2 	= $total_idle_2 + $new_idle - $start_idle;
+						$frequency_idle_2++;
+					}
+					elseif($new_idle - $start_idle >= $idle_2)
+					{
+						$total_idle_3 	= $total_idle_3 + $new_idle - $start_idle;
+						$frequency_idle_3++;
+					}
 					
-			// 		unset($start_idle);
-			// 	}
+					unset($start_idle);
+				}
 
-			// 	if(strtolower($value['name']) == 'sessionlock')
-			// 	{
-			// 		$start_lock 	= date('H:i:s', strtotime($value['on']));
-			// 		list($hours, $minutes, $seconds) = explode(":", $start_lock);
+				if(strtolower($value['name']) == 'sessionlock')
+				{
+					$start_lock 	= date('H:i:s', strtotime($value['on']));
+					list($hours, $minutes, $seconds) = explode(":", $start_lock);
 
-			// 		$start_lock 	= $hours*3600+$minutes*60+$seconds;
-			// 	}
-			// 	elseif((strtolower($value['name']) != 'sessionunlock') && isset($start_lock))
-			// 	{
-			// 		$new_lock 		= date('H:i:s', strtotime($value['on']));
-			// 		list($hours, $minutes, $seconds) = explode(":", $new_lock);
+					$start_lock 	= $hours*3600+$minutes*60+$seconds;
+				}
+				elseif((strtolower($value['name']) != 'sessionunlock') && isset($start_lock))
+				{
+					$new_lock 		= date('H:i:s', strtotime($value['on']));
+					list($hours, $minutes, $seconds) = explode(":", $new_lock);
 
-			// 		$new_lock 		= $hours*3600+$minutes*60+$seconds;
+					$new_lock 		= $hours*3600+$minutes*60+$seconds;
 
-			// 		$total_idle		= $total_idle + $new_lock - $start_lock;
-			// 		if($new_lock - $start_lock <= $idle_1)
-			// 		{
-			// 			$total_idle_1 	= $total_idle_1 + $new_lock - $start_lock;
-			// 			$frequency_idle_1++;
-			// 		}
-			// 		elseif($new_lock - $start_lock > $idle_1 && $new_lock - $start_lock < $idle_2)
-			// 		{
-			// 			$total_idle_2 	= $total_idle_2 + $new_lock - $start_lock;
-			// 			$frequency_idle_2++;
-			// 		}
-			// 		elseif($new_lock - $start_lock >= $idle_2)
-			// 		{
-			// 			$total_idle_3 	= $total_idle_3 + $new_lock - $start_lock;
-			// 			$frequency_idle_3++;
-			// 		}
+					$total_idle		= $total_idle + $new_lock - $start_lock;
+					if($new_lock - $start_lock <= $idle_1)
+					{
+						$total_idle_1 	= $total_idle_1 + $new_lock - $start_lock;
+						$frequency_idle_1++;
+					}
+					elseif($new_lock - $start_lock > $idle_1 && $new_lock - $start_lock < $idle_2)
+					{
+						$total_idle_2 	= $total_idle_2 + $new_lock - $start_lock;
+						$frequency_idle_2++;
+					}
+					elseif($new_lock - $start_lock >= $idle_2)
+					{
+						$total_idle_3 	= $total_idle_3 + $new_lock - $start_lock;
+						$frequency_idle_3++;
+					}
 					
-			// 		unset($start_lock);
-			// 	}
+					unset($start_lock);
+				}
 
-			// 	if(strtolower($value['name']) == 'sleep')
-			// 	{
-			// 		$start_sleep 	= date('H:i:s', strtotime($value['on']));
-			// 		list($hours, $minutes, $seconds) = explode(":", $start_sleep);
+				if(strtolower($value['name']) == 'sleep')
+				{
+					$start_sleep 	= date('H:i:s', strtotime($value['on']));
+					list($hours, $minutes, $seconds) = explode(":", $start_sleep);
 
-			// 		$start_sleep 	= $hours*3600+$minutes*60+$seconds;
-			// 	}
-			// 	elseif((strtolower($value['name']) != 'sleep') && isset($start_sleep))
-			// 	{
-			// 		$new_sleep 		= date('H:i:s', strtotime($value['on']));
-			// 		list($hours, $minutes, $seconds) = explode(":", $new_sleep);
+					$start_sleep 	= $hours*3600+$minutes*60+$seconds;
+				}
+				elseif((strtolower($value['name']) != 'sleep') && isset($start_sleep))
+				{
+					$new_sleep 		= date('H:i:s', strtotime($value['on']));
+					list($hours, $minutes, $seconds) = explode(":", $new_sleep);
 
-			// 		$new_sleep 		= $hours*3600+$minutes*60+$seconds;
+					$new_sleep 		= $hours*3600+$minutes*60+$seconds;
 
-			// 		$total_sleep	= $total_sleep + $new_sleep - $start_sleep;
-			// 		unset($start_sleep);
-			// 	}
-			// }
+					$total_sleep	= $total_sleep + $new_sleep - $start_sleep;
+					unset($start_sleep);
+				}
+			}
 
-			// if(!$actual_status!='' && $margin_start==0 && $margin_end==0)
-			// {
-			// 	$actual_status 			= 'AS';
-			// }
-			// elseif(!$actual_status!='' && $margin_start>=0 && $margin_end>=0)
-			// {
-			// 	$actual_status 			= 'HB';
-			// }
-			// elseif(!$actual_status!='')
-			// {
-			// 	$actual_status 			= 'HC';
-			// }
+			if(!$actual_status!='' && $margin_start==0 && $margin_end==0)
+			{
+				$actual_status 			= 'AS';
+			}
+			elseif(!$actual_status!='' && $margin_start>=0 && $margin_end>=0)
+			{
+				$actual_status 			= 'HB';
+			}
+			elseif(!$actual_status!='')
+			{
+				$actual_status 			= 'HC';
+			}
 
-			// $total_active 				= abs($total_active) - abs($total_sleep) - abs($total_idle);
+			$total_active 				= abs($total_active) - abs($total_sleep) - abs($total_idle);
 
-			// $plog->fill([
-			// 						'name'					=> $name,
-			// 						'on'					=> $on,
-			// 						'schedule_start'		=> $schedule_start,
-			// 						'schedule_end'			=> $schedule_end,										
-			// 						'tooltip'				=> json_encode($tooltip),
-			// 						'start'					=> $start,
-			// 						'end'					=> $end,
-			// 						'fp_start'				=> $fp_start,
-			// 						'fp_end'				=> $fp_end,
-			// 						'margin_start'			=> $margin_start,
-			// 						'margin_end'			=> $margin_end,
-			// 						'total_idle'			=> $total_idle,
-			// 						'total_idle_1'			=> $total_idle_1,
-			// 						'total_idle_2'			=> $total_idle_2,
-			// 						'total_idle_3'			=> $total_idle_3,
-			// 						'total_sleep'			=> $total_sleep,
-			// 						'total_active'			=> $total_active,
-			// 						'actual_status'			=> $actual_status,
-			// 						'total_idle_1'			=> $total_idle_1,
-			// 						'frequency_idle_1'		=> $frequency_idle_1,
-			// 						'frequency_idle_2'		=> $frequency_idle_2,
-			// 						'frequency_idle_3'		=> $frequency_idle_3,
-			// 				]
-			// 		);
+			$plog->fill([
+									'name'					=> $name,
+									'on'					=> $on,
+									'schedule_start'		=> $schedule_start,
+									'schedule_end'			=> $schedule_end,										
+									'tooltip'				=> json_encode($tooltip),
+									'start'					=> $start,
+									'end'					=> $end,
+									'fp_start'				=> $fp_start,
+									'fp_end'				=> $fp_end,
+									'margin_start'			=> $margin_start,
+									'margin_end'			=> $margin_end,
+									'total_idle'			=> $total_idle,
+									'total_idle_1'			=> $total_idle_1,
+									'total_idle_2'			=> $total_idle_2,
+									'total_idle_3'			=> $total_idle_3,
+									'total_sleep'			=> $total_sleep,
+									'total_active'			=> $total_active,
+									'actual_status'			=> $actual_status,
+									'total_idle_1'			=> $total_idle_1,
+									'frequency_idle_1'		=> $frequency_idle_1,
+									'frequency_idle_2'		=> $frequency_idle_2,
+									'frequency_idle_3'		=> $frequency_idle_3,
+							]
+					);
 
-			// if(isset($modified_by))
-			// {
-			// 	$plog->fill(['modified_by' 					=> $modified_by]);
-			// }
-			// else
-			// {
-			// 	unset($plog->modified_by);
-			// }
+			if(isset($modified_by))
+			{
+				$plog->fill(['modified_by' 					=> $modified_by]);
+			}
+			else
+			{
+				unset($plog->modified_by);
+			}
 
-			// if(isset($modified_status))
-			// {
-			// 	$plog->fill(['modified_status' 				=> $modified_status]);
-			// }
+			if(isset($modified_status))
+			{
+				$plog->fill(['modified_status' 				=> $modified_status]);
+			}
 
-			// if(isset($modified_at))
-			// {
-			// 	$plog->fill(['modified_at' 					=> $modified_at]);
-			// }
+			if(isset($modified_at))
+			{
+				$plog->fill(['modified_at' 					=> $modified_at]);
+			}
 
-			// $plog->Person()->associate($person);
+			$plog->Person()->associate($person);
 
-			// if(!is_null($workid))
-			// {
-			// 	$work 			= Work::find($workid);
-			// 	if($work)
-			// 	{
-			// 		$plog->Work()->associate($work);
-			// 	} 	
-			// }
+			if(!is_null($workid))
+			{
+				$work 			= Work::find($workid);
+				if($work)
+				{
+					$plog->Work()->associate($work);
+				} 	
+			}
 
-			// if (!$plog->save())
-			// {
-			// 	$model['errors'] = $plog->getError();
-			// 	return false;
-			// }
+			if (!$plog->save())
+			{
+				$model['errors'] = $plog->getError();
+				return false;
+			}
 
 			return true;
 		}

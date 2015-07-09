@@ -2,12 +2,15 @@
 
 use DB, Validator;
 use App\Models\Person;
+use App\Models\PersonSchedule;
 use App\Models\Work;
 use \Illuminate\Support\MessageBag as MessageBag;
+use DateTime, DateInterval, DatePeriod;
 
 /* ----------------------------------------------------------------------
  * Event:
  * 	Saving						
+ * 	Saved						
  * 	Updating						
  * 	Deleting						
  * ---------------------------------------------------------------------- */
@@ -46,6 +49,49 @@ class PersonWorkleaveObserver
 			$model['errors'] 		= $validator->errors();
 
 			return false;
+		}
+	}
+
+	public function saved($model)
+	{
+		if (isset($model['attributes']['person_id']) && (strtoupper($model['attributes']['status'])=='CB' || strtoupper($model['attributes']['status'])=='CI'  || strtoupper($model['attributes']['status'])=='CONFIRMED'))
+		{
+			$errors 				= new MessageBag;
+			
+			$person 				= Person::find($model['attributes']['person_id']);
+
+			$begin 					= new DateTime( $model['attributes']['start'] );
+			$ended 					= new DateTime( $model['attributes']['end'].' + 1 day' );
+
+			$interval 				= DateInterval::createFromDateString('1 day');
+			$periods 				= new DatePeriod($begin, $interval, $ended);
+
+			foreach ( $periods as $period )
+			{
+				$schedule 			= new PersonSchedule;
+				$psch 				= $schedule->ondate([$period->format('Y-m-d'), $period->format('Y-m-d')])->status(strtoupper($model['attributes']['status'])=='CONFIRMED' ? 'CN' : strtoupper($model['attributes']['status']))->first();
+				if($psch)
+				{
+					$schedule 		= $psch;
+				}
+
+				$schedule->fill([
+					'created_by'	=>  $model['attributes']['created_by'],
+					'name'			=>  $model['attributes']['name'],
+					'status'		=>  (strtoupper($model['attributes']['status'])=='CONFIRMED' ? 'CN' : strtoupper($model['attributes']['status'])),
+					'on'			=>  $period->format('Y-m-d'),
+					'start'			=>  '00:00:00',
+					'end'			=>  '00:00:00',
+				]);
+				
+				$schedule->Person()->associate($person);
+				
+				if (!$schedule->save())
+				{
+					$model['errors'] = $schedule->getError();
+					return false;
+				}
+			}
 		}
 	}
 
