@@ -273,7 +273,7 @@ class WorkleaveController extends BaseController
 			$results_2 							= $this->dispatch(new Getting(new Workleave, $search, $sort , 1, 1));
 			$contents_2 						= json_decode($results_2);
 
-			if(!$contents_2->meta->success && !isset($contents_2->data->works[0]))
+			if(!$contents_2->meta->success || !isset($contents->data->works[0]))
 			{
 				App::abort(404);
 			}

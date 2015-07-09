@@ -95,7 +95,7 @@ class ScheduleObserver
 
 					if(strtoupper($model['attributes']['status'])=='DN')
 					{
-						$data->fill(['modified_at' => date('Y-m-d H:i:s', strtotime('now')), 'modified_by' => $model['attributes']['created_by']]);
+						$data->fill(['actual_status' => 'AS', 'modified_status' => 'DN', 'modified_at' => date('Y-m-d H:i:s', strtotime('now')), 'modified_by' => $model['attributes']['created_by']]);
 					}
 
 					if(!$data->save())

@@ -95,9 +95,9 @@ class LogAbsence extends Command {
 			$results 						= $this->dispatch(new Getting(new Person, $search, $sort ,(int)$page, (int)$per_page));
 			$contents 						= json_decode($results);
 
-			if(!$contents->meta->success)
+			if(!$contents->meta->success && !count($contents->data))
 			{
-				App::abort(404);
+				return false;
 			}
 
 			$variable 						= json_decode(json_encode($contents->data));
@@ -112,9 +112,14 @@ class LogAbsence extends Command {
 				$is_success_2 				= json_decode($saved_log);
 				if(!$is_success_2->meta->success)
 				{
-					$log['email']			= $value2->contacts[0]->value;
+					$log['email']			= $value2->username;
 					$log['message']			= $is_success_2->meta->errors;
 					$saved_error_log 		= $this->dispatch(new Saving(new ErrorLog, $log, null, new Organisation, $value2->organisation_id));
+					$this->info("Gagal Simpan Log ".$is_success_2->meta->errors."\n");
+				}
+				else
+				{
+					$this->info("Sukses Simpan Log ".$value2->name." Tanggal : ".$value->format('Y-m-d')."\n");
 				}
 			}
 		}

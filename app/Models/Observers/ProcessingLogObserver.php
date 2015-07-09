@@ -17,6 +17,9 @@ class ProcessingLogObserver
 {
 	public function saved($model)
 	{
+	try
+		{
+
 		if(isset($model['attributes']['person_id']))
 		{
 			$this->errors 			= new MessageBag;
@@ -79,7 +82,20 @@ class ProcessingLogObserver
 					if(!in_array($model['attributes']['name'], $tooltip))
 					{
 						$tooltip[] 	= $model['attributes']['name'];
-					}						
+					}
+
+					if(count($pschedules->schedules) > 1)
+					{
+						$modified_status 		= 'HD';
+						$actual_status 			= 'HC';
+					}
+					else
+					{
+						$modified_status 		= 'DN';
+						$actual_status 			= 'AS';
+					}
+					$modified_by 	= $model['attributes']['created_by'];
+					$modified_at 	= $model['attributes']['created_at'];
 				}
 				else
 				{
@@ -90,6 +106,9 @@ class ProcessingLogObserver
 							$tooltip[] 	= $value->status;
 						}
 					}
+					$modified_status= $pschedules->schedules[0]->status;
+					$modified_by 	= $pschedules->schedules[0]->created_by;
+					$modified_at 	= $pschedules->schedules[0]->created_at;
 				}
 			}
 			else
@@ -102,6 +121,30 @@ class ProcessingLogObserver
 					$schedule_start	= $ccalendar->workscalendars[0]->calendar->schedules[0]->start;
 					$schedule_end	= $ccalendar->workscalendars[0]->calendar->schedules[0]->end;
 					$workid 		= $ccalendar->workscalendars[0]->id;
+
+					//sync schedule status with process log
+					switch (strtolower($ccalendar->workscalendars[0]->calendar->schedules[0]->status)) 
+					{
+						case 'dn':
+							if(count($ccalendar->workscalendars[0]->calendar->schedules) > 1)
+							{
+								$modified_status 		= 'DN';
+							}
+							else
+							{
+								$modified_status 		= 'HD';
+							}
+
+							$modified_by 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_by;
+							$modified_at 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_at;
+							break;
+
+						case 'ss': case 'sl' : case 'cn' : case 'ci' : case 'cb' : case 'ul' :
+							$modified_status 			= strtoupper($ccalendar->workscalendars[0]->calendar->schedules[0]->status);
+							$modified_by 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_by;
+							$modified_at 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_at;
+							break;
+					}
 
 				}
 				else
@@ -123,6 +166,30 @@ class ProcessingLogObserver
 						{
 							$schedule_start = $calendar->workscalendars[0]->start;
 							$schedule_end 	= $calendar->workscalendars[0]->end;	
+
+							//sync schedule status with process log
+							switch (strtolower($calendar->workscalendars[0]->status)) 
+							{
+								case 'dn':
+									if(count($calendar->workscalendars) > 1)
+									{
+										$modified_status 		= 'DN';
+									}
+									else
+									{
+										$modified_status 		= 'HD';
+									}
+
+									$modified_by 				= $calendar->workscalendars[0]->created_by;
+									$modified_at 				= $calendar->workscalendars[0]->created_at;
+									break;
+
+								case 'ss': case 'sl' : case 'cn' : case 'ci' : case 'cb' : case 'ul' :
+									$modified_status 			= strtoupper($calendar->workscalendars[0]->status);
+									$modified_by 				= $calendar->workscalendars[0]->created_by;
+									$modified_at 				= $calendar->workscalendars[0]->created_at;
+									break;
+							}
 						}
 						else
 						{
@@ -190,7 +257,7 @@ class ProcessingLogObserver
 			{
 				if(isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0)
 				{
-					$modified_by	= $data->created_by;
+					$modified_by	= $model['attributes']['created_by'];
 				}
 
 				if(strtolower($model['attributes']['name'])=='finger_print')
@@ -293,7 +360,7 @@ class ProcessingLogObserver
 
 					$start_lock 	= $hours*3600+$minutes*60+$seconds;
 				}
-				elseif((strtolower($value['name']) != 'sessionlock') && isset($start_lock))
+				elseif((strtolower($value['name']) != 'sessionunlock') && isset($start_lock))
 				{
 					$new_lock 		= date('H:i:s', strtotime($value['on']));
 					list($hours, $minutes, $seconds) = explode(":", $new_lock);
@@ -339,15 +406,15 @@ class ProcessingLogObserver
 				}
 			}
 
-			if($margin_start==0 && $margin_end==0)
+			if(!$actual_status!='' && $margin_start==0 && $margin_end==0)
 			{
 				$actual_status 			= 'AS';
 			}
-			elseif($margin_start>=0 && $margin_end>=0)
+			elseif(!$actual_status!='' && $margin_start>=0 && $margin_end>=0)
 			{
 				$actual_status 			= 'HB';
 			}
-			else
+			elseif(!$actual_status!='')
 			{
 				$actual_status 			= 'HC';
 			}
@@ -389,6 +456,16 @@ class ProcessingLogObserver
 				unset($plog->modified_by);
 			}
 
+			if(isset($modified_status))
+			{
+				$plog->fill(['modified_status' 				=> $modified_status]);
+			}
+
+			if(isset($modified_at))
+			{
+				$plog->fill(['modified_at' 					=> $modified_at]);
+			}
+
 			$plog->Person()->associate($person);
 
 			if(!is_null($workid))
@@ -409,5 +486,10 @@ class ProcessingLogObserver
 			return true;
 		}
 		return true;
+	}
+		catch (Exception $e) 
+		{
+    		echo 'Caught exception: ',  $e->getLine(), "\n";
+		}	
 	}
 }

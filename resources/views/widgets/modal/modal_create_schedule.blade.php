@@ -32,10 +32,13 @@
 									<option value="DN">Dinas Luar</option>
 									<option value="L">Libur</option>
 									<option value="CB">Cuti Bersama</option>
-									<option value="CI">Cuti Istimewa</option>
-									<option value="CN">Cuti Pribadi</option>
-									<option value="SS">Sakit (dalam waktu pendek)</option>
-									<option value="SL">Sakit (dalam waktu panjang)</option>
+									@if(Input::has('person_id'))
+										<option value="CI">Cuti Istimewa</option>
+										<option value="CN">Cuti Pribadi</option>
+										<option value="SS">Sakit (dalam waktu pendek)</option>
+										<option value="SL">Sakit (dalam waktu panjang)</option>
+										<option value="UL">Cuti Tidak Dibayar</option>
+									@endif
 								</select>						
 							</div>
 							{{-- In microtemplate.blade.php --}}

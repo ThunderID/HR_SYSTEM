@@ -60,27 +60,47 @@
 										{{$value['name']}}
 									</td>
 									<td class="hidden-xs">
-										{{$value['position']}} {{$value['department']}} {{$value['branch']}}
+										@if($value['position']!='')
+											{{$value['position']}} {{$value['department']}} {{$value['branch']}}
+										@else
+											{{$value['works'][0]['name']}} {{$value['works'][0]['tag']}} {{$value['works'][0]['branch']['name']}}
+										@endif
 									</td>
 									<td class="hidden-xs">
-										{{floor($value['total_active']/3600)}} Jam<br/>
-										{{floor(($value['total_active']%3600)/60)}} Menit</br/> 
-										{{floor(($value['total_active']%3600)%60)}} Detik
+										@if($value['position']!='')
+											{{floor($value['total_active']/3600)}} Jam<br/>
+											{{floor(($value['total_active']%3600)/60)}} Menit</br/> 
+											{{floor(($value['total_active']%3600)%60)}} Detik
+										@else
+											Tidak ada aktivitas
+										@endif
 									</td>
 									<td class="hidden-xs">
-										{{floor($value['total_idle_1']/3600)}} Jam<br/>
-										{{floor(($value['total_idle_1']%3600)/60)}} Menit</br/> 
-										{{floor(($value['total_idle_1']%3600)%60)}} Detik
+										@if($value['position']!='')
+											{{floor($value['total_idle_1']/3600)}} Jam<br/>
+											{{floor(($value['total_idle_1']%3600)/60)}} Menit</br/> 
+											{{floor(($value['total_idle_1']%3600)%60)}} Detik
+										@else
+											Tidak ada aktivitas
+										@endif
 									</td>
 									<td class="hidden-xs">
-										{{floor($value['total_idle_2']/3600)}} Jam<br/>
-										{{floor(($value['total_idle_2']%3600)/60)}} Menit</br/> 
-										{{floor(($value['total_idle_2']%3600)%60)}} Detik
+										@if($value['position']!='')
+											{{floor($value['total_idle_2']/3600)}} Jam<br/>
+											{{floor(($value['total_idle_2']%3600)/60)}} Menit</br/> 
+											{{floor(($value['total_idle_2']%3600)%60)}} Detik
+										@else
+											Tidak ada aktivitas
+										@endif
 									</td>
 									<td class="hidden-xs">
-										{{floor($value['total_idle_3']/3600)}} Jam<br/>
-										{{floor(($value['total_idle_3']%3600)/60)}} Menit</br/> 
-										{{floor(($value['total_idle_3']%3600)%60)}} Detik
+										@if($value['position']!='')
+											{{floor($value['total_idle_3']/3600)}} Jam<br/>
+											{{floor(($value['total_idle_3']%3600)/60)}} Menit</br/> 
+											{{floor(($value['total_idle_3']%3600)%60)}} Detik
+										@else
+											Tidak ada aktivitas
+										@endif
 									</td>
 									<!-- <td>
 										{{gmdate('H:i:s', $value['total_absence'])}}
@@ -89,11 +109,17 @@
 										{{gmdate('H:i:s', $value['possible_total_effective'])}}
 									</td> -->
 									<td class="hidden-xs">
-										<?php $tlr = ($value['total_absence']!=0 ? $value['total_absence'] : 1) / ($value['possible_total_effective']!=0 ? $value['possible_total_effective'] : 1);?>
-										{{round(abs($tlr) * 100, 2)}} %
+										@if($value['position']!='')
+											<?php $tlr = ($value['total_absence']!=0 ? $value['total_absence'] : 1) / ($value['possible_total_effective']!=0 ? $value['possible_total_effective'] : 1);?>
+											{{round(abs($tlr) * 100, 2)}} %
+										@else
+											Tidak ada aktivitas
+										@endif
 									</td>
 									<td class="text-right">
-										<a href="{{route('hr.attendance.persons.index', ['person_id' => $value['id'], 'org_id' => $data['id'], 'start' => $start, 'end' => $end])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
+										@if($value['position']!='')
+											<a href="{{route('hr.attendance.persons.index', ['person_id' => $value['id'], 'org_id' => $data['id'], 'start' => $start, 'end' => $end])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
+										@endif
 									</td>
 								</tr>
 							</tbody>

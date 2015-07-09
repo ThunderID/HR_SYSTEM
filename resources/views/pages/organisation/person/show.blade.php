@@ -50,12 +50,12 @@
 		<div class="col-sm-6">
 			@include('widgets.organisation.person.stat.average_loss_rate', [
 				'widget_template'		=> 'plain',
-				'widget_title'			=> 'Average Loss Rate "'.$person['name'].'"',
+				'widget_title'			=> 'Average Loss Rate "'.$person['name'].'" Bulan Ini',
 				'widget_options'		=> 	[
 												'lossratelist'		=>
 												[
 													'organisation_id'	=> $data['id'],
-													'search'			=> ['id' => $person['id'], 'globalattendance' => ['organisationid' => $data['id'], 'on' => date('Y-m-d')]],
+													'search'			=> ['id' => $person['id'], 'globalattendance' => ['organisationid' => $data['id'], 'on' => [date('Y-m-d', strtotime('first day of this month')), date('Y-m-d', strtotime('first day of next month'))]]],
 													'sort'				=> [],
 													'page'				=> 1,
 													'per_page'			=> 100,

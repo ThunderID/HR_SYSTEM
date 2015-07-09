@@ -14,7 +14,7 @@
 													'workleavelist'			=>
 													[
 														'organisation_id'	=> $data['id'],
-														'search'			=> [],
+														'search'			=> ['active' => true],
 														'sort'				=> ['name' => 'asc'],
 														'page'				=> (Input::has('page') ? Input::get('page') : 1),
 														'per_page'			=> 100,
