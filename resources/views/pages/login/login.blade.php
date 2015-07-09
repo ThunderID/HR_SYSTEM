@@ -1,6 +1,6 @@
 @section('area')
 	@include('widgets.form.form_login', [
-		'widget_template'	=> 'panel',
+		'widget_template'	=> 'panel_no_title',
 		'widget_options'	=> [
 									'login' 				=> 
 									[
