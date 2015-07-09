@@ -48,7 +48,11 @@ trait HasWorksOnTrait {
 		}
 		if($bool==false)
 		{
-			return $query->whereDoesntHave('works', function($q)use($variable){$q;});
+			return $query->whereDoesntHave('works', function($q)use($variable){$q;})->orwhereHas('works', function($q)use($variable){$q->where('end', '<', 'NOW()');});
+		}
+		if($bool==true)
+		{
+			return $query->whereHas('works', function($q)use($variable){$q->whereNull('end')->orwhere('end', '>=', 'NOW()');});
 		}
 		
 		return $query->whereHas('works', function($q)use($variable){$q;});
@@ -56,6 +60,11 @@ trait HasWorksOnTrait {
 
 	public function scopeCurrentWork($query, $variable)
 	{
+		if(strtotime($variable))
+		{
+			$days = new DateTime($variable);
+			return $query->with(['works' => function($q)use($days){$q->whereNull('end')->orwhere('end', '<=', $days->format('Y-m-d'))->orderBy('start', 'asc');}]);
+		}
 		if(!is_null($variable))
 		{
 			return $query->with(['works' => function($q)use($variable){$q->whereNull('end')->orwhere('end', '>=', 'NOW()')->orderBy('start', 'asc')->id($variable);}]);

@@ -54,7 +54,7 @@ trait HasScheduleTrait {
 	{
 		return $query
 					->wheredoesnthave('processlogs', function($q)use($variable){$q->ondate([$variable, $variable]);})
-					->currentwork(true)
+					->checkwork(true)
 					// ->defaultemail(true)
 					// ->selectRaw('if(person_schedules.on = "'.$variable.'", person_schedules.on, if(tmp_schedules.on = "'.$variable.'", tmp_schedules.on, "'.$variable.'")) as ondate')
 					// ->selectRaw('if(person_schedules.on = "'.$variable.'", person_schedules.start, if(tmp_schedules.on = "'.$variable.'", tmp_schedules.start, "'.$variable.'")) as onstart')

@@ -371,8 +371,42 @@ class Person extends BaseModel {
 
 	public function scopeGlobalAttendance($query, $variable)
 	{
+		if(isset($variable['on']) && is_array($variable['on']))
+		{
+			if(!is_null($variable['on'][1]))
+			{
+				$start 	= date('Y-m-d', strtotime($variable['on'][1]));
+				$end 	= date('Y-m-d', strtotime($variable['on'][0]));
+				// $query =  $query->where('on', '<=', date('Y-m-d', strtotime($variable['on'][1])))
+				// 			 ->where('on', '>=', date('Y-m-d', strtotime($variable['on'][0])));
+			}
+			elseif(!is_null($variable['on'][0]))
+			{
+				$start 	= date('Y-m-d', strtotime($variable['on'][0]));
+				$end 	= date('Y-m-d', strtotime($variable['on'][1]));
+				// $query =  $query->where('on', '>=', date('Y-m-d', strtotime($variable['on'][0])));
+			}
+			else
+			{
+				$start 	=   date('Y-m-d');
+				$end 	=   date('Y-m-d');
+			}
+		}
+		elseif(isset($variable['on']))
+		{
+			$start 	= date('Y-m-d', strtotime($variable['on']));
+			$end 	= date('Y-m-d', strtotime($variable['on']));
+		}
+		else
+		{
+			$start 	=   date('Y-m-d');
+			$end 	=   date('Y-m-d');
+		}
+
 		$query =  $query->selectraw('persons.*')
-					->currentwork($variable['organisationid'])
+					->wherehas('works', function($q)use($variable){$q->wherenull('end')->orwhere('end', '>=',  date('Y-m-d', strtotime($variable['on'][0])));})
+					->with(['works' => function($q)use($variable){$q->wherenull('end')->orwhere('end', '>=',  date('Y-m-d', strtotime($variable['on'][0])));}])
+					->with(['works.branch'])
 					->selectraw('branches.name as branch')
 					->selectraw('charts.name as position')
 					->selectraw('charts.tag as department')
@@ -382,27 +416,16 @@ class Person extends BaseModel {
 					->selectraw('sum(total_idle_2) as total_idle_2')
 					->selectraw('sum(total_idle_3) as total_idle_3')
 					->selectraw('sum(total_active) as total_active')
-					->leftjoin('process_logs', 'process_logs.person_id', '=', 'persons.id')
+					->leftjoin('process_logs', function ($join) use($start, $end) {
+							$join->on('persons.id', '=', 'process_logs.person_id')
+								->where('process_logs.on', '<=', $start)
+								->where('process_logs.on', '>=', $end)
+							;
+						})
 					->leftjoin('works', 'process_logs.work_id', '=', 'works.id')
 					->leftjoin('charts', 'works.chart_id', '=', 'charts.id')
-					->leftjoin('branches', 'charts.branch_id', '=', 'branches.id');
-
-		if(is_array($variable['on']))
-		{
-			if(!is_null($variable['on'][1]))
-			{
-				$query =  $query->where('on', '<=', date('Y-m-d', strtotime($variable['on'][1])))
-							 ->where('on', '>=', date('Y-m-d', strtotime($variable['on'][0])));
-			}
-			elseif(!is_null($variable['on'][0]))
-			{
-				$query =  $query->where('on', '>=', date('Y-m-d', strtotime($variable['on'][0])));
-			}
-			else
-			{
-				$query =  $query->where('on', '>=', date('Y-m-d'));
-			}
-		}
+					->leftjoin('branches', 'charts.branch_id', '=', 'branches.id')
+					;
 		if(isset($variable['name']))
 		{
 			$query =  $query->where('persons.name', 'like', '%'.$variable['name'].'%');
@@ -456,6 +479,7 @@ class Person extends BaseModel {
 		}
 		return $query->groupBy('persons.id')
 					;
+
 	}
 
 	public function scopeGlobalWage($query, $variable)
