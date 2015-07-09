@@ -18,7 +18,8 @@
 		var add				= $(e.relatedTarget).attr('data-add-action');
 		var edit 			= $(e.relatedTarget).attr('data-edit-action'); 
 		var del 			= $(e.relatedTarget).attr('data-delete-action');
-
+		var is_check_range 	= $(e.relatedTarget).find('is_range');
+		// console.log(is_check_range);
 		if ((id != 0)&&(typeof(id) != "undefined"))
 		{
 			$('.modal_schedule_id').val(id);
@@ -30,7 +31,8 @@
 			$('.schedule_delete').attr('data-delete-action', del);
 			$('.schedule_delete').show();
 			$('.schedule_title').text('Edit Jadwal');			
-			$(this).parent().attr('action', edit);			
+			$(this).parent().attr('action', edit);	
+			$('.is_range').parent().parent().parent().remove();
 		}
 		else
 		{
