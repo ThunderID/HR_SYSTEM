@@ -106,13 +106,13 @@
 				temp_sch	+= '<div class="col-sm-5"> \
 									<div class="form-group"> \
 										<label class="control-label">Tanggal Start</label> \
-										<input type="text" name="on_start" class="form-control date-mask schedule_on_start" value="'+sch_on+'"> \
+										<input type="text" name="onstart" class="form-control date-mask schedule_on_start" value="'+sch_on+'"> \
 									</div> \
 								</div> \
 								<div class="col-sm-5 col-sm-offset-2"> \
 									<div class="form-group"> \
 										<label class="control-label">Tanggal End</label> \
-										<input type="text" name="on_end" class="form-control date-mask schedule_on_end" value="'+sch_on+'"> \
+										<input type="text" name="onend" class="form-control date-mask schedule_on_end" value="'+sch_on+'"> \
 									</div> \
 								</div>';
 		} else {

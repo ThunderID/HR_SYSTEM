@@ -25,6 +25,6 @@ trait HasLogsTrait {
 
 	public function ScopeLogsOndate($query, $variable)
 	{
-		return $query->with(['Logs' => function($q)use($variable){$q->ondate($variable['on']);}]);
+		return $query->with(['Logs' => function($q)use($variable){$q->ondate($variable['on'])->orderBy('on', 'asc');}]);
 	}
 }

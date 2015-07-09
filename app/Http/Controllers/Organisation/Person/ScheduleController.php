@@ -166,21 +166,21 @@ class ScheduleController extends BaseController
 		}
 		elseif(Input::has('onstart') && Input::has('onend'))
 		{
-			$begin 									= new DateTime( Input::get('onstart') );
-			$ended 									= new DateTime( Input::get('onend') );
-			$maxend 								= new DateTime( Input::get('onstart').' + 7 days' );
+			$begin 								= new DateTime( Input::get('onstart') );
+			$ended 								= new DateTime( Input::get('onend').' + 1 day' );
+			$maxend 							= new DateTime( Input::get('onstart').' + 7 days' );
 		}
 		else
 		{
 			$errors->add('Person', 'Tanggal Tidak Valid');
 		}
 
-		if($ended->format('Y-m-d') <= $begin->format('Y-m-d'))
+		if(isset($ended) && $ended->format('Y-m-d') <= $begin->format('Y-m-d'))
 		{
 			$errors->add('Person', 'Tanggal akhir harus lebih besar dari tanggal mulai. Gunakan single date untuk tanggal manual');
 		}
 
-		if($ended->format('Y-m-d') > $maxend->format('Y-m-d'))
+		if(isset($ended) && $ended->format('Y-m-d') > $maxend->format('Y-m-d'))
 		{
 			$errors->add('Person', 'Maksimal range adalah satu minggu (7 Hari) ');
 		}
@@ -414,6 +414,9 @@ class ScheduleController extends BaseController
 						case 'ss' : case 'sl' :
 							$schedule[$k]['label']= 'green';
 							break;
+						case 'l' :
+							$schedule[$k]['label']= 'label label-magenta';
+							break;
 						default:
 							$schedule[$k]['label']= 'green';
 							break;
@@ -469,6 +472,9 @@ class ScheduleController extends BaseController
 							break;
 							case 'ss' : case 'sl' :
 								$schedule[$k]['label']= 'green';
+								break;
+							case 'l' :
+								$schedule[$k]['label']= 'label label-magenta';
 								break;
 							default:
 								$schedule[$k]['label']= 'green';

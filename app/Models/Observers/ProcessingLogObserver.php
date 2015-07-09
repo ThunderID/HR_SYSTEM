@@ -244,7 +244,7 @@ class ProcessingLogObserver
 
 			$schedule_end_second	= $hours*3600+$minutes*60+$seconds;
 
-			$margin_end 			= $schedule_end_second - $maxend;
+			$margin_end 			= $maxend - $schedule_end_second;
 
 			$idle 					= Log::ondate($on)->personid($model['attributes']['person_id'])->orderBy('on', 'asc')->get();
 
@@ -259,7 +259,7 @@ class ProcessingLogObserver
 
 					$start_idle 	= $hours*3600+$minutes*60+$seconds;
 				}
-				elseif(strtolower($value['name'] != 'idle') && isset($start_idle))
+				elseif((strtolower($value['name']) != 'idle') && isset($start_idle))
 				{
 					$new_idle 		= date('H:i:s', strtotime($value['on']));
 					list($hours, $minutes, $seconds) = explode(":", $new_idle);
@@ -293,7 +293,7 @@ class ProcessingLogObserver
 
 					$start_lock 	= $hours*3600+$minutes*60+$seconds;
 				}
-				elseif(strtolower($value['name'] != 'sessionlock') && isset($start_lock))
+				elseif((strtolower($value['name']) != 'sessionlock') && isset($start_lock))
 				{
 					$new_lock 		= date('H:i:s', strtotime($value['on']));
 					list($hours, $minutes, $seconds) = explode(":", $new_lock);
@@ -327,7 +327,7 @@ class ProcessingLogObserver
 
 					$start_sleep 	= $hours*3600+$minutes*60+$seconds;
 				}
-				elseif(strtolower($value['name'] != 'sleep') && isset($start_sleep))
+				elseif((strtolower($value['name']) != 'sleep') && isset($start_sleep))
 				{
 					$new_sleep 		= date('H:i:s', strtotime($value['on']));
 					list($hours, $minutes, $seconds) = explode(":", $new_sleep);

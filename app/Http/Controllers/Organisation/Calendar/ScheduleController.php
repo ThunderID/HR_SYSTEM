@@ -141,6 +141,9 @@ class ScheduleController extends BaseController
 							case 'ss' : case 'sl' :
 								$schedule[$k]['label']= 'green';
 								break;
+							case 'l' :
+								$schedule[$k]['label']= 'label label-magenta';
+								break;
 							default:
 								$schedule[$k]['label']= 'green';
 								break;
@@ -185,7 +188,7 @@ class ScheduleController extends BaseController
 					$schedule[$k]['start']			= $period->format('Y-m-d').'T'.'00:00:00';
 					$schedule[$k]['end']			= $period->format('Y-m-d').'T'.'00:00:00';
 					$schedule[$k]['status']			= 'L';
-					$schedule[$k]['label']			= 'magenta';
+					$schedule[$k]['label']			= 'label label-magenta';
 
 					$date[]							= $period->format('Y-m-d');
 					$k++;
@@ -297,7 +300,7 @@ class ScheduleController extends BaseController
 		elseif(Input::has('onstart') && Input::has('onend'))
 		{
 			$begin 									= new DateTime( Input::get('onstart') );
-			$ended 									= new DateTime( Input::get('onend') );
+			$ended 									= new DateTime( Input::get('onend').' + 1 day' );
 			$maxend 								= new DateTime( Input::get('onstart').' + 7 days' );
 		}
 		else
@@ -305,12 +308,12 @@ class ScheduleController extends BaseController
 			$errors->add('Calendar', 'Tanggal Tidak Valid');
 		}
 
-		if($ended->format('Y-m-d') <= $begin->format('Y-m-d'))
+		if(isset($ended)  && $ended->format('Y-m-d') <= $begin->format('Y-m-d'))
 		{
 			$errors->add('Calendar', 'Tanggal akhir harus lebih besar dari tanggal mulai. Gunakan single date untuk tanggal manual');
 		}
 
-		if($ended->format('Y-m-d') > $maxend->format('Y-m-d'))
+		if(isset($ended)  && $ended->format('Y-m-d') > $maxend->format('Y-m-d'))
 		{
 			$errors->add('Calendar', 'Maksimal range adalah satu minggu (7 Hari) ');
 		}
