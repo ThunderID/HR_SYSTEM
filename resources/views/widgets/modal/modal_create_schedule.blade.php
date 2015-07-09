@@ -37,6 +37,7 @@
 										<option value="CN">Cuti Pribadi</option>
 										<option value="SS">Sakit (dalam waktu pendek)</option>
 										<option value="SL">Sakit (dalam waktu panjang)</option>
+										<option value="UL">Cuti Tidak Dibayar</option>
 									@endif
 								</select>						
 							</div>

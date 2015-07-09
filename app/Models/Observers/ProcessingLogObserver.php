@@ -106,7 +106,7 @@ class ProcessingLogObserver
 							$tooltip[] 	= $value->status;
 						}
 					}
-					$modified_status= $pschedules->schedules[0];
+					$modified_status= $pschedules->schedules[0]->status;
 					$modified_by 	= $pschedules->schedules[0]->created_by;
 					$modified_at 	= $pschedules->schedules[0]->created_at;
 				}

@@ -156,13 +156,13 @@ class PersonScheduleObserver
 			}
 		}
 
-		if(strtoupper($model['attributes']['status'])=='DN' && isset($model['attributes']['person_id']))
+		if((strtoupper($model['attributes']['status'])=='DN' || strtoupper($model['attributes']['status'])=='CN' || strtoupper($model['attributes']['status'])=='CB' || strtoupper($model['attributes']['status'])=='CI'  || strtoupper($model['attributes']['status'])=='UL'  || strtoupper($model['attributes']['status'])=='SS' || strtoupper($model['attributes']['status'])=='SL' || strtoupper($model['attributes']['status'])=='UL') && isset($model['attributes']['person_id']))
 		{
 			$person 						= Person::find($model['attributes']['person_id']);
 			$log 							= new Log;
 			$log->fill([
-						'name' 				=> 'DN',
-						'on' 				=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' 00:00:00')),
+						'name' 				=> strtoupper($model['attributes']['status']),
+						'on' 				=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' '.$model['attributes']['start'])),
 						'pc' 				=> 'hr',
 						'created_by' 		=> $model['attributes']['created_by'],
 			]);
@@ -179,8 +179,8 @@ class PersonScheduleObserver
 
 			$log 							= new Log;
 			$log->fill([
-						'name' 				=> 'DN',
-						'on' 				=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' 00:00:00')),
+						'name' 				=> strtoupper($model['attributes']['status']),
+						'on' 				=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' '.$model['attributes']['end'])),
 						'pc' 				=> 'hr',
 						'created_by' 		=> $model['attributes']['created_by'],
 			]);

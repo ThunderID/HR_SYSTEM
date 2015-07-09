@@ -151,8 +151,16 @@ class ScheduleController extends BaseController
 
 		$attributes 							= Input::only('name', 'status', 'start', 'end');
 		$attributes['created_by'] 				= Session::get('user.id');
-		$attributes['start'] 					= date('H:i:s', strtotime($attributes['start']));
-		$attributes['end'] 						= date('H:i:s', strtotime($attributes['end']));
+		if(in_array(strtoupper($attributes['status']), ['CN', 'SS', 'SL', 'CB', 'CI', 'UL']))
+		{
+			$attributes['start']				= '00:00:00';
+			$attributes['end']					= '00:00:00';
+		}
+		else
+		{
+			$attributes['start'] 				= date('H:i:s', strtotime($attributes['start']));
+			$attributes['end'] 					= date('H:i:s', strtotime($attributes['end']));
+		}
 
 		$errors 								= new MessageBag();
 
