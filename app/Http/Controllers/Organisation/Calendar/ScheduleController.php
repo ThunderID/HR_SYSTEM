@@ -118,7 +118,7 @@ class ScheduleController extends BaseController
 				{
 				
 						$schedule[$k]['mode']			= 'edit';
-						$schedule[$k]['top_title']		= 'Schedule';
+						$schedule[$k]['top_title']		= 'Jadwal';
 						$schedule[$k]['data_target']	= '#modal_schedule';
 						$schedule[$k]['id']				= $sh['id'];
 						$schedule[$k]['title'] 			= $sh['name'];

@@ -396,7 +396,7 @@ class ScheduleController extends BaseController
 				{
 					$schedule[$k]['id']				= $k;
 					$schedule[$k]['mode_info']		= 'schedule';
-					$schedule[$k]['top_title'] 			= 'Schedule';
+					$schedule[$k]['top_title'] 		= 'Jadwal';
 					$schedule[$k]['title'] 			= $sh['name'];
 					$schedule[$k]['start']			= $sh['on'].'T'.$sh['start'];
 					$schedule[$k]['end']			= $sh['on'].'T'.$sh['end'];
@@ -457,7 +457,7 @@ class ScheduleController extends BaseController
 					{
 						$schedule[$k]['id']				= $k;
 						$schedule[$k]['mode_info']		= 'schedule';
-						$schedule[$k]['top_title']		= 'Schedule';
+						$schedule[$k]['top_title']		= 'Jadwal';
 						$schedule[$k]['title'] 			= $sh['name'];
 						$schedule[$k]['start']			= $sh['on'].'T'.$sh['start'];
 						$schedule[$k]['end']			= $sh['on'].'T'.$sh['end'];
