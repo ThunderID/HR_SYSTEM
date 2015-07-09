@@ -47,10 +47,9 @@
 											'personlist'			=>
 											[
 												'organisation_id'	=> $data['id'],
-												'search'			=> ['id' => $person['id'], 'globalwage' => array_merge(['organisationid' => $data['id'], 'on' => date('Y-m-d')], (isset($filtered['search']) ? $filtered['search'] : []))],
-												'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']),
+												'search'			=> ['id' => $person['id'], 'globalwage' => ['organisationid' => $data['id'], 'on' => date('Y-m-d')]],
+												'sort'				=> ['persons.name' => 'asc'],
 												'page'				=> 1,
-												'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 												'per_page'			=> 1,
 											]
 										]

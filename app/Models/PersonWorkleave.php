@@ -71,6 +71,7 @@ class PersonWorkleave extends BaseModel {
 											'id' 						=> 'ID', 
 											'personid' 					=> 'PersonID', 
 											'workleaveid' 				=> 'WorkleaveID',
+											'name' 						=> 'Name',
 											'status' 					=> 'Status',
 											 
 											'ondate' 					=> 'OnDate', 
@@ -81,6 +82,7 @@ class PersonWorkleave extends BaseModel {
 											'id' 						=> 'Could be array or integer', 
 											'personid' 					=> 'Could be array or integer', 
 											'workleaveid' 				=> 'Could be array or integer', 
+											'name' 						=> 'Must be string',
 											'status' 					=> 'Could be array or string',
 
 											'ondate' 					=> 'Could be array or string (date)', 
@@ -151,6 +153,11 @@ class PersonWorkleave extends BaseModel {
 			return $query->whereIn('person_workleaves.person_workleave_id', $variable);
 		}
 		return $query->where('person_workleaves.person_workleave_id', $variable);
+	}
+
+	public function scopeName($query, $variable)
+	{
+		return $query->where('name', 'like' ,'%'.$variable.'%');
 	}
 	
 	public function scopeOnDate($query, $variable)

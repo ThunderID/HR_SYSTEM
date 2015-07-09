@@ -63,14 +63,9 @@ class WorkleaveController extends BaseController
 		$filter 									= [];
 		if(Input::has('q'))
 		{
-			$ondate									= Input::get('q');
-			$ondates 								= explode(':', $ondate);
-			foreach ($ondates as $key => $value) 
-			{
-				$range[]							= date('Y-m-d', strtotime($value));						
-			}
-			$filter['search']['ondate']				= $range;
-			$filter['active']['q']					= 'Cari Tanggal "'.Input::get('q').'"';
+			$name									= Input::get('q');
+			$filter['search']['name']				= $name;
+			$filter['active']['q']					= 'Cari Cuti "'.Input::get('q').'"';
 		}
 		
 		if(Input::has('filter'))
@@ -87,12 +82,12 @@ class WorkleaveController extends BaseController
 					$filter['active'][$filter_search]	= $dirty_filter_value[$key];
 					switch (strtolower($filter_search)) 
 					{
-						case 'start':
-							$active = 'Cari Tanggal ';
+						case 'name':
+							$active = 'Cari Cuti ';
 							break;
 
 						default:
-							$active = 'Cari Tanggal ';
+							$active = 'Cari Cuti ';
 							break;
 					}
 
