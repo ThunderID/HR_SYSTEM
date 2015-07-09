@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>HR System</title>	
+	<title>Reliance - HRIS</title>	
 	<link rel="stylesheet" href="{{ elixir('css/app.css') }}">
 	{!! HTML::style('plugins/font-awesome/css/font-awesome.min.css') !!}
 	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>

@@ -28,7 +28,7 @@
 							<th>No</th>
 							<th>CLIENT</th>
 							<th>SECRET</th>
-							<th>MAC ADDRESS</th>
+							<th>APP ID</th>
 							<th>PC Name</th>
 							<th>Aktif</th>
 							<th>&nbsp;</th>

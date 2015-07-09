@@ -26,7 +26,7 @@
 			<div class="row">
 				<div class="col-sm-6">
 					<div class="form-group">
-						<label class="control-label">MAC ADDRESS</label>
+						<label class="control-label">APP ID</label>
 						{!!Form::input('text', 'workstation_address', $ApiComposer['widget_data']['apilist']['api']['workstation_address'], ['class' => 'form-control', 'tabindex' => '3'])!!}
 					</div>
 				</div>
