@@ -312,7 +312,6 @@ class ScheduleController extends BaseController
 		{
 			return Response::json(['message' => 'Not Found'], 404);
 		}
-		dd(1);
 
 		$work 									= json_decode(json_encode($contents->data), true);
 		$wcalendar 								= $work['calendar'];
@@ -381,6 +380,7 @@ class ScheduleController extends BaseController
 				$workdays[]						= $wd[strtolower($value)];
 			}
 		}
+		dd(1);
 
 		$schedule 								= [];
 		$date 									= [];
