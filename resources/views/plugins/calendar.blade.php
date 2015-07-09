@@ -98,6 +98,9 @@
 
 			element.find('#date-title').html(element.find('span.fc-event-title').text());			
 			element.find('.fc-title').append('<br>');
+			if(typeof(event.top_title) != "undefined" && event.top_title !== null) {
+				element.find('.fc-title').prepend(event.top_title+'<br>');
+			} 
 			element.find('.fc-title').addClass(event.label+' font-12');
 			element.attr('data-status', event.status);
 			element.attr('data-date', date_start);

@@ -118,6 +118,7 @@ class ScheduleController extends BaseController
 				{
 				
 						$schedule[$k]['mode']			= 'edit';
+						$schedule[$k]['top_title']		= 'Schedule';
 						$schedule[$k]['data_target']	= '#modal_schedule';
 						$schedule[$k]['id']				= $sh['id'];
 						$schedule[$k]['title'] 			= $sh['name'];
@@ -176,7 +177,7 @@ class ScheduleController extends BaseController
 					$schedule[$k]['start']			= $period->format('Y-m-d').'T'.$calendar['start'];
 					$schedule[$k]['end']			= $period->format('Y-m-d').'T'.$calendar['end'];
 					$schedule[$k]['status']			= 'HB';
-					$schedule[$k]['label']			= 'gray';
+					$schedule[$k]['label']			= 'label label-gray';
 
 					$date[]							= $period->format('Y-m-d');
 					$k++;
