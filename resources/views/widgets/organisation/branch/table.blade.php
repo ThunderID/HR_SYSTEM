@@ -59,7 +59,7 @@
 								<td class=" text-center">
 									<div class="btn-group">
 										<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pengaturan <span class="caret"></span></button>
-										<ul class="dropdown-menu">
+										<ul class="dropdown-menu dropdown-menu-right">
 											@if((int)Session::get('user.menuid')<=2)
 												<li>
 													<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.branches.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash fa-fw"></i> Hapus</a>
