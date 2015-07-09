@@ -532,12 +532,9 @@ class ScheduleController extends BaseController
 
 						$date[]							= $period->format('Y-m-d');
 						$k++;
-		dd(2);
-					
 					}
 					else
 					{
-		dd(3);
 						$schedule[$k]['id']				= $k;
 						$schedule[$k]['title'] 			= 'Libur';
 						$schedule[$k]['start']			= $period->format('Y-m-d').'T'.'00:00:00';
@@ -551,7 +548,7 @@ class ScheduleController extends BaseController
 							$schedule[$k]['data_target']	= '#modal_schedule';
 							$schedule[$k]['ed_action']		= route('hr.person.schedules.store', ['id' => null, 'org_id' => $org_id, 'person_id' => $person_id]);
 						}
-						
+						dd(4);
 						$date[]							= $period->format('Y-m-d');
 						$k++;
 					}
