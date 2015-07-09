@@ -38,7 +38,15 @@
 							</select>						
 						</div>
 						<div class="btn-group ml-10">
-							<select name="value[]" id="" class="form-control filter-value"></select>
+							<select name="value[]" id="" class="form-control filter-value">
+									@foreach($filter as $key => $value)
+										@if ($key==0)
+			 								@foreach($value['values'] as $value2)
+			 									<option value="{{ $value2['key'] }}">{{ $value2['value'] }}</option>
+			 								@endforeach
+			 							@endif
+		 							@endforeach
+							</select>
 						</div>
 					</span>
 					<a href="javascript:;" class="btn btn-add-filter ml-10"><i class="fa fa-plus"></i></a>

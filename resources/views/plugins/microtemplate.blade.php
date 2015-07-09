@@ -66,7 +66,7 @@
 		});
 		// console.log($(e).parent().siblings().children());
 		$(e).parent().next().children().html(tmp);
-		$('.filter-key').on('change', function(){create_o($(this))});
+		$('.filter-key').on('click', function(){create_o($(this))});
 	}
 
 	$('.btn-add-filter').bind('click', function()
@@ -91,7 +91,7 @@
 
 		$('.filter-add').append(template);
 		// $('.btn-delete-filter').on('click', function(){bind_delete_filter($(this))});
-		$('.filter-key').on('change', function(){create_o($(this))});
+		$('.filter-key').on('click', function(){create_o($(this))});
 	});	
 
 	function bind_delete_filter(e) {
