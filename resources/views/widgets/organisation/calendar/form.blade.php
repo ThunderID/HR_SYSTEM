@@ -19,7 +19,7 @@
 														'sort'				=> ['name' => 'asc'],
 														'page'				=> 1,
 														'per_page'			=> 100,
-														'calendar_id'		=> $CalendarComposer['widget_data']['calendarlist']['calendar']['impot_from_id'],
+														'calendar_id'		=> (isset($CalendarComposer['widget_data']['calendarlist']['calendar']['impot_from_id']) ? $CalendarComposer['widget_data']['calendarlist']['calendar']['impot_from_id'] : 0),
 														'tabindex'			=> 1,
 													]
 												]
