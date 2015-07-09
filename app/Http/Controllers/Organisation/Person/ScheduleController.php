@@ -518,8 +518,8 @@ class ScheduleController extends BaseController
 					{
 						$schedule[$k]['id']				= $k;
 						$schedule[$k]['title'] 			= 'Masuk Kerja';
-						$schedule[$k]['start']			= $period->format('Y-m-d').'T'.$sh['start'];
-						$schedule[$k]['end']			= $period->format('Y-m-d').'T'.$sh['end'];
+						$schedule[$k]['start']			= $period->format('Y-m-d').'T'.$wcalendar['start'];
+						$schedule[$k]['end']			= $period->format('Y-m-d').'T'.$wcalendar['end'];
 						$schedule[$k]['status']			= 'HB';
 						$schedule[$k]['label']			= 'label label-gray';
 						// $schedule[$k]['backgroundColor']= '#31708F';
@@ -556,7 +556,6 @@ class ScheduleController extends BaseController
 				// if(($period->format('Y-m-d') == date('Y-m-d', strtotime($sh['on'])))&&(!in_array($period->format('Y-m-d'), $date)))
 			}
 		}
-						dd(4);
 
 		// log	
 		$search 								= ['personid' => $person_id, 'ondate'=> [$start, $end]];
