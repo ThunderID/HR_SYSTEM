@@ -39,7 +39,7 @@
 										{{$key+1}}
 									</td>
 									<td>
-										{{ date('d-m-Y H:i', strtotime($value['on'])) }}
+										{{ date('d-m-Y H:i:s', strtotime($value['on'])) }}
 									</td>
 									<td>
 										{{$value['name']}}

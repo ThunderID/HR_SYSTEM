@@ -20,24 +20,25 @@ class ProcessLogObserver
 		if ($validator->passes())
 		{
 			//save actual status for both start and end
-			$actual_status 				= '';
-
-			if($model->margin_start==0 && $model->margin_end==0)
+			if(!isset($model['attributes']['actual_status']))
 			{
-				$actual_status 			= 'AS';
-			}
-			elseif($model->margin_start>=0 && $model->margin_end>=0)
-			{
-				$actual_status 			= 'HB';
-			}
-			else
-			{
-				$actual_status 			= 'HC';
-			}
+				$actual_status 				= '';
 
-			$model->fill(['actual_status' => $actual_status]);
+				if($model->margin_start==0 && $model->margin_end==0)
+				{
+					$actual_status 			= 'AS';
+				}
+				elseif($model->margin_start>=0 && $model->margin_end>=0)
+				{
+					$actual_status 			= 'HB';
+				}
+				else
+				{
+					$actual_status 			= 'HC';
+				}
 
-
+				$model->fill(['actual_status' => $actual_status]);
+			}
 			//save modfied status
 			if(isset($model->getDirty()['modified_status']))
 			{

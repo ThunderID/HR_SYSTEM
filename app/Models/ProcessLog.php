@@ -108,7 +108,7 @@ class ProcessLog extends BaseModel {
 											'actual_status'	 			=> 'required|max:255',
 											'modified_status'	 		=> 'max:255',
 											'modified_at'				=> 'date_format:"Y-m-d H:i:s"|required_with:modified_status',
-											'tolerance_time'			=> 'numeric|required_with:modified_status',
+											'tolerance_time'			=> 'numeric',
 										];
 
 	public $searchable 				= 	[
