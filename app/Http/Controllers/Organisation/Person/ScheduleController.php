@@ -284,7 +284,7 @@ class ScheduleController extends BaseController
 
 		//check if person worked or not
 		$search['id'] 							= $person_id;
-		$search['organisationid'] 				= $org_id;
+		// $search['organisationid'] 				= $org_id;
 		$sort 									= ['name' => 'asc'];
 		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
