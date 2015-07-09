@@ -97,4 +97,34 @@
 	function bind_delete_filter(e) {
 
 	}
+
+	/* =====schedule modal===== */
+	$('.is_range').on('change', function() {
+		var temp_sch 		= '';
+		if ($(this).prop('checked')) {
+			var sch_on		= $('.schedule_on').val();
+				temp_sch	+= '<div class="col-sm-5"> \
+									<div class="form-group"> \
+										<label class="control-label">Tanggal Start</label> \
+										<input type="text" name="on_start" class="form-control date-mask schedule_on_start" value="'+sch_on+'"> \
+									</div> \
+								</div> \
+								<div class="col-sm-5 col-sm-offset-2"> \
+									<div class="form-group"> \
+										<label class="control-label">Tanggal End</label> \
+										<input type="text" name="on_end" class="form-control date-mask schedule_on_end" value="'+sch_on+'"> \
+									</div> \
+								</div>';
+		} else {
+			var sch_on_start 	= $('.schedule_on_start').val(); 
+				temp_sch 		+= '<div class="col-sm-12"> \
+										<div class="form-group"> \
+											<label class="control-label">Tanggal</label> \
+											<input type="text" name="on" class="form-control date-mask schedule_on" value="'+sch_on_start+'"> \
+										</div> \
+									</div>';
+		}
+		$('.date_range').html(temp_sch);
+		$('.date-mask').inputmask('dd-mm-yyyy');
+	});
 </script>
