@@ -281,7 +281,6 @@ class ScheduleController extends BaseController
 		{
 			$end 								= date('Y-m-d', strtotime('First Day of next month'));
 		}
-		dd(1);
 
 		//check if person worked or not
 		$search['id'] 							= $person_id;
@@ -313,6 +312,7 @@ class ScheduleController extends BaseController
 		{
 			return Response::json(['message' => 'Not Found'], 404);
 		}
+		dd(1);
 
 		$work 									= json_decode(json_encode($contents->data), true);
 		$wcalendar 								= $work['calendar'];
