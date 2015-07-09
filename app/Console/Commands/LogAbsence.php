@@ -112,7 +112,7 @@ class LogAbsence extends Command {
 				$is_success_2 				= json_decode($saved_log);
 				if(!$is_success_2->meta->success)
 				{
-					$log['email']			= $value2->contacts[0]->value;
+					$log['email']			= $value2->username;
 					$log['message']			= $is_success_2->meta->errors;
 					$saved_error_log 		= $this->dispatch(new Saving(new ErrorLog, $log, null, new Organisation, $value2->organisation_id));
 				}
