@@ -18,9 +18,9 @@ class PasswordController extends BaseController {
 
 	function postPassword()
 	{
-		$email 						= Session::get('user.email');
+		$username 					= Session::get('user.username');
 		$password 					= Input::get('old_password');
-		$results 					= $this->dispatch(new Checking(new Person, ['email' => $email, 'password' => $password]));
+		$results 					= $this->dispatch(new Checking(new Person, ['username' => $username, 'password' => $password]));
 		$content 					= json_decode($results);
 
 		if($content->meta->success)
