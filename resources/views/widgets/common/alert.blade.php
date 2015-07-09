@@ -3,7 +3,7 @@
 	@section('widget_body')
 		@foreach (['alert_success', 'alert_warning', 'alert_danger', 'alert_info'] as $alert)
 			@if (Session::has($alert))
-				<div class='alert {{str_replace("alert_", "style-", $alert)}} mt-10'>
+				<div class='alert {{str_replace("alert_", "alert-", $alert)}} mt-10'>
 					@if (is_array(Session::get($alert)))
 						@foreach (Session::get($alert) as $message)
 							<div class="row">

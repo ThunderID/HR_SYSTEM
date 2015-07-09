@@ -30,6 +30,9 @@
 			@if($errors->count())
 				<div class="clearfix">&nbsp;</div>
 				@include('widgets.common.alert', ['errors' => $errors])
+			@else
+				<div class="clearfix">&nbsp;</div>
+				@include('widgets.common.alert')
 			@endif
 
 			<div class="container-fluid">
