@@ -241,7 +241,6 @@ class ScheduleController extends BaseController
 
 	public function ajax($page = 1)
 	{
-		dd(1);
 		if(Input::has('org_id'))
 		{
 			$org_id 							= Input::get('org_id');
@@ -282,6 +281,7 @@ class ScheduleController extends BaseController
 		{
 			$end 								= date('Y-m-d', strtotime('First Day of next month'));
 		}
+		dd(1);
 
 		//check if person worked or not
 		$search['id'] 							= $person_id;
