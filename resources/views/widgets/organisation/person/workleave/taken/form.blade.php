@@ -55,13 +55,13 @@
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label class="control-label">Start</label>
-						{!!Form::input('text', 'start', $PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['start'], ['class' => 'form-control date-mask', 'tabindex' => 4])!!}
+						{!!Form::input('text', 'start', isset($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['start']) ? date('d-m-Y', strtotime($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['start'])) : '', ['class' => 'form-control date-mask', 'tabindex' => 4])!!}
 					</div>
 				</div>
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label class="control-label">End</label>
-						{!!Form::input('text', 'end', $PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['end'], ['class' => 'form-control date-mask', 'tabindex' => 5])!!}
+						{!!Form::input('text', 'end', isset($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['end']) ? date('d-m-Y', strtotime($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['end'])) : '', ['class' => 'form-control date-mask', 'tabindex' => 5])!!}
 					</div>	
 				</div>
 			</div>
