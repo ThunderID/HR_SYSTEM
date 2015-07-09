@@ -548,7 +548,6 @@ class ScheduleController extends BaseController
 							$schedule[$k]['data_target']	= '#modal_schedule';
 							$schedule[$k]['ed_action']		= route('hr.person.schedules.store', ['id' => null, 'org_id' => $org_id, 'person_id' => $person_id]);
 						}
-						dd(4);
 						$date[]							= $period->format('Y-m-d');
 						$k++;
 					}
@@ -557,6 +556,7 @@ class ScheduleController extends BaseController
 				// if(($period->format('Y-m-d') == date('Y-m-d', strtotime($sh['on'])))&&(!in_array($period->format('Y-m-d'), $date)))
 			}
 		}
+						dd(4);
 
 		// log	
 		$search 								= ['personid' => $person_id, 'ondate'=> [$start, $end]];
