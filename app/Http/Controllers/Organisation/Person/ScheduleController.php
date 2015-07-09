@@ -509,7 +509,6 @@ class ScheduleController extends BaseController
 						$date[]								= $period->format('Y-m-d');
 					}
 				}
-		dd(2);
 
 				if(!in_array($period->format('Y-m-d'), $date))
 				{
@@ -533,9 +532,12 @@ class ScheduleController extends BaseController
 
 						$date[]							= $period->format('Y-m-d');
 						$k++;
+		dd(2);
+					
 					}
 					else
 					{
+		dd(3);
 						$schedule[$k]['id']				= $k;
 						$schedule[$k]['title'] 			= 'Libur';
 						$schedule[$k]['start']			= $period->format('Y-m-d').'T'.'00:00:00';
