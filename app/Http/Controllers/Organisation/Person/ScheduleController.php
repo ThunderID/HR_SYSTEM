@@ -448,6 +448,7 @@ class ScheduleController extends BaseController
 					$date[]								= $period->format('Y-m-d');
 				}
 			}
+		dd(2);
 
 			if(!in_array($period->format('Y-m-d'), $date))
 			{
@@ -557,7 +558,6 @@ class ScheduleController extends BaseController
 				// if(($period->format('Y-m-d') == date('Y-m-d', strtotime($sh['on'])))&&(!in_array($period->format('Y-m-d'), $date)))
 			}
 		}
-		dd(2);
 
 		// log	
 		$search 								= ['personid' => $person_id, 'ondate'=> [$start, $end]];
