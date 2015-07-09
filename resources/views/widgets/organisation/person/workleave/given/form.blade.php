@@ -18,7 +18,7 @@
 														'sort'				=> ['name' => 'asc'],
 														'page'				=> (Input::has('page') ? Input::get('page') : 1),
 														'per_page'			=> 100,
-														'workleave_id'		=> $PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['person_workleave_id'],
+														'workleave_id'		=> $PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['workleave_id'],
 														'tabindex'			=> 1,
 													]
 												]

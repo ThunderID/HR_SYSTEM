@@ -14,7 +14,7 @@
 													'workleavelist'			=>
 													[
 														'organisation_id'	=> $data['id'],
-														'search'			=> ['personid' => $person['id'],'status' => 'annual', 'ondate' => [date('Y-m-d', strtotime('first day of January this year')), date('Y-m-d', strtotime('last day of December this year'))]],
+														'search'			=> ['personid' => $person['id'],'status' => 'CN', 'ondate' => [date('Y-m-d', strtotime('first day of January this year')), date('Y-m-d', strtotime('last day of December this year'))]],
 														'sort'				=> ['name' => 'asc'],
 														'page'				=> (Input::has('page') ? Input::get('page') : 1),
 														'per_page'			=> 100,

@@ -17,8 +17,9 @@
 					<div class="form-group">
 						<label class="control-label">Jenis</label>
 						<select name="status" class="form-control" tabindex="2">
-							<option value="annual" @if($WorkleaveComposer['widget_data']['workleavelist']['workleave']['status']=='annual') selected @endif>Cuti Tahunan</option>
-							<option value="special" @if($WorkleaveComposer['widget_data']['workleavelist']['workleave']['status']=='special') selected @endif>Cuti Istimewa</option>
+							<option value="CN" @if($WorkleaveComposer['widget_data']['workleavelist']['workleave']['status']=='CN') selected @endif>Cuti Tahunan</option>
+							<option value="CB" @if($WorkleaveComposer['widget_data']['workleavelist']['workleave']['status']=='CB') selected @endif>Cuti Bersama</option>
+							<option value="CI" @if($WorkleaveComposer['widget_data']['workleavelist']['workleave']['status']=='CI') selected @endif>Cuti Istimewa</option>
 						</select>
 					</div>
 				</div>

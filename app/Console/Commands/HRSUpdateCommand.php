@@ -80,11 +80,20 @@ class HRSUpdateCommand extends Command {
 	{
 		Schema::table('tmp_workleaves', function($table)
 		{
-			$table->enum('status', ['annual', 'special']);
+			$table->enum('status', ['CB', 'CN', 'CI']);
 			$table->boolean('is_active');
 		});
 
 		$this->info("Add status, is active on tmp workleaves table");
+
+		DB::statement("ALTER TABLE person_workleaves MODIFY COLUMN status ENUM('OFFER', 'CB', 'CN', 'CI', 'CONFIRMED')");
+
+		Schema::table('person_workleaves', function($table)
+		{
+			$table->integer('workleave_id')->unsigned()->index();
+		});
+
+		$this->info("Alter person workleaves status to 'OFFER', 'CB', 'CN', 'CI', 'CONFIRMED' add workleave id add field workleave id");
 
 		Schema::table('tmp_calendars', function($table)
 		{
@@ -92,6 +101,15 @@ class HRSUpdateCommand extends Command {
 		});
 
 		$this->info("Add Calendar Parent");
+
+		DB::statement("ALTER TABLE tmp_schedules MODIFY COLUMN status ENUM('DN', 'SS', 'SL', 'CN', 'CB', 'CI', 'UL', 'HB', 'L')");
+
+		$this->info("Alter tmp_schedules status to 'DN', 'SS', 'SL', 'CN', 'CB', 'CI', 'UL', 'HB', 'L");
+	
+
+		DB::statement("ALTER TABLE person_schedules MODIFY COLUMN status ENUM('DN', 'SS', 'SL', 'CN', 'CB', 'CI', 'UL', 'HB', 'L')");
+
+		$this->info("Alter person_schedules status to 'DN', 'SS', 'SL', 'CN', 'CB', 'CI', 'UL', 'HB', 'L");
 
 		//update772015
 		// DB::statement("ALTER TABLE works MODIFY COLUMN status ENUM('contract', 'probation', 'internship', 'permanent', 'others')");

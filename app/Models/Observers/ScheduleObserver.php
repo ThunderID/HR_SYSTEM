@@ -93,7 +93,7 @@ class ScheduleObserver
 
 					$data->fill(['schedule_start' => $model['attributes']['start'], 'schedule_end' => $model['attributes']['end'], 'margin_end' => $margin_end, 'margin_start' => $margin_start]);
 
-					if($model['attributes']['status']=='presence_outdoor')
+					if(strtoupper($model['attributes']['status'])=='DN')
 					{
 						$data->fill(['modified_at' => date('Y-m-d H:i:s', strtotime('now')), 'modified_by' => $model['attributes']['created_by']]);
 					}

@@ -402,34 +402,23 @@ class ScheduleController extends BaseController
 
 					switch (strtolower($sh['status'])) 
 					{
-						case 'presence_indoor':
-							$schedule[$k]['label']			= 'dark-blue';
-							// $schedule[$k]['backgroundColor']= '#6D7DDA';
-							// $schedule[$k]['color']			= '#6D7DDA';
+						case 'hb':
+							$schedule[$k]['label']= 'dark-blue';
 							break;
-						case 'presence_outdoor':
-							$schedule[$k]['label']			= 'blue';
-							// $schedule[$k]['backgroundColor']= '#dgedf7';
-							// $schedule[$k]['color']			= '#31708f';
+						case 'dn':
+							$schedule[$k]['label']= 'blue';
 							break;
-						case 'absence_workleave':
-							$schedule[$k]['label']			= 'green-young';
-							// $schedule[$k]['backgroundColor']= '#EDA7A7';
-							// $schedule[$k]['color']			= '#EDA7A7';
+						case 'ul' : case 'cn' : case  'ci' : case 'cb':
+							$schedule[$k]['label']= 'green-young';
 						break;
-						case 'absence_not_workleave':
-							$schedule[$k]['label']			= 'green';
-							// $schedule[$k]['backgroundColor']= '#9E998A';
-							// $schedule[$k]['color']			= '#9E998A';
+						case 'ss' : case 'sl' :
+							$schedule[$k]['label']= 'green';
 							break;
 						default:
-							$schedule[$k]['label']			= 'green';
-							// $schedule[$k]['backgroundColor']= '#fef8e3';
-							// $schedule[$k]['color']			= '#8abd3b';
+							$schedule[$k]['label']= 'green';
 							break;
 					}
-					// $flag_date = $sh['on'];
-					// if ($flag!=1&&($flag_date!=$sh['on'])) {
+
 					$k++;
 					if(!in_array($period->format('Y-m-d'), $adddate) && (int)Session::get('user.menuid')<4)
 					{
@@ -469,30 +458,20 @@ class ScheduleController extends BaseController
 
 						switch (strtolower($sh['status'])) 
 						{
-							case 'presence_indoor':
-								$schedule[$k]['label']			= 'dark-blue';
-								// $schedule[$k]['backgroundColor']= '#31708f';
-								// $schedule[$k]['color']			= '#31708f';
+							case 'hb':
+								$schedule[$k]['label']= 'dark-blue';
 								break;
-							case 'presence_outdoor':
-								$schedule[$k]['label']			= 'blue';
-								// $schedule[$k]['backgroundColor']= '#ag4442';
-								// $schedule[$k]['color']			= '#ag4442';
+							case 'dn':
+								$schedule[$k]['label']= 'blue';
 								break;
-							case 'absence_workleave':
-								$schedule[$k]['label']			= 'green-young';
-								// $schedule[$k]['backgroundColor']= '#23AB2F';
-								// $schedule[$k]['color']			= '#23AB2F';
+							case 'ul' : case 'cn' : case  'ci' : case 'cb':
+								$schedule[$k]['label']= 'green-young';
 							break;
-							case 'absence_not_workleave':
-								$schedule[$k]['label']			= 'green';
-								// $schedule[$k]['backgroundColor']= '#3C763D';
-								// $schedule[$k]['color']			= '#3C763D';
+							case 'ss' : case 'sl' :
+								$schedule[$k]['label']= 'green';
 								break;
 							default:
-								$schedule[$k]['label']			= 'green';	
-								// $schedule[$k]['backgroundColor']= '#8abd3b';
-								// $schedule[$k]['color']			= '#8abd3b';
+								$schedule[$k]['label']= 'green';
 								break;
 						}
 
@@ -525,7 +504,7 @@ class ScheduleController extends BaseController
 						$schedule[$k]['title'] 			= 'Masuk Kerja';
 						$schedule[$k]['start']			= $period->format('Y-m-d').'T'.$sh['start'];
 						$schedule[$k]['end']			= $period->format('Y-m-d').'T'.$sh['end'];
-						$schedule[$k]['status']			= 'presence_indoor';
+						$schedule[$k]['status']			= 'HB';
 						$schedule[$k]['label']			= 'label label-gray';
 						// $schedule[$k]['backgroundColor']= '#31708F';
 						// $schedule[$k]['color']			= '#31708F';
@@ -544,7 +523,7 @@ class ScheduleController extends BaseController
 						$schedule[$k]['title'] 			= 'Libur';
 						$schedule[$k]['start']			= $period->format('Y-m-d').'T'.'00:00:00';
 						$schedule[$k]['end']			= $period->format('Y-m-d').'T'.'00:00:00';
-						$schedule[$k]['status']			= 'absence_not_workleave';
+						$schedule[$k]['status']			= 'L';
 						$schedule[$k]['label']			= 'label label-magenta';
 						// $schedule[$k]['backgroundColor']= '#D78409';
 						// $schedule[$k]['color']			= '#D78409';

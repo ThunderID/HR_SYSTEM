@@ -54,10 +54,11 @@
 								</td>
 								<td class="text-right ">
 									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.workleaves.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']]) }}"><i class="fa fa-trash"></i></a>
-									<?php //@if(!isset($value['parent']['id']) && (strtolower($value['status'])=='annual' || strtolower($value['status'])=='special'))
-										//<a href="{{route('hr.person.workleaves.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'type' => 'given'])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-									//@else@endif;?>
-									<a href="{{route('hr.person.workleaves.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'type' => 'taken'])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									@if($value['workleave_id']!=0)
+										<a href="{{route('hr.person.workleaves.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'type' => 'given'])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									@else
+										<a href="{{route('hr.person.workleaves.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'type' => 'taken'])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									@endif
 									<!-- <a href="{{route('hr.person.workleaves.show', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a> -->
 								</td>
 							</tr>

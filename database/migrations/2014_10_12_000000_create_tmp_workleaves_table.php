@@ -18,7 +18,7 @@ class CreateTmpWorkleavesTable extends Migration {
 			$table->integer('organisation_id')->unsigned()->index();
 			$table->string('name', 255);
 			$table->integer('quota');
-			$table->enum('status', ['annual', 'special']);
+			$table->enum('status', ['CB', 'CN', 'CI']);
 			$table->boolean('is_active');
 			$table->timestamps();
 			$table->softDeletes();

@@ -86,7 +86,7 @@ trait HasScheduleTrait {
 					->whereIn('persons.id', $variable['ids'])
 					->where('person_schedules.on', '>=', date('Y-m-d',strtotime($variable['ondate'][0])))
 					->where('person_schedules.on', '<=', date('Y-m-d',strtotime($variable['ondate'][1])))
-					->where('status', 'absence_workleave')
+					->whereIn('status', ['UL', 'CN', 'CI', 'CB'])
 					->groupBy('person_schedules.name')
 					->groupBy('persons.id');
 	}

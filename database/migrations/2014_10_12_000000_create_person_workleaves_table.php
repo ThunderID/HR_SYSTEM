@@ -17,13 +17,14 @@ class CreatePersonWorkleavesTable extends Migration {
 			$table->increments('id');
 			$table->integer('person_id')->unsigned()->index();
 			$table->integer('work_id')->unsigned()->index();
+			$table->integer('workleave_id')->unsigned()->index();
 			$table->integer('person_workleave_id')->unsigned()->index();
 			$table->integer('created_by')->unsigned()->index();
 			$table->string('name', 255);
 			$table->date('start');
 			$table->date('end');
 			$table->integer('quota');
-			$table->enum('status', ['offer', 'annual', 'special', 'confirmed']);
+			$table->enum('status', ['OFFER', 'CB', 'CN', 'CI', 'CONFIRMED']);
 			$table->text('notes');
 			$table->timestamps();
 			$table->softDeletes();

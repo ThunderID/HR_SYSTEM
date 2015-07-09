@@ -74,7 +74,7 @@ class ProcessingLogObserver
 			{
 				$schedule_start		= $pschedules->schedules[0]->start;
 				$schedule_end		= $pschedulee->schedules[0]->end;
-				if($model['attributes']['name']=='presence_outdoor')
+				if(strtoupper($model['attributes']['name'])=='DN')
 				{
 					if(!in_array($model['attributes']['name'], $tooltip))
 					{

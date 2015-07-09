@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 	on 		 						: Required, Date
  * 	start 	 						: Required, Time
  * 	end		 						: Required, Time
- * 	status		 					: Required, enum presence_indoor, presence_outdoor, absence_workleave, absence_not_workleave
+ * 	status		 					: Required, enum DN, SS, SL, CN, CB, CI, UL, HB, L
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -52,7 +52,7 @@ class PersonSchedule extends BaseModel {
 											'on'						=> 'required|date_format:"Y-m-d"',
 											'start'						=> 'required|date_format:"H:i:s"',
 											'end'						=> 'required|date_format:"H:i:s"',
-											'status'					=> 'required|in:presence_indoor,presence_outdoor,absence_workleave,absence_not_workleave',
+											'status'					=> 'required|in:DN,SS,SL,CN,CB,CI,UL,HB,L',
 										];
 
 	public $searchable 				= 	[
@@ -156,8 +156,8 @@ class PersonSchedule extends BaseModel {
 	{
 		if($variable)
 		{
-			return $query->where('status', 'absence_workleave');
+			return $query->wherein('status', ['UL', 'CN', 'CI', 'CB']);
 		}
-		return $query->where('status', 'absence_not_workleave');
+		return $query->wherein('status', ['SS', 'SL', 'L']);
 	}
 }

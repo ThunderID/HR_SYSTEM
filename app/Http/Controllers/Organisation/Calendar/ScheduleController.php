@@ -129,16 +129,16 @@ class ScheduleController extends BaseController
 
 						switch (strtolower($sh['status'])) 
 						{
-							case 'presence_indoor':
+							case 'hb':
 								$schedule[$k]['label']= 'dark-blue';
 								break;
-							case 'presence_outdoor':
+							case 'dn':
 								$schedule[$k]['label']= 'blue';
 								break;
-							case 'absence_workleave':
+							case 'ul' : case 'cn' : case  'ci' : case 'cb':
 								$schedule[$k]['label']= 'green-young';
 							break;
-							case 'absence_not_workleave':
+							case 'ss' : case 'sl' :
 								$schedule[$k]['label']= 'green';
 								break;
 							default:
@@ -172,7 +172,7 @@ class ScheduleController extends BaseController
 					$schedule[$k]['title'] 			= 'Masuk Kerja';
 					$schedule[$k]['start']			= $period->format('Y-m-d').'T'.$calendar['start'];
 					$schedule[$k]['end']			= $period->format('Y-m-d').'T'.$calendar['end'];
-					$schedule[$k]['status']			= 'presence_indoor';
+					$schedule[$k]['status']			= 'HB';
 					$schedule[$k]['label']			= 'gray';
 
 					$date[]							= $period->format('Y-m-d');
@@ -184,7 +184,7 @@ class ScheduleController extends BaseController
 					$schedule[$k]['title'] 			= 'Tidak Masuk Kerja';
 					$schedule[$k]['start']			= $period->format('Y-m-d').'T'.'00:00:00';
 					$schedule[$k]['end']			= $period->format('Y-m-d').'T'.'00:00:00';
-					$schedule[$k]['status']			= 'absence_not_workleave';
+					$schedule[$k]['status']			= 'L';
 					$schedule[$k]['label']			= 'magenta';
 
 					$date[]							= $period->format('Y-m-d');

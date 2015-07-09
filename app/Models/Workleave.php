@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 	organisation_id 				: Foreign Key From Organisation, Integer, Required
  * 	name 		 					: Required max 255
  * 	quota 			 				: Required, Integer
- * 	status  		 				: Required, in offer, annual, special, confirmed
+ * 	status  		 				: Required, in CI, CB, CN
  * 	is_active 			 			: Boolean
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
@@ -50,7 +50,7 @@ class Workleave extends BaseModel {
 	protected 	$rules				= 	[
 											'name'						=> 'required|max:255',
 											'quota'						=> 'required|numeric',
-											'status'					=> 'required|in:annual,special',
+											'status'					=> 'required|in:CI,CB,CN',
 											'is_active'					=> 'boolean',
 										];
 
@@ -58,6 +58,7 @@ class Workleave extends BaseModel {
 											'id' 						=> 'ID', 
 											'organisationid' 			=> 'OrganisationID', 
 											'name' 						=> 'Name', 
+											'active' 					=> 'Active', 
 											'withattributes' 			=> 'WithAttributes'
 										];
 
@@ -65,6 +66,7 @@ class Workleave extends BaseModel {
 											'id' 						=> 'Could be array or integer', 
 											'organisationid' 			=> 'Could be array or integer', 
 											'name' 						=> 'Must be string', 
+											'active' 					=> 'Must be true or false', 
 											'withattributes' 			=> 'Must be array of relationship',
 										];
 
@@ -121,4 +123,8 @@ class Workleave extends BaseModel {
 		return $query->where('name', 'like', '%'.$variable.'%');
 	}
 
+	public function scopeActive($query, $variable)
+	{
+		return $query->where('is_active', $variable);
+	}
 }

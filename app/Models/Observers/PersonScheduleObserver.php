@@ -98,7 +98,7 @@ class PersonScheduleObserver
 					{
 						$schedule_start		= $pschedules->schedules[0]->start;
 						$schedule_end		= $pschedulee->schedules[0]->end;
-						if($model['attributes']['status']=='presence_outdoor')
+						if(strtoupper($model['attributes']['status'])=='DN')
 						{
 							if(!in_array($model['attributes']['status'], $tooltip))
 							{
@@ -156,12 +156,12 @@ class PersonScheduleObserver
 			}
 		}
 
-		if(strtolower($model['attributes']['status'])=='presence_outdoor' && isset($model['attributes']['person_id']))
+		if(strtoupper($model['attributes']['status'])=='DN' && isset($model['attributes']['person_id']))
 		{
 			$person 						= Person::find($model['attributes']['person_id']);
 			$log 							= new Log;
 			$log->fill([
-						'name' 				=> 'presence_outdoor',
+						'name' 				=> 'DN',
 						'on' 				=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' 00:00:00')),
 						'pc' 				=> 'hr',
 						'created_by' 		=> $model['attributes']['created_by'],
@@ -179,7 +179,7 @@ class PersonScheduleObserver
 
 			$log 							= new Log;
 			$log->fill([
-						'name' 				=> 'presence_outdoor',
+						'name' 				=> 'DN',
 						'on' 				=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' 00:00:00')),
 						'pc' 				=> 'hr',
 						'created_by' 		=> $model['attributes']['created_by'],

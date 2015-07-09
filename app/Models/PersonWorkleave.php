@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 	ID 								: Auto Increment, Integer, PK
  * 	person_id 						: Foreign Key From Person, Integer, Required
  * 	work_id 						: Foreign Key From Work, Integer, Required
+ * 	workleave_id 					: Foreign Key From Workleave, Integer, Required
  * 	person_workleave_id 			: Foreign Key From Person Workleave, Integer, Required
  * 	created_by 						: Foreign Key From Person, Integer, Required
  * 	name 		 					: Required, max 255
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 	start 		 					: Required, date
  * 	end  		 					: Required, date
  * 	quota  		 					: Required, numeric
- * 	status  		 				: Required, in offer, annual, special, confirmed
+ * 	status  		 				: Required, OFFER, CB, CN, CI, CONFIRMED
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -43,6 +44,7 @@ class PersonWorkleave extends BaseModel {
 
 	protected 	$fillable			= 	[
 											'work_id' 					,
+											'workleave_id' 				,
 											'person_workleave_id' 		,
 											'created_by' 				,
 											'name' 						,
@@ -56,12 +58,13 @@ class PersonWorkleave extends BaseModel {
 	protected 	$rules				= 	[
 											'work_id'					=> 'required|exists:works,id',
 											'person_workleave_id'		=> 'required_if:status,confirmed',
+											'workleave_id'				=> 'required_if:status,CB,CN,CI',
 											'created_by'				=> 'required|exists:persons,id',
 											'name'						=> 'required|max:255',
 											'start'						=> 'required|date_format:"Y-m-d"',
 											'end'						=> 'required|date_format:"Y-m-d"',
 											'quota'						=> 'required|numeric',
-											'status'					=> 'required|in:offer,annual,special,confirmed',
+											'status'					=> 'required|in:OFFER,CB,CN,CI,CONFIRMED',
 										];
 
 	public $searchable 				= 	[

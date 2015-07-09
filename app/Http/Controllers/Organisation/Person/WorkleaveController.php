@@ -257,6 +257,8 @@ class WorkleaveController extends BaseController
 			App::abort(404);
 		}
 
+		$errors 								= new MessageBag();
+
 		$attributes 							= Input::only('notes');
 
 		if(strtolower($type)=='given')
@@ -266,6 +268,7 @@ class WorkleaveController extends BaseController
 
 			$search['organisationid']			= $org_id;
 			$search['id']						= Input::get('workleave_id');
+			$search['active']					= true;
 			$sort 								= ['name' => 'asc'];
 			$results_2 							= $this->dispatch(new Getting(new Workleave, $search, $sort , 1, 1));
 			$contents_2 						= json_decode($results_2);
@@ -275,15 +278,24 @@ class WorkleaveController extends BaseController
 				App::abort(404);
 			}
 
+			$attributes['workleave_id']			= $contents_2->data->id;
 			$attributes['name']					= $contents_2->data->name;
 			$attributes['status']				= $contents_2->data->status;
-			$attributes['quota']					= $contents_2->data->quota;
+			$attributes['quota']				= $contents_2->data->quota;
 		}
 		elseif(strtolower($type)=='taken')
 		{
 			$attributes['person_workleave_id']	= Input::get('person_workleave_id');
+			
+			if($attributes['person_workleave_id']==0)
+			{
+				$errors->add('Person', 'Pengambilan cuti harus menyertakan referensi pengambilan cuti');
+
+				return Redirect::back()->withErrors($errors)->withInput();
+			}
+
 			$attributes['name']					= Input::get('name');
-			$attributes['status']				= 'confirmed';
+			$attributes['status']				= 'CONFIRMED';
 			$attributes['quota']				= Input::get('quota');
 		}
 
@@ -298,8 +310,6 @@ class WorkleaveController extends BaseController
 
 		$attributes['work_id'] 					= $contents->data->works[0]->id;
 		$attributes['created_by'] 				= Session::get('loggedUser');
-
-		$errors 								= new MessageBag();
 
 		DB::beginTransaction();
 
