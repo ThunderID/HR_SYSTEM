@@ -62,7 +62,7 @@
 									<td class="hidden-xs">
 										@if($value['position']!='')
 											{{$value['position']}} {{$value['department']}} {{$value['branch']}}
-										@else
+										@elseif(isset($value['works'][0]))
 											{{$value['works'][0]['name']}} {{$value['works'][0]['tag']}} {{$value['works'][0]['branch']['name']}}
 										@endif
 									</td>
