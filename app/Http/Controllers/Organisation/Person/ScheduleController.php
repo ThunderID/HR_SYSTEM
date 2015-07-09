@@ -256,12 +256,12 @@ class ScheduleController extends BaseController
 		}
 		else
 		{
-			return Response::json(['message' => 'Not Found'], 404);
+			return Response::json(['message' => 'Not Found1'], 404);
 		}
 
 		if(!in_array($org_id, Session::get('user.organisationids')))
 		{
-			return Response::json(['message' => 'Not Found'], 404);
+			return Response::json(['message' => 'Not Found2'], 404);
 		}
 
 		if(Input::has('start'))
@@ -291,7 +291,7 @@ class ScheduleController extends BaseController
 
 		if(!$contents->meta->success)
 		{
-			return Response::json(['message' => 'Not Found'], 404);
+			return Response::json(['message' => 'Not Found3'], 404);
 		}
 
 		$person 								= json_decode(json_encode($contents->data), true);
@@ -310,7 +310,7 @@ class ScheduleController extends BaseController
 
 		if(!$contents->meta->success)
 		{
-			return Response::json(['message' => 'Not Found'], 404);
+			return Response::json(['message' => 'Not Found4'], 404);
 		}
 
 		$work 									= json_decode(json_encode($contents->data), true);
@@ -328,7 +328,7 @@ class ScheduleController extends BaseController
 
 		if(!$contents->meta->success)
 		{
-			return Response::json(['message' => 'Not Found'], 404);
+			return Response::json(['message' => 'Not Found5'], 404);
 		}
 
 		$cschedule 								= json_decode(json_encode($contents->data), true);
@@ -345,7 +345,7 @@ class ScheduleController extends BaseController
 
 		if(!$contents->meta->success)
 		{
-			return Response::json(['message' => 'Not Found'], 404);
+			return Response::json(['message' => 'Not Found6'], 404);
 		}
 
 		$pschedule 								= json_decode(json_encode($contents->data), true);
