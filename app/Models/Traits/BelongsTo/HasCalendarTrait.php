@@ -20,6 +20,11 @@ trait HasCalendarTrait {
 		return $this->belongsTo('App\Models\Calendar');
 	}
 
+	public function Parent()
+	{
+		return $this->belongsTo('App\Models\Calendar', 'import_from_id');
+	}
+
 	public function scopeCalendarID($query, $variable)
 	{
 		if(is_array($variable))

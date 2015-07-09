@@ -28,6 +28,7 @@
 							<th class="">Nama</th>
 							<th class="">Posisi</th>
 							<th class="">Email</th>
+							<th class="">Username</th>
 							<th class="">&nbsp;</th>
 						</tr>
 					</thead>
@@ -53,6 +54,9 @@
 									@if(isset($value['contacts'][0]))
 										{{$value['contacts'][0]['value']}}
 									@endif
+								</td>
+								<td class="">
+									{{$value['username']}}
 								</td>
 								<td class="text-right">
 									<div class="btn-group">

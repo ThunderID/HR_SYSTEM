@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * Document Model:
  * 	ID 								: Auto Increment, Integer, PK
  * 	organisation_id 				: Foreign Key From Organisation, Integer, Required
+ * 	import_from_id 					: Foreign Key From Calendar, Integer, Required
  * 	name 		 					: Required max 255
  * 	workdays 		 				: Text
  * 	start 		 					: Required time
@@ -19,12 +20,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 	//this package
  	1 Relationship hasMany 
 	{
+		Calendar
 		Schedules
 	}
 
  * 	//other package
  	1 Relationship belongsTo 
 	{
+		Calendar
 		Organisation
 	}
 
@@ -42,7 +45,9 @@ class Calendar extends BaseModel {
 
 	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasOrganisationTrait;
+	use \App\Models\Traits\BelongsTo\HasCalendarTrait;
 	use \App\Models\Traits\HasMany\HasSchedulesTrait;
+	use \App\Models\Traits\HasMany\HasCalendarsTrait;
 	use \App\Models\Traits\BelongsToMany\HasChartsTrait;
 
 	public 		$timestamps 		= 	true;
@@ -50,6 +55,7 @@ class Calendar extends BaseModel {
 	protected 	$table 				= 	'tmp_calendars';
 	
 	protected 	$fillable			= 	[
+											'import_from_id' 			,
 											'name' 						,
 											'workdays' 					,
 											'start' 					,
@@ -57,6 +63,7 @@ class Calendar extends BaseModel {
 										];
 
 	protected 	$rules				= 	[
+											'import_from_id'			=> 'exists:tmp_calendars,id',
 											'name'						=> 'required|max:255',
 											'start'						=> 'required|date_format:"H:i:s"',
 											'end'						=> 'required|date_format:"H:i:s"|after:start',
@@ -64,6 +71,7 @@ class Calendar extends BaseModel {
 
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
+											'notid' 					=> 'NotID', 
 											'organisationid' 			=> 'OrganisationID', 
 											'name' 						=> 'Name', 
 											'orname' 					=> 'OrName', 
@@ -76,6 +84,7 @@ class Calendar extends BaseModel {
 
 	public $searchableScope 		= 	[
 											'id' 						=> 'Could be array or integer', 
+											'notid' 					=> 'Must be integer', 
 											'organisationid' 			=> 'Could be array or integer', 
 											'name' 						=> 'Must be string', 
 											'orname' 					=> 'Could be array or string', 
