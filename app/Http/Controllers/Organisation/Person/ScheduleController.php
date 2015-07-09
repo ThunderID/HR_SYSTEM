@@ -241,6 +241,7 @@ class ScheduleController extends BaseController
 
 	public function ajax($page = 1)
 	{
+		dd(1);
 		if(Input::has('org_id'))
 		{
 			$org_id 							= Input::get('org_id');
@@ -256,12 +257,12 @@ class ScheduleController extends BaseController
 		}
 		else
 		{
-			return Response::json(['message' => 'Not Found1'], 404);
+			return Response::json(['message' => 'Not Found'], 404);
 		}
 
 		if(!in_array($org_id, Session::get('user.organisationids')))
 		{
-			return Response::json(['message' => 'Not Found2'], 404);
+			return Response::json(['message' => 'Not Found'], 404);
 		}
 
 		if(Input::has('start'))
@@ -284,14 +285,14 @@ class ScheduleController extends BaseController
 
 		//check if person worked or not
 		$search['id'] 							= $person_id;
-		// $search['organisationid'] 				= $org_id;
+		$search['organisationid'] 				= $org_id;
 		$sort 									= ['name' => 'asc'];
 		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
 
 		if(!$contents->meta->success)
 		{
-			return Response::json(['message' => 'Not Found3'], 404);
+			return Response::json(['message' => 'Not Found'], 404);
 		}
 
 		$person 								= json_decode(json_encode($contents->data), true);
@@ -310,7 +311,7 @@ class ScheduleController extends BaseController
 
 		if(!$contents->meta->success)
 		{
-			return Response::json(['message' => 'Not Found4'], 404);
+			return Response::json(['message' => 'Not Found'], 404);
 		}
 
 		$work 									= json_decode(json_encode($contents->data), true);
@@ -328,7 +329,7 @@ class ScheduleController extends BaseController
 
 		if(!$contents->meta->success)
 		{
-			return Response::json(['message' => 'Not Found5'], 404);
+			return Response::json(['message' => 'Not Found'], 404);
 		}
 
 		$cschedule 								= json_decode(json_encode($contents->data), true);
@@ -345,7 +346,7 @@ class ScheduleController extends BaseController
 
 		if(!$contents->meta->success)
 		{
-			return Response::json(['message' => 'Not Found6'], 404);
+			return Response::json(['message' => 'Not Found'], 404);
 		}
 
 		$pschedule 								= json_decode(json_encode($contents->data), true);
