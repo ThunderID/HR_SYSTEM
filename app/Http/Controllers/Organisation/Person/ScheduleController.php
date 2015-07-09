@@ -149,9 +149,8 @@ class ScheduleController extends BaseController
 			App::abort(404);
 		}
 
-		$attributes 							= Input::only('name', 'status', 'on', 'start', 'end');
+		$attributes 							= Input::only('name', 'status', 'start', 'end');
 		$attributes['created_by'] 				= Session::get('user.id');
-		$attributes['on'] 						= date('Y-m-d', strtotime($attributes['on']));
 		$attributes['start'] 					= date('H:i:s', strtotime($attributes['start']));
 		$attributes['end'] 						= date('H:i:s', strtotime($attributes['end']));
 
@@ -159,23 +158,60 @@ class ScheduleController extends BaseController
 
 		DB::beginTransaction();
 
-		$content 								= $this->dispatch(new Saving(new PersonSchedule, $attributes, $id, new Person, $person_id));
-		$is_success 							= json_decode($content);		
-		
-		if(!$is_success->meta->success)
+		if(Input::has('on'))
 		{
-			foreach ($is_success->meta->errors as $key => $value) 
+			$begin 								= new DateTime( Input::get('on') );
+			$ended 								= new DateTime( Input::get('on').' + 1 day' );
+			$maxend 							= new DateTime( Input::get('on').' + 7 days' );
+		}
+		elseif(Input::has('onstart') && Input::has('onend'))
+		{
+			$begin 									= new DateTime( Input::get('onstart') );
+			$ended 									= new DateTime( Input::get('onend') );
+			$maxend 								= new DateTime( Input::get('onstart').' + 7 days' );
+		}
+		else
+		{
+			$errors->add('Person', 'Tanggal Tidak Valid');
+		}
+
+		if($ended->format('Y-m-d') <= $begin->format('Y-m-d'))
+		{
+			$errors->add('Person', 'Tanggal akhir harus lebih besar dari tanggal mulai. Gunakan single date untuk tanggal manual');
+		}
+
+		if($ended->format('Y-m-d') > $maxend->format('Y-m-d'))
+		{
+			$errors->add('Person', 'Maksimal range adalah satu minggu (7 Hari) ');
+		}
+
+		if(!$errors->count())
+		{
+			$interval 								= DateInterval::createFromDateString('1 day');
+			$periods 								= new DatePeriod($begin, $interval, $ended);
+
+			foreach ( $periods as $period )
 			{
-				if(is_array($value))
+				$attributes['on'] 					= $period->format('Y-m-d');
+				$content 							= $this->dispatch(new Saving(new PersonSchedule, $attributes, $id, new Person, $person_id));
+				$is_success 						= json_decode($content);
+
+				if(!$is_success->meta->success)
 				{
-					foreach ($value as $key2 => $value2) 
+					foreach ($is_success->meta->errors as $key => $value) 
 					{
-						$errors->add('Person', $value2);
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Person', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Person', $value);
+						}
 					}
-				}
-				else
-				{
-					$errors->add('Person', $value);
 				}
 			}
 		}

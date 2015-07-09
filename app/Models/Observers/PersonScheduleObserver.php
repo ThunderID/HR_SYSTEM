@@ -24,46 +24,46 @@ class PersonScheduleObserver
 		{
 			if(isset($model['attributes']['person_id']))
 			{
-				if(strtolower($model['attributes']['status'])=='absence_workleave')
-				{
-					$person 				= new Person;
-					$data					= $person->id($model['attributes']['person_id'])->CheckWork(true)->CheckWorkleave([date('Y-m-d',strtotime('first day of january this year')), date('Y-m-d',strtotime('last day of december this year'))])->withattributes(['personworkleaves', 'personworkleaves.workleave'])->first();
+				// if(strtolower($model['attributes']['status'])=='absence_workleave')
+				// {
+				// 	$person 				= new Person;
+				// 	$data					= $person->id($model['attributes']['person_id'])->CheckWork(true)->CheckWorkleave([date('Y-m-d',strtotime('first day of january this year')), date('Y-m-d',strtotime('last day of december this year'))])->withattributes(['personworkleaves', 'personworkleaves'])->first();
 					
-					if(count($data))
-					{
-						$quota 				= 0;
-						foreach($data->personworkleaves as $key => $value)
-						{
-							$quota 			= $quota + $value->workleave->quota;
-						}
+				// 	if(count($data))
+				// 	{
+				// 		$quota 				= 0;
+				// 		foreach($data->personworkleaves as $key => $value)
+				// 		{
+				// 			$quota 			= $quota + $value->quota;
+				// 		}
 
-						$on 				= [date('Y-m-d',strtotime('first day of january this year')), date('Y-m-d',strtotime('last day of december this year'))];
-						$data				= $person->id($model['attributes']['person_id'])->takenworkleave(['status' => 'workleave', 'on' => $on])->first();
-						if(count($data))
-						{
-							if(count($data->takenworkleave) + 1 <= $quota)
-							{
-								return true;
-							}
-							else
-							{
-								$errors 	= new MessageBag;
-								$errors->add('ondate', 'Jatah cuti tidak mencukupi. Sisa jatah cuti : '.$quota-count($data->workleaves).' hari');
+				// 		$on 				= [date('Y-m-d',strtotime('first day of january this year')), date('Y-m-d',strtotime('last day of december this year'))];
+				// 		$data				= $person->id($model['attributes']['person_id'])->takenworkleave(['status' => 'workleave', 'on' => $on])->first();
+				// 		if(count($data))
+				// 		{
+				// 			if(count($data->takenworkleave) + 1 <= $quota)
+				// 			{
+				// 				return true;
+				// 			}
+				// 			else
+				// 			{
+				// 				$errors 	= new MessageBag;
+				// 				$errors->add('ondate', 'Jatah cuti tidak mencukupi. Sisa jatah cuti : '.$quota-count($data->workleaves).' hari');
 								
-								$model['errors'] = $errors;
-								return false;
-							}
-						}
-						return true;
-					}
-					else
-					{
-						$errors 			= new MessageBag;
-						$errors->add('ondate', 'Karyawan tidak memiliki jatah cuti.');
+				// 				$model['errors'] = $errors;
+				// 				return false;
+				// 			}
+				// 		}
+				// 		return true;
+				// 	}
+				// 	else
+				// 	{
+				// 		$errors 			= new MessageBag;
+				// 		$errors->add('ondate', 'Karyawan tidak memiliki jatah cuti.');
 
-						$model['errors'] 	= $errors;
-					}
-				}
+				// 		$model['errors'] 	= $errors;
+				// 	}
+				// }
 			}
 
 			return true;
