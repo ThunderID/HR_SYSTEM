@@ -7,21 +7,21 @@
 	<title>HR System</title>	
 	<link rel="stylesheet" href="{{ elixir('css/app.css') }}">
 	{!! HTML::style('plugins/font-awesome/css/font-awesome.min.css') !!}	
-	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+	{{-- <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'> --}}
 </head>
 <body>	
 	<div id="wrapper">
 		<!-- Navigation -->		
 		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 			<!-- topbar -->
-		    @yield('nav_topbar', '[nav_topbar]')   
+			@yield('nav_topbar', '[nav_topbar]')   
 		
-		    <div class="navbar-default sidebar" role="navigation">
-		        <div class="sidebar-nav navbar-collapse collapse" aria-expanded="false">
-		        	<!-- sidebar -->
-		            @yield('nav_sidebar', '[nav_sidebar]')
-		        </div>		        
-		    </div>		    
+			<div class="navbar-default sidebar" role="navigation">
+				<div class="sidebar-nav navbar-collapse collapse" aria-expanded="false">
+					<!-- sidebar -->
+					@yield('nav_sidebar', '[nav_sidebar]')
+				</div>		        
+			</div>		    
 		</nav>
 		<div id="page-wrapper">
 			@yield('content_filter', '[content_filter]')
@@ -43,10 +43,10 @@
 
 			<!-- Model Organisation delete -->
 			{!! Form::open(array('route' => array('hr.organisations.delete', 0),'method' => 'DELETE')) !!}
-			    @include('widgets.modal.delete', [
-			        'widget_template'       => 'plain_no_title',
-			        'modal'                 => 'deleteorg'
-			    ])
+				@include('widgets.modal.delete', [
+					'widget_template'       => 'plain_no_title',
+					'modal'                 => 'deleteorg'
+				])
 			{!! Form::close() !!}
 
 		</div>
@@ -71,23 +71,68 @@
 
 	<script>
 		$(function() {
-
-		    $('#side-menu').metisMenu();
-
+			$('#side-menu').metisMenu();
 		});
 
 		//Loads the correct sidebar on window load,
 		//collapses the sidebar on window resize.
 		// Sets the min-height of #page-wrapper to window size
 		$(function() {
-		    
-		    var url = window.location;
-		    var element = $('ul.nav a').filter(function() {
-		        return this.href == url || url.href.indexOf(this.href) == 0;
-		    }).addClass('active').parent().parent().addClass('in').parent();
-		    if (element.is('li')) {
-		        element.addClass('active');
-		    }
+			$(window).bind("load resize", function() {
+				topOffset = 50;
+				width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
+				if (width < 768) {
+					$('div.navbar-collapse').addClass('collapse');
+					topOffset = 100; // 2-row-menu
+				} else {
+					$('div.navbar-collapse').removeClass('collapse');
+				}
+
+				height = ((this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height) - 1;
+				height = height - topOffset;
+				if ($(this).width>640) {
+					if (height < 1) height = 1;
+					if (height > topOffset) {
+						$("#page-wrapper").css("min-height", (height) + "px");
+						$(".sidebar").css('min-height', (height) + 'px');
+					}
+				}
+
+					if ($('.sidebar').height()>height) {
+						$('#page-wrapper').css('min-height', (height) + 'px');
+					}
+					if ($('.sidemenu').height()>$('#page-wrapper').height()) {
+						$('#page-wrapper').css('height', ($('.sidebar').height()) + 'px');
+					}
+					else {
+						$('#page-wrapper').css('height', (height) + 'px');
+					}
+			});
+
+			$('.sidemenu').on('click', function()
+			{
+				height_side 	= $(this).height();
+				height_content 	= $('#page-wrapper').height();
+
+				// if ($(window).width>640) {
+					if (height_side>height_content) {
+						$('#page-wrapper').css('height', ($('.sidebar').height()) + 'px');
+					} else {
+						$('#page-wrapper').css('height', ($('.sidebar').height()) + 'px');
+					}
+				// }
+			});
+		});
+
+		$(function() {
+			
+			var url = window.location;
+			var element = $('ul.nav a').filter(function() {
+				return this.href == url || url.href.indexOf(this.href) == 0;
+			}).addClass('active').parent().parent().addClass('in').parent();
+			if (element.is('li')) {
+				element.addClass('active');
+			}
 		});
 
 	</script>
