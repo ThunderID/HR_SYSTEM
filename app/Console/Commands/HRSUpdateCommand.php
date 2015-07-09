@@ -41,7 +41,7 @@ class HRSUpdateCommand extends Command {
 	public function fire()
 	{
 		//
-		$result 		= $this->update772015();
+		$result 		= $this->update972015();
 		
 		return true;
 	}
@@ -76,7 +76,7 @@ class HRSUpdateCommand extends Command {
 	 * @return void
 	 * @author 
 	 **/
-	public function update772015()
+	public function update972015()
 	{
 		Schema::table('tmp_workleaves', function($table)
 		{
@@ -86,6 +86,14 @@ class HRSUpdateCommand extends Command {
 
 		$this->info("Add status, is active on tmp workleaves table");
 
+		Schema::table('tmp_calendars', function($table)
+		{
+			$table->integer('import_from_id')->unsigned()->index();
+		});
+
+		$this->info("Add Calendar Parent");
+
+		//update772015
 		// DB::statement("ALTER TABLE works MODIFY COLUMN status ENUM('contract', 'probation', 'internship', 'permanent', 'others')");
 
 		// $this->info("Alter works status to 'contract', 'probation', 'internship', 'permanent', 'others'");

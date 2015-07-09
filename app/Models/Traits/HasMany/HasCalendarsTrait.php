@@ -21,4 +21,8 @@ trait HasCalendarsTrait {
 		return $this->hasMany('App\Models\Calendar');
 	}
 
+	public function Child()
+	{
+		return $this->hasMany('App\Models\Calendar', 'import_from_id');
+	}
 }

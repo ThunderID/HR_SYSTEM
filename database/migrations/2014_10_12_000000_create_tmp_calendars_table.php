@@ -16,6 +16,7 @@ class CreateTmpCalendarsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('organisation_id')->unsigned()->index();
+			$table->integer('import_from_id')->unsigned()->index();
 			$table->string('name', 255);
 			$table->text('workdays');
 			$table->time('start');

@@ -184,6 +184,11 @@ class CalendarController extends BaseController
 			$org_id 							= Session::get('user.organisation');
 		}
 
+		if(Input::has('calendar_id'))
+		{
+			$attributes['import_from_id'] 		= Input::get('calendar_id');
+		}
+
 		if(!in_array($org_id, Session::get('user.organisationids')))
 		{
 			App::abort(404);
