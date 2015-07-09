@@ -380,7 +380,6 @@ class ScheduleController extends BaseController
 				$workdays[]						= $wd[strtolower($value)];
 			}
 		}
-		dd(1);
 
 		$schedule 								= [];
 		$date 									= [];
@@ -558,6 +557,7 @@ class ScheduleController extends BaseController
 				// if(($period->format('Y-m-d') == date('Y-m-d', strtotime($sh['on'])))&&(!in_array($period->format('Y-m-d'), $date)))
 			}
 		}
+		dd(2);
 
 		// log	
 		$search 								= ['personid' => $person_id, 'ondate'=> [$start, $end]];
