@@ -99,7 +99,7 @@ class WorkObserver
 	{
 		if(isset($model['attributes']['chart_id']) && $model['attributes']['chart_id']!=0)
 		{
-			$current_employee 			= Work::where('chart_id',$model['attributes']['chart_id'])->whereNull('end')->orwhere('end', '>=', 'NOW()')->count();
+			$current_employee 			= Work::where('chart_id',$model['attributes']['chart_id'])->whereNull('end')->orwhere('end', '>=', date('Y-m-d'))->count();
 			$updated 					= Chart::where('id', $model['attributes']['chart_id'])->update(['current_employee' => $current_employee]);
 		}
 		return true;

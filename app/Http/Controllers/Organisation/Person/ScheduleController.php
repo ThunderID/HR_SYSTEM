@@ -320,7 +320,7 @@ class ScheduleController extends BaseController
 		unset($sort);
 
 		//look for schedule based on work calendar
-		$search['calendarid'] 					= $wcalendar;
+		$search['calendarid'] 					= $wcalendar['id'];
 		$search['ondate'] 						= [$start, $end];
 		$sort 									= ['on' => 'asc'];
 		$results 								= $this->dispatch(new Getting(new Schedule, $search, $sort , 1, 100));
