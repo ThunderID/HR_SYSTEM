@@ -14,8 +14,8 @@
 				<span class="icon-bar"></span>
 			</button>
 			<span class="breadcrumb">
-				<a class="" href="{{route('hr.organisations.index')}}">
-					{!! HTML::image('logo_reliance.png', 'Logo Reliance', ['class' => 'logo-breadcrumb'], '') !!}
+				<a class="first" href="{{route('hr.organisations.index')}}">
+					{!! HTML::image('logo_top_reliance.png', 'Logo Reliance', ['class' => 'logo-breadcrumb'], '') !!}
 				</a>
 				@forelse($breadcrumb as $key => $value)
 					<i class="fa fa-angle-double-right"></i><a class="" href="{{$value['route']}}">{{$value['name']}}</a> 

@@ -4196,7 +4196,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   color: #444444;
 }
 .breadcrumb {
-  padding: 8px 15px;
+  padding: 8px 10px;
   margin-top: 2px;
   margin-bottom: 20px;
   list-style: none;
@@ -6421,7 +6421,7 @@ label,
 
 /* ------LOGO BREADRCUMB------ */
 .logo-breadcrumb {
-  width: 130px;
+  width: 180px;
 }
 
 @media only screen and (max-device-width: 480px) {
@@ -6450,6 +6450,9 @@ label,
   font-weight: bold;
   margin-right: 10px;
   margin-left: 10px;
+}
+.navbar-static-top .breadcrumb a.first {
+  margin-left: 0px;
 }
 .navbar-static-top .breadcrumb i {
   font-size: 12px;
@@ -6539,16 +6542,16 @@ label,
   border-bottom: none !important;
 }
 .sidebar .nav-second-level li a {
-  padding-left: 37px;
+  padding-left: 25px;
 }
 .sidebar .nav-third-level li a {
-  padding-left: 52px;
+  padding-left: 35px;
 }
 .sidebar .nav-fourty-level li a {
-  padding-left: 67px;
+  padding-left: 45px;
 }
 .sidebar .nav-fifty-level li a {
-  padding-left: 80px;
+  padding-left: 55px;
 }
 .sidebar li.active-li,
 .sidebar .nav-second-level li.active-li,
@@ -6795,4 +6798,16 @@ label,
 }
 .chartlist:hover {
   background-color: #eee;
+}
+.label-schedule {
+  display: inline;
+  padding: 1px 2px 2px 1px;
+  font-size: 90%;
+  font-weight: bold;
+  line-height: 1;
+  color: #ffffff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em;
 }

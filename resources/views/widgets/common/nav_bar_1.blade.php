@@ -117,7 +117,7 @@
             </ul>
         </li>
         <li @if(isset($widget_options['sidebar']['laporan'])) class="active" @endif>
-            <a href="javascript:;" @if(isset($widget_options['sidebar']['laporan'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-database"></i> Laporan <span class="fa arrow"></span></a>
+            <a href="javascript:;" @if(isset($widget_options['sidebar']['laporan'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-database fa-fw"></i> Laporan <span class="fa arrow"></span></a>
             <ul class="nav nav-third-level">
                 <li @if(isset($widget_options['sidebar']['active_report_attendances'])&&Input::get('org_id')==$value) class="active-li" @endif>
                     <a href="{{route('hr.report.attendances.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_report_attendances'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-file-text-o fa-fw"></i> Laporan Aktivitas</a>

@@ -424,7 +424,7 @@ class ScheduleController extends BaseController
 							$schedule[$k]['label']= 'green';
 							break;
 						case 'l' :
-							$schedule[$k]['label']= 'label label-magenta';
+							$schedule[$k]['label']= 'magenta';
 							break;
 						default:
 							$schedule[$k]['label']= 'green';
@@ -441,7 +441,8 @@ class ScheduleController extends BaseController
 						$schedule[$k]['end']			= $sh['on'];
 						$schedule[$k]['status']			= $sh['status'];
 						$schedule[$k]['add_action']		= route('hr.person.schedules.store', ['org_id' => $org_id, 'person_id' => $person_id]);
-						$schedule[$k]['label']			= 'label label-primary';
+						$schedule[$k]['label']			= 'label-schedule label-primary';
+						$schedule[$k]['info_default']	= 'yes';
 						$adddate[]						= $period->format('Y-m-d');
 						$k++;
 					}
@@ -484,7 +485,7 @@ class ScheduleController extends BaseController
 								$schedule[$k]['label']= 'green';
 								break;
 							case 'l' :
-								$schedule[$k]['label']= 'label label-magenta';
+								$schedule[$k]['label']= 'magenta';
 								break;
 							default:
 								$schedule[$k]['label']= 'green';
@@ -501,7 +502,8 @@ class ScheduleController extends BaseController
 							$schedule[$k]['end']			= $sh['on'];
 							$schedule[$k]['status']			= $sh['status'];
 							$schedule[$k]['add_action']		= route('hr.person.schedules.store', ['org_id' => $org_id, 'person_id' => $person_id]);
-							$schedule[$k]['label']			= 'label label-primary';
+							$schedule[$k]['label']			= 'label-schedule label-primary';
+							$schedule[$k]['info_default']	= 'yes';
 
 							$adddate[]						= $period->format('Y-m-d');
 							$k++;
@@ -521,7 +523,8 @@ class ScheduleController extends BaseController
 						$schedule[$k]['start']			= $period->format('Y-m-d').'T'.$wcalendar['start'];
 						$schedule[$k]['end']			= $period->format('Y-m-d').'T'.$wcalendar['end'];
 						$schedule[$k]['status']			= 'HB';
-						$schedule[$k]['label']			= 'label label-gray';
+						$schedule[$k]['label']			= 'label-schedule label-gray';
+						$schedule[$k]['info_default']	= 'yes';
 						// $schedule[$k]['backgroundColor']= '#31708F';
 						// $schedule[$k]['color']			= '#31708F';
 						if((int)Session::get('user.menuid')<4)
@@ -540,7 +543,8 @@ class ScheduleController extends BaseController
 						$schedule[$k]['start']			= $period->format('Y-m-d').'T'.'00:00:00';
 						$schedule[$k]['end']			= $period->format('Y-m-d').'T'.'00:00:00';
 						$schedule[$k]['status']			= 'L';
-						$schedule[$k]['label']			= 'label label-magenta';
+						$schedule[$k]['label']			= 'label-schedule label-magenta';
+						$schedule[$k]['info_default']	= 'yes';
 						// $schedule[$k]['backgroundColor']= '#D78409';
 						// $schedule[$k]['color']			= '#D78409';
 						if((int)Session::get('user.menuid')<4)

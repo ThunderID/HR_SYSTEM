@@ -132,6 +132,7 @@ class ScheduleController extends BaseController
 						{
 							case 'hb':
 								$schedule[$k]['label']= 'dark-blue';
+								// $schedule[$k]['title_info']= 
 								break;
 							case 'dn':
 								$schedule[$k]['label']= 'blue';
@@ -177,7 +178,8 @@ class ScheduleController extends BaseController
 					$schedule[$k]['start']			= $period->format('Y-m-d').'T'.$calendar['start'];
 					$schedule[$k]['end']			= $period->format('Y-m-d').'T'.$calendar['end'];
 					$schedule[$k]['status']			= 'HB';
-					$schedule[$k]['label']			= 'label label-gray';
+					$schedule[$k]['label']			= 'label-schedule label-gray';
+					$schedule[$k]['info_default']	= 'yes';
 
 					$date[]							= $period->format('Y-m-d');
 					$k++;
@@ -189,7 +191,8 @@ class ScheduleController extends BaseController
 					$schedule[$k]['start']			= $period->format('Y-m-d').'T'.'00:00:00';
 					$schedule[$k]['end']			= $period->format('Y-m-d').'T'.'00:00:00';
 					$schedule[$k]['status']			= 'L';
-					$schedule[$k]['label']			= 'label label-magenta';
+					$schedule[$k]['label']			= 'label-schedule label-magenta';
+					$schedule[$k]['info_default']	= 'yes';
 
 					$date[]							= $period->format('Y-m-d');
 					$k++;
