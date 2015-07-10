@@ -85,13 +85,12 @@
 
 				element.attr('data-id', event.id);
 				element.attr('data-title', event.title);				
-				element.attr('data-toggle-tooltip', 'tooltip');
 				element.attr('data-placement', 'bottom');
 				element.attr('data-edit-action', event.ed_action);
 				element.attr('data-delete-action', event.del_action);
 				// element.find('.fc-title').parent().addClass('border-schedule');
 
-				element.attr('data-original-title', event.status);
+				element.attr('data-tooltip', 'true');
 				element.attr('title', event.status);
 				element.attr('data-show', 'tip');
 			}
@@ -106,7 +105,11 @@
 			element.attr('data-date', date_start);
 			element.attr('data-start', datetime_start[1]);
 			element.attr('data-end', datetime_end[1]);			
-			element.attr('data-is-affect-salary', event.affect_salary);			
+			element.attr('data-is-affect-salary', event.affect_salary);
+
+			if(typeof(event.info_default) != "undefined" && event.info_default == "yes") {
+				element.find('.fc-title').removeClass('fc-title');
+			} 
 		},
 		viewRender: function (view, element) {			
 	        //The title isn't rendered until after this callback, so we need to use a timeout.	        
