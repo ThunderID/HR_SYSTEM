@@ -149,7 +149,8 @@ class ProcessingLogObserver
 				}
 				else
 				{
-					$calendar 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->withAttributes(['workscalendars','workscalendars.calendar'])->first();
+					$calendar 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->withWorkSchedules(true)->first();
+
 					if($calendar)
 					{
 						if(!isset($calendar->workscalendars[0]))

@@ -95,7 +95,26 @@ trait HasWorksOnTrait {
 		{
 			return $query->whereHas('workscalendars' ,function($q)use($variable){$q->calendarid($variable['id']);});
 		}
+		$bool 						= filter_var($variable, FILTER_VALIDATE_BOOLEAN);
+		if($bool==true)
+		{
+			return $query->whereHas('workscalendars' ,function($q)use($variable){$q->whereNull('end')->orwhere('end', '>=', 'NOW()');});
+		}
 		return $query->whereHas('workscalendars' ,function($q)use($variable){$q;});
+	}
+
+	public function ScopeWithWorkSchedules($query, $variable)
+	{
+		if(isset($variable['id']))
+		{
+			return $query->with(['workscalendars' => function($q)use($variable){$q->calendarid($variable['id']);}, 'workscalendars.calendar']);
+		}
+		$bool 						= filter_var($variable, FILTER_VALIDATE_BOOLEAN);
+		if($bool==true)
+		{
+			return $query->with(['workscalendars' => function($q)use($variable){$q->whereNull('end')->orwhere('end', '>=', 'NOW()');}, 'workscalendars.calendar']);
+		}
+		return $query->with(['workscalendars' => function($q)use($variable){$q;}, 'workscalendars.calendar']);
 	}
 
 	public function ScopeWorkCalendarSchedule($query, $variable)

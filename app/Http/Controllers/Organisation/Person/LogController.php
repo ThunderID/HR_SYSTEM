@@ -61,8 +61,8 @@ class LogController extends BaseController
 			$apiattributes 						= json_decode(json_encode($content->data), true);
 			$apiattributes['tr_version']		= strtolower($attributes['application']['api']['tr_ver']);
 
-			$content 							= $this->dispatch(new Saving(new API, $apiattributes, $apiattributes['id'], new Branch, $apiattributes['branch_id']));
-			$is_success 						= json_decode($content);
+			$content_2 							= $this->dispatch(new Saving(new API, $apiattributes, $apiattributes['id'], new Branch, $apiattributes['branch_id']));
+			$is_success 						= json_decode($content_2);
 			
 			if(!$is_success->meta->success)
 			{
