@@ -339,7 +339,7 @@ class ProcessingLogObserver
 
 					$start_idle 	= $hours*3600+$minutes*60+$seconds;
 				}
-				elseif((strtolower($value['name']) != 'idle') && isset($start_idle))
+				elseif((strtolower($value['name']) == 'active') && isset($start_idle))
 				{
 					$new_idle 		= date('H:i:s', strtotime($value['on']));
 					list($hours, $minutes, $seconds) = explode(":", $new_idle);
@@ -493,6 +493,7 @@ class ProcessingLogObserver
 			if (!$plog->save())
 			{
 				$model['errors'] = $plog->getError();
+
 				return false;
 			}
 

@@ -45,7 +45,7 @@
 										'chartlist'				=>
 										[
 											'organisation_id'	=> $data['id'],
-											'search'			=> array_merge(['branchid' => $branch['id']], (isset($filtered['search']) ? $filtered['search'] : [])),
+											'search'			=> array_merge(['branchid' => $branch['id'], 'notadmin' => true], (isset($filtered['search']) ? $filtered['search'] : [])),
 											'sort'				=> ['path' => 'asc'],
 											'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
