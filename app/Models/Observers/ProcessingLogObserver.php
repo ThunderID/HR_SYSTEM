@@ -73,10 +73,12 @@ class ProcessingLogObserver
 
 			$pschedulee 			= Person::ID($model['attributes']['person_id'])->maxendschedule(['on' => [$on, $on]])->first();
 			$pschedules 			= Person::ID($model['attributes']['person_id'])->minstartschedule(['on' => [$on, $on]])->first();
+
 			if($pschedulee && $pschedules)
 			{
 				$schedule_start		= $pschedules->schedules[0]->start;
 				$schedule_end		= $pschedulee->schedules[0]->end;
+
 				if(strtoupper($model['attributes']['name'])=='DN')
 				{
 					if(!in_array($model['attributes']['name'], $tooltip))
@@ -106,18 +108,22 @@ class ProcessingLogObserver
 							$tooltip[] 	= $value->status;
 						}
 					}
-					$modified_status= $pschedules->schedules[0]->status;
-					$modified_by 	= $pschedules->schedules[0]->created_by;
-					$modified_at 	= $pschedules->schedules[0]->created_at;
+					if(strtoupper($pschedules->schedules[0]->status)!='HB')
+					{
+						$modified_status= $pschedules->schedules[0]->status;
+						$modified_by 	= $pschedules->schedules[0]->created_by;
+						$modified_at 	= $pschedules->schedules[0]->created_at;
+					}
 				}
 			}
 			else
 			{
-				$ccalendars 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->WorkCalendarschedule(['on' => [$on, $on]])->first();
+				$ccalendars 		= Person::ID($model['attributes']['person_id'])->WorkCalendar(true)->WorkCalendarschedule(['on' => [$on, $on]])->first();
 				if(!is_null($ccalendars))
 				{
-					$ccalendar 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->WorkCalendarschedule(['on' => [$on, $on]])->with(['workscalendars', 'workscalendars.calendar', 'workscalendars.calendar.schedules' => function($q)use($on){$q->ondate([$on, $on]);}])->first();
-					
+					$ccalendar 		= Person::ID($model['attributes']['person_id'])->WorkCalendar(true)->WorkCalendarschedule(['on' => [$on, $on]])->WithWorkCalendarSchedules(['on' => [$on, $on]])->first();
+					dd($ccalendar);
+
 					$schedule_start	= $ccalendar->workscalendars[0]->calendar->schedules[0]->start;
 					$schedule_end	= $ccalendar->workscalendars[0]->calendar->schedules[0]->end;
 					$workid 		= $ccalendar->workscalendars[0]->id;
@@ -149,7 +155,8 @@ class ProcessingLogObserver
 				}
 				else
 				{
-					$calendar 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->withAttributes(['workscalendars','workscalendars.calendar'])->first();
+					$calendar 		= Person::ID($model['attributes']['person_id'])->WorkCalendar(true)->WithWorkSchedules(true)->first();
+
 					if($calendar)
 					{
 						if(!isset($calendar->workscalendars[0]))
@@ -158,17 +165,23 @@ class ProcessingLogObserver
 						}
 						
 						$workid 	= $calendar->workscalendars[0]->id;
-						$workdays  	= explode(',', $calendar->workscalendars[0]->workdays);
+						$workdays  	= explode(',', $calendar->workscalendars[0]->calendar->workdays);
+						$lworkdays 	= [];
+						foreach ($workdays as $idx => $days) 
+						{
+							$lworkdays[] 	= strtolower($days);
+						}
+
 						$wd			= ['monday' => 'senin', 'tuesday' => 'selasa', 'wednesday' => 'rabu', 'thursday' => 'kamis', 'friday' => 'jumat', 'saturday' => 'sabtu', 'sunday' => 'minggu', 'senin' => 'monday', 'selasa' => 'tuesday', 'rabu' => 'wednesday', 'kamis' => 'thursday', 'jumat' => 'friday', 'sabtu' => 'saturday', 'minggu' => 'sunday'];
 						$day 		= date("l", strtotime($model['attributes']['on']));
 
-						if(isset($wd[strtolower($day)]) && in_array($wd[strtolower($day)], $workdays))
+						if(isset($wd[strtolower($day)]) && in_array(strtolower($wd[strtolower($day)]), $lworkdays))
 						{
-							$schedule_start = $calendar->workscalendars[0]->start;
-							$schedule_end 	= $calendar->workscalendars[0]->end;	
+							$schedule_start = $calendar->workscalendars[0]->calendar->start;
+							$schedule_end 	= $calendar->workscalendars[0]->calendar->end;	
 
 							//sync schedule status with process log
-							switch (strtolower($calendar->workscalendars[0]->status)) 
+							switch (strtolower($calendar->workscalendars[0]->calendar->status)) 
 							{
 								case 'dn':
 									if(count($calendar->workscalendars) > 1)
@@ -180,14 +193,14 @@ class ProcessingLogObserver
 										$modified_status 		= 'HD';
 									}
 
-									$modified_by 				= $calendar->workscalendars[0]->created_by;
-									$modified_at 				= $calendar->workscalendars[0]->created_at;
+									$modified_by 				= $calendar->workscalendars[0]->calendar->created_by;
+									$modified_at 				= $calendar->workscalendars[0]->calendar->created_at;
 									break;
 
 								case 'ss': case 'sl' : case 'cn' : case 'ci' : case 'cb' : case 'ul' :
-									$modified_status 			= strtoupper($calendar->workscalendars[0]->status);
-									$modified_by 				= $calendar->workscalendars[0]->created_by;
-									$modified_at 				= $calendar->workscalendars[0]->created_at;
+									$modified_status 			= strtoupper($calendar->workscalendars[0]->calendar->status);
+									$modified_by 				= $calendar->workscalendars[0]->calendar->created_by;
+									$modified_at 				= $calendar->workscalendars[0]->calendar->created_at;
 									break;
 							}
 						}

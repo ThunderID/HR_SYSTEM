@@ -25,6 +25,6 @@ trait HasWorksTrait {
 	public function CheckWorks()
 	{
 		return $this->belongsToMany('App\Models\Chart', 'works', 'chart_id', 'person_id')
-					->withPivot('status', 'start', 'end', 'reason_end_job')->whereNull('end')->orwhere('end', '>=', 'NOW()');
+					->withPivot('status', 'start', 'end', 'reason_end_job')->whereNull('end')->orwhere('end', '>=', date('Y-m-d'));
 	}
 }
