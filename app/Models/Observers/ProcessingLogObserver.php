@@ -116,7 +116,7 @@ class ProcessingLogObserver
 				$ccalendars 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->WorkCalendarschedule(['on' => [$on, $on]])->first();
 				if(!is_null($ccalendars))
 				{
-					$ccalendar 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->WorkCalendarschedule(['on' => [$on, $on]])->with(['workscalendars', 'workscalendars.calendar', 'workscalendars.calendar.schedules' => function($q)use($on){$q->ondate([$on, $on]);}])->first();
+					$ccalendar 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->WorkCalendarschedule(['on' => [$on, $on]])->WithWorkSchedules(true)->with(['workscalendars.calendar.schedules' => function($q)use($on){$q->ondate([$on, $on]);}])->first();
 					
 					$schedule_start	= $ccalendar->workscalendars[0]->calendar->schedules[0]->start;
 					$schedule_end	= $ccalendar->workscalendars[0]->calendar->schedules[0]->end;
@@ -149,7 +149,7 @@ class ProcessingLogObserver
 				}
 				else
 				{
-					$calendar 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->withWorkSchedules(true)->first();
+					$calendar 		= Person::ID($model['attributes']['person_id'])->CheckWork(true)->WorkCalendar(true)->WithWorkSchedules(true)->first();
 
 					if($calendar)
 					{
