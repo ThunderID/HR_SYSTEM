@@ -17,7 +17,7 @@
 					<th>Time Loss Rate</th>
 					<!-- <th>Total Absence</th>
 					<th>Possible Total Effective</th> -->
-					<th>Time Loss Rate</th>
+					
 				</tr>
 			</thead>
 			@foreach($data as $key => $value)
@@ -39,7 +39,7 @@
 						<td class="hidden-xs">
 							@if($value['position']!='')
 								{{floor($value['total_active']/3600)}} Jam<br/>
-								{{floor(($value['total_active']%3600)/60)}} Menit</br/> 
+								{{floor(($value['total_active']%3600)/60)}} Menit<br/> 
 								{{floor(($value['total_active']%3600)%60)}} Detik
 							@else
 								Tidak ada aktivitas
@@ -48,7 +48,7 @@
 						<td class="hidden-xs">
 							@if($value['position']!='')
 								{{floor($value['total_idle_1']/3600)}} Jam<br/>
-								{{floor(($value['total_idle_1']%3600)/60)}} Menit</br/> 
+								{{floor(($value['total_idle_1']%3600)/60)}} Menit<br/> 
 								{{floor(($value['total_idle_1']%3600)%60)}} Detik
 								/ {{$value['frequency_idle_1']}}
 							@else
@@ -58,7 +58,7 @@
 						<td class="hidden-xs">
 							@if($value['position']!='')
 								{{floor($value['total_idle_2']/3600)}} Jam<br/>
-								{{floor(($value['total_idle_2']%3600)/60)}} Menit</br/> 
+								{{floor(($value['total_idle_2']%3600)/60)}} Menit<br/> 
 								{{floor(($value['total_idle_2']%3600)%60)}} Detik
 								/ {{$value['frequency_idle_2']}}
 							@else
@@ -68,7 +68,7 @@
 						<td class="hidden-xs">
 							@if($value['position']!='')
 								{{floor($value['total_idle_3']/3600)}} Jam<br/>
-								{{floor(($value['total_idle_3']%3600)/60)}} Menit</br/> 
+								{{floor(($value['total_idle_3']%3600)/60)}} Menit<br/> 
 								{{floor(($value['total_idle_3']%3600)%60)}} Detik
 								/ {{$value['frequency_idle_3']}}
 							@else

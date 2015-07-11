@@ -42,13 +42,13 @@
 						@foreach($PersonComposer['widget_data']['personlist']['person']['processlogs'] as $key => $value)
 							<tbody>
 								<tr>
-									<td>
+									<td class="font-11">
 										{{$key+1}}
 									</td>
-									<td>
+									<td class="font-11">
 										{{ date('d-m-Y', strtotime($value['on'])) }}
 									</td>
-									<td>
+									<td class="font-11">
 										<?php
 											$margin_start = 0;
 											$margin_end = 0;
@@ -86,7 +86,7 @@
 										{{round(abs($tlr) * 100, 2)}} %
 									</td>
 
-									<td class="hidden-xs">
+									<td class="hidden-xs font-11">
 										<a href="javascript:;" class="black cursor-text" data-toggle-tooltip="tooltip" data-placement="bottom" title="
 											@if ($value['actual_status']=='AS')
 												Ketidakhadiran Tanpa Penjelasan
@@ -117,7 +117,7 @@
 											{{$value['actual_status']}}
 										</a>
 									</td>
-									<td class="hidden-xs">
+									<td class="hidden-xs font-11">
 										<a href="javascript:;" class="black cursor-text" data-toggle-tooltip="tooltip" data-placement="bottom" title="
 											@if ($value['modified_status']=='AS')
 												Ketidakhadiran Tanpa Penjelasan
@@ -148,10 +148,10 @@
 											{{($value['modified_status']!='' ? $value['modified_status'] : '')}}
 										</a>
 									</td>
-									<td class="hidden-xs">
+									<td class="hidden-xs font-11">
 										{{($value['modified_status']!='' ? $value['modifiedby']['name'] : '')}}
 									</td>
-									<td class="hidden-xs">
+									<td class="hidden-xs font-11">
 										@if($value['modified_status']!='')
 											{{ date('d-m-Y', strtotime($value['modified_at'])) }}
 										@endif

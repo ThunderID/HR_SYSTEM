@@ -35,17 +35,17 @@
 						@foreach($PersonComposer['widget_data']['personlist']['person']['logs'] as $key => $value)
 							<tbody>
 								<tr>
-									<td>
+									<td class="font-11">
 										{{$key+1}}
 									</td>
-									<td>
+									<td class="font-11">
 										{{ date('d-m-Y H:i:s', strtotime($value['on'])) }}
 									</td>
-									<td>
+									<td class="font-11">
 										{{$value['name']}}
 									</td>
 
-									<td class="hidden-xs">
+									<td class="hidden-xs font-11">
 										{{$value['pc']}}
 									</td>
 								</tr>
