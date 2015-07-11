@@ -32,6 +32,7 @@
 								<th rowspan="2" class="hidden-xs text-center">HB</th>
 								<th colspan="4" class="hidden-xs text-center">HC</th>
 								<th colspan="8" class="hidden-xs text-center">AS</th>
+								<th rowspan="2" class="text-center">Total</th>
 							</tr>
 							<tr>
 								<th class="text-center">HT</th>
@@ -105,6 +106,9 @@
 									<td class="text-center hidden-xs font-11">
 										{{$value['AS']}}
 									</td>
+									<td class="text-center hidden-xs font-11">
+										{{$value['HB']+$value['HT']+$value['HP']+$value['HD']+$value['HC']+$value['DN']+$value['SS']+$value['SL']+$value['CN']+$value['CB']+$value['CI']+$value['UL']+$value['AS']}}
+									</td>
 								</tr>
 							</tbody>
 						@endforeach
@@ -113,7 +117,7 @@
 				</table>
 
 				<div class="row">
-					<div class="col-sm-12 text-center mt-10">
+					<div class="col-sm-12 text-center mt-11">
 						<p>Menampilkan {!! $PersonComposer['widget_data']['personlist']['person-display']['from']!!} - {!! $PersonComposer['widget_data']['personlist']['person-display']['to']!!}</p>
 						{!! $PersonComposer['widget_data']['personlist']['person-pagination']->appends(Input::all())->render()!!}
 					</div>
