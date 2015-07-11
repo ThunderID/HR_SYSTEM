@@ -6,12 +6,11 @@
 				<tr>
 					<th>No</th>
 					<th>Tanggal</th>
-					
 					<th>Time Loss Rate</th>
 					<th>Status Awal</th>
 					<th>Status Modifikasi</th>
-					<th>Dimodifikasi Oleh</th>
-					<th>Dimodifikasi Tanggal</th>
+					<th style="text-align:center">Dimodifikasi Oleh</th>
+					<th style="text-align:center">Dimodifikasi Tanggal</th>
 				</tr>
 			</thead>
 			@foreach($data['processlogs'] as $key => $value)
@@ -60,6 +59,7 @@
 								$tlr = ($total_absence!=0 ? $total_absence : 1) / (abs($schedule_end_second - $schedule_start_second)!=0 ? abs($schedule_end_second - $schedule_start_second) : 1);?>
 							{{round(abs($tlr) * 100, 2)}} %
 						</td>
+
 						<td>
 							{{$value['actual_status']}}
 						</td>
