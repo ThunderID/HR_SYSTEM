@@ -3,9 +3,9 @@
 	['breadcrumb' 	=> 	[	
 							['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
 							(Input::has('start') ? 
-							['name' => 'Laporan Kehadiran', 'route' => route('hr.report.wages.index', ['org_id' => $data['id'], 'start' => $start, 'end' => $end]) ]
+							['name' => 'Laporan Kehadiran', 'route' => route('hr.report.attendances.index', ['org_id' => $data['id'], 'start' => $start, 'end' => $end]) ]
 							:
-							['name' => 'Laporan Kehadiran', 'route' => route('hr.report.wages.index', ['org_id' => $data['id']]) ]
+							['name' => 'Laporan Kehadiran', 'route' => route('hr.report.attendances.index', ['org_id' => $data['id']]) ]
 							)
 						]
 	])
@@ -35,7 +35,7 @@
 	@include('widgets.common.filter', [
 		'widget_template'		=> 'plain_no_title',
 		'widget_options'		=> [
-									'form_url'	=> route('hr.report.wages.index', ['org_id' => $data['id'], 'start' => $start, 'end' => $end, 'page' => (Input::has('page') ? Input::get('page') : 1)])
+									'form_url'	=> route('hr.report.attendances.index', ['org_id' => $data['id'], 'start' => $start, 'end' => $end, 'page' => (Input::has('page') ? Input::get('page') : 1)])
 									],
 	])
 @overwrite
@@ -64,7 +64,7 @@
 		'widget_template'		=> 'panel',
 		'widget_title'			=> 'Tanggal Laporan Kehadiran',
 		'widget_options'		=> [
-									'form_url'	=> route('hr.report.wages.index', ['org_id' => $data['id'], 'page' => (Input::has('page') ? Input::get('page') : 1)])
+									'form_url'	=> route('hr.report.attendances.index', ['org_id' => $data['id'], 'page' => (Input::has('page') ? Input::get('page') : 1)])
 									],
 		])
 	@endif

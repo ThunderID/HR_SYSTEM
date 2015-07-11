@@ -417,6 +417,9 @@ class Person extends BaseModel {
 					->selectraw('sum(total_idle_1) as total_idle_1')
 					->selectraw('sum(total_idle_2) as total_idle_2')
 					->selectraw('sum(total_idle_3) as total_idle_3')
+					->selectraw('sum(frequency_idle_1) as frequency_idle_1')
+					->selectraw('sum(frequency_idle_2) as frequency_idle_2')
+					->selectraw('sum(frequency_idle_3) as frequency_idle_3')
 					->selectraw('sum(total_active) as total_active')
 					->leftjoin('process_logs', function ($join) use($start, $end) {
 							$join->on('persons.id', '=', 'process_logs.person_id')
@@ -486,41 +489,84 @@ class Person extends BaseModel {
 
 	public function scopeGlobalWage($query, $variable)
 	{
+		if(isset($variable['on']) && is_array($variable['on']))
+		{
+			if(!is_null($variable['on'][1]))
+			{
+				$start 	= date('Y-m-d', strtotime($variable['on'][1]));
+				$end 	= date('Y-m-d', strtotime($variable['on'][0]));
+				// $query =  $query->where('on', '<=', date('Y-m-d', strtotime($variable['on'][1])))
+				// 			 ->where('on', '>=', date('Y-m-d', strtotime($variable['on'][0])));
+			}
+			elseif(!is_null($variable['on'][0]))
+			{
+				$start 	= date('Y-m-d', strtotime($variable['on'][0]));
+				$end 	= date('Y-m-d', strtotime($variable['on'][1]));
+				// $query =  $query->where('on', '>=', date('Y-m-d', strtotime($variable['on'][0])));
+			}
+			else
+			{
+				$start 	=   date('Y-m-d');
+				$end 	=   date('Y-m-d');
+			}
+		}
+		elseif(isset($variable['on']))
+		{
+			$start 	= date('Y-m-d', strtotime($variable['on']));
+			$end 	= date('Y-m-d', strtotime($variable['on']));
+		}
+		else
+		{
+			$start 	=   date('Y-m-d');
+			$end 	=   date('Y-m-d');
+		}
+
 		$query =  $query->selectraw('persons.*')
-					->currentwork($variable['organisationid'])
+					->wherehas('works', function($q)use($variable){$q->wherenull('end')->orwhere('end', '>=',  date('Y-m-d', strtotime($variable['on'][0])));})
+					->with(['works' => function($q)use($variable){$q->wherenull('end')->orwhere('end', '>=',  date('Y-m-d', strtotime($variable['on'][0])));}])
+					// ->selectraw('branches.name as branch')
+					// ->selectraw('(SELECT sum(if(person_workleaves.status="annual", abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][1])).') as quotas')
+					// ->selectraw('(SELECT sum(if(person_workleaves.status="special", abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][1])).') as plus_quotas')
+					// ->selectraw('(SELECT sum(if(person_workleaves.status="confirmed", abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][1])).') as minus_quotas')
+					// // ->selectraw('sum(if(person_workleaves.status="annual", abs(person_workleaves.quota), 0)) as quotas')
+					// // ->selectraw('sum(if(person_workleaves.status="special", abs(person_workleaves.quota), 0)) as plus_quotas')
+					// ->selectraw('charts.name as position')
+					// ->selectraw('charts.tag as department')
+					// // ->selectraw('sum(
+					// // 				if(modified_status="SS" || modified_status="SL" || modified_status="CN" || modified_status="CB" || modified_status="CI" || modified_status="UL" || modified_status="AS", 
+					// // 					1, if(actual_status="AS", 1, 0 ))) as minus_quotas')
+					// ->leftjoin('process_logs', 'process_logs.person_id', '=', 'persons.id')
+					// ->leftjoin('works', 'process_logs.work_id', '=', 'works.id')
+					// ->leftjoin('charts', 'works.chart_id', '=', 'charts.id')
+					// ->leftjoin('branches', 'charts.branch_id', '=', 'branches.id')
+					->with(['works.branch'])
 					->selectraw('branches.name as branch')
-					->selectraw('(SELECT sum(if(person_workleaves.status="annual", abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][1])).') as quotas')
-					->selectraw('(SELECT sum(if(person_workleaves.status="special", abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][1])).') as plus_quotas')
-					->selectraw('(SELECT sum(if(person_workleaves.status="confirmed", abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][1])).') as minus_quotas')
-					// ->selectraw('sum(if(person_workleaves.status="annual", abs(person_workleaves.quota), 0)) as quotas')
-					// ->selectraw('sum(if(person_workleaves.status="special", abs(person_workleaves.quota), 0)) as plus_quotas')
 					->selectraw('charts.name as position')
 					->selectraw('charts.tag as department')
-					// ->selectraw('sum(
-					// 				if(modified_status="SS" || modified_status="SL" || modified_status="CN" || modified_status="CB" || modified_status="CI" || modified_status="UL" || modified_status="AS", 
-					// 					1, if(actual_status="AS", 1, 0 ))) as minus_quotas')
-					->leftjoin('process_logs', 'process_logs.person_id', '=', 'persons.id')
+					->selectraw('sum(if(actual_status="HB",1,0)) as HB')
+					->selectraw('sum(if(actual_status="HC",if(modified_status="HT", 1, 0),0)) as HT')
+					->selectraw('sum(if(actual_status="HC",if(modified_status="HP", 1, 0),0)) as HP')
+					->selectraw('sum(if(actual_status="HC",if(modified_status="HD", 1, 0),0)) as HD')
+					->selectraw('sum(if(actual_status="HC",if(modified_status="HC", 1, if(modified_status="", 1, 0)),0)) as HC')
+					->selectraw('sum(if(actual_status="AS",if(modified_status="DN", 1, 0),0)) as DN')
+					->selectraw('sum(if(actual_status="AS",if(modified_status="SS", 1, 0),0)) as SS')
+					->selectraw('sum(if(actual_status="AS",if(modified_status="SL", 1, 0),0)) as SL')
+					->selectraw('sum(if(actual_status="AS",if(modified_status="CN", 1, 0),0)) as CN')
+					->selectraw('sum(if(actual_status="AS",if(modified_status="CB", 1, 0),0)) as CB')
+					->selectraw('sum(if(actual_status="AS",if(modified_status="CI", 1, 0),0)) as CI')
+					->selectraw('sum(if(actual_status="AS",if(modified_status="UL", 1, 0),0)) as UL')
+					->selectraw('sum(if(actual_status="AS",if(modified_status="AS", 1, if(modified_status="", 1, 0)),0)) as `AS`')
+					->leftjoin('process_logs', function ($join) use($start, $end) {
+							$join->on('persons.id', '=', 'process_logs.person_id')
+								->where('process_logs.on', '<=', $start)
+								->where('process_logs.on', '>=', $end)
+							;
+						})
 					->leftjoin('works', 'process_logs.work_id', '=', 'works.id')
 					->leftjoin('charts', 'works.chart_id', '=', 'charts.id')
 					->leftjoin('branches', 'charts.branch_id', '=', 'branches.id')
 					;
 
-		if(is_array($variable['on']))
-		{
-			if(!is_null($variable['on'][1]))
-			{
-				$query =  $query->where('on', '<=', date('Y-m-d', strtotime($variable['on'][1])))
-							 ->where('on', '>=', date('Y-m-d', strtotime($variable['on'][0])));
-			}
-			elseif(!is_null($variable['on'][0]))
-			{
-				$query =  $query->where('on', '>=', date('Y-m-d', strtotime($variable['on'][0])));
-			}
-			else
-			{
-				$query =  $query->where('on', '>=', date('Y-m-d'));
-			}
-		}
 
 		if(isset($variable['name']))
 		{

@@ -5,7 +5,7 @@
 	<h1> {!! $widget_title or 'Laporan Kehadiran' !!} </h1>
 	<small>Total data {{ $PersonComposer['widget_data']['personlist']['person-pagination']->total() }}</small>
 	<?php
-		$PersonComposer['widget_data']['personlist']['person-pagination']->setPath('hr.report.attendances.index');
+		$PersonComposer['widget_data']['personlist']['person-pagination']->setPath('hr.report.activities.index');
 	 ?>
 
 	 @if(isset($PersonComposer['widget_data']['personlist']['active_filter']) && !is_null($PersonComposer['widget_data']['personlist']['active_filter']))
@@ -20,8 +20,8 @@
 			<i class="fa fa-file"></i> Export to <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
-			<li><a href="{{route('hr.report.attendances.index', array_merge(Input::all(), ['print' => 'yes', 'mode' => 'csv']))}}">CSV</a></li>
-			<li><a href="{{route('hr.report.attendances.index', array_merge(Input::all(), ['print' => 'yes', 'mode' => 'xls']))}}">XLS</a></li>
+			<li><a href="{{route('hr.report.activities.index', array_merge(Input::all(), ['print' => 'yes', 'mode' => 'csv']))}}">CSV</a></li>
+			<li><a href="{{route('hr.report.activities.index', array_merge(Input::all(), ['print' => 'yes', 'mode' => 'xls']))}}">XLS</a></li>
 		</ul>
 	</div>
 
@@ -37,9 +37,9 @@
 								<th>Nama</th>
 								<th class="hidden-xs">Jabatan</th>
 								<th class="hidden-xs">Average Aktif</th>
-								<th class="hidden-xs">Total Idle I</th>
-								<th class="hidden-xs">Total Idle II</th>
-								<th class="hidden-xs">Total Idle III</th>
+								<th class="hidden-xs">Total Idle I / Freq</th>
+								<th class="hidden-xs">Total Idle II / Freq</th>
+								<th class="hidden-xs">Total Idle III / Freq</th>
 								<!-- <th>Total Absence</th>
 								<th>Possible Total Effective</th> -->
 								<th class="hidden-xs">Time Loss Rate</th>
@@ -80,6 +80,7 @@
 											{{floor($value['total_idle_1']/3600)}} Jam<br/>
 											{{floor(($value['total_idle_1']%3600)/60)}} Menit</br/> 
 											{{floor(($value['total_idle_1']%3600)%60)}} Detik
+											/ {{$value['frequency_idle_1']}}
 										@else
 											Tidak ada aktivitas
 										@endif
@@ -89,6 +90,7 @@
 											{{floor($value['total_idle_2']/3600)}} Jam<br/>
 											{{floor(($value['total_idle_2']%3600)/60)}} Menit</br/> 
 											{{floor(($value['total_idle_2']%3600)%60)}} Detik
+											/ {{$value['frequency_idle_2']}}
 										@else
 											Tidak ada aktivitas
 										@endif
@@ -98,6 +100,7 @@
 											{{floor($value['total_idle_3']/3600)}} Jam<br/>
 											{{floor(($value['total_idle_3']%3600)/60)}} Menit</br/> 
 											{{floor(($value['total_idle_3']%3600)%60)}} Detik
+											/ {{$value['frequency_idle_3']}}
 										@else
 											Tidak ada aktivitas
 										@endif
