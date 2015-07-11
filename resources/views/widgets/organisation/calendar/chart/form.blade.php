@@ -19,7 +19,7 @@
 														'chartlist'			=>
 														[
 															'organisation_id'	=> $data['id'],
-															'search'			=> ['withattributes' => ['branch']],
+															'search'			=> ['withattributes' => ['branch'], 'notadmin' => true],
 															'sort'				=> ['name' => 'asc'],
 															'page'				=> 1,
 															'per_page'			=> 100,

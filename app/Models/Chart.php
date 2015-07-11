@@ -94,6 +94,7 @@ class Chart extends BaseModel {
 
 											'name' 					=> 'Name', 
 											'orname' 				=> 'OrName', 
+											'notadmin' 				=> 'NotAdmin', 
 											'tag' 					=> 'Tag', 
 											'ortag' 				=> 'OrTag', 
 											'child' 				=> 'Child', 
@@ -116,6 +117,7 @@ class Chart extends BaseModel {
 											'child' 				=> 'Path of current node', 
 											'neighbor' 				=> 'Path of current node', 
 											'grouptag'	 			=> 'Null',
+											'notadmin'	 			=> 'Null',
 
 											'orbranchname' 			=> 'Could be array or string', 
 											'withattributes' 		=> 'Must be array of relationship',
@@ -199,6 +201,11 @@ class Chart extends BaseModel {
 	public function scopeName($query, $variable)
 	{
 		return $query->where('name', 'like' ,'%'.$variable.'%');
+	}
+
+	public function scopeNotAdmin($query, $variable)
+	{
+		return $query->where('name', '<>', 'system admin')->where('tag', '<>', 'admin');
 	}
 
 	public function scopeTag($query, $variable)

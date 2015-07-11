@@ -51,7 +51,7 @@
 									'chartpath'				=>
 									[
 										'organisation_id'	=> $data['id'],
-										'search'			=> ['branchid' => $branch['id'], 'neighbor' => (Input::has('path') ? Input::get('path') : 0)],
+										'search'			=> ['branchid' => $branch['id'], 'neighbor' => (Input::has('path') ? Input::get('path') : 0), 'notadmin' => true],
 										'sort'				=> ['path' => 'desc'],
 										'page'				=> 1,
 										'per_page'			=> 100,

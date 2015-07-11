@@ -113,7 +113,7 @@
 											<?php $tlr = ($value['total_absence']!=0 ? $value['total_absence'] : 1) / ($value['possible_total_effective']!=0 ? $value['possible_total_effective'] : 1);?>
 											{{round(abs($tlr) * 100, 2)}} %
 										@else
-											Tidak ada aktivitas
+											100 %
 										@endif
 									</td>
 									<td class="text-right">

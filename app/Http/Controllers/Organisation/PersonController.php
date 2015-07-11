@@ -209,6 +209,10 @@ class PersonController extends BaseController
 				$filter['search']['chartchild'] 		= Session::get('user.chartpath');
 				$filter['active']['chartchild'] 		= 'Lihat Sebagai "'.Session::get('user.chartname').'"';
 			}
+			else
+			{
+				$filter['search']['chartnotadmin'] 		= true;
+			}
 		
 			$filter['search']['checkwork'] 			= true;
 		}
