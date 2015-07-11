@@ -97,7 +97,7 @@ class PersonController extends BaseController
 			$report 								= json_decode(json_encode($contents->data), true);
 			
 
-			Excel::create('Laporan Aktivitas '.$report['name'].'( '.$start.' s.d '.$end.' )', function($excel) use ($report, $start, $end, $person) 
+			Excel::create('Laporan Aktivitas '.$report['name'].' per tanggal ( '.$start.' s.d '.$end.' )', function($excel) use ($report, $start, $end, $person) 
 			{
 				// Set the title
 				$excel->setTitle('Laporan Aktivitas');
@@ -106,7 +106,6 @@ class PersonController extends BaseController
 				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end, $person) 
 				{
 					$c 									= count($report);
-					$sheet->setColumnFormat(array('G' => 'dd-mm-yyyy'));
 					$sheet->loadView('widgets.organisation.report.attendance.person.table_csv')->with('data', $report)->with('start', $start)->with('end', $end)->with('person', $person);
 				});
 			})->export(Input::get('mode'));	
@@ -379,7 +378,7 @@ class PersonController extends BaseController
 			}
 			$report 								= json_decode(json_encode($contents->data), true);
 			
-			Excel::create('Laporan Aktivitas '.$report['name'].'( '.date('d-m-Y',strtotime($ondate)).' )', function($excel) use ($report, $start, $end, $person, $ondate) 
+			Excel::create('Laporan Aktivitas '.$report['name'].' per tanggal ( '.date('d-m-Y',strtotime($ondate)).' )', function($excel) use ($report, $start, $end, $person, $ondate) 
 			{
 				// Set the title
 				$excel->setTitle('Laporan Aktivitas');
@@ -389,6 +388,7 @@ class PersonController extends BaseController
 				{
 					$c 									= count($report);
 					$sheet->loadView('widgets.organisation.report.attendance.person.log.table_csv')->with('data', $report)->with('start', $start)->with('end', $end)->with('person', $person)->with('ondate', $ondate);
+					$sheet->setColumnFormat(array('G' => 'dd-mm-yyyy'));
 				});
 			})->export(Input::get('mode'));
 		}

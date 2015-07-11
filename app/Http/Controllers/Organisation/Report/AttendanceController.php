@@ -249,7 +249,7 @@ class AttendanceController extends BaseController
 			$report 								= json_decode(json_encode($contents->data), true);
 
 			// $case = Input::get('case');
-			Excel::create('Laporan Aktivitas ( '.$start.' s.d '.$end.' )', function($excel) use ($report, $start, $end) 
+			Excel::create('Laporan Aktivitas per tanggal ( '.$start.' s.d '.$end.' ) di '.$data['name'], function($excel) use ($report, $start, $end) 
 			{
 				// Set the title
 				$excel->setTitle('Laporan Aktivitas');
