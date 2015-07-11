@@ -32,7 +32,7 @@
 								<th rowspan="2" class="hidden-xs text-center">HB</th>
 								<th colspan="4" class="hidden-xs text-center">HC</th>
 								<th colspan="8" class="hidden-xs text-center">AS</th>
-								<th rowspan="2" class="text-center">Total</th>
+								<th rowspan="2" class="hidden-xs text-center">Total</th>
 							</tr>
 							<tr>
 								<th class="text-center">HT</th>

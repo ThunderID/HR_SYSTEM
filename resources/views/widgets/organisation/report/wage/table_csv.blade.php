@@ -10,6 +10,7 @@
 					<th rowspan="2" style="text-align:center">HB</th>
 					<th colspan="4" style="text-align:center">HC</th>
 					<th colspan="8" style="text-align:center">AS</th>
+					<th rowspan="2" style="text-align:center">Total</th>
 				</tr>
 				<tr>
 					<th></th>
@@ -82,6 +83,9 @@
 						</td>
 						<td style="text-align:center">
 							{{$value['AS']}}
+						</td>
+						<td style="text-align:center">
+							{{$value['HB']+$value['HT']+$value['HP']+$value['HD']+$value['HC']+$value['DN']+$value['SS']+$value['SL']+$value['CN']+$value['CB']+$value['CI']+$value['UL']+$value['AS']}}
 						</td>
 					</tr>
 				</tbody>
