@@ -350,17 +350,17 @@ class ProcessingLogObserver
 					if($new_idle - $start_idle <= $idle_1)
 					{
 						$total_idle_1 	= $total_idle_1 + $new_idle - $start_idle;
-						$frequency_idle_1++;
+						$frequency_idle_1 = $frequency_idle_1 + 1;
 					}
 					elseif($new_idle - $start_idle > $idle_1 && $new_idle - $start_idle < $idle_2)
 					{
 						$total_idle_2 	= $total_idle_2 + $new_idle - $start_idle;
-						$frequency_idle_2++;
+						$frequency_idle_2 = $frequency_idle_2 + 1;
 					}
 					elseif($new_idle - $start_idle >= $idle_2)
 					{
 						$total_idle_3 	= $total_idle_3 + $new_idle - $start_idle;
-						$frequency_idle_3++;
+						$frequency_idle_3 = $frequency_idle_3 + 1;
 					}
 					
 					unset($start_idle);
