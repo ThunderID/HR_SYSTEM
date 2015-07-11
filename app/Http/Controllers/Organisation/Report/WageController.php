@@ -249,12 +249,12 @@ class WageController extends BaseController
 			$report 								= json_decode(json_encode($contents->data), true);
 
 			// $case = Input::get('case');
-			Excel::create('Laporan Cuti ( '.$start.' s.d '.$end.' )', function($excel) use ($report, $start, $end) 
+			Excel::create('Laporan Kehadiran ( '.$start.' s.d '.$end.' )', function($excel) use ($report, $start, $end) 
 			{
 				// Set the title
-				$excel->setTitle('Laporan Cuti');
+				$excel->setTitle('Laporan Kehadiran');
 				// Call them separately
-				$excel->setDescription('Laporan Cuti');
+				$excel->setDescription('Laporan Kehadiran');
 				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end) 
 				{
 					$c 									= count($report);
