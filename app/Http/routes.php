@@ -194,9 +194,9 @@ Route::group(['middleware' => 'csrfverify'], function()
 			// REPORT FOR ATTENDANCE (PROCESS LOG) RESOURCE
 			// ------------------------------------------------------------------------------------
 
-			Route::resource('attendances',		'AttendanceController',								['names' => ['index' => 'hr.report.attendances.index', 'create' => 'hr.report.attendances.create', 'store' => 'hr.report.attendances.store', 'show' => 'hr.report.attendances.show', 'edit' => 'hr.report.attendances.edit', 'update' => 'hr.report.attendances.update', 'destroy' => 'hr.report.attendances.delete']]);
+			Route::resource('activities',		'AttendanceController',								['names' => ['index' => 'hr.report.activities.index', 'create' => 'hr.report.activities.create', 'store' => 'hr.report.activities.store', 'show' => 'hr.report.activities.show', 'edit' => 'hr.report.activities.edit', 'update' => 'hr.report.activities.update', 'destroy' => 'hr.report.activities.delete']]);
 
-			Route::group(['namespace' => 'Attendance\\', 'prefix' => 'attendance'], function() 
+			Route::group(['namespace' => 'Attendance\\', 'prefix' => 'activity'], function() 
 			{
 				// ------------------------------------------------------------------------------------
 				// REPORT FOR ATTENDANCE (PROCESS LOG PER PERSON) RESOURCE
@@ -210,7 +210,7 @@ Route::group(['middleware' => 'csrfverify'], function()
 			// REPORT FOR WAGE (PROCESS LOG) RESOURCE
 			// ------------------------------------------------------------------------------------
 
-			Route::resource('wages',			'WageController',									['names' => ['index' => 'hr.report.wages.index', 'create' => 'hr.report.wages.create', 'store' => 'hr.report.wages.store', 'show' => 'hr.report.wages.show', 'edit' => 'hr.report.wages.edit', 'update' => 'hr.report.wages.update', 'destroy' => 'hr.report.wages.delete']]);
+			Route::resource('attendances',			'WageController',								['names' => ['index' => 'hr.report.attendances.index', 'create' => 'hr.report.attendances.create', 'store' => 'hr.report.attendances.store', 'show' => 'hr.report.attendances.show', 'edit' => 'hr.report.attendances.edit', 'update' => 'hr.report.attendances.update', 'destroy' => 'hr.report.attendances.delete']]);
 		});
 
 		});
@@ -263,6 +263,40 @@ Route::group(['namespace' => 'Auth\\'], function()
 	Route::post('api/tracker/test/',			['uses' => 'TrackerController@testlogin',			'as' => 'hr.tracker.test']);
 });
 
+Route::get('api/test/mac/logs3', function() 
+{
+		// $content 		= '﻿{"application":{"api":{"client":"123456789","secret":"123456789"}},"person":{"id":"1","email":"hr@thunderid.com"},"log":[["budi","StillAlive","06/05/2015 12:40:12","RED_SCARLET"],["budi","SessionLogon","06/05/2015 12:40:11","RED_SCARLET"],["budi","UnknownSessionEnd","06/05/2015 12:39:02","RED_SCARLET"]]}';
+		// $content2    = '{"application":{"api":{"client":"123456789","secret":"123456789","email":"user1","password":"admin","workstation_address":["00000000000000E0","742F6855C2EC","74F06DF15C1C","F46D04FD9B59"]}}}';
+		// '"application":{"api":{"client":"123456789","secret":"123456789","workstation_address":["00000000000000E0","742F6855C2EC","74F06DF15C1C","F46D04FD9B59"],"email":"user1","password":"admin"}}}'
+		$content2 									= ['application' => ['api' => ['client' => '123456789', 'secret' => '123456789', 'station_id' => 'ED-08-D3-C8-5E-69', 'tr_ver' => 1]], 'log' => [['ulala', 'idle', '07/10/2015 08:00:00', 'RED_SCARLET']]];		
+		// $content2 									= ['application' => ['api' => ['client' => '123456789', 'secret' => '123456789', 'station_id' => ['BFEBFBFF000206A7', '742F6855C2EC', '74F06DF15C1C', 'F46D04FD9B59'], 'tr_ver' => '0.1']]];		
+		// $content2 									= ['application' => ['api' => ['client' => '123456789', 'secret' => '123456789', 'station_id' => ['BFEBFBFF000206A7', '742F6855C2EC', '74F06DF15C1C', 'F46D04FD9B59'], 'tr_ver' => '0.1', 'email' => 'budi', 'password' => 'admin']]];		
+		$data2 = json_encode($content2);
+// dd($data2);
+
+// 		$data 										= json_decode(json_encode($contents), true);
+// 		$data 										= json_decode(json_encode($contents), true);
+// dd($data);
+	$url = 'http://localhost:9000/api/activity/logs';
+		$curl 			= curl_init($url);
+	curl_setopt($curl, CURLOPT_HEADER, false);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_HTTPHEADER,
+			array("Content-type: application/json"));
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $data2);
+
+		$results 		= curl_exec($curl);
+
+		if(!json_decode($results))
+		{
+			print_r($results);
+		}
+		else
+		{
+			dd($results);
+		}
+});
 
 Blade::extend(function ($value, $compiler)
 {
