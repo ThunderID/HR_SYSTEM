@@ -560,6 +560,8 @@ class Person extends BaseModel {
 							$join->on('persons.id', '=', 'process_logs.person_id')
 								->where('process_logs.on', '<=', $start)
 								->where('process_logs.on', '>=', $end)
+								->where('schedule_start', '<>', '00:00:00')
+								->where('schedule_end', '<>', '00:00:00')
 							;
 						})
 					->leftjoin('works', 'process_logs.work_id', '=', 'works.id')
