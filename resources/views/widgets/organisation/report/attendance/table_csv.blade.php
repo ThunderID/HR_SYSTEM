@@ -30,23 +30,23 @@
 							{{$value['position']}} di departemen {{$value['department']}} cabang {{$value['branch']}}
 						</td>
 						<td>
-							{{floor($value['total_active']/3600)}} Jam<br/>
-							{{floor(($value['total_active']%3600)/60)}} Menit</br/> 
+							{{floor($value['total_active']/3600)}} Jam <br/>
+							{{floor(($value['total_active']%3600)/60)}} Menit <br/> 
 							{{floor(($value['total_active']%3600)%60)}} Detik
 						</td>
 						<td>
-							{{floor($value['total_idle_1']/3600)}} Jam<br/>
-							{{floor(($value['total_idle_1']%3600)/60)}} Menit</br/> 
+							{{floor($value['total_idle_1']/3600)}} Jam <br/>
+							{{floor(($value['total_idle_1']%3600)/60)}} Menit <br/>
 							{{floor(($value['total_idle_1']%3600)%60)}} Detik
 						</td>
 						<td>
-							{{floor($value['total_idle_2']/3600)}} Jam<br/>
-							{{floor(($value['total_idle_2']%3600)/60)}} Menit</br/> 
+							{{floor($value['total_idle_2']/3600)}} Jam <br/>
+							{{floor(($value['total_idle_2']%3600)/60)}} Menit <br/> 
 							{{floor(($value['total_idle_2']%3600)%60)}} Detik
 						</td>
 						<td>
-							{{floor($value['total_idle_3']/3600)}} Jam<br/>
-							{{floor(($value['total_idle_3']%3600)/60)}} Menit</br/> 
+							{{floor($value['total_idle_3']/3600)}} Jam <br/>
+							{{floor(($value['total_idle_3']%3600)/60)}} Menit <br/> 
 							{{floor(($value['total_idle_3']%3600)%60)}} Detik
 						</td>
 						<!-- <td>

@@ -13,8 +13,8 @@
 			<i class="fa fa-file"></i> Export to <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
-			<li><a href="#">CSV</a></li>
-			<li><a href="#">XLS</a></li>
+			<li><a href="{{ route('hr.report.wages.index', array_merge(Input::all(), ['print' => 'yes', 'mode' => 'csv'])) }}">CSV</a></li>
+			<li><a href="{{ route('hr.report.wages.index', array_merge(Input::all(), ['print' => 'yes', 'mode' => 'xls'])) }}">XLS</a></li>
 		</ul>
 	</div>
 	

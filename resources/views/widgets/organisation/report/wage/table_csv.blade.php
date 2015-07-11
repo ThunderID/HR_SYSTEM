@@ -4,6 +4,7 @@
 		<table class="table">
 			<thead>
 				<tr>
+					<th>No</th>
 					<th>Nama</th>
 					<th>Jabatan</th>
 					<!-- <th>Hak Cuti</th>
@@ -15,9 +16,10 @@
 					{{-- <th>&nbsp;</th> --}}
 				</tr>
 			</thead>
-			@foreach($PersonComposer['widget_data']['personlist']['person'] as $key => $value)
+			@foreach($data as $key => $value)
 				<tbody>
 					<tr>
+						<td>{{ $key+1 }}</td>
 						<td>
 							{{$value['name']}}
 						</td>
