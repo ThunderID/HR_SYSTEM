@@ -65,8 +65,8 @@
 				<li @if(isset($widget_options['sidebar']['active_idle'])&&Input::get('org_id')==$value) class="active-li" @endif>
 					<a href="{{route('hr.idles.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_idle'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-clock-o fa-fw"></i> Pengaturan Idle</a>
 				</li>
-				<li>
-					<a href="{{ route('hr.authentications.index') }}"><i class="fa fa-lock fa-fw"></i> Otentikasi</a>
+				<li @if(isset($widget_options['sidebar']['active_authentication'])&&Input::get('org_id')==$value) class="active-li" @endif>
+					<a href="{{ route('hr.authentications.index', ['org_id' => $value]) }}" @if(isset($widget_options['sidebar']['active_authentication'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-lock fa-fw"></i> Otentikasi</a>
 				</li>
 			</ul>
 		</li>

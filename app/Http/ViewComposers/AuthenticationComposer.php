@@ -6,7 +6,7 @@ use App\Console\Commands\Getting;
 use App\Models\Authentication;
 use Input, Validator, App, Paginator;
 
-class AuthentComposer extends WidgetComposer 
+class AuthenticationComposer extends WidgetComposer 
 {
 	protected function setRules($options)
 	{

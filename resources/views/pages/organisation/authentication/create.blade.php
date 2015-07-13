@@ -26,27 +26,21 @@
 @overwrite
 
 @section('content_body')
-	@include('widgets.organisation.authentication.table', [
+	@include('widgets.organisation.authentication.form', [
 		'widget_template'		=> 'panel',
-		'widget_title'			=> 'Otentikasi',
 		'widget_options'		=> [ 'authentication' 				=>
 											[
-												'form_url' 			=> null,
+												'form_url' 			=> route('hr.authentications.store', ['id' => $id]),
 												'organisation_id'	=> $data['id'],
-												'search'			=> [],
+												'search'			=> ['id' => $id],
 												'sort'				=> [],											
 												'page'				=> (Input::has('page') ? Input::get('page') : 1),
-												'per_page'			=> 12,
-												'route_create'		=> route('hr.authentications.create', ['org_id' => $data['id']])								
+												'new'				=> (is_null($id) ? true : false),
+												'per_page'			=> 1,
+												'route_back'		=> route('hr.authentications.index', ['org_id' => $data['id']])								
 											]
 									]
 	])	
-	
-	{!! Form::open(array('route' => array('hr.branches.delete', 0),'method' => 'DELETE')) !!}
-		@include('widgets.modal.delete', [
-			'widget_template'		=> 'plain_no_title'
-		])
-	{!! Form::close() !!}
 @overwrite
 
 @section('content_footer')

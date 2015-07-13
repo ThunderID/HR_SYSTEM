@@ -17,45 +17,69 @@ class AuthenticationController extends BaseController
 
 	public function index()
 	{
-dd('halo');exit;
-		// $data 									= json_decode(json_encode($contents->data), true);
-		$this->layout->page 					= view('pages.organisation.authentications.index');
+		// dd(Session::all());		
+		if(Input::has('org_id'))
+		{
+			$org_id 							= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 							= Session::get('user.organisationid');
+		}
+
+		// if(!in_array($org_id, Session::get('user.organisationid')))
+		// {
+		// 	App::abort(404);
+		// }
+
+		$search['id'] 							= $org_id;
+		$sort 									= ['name' => 'asc'];
+		$results 								= $this->dispatch(new Getting(new Organisation, $search, $sort , 1, 1));
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$data 									= json_decode(json_encode($contents->data), true);
+		$this->layout->page 					= view('pages.organisation.authentication.index');
 		$this->layout->page->controller_name 	= $this->controller_name;
-		// $this->layout->page->data 				= $data;		
+		$this->layout->page->data 				= $data;		
 
 		return $this->layout;
 	}
 	
 	public function create($id = null)
 	{
-		// if(Input::has('org_id'))
-		// {
-		// 	$org_id 							= Input::get('org_id');
-		// }
-		// else
-		// {
-		// 	$org_id 							= Session::get('user.organisation');
-		// }
+		if(Input::has('org_id'))
+		{
+			$org_id 							= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 							= Session::get('user.organisation');
+		}
 
 		// if(!in_array($org_id, Session::get('user.organisationids')))
 		// {
 		// 	App::abort(404);
 		// }
 
-		// $search 								= ['id' => $org_id];
-		// $results 								= $this->dispatch(new Getting(new Organisation, $search, [] , 1, 1));
-		// $contents 								= json_decode($results);
+		$search 								= ['id' => $org_id];
+		$results 								= $this->dispatch(new Getting(new Organisation, $search, [] , 1, 1));
+		$contents 								= json_decode($results);
 		
-		// if(!$contents->meta->success)
-		// {
-		// 	App::abort(404);
-		// }
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
 
-		// $data 									= json_decode(json_encode($contents->data), true);
+		$data 									= json_decode(json_encode($contents->data), true);
 
-		// // ---------------------- GENERATE CONTENT ----------------------
-		// $this->layout->pages 					= view('pages.organisation.branch.create', compact('id', 'data'));
-		// return $this->layout;
+		// ---------------------- GENERATE CONTENT ----------------------
+		$this->layout->pages 					= view('pages.organisation.authentication.create', compact('id', 'data'));
+		return $this->layout;
 	}
 	
 	public function store($id = null)
