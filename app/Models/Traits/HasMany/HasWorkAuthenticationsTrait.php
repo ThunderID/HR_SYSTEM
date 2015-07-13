@@ -1,6 +1,6 @@
 <?php namespace App\Models\Traits\HasMany;
 
-trait HasAuthenticationsTrait {
+trait HasWorkAuthenticationsTrait {
 
 	/**
 	 * boot
@@ -9,16 +9,15 @@ trait HasAuthenticationsTrait {
 	 * @author 
 	 **/
 
-	function HasAuthenticationsTraitConstructor()
+	function HasWorkAuthenticationsTraitConstructor()
 	{
 		//
 	}
 
 	/* ------------------------------------------------------------------- RELATIONSHIP IN CHAUTH PACKAGE -------------------------------------------------------------------*/
 
-	public function Authentications()
+	public function WorkAuthentications()
 	{
-		return $this->hasMany('App\Models\Authentication');
+		return $this->hasMany('App\Models\WorkAuthentication');
 	}
-
 }

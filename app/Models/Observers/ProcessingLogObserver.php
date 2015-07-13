@@ -17,9 +17,6 @@ class ProcessingLogObserver
 {
 	public function saved($model)
 	{
-	try
-		{
-
 		if(isset($model['attributes']['person_id']))
 		{
 			$this->errors 			= new MessageBag;
@@ -466,10 +463,5 @@ class ProcessingLogObserver
 			return true;
 		}
 		return true;
-	}
-		catch (Exception $e) 
-		{
-    		echo 'Caught exception: ',  $e->getLine(), "\n";
-		}	
 	}
 }

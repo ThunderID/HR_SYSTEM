@@ -146,7 +146,7 @@ class Person extends BaseModel {
 											'checkwork'	 					=> 'CheckWork',
 											'currentwork' 					=> 'CurrentWork',
 											'previouswork' 					=> 'PreviousWork',
-										
+
 											'displayupdatedfinger'			=> 'DisplayUpdatedFinger',
 
 											'globalattendance'	 			=> 'GlobalAttendance',

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 	created_by 						: Foreign Key From Person, Integer, Required
  * 	name 		 					: Required max 255
  * 	on 		 						: Required, Datetime
+ * 	last_time_input 		 		: Nullable, Datetime
  * 	pc 			 					: Required max 255
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
@@ -39,6 +40,7 @@ class Log extends BaseModel {
 											'created_by' 				,
 											'name' 						,
 											'on' 						,
+											'last_time_input' 			,
 											'pc' 						,
 										];
 
@@ -46,6 +48,7 @@ class Log extends BaseModel {
 											'created_by'				=> 'exists:persons,id',
 											'name'						=> 'required|max:255',
 											'on'						=> 'required|date_format:"Y-m-d H:i:s"',
+											'last_time_input'			=> 'date_format:"Y-m-d H:i:s"',
 											'pc'						=> 'required|max:255',
 										];
 

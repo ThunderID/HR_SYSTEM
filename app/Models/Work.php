@@ -38,6 +38,7 @@ class Work extends BaseModel {
 	use \App\Models\Traits\BelongsTo\HasChartTrait;
 	use \App\Models\Traits\BelongsTo\HasPersonTrait;
 	use \App\Models\Traits\BelongsTo\HasCalendarTrait;
+	use \App\Models\Traits\HasMany\HasWorkAuthenticationsTrait;
 
 	public 		$timestamps 		= 	true;
 

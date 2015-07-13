@@ -2,26 +2,28 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Person;
-use App\Models\Application;
-use App\Models\Chart;
+use App\Models\Work;
+use App\Models\WorkAuthentication;
 use Faker\Factory;
 use Illuminate\Support\Facades\DB;
 
-class ApplicationTableSeeder extends Seeder
+class WorkAuthenticationTableSeeder extends Seeder
 {
 	function run()
 	{
-		DB::table('tmp_applications')->truncate();
+		$works 										= Work::where('status', 'admin')->get();
 		$app 										= ['web', 'tracker', 'fingerprint'];
 		try
 		{
-			foreach(range(0, count($app)-1) as $index)
+			foreach(range(0, count($works)-1) as $index)
 			{
-				$data 								= new Application;
+				$data 								= new WorkAuthentication;
 				$data->fill([
-					'name'							=> $app[$index],
+					'tmp_auth_group_id'				=> 1,
+					'organisation_id'				=> $works[$index]->chart->branch->organisation_id,
 				]);
+
+				$data->Work()->associate($works[$index]);
 
 				if (!$data->save())
 				{

@@ -3,13 +3,14 @@
 use DB, Validator;
 use App\Models\Work;
 use App\Models\Chart;
-use App\Models\Person;
-use App\Models\Finger;
 use App\Models\Follow;
+use App\Models\Person;
+use App\Models\WorkAuth;
 use Illuminate\Support\MessageBag;
 
 /* ----------------------------------------------------------------------
  * Event:
+ * 	Created						
  * 	Saving						
  * 	Saved						
  * 	Updating						
@@ -18,6 +19,37 @@ use Illuminate\Support\MessageBag;
 
 class WorkObserver 
 {
+	public function created($model)
+	{
+		if(strtolower($model['status'])=='admin')
+		{
+			$auth 								= new WorkAuth;
+			$auth->fill([
+						'tmp_auth_group_id'		=> 1,
+						'organisation_id'		=> $model->chart->branch->organisation_id,
+			]);
+		}
+		else
+		{
+			$auth 								= new WorkAuth;
+			$auth->fill([
+						'tmp_auth_group_id'		=> 5,
+						'organisation_id'		=> $model->chart->branch->organisation_id,
+			]);
+		}
+
+		$auth->Work()->associate($model);
+
+		if(!$auth->save())
+		{
+			$model['errors'] = $auth->getError();
+
+			return false;
+		}
+
+		return true;
+	}
+
 	public function saving($model)
 	{
 		$validator 						= Validator::make($model['attributes'], $model['rules']);

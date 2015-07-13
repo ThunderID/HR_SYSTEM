@@ -1,6 +1,6 @@
 <?php namespace App\Models\Traits\BelongsToMany;
 
-trait HasAuthenticationChartsTrait {
+trait HasAuthGroupsTrait {
 
 	/**
 	 * boot
@@ -9,15 +9,15 @@ trait HasAuthenticationChartsTrait {
 	 * @author 
 	 **/
 
-	function HasAuthenticationChartsTraitConstructor()
+	function HasAuthGroupsTraitConstructor()
 	{
 		//
 	}
 
 	/* ------------------------------------------------------------------- RELATIONSHIP IN ORGANISATION PACKAGE -------------------------------------------------------------------*/
 
-	public function Charts()
+	public function AuthGroups()
 	{
-		return $this->belongsToMany('App\Models\Chart', 'authentications', 'menu_id', 'chart_id');
+		return $this->belongsToMany('App\Models\AuthGroup', 'tmp_groups_menus', 'tmp_menu_id', 'tmp_auth_group_id');
 	}
 }
