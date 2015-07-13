@@ -16,7 +16,7 @@
 	@overwrite
 
 	@section('widget_body')
-		@if((int)Session::get('user.menuid')<=2)
+		@if((int)Session::get('user.menuid')<=3)
 			<a href="{{ $BranchComposer['widget_data']['branchlist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
 		@endif
 		@if(isset($BranchComposer['widget_data']['branchlist']['branch']))
@@ -64,6 +64,8 @@
 												<li>
 													<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.branches.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash fa-fw"></i> Hapus</a>
 												</li>
+											@endif
+											@if((int)Session::get('user.menuid')<=3)
 												<li>
 													<a href="{{route('hr.branches.edit', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="ubah"><i class="fa fa-pencil fa-fw"></i> Ubah</a>
 												</li>

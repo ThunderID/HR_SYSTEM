@@ -8,7 +8,7 @@
 	@overwrite
 
 	@section('widget_body')
-		@if((int)Session::get('user.menuid')<=2)
+		@if((int)Session::get('user.menuid')<=4)
 			<a href="{{ $WorkAuthenticationComposer['widget_data']['workauthlist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
 		@endif
 		<div class="clearfix">&nbsp;</div>

@@ -15,7 +15,7 @@
 	@overwrite
 
 	@section('widget_body')
-		@if((int)Session::get('user.menuid')<=2)
+		@if((int)Session::get('user.menuid')<=3)
 			<a href="{{ $CalendarComposer['widget_data']['calendarlist']['route_create'] }}" class="btn btn-primary">Tambah</a>
 		@endif
 		@if(isset($CalendarComposer['widget_data']['calendarlist']['calendar']))
@@ -55,6 +55,8 @@
 												<li>
 													<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.calendars.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash fa-fw"></i> Hapus</a>
 												</li>
+											@endif
+											@if((int)Session::get('user.menuid')<=3)
 												<li>
 													<a href="{{route('hr.calendars.edit', [$value['id'], 'org_id' => $data['id']])}}"><i class="fa fa-pencil fa-fw"></i> Ubah</a>
 												</li>
