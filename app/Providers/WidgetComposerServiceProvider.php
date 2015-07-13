@@ -98,6 +98,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// AUTHENTICATION
 		// -----------------------------------------------------------------------------
 		View::composer(['widgets.organisation.branch.chart.authentication.table', 'widgets.authentication.form'], 	'App\Http\ViewComposers\ApplicationComposer');
+		View::composer(['widgets.organisation.authentication.table', 'widgets.organisation.authentication.form'], 	'App\Http\ViewComposers\AuthenticationComposer');
 
 		// -----------------------------------------------------------------------------
 		// FOLLOW
