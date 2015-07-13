@@ -251,7 +251,7 @@ Route::group(['namespace' => 'Organisation\\Person\\'], function()
 	Route::post('api/activity/logs/',			['uses' => 'LogController@store',					'as' => 'hr.log.store']);
 });
 
-Route::group(['namespace' => 'Auth\\', 'before' => 'hr_acl'], function() 
+Route::group(['namespace' => 'Auth\\'], function() 
 {
 	Route::post('api/tracker/setting/',			['uses' => 'TrackerController@postlogin',			'as' => 'hr.tracker.post']);
 });
@@ -260,7 +260,6 @@ Route::group(['namespace' => 'Auth\\'], function()
 {
 	Route::post('api/tracker/test/',			['uses' => 'TrackerController@testlogin',			'as' => 'hr.tracker.test']);
 });
-
 
 Blade::extend(function ($value, $compiler)
 {

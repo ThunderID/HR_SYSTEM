@@ -6,6 +6,8 @@ use App\Console\Commands\Getting;
 use App\Console\Commands\Saving;
 use App\Models\Person;
 use App\Models\API;
+use App\Models\Work;
+use App\Models\WorkAuthentication;
 use App\Models\Branch;
 use Auth, Input, Session, Redirect, Response;
 
@@ -65,7 +67,62 @@ class TrackerController extends BaseController {
 
 		if($content->meta->success)
 		{
-			return Response::json(['message' => 'Sukses'], 200);
+			$results 							= $this->dispatch(new Getting(new Work, ['personid' => $content->data->id, 'active' => true, 'withattributes' => ['workauthentications', 'workauthentications.organisation', 'chart']], ['end' => 'asc'],1, 100));
+
+			$contents_2 						= json_decode($results);
+
+			if(!$contents_2->meta->success || !count($contents_2->data))
+			{
+				return Response::json(['message' => 'Gagal'], 200);
+			}
+
+			$workid										= [];
+			$chartids									= [];
+			$chartsids									= [];
+			$chartnames									= [];
+			$organisationids							= [];
+			$organisationnames							= [];
+			
+			foreach ($contents_2->data as $key => $value) 
+			{
+				$workid[]								= $value->id;
+				foreach ($value->workauthentications as $key_2 => $value_2) 
+				{
+					if(!isset($chartids[$value_2->organisation->id]) || !in_array($value->chart->id, $chartids[$value_2->organisation->id]))
+					{
+						$chartids[$value_2->organisation->id][]			= $value->chart->id;
+						$chartsids[]									= $value->chart->id;
+					}
+
+					if(!isset($chartnames[$value_2->organisation->id]) || !in_array($value->chart->name, $chartnames[$value_2->organisation->id]))
+					{
+						$chartnames[$value_2->organisation->id][]		= $value->chart->name;
+					}
+
+					if(!in_array($value_2->organisation->name, $organisationnames))
+					{
+						$organisationnames[]							= $value_2->organisation->name;
+					}
+
+					if(!in_array($value_2->organisation->id, $organisationids))
+					{
+						$organisationids[]								= $value_2->organisation->id;
+					}
+				}
+			}
+
+			$results 										= $this->dispatch(new Getting(new WorkAuthentication, ['menuid' => 102, 'workid' => $workid, 'organisationid' => $organisationids], ['tmp_auth_group_id' => 'asc'],1, 1));
+
+			$contents_3 									= json_decode($results);
+
+			if((!$contents_3->meta->success))
+			{
+				return Response::json(['message' => 'Gagal'], 200);
+			}
+			else
+			{
+				return Response::json(['message' => 'Sukses'], 200);
+			}
 		}
 		else
 		{

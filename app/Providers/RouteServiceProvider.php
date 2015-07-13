@@ -240,8 +240,6 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.password.get'								=> 101,
 							'hr.password.post'								=> 101,
 							'hr.logout.get'									=> 1,
-
-							'hr.tracker.post'								=> 102,
 				];
 			return $routes_acl;
 		});
