@@ -51,6 +51,8 @@ class WorkAuthentication extends BaseModel {
 											'workid' 							=> 'WorkID', 
 											'organisationid' 					=> 'OrganisationID', 
 											'authgroupid' 						=> 'AuthGroupID', 
+
+											'level' 							=> 'Level', 
 											'withattributes'					=> 'WithAttributes'
 										];
 
@@ -59,7 +61,8 @@ class WorkAuthentication extends BaseModel {
 											'workid' 							=> 'Could be array or integer', 
 											'organisationid' 					=> 'Could be array or integer', 
 											'authgroupid' 						=> 'Could be array or integer', 
-
+											
+											'level' 							=> 'Must be integer', 
 											'withattributes' 					=> 'Must be array of relationship',
 										];
 
@@ -121,5 +124,15 @@ class WorkAuthentication extends BaseModel {
 			return $query->whereIn('works_authentications.id', $variable);
 		}
 		return $query->where('works_authentications.id', $variable);
+	}
+
+	public function scopeLevel($query, $variable)
+	{
+		if((int)$variable)
+		{
+			return $query->where('tmp_auth_group_id', '>=', $variable);
+		}
+
+		return $query;
 	}
 }

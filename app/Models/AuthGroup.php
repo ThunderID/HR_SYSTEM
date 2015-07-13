@@ -60,7 +60,7 @@ class AuthGroup extends BaseModel {
 											'withattributes' 					=> 'Must be array of relationship',
 										];
 
-	public $sortable 				= 	['name'];
+	public $sortable 				= 	['name', 'id'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**

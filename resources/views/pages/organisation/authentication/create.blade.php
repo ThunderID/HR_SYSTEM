@@ -28,7 +28,7 @@
 @section('content_body')
 	@include('widgets.organisation.authentication.form', [
 		'widget_template'		=> 'panel',
-		'widget_options'		=> [ 'authentication' 				=>
+		'widget_options'		=> [ 'workauthlist' 				=>
 											[
 												'form_url' 			=> route('hr.authentications.store', ['id' => $id]),
 												'organisation_id'	=> $data['id'],

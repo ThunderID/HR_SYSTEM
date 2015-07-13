@@ -29,11 +29,11 @@
 	@include('widgets.organisation.authentication.table', [
 		'widget_template'		=> 'panel',
 		'widget_title'			=> 'Otentikasi',
-		'widget_options'		=> [ 'authentication' 				=>
+		'widget_options'		=> [ 'workauthlist' 				=>
 											[
 												'form_url' 			=> null,
 												'organisation_id'	=> $data['id'],
-												'search'			=> [],
+												'search'			=> ['level' => Session::get('user.menuid'), 'organisationid' => $data['id'], 'withattributes' => ['work', 'work.person', 'authgroup']],
 												'sort'				=> [],											
 												'page'				=> (Input::has('page') ? Input::get('page') : 1),
 												'per_page'			=> 12,
