@@ -527,9 +527,9 @@ class Person extends BaseModel {
 		}
 
 		$query =  $query->selectraw('persons.*')
-					->wherehas('works', function($q)use($variable){$q->wherenull('end')->orwhere('end', '>=', $start);})
+					->wherehas('works', function($q)use($start){$q->wherenull('end')->orwhere('end', '>=', $start);})
 					->wherehas('workscalendars', function($q)use($variable){$q->status(['permanent', 'contract', 'probation', 'internship', 'permanent','others']);})
-					->with(['works' => function($q)use($variable){$q->wherenull('end')->orwhere('end', '>=', $start);}])
+					->with(['works' => function($q)use($start){$q->wherenull('end')->orwhere('end', '>=', $start);}])
 					// ->selectraw('branches.name as branch')
 					// ->selectraw('(SELECT sum(if(person_workleaves.status="annual", abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][1])).') as quotas')
 					// ->selectraw('(SELECT sum(if(person_workleaves.status="special", abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][0])).' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.date('Y-m-d', strtotime($variable['on'][1])).') as plus_quotas')
