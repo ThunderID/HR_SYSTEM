@@ -12,11 +12,11 @@ class PersonObserver
 {
 	public function saving($model)
 	{
-		$validator 					= Validator::make($model['attributes'], $model['rules'], ['uniqid.required' => 'ID tidak boleh kosong', 'uniqid.max' => 'Maksimal Panjang ID : 255 Karakter']);
+		$validator 					= Validator::make($model['attributes'], $model['rules'], ['uniqid.required' => 'N I K tidak boleh kosong', 'uniqid.max' => 'Maksimal Panjang N I K : 255 Karakter']);
 
 		if ($validator->passes())
 		{
-			$validator 				= Validator::make($model['attributes'], ['uniqid' => 'unique:persons,uniqid,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : ''), 'username' => 'unique:persons,username,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : '')], ['uniqid.unique' => 'ID sudah terpakai']);
+			$validator 				= Validator::make($model['attributes'], ['uniqid' => 'unique:persons,uniqid,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : ''), 'username' => 'unique:persons,username,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : '')], ['uniqid.unique' => 'N I K sudah terpakai']);
 
 			if ($validator->passes())
 			{
