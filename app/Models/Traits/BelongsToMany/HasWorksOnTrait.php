@@ -91,7 +91,7 @@ trait HasWorksOnTrait {
 
 	public function scopeChartNotAdmin($query, $variable)
 	{
-		return $query->WhereHas('works', function($q)use($variable){$q->notadmin(true);});
+		return $query->WhereHas('workscalendars', function($q)use($variable){$q->status(['permanent', 'contract', 'probation', 'internship', 'permanent','others']);});
 	}
 
 	public function ScopeWorkCalendar($query, $variable)

@@ -14,7 +14,7 @@
 					'widget_options'		=> 	[
 													'worklist'			=>
 													[
-														'search'			=> ['active' => true, 'organisationid' => Session::get('user.organisationids'),'withattributes' => ['person', 'person.organisation'], 'groupperson' => true],
+														'search'			=> ['status' => ['permanent', 'contract', 'probation', 'internship', 'permanent','others'], 'active' => true, 'organisationid' => Session::get('user.organisationids'),'withattributes' => ['person', 'person.organisation'], 'groupperson' => true],
 														'sort'				=> ['end' => 'asc'],
 														'page'				=> 1,
 														'per_page'			=> 100,
