@@ -48,7 +48,7 @@
 											'worklist'			=>
 											[
 												'organisation_id'	=> $data['id'],
-												'search'			=> array_merge(['active' => true,'personid' => $person['id'], 'withattributes' => ['chart', 'chart.branch', 'chart.branch.organisation']], (isset($filtered['search']) ? $filtered['search'] : [])),
+												'search'			=> array_merge(['active' => false,'personid' => $person['id'], 'withattributes' => ['chart', 'chart.branch', 'chart.branch.organisation']], (isset($filtered['search']) ? $filtered['search'] : [])),
 												'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['end' => 'asc']),
 												'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 												'page'				=> (Input::has('page') ? Input::get('page') : 1),
