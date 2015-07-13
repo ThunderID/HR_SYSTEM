@@ -34,7 +34,7 @@
 												'form_url' 			=> null,
 												'organisation_id'	=> $data['id'],
 												'search'			=> ['level' => Session::get('user.menuid'), 'organisationid' => $data['id'], 'withattributes' => ['work', 'work.person', 'authgroup']],
-												'sort'				=> [],											
+												'sort'				=> ['tmp_auth_group_id' => 'desc'],											
 												'page'				=> (Input::has('page') ? Input::get('page') : 1),
 												'per_page'			=> 12,
 												'route_create'		=> route('hr.authentications.create', ['org_id' => $data['id']])								

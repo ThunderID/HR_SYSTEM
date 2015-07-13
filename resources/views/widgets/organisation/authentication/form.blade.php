@@ -25,7 +25,7 @@
 					])
 				</div>
 				<div class="form-group">
-					<label class="control-label"></label>
+					<label class="control-label">Otentikasi</label>
 					@include('widgets.authgroup.select', [
 					'widget_options'		=> 	[
 													'authgrouplist'			=>
