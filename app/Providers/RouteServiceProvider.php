@@ -7,6 +7,8 @@ use App\Console\Commands\Checking;
 use App\Console\Commands\Getting;
 use App\Models\Authentication;
 use App\Models\Person;
+use App\Models\Work;
+use App\Models\WorkAuthentication;
 use App\Models\Organisation;
 
 class RouteServiceProvider extends ServiceProvider {
@@ -216,10 +218,10 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.person.documents.delete'					=> [['1', '2', '3'], 'delete'],
 
 							'hr.report.activities.index'					=> [['1', '2', '3', '4', '5'], 'read'],
-							'hr.report.activities.show'					=> [['1', '2', '3', '4', '5'], 'read'],
+							'hr.report.activities.show'						=> [['1', '2', '3', '4', '5'], 'read'],
 							'hr.report.activities.create'					=> [['1', '2', '3'], 'create'],
 							'hr.report.activities.store'					=> [['1', '2', '3'], 'create'],
-							'hr.report.activities.edit'					=> [['1', '2', '3'], 'update'],
+							'hr.report.activities.edit'						=> [['1', '2', '3'], 'update'],
 							'hr.report.activities.update'					=> [['1', '2', '3'], 'update'],
 							'hr.report.activities.delete'					=> [['1', '2', '3'], 'delete'],
 
@@ -231,13 +233,13 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.attendance.persons.update'					=> [['1', '2', '3', '4'], 'update'],
 							'hr.attendance.persons.delete'					=> [['1', '2', '3', '4'], 'delete'],
 
-							'hr.report.attendances.index'							=> [['1', '2', '3', '4', '5'], 'read'],
-							'hr.report.attendances.show'							=> [['1', '2', '3', '4', '5'], 'read'],
-							'hr.report.attendances.create'						=> [['1', '2', '3'], 'create'],
-							'hr.report.attendances.store'							=> [['1', '2', '3'], 'create'],
-							'hr.report.attendances.edit'							=> [['1', '2', '3'], 'update'],
-							'hr.report.attendances.update'						=> [['1', '2', '3'], 'update'],
-							'hr.report.attendances.delete'						=> [['1', '2', '3'], 'delete'],
+							'hr.report.attendances.index'					=> [['1', '2', '3', '4', '5'], 'read'],
+							'hr.report.attendances.show'					=> [['1', '2', '3', '4', '5'], 'read'],
+							'hr.report.attendances.create'					=> [['1', '2', '3'], 'create'],
+							'hr.report.attendances.store'					=> [['1', '2', '3'], 'create'],
+							'hr.report.attendances.edit'					=> [['1', '2', '3'], 'update'],
+							'hr.report.attendances.update'					=> [['1', '2', '3'], 'update'],
+							'hr.report.attendances.delete'					=> [['1', '2', '3'], 'delete'],
 							
 							'hr.password.get'								=> [['1', '2', '3', '4', '5'], 'read'],
 							'hr.password.post'								=> [['1', '2', '3', '4', '5'], 'read'],
@@ -288,57 +290,14 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 				if($count_orgs->pagination->total_data>0)
 				{
 					//check user logged in 
-					$results 									= $this->dispatch(new Getting(new Person, ['id' => Session::get('loggedUser'), 'CurrentWork' => true, 'withattributes' => ['works.branch', 'works.branch.organisation'], 'defaultemail' => true], ['created_at' => 'asc'],1, 1));
+					$results 									= $this->dispatch(new Getting(new Person, ['id' => Session::get('loggedUser'), 'withattributes' => ['organisation']], ['created_at' => 'asc'],1, 1));
 
 					$contents 									= json_decode($results);
 
-					if(!$contents->meta->success || !count($contents->data->works))
+					if(!$contents->meta->success)
 					{
 						App::abort(404);
 					}
-
-					if(!Session::has('user.organisationid'))
-					{
-						Session::put('user.organisationid', $contents->data->works[0]->branch->organisation->id);
-						Session::put('user.chartname', $contents->data->works[0]->name);
-						Session::put('user.chartpath', $contents->data->works[0]->path);
-						Session::put('user.branchid', $contents->data->works[0]->branch_id);
-						Session::put('user.organisationname', $contents->data->works[0]->branch->organisation->name);
-					}
-
-					$chartids									= [];
-					$chartsids									= [];
-					$chartnames									= [];
-					$organisationids							= [];
-					$organisationnames							= [];
-					
-					foreach ($contents->data->works as $key => $value) 
-					{
-						if(!isset($chartids[$value->branch->organisation->id]) || !in_array($value->id, $chartids[$value->branch->organisation->id]))
-						{
-							$chartids[$value->branch->organisation->id][]			= $value->id;
-							$chartsids[]											= $value->id;
-						}
-
-						if(!isset($chartnames[$value->branch->organisation->id]) || !in_array($value->name, $chartnames[$value->branch->organisation->id]))
-						{
-							$chartnames[$value->branch->organisation->id][]			= $value->name;
-						}
-
-						if(!in_array($value->branch->organisation->name, $organisationnames))
-						{
-							$organisationnames[]				= $value->branch->organisation->name;
-						}
-
-						if(!in_array($value->branch->organisation->id, $organisationids))
-						{
-							$organisationids[]					= $value->branch->organisation->id;
-						}
-					}
-
-					Session::put('user.organisationids', $organisationids);
-					Session::put('user.organisationnames', $organisationnames);
-					Session::put('user.chartnames', $chartnames);
 
 					Session::put('user.id', $contents->data->id);
 					Session::put('user.name', $contents->data->name);
@@ -346,29 +305,77 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 					Session::put('user.gender', $contents->data->gender);
 					Session::put('user.avatar', $contents->data->avatar);
 
-					if(Input::has('org_id'))
+					$results 									= $this->dispatch(new Getting(new Work, ['personid' => Session::get('loggedUser'), 'active' => true, 'withattributes' => ['workauthentications', 'workauthentications.organisation', 'chart']], ['end' => 'asc'],1, 100));
+
+					$contents_2 								= json_decode($results);
+
+					if(!$contents_2->meta->success || !count($contents_2->data))
 					{
-						$chartid									= $chartids[Input::get('org_id')];
+						App::abort(404);
 					}
-					else
+
+					if(!Session::has('user.organisationid'))
 					{
-						$chartid									= $chartsids;
+						Session::put('user.organisationid', $contents->data->organisation->id);
+						Session::put('user.chartname', $contents_2->data[0]->chart->name);
+						Session::put('user.chartpath', $contents_2->data[0]->chart->path);
+						Session::put('user.branchid', $contents_2->data[0]->chart->branch_id);
+						Session::put('user.organisationname', $contents->data->organisation->name);
 					}
+
+					$workid										= [];
+					$chartids									= [];
+					$chartsids									= [];
+					$chartnames									= [];
+					$organisationids							= [];
+					$organisationnames							= [];
+					
+					foreach ($contents_2->data as $key => $value) 
+					{
+						$workid[]								= $value->id;
+						foreach ($value->workauthentications as $key_2 => $value_2) 
+						{
+							if(!isset($chartids[$value_2->organisation->id]) || !in_array($value->chart->id, $chartids[$value_2->organisation->id]))
+							{
+								$chartids[$value_2->organisation->id][]			= $value->chart->id;
+								$chartsids[]									= $value->chart->id;
+							}
+
+							if(!isset($chartnames[$value_2->organisation->id]) || !in_array($value->chart->name, $chartnames[$value_2->organisation->id]))
+							{
+								$chartnames[$value_2->organisation->id][]		= $value->chart->name;
+							}
+
+							if(!in_array($value_2->organisation->name, $organisationnames))
+							{
+								$organisationnames[]							= $value_2->organisation->name;
+							}
+
+							if(!in_array($value_2->organisation->id, $organisationids))
+							{
+								$organisationids[]								= $value_2->organisation->id;
+							}
+						}
+					}
+
+					Session::put('user.organisationids', $organisationids);
+					Session::put('user.organisationnames', $organisationnames);
+					Session::put('user.chartnames', $chartnames);
 
 					//check access
 					$menu 											= app('hr_acl')[Route::currentRouteName()];
 
-					$results 										= $this->dispatch(new Getting(new Authentication, ['menuid' => $menu[0],'chartid' => $chartid, 'access' => $menu[1]], ['menu_id' => 'asc'],1, 1));
+					$results 										= $this->dispatch(new Getting(new WorkAuthentication, ['authgroupid' => $menu[0], 'workid' => $workid, 'organisationid' => $organisationids], ['tmp_auth_group_id' => 'asc'],1, 1));
 
 					$contents 										= json_decode($results);
 
-					if(!$contents->meta->success)
+					if((!$contents->meta->success))
 					{
 						Session::flush();
 						return Redirect::guest(route('hr.login.get'));
 					}
 
-					Session::put('user.menuid', $contents->data->menu_id);
+					Session::put('user.menuid', $contents->data->tmp_auth_group_id);
 				}
 				elseif(Route::currentRouteName()=='hr.logout.get')
 				{

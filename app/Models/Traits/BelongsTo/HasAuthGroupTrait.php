@@ -18,11 +18,11 @@ trait HasAuthGroupTrait {
 
 	public function AuthGroup()
 	{
-		return $this->belongsTo('App\Models\AuthGroup');
+		return $this->belongsTo('App\Models\AuthGroup', 'tmp_auth_group_id');
 	}
 
 	public function scopeAuthGroupID($query, $variable)
 	{
-		return $query->whereHas('tmp_auth_groups', function($q)use($variable){$q->id($variable);});
+		return $query->whereHas('authgroup', function($q)use($variable){$q->id($variable);});
 	}
 }

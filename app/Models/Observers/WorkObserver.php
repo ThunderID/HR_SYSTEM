@@ -5,7 +5,7 @@ use App\Models\Work;
 use App\Models\Chart;
 use App\Models\Follow;
 use App\Models\Person;
-use App\Models\WorkAuth;
+use App\Models\WorkAuthentication;
 use Illuminate\Support\MessageBag;
 
 /* ----------------------------------------------------------------------
@@ -23,7 +23,7 @@ class WorkObserver
 	{
 		if(strtolower($model['status'])=='admin')
 		{
-			$auth 								= new WorkAuth;
+			$auth 								= new WorkAuthentication;
 			$auth->fill([
 						'tmp_auth_group_id'		=> 1,
 						'organisation_id'		=> $model->chart->branch->organisation_id,
@@ -31,7 +31,7 @@ class WorkObserver
 		}
 		else
 		{
-			$auth 								= new WorkAuth;
+			$auth 								= new WorkAuthentication;
 			$auth->fill([
 						'tmp_auth_group_id'		=> 5,
 						'organisation_id'		=> $model->chart->branch->organisation_id,

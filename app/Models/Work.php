@@ -144,6 +144,13 @@ class Work extends BaseModel {
 
 	public function scopeActive($query, $variable)
 	{
+		$bool 						= filter_var($variable, FILTER_VALIDATE_BOOLEAN);
+		if($bool==true)
+		{
+			return $query->whereNull('end')->orwhere('end', '>=', date('Y-m-d'));
+		}
+
 		return $query->whereHas('calendar', function($q){$q;});
 	}
+
 }
