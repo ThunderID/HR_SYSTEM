@@ -81,6 +81,13 @@ Route::group(['middleware' => 'csrfverify'], function()
 			Route::resource('idles',				'IdleController',									['names' => ['index' => 'hr.idles.index', 'create' => 'hr.idles.create', 'store' => 'hr.idles.store', 'show' => 'hr.idles.show', 'edit' => 'hr.idles.edit', 'update' => 'hr.idles.update', 'destroy' => 'hr.idles.delete']]);
 
 			// ------------------------------------------------------------------------------------
+			// AUTHENTICATION RESOURCE
+			// ------------------------------------------------------------------------------------
+
+			Route::resource('authentications',		'AuthenticationController',						['names' => ['index' => 'hr.authentications.index', 'create' => 'hr.authentications.create', 'store' => 'hr.authentications.store', 'show' => 'hr.authentications.show', 'edit' => 'hr.authentications.edit', 'update' => 'hr.authentications.update', 'destroy' => 'hr.authentications.delete']]);
+
+
+			// ------------------------------------------------------------------------------------
 			// PERSONS RESOURCE
 			// ------------------------------------------------------------------------------------
 
