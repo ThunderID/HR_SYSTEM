@@ -1,5 +1,4 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
-
 @if (!$widget_error_count)
 	@section('widget_body')
 		@if(isset($PersonComposer['widget_data']['personlist']['person']))

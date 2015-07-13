@@ -151,6 +151,7 @@ class Person extends BaseModel {
 
 											'globalattendance'	 			=> 'GlobalAttendance',
 											'globalwage'	 				=> 'GlobalWage',
+											'globalworkleave'	 			=> 'GlobalWorkleave',
 											
 											'processlogsondate'	 			=> 'ProcessLogsOndate',
 											'logsondate'	 				=> 'LogsOndate',
@@ -172,6 +173,8 @@ class Person extends BaseModel {
 											'checkcreate' 					=> 'Could be array or string (date)',
 											'globalattendance'	 			=> 'Must be array of string and or case and or sort',
 											'globalwage'	 				=> 'Must be array of string and or case and or sort',
+											'globalworkleave'	 			=> 'Must be array of string and or case and or sort',
+											
 											'withattributes' 				=> 'Must be array of relationship',
 											
 											'contactid' 					=> 'ID of contact',
@@ -202,6 +205,7 @@ class Person extends BaseModel {
 											'previouswork' 					=> 'Null',
 
 											'displayupdatedfinger'			=> 'Must be string (datetime)',
+
 											'processlogsondate'	 			=> 'Could be array or string (date)',
 											'logsondate'	 				=> 'Could be array or string (date)',
 										];
@@ -569,6 +573,103 @@ class Person extends BaseModel {
 					->leftjoin('branches', 'charts.branch_id', '=', 'branches.id')
 					;
 
+
+		if(isset($variable['name']))
+		{
+			$query =  $query->where('persons.name', 'like', '%'.$variable['name'].'%');
+		}
+
+		if(isset($variable['branchid']))
+		{
+			$query =  $query->where('branches.id', $variable['branchid']);
+		}
+
+		if(isset($variable['chartchild']))
+		{
+			$query =  $query->where('charts.path', 'like', $variable.'%');
+		}
+
+		if(isset($variable['charttag']))
+		{
+			$query =  $query->where('charts.tag', $variable);
+		}
+
+		if(isset($variable['chartid']))
+		{
+			$query =  $query->where('charts.id', $variable);
+		}
+
+		if(isset($variable['case']))
+		{
+			switch ($variable['case']) 
+			{
+				case 'late':
+					$query = $query->where('margin_start', '<', 0);
+					break;
+				case 'ontime':
+					$query = $query->where('margin_start', '>=', 0);
+					break;
+				
+				case 'earlier':
+					$query = $query->where('margin_end', '<', 0);
+					break;
+				case 'overtime':
+					$query = $query->where('margin_start', '>', 0);
+					break;
+				default:
+					$query;
+					break;
+			}
+		}
+
+		if(isset($variable['sort']))
+		{
+			$query = $query->orderBy($variable['sort'][0], $variable['sort'][1]);
+		}
+
+		return $query->groupBy('persons.id')
+					;
+	}
+
+
+	public function scopeGlobalWorkleave($query, $variable)
+	{
+		if(isset($variable['on']) && is_array($variable['on']))
+		{
+			if(!is_null($variable['on'][1]))
+			{
+				$start 	= date('Y-m-d', strtotime($variable['on'][1]));
+				$end 	= date('Y-m-d', strtotime($variable['on'][0]));
+			}
+			elseif(!is_null($variable['on'][0]))
+			{
+				$start 	= date('Y-m-d', strtotime($variable['on'][0]));
+				$end 	= date('Y-m-d', strtotime($variable['on'][1]));
+			}
+			else
+			{
+				$start 	=   date('Y-m-d');
+				$end 	=   date('Y-m-d');
+			}
+		}
+		elseif(isset($variable['on']))
+		{
+			$start 	= date('Y-m-d', strtotime($variable['on']));
+			$end 	= date('Y-m-d', strtotime($variable['on']));
+		}
+		else
+		{
+			$start 	=   date('Y-m-d');
+			$end 	=   date('Y-m-d');
+		}
+
+		$query =  $query->selectraw('persons.*')
+					->wherehas('works', function($q)use($variable){$q->wherenull('end')->orwhere('end', '>=',  date('Y-m-d', strtotime($variable['on'][0])));})
+					->with(['works' => function($q)use($variable){$q->wherenull('end')->orwhere('end', '>=',  date('Y-m-d', strtotime($variable['on'][0])));}])
+					->selectraw('(SELECT sum(if(person_workleaves.status="CN", abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.') as quotas')
+					->selectraw('(SELECT sum(if(person_workleaves.status="CB", abs(person_workleaves.quota), if(person_workleaves.status="CN", abs(person_workleaves.quota), 0))) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.') as plus_quotas')
+					->selectraw('(SELECT sum(if(person_workleaves.status="CONFIRMED", abs(person_workleaves.quota), if(person_workleaves.status="CB", abs(person_workleaves.quota), if(person_workleaves.status="CN", abs(person_workleaves.quota), 0)))) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.') as minus_quotas')
+						;
 
 		if(isset($variable['name']))
 		{

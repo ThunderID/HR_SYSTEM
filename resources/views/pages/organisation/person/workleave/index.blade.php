@@ -47,7 +47,7 @@
 											'personlist'			=>
 											[
 												'organisation_id'	=> $data['id'],
-												'search'			=> ['id' => $person['id'], 'globalwage' => ['organisationid' => $data['id'], 'on' => date('Y-m-d')]],
+												'search'			=> ['id' => $person['id'], 'globalworkleave' => ['organisationid' => $data['id'], 'on' => date('Y-m-d')]],
 												'sort'				=> ['persons.name' => 'asc'],
 												'page'				=> 1,
 												'per_page'			=> 1,
