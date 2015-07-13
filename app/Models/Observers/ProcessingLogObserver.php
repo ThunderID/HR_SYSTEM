@@ -28,6 +28,9 @@ class ProcessingLogObserver
 			
 			$idle_rule 				= new SettingIdle;
 			$idle_rule 				= $idle_rule->organisationid($person->organisation_id)->OnDate($on)->orderBy('start', 'desc')->first();
+			
+			$margin_bottom_idle 	= 900;
+			
 			if($idle_rule)
 			{
 				$idle_1 			= $idle_rule->idle_1;
@@ -344,7 +347,7 @@ class ProcessingLogObserver
 					$new_idle 		= $hours*3600+$minutes*60+$seconds;
 
 					$total_idle		= $total_idle + $new_idle - $start_idle;
-					if($new_idle - $start_idle <= $idle_1)
+					if($new_idle - $start_idle >= $margin_bottom_idle && $new_idle - $start_idle <= $idle_1)
 					{
 						$total_idle_1 	= $total_idle_1 + $new_idle - $start_idle;
 						$frequency_idle_1 = $frequency_idle_1 + 1;
