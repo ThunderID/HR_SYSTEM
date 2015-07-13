@@ -16,7 +16,7 @@ class LoginController extends BaseController {
 
 	function postLogin()
 	{
-		$username 						= Input::get('username');
+		$username 					= Input::get('username');
 		$password 					= Input::get('password');
 		$results 					= $this->dispatch(new Checking(new Person, ['username' => $username, 'password' => $password]));
 		$content 					= json_decode($results);
