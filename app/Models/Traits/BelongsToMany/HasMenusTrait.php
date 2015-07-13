@@ -18,8 +18,8 @@ trait HasMenusTrait {
 	
 	public function Menus()
 	{
-		return $this->belongsToMany('App\Models\Menu', 'authentications', 'chart_id', 'menu_id')
-					->withPivot('is_create', 'is_read', 'is_update', 'is_delete', 'id');
+		return $this->belongsToMany('App\Models\Menu', 'tmp_groups_menus', 'tmp_auth_group_id', 'tmp_menu_id')
+					->withPivot('id');
 	}
 
 }

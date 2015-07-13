@@ -4,73 +4,63 @@
 /* ----------------------------------------------------------------------
  * Document Model:
  * 	ID 								: Auto Increment, Integer, PK
- * 	application_id 		 			: FK from table Application, Required
- * 	name 	 						: Varchar, 255, Required
- * 	tag 	 						: Varchar, 255, Required
- * 	description 	 				:
+ * 	name 							: Required, Max : 255
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
- * 
  * ---------------------------------------------------------------------- */
 
 /* ----------------------------------------------------------------------
  * Document Relationship :
-	//this package
-	1 Relationship belongsTo 
+	//other package
+	1 Relationship belongsToMany
 	{
-		Application
+		Menu
 	}
 
-	//other package
-	1 Relationship belongsToMany 
+	1 Relationship hasMany
 	{
-		AuthGroups
+		WorkAuthentication
 	}
 
  * ---------------------------------------------------------------------- */
 
 use Str, Validator, DateTime, Exception;
 
-class Menu extends BaseModel {
+class AuthGroup extends BaseModel {
 
-	use \App\Models\Traits\BelongsToMany\HasAuthGroupsTrait;
-	use \App\Models\Traits\BelongsTo\HasApplicationTrait;
+	use \App\Models\Traits\BelongsToMany\HasMenusTrait;
+	use \App\Models\Traits\HasMany\HasWorkAuthenticationsTrait;
 
 	public 		$timestamps 		= true;
 
-	protected 	$table 				= 	'tmp_menus';
-	
-	protected 	$fillable			= 	[
-											'name' 							,
-											'tag' 							,
-											'description' 					,
+	protected 	$table 				= 	'tmp_auth_groups';
+
+	protected 	$fillable			=	[
+											'name' 								,
 										];
 
-	protected	$dates 				= 	['created_at', 'updated_at', 'deleted_at'];
-
 	protected 	$rules				= 	[
-											'name' 							=> 'required|max:255',
-											'tag' 							=> 'max:255',
+											'name' 								=> 'required|max:255',
 										];
 
 	public $searchable 				= 	[
-											'id' 							=> 'ID', 
-											'applicationid' 				=> 'ApplicationID', 
-											'name' 							=> 'Name', 
-											'level' 						=> 'Level', 
-											'withattributes' 				=> 'WithAttributes',
+											'id' 								=> 'ID', 
+											'name' 								=> 'Name', 
+											'level' 							=> 'Level', 
+
+											'withattributes'					=> 'WithAttributes'
 										];
 
 	public $searchableScope 		= 	[
-											'id' 						=> 'Could be array or integer', 
-											'applicationid' 			=> 'Could be array or integer', 
-											'name' 						=> 'Must be string', 
-											'level' 					=> 'Must be integer', 
-											'withattributes' 			=> 'Must be array of relationship'
+											'id' 								=> 'Could be array or integer', 
+											'name' 								=> 'Must be string', 
+											'level' 							=> 'Must be integer', 
+
+											'withattributes' 					=> 'Must be array of relationship',
 										];
 
-	public $sortable 				= 	['name', 'menu', 'created_at', 'tmp_applications.id'];
+	public $sortable 				= 	['name'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**
@@ -125,11 +115,11 @@ class Menu extends BaseModel {
 	{
 		if(is_array($variable))
 		{
-			return $query->whereIn('tmp_menus.id', $variable);
+			return $query->whereIn('tmp_auth_groups.id', $variable);
 		}
-		return $query->where('tmp_menus.id', $variable);
+		return $query->where('tmp_auth_groups.id', $variable);
 	}
-	
+
 	public function scopeName($query, $variable)
 	{
 		return $query->where('name', 'like' ,'%'.$variable.'%');
@@ -139,7 +129,7 @@ class Menu extends BaseModel {
 	{
 		if((int)$variable)
 		{
-			return $query->where('tmp_menus.id', '>=', $variable);
+			return $query->where('tmp_auth_groups.id', '>=', $variable);
 		}
 
 		return $query;

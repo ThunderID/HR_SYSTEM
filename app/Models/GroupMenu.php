@@ -4,13 +4,8 @@
 /* ----------------------------------------------------------------------
  * Document Model:
  * 	ID 								: Auto Increment, Integer, PK
+ * 	tmp_auth_group_id 				: Required, Integer, FK from Auth Group
  * 	menu_id 						: Required, Integer, FK from Menu
- * 	chart_id 						: Required, Integer, FK from Chart
- * 	is create 			 			: Boolean
- * 	is read 			 			: Boolean
- * 	is update 			 			: Boolean
- * 	is delete 			 			: Boolean
- * 	settings 			 			: Text
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -18,69 +13,51 @@
 
 /* ----------------------------------------------------------------------
  * Document Relationship :
-	//this package
-	1 Relationship belongsTo
+	//other package
+	2 Relationships belongsTo
 	{
 		Menu
-	}
-
-	//other package
-	1 Relationship belongsTo
-	{
-		Chart
+		AuthGroup
 	}
 
  * ---------------------------------------------------------------------- */
 
 use Str, Validator, DateTime, Exception;
 
-class Authentication extends BaseModel {
+class GroupMenu extends BaseModel {
 
-	use \App\Models\Traits\BelongsTo\HasChartTrait;
 	use \App\Models\Traits\BelongsTo\HasMenuTrait;
+	use \App\Models\Traits\BelongsTo\HasAuthGroupTrait;
 
 	public 		$timestamps 		= true;
 
-	protected 	$table 				= 	'authentications';
+	protected 	$table 				= 	'tmp_groups_menus';
 
 	protected 	$fillable			=	[
-											'chart_id' 							,
-											'is_create' 						,
-											'is_read' 							,
-											'is_update' 						,
-											'is_delete' 						,
-											'settings' 							,
+											'tmp_auth_group_id' 				,
 										];
 
 	protected 	$rules				= 	[
-											'chart_id' 							=> 'required|exists:charts,id',
-											'is_create'							=> 'boolean',
-											'is_read'							=> 'boolean',
-											'is_update'							=> 'boolean',
-											'is_delete'							=> 'boolean',
+											'tmp_auth_group_id' 				=> 'required|exists:tmp_auth_groups,id',
 										];
 
 	public $searchable 				= 	[
 											'id' 								=> 'ID', 
-											'chartid' 							=> 'ChartID', 
+											'authgroupid' 						=> 'AuthGroupID', 
 											'menuid' 							=> 'MenuID', 
-											
-											'email' 							=> 'Email', 
-											'access' 							=> 'Access', 
-											'withattributes' 					=> 'WithAttributes',
+
+											'withattributes'					=> 'WithAttributes'
 										];
 
 	public $searchableScope 		= 	[
 											'id' 								=> 'Could be array or integer', 
-											'chartid' 							=> 'Could be array or integer', 
-											'menuid' 							=> 'Could be array or integer', 
-											
-											'email' 							=> 'Must be string', 
-											'access' 							=> 'String in create, read, update, delete or null for all access', 
+											'authgroupid' 						=> 'Could be array or integer', 
+											'menuid' 								=> 'Could be array or integer', 
+
 											'withattributes' 					=> 'Must be array of relationship',
 										];
 
-	public $sortable 				= 	['chart_id', 'created_at', 'menu_id'];
+	public $sortable 				= 	['tmp_auth_group_id'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**
@@ -135,22 +112,8 @@ class Authentication extends BaseModel {
 	{
 		if(is_array($variable))
 		{
-			return $query->whereIn('authentications.id', $variable);
+			return $query->whereIn('tmp_groups_menus.id', $variable);
 		}
-		return $query->where('authentications.id', $variable);
-	}
-	
-	public function scopeAccess($query, $variable)
-	{
-		if(is_null($variable))
-		{
-			return $query;
-		}
-		if(in_array('is_'.$variable, ['is_create', 'is_read', 'is_update', 'is_delete']))
-		{
-			return $query->where('is_'.$variable, true);
-		}
-		
-		return $query;
+		return $query->where('tmp_groups_menus.id', $variable);
 	}
 }

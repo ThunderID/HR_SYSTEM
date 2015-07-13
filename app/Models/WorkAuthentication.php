@@ -4,73 +4,66 @@
 /* ----------------------------------------------------------------------
  * Document Model:
  * 	ID 								: Auto Increment, Integer, PK
- * 	application_id 		 			: FK from table Application, Required
- * 	name 	 						: Varchar, 255, Required
- * 	tag 	 						: Varchar, 255, Required
- * 	description 	 				:
+ * 	tmp_auth_group_id 				: Required, Integer, FK from Auth Group
+ * 	organisation_id 				: Required, Integer, FK from Organisation
+ * 	work_id 						: Required, Integer, FK from Work
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
- * 
  * ---------------------------------------------------------------------- */
 
 /* ----------------------------------------------------------------------
  * Document Relationship :
-	//this package
-	1 Relationship belongsTo 
-	{
-		Application
-	}
-
 	//other package
-	1 Relationship belongsToMany 
+	3 Relationships belongsTo
 	{
-		AuthGroups
+		AuthGroup
+		Organisation
+		Work
 	}
 
  * ---------------------------------------------------------------------- */
 
 use Str, Validator, DateTime, Exception;
 
-class Menu extends BaseModel {
+class WorkAuthentication extends BaseModel {
 
-	use \App\Models\Traits\BelongsToMany\HasAuthGroupsTrait;
-	use \App\Models\Traits\BelongsTo\HasApplicationTrait;
+	use \App\Models\Traits\BelongsTo\HasAuthGroupTrait;
+	use \App\Models\Traits\BelongsTo\HasOrganisationTrait;
+	use \App\Models\Traits\BelongsTo\HasWorkTrait;
 
 	public 		$timestamps 		= true;
 
-	protected 	$table 				= 	'tmp_menus';
-	
-	protected 	$fillable			= 	[
-											'name' 							,
-											'tag' 							,
-											'description' 					,
+	protected 	$table 				= 	'works_authentications';
+
+	protected 	$fillable			=	[
+											'tmp_auth_group_id' 				,
+											'organisation_id' 					,
 										];
 
-	protected	$dates 				= 	['created_at', 'updated_at', 'deleted_at'];
-
 	protected 	$rules				= 	[
-											'name' 							=> 'required|max:255',
-											'tag' 							=> 'max:255',
+											'tmp_auth_group_id' 				=> 'required|exists:tmp_auth_groups,id',
+											'organisation_id' 					=> 'required|exists:organisations,id',
 										];
 
 	public $searchable 				= 	[
-											'id' 							=> 'ID', 
-											'applicationid' 				=> 'ApplicationID', 
-											'name' 							=> 'Name', 
-											'level' 						=> 'Level', 
-											'withattributes' 				=> 'WithAttributes',
+											'id' 								=> 'ID', 
+											'workid' 							=> 'WorkID', 
+											'organisationid' 					=> 'OrganisationID', 
+											'authgroupid' 						=> 'AuthGroupID', 
+											'withattributes'					=> 'WithAttributes'
 										];
 
 	public $searchableScope 		= 	[
-											'id' 						=> 'Could be array or integer', 
-											'applicationid' 			=> 'Could be array or integer', 
-											'name' 						=> 'Must be string', 
-											'level' 					=> 'Must be integer', 
-											'withattributes' 			=> 'Must be array of relationship'
+											'id' 								=> 'Could be array or integer', 
+											'workid' 							=> 'Could be array or integer', 
+											'organisationid' 					=> 'Could be array or integer', 
+											'authgroupid' 						=> 'Could be array or integer', 
+
+											'withattributes' 					=> 'Must be array of relationship',
 										];
 
-	public $sortable 				= 	['name', 'menu', 'created_at', 'tmp_applications.id'];
+	public $sortable 				= 	['organisation_id', 'work_id', 'tmp_auth_group_id'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**
@@ -125,23 +118,8 @@ class Menu extends BaseModel {
 	{
 		if(is_array($variable))
 		{
-			return $query->whereIn('tmp_menus.id', $variable);
+			return $query->whereIn('works_authentications.id', $variable);
 		}
-		return $query->where('tmp_menus.id', $variable);
-	}
-	
-	public function scopeName($query, $variable)
-	{
-		return $query->where('name', 'like' ,'%'.$variable.'%');
-	}
-
-	public function scopeLevel($query, $variable)
-	{
-		if((int)$variable)
-		{
-			return $query->where('tmp_menus.id', '>=', $variable);
-		}
-
-		return $query;
+		return $query->where('works_authentications.id', $variable);
 	}
 }

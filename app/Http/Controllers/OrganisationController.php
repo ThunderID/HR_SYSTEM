@@ -60,7 +60,7 @@ class OrganisationController extends BaseController
 		}
 
 		$attributes 							= Input::only('name', 'code');
-		$person 								= Session::get('user.id');
+		$person_id 								= Session::get('loggedUser');
 		
 		$errors 								= new MessageBag();
 		
@@ -127,7 +127,7 @@ class OrganisationController extends BaseController
 				$work['position'] 					= 'admin';
 				$work['start'] 						= date('Y-m-d');
 
-				$saved_work 						= $this->dispatch(new Saving(new Work, $work, null, new Person, $person));
+				$saved_work 						= $this->dispatch(new Saving(new Work, $work, null, new Person, $person_id));
 				$is_success_3 						= json_decode($saved_work);
 				
 				if(!$is_success_3->meta->success)

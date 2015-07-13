@@ -19,22 +19,24 @@ class DatabaseSeeder extends Seeder {
 
 		$this->call('ApplicationTableSeeder');
 		$this->call('MenuTableSeeder');
+		$this->call('AuthGroupTableSeeder');
 
 		// $this->call('OrganisationTableSeeder');
 		// $this->call('BranchTableSeeder');
 		// $this->call('ChartTableSeeder');
 		// $this->call('ApiTableSeeder');
 
-		$this->call('PersonTableSeeder');
+		// $this->call('PersonTableSeeder');
 		// $this->call('RelativeTableSeeder');
 
-		$this->call('ContactTableSeeder');
+		// $this->call('ContactTableSeeder');
 
 		// $this->call('CalendarTableSeeder');
 		// $this->call('ScheduleTableSeeder');
 		// $this->call('PersonScheduleTableSeeder');
 		
 		// $this->call('WorkTableSeeder');
+		$this->call('WorkAuthenticationTableSeeder');
 
 		// $this->call('DocumentTableSeeder');
 		// $this->call('PersonDocumentTableSeeder');

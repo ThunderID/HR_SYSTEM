@@ -41,7 +41,7 @@ class HRSUpdateCommand extends Command {
 	public function fire()
 	{
 		//
-		$result 		= $this->update972015();
+		$result 		= $this->update1372015();
 		
 		return true;
 	}
@@ -76,80 +76,56 @@ class HRSUpdateCommand extends Command {
 	 * @return void
 	 * @author 
 	 **/
-	public function update972015()
+	public function update1372015()
 	{
-		Schema::table('tmp_workleaves', function($table)
-		{
-			$table->enum('status', ['CB', 'CN', 'CI']);
-			$table->boolean('is_active');
+		Schema::drop('authentications');
+
+		$this->info("Table Authentications removed");
+
+		Schema::create('works_authentications', function(Blueprint $table) {
+			$table->increments('id');
+			$table->integer('tmp_auth_group_id')->unsigned()->index();
+			$table->integer('organisation_id')->unsigned()->index();
+			$table->integer('work_id')->unsigned()->index();
+			$table->timestamps();
+			$table->softDeletes();
 		});
 
-		$this->info("Add status, is active on tmp workleaves table");
+		$this->info("Table Work Authentications created");
 
-		DB::statement("ALTER TABLE person_workleaves MODIFY COLUMN status ENUM('OFFER', 'CB', 'CN', 'CI', 'CONFIRMED')");
-
-		Schema::table('person_workleaves', function($table)
-		{
-			$table->integer('workleave_id')->unsigned()->index();
+		Schema::create('tmp_auth_groups', function(Blueprint $table) {
+			$table->increments('id');
+			$table->string('name', 255);
+			$table->timestamps();
+			$table->softDeletes();
 		});
 
-		$this->info("Alter person workleaves status to 'OFFER', 'CB', 'CN', 'CI', 'CONFIRMED' add workleave id add field workleave id");
+		$this->info("Table Auth Groups created");
 
-		Schema::table('tmp_calendars', function($table)
-		{
-			$table->integer('import_from_id')->unsigned()->index();
+		Schema::create('tmp_groups_menus', function(Blueprint $table) {
+			$table->increments('id');
+			$table->integer('tmp_auth_group_id')->unsigned()->index();
+			$table->integer('tmp_menu_id')->unsigned()->index();
+			$table->timestamps();
+			$table->softDeletes();
 		});
 
-		$this->info("Add Calendar Parent");
+		$this->info("Table Groups Menus created");
 
-		DB::statement("ALTER TABLE tmp_schedules MODIFY COLUMN status ENUM('DN', 'SS', 'SL', 'CN', 'CB', 'CI', 'UL', 'HB', 'L')");
+		Schema::table('tmp_menus', function($table)
+		{
+			$table->string('tag', 255);
+			$table->text('description');
+		});
 
-		$this->info("Alter tmp_schedules status to 'DN', 'SS', 'SL', 'CN', 'CB', 'CI', 'UL', 'HB', 'L");
-	
+		$this->info("Add tag and description on menus table");
 
-		DB::statement("ALTER TABLE person_schedules MODIFY COLUMN status ENUM('DN', 'SS', 'SL', 'CN', 'CB', 'CI', 'UL', 'HB', 'L')");
+		Schema::table('logs', function($table)
+		{
+			$table->datetime('last_input_time')->nullable();
+		});
 
-		$this->info("Alter person_schedules status to 'DN', 'SS', 'SL', 'CN', 'CB', 'CI', 'UL', 'HB', 'L");
-
-		//update772015
-		// DB::statement("ALTER TABLE works MODIFY COLUMN status ENUM('contract', 'probation', 'internship', 'permanent', 'others')");
-
-		// $this->info("Alter works status to 'contract', 'probation', 'internship', 'permanent', 'others'");
-
-		// Schema::drop('persons_workleaves');
-
-		// $this->info("Table Persons Workleaves removed");
-
-		// Schema::table('apis', function($table)
-		// {
-		//     $table->string('workstation_address', 255);
-		// 	$table->string('workstation_name', 255);
-		// 	$table->string('tr_version', 255);
-		// 	$table->boolean('is_active');
-		// });
-
-		// $this->info("Add workstation address, workstation name and tracker version on apis table");
-
-		// Schema::create('person_workleaves', function(Blueprint $table)
-		// {
-		// 	$table->increments('id');
-		// 	$table->integer('person_id')->unsigned()->index();
-		// 	$table->integer('work_id')->unsigned()->index();
-		// 	$table->integer('person_workleave_id')->unsigned()->index();
-		// 	$table->integer('created_by')->unsigned()->index();
-		// 	$table->string('name', 255);
-		// 	$table->date('start');
-		// 	$table->date('end');
-		// 	$table->integer('quota');
-		// 	$table->enum('status', ['offer', 'annual', 'special', 'confirmed']);
-		// 	$table->text('notes');
-		// 	$table->timestamps();
-		// 	$table->softDeletes();
-			
-		// 	$table->index(['deleted_at', 'person_id', 'start']);
-		// });
-
-		// $this->info("Table Person Workleaves created");
+		$this->info("Add last input time on logs table");
 
 		return true;
 	}

@@ -13,7 +13,10 @@ class AppServiceProvider extends ServiceProvider {
 	{
 		\App\Models\Application::observe(new \App\Models\Observers\ApplicationObserver);
 		\App\Models\Menu::observe(new \App\Models\Observers\MenuObserver);
-		\App\Models\Authentication::observe(new \App\Models\Observers\AuthenticationObserver);
+		\App\Models\WorkAuthentication::observe(new \App\Models\Observers\WorkAuthenticationObserver);
+		\App\Models\AuthGroup::observe(new \App\Models\Observers\AuthGroupObserver);
+		\App\Models\GroupMenu::observe(new \App\Models\Observers\GroupMenuObserver);
+
 		\App\Models\Api::observe(new \App\Models\Observers\ApiObserver);
 
 		\App\Models\Contact::observe(new \App\Models\Observers\ContactObserver);
@@ -67,7 +70,10 @@ class AppServiceProvider extends ServiceProvider {
 	{
 		\App\Models\Application::observe(new \App\Models\Observers\ApplicationObserver);
 		\App\Models\Menu::observe(new \App\Models\Observers\MenuObserver);
-		\App\Models\Authentication::observe(new \App\Models\Observers\AuthenticationObserver);
+		\App\Models\WorkAuthentication::observe(new \App\Models\Observers\WorkAuthenticationObserver);
+		\App\Models\AuthGroup::observe(new \App\Models\Observers\AuthGroupObserver);
+		\App\Models\GroupMenu::observe(new \App\Models\Observers\GroupMenuObserver);
+		
 		\App\Models\Api::observe(new \App\Models\Observers\ApiObserver);
 
 		\App\Models\Contact::observe(new \App\Models\Observers\ContactObserver);

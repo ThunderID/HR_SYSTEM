@@ -286,7 +286,7 @@ class ScheduleController extends BaseController
 		}
 
 		$attributes 							= Input::only('name', 'status', 'start', 'end');
-		$attributes['created_by'] 				= Session::get('user.id');
+		$attributes['created_by'] 				= Session::get('loggedUser');
 
 		$attributes['start'] 					= date('H:i:s', strtotime($attributes['start']));
 		$attributes['end'] 						= date('H:i:s', strtotime($attributes['end']));

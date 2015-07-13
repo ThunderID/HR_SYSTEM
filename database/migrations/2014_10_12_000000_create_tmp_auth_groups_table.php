@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTmpMenusTable extends Migration {
+class CreateTmpAuthGroupsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,17 +12,14 @@ class CreateTmpMenusTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tmp_menus', function(Blueprint $table)
-		{
+		Schema::create('tmp_auth_groups', function(Blueprint $table) {
 			$table->increments('id');
-			$table->integer('application_id')->unsigned()->index();
 			$table->string('name', 255);
-			$table->string('tag', 255);
-			$table->text('description');
 			$table->timestamps();
 			$table->softDeletes();
 		});
 	}
+
 
 	/**
 	 * Reverse the migrations.
@@ -31,7 +28,7 @@ class CreateTmpMenusTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('tmp_menus');
+		Schema::drop('tmp_auth_groups');
 	}
 
 }
