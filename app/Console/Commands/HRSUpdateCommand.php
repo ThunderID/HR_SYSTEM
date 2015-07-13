@@ -82,54 +82,54 @@ class HRSUpdateCommand extends Command {
 
 		$this->info("Alter works status to 'contract', 'probation', 'internship', 'permanent', 'others', 'admin'");
 
-		// Schema::drop('authentications');
+		Schema::drop('authentications');
 
-		// $this->info("Table Authentications removed");
+		$this->info("Table Authentications removed");
 
-		// Schema::create('works_authentications', function(Blueprint $table) {
-		// 	$table->increments('id');
-		// 	$table->integer('tmp_auth_group_id')->unsigned()->index();
-		// 	$table->integer('organisation_id')->unsigned()->index();
-		// 	$table->integer('work_id')->unsigned()->index();
-		// 	$table->timestamps();
-		// 	$table->softDeletes();
-		// });
+		Schema::create('works_authentications', function(Blueprint $table) {
+			$table->increments('id');
+			$table->integer('tmp_auth_group_id')->unsigned()->index();
+			$table->integer('organisation_id')->unsigned()->index();
+			$table->integer('work_id')->unsigned()->index();
+			$table->timestamps();
+			$table->softDeletes();
+		});
 
-		// $this->info("Table Work Authentications created");
+		$this->info("Table Work Authentications created");
 
-		// Schema::create('tmp_auth_groups', function(Blueprint $table) {
-		// 	$table->increments('id');
-		// 	$table->string('name', 255);
-		// 	$table->timestamps();
-		// 	$table->softDeletes();
-		// });
+		Schema::create('tmp_auth_groups', function(Blueprint $table) {
+			$table->increments('id');
+			$table->string('name', 255);
+			$table->timestamps();
+			$table->softDeletes();
+		});
 
-		// $this->info("Table Auth Groups created");
+		$this->info("Table Auth Groups created");
 
-		// Schema::create('tmp_groups_menus', function(Blueprint $table) {
-		// 	$table->increments('id');
-		// 	$table->integer('tmp_auth_group_id')->unsigned()->index();
-		// 	$table->integer('tmp_menu_id')->unsigned()->index();
-		// 	$table->timestamps();
-		// 	$table->softDeletes();
-		// });
+		Schema::create('tmp_groups_menus', function(Blueprint $table) {
+			$table->increments('id');
+			$table->integer('tmp_auth_group_id')->unsigned()->index();
+			$table->integer('tmp_menu_id')->unsigned()->index();
+			$table->timestamps();
+			$table->softDeletes();
+		});
 
-		// $this->info("Table Groups Menus created");
+		$this->info("Table Groups Menus created");
 
-		// Schema::table('tmp_menus', function($table)
-		// {
-		// 	$table->string('tag', 255);
-		// 	$table->text('description');
-		// });
+		Schema::table('tmp_menus', function($table)
+		{
+			$table->string('tag', 255);
+			$table->text('description');
+		});
 
-		// $this->info("Add tag and description on menus table");
+		$this->info("Add tag and description on menus table");
 
-		// Schema::table('logs', function($table)
-		// {
-		// 	$table->datetime('last_input_time')->nullable();
-		// });
+		Schema::table('logs', function($table)
+		{
+			$table->datetime('last_input_time')->nullable();
+		});
 
-		// $this->info("Add last input time on logs table");
+		$this->info("Add last input time on logs table");
 
 		return true;
 	}
