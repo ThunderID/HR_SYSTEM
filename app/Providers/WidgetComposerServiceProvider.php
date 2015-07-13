@@ -117,7 +117,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// WORK
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.person.work.table', 'widgets.organisation.person.work.form', 'widgets.organisation.person.work.experience.form'], 	'App\Http\ViewComposers\WorkComposer');
+		View::composer(['widgets.organisation.person.work.table', 'widgets.organisation.person.work.form', 'widgets.organisation.person.work.experience.form', 'widgets.organisation.person.work.select'], 	'App\Http\ViewComposers\WorkComposer');
 
 		// -----------------------------------------------------------------------------
 		// PERSON WORKLEAVE

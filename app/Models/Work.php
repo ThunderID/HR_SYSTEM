@@ -72,6 +72,7 @@ class Work extends BaseModel {
 											'personid' 					=> 'PersonID', 
 											'status' 					=> 'Status', 
 											'active' 					=> 'Active', 
+											'groupperson' 				=> 'GroupPerson', 
 											'withattributes' 			=> 'WithAttributes'
 										];
 
@@ -82,6 +83,7 @@ class Work extends BaseModel {
 											'personid' 					=> 'Could be array or integer', 
 											'status' 					=> 'Could be array or string', 
 											'active' 					=> 'Must be enddate of work', 
+											'groupperson' 				=> 'Must be true', 
 											'withattributes' 			=> 'Must be array of relationship',
 										];
 
@@ -151,6 +153,11 @@ class Work extends BaseModel {
 		}
 
 		return $query->whereHas('calendar', function($q){$q;});
+	}
+
+	public function scopeGroupPerson($query, $variable)
+	{
+		return $query->groupBy('person_id');
 	}
 
 }

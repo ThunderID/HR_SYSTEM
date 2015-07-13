@@ -10,7 +10,19 @@
 			{!! Form::open(['url' => $WorkAuthenticationComposer['widget_data']['workauthlist']['form_url'], 'class' => 'form no_enter']) !!}	
 				<div class="form-group">
 					<label class="control-label">Karyawan</label>
-					{!! Form::input('text', 'work_id', '', ['class' => 'form-control']) !!}
+					@include('widgets.organisation.person.work.select', [
+					'widget_options'		=> 	[
+													'worklist'			=>
+													[
+														'search'			=> ['active' => true, 'withattributes' => ['person', 'person.organisation'], 'groupperson' => true],
+														'sort'				=> ['end' => 'asc'],
+														'page'				=> 1,
+														'per_page'			=> 100,
+														'work_id'			=> $WorkAuthenticationComposer['widget_data']['workauthlist']['workauth']['work_id'],
+														'tabindex'			=> 1,
+													]
+												]
+					])
 				</div>
 				<div class="form-group">
 					<label class="control-label"></label>
