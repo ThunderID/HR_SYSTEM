@@ -36,9 +36,6 @@
 									<a href="{{route('hr.branch.charts.show', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" title="lihat data"><i class="fa fa-eye fa-fw"></i> Detail</a>
 								</li>
 								<li>
-									<a href="{{route('hr.chart.authentications.index', ['chart_id' => $value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']])}}" title="lihat otentikasi"><i class="fa fa-lock fa-fw"></i> Authentikasi</a>
-								</li>
-								<li>
 									<a href="{{ route('hr.chart.calendars.index', ['chart_id' => $value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']]) }}" title="lihat kalender"><i class="fa fa-calendar fa-fw"></i> Kalender</a>
 								</li>
 							</ul>
