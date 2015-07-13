@@ -8,9 +8,6 @@
 
 @section('widget_body')
     <ul class="nav in sidemenu" id="side-menu" style="margin-top:37px">
-        <li @if(isset($widget_options['sidebar']['active_form'])&&($widget_options['sidebar']['active_form']=='active_create_org')) class="active-li" @endif>
-            <a href="{{route('hr.organisations.create')}}"><i class="fa fa-plus-circle fa-fw"></i> Tambah Organisasi</a>
-        </li>
         @if(Session::has('user.organisationids'))
             @foreach(Session::get('user.organisationids') as $key => $value)
                 <?php switch(strtolower(Session::get('user.menuid')))
