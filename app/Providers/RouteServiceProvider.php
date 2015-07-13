@@ -5,7 +5,6 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Config, Session, App, View, Route, Redirect, Request, Input;
 use App\Console\Commands\Checking;
 use App\Console\Commands\Getting;
-use App\Models\Authentication;
 use App\Models\Person;
 use App\Models\Work;
 use App\Models\WorkAuthentication;
@@ -368,6 +367,8 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 					$results 										= $this->dispatch(new Getting(new WorkAuthentication, ['authgroupid' => $menu[0], 'workid' => $workid, 'organisationid' => $organisationids], ['tmp_auth_group_id' => 'asc'],1, 1));
 
 					$contents 										= json_decode($results);
+
+					// $contents 										= json_decode($results);
 
 					if((!$contents->meta->success))
 					{
