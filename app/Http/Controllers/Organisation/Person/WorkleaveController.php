@@ -44,7 +44,7 @@ class WorkleaveController extends BaseController
 		$search['withattributes'] 				= ['organisation'];
 		$search['checkwork'] 					= true;
 		$sort 									= ['name' => 'asc'];
-		if(Session::get('user.menuid')>=4)
+		if(Session::get('user.menuid')>=5)
 		{
 			$search['chartchild'] 				= Session::get('user.chartpath');
 		}

@@ -44,7 +44,7 @@ class RelativeController extends BaseController
 		$search['withattributes'] 				= ['organisation'];
 		$sort 									= ['name' => 'asc'];
 		
-		if(Session::get('user.menuid')>=4)
+		if(Session::get('user.menuid')>=5)
 		{
 			$search['chartchild'] 				= Session::get('user.chartpath');
 		}

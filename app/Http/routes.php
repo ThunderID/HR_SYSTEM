@@ -217,21 +217,12 @@ Route::group(['middleware' => 'csrfverify'], function()
 			// REPORT FOR WAGE (PROCESS LOG) RESOURCE
 			// ------------------------------------------------------------------------------------
 
-			Route::resource('attendances',			'WageController',								['names' => ['index' => 'hr.report.attendances.index', 'create' => 'hr.report.attendances.create', 'store' => 'hr.report.attendances.store', 'show' => 'hr.report.attendances.show', 'edit' => 'hr.report.attendances.edit', 'update' => 'hr.report.attendances.update', 'destroy' => 'hr.report.attendances.delete']]);
+			Route::resource('attendances',		'WageController',								['names' => ['index' => 'hr.report.attendances.index', 'create' => 'hr.report.attendances.create', 'store' => 'hr.report.attendances.store', 'show' => 'hr.report.attendances.show', 'edit' => 'hr.report.attendances.edit', 'update' => 'hr.report.attendances.update', 'destroy' => 'hr.report.attendances.delete']]);
 		});
 
 		});
 	});	
 }); 
-
-Route::group(['namespace' => 'Organisation\\Branch\\Chart\\', 'prefix' => 'chart'], function() 
-{
-	// ------------------------------------------------------------------------------------
-	// AUTHENTICATIONS FOR CHART RESOURCE
-	// ------------------------------------------------------------------------------------
-
-	Route::resource('authentications',	'AuthenticationController',									['names' => ['index' => 'hr.chart.authentications.index', 'create' => 'hr.chart.authentications.create', 'store' => 'hr.chart.authentications.store', 'show' => 'hr.chart.authentications.show', 'edit' => 'hr.chart.authentications.edit', 'update' => 'hr.chart.authentications.update', 'destroy' => 'hr.chart.authentications.delete']]);
-});
 
 Route::group(['namespace' => 'Organisation\\Calendar\\', 'prefix' => 'calendar'], function() 
 {
@@ -240,7 +231,7 @@ Route::group(['namespace' => 'Organisation\\Calendar\\', 'prefix' => 'calendar']
 	// SCHEDULES FOR CALENDAR RESOURCE
 	// ------------------------------------------------------------------------------------
 
-	Route::resource('schedules',		'ScheduleController',										['names' => ['index' => 'hr.calendar.schedules.index', 'create' => 'hr.calendar.schedules.create', 'store' => 'hr.calendar.schedules.store', 'show' => 'hr.calendar.schedules.show', 'edit' => 'hr.calendar.schedules.edit', 'update' => 'hr.calendar.schedules.update', 'destroy' => 'hr.calendar.schedules.delete']]);
+	Route::resource('schedules',				'ScheduleController',										['names' => ['index' => 'hr.calendar.schedules.index', 'create' => 'hr.calendar.schedules.create', 'store' => 'hr.calendar.schedules.store', 'show' => 'hr.calendar.schedules.show', 'edit' => 'hr.calendar.schedules.edit', 'update' => 'hr.calendar.schedules.update', 'destroy' => 'hr.calendar.schedules.delete']]);
 });
 
 Route::group(['namespace' => 'Organisation\\Person\\', 'prefix' => 'person'], function() 
@@ -249,7 +240,7 @@ Route::group(['namespace' => 'Organisation\\Person\\', 'prefix' => 'person'], fu
 	// AJAX SCHEDULES FOR PERSON
 	// ------------------------------------------------------------------------------------
 
-	Route::any('schedules-list',		['uses' => 'ScheduleController@ajax',						'as' => 'hr.person.schedule.ajax']);
+	Route::any('schedules-list',				['uses' => 'ScheduleController@ajax',						'as' => 'hr.person.schedule.ajax']);
 });
 
 // ------------------------------------------------------------------------------------
@@ -260,7 +251,7 @@ Route::group(['namespace' => 'Organisation\\Person\\'], function()
 	Route::post('api/activity/logs/',			['uses' => 'LogController@store',					'as' => 'hr.log.store']);
 });
 
-Route::group(['namespace' => 'Auth\\'], function() 
+Route::group(['namespace' => 'Auth\\', 'before' => 'hr_acl'], function() 
 {
 	Route::post('api/tracker/setting/',			['uses' => 'TrackerController@postlogin',			'as' => 'hr.tracker.post']);
 });
@@ -270,40 +261,6 @@ Route::group(['namespace' => 'Auth\\'], function()
 	Route::post('api/tracker/test/',			['uses' => 'TrackerController@testlogin',			'as' => 'hr.tracker.test']);
 });
 
-Route::get('api/test/mac/logs3', function() 
-{
-		// $content 		= '﻿{"application":{"api":{"client":"123456789","secret":"123456789"}},"person":{"id":"1","email":"hr@thunderid.com"},"log":[["budi","StillAlive","06/05/2015 12:40:12","RED_SCARLET"],["budi","SessionLogon","06/05/2015 12:40:11","RED_SCARLET"],["budi","UnknownSessionEnd","06/05/2015 12:39:02","RED_SCARLET"]]}';
-		// $content2    = '{"application":{"api":{"client":"123456789","secret":"123456789","email":"user1","password":"admin","workstation_address":["00000000000000E0","742F6855C2EC","74F06DF15C1C","F46D04FD9B59"]}}}';
-		// '"application":{"api":{"client":"123456789","secret":"123456789","workstation_address":["00000000000000E0","742F6855C2EC","74F06DF15C1C","F46D04FD9B59"],"email":"user1","password":"admin"}}}'
-		$content2 									= ['application' => ['api' => ['client' => '123456789', 'secret' => '123456789', 'station_id' => 'ED-08-D3-C8-5E-69', 'tr_ver' => 1]], 'log' => [['ulala', 'idle', '07/10/2015 08:00:00', 'RED_SCARLET']]];		
-		// $content2 									= ['application' => ['api' => ['client' => '123456789', 'secret' => '123456789', 'station_id' => ['BFEBFBFF000206A7', '742F6855C2EC', '74F06DF15C1C', 'F46D04FD9B59'], 'tr_ver' => '0.1']]];		
-		// $content2 									= ['application' => ['api' => ['client' => '123456789', 'secret' => '123456789', 'station_id' => ['BFEBFBFF000206A7', '742F6855C2EC', '74F06DF15C1C', 'F46D04FD9B59'], 'tr_ver' => '0.1', 'email' => 'budi', 'password' => 'admin']]];		
-		$data2 = json_encode($content2);
-// dd($data2);
-
-// 		$data 										= json_decode(json_encode($contents), true);
-// 		$data 										= json_decode(json_encode($contents), true);
-// dd($data);
-	$url = 'http://localhost:9000/api/activity/logs';
-		$curl 			= curl_init($url);
-	curl_setopt($curl, CURLOPT_HEADER, false);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_HTTPHEADER,
-			array("Content-type: application/json"));
-		curl_setopt($curl, CURLOPT_POST, true);
-		curl_setopt($curl, CURLOPT_POSTFIELDS, $data2);
-
-		$results 		= curl_exec($curl);
-
-		if(!json_decode($results))
-		{
-			print_r($results);
-		}
-		else
-		{
-			dd($results);
-		}
-});
 
 Blade::extend(function ($value, $compiler)
 {

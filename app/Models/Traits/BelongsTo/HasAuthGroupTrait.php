@@ -25,4 +25,9 @@ trait HasAuthGroupTrait {
 	{
 		return $query->whereHas('authgroup', function($q)use($variable){$q->id($variable);});
 	}
+
+	public function scopeAccessMenuID($query, $variable)
+	{
+		return $query->whereHas('authgroup.menus', function($q)use($variable){$q->id($variable);});
+	}
 }

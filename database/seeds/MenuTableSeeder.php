@@ -140,6 +140,8 @@ class MenuTableSeeder extends Seeder
 															'Tambah Laporan Kehadiran',
 															'Ubah Laporan Kehadiran',
 															'Hapus Laporan Kehadiran',
+
+															'Ganti Password',
 														];
 
 				$tags 								= 
@@ -268,6 +270,8 @@ class MenuTableSeeder extends Seeder
 															'Pengaturan Laporan',
 															'Pengaturan Laporan',
 															'Pengaturan Laporan',
+
+															'Pengaturan Aplikasi',
 														];
 
 		$trackermenu 								= 

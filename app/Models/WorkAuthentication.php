@@ -51,6 +51,7 @@ class WorkAuthentication extends BaseModel {
 											'workid' 							=> 'WorkID', 
 											'organisationid' 					=> 'OrganisationID', 
 											'authgroupid' 						=> 'AuthGroupID', 
+											'menuid' 							=> 'AccessMenuID', 
 
 											'level' 							=> 'Level', 
 											'withattributes'					=> 'WithAttributes'
@@ -61,6 +62,7 @@ class WorkAuthentication extends BaseModel {
 											'workid' 							=> 'Could be array or integer', 
 											'organisationid' 					=> 'Could be array or integer', 
 											'authgroupid' 						=> 'Could be array or integer', 
+											'menuid' 							=> 'Could be array or integer', 
 											
 											'level' 							=> 'Must be integer', 
 											'withattributes' 					=> 'Must be array of relationship',
