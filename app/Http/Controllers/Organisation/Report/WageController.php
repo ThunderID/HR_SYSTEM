@@ -249,7 +249,7 @@ class WageController extends BaseController
 			$report 								= json_decode(json_encode($contents->data), true);
 
 			// $case = Input::get('case');
-			Excel::create('Laporan Kehadiran ( '.$start.' s.d '.$end.' )', function($excel) use ($report, $start, $end) 
+			Excel::create('Laporan Kehadiran per tanggal ( '.$start.' s.d '.$end.' ) di '.$data['name'], function($excel) use ($report, $start, $end) 
 			{
 				// Set the title
 				$excel->setTitle('Laporan Kehadiran');

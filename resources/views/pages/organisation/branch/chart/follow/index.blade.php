@@ -34,7 +34,7 @@
 
 			@include('widgets.organisation.branch.chart.follow.table', [
 				'widget_template'		=> 'panel',
-				'widget_title'			=> 'Kalender Kerja "'.$chart['name'].'"" '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
+				'widget_title'			=> 'Kalender Kerja "'.$chart['name'].'" '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 				'widget_options'		=> 	[
 												'followlist'		=>
 												[
