@@ -30,7 +30,7 @@
 		'widget_template'		=> 'panel',
 		'widget_options'		=> [ 'workauthlist' 				=>
 											[
-												'form_url' 			=> route('hr.authentications.store', ['id' => $id]),
+												'form_url' 			=> route('hr.authentications.store', ['id' => $id, 'org_id' => $data['id']]),
 												'organisation_id'	=> $data['id'],
 												'search'			=> ['id' => $id],
 												'sort'				=> [],											

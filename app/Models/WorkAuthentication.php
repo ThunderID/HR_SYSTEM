@@ -38,12 +38,12 @@ class WorkAuthentication extends BaseModel {
 
 	protected 	$fillable			=	[
 											'tmp_auth_group_id' 				,
-											'organisation_id' 					,
+											'work_id' 							,
 										];
 
 	protected 	$rules				= 	[
 											'tmp_auth_group_id' 				=> 'required|exists:tmp_auth_groups,id',
-											'organisation_id' 					=> 'required|exists:organisations,id',
+											'work_id' 							=> 'required|exists:works,id',
 										];
 
 	public $searchable 				= 	[
