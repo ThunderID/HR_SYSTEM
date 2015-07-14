@@ -2,7 +2,7 @@
 	@include('widgets.common.nav_topbar', 
 	['breadcrumb' 	=> 	[	
 							['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
-							['name' => 'Laporan Aktifitas', 'route' => route('hr.report.activities.index', ['org_id' => $data['id'], 'start' => $start, 'end' => $end]) ],
+							['name' => 'Laporan Aktivitas', 'route' => route('hr.report.activities.index', ['org_id' => $data['id'], 'start' => $start, 'end' => $end]) ],
 							['name' => $person['name'], 'route' => route('hr.report.activities.show', ['person_id' => $person['id'], 'start' => $start, 'end' => $end, 'org_id' => $data['id']]) ],
 						]
 	])
