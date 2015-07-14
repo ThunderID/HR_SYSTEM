@@ -425,15 +425,16 @@ class WorkController extends BaseController
 			return Response::json(['message' => 'Not Found'], 404);
 		}
 		
-		$search 						= ['chartid' => $branch_id, 'organisationid' => $org_id, 'withattributes' => ['calendar']];
+		$search 						= ['chartid' => (int)$chartid, 'withattributes' => ['calendar']];
 		$results 						= $this->dispatch(new Getting(new Follow, $search, [] , 1, 100));
-		$contents 						= json_decode($results);
+		$contents 						= json_decode($results);	
+		$data_follow					= json_decode(json_encode($contents->data), true);	
 		
 		if(!$contents->meta->success)
 		{
 			return Response::json(['message' => 'Not Found'], 404);
 		}
 
-		return Response::json($results, 200);
+		return Response::json($data_follow, 200);
 	}
 }
