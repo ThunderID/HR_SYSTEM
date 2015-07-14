@@ -27,43 +27,7 @@
 @overwrite
 
 @section('content_body')
-	<div class="row">
-		<div class="col-sm-6">
-			@include('widgets.organisation.person.workleave.left_quota', [
-				'widget_template'		=> 'plain',
-				'widget_title'			=> 'Sisa Cuti "'.$person['name'].'"',
-				'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
-				'widget_body_class'		=> '',
-				'widget_options'		=> 	[
-												'personlist'			=>
-												[
-													'organisation_id'	=> $data['id'],
-													'search'			=> ['id' => $person['id'], 'globalworkleave' => array_merge(['organisationid' => $data['id'], 'on' => date('Y-m-d')], (isset($filtered['search']) ? $filtered['search'] : []))],
-													'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']),
-													'page'				=> 1,
-													'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
-													'per_page'			=> 1,
-												]
-											]
-			])
-		</div>
-		<div class="col-sm-6">
-			@include('widgets.organisation.person.stat.average_loss_rate', [
-				'widget_template'		=> 'plain',
-				'widget_title'			=> 'Average Loss Rate "'.$person['name'].'" Bulan Ini',
-				'widget_options'		=> 	[
-												'lossratelist'		=>
-												[
-													'organisation_id'	=> $data['id'],
-													'search'			=> ['id' => $person['id'], 'globalattendance' => ['organisationid' => $data['id'], 'on' => [date('Y-m-d', strtotime('first day of this month')), date('Y-m-d', strtotime('first day of next month'))]]],
-													'sort'				=> [],
-													'page'				=> 1,
-													'per_page'			=> 100,
-												]
-											]
-			])
-		</div>
-	</div>
+	
 	<div class="row">
 		<div class="col-sm-12">
 			@include('widgets.organisation.person.work.table', [

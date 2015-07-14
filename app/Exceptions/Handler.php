@@ -36,14 +36,14 @@ class Handler extends ExceptionHandler {
 	 */
 	public function render($request, Exception $e)
 	{
-		// if (view()->exists('pages.errors.'.$e->getStatusCode())) 	
-		// { 	
-		// 	return response()->view('pages.errors.'.$e->getStatusCode(), [], $e->getStatusCode()); 	
-		// } 	
-		// else 	
-		// { 	
-		// 	return response()->view('pages.errors.500', [], 500); 	
-		// }
+		if (view()->exists('pages.errors.'.$e->getStatusCode())) 	
+		{ 	
+			return response()->view('pages.errors.'.$e->getStatusCode(), [], $e->getStatusCode()); 	
+		} 	
+		else 	
+		{ 	
+			return response()->view('pages.errors.500', [], 500); 	
+		}
 		return parent::render($request, $e);
 	}
 
