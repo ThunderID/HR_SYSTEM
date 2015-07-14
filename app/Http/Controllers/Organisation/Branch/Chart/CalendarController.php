@@ -24,7 +24,7 @@ class CalendarController extends BaseController
 		}
 		else
 		{
-			$org_id 					= Session::get('user.organisation');
+			$org_id 					= Session::get('user.organisationid');
 		}
 
 		if(Input::has('branch_id'))
@@ -79,7 +79,7 @@ class CalendarController extends BaseController
 		}
 		else
 		{
-			$org_id 							= Session::get('user.organisation');
+			$org_id 							= Session::get('user.organisationid');
 		}
 
 		if(Input::has('branch_id'))
@@ -105,7 +105,8 @@ class CalendarController extends BaseController
 			App::abort(404);
 		}
 
-		$search['id'] 							= $branch_id;
+		$search['id'] 							= $chart_id;
+		$search['branchhid'] 					= $branch_id;
 		$search['organisationid'] 				= $org_id;
 		$search['withattributes'] 				= ['branch', 'branch.organisation'];
 		$sort 									= ['name' => 'asc'];
@@ -118,6 +119,7 @@ class CalendarController extends BaseController
 		}
 
 		$chart 									= json_decode(json_encode($contents->data), true);
+
 		$data 									= $chart['branch']['organisation'];
 		$branch 								= $chart['branch'];
 
@@ -140,7 +142,7 @@ class CalendarController extends BaseController
 		}
 		else
 		{
-			$org_id 							= Session::get('user.organisation');
+			$org_id 							= Session::get('user.organisationid');
 		}
 
 		if(Input::has('branch_id'))
@@ -251,7 +253,7 @@ class CalendarController extends BaseController
 			}
 			else
 			{
-				$org_id 							= Session::get('user.organisation');
+				$org_id 							= Session::get('user.organisationid');
 			}
 
 			if(Input::has('branch_id'))

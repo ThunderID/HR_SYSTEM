@@ -24,7 +24,7 @@ class ChartController extends BaseController
 		}
 		else
 		{
-			$org_id 					= Session::get('user.organisation');
+			$org_id 					= Session::get('user.organisationid');
 		}
 
 		if(Input::has('cal_id'))
@@ -68,7 +68,7 @@ class ChartController extends BaseController
 		}
 		else
 		{
-			$org_id 							= Session::get('user.organisation');
+			$org_id 							= Session::get('user.organisationid');
 		}
 
 		if(Input::has('cal_id'))
@@ -119,7 +119,7 @@ class ChartController extends BaseController
 		}
 		else
 		{
-			$org_id 							= Session::get('user.organisation');
+			$org_id 							= Session::get('user.organisationid');
 		}
 
 		if(Input::has('chart_id'))
@@ -220,7 +220,7 @@ class ChartController extends BaseController
 			}
 			else
 			{
-				$org_id 							= Session::get('user.organisation');
+				$org_id 							= Session::get('user.organisationid');
 			}
 
 			if(Input::has('cal_id'))

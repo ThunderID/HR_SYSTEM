@@ -57,7 +57,7 @@ class AuthenticationController extends BaseController
 		}
 		else
 		{
-			$org_id 							= Session::get('user.organisation');
+			$org_id 							= Session::get('user.organisationid');
 		}
 
 		if(!in_array($org_id, Session::get('user.organisationids')))
@@ -95,7 +95,7 @@ class AuthenticationController extends BaseController
 		}
 		else
 		{
-			$org_id 							= Session::get('user.organisation');
+			$org_id 							= Session::get('user.organisationid');
 		}
 
 		$attributes 							= Input::only('tmp_auth_group_id', 'work_id');
@@ -144,7 +144,7 @@ class AuthenticationController extends BaseController
 		// }
 		// else
 		// {
-		// 	$org_id 					= Session::get('user.organisation');
+		// 	$org_id 					= Session::get('user.organisationid');
 		// }
 
 		// if(!in_array($org_id, Session::get('user.organisationids')))
@@ -194,7 +194,7 @@ class AuthenticationController extends BaseController
 			}
 			else
 			{
-				$org_id 					= Session::get('user.organisation');
+				$org_id 					= Session::get('user.organisationid');
 			}
 
 			if(!in_array($org_id, Session::get('user.organisationids')))

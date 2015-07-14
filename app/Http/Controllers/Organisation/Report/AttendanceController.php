@@ -23,7 +23,7 @@ class AttendanceController extends BaseController
 		}
 		else
 		{
-			$org_id 								= Session::get('user.organisation');
+			$org_id 								= Session::get('user.organisationid');
 		}
 
 		if(Input::has('start'))
@@ -276,7 +276,7 @@ class AttendanceController extends BaseController
 		}
 		else
 		{
-			$org_id 							= Session::get('user.organisation');
+			$org_id 							= Session::get('user.organisationid');
 		}
 
 		if(!in_array($org_id, Session::get('user.organisationids')))

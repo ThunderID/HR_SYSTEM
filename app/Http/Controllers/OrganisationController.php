@@ -256,7 +256,7 @@ class OrganisationController extends BaseController
 		}
 		else
 		{
-			$id 							= Session::get('user.organisation');
+			$id 							= Session::get('user.organisationid');
 		}
 
 		$attributes 						= ['username' => Session::get('user.username'), 'password' => Input::get('password')];
