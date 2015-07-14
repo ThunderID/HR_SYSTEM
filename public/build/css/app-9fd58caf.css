@@ -6445,11 +6445,11 @@ label,
   position: relative;
   float: right;
   z-index: 999;
-  font-size: 18px;
+  font-size: 14px;
   margin-bottom: 0;
 }
 .navbar-static-top .breadcrumb a {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
   margin-right: 10px;
   margin-left: 10px;
