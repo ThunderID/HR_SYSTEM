@@ -13,8 +13,8 @@
 			<i class="fa fa-file"></i> Export to <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
-			<li><a href="{{route('hr.activity.logs.index', array_merge(Input::all(), ['print' => 'yes', 'mode' => 'csv']))}}">CSV</a></li>
-			<li><a href="{{route('hr.activity.logs.index', array_merge(Input::all(), ['print' => 'yes', 'mode' => 'xls']))}}">XLS</a></li>
+			<li><a href="{{route('hr.report.activities.show', array_merge([$person['id'],'print' => 'yes', 'mode' => 'csv'], Input::all()))}}">CSV</a></li>
+			<li><a href="{{route('hr.report.activities.show', array_merge([$person['id'],'print' => 'yes', 'mode' => 'xls'], Input::all()))}}">XLS</a></li>
 		</ul>
 	</div>
 	@overwrite
@@ -30,7 +30,7 @@
 						<th rowspan="2" class="text-center">Total Idle I <br/>(Freq)</th>
 						<th rowspan="2" class="text-center">Total Idle II <br/>(Freq)</th>
 						<th rowspan="2" class="text-center">Total Idle III <br/>(Freq)</th>
-						<th rowspan="2" class="text-center">Performance Rate</th>
+						<th rowspan="2" class="text-center">Performance Rate<br/>&nbsp;</th>
 						<th rowspan="2">&nbsp;</th>
 					</tr>
 					<tr></tr>
@@ -46,7 +46,7 @@
 							</td>
 							<td class="hidden-xs font-11 text-center">
 								{{floor(($value['total_active']+$value['total_sleep']+$value['total_idle'])/3600)}} Jam<br/>
-								{{floor((($value['total_active']+$value['total_sleep']+$value['total_idle'])%3600)/60)}} Menit</br/> 
+								{{floor((($value['total_active']+$value['total_sleep']+$value['total_idle'])%3600)/60)}} Menit<br/> 
 							</td>
 							<td class="hidden-xs font-11 text-center">
 								{{floor($value['total_idle_1']/3600)}} Jam<br/>

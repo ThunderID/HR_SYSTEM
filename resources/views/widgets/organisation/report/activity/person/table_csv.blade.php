@@ -4,75 +4,59 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th>No</th>
-					<th>Tanggal</th>
-					<th>Time Loss Rate</th>
-					<th>Status Awal</th>
-					<th>Status Modifikasi</th>
-					<th style="text-align:center">Dimodifikasi Oleh</th>
-					<th style="text-align:center">Dimodifikasi Tanggal</th>
+					<th colspan="8"></th>
 				</tr>
+				<tr>
+					<th style="width:10%">&nbsp;</th>
+					<th colspan="7" style="height:20%">Laporan Aktivitas {{$data['name']}} Per Tanggal {{$start}} - {{$end}} Unit Bisnis {{$org['name']}}</th>
+				</tr>
+				<tr>
+					<th colspan="8"></th>
+				</tr>
+				<tr>
+					<th rowspan="2" class="text-center" style="width:10%; height:35%">&nbsp;</th>
+					<th rowspan="2" class="text-center" style="width:4%; height:35%">No<br/>&nbsp;</th>
+					<th rowspan="2" class="text-left" style="width:20%; height:35%">Tanggal<br/>&nbsp;</th>
+					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Aktif <br/>(Hari)</th>
+					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Idle I <br/>(Freq)</th>
+					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Idle II <br/>(Freq)</th>
+					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Idle III <br/>(Freq)</th>
+					<th rowspan="2" class="text-center" style="width:20%; height:35%">Performance Rate<br/>&nbsp;</th>
+				</tr>
+				<tr></tr>
 			</thead>
 			@foreach($data['processlogs'] as $key => $value)
 				<tbody>
 					<tr>
-						<td>
+						<td style="width:10%; height:35%">&nbsp;</td>
+						<td class="font-11" style="height:35%">
 							{{$key+1}}
 						</td>
-						<td>
+						<td class="font-11" style="height:35%">
 							{{ date('d-m-Y', strtotime($value['on'])) }}
 						</td>
-						<td>
-							<?php
-								$margin_start = 0;
-								$margin_end = 0;
-								if(in_array($value['modified_status'], ['HC', 'AS', 'UL', 'SS', 'LL']) || ($value['modified_status']=='' && in_array($value['actual_status'], ['HC', 'AS'])))
-								{
-									if($value['margin_start']<0)
-									{
-										$margin_start=abs($value['margin_start']);
-									}
-									// else
-									// {
-									// 	$margin_start=($value['margin_start']);
-									// }
-									if($value['margin_end']<0)
-									{
-										$margin_end=abs($value['margin_end']);
-									}
-									// else
-									// {
-									// 	$margin_end=($value['margin_end']);
-									// }
-								}
-
-								$total_absence = $margin_end + $margin_start;
-
-								list($hours, $minutes, $seconds) = explode(":", $value['schedule_end']);
-
-								$schedule_end_second	= $hours*3600+$minutes*60+$seconds;
-
-								list($hours, $minutes, $seconds) = explode(":", $value['schedule_start']);
-
-								$schedule_start_second	= $hours*3600+$minutes*60+$seconds;
-
-								$tlr = ($total_absence!=0 ? $total_absence : 1) / (abs($schedule_end_second - $schedule_start_second)!=0 ? abs($schedule_end_second - $schedule_start_second) : 1);?>
-							{{round(abs($tlr) * 100, 2)}} %
+						<td class="hidden-xs font-11 text-center" style="height:35%">
+							{{floor(($value['total_active']+$value['total_sleep']+$value['total_idle'])/3600)}} Jam&nbsp;
+							{{floor((($value['total_active']+$value['total_sleep']+$value['total_idle'])%3600)/60)}} Menit&nbsp; 
 						</td>
-
-						<td>
-							{{$value['actual_status']}}
+						<td class="hidden-xs font-11 text-center" style="height:35%">
+							{{floor($value['total_idle_1']/3600)}} Jam&nbsp;
+							{{floor(($value['total_idle_1']%3600)/60)}} Menit&nbsp; 
+							({{$value['frequency_idle_1']}})
 						</td>
-						<td>
-							{{($value['modified_status']!='' ? $value['modified_status'] : '')}}
+						<td class="hidden-xs font-11 text-center" style="height:35%">
+							{{floor($value['total_idle_2']/3600)}} Jam&nbsp;
+							{{floor(($value['total_idle_2']%3600)/60)}} Menit&nbsp; 
+							({{$value['frequency_idle_2']}})
 						</td>
-						<td>
-							{{($value['modified_status']!='' ? $value['modifiedby']['name'] : '')}}
+						<td class="hidden-xs font-11 text-center" style="height:35%">
+							{{floor($value['total_idle_3']/3600)}} Jam&nbsp;
+							{{floor(($value['total_idle_3']%3600)/60)}} Menit&nbsp; 
+							({{$value['frequency_idle_3']}})
 						</td>
-						<td>
-							@if($value['modified_status']!='')
-								{{ date('d-m-Y', strtotime($value['modified_at'])) }}
-							@endif
+						<td class="hidden-xs font-11 text-center" style="height:35%">
+							<?php $pr = ($value['total_active']!=0 ? $value['total_active'] : 1) / (($value['total_active']+$value['total_sleep']+$value['total_idle'])!=0 ? ($value['total_active']+$value['total_sleep']+$value['total_idle']) : 1);?>
+							{{round(abs($pr) * 100, 2)}} %
 						</td>
 					</tr>
 				</tbody>

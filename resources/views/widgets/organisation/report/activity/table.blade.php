@@ -60,7 +60,7 @@
 							<td class="hidden-xs font-11 text-center">
 								@if($value['position']!='')
 									{{floor($value['total_presence']/3600)}} Jam<br/>
-									{{floor(($value['total_presence']%3600)/60)}} Menit</br/> 
+									{{floor(($value['total_presence']%3600)/60)}} Menit<br/> 
 									({{$value['total_days']}})
 								@else
 									Tidak ada aktivitas

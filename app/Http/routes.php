@@ -272,6 +272,8 @@ Route::group(['namespace' => 'Tracker\\'], function()
 	Route::post('api/time/test/',				['uses' => 'TimeController@test',					'as' => 'hr.time.test']);
 });
 
+
+
 Blade::extend(function ($value, $compiler)
 {
 	$pattern = $compiler->createMatcher('time_indo');

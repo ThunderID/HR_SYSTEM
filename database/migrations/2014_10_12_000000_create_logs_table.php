@@ -21,6 +21,7 @@ class CreateLogsTable extends Migration {
 			$table->datetime('on');
 			$table->datetime('last_input_time')->nullable();
 			$table->string('pc', 255);
+			$table->string('app_version', 255);
 			$table->timestamps();
 			$table->softDeletes();
 			

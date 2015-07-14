@@ -10,8 +10,8 @@
 			<i class="fa fa-file"></i> Export to <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
-			<li><a href="{{route('hr.activity.logs.index', array_merge(['id' => $PersonComposer['widget_data']['personlist']['person']['id'], 'print' => 'yes', 'mode' => 'csv'], Input::all()))}}">CSV</a></li>
-			<li><a href="{{route('hr.activity.logs.index', array_merge(['id' => $PersonComposer['widget_data']['personlist']['person']['id'], 'print' => 'yes', 'mode' => 'xls'], Input::all()))}}">XLS</a></li>
+			<li><a href="{{route('hr.activity.logs.index', array_merge(['person_id' => $PersonComposer['widget_data']['personlist']['person']['id'], 'print' => 'yes', 'mode' => 'csv'], Input::all()))}}">CSV</a></li>
+			<li><a href="{{route('hr.activity.logs.index', array_merge(['person_id' => $PersonComposer['widget_data']['personlist']['person']['id'], 'print' => 'yes', 'mode' => 'xls'], Input::all()))}}">XLS</a></li>
 		</ul>
 	</div>
 	@overwrite
