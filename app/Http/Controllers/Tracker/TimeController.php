@@ -5,7 +5,7 @@ use App\Console\Commands\Checking;
 use App\Console\Commands\Getting;
 use App\Console\Commands\Saving;
 use App\Models\API;
-use Auth, Input, Session, Redirect, Response;
+use Auth, Input, Session, Redirect, Response, DateTimeZone, DateTime;
 
 class TimeController extends BaseController {
 
@@ -50,6 +50,9 @@ class TimeController extends BaseController {
 			}
 		}
 
-		return Response::json(['message' => 'sukses|'.date('d|m|Y|H|i|s')], 200);
+		$GMT 										= new DateTimeZone("GMT");
+		$date 										= new DateTime( "now", $GMT );
+
+		return Response::json(['message' => 'sukses|'.$date->format('Y/m/d H:i:s')], 200);
 	}
 }
