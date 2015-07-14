@@ -257,14 +257,19 @@ Route::group(['namespace' => 'Organisation\\Person\\'], function()
 	Route::post('api/activity/logs/',			['uses' => 'LogController@store',					'as' => 'hr.log.store']);
 });
 
-Route::group(['namespace' => 'Auth\\'], function() 
+Route::group(['namespace' => 'Tracker\\'], function() 
 {
-	Route::post('api/tracker/setting/',			['uses' => 'TrackerController@postlogin',			'as' => 'hr.tracker.post']);
+	Route::post('api/tracker/setting/',			['uses' => 'LoginController@postlogin',				'as' => 'hr.tracker.post']);
 });
 
-Route::group(['namespace' => 'Auth\\'], function() 
+Route::group(['namespace' => 'Tracker\\'], function() 
 {
-	Route::post('api/tracker/test/',			['uses' => 'TrackerController@testlogin',			'as' => 'hr.tracker.test']);
+	Route::post('api/tracker/test/',			['uses' => 'LoginController@testlogin',				'as' => 'hr.tracker.test']);
+});
+
+Route::group(['namespace' => 'Tracker\\'], function() 
+{
+	Route::post('api/time/test/',				['uses' => 'TimeController@test',					'as' => 'hr.time.test']);
 });
 
 Blade::extend(function ($value, $compiler)
