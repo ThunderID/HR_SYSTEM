@@ -66,14 +66,14 @@
 													<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.persons.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash fa-fw"></i> Hapus</a>
 												</li>
 											@endif
-											@if((int)Session::get('user.menuid')<5)
+											@if((int)Session::get('user.menuid')<=3)
 												<li>
 													<a href="{{route('hr.persons.edit', [$value['id'], 'org_id' => $data['id']])}}" title="ubah"><i class="fa fa-pencil fa-fw"></i> Ubah</a>
 												</li>
-												<li>
-													<a href="{{route('hr.persons.show', [$value['id'], 'org_id' => $data['id']])}}"  title="lihat"><i class="fa fa-eye fa-fw"></i> Detail</a>
-												</li>
 											@endif
+											<li>
+												<a href="{{route('hr.persons.show', [$value['id'], 'org_id' => $data['id']])}}"  title="lihat"><i class="fa fa-eye fa-fw"></i> Detail</a>
+											</li>
 											<li>
 												<a href="{{route('hr.person.works.index', ['person_id' => $value['id'], 'org_id' => $data['id']])}}" title="karir"><i class="fa fa-building fa-fw"></i> Pekerjaan</a>
 											</li>
