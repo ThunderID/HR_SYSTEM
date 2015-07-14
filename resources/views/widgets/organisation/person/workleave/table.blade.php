@@ -13,7 +13,9 @@
 	@overwrite
 
 	@section('widget_body')
-		<a href="{{ $PersonWorkleaveComposer['widget_data']['workleavelist']['route_create'] }}" class="btn btn-primary">Tambah</a>
+		@if((int)Session::get('user.menuid')<5)
+			<a href="{{ $PersonWorkleaveComposer['widget_data']['workleavelist']['route_create'] }}" class="btn btn-primary">Tambah</a>
+		@endif
 		@if(isset($PersonWorkleaveComposer['widget_data']['workleavelist']['workleave']))
 			<div class="clearfix">&nbsp;</div>
 			<div class="table-responsive">
@@ -53,13 +55,16 @@
 									{{ date('d-m-Y', strtotime($value['end'])) }}
 								</td>
 								<td class="text-right ">
-									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.workleaves.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']]) }}"><i class="fa fa-trash"></i></a>
-									@if($value['workleave_id']!=0)
-										<a href="{{route('hr.person.workleaves.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'type' => 'given'])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-									@else
-										<a href="{{route('hr.person.workleaves.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'type' => 'taken'])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									@if((int)Session::get('user.menuid') <= 2)
+										<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.workleaves.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']]) }}"><i class="fa fa-trash"></i></a>
 									@endif
-									<!-- <a href="{{route('hr.person.workleaves.show', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a> -->
+									@if((int)Session::get('user.menuid')<=3)
+										@if($value['workleave_id']!=0)
+											<a href="{{route('hr.person.workleaves.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'type' => 'given'])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+										@else
+											<a href="{{route('hr.person.workleaves.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'type' => 'taken'])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+										@endif
+									@endif
 								</td>
 							</tr>
 						</tbody>

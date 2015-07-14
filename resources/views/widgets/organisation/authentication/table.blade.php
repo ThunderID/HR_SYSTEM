@@ -30,6 +30,7 @@
 							<td>{{$value['work']['person']['name']}}</td>
 							<td>{{$value['authgroup']['name']}}</td>
 							<td class="text-right">
+								@if((int)Session::get('user.menuid') <= 2)
 								<div class="btn-group">
 									<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pengaturan <span class="caret"></span></button>
 									<ul class="dropdown-menu dropdown-menu-right">
@@ -38,6 +39,7 @@
 										</li>
 									</ul>
 								</div>
+								@endif
 							</td>
 						</tr>
 						<?php $i++;?>

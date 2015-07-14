@@ -14,7 +14,7 @@
 	@overwrite
 
 	@section('widget_body')
-		@if((int)Session::get('user.menuid')<4)
+		@if((int)Session::get('user.menuid')<5)
 			<a href="{{ $PersonComposer['widget_data']['personlist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
 		@endif
 		@if(isset($PersonComposer['widget_data']['personlist']['person']))
@@ -61,10 +61,12 @@
 									<div class="btn-group">
 										<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pengaturan <span class="caret"></span></button>
 										<ul class="dropdown-menu dropdown-menu-right">
-											@if((int)Session::get('user.menuid') <= 3)
+											@if((int)Session::get('user.menuid') <= 2)
 												<li>
 													<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.persons.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash fa-fw"></i> Hapus</a>
 												</li>
+											@endif
+											@if((int)Session::get('user.menuid')<5)
 												<li>
 													<a href="{{route('hr.persons.edit', [$value['id'], 'org_id' => $data['id']])}}" title="ubah"><i class="fa fa-pencil fa-fw"></i> Ubah</a>
 												</li>

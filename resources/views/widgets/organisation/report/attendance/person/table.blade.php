@@ -6,14 +6,14 @@
 @if (!$widget_error_count)
 	@section('widget_title')
 	<h1> {!! $widget_title or 'Laporan Kehadiran' !!} </h1>
-	<small>Total data {{ count($PersonComposer['widget_data']['personlist']['person']['processlogs']) }}</small>	
+	<small>Total data {{ count($PersonComposer['widget_data']['personlist']['person']['processlogs']) }}</small>
 	<div class="btn-group pull-right">
 		<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			<i class="fa fa-file"></i> Export to <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
-			<li><a href="{{route('hr.report.attendances.show', array_merge(['person_id' => $PersonComposer['widget_data']['personlist']['person']['id'], 'print' => 'yes', 'mode' => 'csv'], Input::all()))}}">CSV</a></li>
-			<li><a href="{{route('hr.report.attendances.show', array_merge(['person_id' => $PersonComposer['widget_data']['personlist']['person']['id'], 'print' => 'yes', 'mode' => 'xls'], Input::all()))}}">XLS</a></li>
+			<li><a href="{{route('hr.report.attendances.show', array_merge([$person['id'],'print' => 'yes', 'mode' => 'csv'], Input::all()))}}">CSV</a></li>
+			<li><a href="{{route('hr.report.attendances.show', array_merge([$person['id'],'print' => 'yes', 'mode' => 'xls'], Input::all()))}}">XLS</a></li>
 		</ul>
 	</div>
 	@overwrite
@@ -153,7 +153,9 @@
 								@endif
 							</td>
 							<td class="text-right">
-								<a href="{{route('hr.report.attendances.edit', array_merge(['id' => $value['id'], 'start' => $start, 'end' => $end, 'person_id' => $person['id'], 'org_id' => $data['id'], 'ondate' => $value['on']])) }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+								@if((int)Session::get('user.menuid')<=3)
+									<a href="{{route('hr.report.attendances.edit', array_merge(['id' => $value['id'], 'start' => $start, 'end' => $end, 'person_id' => $person['id'], 'org_id' => $data['id'], 'ondate' => $value['on']])) }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+								@endif
 							</td>
 						</tr>
 					@endforeach

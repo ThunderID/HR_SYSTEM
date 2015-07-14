@@ -58,12 +58,16 @@
 									<div class="btn-group">
 										<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pengaturan <span class="caret"></span></button>
 										<ul class="dropdown-menu">
-											<li>
-												<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.documents.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $value['person_id']]) }}"><i class="fa fa-trash fa-fw"></i> Hapus</a>
-											</li>
-											<li>
-												<a href="{{route('hr.person.documents.edit', [$value['id'], 'doc_id' => $value['document_id'], 'org_id' => $data['id'], 'person_id' => $value['person_id']])}}"><i class="fa fa-pencil fa-fw"></i> Ubah</a>
-											</li>
+											@if((int)Session::get('user.menuid') <= 2)
+												<li>
+													<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.documents.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $value['person_id']]) }}"><i class="fa fa-trash fa-fw"></i> Hapus</a>
+												</li>
+											@endif
+											@if((int)Session::get('user.menuid') <= 3)
+												<li>
+													<a href="{{route('hr.person.documents.edit', [$value['id'], 'doc_id' => $value['document_id'], 'org_id' => $data['id'], 'person_id' => $value['person_id']])}}"><i class="fa fa-pencil fa-fw"></i> Ubah</a>
+												</li>
+											@endif
 											<li>
 												<a href="{{route('hr.person.documents.show', [$value['id'], 'org_id' => $data['id'], 'person_id' => $value['person_id']])}}"><i class="fa fa-eye fa-fw"></i> Detail</a>
 											</li>

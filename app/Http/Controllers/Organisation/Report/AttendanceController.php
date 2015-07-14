@@ -239,9 +239,9 @@ class AttendanceController extends BaseController
 			$page 									= 1;
 			$per_page 								= 100;
 			$search['organisationid'] 				= ['fieldname' => 'persons.organisation_id', 'variable' => $data['id']];
-			$results 									= $this->dispatch(new Getting(new Person, $search, $sort , (int)$page, (int)$per_page, isset($new) ? $new : false));
+			$results 								= $this->dispatch(new Getting(new Person, $search, $sort , (int)$page, (int)$per_page, isset($new) ? $new : false));
 
-			$contents 									= json_decode($results);
+			$contents 								= json_decode($results);
 
 			if(!$contents->meta->success)
 			{	
@@ -262,8 +262,6 @@ class AttendanceController extends BaseController
 					$sheet->loadView('widgets.organisation.report.attendance.table_csv')->with('data', $report)->with('start', $start)->with('end', $end)->with('org', $data);
 				});
 			})->export(Input::get('mode'));
-			// dD($report
-			///nama viewnya			
 		}
 
 		return $this->layout;

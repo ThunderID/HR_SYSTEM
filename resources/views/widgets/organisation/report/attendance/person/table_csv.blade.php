@@ -8,42 +8,43 @@
 				</tr>
 				<tr>
 					<th style="width:10%">&nbsp;</th>
-					<th colspan="9" style="height:20%">Laporan Kehadiran {{$data['name']}} Per Tanggal {{$start}} s/d {{$end}} Unit Bisnis {{$org['name']}}</th>
+					<th colspan="9" style="height:20%">Laporan Kehadiran {{$data['name']}} Per Tanggal {{$start}} - {{$end}} Unit Bisnis {{$org['name']}}</th>
 				</tr>
 				<tr>
 					<th colspan="10"></th>
 				</tr>
 				<tr>
-					<th rowspan="2" class="text-center" style="width:10%; height:35%">&nbsp;</th>
-					<th rowspan="2" class="text-center" style="width:4%; height:35%">No<br/>&nbsp;</th>
-					<th rowspan="2" class="text-left" style="width:20%; height:35%">Tanggal<br/>&nbsp;</th>
-					<th rowspan="2" class="text-center" style="width:20%; height:35%">Jam Masuk<br/>(Jadwal);</th>
-					<th rowspan="2" class="text-center" style="width:20%; height:35%">Jam Keluar <br/>(Jadwal)</th>
-					<th rowspan="2" class="text-center" style="width:20%; height:35%">Time Loss Rate <br/>&nbsp;</th>
-					<th rowspan="2" class="text-center" style="width:20%; height:35%">Status Awal <br/>&nbsp;</th>
-					<th rowspan="2" class="text-center" style="width:20%; height:35%">Status Modifikasi <br/>&nbsp;</th>
-					<th rowspan="2" class="text-center" style="width:20%; height:35%">Dimodifikasi Oleh <br/>&nbsp;</th>
-					<th rowspan="2" class="text-center" style="width:20%; height:35%">Dimodifikasi Tanggal<br/>&nbsp;</th>
+					<th style="width:10%">&nbsp;</th>
+					<th class="text-center" style="width:5%; height:40%">No<br/>&nbsp;</th>
+					<th style="width:12%; height:40%">Tanggal<br/>&nbsp;</th>
+					<th class="text-center" style="width:12%; height:40%">Jam Masuk<br/>&nbsp;(Jadwal)</th>
+					<th class="text-center" style="width:12%; height:40%">Jam Keluar<br/>&nbsp;(Jadwal)</th>
+					<th class="text-center" style="width:10%; height:40%">Time <br/>&nbsp;Loss <br/>&nbsp;Rate</th>
+					<th class="text-center" style="width:8%; height:40%">Status <br/>&nbsp;Awal</th>
+					<th class="text-center" style="width:8%; height:40%">Status <br/>&nbsp; Modifikasi</th>
+					<th class="text-center" style="width:20%; height:40%">Dimodifikasi <br/>&nbsp;Oleh</th>
+					<th class="text-center" style="width:12%; height:40%">Dimodifikasi <br/>&nbsp;Tanggal</th>
 				</tr>
-				<tr></tr>				
 			</thead>
-			<tbody>
-				@foreach($data['processlogs'] as $key => $value)
+			@foreach($data['processlogs'] as $key => $value)
+				<tbody>
 					<tr>
-						<td style="width:10%">&nbsp;</td>
-						<td style="height:35%">{{$key+1}}</td>
-						<td style="height:35%">
+						<td style="width:10%" style="height:35%">&nbsp;</td>
+						<td class="font-11" style="height:35%">
+							{{$key+1}}
+						</td>
+						<td class="font-11" style="height:35%">
 							{{ date('d-m-Y', strtotime($value['on'])) }}
 						</td>
-						<td style="text-align:center">
-							{{ date('H:i:s', strtotime($value['start'])) }}
-								({{ date('H:i:s', strtotime($value['schedule_start'])) }})
+						<td class="font-11 text-center" style="height:35%">
+							{{ date('H:i:s', strtotime($value['start'])) }}<br/>&nbsp;
+							({{ date('H:i:s', strtotime($value['schedule_start'])) }})
 						</td>
-						<td style="text-align:center">
-							{{ date('H:i:s', strtotime($value['end'])) }}
-								({{ date('H:i:s', strtotime($value['schedule_end'])) }})
+						<td class="font-11 text-center" style="height:35%">
+							{{ date('H:i:s', strtotime($value['end'])) }}<br/>&nbsp;
+							({{ date('H:i:s', strtotime($value['schedule_end'])) }})
 						</td>
-						<td style="text-align:center">
+						<td class="font-11" style="height:35%">
 							<?php
 								$margin_start = 0;
 								$margin_end = 0;
@@ -72,23 +73,75 @@
 								$tlr = ($total_absence!=0 ? $total_absence : 1) / (abs($schedule_end_second - $schedule_start_second)!=0 ? abs($schedule_end_second - $schedule_start_second) : 1);?>
 							{{round(abs($tlr) * 100, 2)}} %
 						</td>
-						<td style="text-align:center">
+
+						<td class="hidden-xs font-11 text-center" style="height:35%">
 							{{$value['actual_status']}}
+							<?php /*@if ($value['actual_status']=='AS')
+								Ketidakhadiran Tanpa Penjelasan
+							@elseif ($value['actual_status']=='CB')
+								Cuti Bersama
+							@elseif ($value['actual_status']=='CI')
+								Cuti Istimewa
+							@elseif ($value['actual_status']=='CN')
+								Cuti Untuk Keperluan Pribadi
+							@elseif ($value['actual_status']=='DN')
+								Keperluan Dinas
+							@elseif ($value['actual_status']=='HC')
+								Hadir Cacat Tanpa Penjelasan
+							@elseif ($value['actual_status']=='HD')
+								Hadir Cacat Dengan Ijin Dinas
+							@elseif ($value['actual_status']=='HP')
+								Hadir Cacat Dengan Ijin Pulang Cepat
+							@elseif ($value['actual_status']=='HT')
+								Hadir Cacat Dengan Ijin Datang Terlambat
+							@elseif ($value['actual_status']=='SS')
+								Sakit Jangka Pendek
+							@elseif ($value['actual_status']=='SL')
+								Sakit Berkepanjangan
+							@elseif ($value['actual_status']=='UL')
+								Ketidakhadiran Dengan Ijin Namun Cuti Tidak Tersedia
+							@endif; */?>
 						</td>
-						<td style="text-align:center">
+						<td class="hidden-xs font-11 text-center" style="height:35%">
 							{{($value['modified_status']!='' ? $value['modified_status'] : '')}}
+							<?php /*@if ($value['modified_status']=='AS')
+								Ketidakhadiran Tanpa Penjelasan
+							@elseif ($value['modified_status']=='CB')
+								Cuti Bersama
+							@elseif ($value['modified_status']=='CI')
+								Cuti Istimewa
+							@elseif ($value['modified_status']=='CN')
+								Cuti Untuk Keperluan Pribadi
+							@elseif ($value['modified_status']=='DN')
+								Keperluan Dinas
+							@elseif ($value['modified_status']=='HC')
+								Hadir Cacat Tanpa Penjelasan
+							@elseif ($value['modified_status']=='HD')
+								Hadir Cacat Dengan Ijin Dinas
+							@elseif ($value['modified_status']=='HP')
+								Hadir Cacat Dengan Ijin Pulang Cepat
+							@elseif ($value['modified_status']=='HT')
+								Hadir Cacat Dengan Ijin Datang Terlambat
+							@elseif ($value['modified_status']=='SS')
+								Sakit Jangka Pendek
+							@elseif ($value['modified_status']=='SL')
+								Sakit Berkepanjangan
+							@elseif ($value['modified_status']=='UL')
+								Ketidakhadiran Dengan Ijin Namun Cuti Tidak Tersedia
+							@endif
+							*/?>
 						</td>
-						<td style="text-align:center">
+						<td class="hidden-xs font-11" style="height:35%">
 							{{($value['modified_status']!='' ? $value['modifiedby']['name'] : '')}}
 						</td>
-						<td style="text-align:center">
+						<td class="hidden-xs font-11" style="height:35%">
 							@if($value['modified_status']!='')
 								{{ date('d-m-Y', strtotime($value['modified_at'])) }}
 							@endif
 						</td>
 					</tr>
-				@endforeach
-			</tbody>
+				</tbody>
+			@endforeach
 		</table>
 
 	@endif

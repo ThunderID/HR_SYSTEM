@@ -457,17 +457,17 @@ class Person extends BaseModel {
 
 		if(isset($variable['chartchild']))
 		{
-			$query =  $query->where('charts.path', 'like', $variable.'%');
+			$query =  $query->where('charts.path', 'like', $variable['chartchild'].'%');
 		}
 
 		if(isset($variable['charttag']))
 		{
-			$query =  $query->where('charts.tag', $variable);
+			$query =  $query->where('charts.tag', $variable['charttag']);
 		}
 
 		if(isset($variable['chartid']))
 		{
-			$query =  $query->where('charts.id', $variable);
+			$query =  $query->where('charts.id', $variable['chartid']);
 		}
 
 		if(isset($variable['case']))
@@ -574,17 +574,17 @@ class Person extends BaseModel {
 
 		if(isset($variable['chartchild']))
 		{
-			$query =  $query->where('charts.path', 'like', $variable.'%');
+			$query =  $query->where('charts.path', 'like', $variable['chartchild'].'%');
 		}
 
 		if(isset($variable['charttag']))
 		{
-			$query =  $query->where('charts.tag', $variable);
+			$query =  $query->where('charts.tag', $variable['charttag']);
 		}
 
 		if(isset($variable['chartid']))
 		{
-			$query =  $query->where('charts.id', $variable);
+			$query =  $query->where('charts.id', $variable['chartid']);
 		}
 		if(isset($variable['case']))
 		{
@@ -702,12 +702,12 @@ class Person extends BaseModel {
 
 		if(isset($variable['charttag']))
 		{
-			$query =  $query->where('charts.tag', $variable);
+			$query =  $query->where('charts.tag', $variable['charttag']);
 		}
 
 		if(isset($variable['chartid']))
 		{
-			$query =  $query->where('charts.id', $variable);
+			$query =  $query->where('charts.id', $variable['chartid']);
 		}
 
 		if(isset($variable['case']))
@@ -799,12 +799,12 @@ class Person extends BaseModel {
 
 		if(isset($variable['charttag']))
 		{
-			$query =  $query->where('charts.tag', $variable);
+			$query =  $query->where('charts.tag', $variable['charttag']);
 		}
 
 		if(isset($variable['chartid']))
 		{
-			$query =  $query->where('charts.id', $variable);
+			$query =  $query->where('charts.id', $variable['chartid']);
 		}
 
 		if(isset($variable['case']))
