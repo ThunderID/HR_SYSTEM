@@ -1,6 +1,3 @@
-<li @if(isset($widget_options['sidebar']['active_form'])&&($widget_options['sidebar']['active_form']=='active_create_org')) class="active-li" @endif>
-    <a href="{{route('hr.organisations.create')}}"><i class="fa fa-plus-circle fa-fw"></i> Tambah Organisasi</a>
-</li>
 <li @if(Input::has('org_id') && Input::get('org_id')==$value) class="active" @endif>
 	<a @if(Input::get('org_id')==$value) class="active" @endif href="{{route('hr.organisations.show', $value)}}" class="top-level"><i class="fa fa-bank fa-fw"></i> {{ Session::get('user.organisationnames')[$key] }} <span class="fa arrow"></span></a>
 	<ul class="nav nav-second-level">
