@@ -19,10 +19,9 @@
 		@endif
 		@if(isset($PersonComposer['widget_data']['personlist']['person']))
 			<div class="clearfix">&nbsp;</div>
-			<div class="table-responsive">
-				<table class="table table-hover">
+				<table class="table">
 					<thead>
-						<tr class="row">
+						<tr class="">
 							<th class="">No</th>
 							<th class=""></th>
 							<th class="">Nama</th>
@@ -31,11 +30,11 @@
 							<th class="">Username</th>
 							<th class="">&nbsp;</th>
 						</tr>
-					</thead>
+					</thead>				
+					<tbody>
 					<?php $i = $PersonComposer['widget_data']['personlist']['person-display']['from'];?>
 					@foreach($PersonComposer['widget_data']['personlist']['person'] as $key => $value)
-						<tbody>
-							<tr class="row">
+							<tr class="">
 								<td class="">
 									{{$i}}
 								</td>
@@ -95,11 +94,11 @@
 									</div>
 								</td>
 							</tr>
-						</tbody>
-						<?php $i++;?>
-					@endforeach
+							<?php $i++;?>
+						@endforeach
+					</tbody>
 				</table>
-			</div>
+			
 
 			<div class="row">
 				<div class="col-sm-12 text-center">

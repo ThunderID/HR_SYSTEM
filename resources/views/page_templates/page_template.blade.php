@@ -68,8 +68,8 @@
 	@include('plugins.microtemplate')
 	@include('plugins.imageupload')
 	@include('plugins.single_submit')
-	@include('plugins.no_enter_form')
-	@include('plugins.tablefixheader')
+	@include('plugins.no_enter_form')	
+	@include('plugins.stickytableheader')
 
 	<script>
 		$(function() {
@@ -127,7 +127,6 @@
 		});
 
 		$(function() {
-			
 			var url = window.location;
 			var element = $('ul.nav a').filter(function() {
 				return this.href == url || url.href.indexOf(this.href) == 0;
