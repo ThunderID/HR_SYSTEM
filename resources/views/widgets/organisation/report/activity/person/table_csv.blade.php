@@ -8,7 +8,7 @@
 				</tr>
 				<tr>
 					<th style="width:10%">&nbsp;</th>
-					<th colspan="7" style="height:20%">Laporan Aktivitas {{$data['name']}} Per Tanggal {{$start}} - {{$end}} Unit Bisnis {{$org['name']}}</th>
+					<th colspan="7" style="height:20%">Laporan Aktivitas {{$data['name']}} Per Tanggal {{$start}} s/d {{$end}} Unit Bisnis {{$org['name']}}</th>
 				</tr>
 				<tr>
 					<th colspan="8"></th>
@@ -17,7 +17,7 @@
 					<th rowspan="2" class="text-center" style="width:10%; height:35%">&nbsp;</th>
 					<th rowspan="2" class="text-center" style="width:4%; height:35%">No<br/>&nbsp;</th>
 					<th rowspan="2" class="text-left" style="width:20%; height:35%">Tanggal<br/>&nbsp;</th>
-					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Aktif <br/>(Hari)</th>
+					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Aktif<br/>&nbsp;</th>
 					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Idle I <br/>(Freq)</th>
 					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Idle II <br/>(Freq)</th>
 					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Idle III <br/>(Freq)</th>
@@ -25,8 +25,8 @@
 				</tr>
 				<tr></tr>
 			</thead>
-			@foreach($data['processlogs'] as $key => $value)
-				<tbody>
+			<tbody>
+				@foreach($data['processlogs'] as $key => $value)
 					<tr>
 						<td style="width:10%; height:35%">&nbsp;</td>
 						<td class="font-11" style="height:35%">
@@ -59,8 +59,8 @@
 							{{round(abs($pr) * 100, 2)}} %
 						</td>
 					</tr>
-				</tbody>
-			@endforeach
+				@endforeach
+			</tbody>
 		</table>
 	@endif
 </body>

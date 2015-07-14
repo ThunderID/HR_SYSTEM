@@ -9,7 +9,7 @@
 				</tr>
 				<tr>
 					<th style="width:10%">&nbsp;</th>
-					<th colspan="7" style="height:20%">Laporan Aktivitas Per Tanggal {{$start}} - {{$end}} Unit Bisnis {{$org['name']}}</th>
+					<th colspan="7" style="height:20%">Laporan Aktivitas Per Tanggal {{$start}} s/d {{$end}} Unit Bisnis {{$org['name']}}</th>
 				</tr>
 				<tr>
 					<th colspan="8"></th>

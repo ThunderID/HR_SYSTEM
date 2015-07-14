@@ -1,7 +1,7 @@
 @section('area')	
 		@include('widgets.organisation.report.attendance.table', [
 			'widget_template'		=> 'panel_no_title',
-			'widget_title'			=> 'Laporan Aktivitas "'.date('d-m-Y',strtotime($start)).' - '.date('d-m-Y',strtotime($end)).'"'.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
+			'widget_title'			=> 'Laporan Aktivitas "'.date('d-m-Y',strtotime($start)).' s/d '.date('d-m-Y',strtotime($end)).'"'.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 			'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 			'widget_body_class'		=> '',
 			'widget_options'		=> 	[

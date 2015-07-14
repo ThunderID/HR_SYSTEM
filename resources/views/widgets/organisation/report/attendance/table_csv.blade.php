@@ -4,13 +4,21 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th rowspan="2">No</th>
-					<th rowspan="2">Nama</th>
-					<th rowspan="2">Jabatan</th>
-					<th rowspan="2" style="text-align:center">HB</th>
-					<th colspan="4" style="text-align:center">HC</th>
-					<th colspan="8" style="text-align:center">AS</th>
-					<th rowspan="2" style="text-align:center">Total</th>
+					<th colspan="8"></th>
+				</tr>
+				<tr>
+					<th style="width:10%">&nbsp;</th>
+					<th colspan="7" style="height:20%">Laporan Kehadiran Per Tanggal {{$start}} s/d {{$end}} Unit Bisnis {{$org['name']}}</th>
+				</tr>
+				<tr>
+					<th rowspan="2" style="width:10%; height:35%">&nbsp;</th>
+					<th rowspan="2" style="width:10%; height:35%">No<br/>&nbsp;</th>
+					<th rowspan="2" style="width:10%; height:35%">Nama <br>(Jabatan)</th>					
+					<th rowspan="2" style="width:10%; height:35%; text-align:center">HB<br>&nbsp;</th>
+					<th colspan="4" style="width:10%; height:35%;text-align:center">HC<br>&nbsp;</th>
+					<th colspan="8" style="width:10%; height:35%;text-align:center">AS<br>&nbsp;</th>
+					<th rowspan="2" style="width:10%; height:35%;text-align:center">Total<br>&nbsp;</th>
+					<th rowspan="2" style="width:10%; height:35%;text-align:center">Time Loss Rate</th>
 				</tr>
 				<tr>
 					<th></th>
@@ -31,14 +39,14 @@
 					<th style="text-align:center">AS</th>
 				</tr>
 			</thead>
-			@foreach($data as $key => $value)
-				<tbody>
+			<tbody>
+				@foreach($data as $key => $value)
 					<tr>
-						<td>{{$key+1}}</td>
-						<td>
+						<td style="width:10%">&nbsp;</td>
+						<td style="height:35%">{{$key+1}}</td>
+						<td style="height:35%">
 							{{$value['name']}}
-						</td>
-						<td>
+							<br/>
 							@if($value['position']!='')
 								{{$value['position']}} {{$value['department']}} {{$value['branch']}}
 							@elseif(isset($value['works'][0]))
@@ -87,9 +95,17 @@
 						<td style="text-align:center">
 							{{$value['HB']+$value['HT']+$value['HP']+$value['HD']+$value['HC']+$value['DN']+$value['SS']+$value['SL']+$value['CN']+$value['CB']+$value['CI']+$value['UL']+$value['AS']}}
 						</td>
+						<td style="text-align:center">
+							@if($value['position']!='')
+								<?php $tlr = ($value['total_absence']!=0 ? $value['total_absence'] : 1) / ($value['possible_total_effective']!=0 ? $value['possible_total_effective'] : 1);?>
+								{{round(abs($tlr) * 100, 2)}} %
+							@else
+								100 %
+							@endif
+						</td>
 					</tr>
-				</tbody>
-			@endforeach
+				@endforeach
+			</tbody>
 		</table>
 
 	@endif

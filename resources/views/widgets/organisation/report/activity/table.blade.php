@@ -29,16 +29,16 @@
 
 	@section('widget_body')
 		@if(isset($PersonComposer['widget_data']['personlist']['person']))
-			<table class="table report table-hover table-bordered table-condensed">				
+			<table class="table">				
 				<thead>
 					<tr>
-						<th rowspan="2" class="text-center" style="width:4%">No<br/>&nbsp;</th>
-						<th rowspan="2" class="text-left">Nama <br/>(Jabatan)</th>
-						<th rowspan="2" class="text-center">Total Aktif <br/>(Hari)</th>
-						<th rowspan="2" class="text-center">Total Idle I <br/>(Freq)</th>
-						<th rowspan="2" class="text-center">Total Idle II <br/>(Freq)</th>
-						<th rowspan="2" class="text-center">Total Idle III <br/>(Freq)</th>
-						<th rowspan="2" class="text-center">Performance Rate</th>
+						<th rowspan="2" class="text-center font-11" style="width:4%">No<br/>&nbsp;</th>
+						<th rowspan="2" class="text-left font-11">Nama <br/>(Jabatan)</th>
+						<th rowspan="2" class="text-center font-11">Total Aktif <br/>(Hari)</th>
+						<th rowspan="2" class="text-center font-11">Total Idle I <br/>(Freq)</th>
+						<th rowspan="2" class="text-center font-11">Total Idle II <br/>(Freq)</th>
+						<th rowspan="2" class="text-center font-11">Total Idle III <br/>(Freq)</th>
+						<th rowspan="2" class="text-center font-11">Performance Rate</th>
 						<th rowspan="2">&nbsp;</th>
 					</tr>
 					<tr></tr>
@@ -46,7 +46,7 @@
 				<tbody>
 					@foreach($PersonComposer['widget_data']['personlist']['person'] as $key => $value)
 						<tr>
-							<td class="col-sm-1 font-11">
+							<td class="col-sm-1 font-11 text-center">
 								{{$key+1}}
 							</td>
 							<td class="font-11">
@@ -57,7 +57,7 @@
 									({{$value['works'][0]['name']}} {{$value['works'][0]['tag']}} {{$value['works'][0]['branch']['name']}})
 								@endif
 							</td>
-							<td class="hidden-xs font-11 text-center">
+							<td class="font-11 text-center">
 								@if($value['position']!='')
 									{{floor($value['total_presence']/3600)}} Jam<br/>
 									{{floor(($value['total_presence']%3600)/60)}} Menit<br/> 
@@ -66,7 +66,7 @@
 									Tidak ada aktivitas
 								@endif
 							</td>
-							<td class="hidden-xs font-11 text-center">
+							<td class="font-11 text-center">
 								@if($value['position']!='')
 									{{floor($value['total_idle_1']/3600)}} Jam<br/>
 									{{floor(($value['total_idle_1']%3600)/60)}} Menit<br/> 
@@ -75,7 +75,7 @@
 									Tidak ada aktivitas
 								@endif
 							</td>
-							<td class="hidden-xs font-11 text-center">
+							<td class="font-11 text-center">
 								@if($value['position']!='')
 									{{floor($value['total_idle_2']/3600)}} Jam<br/>
 									{{floor(($value['total_idle_2']%3600)/60)}} Menit<br/> 
@@ -84,7 +84,7 @@
 									Tidak ada aktivitas
 								@endif
 							</td>
-							<td class="hidden-xs font-11 text-center">
+							<td class="font-11 text-center">
 								@if($value['position']!='')
 									{{floor($value['total_idle_3']/3600)}} Jam<br/>
 									{{floor(($value['total_idle_3']%3600)/60)}} Menit<br/> 
@@ -93,15 +93,15 @@
 									Tidak ada aktivitas
 								@endif
 							</td>
-							<td class="hidden-xs font-11 text-center">
+							<td class="font-11 text-center">
 								@if($value['position']!='')
 									<?php $pr = ($value['total_active']!=0 ? $value['total_active'] : 1) / ($value['total_presence']!=0 ? $value['total_presence'] : 1);?>
 									{{round(abs($pr) * 100, 2)}} %
 								@endif
 							</td>
-							<td class="text-right font-11">
+							<td class="text-center font-11">
 								@if($value['position']!='')
-									<a href="{{route('hr.report.activities.show', ['person_id' => $value['id'], 'org_id' => $data['id'], 'start' => $start, 'end' => $end])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
+									<a href="{{route('hr.report.activities.show', ['person_id' => $value['id'], 'org_id' => $data['id'], 'start' => $start, 'end' => $end])}}" class="btn btn-sm btn-default"><i class="fa fa-eye"></i></a>
 								@endif
 							</td>
 						</tr>

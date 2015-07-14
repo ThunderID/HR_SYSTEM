@@ -6,15 +6,14 @@
 @if (!$widget_error_count)
 	@section('widget_title')
 	<h1> {!! $widget_title or 'Laporan Kehadiran' !!} </h1>
-	<small>Total data {{ count($PersonComposer['widget_data']['personlist']['person']['processlogs']) }}</small>
-	
+	<small>Total data {{ count($PersonComposer['widget_data']['personlist']['person']['processlogs']) }}</small>	
 	<div class="btn-group pull-right">
 		<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			<i class="fa fa-file"></i> Export to <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
-			<li><a href="{{route('hr.report.attendances.index', array_merge(Input::all(), ['print' => 'yes', 'mode' => 'csv']))}}">CSV</a></li>
-			<li><a href="{{route('hr.report.attendances.index', array_merge(Input::all(), ['print' => 'yes', 'mode' => 'xls']))}}">XLS</a></li>
+			<li><a href="{{route('hr.report.attendances.show', array_merge(['person_id' => $PersonComposer['widget_data']['personlist']['person']['id'], 'print' => 'yes', 'mode' => 'csv'], Input::all()))}}">CSV</a></li>
+			<li><a href="{{route('hr.report.attendances.show', array_merge(['person_id' => $PersonComposer['widget_data']['personlist']['person']['id'], 'print' => 'yes', 'mode' => 'xls'], Input::all()))}}">XLS</a></li>
 		</ul>
 	</div>
 	@overwrite
@@ -53,7 +52,7 @@
 								{{ date('H:i:s', strtotime($value['end'])) }}
 								({{ date('H:i:s', strtotime($value['schedule_end'])) }})
 							</td>
-							<td class="font-11">
+							<td class="text-center font-11">
 								<?php
 									$margin_start = 0;
 									$margin_end = 0;

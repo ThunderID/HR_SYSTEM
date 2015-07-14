@@ -21,22 +21,22 @@
 
 	@section('widget_body')
 		@if(isset($PersonComposer['widget_data']['personlist']['person']['processlogs']))
-			<table class="table table-hover table-condensed report">
+			<table class="table">
 				<thead>
 					<tr>
-						<th rowspan="2" class="text-center" style="width:4%">No<br/>&nbsp;</th>
-						<th rowspan="2" class="text-left">Tanggal<br/>&nbsp;</th>
-						<th rowspan="2" class="text-center">Total Aktif<br/>&nbsp;</th>
-						<th rowspan="2" class="text-center">Total Idle I <br/>(Freq)</th>
-						<th rowspan="2" class="text-center">Total Idle II <br/>(Freq)</th>
-						<th rowspan="2" class="text-center">Total Idle III <br/>(Freq)</th>
-						<th rowspan="2" class="text-center">Performance Rate<br/>&nbsp;</th>
+						<th rowspan="2" class="text-center font-11" style="width:4%">No<br/>&nbsp;</th>
+						<th rowspan="2" class="text-left font-11">Tanggal<br/>&nbsp;</th>
+						<th rowspan="2" class="text-center font-11">Total Aktif<br/>&nbsp;</th>
+						<th rowspan="2" class="text-center font-11">Total Idle I <br/>(Freq)</th>
+						<th rowspan="2" class="text-center font-11">Total Idle II <br/>(Freq)</th>
+						<th rowspan="2" class="text-center font-11">Total Idle III <br/>(Freq)</th>
+						<th rowspan="2" class="text-center font-11">Performance Rate<br/>&nbsp;</th>
 						<th rowspan="2">&nbsp;</th>
 					</tr>
 					<tr></tr>
 				</thead>
-				@foreach($PersonComposer['widget_data']['personlist']['person']['processlogs'] as $key => $value)
-					<tbody>
+				<tbody>
+					@foreach($PersonComposer['widget_data']['personlist']['person']['processlogs'] as $key => $value)
 						<tr>
 							<td class="font-11">
 								{{$key+1}}
@@ -44,35 +44,35 @@
 							<td class="font-11">
 								{{ date('d-m-Y', strtotime($value['on'])) }}
 							</td>
-							<td class="hidden-xs font-11 text-center">
+							<td class="font-11 text-center">
 								{{floor(($value['total_active']+$value['total_sleep']+$value['total_idle'])/3600)}} Jam<br/>
 								{{floor((($value['total_active']+$value['total_sleep']+$value['total_idle'])%3600)/60)}} Menit<br/> 
 							</td>
-							<td class="hidden-xs font-11 text-center">
+							<td class="font-11 text-center">
 								{{floor($value['total_idle_1']/3600)}} Jam<br/>
 								{{floor(($value['total_idle_1']%3600)/60)}} Menit<br/> 
 								({{$value['frequency_idle_1']}})
 							</td>
-							<td class="hidden-xs font-11 text-center">
+							<td class="font-11 text-center">
 								{{floor($value['total_idle_2']/3600)}} Jam<br/>
 								{{floor(($value['total_idle_2']%3600)/60)}} Menit<br/> 
 								({{$value['frequency_idle_2']}})
 							</td>
-							<td class="hidden-xs font-11 text-center">
+							<td class="font-11 text-center">
 								{{floor($value['total_idle_3']/3600)}} Jam<br/>
 								{{floor(($value['total_idle_3']%3600)/60)}} Menit<br/> 
 								({{$value['frequency_idle_3']}})
 							</td>
-							<td class="hidden-xs font-11 text-center">
+							<td class="font-11 text-center">
 								<?php $pr = ($value['total_active']!=0 ? $value['total_active'] : 1) / (($value['total_active']+$value['total_sleep']+$value['total_idle'])!=0 ? ($value['total_active']+$value['total_sleep']+$value['total_idle']) : 1);?>
 								{{round(abs($pr) * 100, 2)}} %
 							</td>
 							<td class="text-right font-11">
-								<a href="{{route('hr.activity.logs.index', ['person_id' => $value['person_id'], 'org_id' => $data['id'], 'start' => $start, 'end' => $end, 'ondate' => $value['on']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
+								<a href="{{route('hr.activity.logs.index', ['person_id' => $value['person_id'], 'org_id' => $data['id'], 'start' => $start, 'end' => $end, 'ondate' => $value['on']])}}" class="btn btn-sm btn-default"><i class="fa fa-eye"></i></a>
 							</td>
 						</tr>
-					</tbody>
-				@endforeach
+					@endforeach
+				</tbody>
 			</table>
 			<div class="clearfix">&nbsp;</div>
 		@endif

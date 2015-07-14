@@ -21,26 +21,26 @@
 			<table class="table table-hover table-condensed report">
 				<thead>
 					<tr>
-						<th class="text-center" style="width:6%">No</th>
-						<th class="text-center" style="width:28%">Waktu</th>
-						<th class="text-center" style="width:32%">Aktivitas</th>
-						<th class="text-center" style="width:40%">PC</th>
+						<th class="text-center font-11" style="width:6%">No</th>
+						<th class="text-center font-11" style="width:28%">Waktu</th>
+						<th class="text-center font-11" style="width:32%">Aktivitas</th>
+						<th class="text-center font-11" style="width:40%">PC</th>
 					</tr>
 				</thead>
 				@foreach($PersonComposer['widget_data']['personlist']['person']['logs'] as $key => $value)
 					<tbody>
 						<tr>
-							<td class="text-center">
+							<td class="text-center font-11">
 								{{$key+1}}
 							</td>
-							<td class="text-center">
+							<td class="text-center font-11">
 								{{ date('d-m-Y H:i:s', strtotime($value['on'])) }}
 							</td>
-							<td class="text-center">
+							<td class="text-center font-11">
 								{{$value['name']}}
 							</td>
 
-							<td class="hidden-xs text-center">
+							<td class="hidden-xs text-center font-11">
 								{{$value['pc']}}
 							</td>
 						</tr>
