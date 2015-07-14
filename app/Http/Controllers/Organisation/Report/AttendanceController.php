@@ -239,9 +239,9 @@ class AttendanceController extends BaseController
 			$page 									= 1;
 			$per_page 								= 100;
 			$search['organisationid'] 				= ['fieldname' => 'persons.organisation_id', 'variable' => $data['id']];
-			$results 									= $this->dispatch(new Getting(new Person, $search, $sort , (int)$page, (int)$per_page, isset($new) ? $new : false));
+			$results 								= $this->dispatch(new Getting(new Person, $search, $sort , (int)$page, (int)$per_page, isset($new) ? $new : false));
 
-			$contents 									= json_decode($results);
+			$contents 								= json_decode($results);
 
 			if(!$contents->meta->success)
 			{	
@@ -249,21 +249,18 @@ class AttendanceController extends BaseController
 			}
 			$report 								= json_decode(json_encode($contents->data), true);
 
-			// $case = Input::get('case');
-			Excel::create('Laporan Kehadiran per tanggal ( '.$start.' s.d '.$end.' ) di '.$data['name'], function($excel) use ($report, $start, $end) 
+			Excel::create('Laporan Kehadiran per tanggal ( '.$start.' s.d '.$end.' ) '.$data['name'], function($excel) use ($report, $start, $end, $data) 
 			{
 				// Set the title
 				$excel->setTitle('Laporan Kehadiran');
 				// Call them separately
 				$excel->setDescription('Laporan Kehadiran');
-				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end) 
+				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end, $data) 
 				{
 					$c 									= count($report);
-					$sheet->loadView('widgets.organisation.report.attendance.table_csv')->with('data', $report)->with('start', $start)->with('end', $end);
+					$sheet->loadView('widgets.organisation.report.attendance.table_csv')->with('data', $report)->with('start', $start)->with('end', $end)->with('org', $data);
 				});
 			})->export(Input::get('mode'));
-			// dD($report
-			///nama viewnya			
 		}
 
 		return $this->layout;
@@ -342,16 +339,16 @@ class AttendanceController extends BaseController
 			$report 								= json_decode(json_encode($contents->data), true);
 			
 
-			Excel::create('Laporan Aktivitas '.$report['name'].' per tanggal ( '.$start.' s.d '.$end.' )', function($excel) use ($report, $start, $end, $person) 
+			Excel::create('Laporan Kehadiran '.$report['name'].' per tanggal ( '.$start.' s.d '.$end.' )', function($excel) use ($report, $start, $end, $data) 
 			{
 				// Set the title
-				$excel->setTitle('Laporan Aktivitas');
+				$excel->setTitle('Laporan Kehadiran');
 				// Call them separately
-				$excel->setDescription('Laporan Aktivitas person');
-				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end, $person) 
+				$excel->setDescription('Laporan Kehadiran Perorangan');
+				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end, $data) 
 				{
 					$c 									= count($report);
-					$sheet->loadView('widgets.organisation.report.attendance.person.table_csv')->with('data', $report)->with('start', $start)->with('end', $end)->with('person', $person);
+					$sheet->loadView('widgets.organisation.report.attendance.person.table_csv')->with('data', $report)->with('start', $start)->with('end', $end)->with('org', $data);
 				});
 			})->export(Input::get('mode'));	
 		}
