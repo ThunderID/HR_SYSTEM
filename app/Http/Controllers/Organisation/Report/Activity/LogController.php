@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\Organisation\Report\Attendance;
+<?php namespace App\Http\Controllers\Organisation\Report\Activity;
 
 use Input, Session, App, Paginator, Redirect, DB, Config, Validator, Image, Excel;
 use App\Http\Controllers\BaseController;
@@ -11,9 +11,9 @@ use App\Models\Organisation;
 use App\Models\Person;
 use App\Models\ProcessLog;
 
-class PersonController extends BaseController 
+class LogController extends BaseController 
 {
-	protected $controller_name 						= 'attendance';
+	protected $controller_name 						= 'activity';
 
 	public function index()
 	{		
@@ -53,6 +53,15 @@ class PersonController extends BaseController
 			$end 									= date('Y-m-d', strtotime('last day of next month'));
 		}
 
+		if(Input::has('ondate'))
+		{
+			$ondate 									= date('Y-m-d', strtotime(Input::get('ondate')));
+		}
+		else
+		{
+			$ondate 									= date('Y-m-d');
+		}
+
 		if(!in_array($org_id, Session::get('user.organisationids')))
 		{
 			App::abort(404);
@@ -77,7 +86,7 @@ class PersonController extends BaseController
 		$person 									= json_decode(json_encode($contents->data), true);
 		$data 										= $person['organisation'];
 
-		$this->layout->page 						= view('pages.organisation.report.attendance.person.index', compact('data', 'start', 'end', 'person'));
+		$this->layout->page 						= view('pages.organisation.report.activity.log.index', compact('data', 'start', 'end', 'person', 'ondate'));
 
 		if(Input::has('print'))
 		{

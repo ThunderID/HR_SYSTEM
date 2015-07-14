@@ -198,26 +198,26 @@ Route::group(['middleware' => 'csrfverify'], function()
 		Route::group(['namespace' => 'Report\\', 'prefix' => 'report'], function() 
 		{
 			// ------------------------------------------------------------------------------------
-			// REPORT FOR ATTENDANCE (PROCESS LOG) RESOURCE
+			// REPORT FOR ACTIVITIES (PROCESS LOG) RESOURCE
 			// ------------------------------------------------------------------------------------
 
-			Route::resource('activities',		'AttendanceController',								['names' => ['index' => 'hr.report.activities.index', 'create' => 'hr.report.activities.create', 'store' => 'hr.report.activities.store', 'show' => 'hr.report.activities.show', 'edit' => 'hr.report.activities.edit', 'update' => 'hr.report.activities.update', 'destroy' => 'hr.report.activities.delete']]);
+			Route::resource('activities',		'ActivityController',								['names' => ['index' => 'hr.report.activities.index', 'create' => 'hr.report.activities.create', 'store' => 'hr.report.activities.store', 'show' => 'hr.report.activities.show', 'edit' => 'hr.report.activities.edit', 'update' => 'hr.report.activities.update', 'destroy' => 'hr.report.activities.delete']]);
 
-			Route::group(['namespace' => 'Attendance\\', 'prefix' => 'activity'], function() 
+			Route::group(['namespace' => 'Activity\\', 'prefix' => 'activity'], function() 
 			{
 				// ------------------------------------------------------------------------------------
-				// REPORT FOR ATTENDANCE (PROCESS LOG PER PERSON) RESOURCE
+				// REPORT FOR LOG ACTIVITIES (PROCESS LOG PER PERSON) RESOURCE
 				// ------------------------------------------------------------------------------------
 
-				Route::resource('persons',		'PersonController',									['names' => ['index' => 'hr.attendance.persons.index', 'create' => 'hr.attendance.persons.create', 'store' => 'hr.attendance.persons.store', 'show' => 'hr.attendance.persons.show', 'edit' => 'hr.attendance.persons.edit', 'update' => 'hr.attendance.persons.update', 'destroy' => 'hr.attendance.persons.delete']]);
+				Route::resource('logs',			'LogController',									['names' => ['index' => 'hr.activity.logs.index', 'create' => 'hr.activity.logs.create', 'store' => 'hr.activity.logs.store', 'show' => 'hr.activity.logs.show', 'edit' => 'hr.activity.logs.edit', 'update' => 'hr.activity.logs.update', 'destroy' => 'hr.activity.logs.delete']]);
 			});
 
 
 			// ------------------------------------------------------------------------------------
-			// REPORT FOR WAGE (PROCESS LOG) RESOURCE
+			// REPORT FOR ATTENDANCES (PROCESS LOG) RESOURCE
 			// ------------------------------------------------------------------------------------
 
-			Route::resource('attendances',		'WageController',								['names' => ['index' => 'hr.report.attendances.index', 'create' => 'hr.report.attendances.create', 'store' => 'hr.report.attendances.store', 'show' => 'hr.report.attendances.show', 'edit' => 'hr.report.attendances.edit', 'update' => 'hr.report.attendances.update', 'destroy' => 'hr.report.attendances.delete']]);
+			Route::resource('attendances',		'AttendanceController',								['names' => ['index' => 'hr.report.attendances.index', 'create' => 'hr.report.attendances.create', 'store' => 'hr.report.attendances.store', 'show' => 'hr.report.attendances.show', 'edit' => 'hr.report.attendances.edit', 'update' => 'hr.report.attendances.update', 'destroy' => 'hr.report.attendances.delete']]);
 		});
 
 		});

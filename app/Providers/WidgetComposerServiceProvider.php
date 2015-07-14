@@ -72,7 +72,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// PERSON
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.person.table', 'widgets.organisation.person.form', 'widgets.organisation.person.select', 'widgets.organisation.report.attendance.table', 'widgets.organisation.report.wage.table', 'widgets.organisation.person.stat.total_employee', 'widgets.organisation.person.stat.average_loss_rate','widgets.organisation.report.attendance.person.table','widgets.organisation.report.attendance.person.log.table', 'widgets.organisation.report.attendance.table_csv', 'widgets.organisation.report.attendance.person.table_csv', 'widgets.organisation.report.attendance.person.log.table_csv', 'widgets.organisation.report.wage.table_csv', 'widgets.organisation.person.workleave.left_quota', 'widgets.organisation.person.upload_csv'], 	'App\Http\ViewComposers\PersonComposer');
+		View::composer(['widgets.organisation.person.table', 'widgets.organisation.person.form', 'widgets.organisation.person.select', 'widgets.organisation.report.attendance.table', 'widgets.organisation.report.wage.table', 'widgets.organisation.person.stat.total_employee', 'widgets.organisation.person.stat.average_loss_rate','widgets.organisation.report.attendance.person.table','widgets.organisation.report.activity.person.log.table', 'widgets.organisation.report.attendance.table_csv', 'widgets.organisation.report.attendance.person.table_csv', 'widgets.organisation.report.attendance.person.log.table_csv', 'widgets.organisation.report.wage.table_csv', 'widgets.organisation.person.workleave.left_quota', 'widgets.organisation.person.upload_csv', 'widgets.organisation.report.activity.table', 'widgets.organisation.report.activity.person.table'], 	'App\Http\ViewComposers\PersonComposer');
 
 		// -----------------------------------------------------------------------------
 		// CONTACT
@@ -142,7 +142,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// PROCESS LOG
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.report.attendance.person.form'], 	'App\Http\ViewComposers\ProcessLogComposer');
+		View::composer(['widgets.organisation.report.attendance.form'], 	'App\Http\ViewComposers\ProcessLogComposer');
 	}
 
 	private function web_widget()

@@ -9,16 +9,14 @@ use App\Console\Commands\Deleting;
 use App\Console\Commands\Checking;
 use App\Models\Organisation;
 use App\Models\Person;
-use App\Models\Work;
 use App\Models\Branch;
 
-class WageController extends BaseController 
+class ActivityController extends BaseController 
 {
-	protected $controller_name 						= 'wages';
+	protected $controller_name 						= 'activity';
 
 	public function index()
 	{		
-		// ---------------------- LOAD DATA ----------------------
 		if(Input::has('org_id'))
 		{
 			$org_id 								= Input::get('org_id');
@@ -34,7 +32,7 @@ class WageController extends BaseController
 		}
 		else
 		{
-			$start 									= date('Y-m-d', strtotime('first day of january '.date('Y')));
+			$start 									= date('Y-m-d', strtotime('first day of this month'));
 		}
 
 		if(Input::has('end'))
@@ -43,7 +41,7 @@ class WageController extends BaseController
 		}
 		else
 		{
-			$end 									= date('Y-m-d', strtotime('last day of december '.date('Y')));
+			$end 									= date('Y-m-d', strtotime('last day of next month'));
 		}
 
 		if(!in_array($org_id, Session::get('user.organisationids')))
@@ -62,6 +60,7 @@ class WageController extends BaseController
 		}
 
 		$data 										= json_decode(json_encode($contents->data), true);
+
 
 		unset($search);
 		unset($sort);
@@ -212,6 +211,8 @@ class WageController extends BaseController
 			$filter['search']['chartchild'] 		= Session::get('user.chartpath');
 			$filter['active']['chartchild'] 		= 'Lihat Sebagai "'.Session::get('user.chartname').'"';
 		}
+		
+		$this->layout->page 						= view('pages.organisation.report.activity.index', compact('data', 'start', 'end'));
 
 		$filters 									= 	[
 															['prefix' => 'sort', 'key' => 'persons.name', 'value' => 'Urutkan Nama', 'values' => [['key' => 'asc', 'value' => 'A-Z'], ['key' => 'desc', 'value' => 'Z-A']]]
@@ -226,14 +227,13 @@ class WageController extends BaseController
 			$filters[] 					 			= ['prefix' => 'search', 'key' => 'charttag', 'value' => 'Cari Di Departemen', 'values' => $charts];
 		}
 
-		$this->layout->page 						= view('pages.organisation.report.wage.index', compact('data', 'start', 'end'));
 		$this->layout->page->filter 				= $filters;
 		$this->layout->page->filtered 				= $filter;
 		$this->layout->page->default_filter  		= ['org_id' => $data['id'], 'start' => $start, 'end' => $end];
 
 		if(Input::has('print'))
 		{
-			$search 								= ['globalwage' => array_merge(['organisationid' => $data['id'], 'on' => [$start, $end]], (isset($filtered['search']) ? $filtered['search'] : []))];
+			$search 								= ['globalactivity' => array_merge(['organisationid' => $data['id'], 'on' => [$start, $end]], (isset($filter['search']) ? $filter['search'] : []))];
 			$sort 									= (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']);
 			$page 									= 1;
 			$per_page 								= 100;
@@ -249,20 +249,110 @@ class WageController extends BaseController
 			$report 								= json_decode(json_encode($contents->data), true);
 
 			// $case = Input::get('case');
-			Excel::create('Laporan Kehadiran per tanggal ( '.$start.' s.d '.$end.' ) di '.$data['name'], function($excel) use ($report, $start, $end) 
+			Excel::create('Laporan Aktivitas per tanggal ( '.$start.' s.d '.$end.' ) di '.$data['name'], function($excel) use ($report, $start, $end) 
 			{
 				// Set the title
-				$excel->setTitle('Laporan Kehadiran');
+				$excel->setTitle('Laporan Aktivitas');
 				// Call them separately
-				$excel->setDescription('Laporan Kehadiran');
+				$excel->setDescription('Laporan Aktivitas');
 				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end) 
 				{
 					$c 									= count($report);
-					$sheet->loadView('widgets.organisation.report.wage.table_csv')->with('data', $report)->with('start', $start)->with('end', $end);
+					$sheet->loadView('widgets.organisation.report.activity.table_csv')->with('data', $report)->with('start', $start)->with('end', $end);
 				});
 			})->export(Input::get('mode'));
 			// dD($report
 			///nama viewnya			
+		}
+
+		return $this->layout;
+	}
+
+	public function show($person_id = null)
+	{
+		if(Input::has('org_id'))
+		{
+			$org_id 								= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 								= Session::get('user.organisationid');
+		}
+
+		if(Input::has('start'))
+		{
+			$start 									= date('Y-m-d', strtotime(Input::get('start')));
+		}
+		else
+		{
+			$start 									= date('Y-m-d', strtotime('first day of this month'));
+		}
+
+		if(Input::has('end'))
+		{
+			$end 									= date('Y-m-d', strtotime(Input::get('end')));
+		}
+		else
+		{
+			$end 									= date('Y-m-d', strtotime('last day of next month'));
+		}
+
+		if(!in_array($org_id, Session::get('user.organisationids')))
+		{
+			App::abort(404);
+		}
+
+		$search['id']								= $person_id;
+		$search['organisationid']					= $org_id;
+		$search['withattributes']					= ['organisation'];
+		$sort 										= ['name' => 'asc'];
+		if(Session::get('user.menuid')>=5)
+		{
+			$search['chartchild'] 					= Session::get('user.chartpath');
+		}
+		$results 									= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
+		$contents 									= json_decode($results);		
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$person 									= json_decode(json_encode($contents->data), true);
+		$data 										= $person['organisation'];
+
+		$this->layout->page 						= view('pages.organisation.report.activity.show', compact('data', 'start', 'end', 'person'));
+
+		if(Input::has('print'))
+		{
+			$search 								= ['id' => $person['id'], 'processlogsondate' => ['on' => [$start, $end]]];
+			$sort 									= ['persons.name' => 'asc'];
+			$page 									= 1;
+			$per_page 								= 1;
+			$search['organisationid'] 				= ['fieldname' => 'persons.organisation_id', 'variable' => $data['id']];
+			$results 								= $this->dispatch(new Getting(new Person, $search, $sort , (int)$page, (int)$per_page, isset($new) ? $new : false));
+
+			$contents 									= json_decode($results);
+
+			if(!$contents->meta->success)
+			{	
+				App::abort(404);	
+			}
+			$report 								= json_decode(json_encode($contents->data), true);
+			
+
+			Excel::create('Laporan Aktivitas '.$report['name'].' per tanggal ( '.$start.' s.d '.$end.' )', function($excel) use ($report, $start, $end, $person) 
+			{
+				// Set the title
+				$excel->setTitle('Laporan Aktivitas');
+				// Call them separately
+				$excel->setDescription('Laporan Aktivitas person');
+				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end, $person) 
+				{
+					$c 									= count($report);
+					$sheet->loadView('widgets.organisation.report.attendance.person.table_csv')->with('data', $report)->with('start', $start)->with('end', $end)->with('person', $person);
+				});
+			})->export(Input::get('mode'));	
 		}
 
 		return $this->layout;

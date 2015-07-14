@@ -1,98 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <body>
 	@if(isset($data))
 		<table class="table">
 			<thead>
 				<tr>
-					<th class="col-sm-1">No</th>
-					<th>Nama</th>
-					<th>Jabatan</th>
-					<th>Average Aktif</th>
-					<th>Total Idle I / Freq</th>
-					<th>Total Idle II / Freq</th>
-					<th>Total Idle III / Freq</th>
-					<!-- <th>Total Absence</th>
-					<th>Possible Total Effective</th> -->
-					<th>Time Loss Rate</th>
-					<!-- <th>Total Absence</th>
-					<th>Possible Total Effective</th> -->
-					
+					<th rowspan="2">No</th>
+					<th rowspan="2">Nama</th>
+					<th rowspan="2">Jabatan</th>
+					<th rowspan="2" style="text-align:center">HB</th>
+					<th colspan="4" style="text-align:center">HC</th>
+					<th colspan="8" style="text-align:center">AS</th>
+					<th rowspan="2" style="text-align:center">Total</th>
+				</tr>
+				<tr>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th style="text-align:center">HT</th>
+					<th style="text-align:center">HP</th>
+					<th style="text-align:center">HD</th>
+					<th style="text-align:center">HC</th>
+					<th style="text-align:center">DN</th>
+					<th style="text-align:center">SS</th>
+					<th style="text-align:center">SL</th>
+					<th style="text-align:center">CN</th>
+					<th style="text-align:center">CB</th>
+					<th style="text-align:center">CI</th>
+					<th style="text-align:center">UL</th>
+					<th style="text-align:center">AS</th>
 				</tr>
 			</thead>
 			@foreach($data as $key => $value)
 				<tbody>
-					<tr class="font-11">
-						<td class="col-sm-1">
-							{{$key+1}}
-						</td>
+					<tr>
+						<td>{{$key+1}}</td>
 						<td>
 							{{$value['name']}}
 						</td>
-						<td class="hidden-xs">
+						<td>
 							@if($value['position']!='')
 								{{$value['position']}} {{$value['department']}} {{$value['branch']}}
 							@elseif(isset($value['works'][0]))
 								{{$value['works'][0]['name']}} {{$value['works'][0]['tag']}} {{$value['works'][0]['branch']['name']}}
 							@endif
 						</td>
-						<td class="hidden-xs">
-							@if($value['position']!='')
-								{{floor($value['total_active']/3600)}} Jam<br/>
-								{{floor(($value['total_active']%3600)/60)}} Menit<br/> 
-								{{floor(($value['total_active']%3600)%60)}} Detik
-							@else
-								Tidak ada aktivitas
-							@endif
+						<td style="text-align:center">
+							{{$value['HB']}}
 						</td>
-						<td class="hidden-xs">
-							@if($value['position']!='')
-								{{floor($value['total_idle_1']/3600)}} Jam<br/>
-								{{floor(($value['total_idle_1']%3600)/60)}} Menit<br/> 
-								{{floor(($value['total_idle_1']%3600)%60)}} Detik
-								/ {{$value['frequency_idle_1']}}
-							@else
-								Tidak ada aktivitas
-							@endif
+						<td style="text-align:center">
+							{{$value['HT']}}
 						</td>
-						<td class="hidden-xs">
-							@if($value['position']!='')
-								{{floor($value['total_idle_2']/3600)}} Jam<br/>
-								{{floor(($value['total_idle_2']%3600)/60)}} Menit<br/> 
-								{{floor(($value['total_idle_2']%3600)%60)}} Detik
-								/ {{$value['frequency_idle_2']}}
-							@else
-								Tidak ada aktivitas
-							@endif
+						<td style="text-align:center">
+							{{$value['HP']}}
 						</td>
-						<td class="hidden-xs">
-							@if($value['position']!='')
-								{{floor($value['total_idle_3']/3600)}} Jam<br/>
-								{{floor(($value['total_idle_3']%3600)/60)}} Menit<br/> 
-								{{floor(($value['total_idle_3']%3600)%60)}} Detik
-								/ {{$value['frequency_idle_3']}}
-							@else
-								Tidak ada aktivitas
-							@endif
+						<td style="text-align:center">
+							{{$value['HD']}}
 						</td>
-						<!-- <td>
-							{{gmdate('H:i:s', $value['total_absence'])}}
+						<td style="text-align:center">
+							{{$value['HC']}}
 						</td>
-						<td>
-							{{gmdate('H:i:s', $value['possible_total_effective'])}}
-						</td> -->
-						<td class="hidden-xs">
-							@if($value['position']!='')
-								<?php $tlr = ($value['total_absence']!=0 ? $value['total_absence'] : 1) / ($value['possible_total_effective']!=0 ? $value['possible_total_effective'] : 1);?>
-								{{round(abs($tlr) * 100, 2)}} %
-							@else
-								100 %
-							@endif
+						<td style="text-align:center">
+							{{$value['DN']}}
+						</td>
+						<td style="text-align:center">
+							{{$value['SS']}}
+						</td>
+						<td style="text-align:center">
+							{{$value['SL']}}
+						</td>
+						<td style="text-align:center">
+							{{$value['CN']}}
+						</td>
+						<td style="text-align:center">
+							{{$value['CB']}}
+						</td>
+						<td style="text-align:center">
+							{{$value['CI']}}
+						</td>
+						<td style="text-align:center">
+							{{$value['UL']}}
+						</td>
+						<td style="text-align:center">
+							{{$value['AS']}}
+						</td>
+						<td style="text-align:center">
+							{{$value['HB']+$value['HT']+$value['HP']+$value['HD']+$value['HC']+$value['DN']+$value['SS']+$value['SL']+$value['CN']+$value['CB']+$value['CI']+$value['UL']+$value['AS']}}
 						</td>
 					</tr>
 				</tbody>
 			@endforeach
 		</table>
+
 	@endif
 </body>
 </html>

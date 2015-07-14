@@ -2,7 +2,7 @@
 
 @if (!$widget_error_count)
 	@section('widget_title')
-		<h1> {{ is_null($id) ? 'Tambah Status Log ' : 'Ubah Status Log '}} "{{$person['name']}}" </h1> 
+		<h1> {{ is_null($id) ? 'Tambah Status Kehadiran ' : 'Ubah Status Kehadiran '}} "{{$person['name']}}" <br/> Tanggal "{{$ondate}}"</h1> 
 	@overwrite
 
 	@section('widget_body')
