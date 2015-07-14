@@ -248,21 +248,18 @@ class ActivityController extends BaseController
 			}
 			$report 								= json_decode(json_encode($contents->data), true);
 
-			// $case = Input::get('case');
-			Excel::create('Laporan Aktivitas per tanggal ( '.$start.' s.d '.$end.' ) di '.$data['name'], function($excel) use ($report, $start, $end) 
+			Excel::create('Laporan Aktivitas per tanggal ( '.$start.' s.d '.$end.' ) Unit Bisnis '.$data['name'], function($excel) use ($report, $start, $end, $data) 
 			{
 				// Set the title
 				$excel->setTitle('Laporan Aktivitas');
 				// Call them separately
 				$excel->setDescription('Laporan Aktivitas');
-				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end) 
+				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end, $data) 
 				{
 					$c 									= count($report);
-					$sheet->loadView('widgets.organisation.report.activity.table_csv')->with('data', $report)->with('start', $start)->with('end', $end);
+					$sheet->loadView('widgets.organisation.report.activity.table_csv')->with('data', $report)->with('start', $start)->with('end', $end)->with('org', $data);
 				});
 			})->export(Input::get('mode'));
-			// dD($report
-			///nama viewnya			
 		}
 
 		return $this->layout;
@@ -341,16 +338,16 @@ class ActivityController extends BaseController
 			$report 								= json_decode(json_encode($contents->data), true);
 			
 
-			Excel::create('Laporan Aktivitas '.$report['name'].' per tanggal ( '.$start.' s.d '.$end.' )', function($excel) use ($report, $start, $end, $person) 
+			Excel::create('Laporan Aktivitas '.$report['name'].' per tanggal ( '.$start.' s.d '.$end.' )', function($excel) use ($report, $start, $end, $data) 
 			{
 				// Set the title
 				$excel->setTitle('Laporan Aktivitas');
 				// Call them separately
-				$excel->setDescription('Laporan Aktivitas person');
-				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end, $person) 
+				$excel->setDescription('Laporan Aktivitas Perorangan');
+				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end, $data) 
 				{
 					$c 									= count($report);
-					$sheet->loadView('widgets.organisation.report.attendance.person.table_csv')->with('data', $report)->with('start', $start)->with('end', $end)->with('person', $person);
+					$sheet->loadView('widgets.organisation.report.activity.person.table_csv')->with('data', $report)->with('start', $start)->with('end', $end)->with('org', $data);
 				});
 			})->export(Input::get('mode'));	
 		}

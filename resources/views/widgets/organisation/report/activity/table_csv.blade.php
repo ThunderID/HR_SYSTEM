@@ -2,96 +2,90 @@
 <html lang="en">
 <body>
 	@if(isset($data))
-		<table class="table">
+		<table class="table">				
 			<thead>
 				<tr>
-					<th class="col-sm-1">No</th>
-					<th>Nama</th>
-					<th>Jabatan</th>
-					<th>Average Aktif</th>
-					<th>Total Idle I / Freq</th>
-					<th>Total Idle II / Freq</th>
-					<th>Total Idle III / Freq</th>
-					<!-- <th>Total Absence</th>
-					<th>Possible Total Effective</th> -->
-					<th>Time Loss Rate</th>
-					<!-- <th>Total Absence</th>
-					<th>Possible Total Effective</th> -->
-					
+					<th colspan="8"></th>
 				</tr>
+				<tr>
+					<th style="width:10%">&nbsp;</th>
+					<th colspan="7" style="height:20%">Laporan Aktivitas Per Tanggal {{$start}} - {{$end}} Unit Bisnis {{$org['name']}}</th>
+				</tr>
+				<tr>
+					<th colspan="8"></th>
+				</tr>
+				<tr>
+					<th rowspan="2" class="text-center" style="width:10%; height:35%">&nbsp;</th>
+					<th rowspan="2" class="text-center" style="width:4%; height:35%">No<br/>&nbsp;</th>
+					<th rowspan="2" class="text-left" style="width:40%; height:35%">Nama <br/>(Jabatan)</th>
+					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Aktif <br/>(Hari)</th>
+					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Idle I <br/>(Freq)</th>
+					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Idle II <br/>(Freq)</th>
+					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Idle III <br/>(Freq)</th>
+					<th rowspan="2" class="text-center" style="width:20%; height:35%">Performance Rate</th>
+				</tr>
+				<tr></tr>
 			</thead>
-			@foreach($data as $key => $value)
-				<tbody>
-					<tr class="font-11">
-						<td class="col-sm-1">
+			<tbody>
+				@foreach($data as $key => $value)
+					<tr>
+						<td style="width:10%">&nbsp;</td>
+						<td class="font-11" style="height:35%">
 							{{$key+1}}
 						</td>
-						<td>
-							{{$value['name']}}
-						</td>
-						<td class="hidden-xs">
+						<td class="font-11" style="height:35%">
+							{{$value['name']}}<br/>
 							@if($value['position']!='')
-								{{$value['position']}} {{$value['department']}} {{$value['branch']}}
+								({{$value['position']}} {{$value['department']}} {{$value['branch']}})
 							@elseif(isset($value['works'][0]))
-								{{$value['works'][0]['name']}} {{$value['works'][0]['tag']}} {{$value['works'][0]['branch']['name']}}
+								({{$value['works'][0]['name']}} {{$value['works'][0]['tag']}} {{$value['works'][0]['branch']['name']}})
 							@endif
 						</td>
-						<td class="hidden-xs">
+						<td class="hidden-xs font-11 text-center" style="height:35%">
 							@if($value['position']!='')
-								{{floor($value['total_active']/3600)}} Jam<br/>
-								{{floor(($value['total_active']%3600)/60)}} Menit<br/> 
-								{{floor(($value['total_active']%3600)%60)}} Detik
+								{{floor($value['total_presence']/3600)}} Jam&nbsp;
+								{{floor(($value['total_presence']%3600)/60)}} Menit&nbsp; 
+								({{$value['total_days']}})
 							@else
 								Tidak ada aktivitas
 							@endif
 						</td>
-						<td class="hidden-xs">
+						<td class="hidden-xs font-11 text-center" style="height:35%">
 							@if($value['position']!='')
-								{{floor($value['total_idle_1']/3600)}} Jam<br/>
-								{{floor(($value['total_idle_1']%3600)/60)}} Menit<br/> 
-								{{floor(($value['total_idle_1']%3600)%60)}} Detik
-								/ {{$value['frequency_idle_1']}}
+								{{floor($value['total_idle_1']/3600)}} Jam&nbsp;
+								{{floor(($value['total_idle_1']%3600)/60)}} Menit&nbsp; 
+								({{$value['frequency_idle_1']}})
 							@else
 								Tidak ada aktivitas
 							@endif
 						</td>
-						<td class="hidden-xs">
+						<td class="hidden-xs font-11 text-center" style="height:35%">
 							@if($value['position']!='')
-								{{floor($value['total_idle_2']/3600)}} Jam<br/>
-								{{floor(($value['total_idle_2']%3600)/60)}} Menit<br/> 
-								{{floor(($value['total_idle_2']%3600)%60)}} Detik
-								/ {{$value['frequency_idle_2']}}
+								{{floor($value['total_idle_2']/3600)}} Jam&nbsp;
+								{{floor(($value['total_idle_2']%3600)/60)}} Menit&nbsp; 
+								({{$value['frequency_idle_2']}})
 							@else
 								Tidak ada aktivitas
 							@endif
 						</td>
-						<td class="hidden-xs">
+						<td class="hidden-xs font-11 text-center" style="height:35%">
 							@if($value['position']!='')
-								{{floor($value['total_idle_3']/3600)}} Jam<br/>
-								{{floor(($value['total_idle_3']%3600)/60)}} Menit<br/> 
-								{{floor(($value['total_idle_3']%3600)%60)}} Detik
-								/ {{$value['frequency_idle_3']}}
+								{{floor($value['total_idle_3']/3600)}} Jam&nbsp;
+								{{floor(($value['total_idle_3']%3600)/60)}} Menit&nbsp; 
+								({{$value['frequency_idle_3']}})
 							@else
 								Tidak ada aktivitas
 							@endif
 						</td>
-						<!-- <td>
-							{{gmdate('H:i:s', $value['total_absence'])}}
-						</td>
-						<td>
-							{{gmdate('H:i:s', $value['possible_total_effective'])}}
-						</td> -->
-						<td class="hidden-xs">
+						<td class="hidden-xs font-11 text-center" style="height:35%">
 							@if($value['position']!='')
-								<?php $tlr = ($value['total_absence']!=0 ? $value['total_absence'] : 1) / ($value['possible_total_effective']!=0 ? $value['possible_total_effective'] : 1);?>
-								{{round(abs($tlr) * 100, 2)}} %
-							@else
-								100 %
+								<?php $pr = ($value['total_active']!=0 ? $value['total_active'] : 1) / ($value['total_presence']!=0 ? $value['total_presence'] : 1);?>
+								{{round(abs($pr) * 100, 2)}} %
 							@endif
 						</td>
 					</tr>
-				</tbody>
-			@endforeach
+				@endforeach
+			</tbody>
 		</table>
 	@endif
 </body>

@@ -90,7 +90,7 @@ class LogController extends BaseController
 
 		if(Input::has('print'))
 		{
-			$search 								= ['id' => $person['id'], 'processlogsondate' => ['on' => [$start, $end]]];
+			$search 								= ['id' => $person['id'], 'logsondate' => ['on' => [$ondate, date('Y-m-d',strtotime($ondate.' + 1 Day'))]]];
 			$sort 									= ['persons.name' => 'asc'];
 			$page 									= 1;
 			$per_page 								= 1;
@@ -106,16 +106,16 @@ class LogController extends BaseController
 			$report 								= json_decode(json_encode($contents->data), true);
 			
 
-			Excel::create('Laporan Aktivitas '.$report['name'].' per tanggal ( '.$start.' s.d '.$end.' )', function($excel) use ($report, $start, $end, $person) 
+			Excel::create('Laporan Aktivitas '.$report['name'].' per tanggal ( '.$ondate.' )', function($excel) use ($report, $ondate, $data) 
 			{
 				// Set the title
 				$excel->setTitle('Laporan Aktivitas');
 				// Call them separately
-				$excel->setDescription('Laporan Aktivitas person');
-				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end, $person) 
+				$excel->setDescription('Laporan Aktivitas Perorangan');
+				$excel->sheet('Sheetname', function ($sheet) use ($report, $ondate, $data) 
 				{
 					$c 									= count($report);
-					$sheet->loadView('widgets.organisation.report.attendance.person.table_csv')->with('data', $report)->with('start', $start)->with('end', $end)->with('person', $person);
+					$sheet->loadView('widgets.organisation.report.activity.person.log.table_csv')->with('data', $report)->with('ondate', $ondate)->with('org', $data);
 				});
 			})->export(Input::get('mode'));	
 		}
