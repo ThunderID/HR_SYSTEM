@@ -241,6 +241,12 @@ Route::group(['namespace' => 'Organisation\\Person\\', 'prefix' => 'person'], fu
 	// ------------------------------------------------------------------------------------
 
 	Route::any('schedules-list',				['uses' => 'ScheduleController@ajax',						'as' => 'hr.person.schedule.ajax']);
+
+	// ------------------------------------------------------------------------------------
+	// AJAX FOLLOWS FOR PERSON
+	// ------------------------------------------------------------------------------------
+
+	Route::any('follows-list',					['uses' => 'WorkController@ajax',							'as' => 'hr.person.work.ajax']);
 });
 
 // ------------------------------------------------------------------------------------

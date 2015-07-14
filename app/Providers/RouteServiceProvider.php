@@ -162,6 +162,8 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.person.works.update'						=> 67,
 							'hr.person.works.delete'						=> 68,
 
+							'hr.person.work.ajax'							=> 66,
+
 							'hr.authentications.index'						=> 69,
 							'hr.authentications.show'						=> 69,
 							'hr.authentications.create'						=> 70,
@@ -219,7 +221,6 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.report.activities.edit'						=> 95,
 							'hr.report.activities.update'					=> 95,
 							'hr.report.activities.delete'					=> 96,
-
 
 							'hr.report.attendances.index'					=> 97,
 							'hr.report.attendances.show'					=> 97,

@@ -1,5 +1,5 @@
 <?php namespace App\Http\Controllers\Organisation\Person;
-use Input, Session, App, Paginator, Redirect, DB, Config;
+use Input, Session, App, Paginator, Redirect, DB, Config, Response;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -8,6 +8,7 @@ use App\Console\Commands\Checking;
 use App\Console\Commands\Deleting;
 use App\Models\Work;
 use App\Models\Person;
+use App\Models\Follow;
 
 class WorkController extends BaseController
 {
@@ -396,5 +397,43 @@ class WorkController extends BaseController
 		{
 			return Redirect::back()->withErrors(['Password yang Anda masukkan tidak sah!']);
 		}
+	}
+
+	public function ajax($page = 1)
+	{
+		// ---------------------- LOAD DATA ----------------------
+		if(Input::has('org_id'))
+		{
+			$org_id 					= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 					= Session::get('user.organisation');
+		}
+
+		if(Input::has('term'))
+		{
+			$chartid 					= Input::get('term');
+		}
+		else
+		{
+			return Response::json(['message' => 'Not Found'], 404);
+		}
+	
+		if(!in_array($org_id, Session::get('user.organisationids')))
+		{
+			return Response::json(['message' => 'Not Found'], 404);
+		}
+		
+		$search 						= ['chartid' => $branch_id, 'organisationid' => $org_id, 'withattributes' => ['calendar']];
+		$results 						= $this->dispatch(new Getting(new Follow, $search, [] , 1, 100));
+		$contents 						= json_decode($results);
+		
+		if(!$contents->meta->success)
+		{
+			return Response::json(['message' => 'Not Found'], 404);
+		}
+
+		return Response::json($results, 200);
 	}
 }
