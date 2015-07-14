@@ -14,7 +14,7 @@
 					'widget_options'		=> 	[
 													'calendarlist'			=>
 													[
-														'organisation_id'	=> Session::get('user.organisationids'),
+														'organisation_id'	=> Session::get('user.organisationid'),
 														'search'			=> ['notid' => (is_null($id) ? 0 : $id)],
 														'sort'				=> ['name' => 'asc'],
 														'page'				=> 1,
