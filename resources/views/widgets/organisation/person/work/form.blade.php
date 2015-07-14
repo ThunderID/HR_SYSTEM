@@ -20,6 +20,7 @@
 														'per_page'			=> 100,
 														'chart_id'			=> $WorkComposer['widget_data']['worklist']['work']['chart_id'],
 														'tabindex'			=> 1,
+														'class_name'		=> 'select_chart'
 													]
 												]
 				])
@@ -37,6 +38,7 @@
 														'per_page'			=> 100,
 														'calendar_id'		=> $WorkComposer['widget_data']['worklist']['work']['calendar_id'],
 														'tabindex'			=> 2,
+														'class_name'		=> 'select_follow'
 													]
 												]
 				])
