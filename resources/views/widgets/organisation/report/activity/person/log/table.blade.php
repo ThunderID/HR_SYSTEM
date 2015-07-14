@@ -18,7 +18,7 @@
 
 	@section('widget_body')
 		@if(isset($PersonComposer['widget_data']['personlist']['person']['logs']))
-			<table class="table table-condensed report">
+			<table class="table table-hover table-condensed report">
 				<thead>
 					<tr>
 						<th class="text-center" style="width:6%">No</th>
@@ -30,7 +30,7 @@
 				@foreach($PersonComposer['widget_data']['personlist']['person']['logs'] as $key => $value)
 					<tbody>
 						<tr>
-							<td class="text-left">
+							<td class="text-center">
 								{{$key+1}}
 							</td>
 							<td class="text-center">

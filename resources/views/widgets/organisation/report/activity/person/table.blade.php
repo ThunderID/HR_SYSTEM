@@ -21,7 +21,7 @@
 
 	@section('widget_body')
 		@if(isset($PersonComposer['widget_data']['personlist']['person']['processlogs']))
-			<table class="table table-condensed report">
+			<table class="table table-hover table-condensed report">
 				<thead>
 					<tr>
 						<th rowspan="2" class="text-center" style="width:4%">No<br/>&nbsp;</th>

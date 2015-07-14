@@ -21,7 +21,7 @@
 
 	@section('widget_body')
 		@if(isset($PersonComposer['widget_data']['personlist']['person']['processlogs']))
-			<table class="table table-condensed report">
+			<table class="table table-hover table-condensed report">
 				<thead>
 					<tr>
 						<th class="text-center" style="width:5%">No<br/>&nbsp;</th>
@@ -36,8 +36,8 @@
 						<th>&nbsp;</th>
 					</tr>
 				</thead>
-				@foreach($PersonComposer['widget_data']['personlist']['person']['processlogs'] as $key => $value)
-					<tbody>
+				<tbody>
+					@foreach($PersonComposer['widget_data']['personlist']['person']['processlogs'] as $key => $value)
 						<tr>
 							<td class="font-11">
 								{{$key+1}}
@@ -157,8 +157,8 @@
 								<a href="{{route('hr.report.attendances.edit', array_merge(['id' => $value['id'], 'start' => $start, 'end' => $end, 'person_id' => $person['id'], 'org_id' => $data['id'], 'ondate' => $value['on']])) }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 							</td>
 						</tr>
-					</tbody>
-				@endforeach
+					@endforeach
+				</tbody>
 			</table>
 			<div class="clearfix">&nbsp;</div>
 		@endif

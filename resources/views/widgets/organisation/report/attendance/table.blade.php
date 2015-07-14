@@ -22,7 +22,7 @@
 
 	@section('widget_body')
 			@if(isset($PersonComposer['widget_data']['personlist']['person']))
-					<table class="table report table-bordered table-condensed">
+					<table class="table table-hover report table-bordered table-condensed">
 						<thead>
 							<tr>
 								<th rowspan="2" class="text-center" style="width:4%">No<br/>&nbsp;</th>
