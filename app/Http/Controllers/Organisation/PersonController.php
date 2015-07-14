@@ -29,7 +29,7 @@ class PersonController extends BaseController
 		}
 		else
 		{
-			$org_id 								= Session::get('user.organisation');
+			$org_id 								= Session::get('user.organisationid');
 		}
 
 		if(!in_array($org_id, Session::get('user.organisationids')))
@@ -252,7 +252,7 @@ class PersonController extends BaseController
 		}
 		else
 		{
-			$org_id 							= Session::get('user.organisation');
+			$org_id 							= Session::get('user.organisationid');
 		}
 
 		if(!in_array($org_id, Session::get('user.organisationids')))
@@ -285,7 +285,7 @@ class PersonController extends BaseController
 		}
 		else
 		{
-			$org_id 							= Session::get('user.organisation');
+			$org_id 							= Session::get('user.organisationid');
 		}
 
 		if (Input::has('import'))
@@ -381,7 +381,7 @@ class PersonController extends BaseController
 		}
 		else
 		{
-			$org_id 							= Session::get('user.organisation');
+			$org_id 							= Session::get('user.organisationid');
 		}
 
 		if(Input::has('person_id'))
@@ -436,7 +436,7 @@ class PersonController extends BaseController
 			}
 			else
 			{
-				$org_id 					= Session::get('user.organisation');
+				$org_id 					= Session::get('user.organisationid');
 			}
 
 			if(!in_array($org_id, Session::get('user.organisationids')))

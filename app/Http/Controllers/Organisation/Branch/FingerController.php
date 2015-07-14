@@ -19,7 +19,7 @@ class FingerController extends BaseController
 		}
 		else
 		{
-			$org_id 							= Session::get('user.organisation');
+			$org_id 							= Session::get('user.organisationid');
 		}
 
 		if(Input::has('branch_id'))
@@ -70,7 +70,7 @@ class FingerController extends BaseController
 		}
 		else
 		{
-			$org_id 							= Session::get('user.organisation');
+			$org_id 							= Session::get('user.organisationid');
 		}
 
 		if(Input::has('branch_id'))

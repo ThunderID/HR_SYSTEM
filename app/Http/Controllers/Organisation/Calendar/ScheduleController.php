@@ -22,7 +22,7 @@ class ScheduleController extends BaseController
 		}
 		else
 		{
-			$org_id 							= Session::get('user.organisation');
+			$org_id 							= Session::get('user.organisationid');
 		}
 
 		if(Input::has('cal_id'))
@@ -211,7 +211,7 @@ class ScheduleController extends BaseController
 		}
 		else
 		{
-			$org_id 							= Session::get('user.organisation');
+			$org_id 							= Session::get('user.organisationid');
 		}
 
 		if(Input::has('cal_id'))
@@ -262,7 +262,7 @@ class ScheduleController extends BaseController
 		}
 		else
 		{
-			$org_id 							= Session::get('user.organisation');
+			$org_id 							= Session::get('user.organisationid');
 		}
 
 		if(Input::has('cal_id'))
@@ -385,7 +385,7 @@ class ScheduleController extends BaseController
 			}
 			else
 			{
-				$org_id 					= Session::get('user.organisation');
+				$org_id 					= Session::get('user.organisationid');
 			}
 
 			if(Input::has('cal_id'))
