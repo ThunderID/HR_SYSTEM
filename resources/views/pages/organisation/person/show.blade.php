@@ -38,7 +38,7 @@
 												'personlist'			=>
 												[
 													'organisation_id'	=> $data['id'],
-													'search'			=> ['id' => $person['id'], 'globalwage' => array_merge(['organisationid' => $data['id'], 'on' => date('Y-m-d')], (isset($filtered['search']) ? $filtered['search'] : []))],
+													'search'			=> ['id' => $person['id'], 'globalworkleave' => array_merge(['organisationid' => $data['id'], 'on' => date('Y-m-d')], (isset($filtered['search']) ? $filtered['search'] : []))],
 													'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']),
 													'page'				=> 1,
 													'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
