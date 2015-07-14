@@ -32,8 +32,8 @@
 						</tr>
 					</thead>				
 					<tbody>
-					<?php $i = $PersonComposer['widget_data']['personlist']['person-display']['from'];?>
-					@foreach($PersonComposer['widget_data']['personlist']['person'] as $key => $value)
+						<?php $i = $PersonComposer['widget_data']['personlist']['person-display']['from'];?>
+						@foreach($PersonComposer['widget_data']['personlist']['person'] as $key => $value)
 							<tr class="">
 								<td class="">
 									{{$i}}
@@ -57,7 +57,7 @@
 								<td class="">
 									{{$value['username']}}
 								</td>
-								<td class="text-right">
+								<td class="">
 									<div class="btn-group">
 										<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pengaturan <span class="caret"></span></button>
 										<ul class="dropdown-menu dropdown-menu-right">

@@ -55,12 +55,25 @@ tbody tr:hover {
 }
 
 /* For appearance */
-.sticky-wrap {
-	overflow-x: auto;
-	overflow-y: hidden;
-	position: relative;
-	margin: 3em 0;
-	width: 100%;
+@media screen and (min-width: 840px) {
+	.sticky-wrap {
+		overflow: visible;
+		position: relative;
+		margin: 3em 0;
+		width: 100%;
+	}
+}
+@media screen and (max-width: 839px) {
+	.sticky-wrap {
+		overflow-x: auto;
+		/*overflow-y: auto;		*/
+		position: relative;
+		margin: 3em 0;
+		width: 100%;
+	}
+	.sticky-wrap .dropdown-menu {
+		position: static !important;
+	}
 }
 .sticky-wrap .sticky-thead,
 .sticky-wrap .sticky-col,
