@@ -34,12 +34,12 @@ class FollowComposer extends WidgetComposer
 				{
 					foreach ($value as $key2 => $value2) 
 					{
-						$widget_errors->add('Follow', $value2);
+						$this->widget_errors->add('Follow', $value2);
 					}
 				}
 				else
 				{
-					$widget_errors->add('Follow', $value);
+					$this->widget_errors->add('Follow', $value);
 				}
 			}
 
