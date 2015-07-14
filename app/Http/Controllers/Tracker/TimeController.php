@@ -19,7 +19,7 @@ class TimeController extends BaseController {
 			return Response::json(['message' => 'Server Error'], 500);
 		}		
 
-		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['tr_ver']) || !isset($attributes['application']['api']['station_id']))
+		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['station_id']))
 		{
 			return Response::json(['message' => 'Server Error'], 500);
 		}
@@ -50,6 +50,6 @@ class TimeController extends BaseController {
 			}
 		}
 
-		return Response::json(['message' => 'sukses|'.date('d|m|Y|H:i:s')], 200);
+		return Response::json(['message' => 'sukses|'.date('d|m|Y|H|i|s')], 200);
 	}
 }

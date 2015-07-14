@@ -55,25 +55,6 @@ trait HasScheduleTrait {
 		return $query
 					->wheredoesnthave('processlogs', function($q)use($variable){$q->ondate([$variable, $variable]);})
 					->chartnotadmin(true)
-					// ->defaultemail(true)
-					// ->selectRaw('if(person_schedules.on = "'.$variable.'", person_schedules.on, if(tmp_schedules.on = "'.$variable.'", tmp_schedules.on, "'.$variable.'")) as ondate')
-					// ->selectRaw('if(person_schedules.on = "'.$variable.'", person_schedules.start, if(tmp_schedules.on = "'.$variable.'", tmp_schedules.start, "'.$variable.'")) as onstart')
-					// ->selectRaw('if(person_schedules.on = "'.$variable.'", person_schedules.end, if(tmp_schedules.on = "'.$variable.'", tmp_schedules.end, "'.$variable.'")) as onend')
-					// ->selectRaw('persons.id')
-					// ->selectRaw('persons.name')
-					// ->selectRaw('charts.name as chart')
-					// ->selectRaw('branches.name as branch')
-					// ->selectRaw('charts.tag as tag')
-					// ->Join('works', 'persons.id', '=', 'works.person_id')
-					// ->Join('charts', 'works.chart_id', '=', 'charts.id')
-					// ->Join('branches', 'charts.branch_id', '=', 'branches.id')
-					// ->Join('tmp_calendars', 'tmp_calendars.id', '=', 'works.calendar_id')
-					// ->leftJoin('person_schedules', 'persons.id', '=', 'person_schedules.person_id')
-					// ->leftJoin('tmp_schedules', 'tmp_calendars.id', '=', 'tmp_schedules.calendar_id')
-					// ->whereRaw('NOT EXISTS (SELECT * FROM logs WHERE logs.on = "'.$variable.'" && logs.person_id = persons.id)')
-                    // ->whereNull('works.end')
-                    // ->where('person_schedules.is_affect_workleave', false)
-                    // ->groupBy('persons.id')
 					;
 	}
 
