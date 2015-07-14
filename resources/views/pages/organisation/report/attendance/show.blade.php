@@ -22,7 +22,7 @@
 										'page'						=> 1,
 										'per_page'					=> 100,
 										'laporan'					=> 'yes',
-										'active_report_activities'	=> 'yes'
+										'active_report_attendances'	=> 'yes'
 									]
 								]
 	])

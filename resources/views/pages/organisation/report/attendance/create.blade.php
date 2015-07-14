@@ -4,7 +4,7 @@
 							['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
 							['name' => 'Laporan Kehadiran', 'route' => route('hr.report.attendances.index', ['org_id' => $data['id']]) ],
 							['name' => $person['name'], 'route' => route('hr.report.attendances.show', ['person_id' => $person['id'], 'org_id' => $data['id'], 'start' => $start, 'end' => $end]) ],
-							['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.attendance.persons.create', ['org_id' => $data['id']]) : route('hr.attendance.persons.edit', ['id' => $id, 'org_id' => $data['id']]) )]
+							['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.report.attendances.create', ['org_id' => $data['id']]) : route('hr.report.attendances.edit', ['id' => $id, 'org_id' => $data['id']]) )]
 						]
 	])
 @stop
