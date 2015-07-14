@@ -3,6 +3,7 @@
 	@section('widget_body')
 		@foreach (['alert_success', 'alert_warning', 'alert_danger', 'alert_info'] as $alert)
 			@if (Session::has($alert))
+				<div class="clearfix">&nbsp;</div>
 				<div class='alert {{str_replace("alert_", "alert-", $alert)}} mt-10'>
 					@if (is_array(Session::get($alert)))
 						@foreach (Session::get($alert) as $message)
@@ -46,6 +47,7 @@
 		@endforeach
 
 		@if (isset($errors) && $errors->count())
+			<div class="clearfix">&nbsp;</div>
 			<div class='alert alert-danger mt-10'>
 				<div class="row">
 					<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 text-center">

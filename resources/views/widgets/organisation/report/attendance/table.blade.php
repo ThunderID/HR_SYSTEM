@@ -3,115 +3,108 @@
 @if (!$widget_error_count)
 	@section('widget_title')
 	<h1> {!! $widget_title or 'Laporan Kehadiran' !!} </h1>
-	<small>Total data {{ $PersonComposer['widget_data']['personlist']['person-pagination']->total() }}</small>
+	<small>Total data {{ count($PersonComposer['widget_data']['personlist']['person']) }}</small>
 	<?php
 		$PersonComposer['widget_data']['personlist']['person-pagination']->setPath('hr.report.activities.index');
 	 ?>
 
-	 @if(isset($PersonComposer['widget_data']['personlist']['active_filter']) && !is_null($PersonComposer['widget_data']['personlist']['active_filter']))
-		<div class="clearfix">&nbsp;</div>
-		@foreach($PersonComposer['widget_data']['personlist']['active_filter'] as $key => $value)
-			<span class="active-filter">{{$value}}</span>
-		@endforeach
-	@endif
-	
-	<div class="btn-group pull-right">
+	 <div class="btn-group pull-right">
 		<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			<i class="fa fa-file"></i> Export to <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
-			<li><a href="{{route('hr.report.activities.index', array_merge(Input::all(), ['print' => 'yes', 'mode' => 'csv']))}}">CSV</a></li>
-			<li><a href="{{route('hr.report.activities.index', array_merge(Input::all(), ['print' => 'yes', 'mode' => 'xls']))}}">XLS</a></li>
+			<li><a href="{{ route('hr.report.attendances.index', array_merge(Input::all(), ['print' => 'yes', 'mode' => 'csv'])) }}">CSV</a></li>
+			<li><a href="{{ route('hr.report.attendances.index', array_merge(Input::all(), ['print' => 'yes', 'mode' => 'xls'])) }}">XLS</a></li>
 		</ul>
 	</div>
-
+	
 	@overwrite
 
 	@section('widget_body')
 			@if(isset($PersonComposer['widget_data']['personlist']['person']))
-				<div class="table-responsive">
-					<table class="table table-condensed report">				
+					<table class="table table-hover report table-bordered table-condensed">
 						<thead>
 							<tr>
-								<th class="col-sm-1">No</th>
-								<th>Nama</th>
-								<th class="hidden-xs">Jabatan</th>
-								<th class="hidden-xs">Average Aktif</th>
-								<th class="hidden-xs">Total Idle I / Freq</th>
-								<th class="hidden-xs">Total Idle II / Freq</th>
-								<th class="hidden-xs">Total Idle III / Freq</th>
-								<!-- <th>Total Absence</th>
-								<th>Possible Total Effective</th> -->
-								<th class="hidden-xs">Time Loss Rate</th>
-								<th>&nbsp;</th>
+								<th rowspan="2" class="text-center" style="width:4%">No<br/>&nbsp;</th>
+								<th rowspan="2" class="text-left">Nama <br/>(Jabatan)</th>
+								<th rowspan="2" class="hidden-xs text-center" style="width:4%">HB<br/>&nbsp;</th>
+								<th colspan="4" class="hidden-xs text-center" style="width:16%">HC</th>
+								<th colspan="8" class="hidden-xs text-center" style="width:32%">AS</th>
+								<th rowspan="2" class="hidden-xs text-center" style="width:6%">Total<br/>&nbsp;</th>
+								<th rowspan="2" class="hidden-xs text-center" style="width:8%">Time Loss Rate<br/>&nbsp;</th>
+								<th rowspan="2" class="hidden-xs text-center" style="width:8%">&nbsp;</th>
+							</tr>
+							<tr>
+								<th class="text-center" style="width:4%">HT</th>
+								<th class="text-center" style="width:4%">HP</th>
+								<th class="text-center" style="width:4%">HD</th>
+								<th class="text-center" style="width:4%">HC</th>
+								<th class="text-center" style="width:4%">DN</th>
+								<th class="text-center" style="width:4%">SS</th>
+								<th class="text-center" style="width:4%">SL</th>
+								<th class="text-center" style="width:4%">CN</th>
+								<th class="text-center" style="width:4%">CB</th>
+								<th class="text-center" style="width:4%">CI</th>
+								<th class="text-center" style="width:4%">UL</th>
+								<th class="text-center" style="width:4%">AS</th>
 							</tr>
 						</thead>
-					</table>
-				</div>
-				<div class="table-responsive div-table-content">
-					<table class="table table-condensed table-hover report">
 						@foreach($PersonComposer['widget_data']['personlist']['person'] as $key => $value)
 							<tbody>
 								<tr>
-									<td class="col-sm-1 font-11">
-										{{$key+1}}
-									</td>
-									<td class="font-11">
+									<td class="text-center font-11" style="width:4%">{{$key+1}}</td>
+									<td class="text-left font-11">
 										{{$value['name']}}
-									</td>
-									<td class="hidden-xs font-11">
+										<br/>
 										@if($value['position']!='')
-											{{$value['position']}} {{$value['department']}} {{$value['branch']}}
+											({{$value['position']}} {{$value['department']}} {{$value['branch']}})
 										@elseif(isset($value['works'][0]))
-											{{$value['works'][0]['name']}} {{$value['works'][0]['tag']}} {{$value['works'][0]['branch']['name']}}
+											({{$value['works'][0]['name']}} {{$value['works'][0]['tag']}} {{$value['works'][0]['branch']['name']}})
 										@endif
 									</td>
-									<td class="hidden-xs font-11">
-										@if($value['position']!='')
-											{{floor($value['total_active']/3600)}} Jam<br/>
-											{{floor(($value['total_active']%3600)/60)}} Menit</br/> 
-											{{floor(($value['total_active']%3600)%60)}} Detik
-										@else
-											Tidak ada aktivitas
-										@endif
+									<td class="text-center hidden-xs font-11">
+										{{$value['HB']}}
 									</td>
-									<td class="hidden-xs font-11">
-										@if($value['position']!='')
-											{{floor($value['total_idle_1']/3600)}} Jam<br/>
-											{{floor(($value['total_idle_1']%3600)/60)}} Menit<br/> 
-											{{floor(($value['total_idle_1']%3600)%60)}} Detik
-											/ {{$value['frequency_idle_1']}}
-										@else
-											Tidak ada aktivitas
-										@endif
+									<td class="text-center hidden-xs font-11">
+										{{$value['HT']}}
 									</td>
-									<td class="hidden-xs font-11">
-										@if($value['position']!='')
-											{{floor($value['total_idle_2']/3600)}} Jam<br/>
-											{{floor(($value['total_idle_2']%3600)/60)}} Menit<br/> 
-											{{floor(($value['total_idle_2']%3600)%60)}} Detik
-											/ {{$value['frequency_idle_2']}}
-										@else
-											Tidak ada aktivitas
-										@endif
+									<td class="text-center hidden-xs font-11">
+										{{$value['HP']}}
 									</td>
-									<td class="hidden-xs font-11">
-										@if($value['position']!='')
-											{{floor($value['total_idle_3']/3600)}} Jam<br/>
-											{{floor(($value['total_idle_3']%3600)/60)}} Menit<br/> 
-											{{floor(($value['total_idle_3']%3600)%60)}} Detik
-											/ {{$value['frequency_idle_3']}}
-										@else
-											Tidak ada aktivitas
-										@endif
+									<td class="text-center hidden-xs font-11">
+										{{$value['HD']}}
 									</td>
-									<!-- <td>
-										{{gmdate('H:i:s', $value['total_absence'])}}
+									<td class="text-center hidden-xs font-11">
+										{{$value['HC']}}
 									</td>
-									<td>
-										{{gmdate('H:i:s', $value['possible_total_effective'])}}
-									</td> -->
-									<td class="hidden-xs font-11">
+									<td class="text-center hidden-xs font-11">
+										{{$value['DN']}}
+									</td>
+									<td class="text-center hidden-xs font-11">
+										{{$value['SS']}}
+									</td>
+									<td class="text-center hidden-xs font-11">
+										{{$value['SL']}}
+									</td>
+									<td class="text-center hidden-xs font-11">
+										{{$value['CN']}}
+									</td>
+									<td class="text-center hidden-xs font-11">
+										{{$value['CB']}}
+									</td>
+									<td class="text-center hidden-xs font-11">
+										{{$value['CI']}}
+									</td>
+									<td class="text-center hidden-xs font-11">
+										{{$value['UL']}}
+									</td>
+									<td class="text-center hidden-xs font-11">
+										{{$value['AS']}}
+									</td>
+									<td class="text-center hidden-xs font-11">
+										{{$value['HB']+$value['HT']+$value['HP']+$value['HD']+$value['HC']+$value['DN']+$value['SS']+$value['SL']+$value['CN']+$value['CB']+$value['CI']+$value['UL']+$value['AS']}}
+									</td>
+									<td class="text-center hidden-xs font-11">
 										@if($value['position']!='')
 											<?php $tlr = ($value['total_absence']!=0 ? $value['total_absence'] : 1) / ($value['possible_total_effective']!=0 ? $value['possible_total_effective'] : 1);?>
 											{{round(abs($tlr) * 100, 2)}} %
@@ -121,18 +114,17 @@
 									</td>
 									<td class="text-right font-11">
 										@if($value['position']!='')
-											<a href="{{route('hr.attendance.persons.index', ['person_id' => $value['id'], 'org_id' => $data['id'], 'start' => $start, 'end' => $end])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
+											<a href="{{route('hr.report.attendances.show', ['person_id' => $value['id'], 'org_id' => $data['id'], 'start' => $start, 'end' => $end])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
 										@endif
 									</td>
 								</tr>
 							</tbody>
 						@endforeach
 					</table>
-				</div>
 
 				<div class="row">
-					<div class="col-sm-12 text-center mt-10">
-						<p>Menampilkan {!! $PersonComposer['widget_data']['personlist']['person-display']['from']!!} - {!! count($PersonComposer['widget_data']['personlist']['person']) !!}</p>
+					<div class="col-sm-12 text-center mt-11">
+						<p>Menampilkan {!! $PersonComposer['widget_data']['personlist']['person-display']['from']!!} - {!! $PersonComposer['widget_data']['personlist']['person-display']['to']!!}</p>
 						{!! $PersonComposer['widget_data']['personlist']['person-pagination']->appends(Input::all())->render()!!}
 					</div>
 				</div>

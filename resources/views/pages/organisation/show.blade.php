@@ -38,7 +38,7 @@
 												[
 													'title'				=> 'Total Karyawan "'.$data['name'].'"',
 													'organisation_id'	=> $data['id'],
-													'search'			=> ['currentwork' => null],
+													'search'			=> ['chartnotadmin' => true],
 													'sort'				=> [],
 													'page'				=> 1,
 													'per_page'			=> 100,

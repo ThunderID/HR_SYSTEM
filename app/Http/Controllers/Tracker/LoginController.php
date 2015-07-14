@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\Auth;
+<?php namespace App\Http\Controllers\Tracker;
 
 use App\Http\Controllers\BaseController;
 use App\Console\Commands\Checking;
@@ -11,7 +11,7 @@ use App\Models\WorkAuthentication;
 use App\Models\Branch;
 use Auth, Input, Session, Redirect, Response;
 
-class TrackerController extends BaseController {
+class LoginController extends BaseController {
 
 	function postLogin()
 	{

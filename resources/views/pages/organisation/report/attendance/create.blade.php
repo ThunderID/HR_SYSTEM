@@ -2,9 +2,9 @@
 	@include('widgets.common.nav_topbar', 
 	['breadcrumb' 	=> 	[	
 							['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
-							['name' => 'Laporan Aktivitas', 'route' => route('hr.report.activities.index', ['org_id' => $data['id']]) ],
-							['name' => $person['name'], 'route' => route('hr.attendance.persons.index', ['org_id' => $data['id'], 'person_id' => $person['id']]) ],
-							['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.attendance.persons.create', ['org_id' => $data['id']]) : route('hr.attendance.persons.edit', ['id' => $id, 'org_id' => $data['id']]) )]
+							['name' => 'Laporan Kehadiran', 'route' => route('hr.report.attendances.index', ['org_id' => $data['id']]) ],
+							['name' => $person['name'], 'route' => route('hr.report.attendances.show', ['person_id' => $person['id'], 'org_id' => $data['id'], 'start' => $start, 'end' => $end]) ],
+							['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.report.attendances.create', ['org_id' => $data['id']]) : route('hr.report.attendances.edit', ['id' => $id, 'org_id' => $data['id']]) )]
 						]
 	])
 @stop
@@ -23,7 +23,7 @@
 											'page'				=> 1,
 											'per_page'			=> 100,
 											'laporan'			=> 'yes',
-											'active_report_attendances'	=> 'yes'
+											'active_report_activities'	=> 'yes'
 										]
 									]
 	])
@@ -33,19 +33,19 @@
 @overwrite
 
 @section('content_body')
-	@include('widgets.organisation.report.attendance.person.form', [
+	@include('widgets.organisation.report.attendance.form', [
 		'widget_template'	=> 'panel',
 		'widget_options'	=> 	[
 									'processlogslist'			=>
 									[
-										'form_url'			=> route('hr.attendance.persons.store', array_merge(['id' => $id, 'org_id' => $data['id'], 'person_id' => $person['id']], Input::all())),
+										'form_url'			=> route('hr.report.attendances.store', array_merge(['id' => $id, 'org_id' => $data['id'], 'person_id' => $person['id']], Input::all())),
 										'new'				=> (is_null($id) ? true : false),
 										'organisation_id'	=> $data['id'],
 										'search'			=> ['id' => $id],
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 1,
-										'route_back'		=> route('hr.attendance.persons.index', array_merge(['org_id' => $data['id'], 'person_id' => $person['id']], Input::all()))
+										'route_back'		=> route('hr.report.attendances.show', array_merge(['person_id' => $person['id'], 'org_id' => $data['id']], Input::all()))
 									]
 								]
 	])

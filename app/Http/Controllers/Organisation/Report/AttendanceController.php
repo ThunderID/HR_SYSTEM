@@ -9,7 +9,9 @@ use App\Console\Commands\Deleting;
 use App\Console\Commands\Checking;
 use App\Models\Organisation;
 use App\Models\Person;
+use App\Models\Work;
 use App\Models\Branch;
+use App\Models\ProcessLog;
 
 class AttendanceController extends BaseController 
 {
@@ -17,6 +19,7 @@ class AttendanceController extends BaseController
 
 	public function index()
 	{		
+		// ---------------------- LOAD DATA ----------------------
 		if(Input::has('org_id'))
 		{
 			$org_id 								= Input::get('org_id');
@@ -32,7 +35,7 @@ class AttendanceController extends BaseController
 		}
 		else
 		{
-			$start 									= date('Y-m-d', strtotime('first day of this month'));
+			$start 									= date('Y-m-d', strtotime('first day of january '.date('Y')));
 		}
 
 		if(Input::has('end'))
@@ -41,7 +44,7 @@ class AttendanceController extends BaseController
 		}
 		else
 		{
-			$end 									= date('Y-m-d', strtotime('last day of next month'));
+			$end 									= date('Y-m-d', strtotime('last day of december '.date('Y')));
 		}
 
 		if(!in_array($org_id, Session::get('user.organisationids')))
@@ -60,7 +63,6 @@ class AttendanceController extends BaseController
 		}
 
 		$data 										= json_decode(json_encode($contents->data), true);
-
 
 		unset($search);
 		unset($sort);
@@ -211,8 +213,6 @@ class AttendanceController extends BaseController
 			$filter['search']['chartchild'] 		= Session::get('user.chartpath');
 			$filter['active']['chartchild'] 		= 'Lihat Sebagai "'.Session::get('user.chartname').'"';
 		}
-		
-		$this->layout->page 						= view('pages.organisation.report.attendance.index', compact('data', 'start', 'end'));
 
 		$filters 									= 	[
 															['prefix' => 'sort', 'key' => 'persons.name', 'value' => 'Urutkan Nama', 'values' => [['key' => 'asc', 'value' => 'A-Z'], ['key' => 'desc', 'value' => 'Z-A']]]
@@ -227,13 +227,14 @@ class AttendanceController extends BaseController
 			$filters[] 					 			= ['prefix' => 'search', 'key' => 'charttag', 'value' => 'Cari Di Departemen', 'values' => $charts];
 		}
 
+		$this->layout->page 						= view('pages.organisation.report.attendance.index', compact('data', 'start', 'end'));
 		$this->layout->page->filter 				= $filters;
 		$this->layout->page->filtered 				= $filter;
 		$this->layout->page->default_filter  		= ['org_id' => $data['id'], 'start' => $start, 'end' => $end];
 
 		if(Input::has('print'))
 		{
-			$search 								= ['globalattendance' => array_merge(['organisationid' => $data['id'], 'on' => [$start, $end]], (isset($filter['search']) ? $filter['search'] : []))];
+			$search 								= ['globalattendance' => array_merge(['organisationid' => $data['id'], 'on' => [$start, $end]], (isset($filtered['search']) ? $filtered['search'] : []))];
 			$sort 									= (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']);
 			$page 									= 1;
 			$per_page 								= 100;
@@ -249,12 +250,12 @@ class AttendanceController extends BaseController
 			$report 								= json_decode(json_encode($contents->data), true);
 
 			// $case = Input::get('case');
-			Excel::create('Laporan Aktivitas per tanggal ( '.$start.' s.d '.$end.' ) di '.$data['name'], function($excel) use ($report, $start, $end) 
+			Excel::create('Laporan Kehadiran per tanggal ( '.$start.' s.d '.$end.' ) di '.$data['name'], function($excel) use ($report, $start, $end) 
 			{
 				// Set the title
-				$excel->setTitle('Laporan Aktivitas');
+				$excel->setTitle('Laporan Kehadiran');
 				// Call them separately
-				$excel->setDescription('Laporan Aktivitas');
+				$excel->setDescription('Laporan Kehadiran');
 				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end) 
 				{
 					$c 									= count($report);
@@ -268,8 +269,101 @@ class AttendanceController extends BaseController
 		return $this->layout;
 	}
 
+	public function show($person_id = null)
+	{		
+		if(Input::has('org_id'))
+		{
+			$org_id 								= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 								= Session::get('user.organisationid');
+		}
+
+		if(Input::has('start'))
+		{
+			$start 									= date('Y-m-d', strtotime(Input::get('start')));
+		}
+		else
+		{
+			$start 									= date('Y-m-d', strtotime('first day of this month'));
+		}
+
+		if(Input::has('end'))
+		{
+			$end 									= date('Y-m-d', strtotime(Input::get('end')));
+		}
+		else
+		{
+			$end 									= date('Y-m-d', strtotime('last day of next month'));
+		}
+
+		if(!in_array($org_id, Session::get('user.organisationids')))
+		{
+			App::abort(404);
+		}
+
+		$search['id']								= $person_id;
+		$search['organisationid']					= $org_id;
+		$search['withattributes']					= ['organisation'];
+		$sort 										= ['name' => 'asc'];
+		if(Session::get('user.menuid')>=5)
+		{
+			$search['chartchild'] 					= Session::get('user.chartpath');
+		}
+		$results 									= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
+		$contents 									= json_decode($results);		
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$person 									= json_decode(json_encode($contents->data), true);
+		$data 										= $person['organisation'];
+
+		$this->layout->page 						= view('pages.organisation.report.attendance.show', compact('data', 'start', 'end', 'person'));
+
+		if(Input::has('print'))
+		{
+			$search 								= ['id' => $person['id'], 'processlogsondate' => ['on' => [$start, $end]]];
+			$sort 									= ['persons.name' => 'asc'];
+			$page 									= 1;
+			$per_page 								= 1;
+			$search['organisationid'] 				= ['fieldname' => 'persons.organisation_id', 'variable' => $data['id']];
+			$results 								= $this->dispatch(new Getting(new Person, $search, $sort , (int)$page, (int)$per_page, isset($new) ? $new : false));
+
+			$contents 									= json_decode($results);
+
+			if(!$contents->meta->success)
+			{	
+				App::abort(404);	
+			}
+			$report 								= json_decode(json_encode($contents->data), true);
+			
+
+			Excel::create('Laporan Aktivitas '.$report['name'].' per tanggal ( '.$start.' s.d '.$end.' )', function($excel) use ($report, $start, $end, $person) 
+			{
+				// Set the title
+				$excel->setTitle('Laporan Aktivitas');
+				// Call them separately
+				$excel->setDescription('Laporan Aktivitas person');
+				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end, $person) 
+				{
+					$c 									= count($report);
+					$sheet->loadView('widgets.organisation.report.attendance.person.table_csv')->with('data', $report)->with('start', $start)->with('end', $end)->with('person', $person);
+				});
+			})->export(Input::get('mode'));	
+		}
+
+		return $this->layout;
+	}
+
+
 	public function create($id = null)
 	{
+		$errors 								= new MessageBag();
+
 		if(Input::has('org_id'))
 		{
 			$org_id 							= Input::get('org_id');
@@ -284,9 +378,20 @@ class AttendanceController extends BaseController
 			App::abort(404);
 		}
 
-		$search['id']							= $org_id;
+		if(Input::has('person_id'))
+		{
+			$person_id 							= Input::get('person_id');
+		}
+		else
+		{
+			App::abort(404);
+		}
+
+		$search['id']							= $person_id;
+		$search['organisationid']				= $org_id;
+		$search['withattributes']				= ['organisation'];
 		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Organisation, $search, $sort , 1, 1));
+		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);		
 
 		if(!$contents->meta->success)
@@ -294,10 +399,141 @@ class AttendanceController extends BaseController
 			App::abort(404);
 		}
 
-		$data 									= json_decode(json_encode($contents->data), true);
+		$person 								= json_decode(json_encode($contents->data), true);
+		$data 									= $person['organisation'];
 
-		$this->layout->page 					= view('pages.person.create', compact('id', 'data'));
+		if(!is_null($id))
+		{
+			if(!Input::has('ondate'))
+			{
+				App::abort(404);
+			}
+
+			if((int)Session::Get('user.menuid')==2)
+			{
+				$dateline 						= date('Y-m-d', strtotime(Input::get('ondate'). ' + 2 months'));
+
+				if($dateline < date('Y-m-d'))
+				{
+					$errors->add('ProcessLog', 'Batas Akhir Perubahan Status adalah 2 Bulan');
+					
+					return Redirect::back()->withErrors($errors)->withInput();
+				}
+			}
+
+			if((int)Session::Get('user.menuid')==3)
+			{
+				$dateline 						= date('Y-m-d', strtotime(Input::get('ondate'). ' + 7 days'));
+
+				if($dateline < date('Y-m-d'))
+				{
+					$errors->add('ProcessLog', 'Batas Akhir Perubahan Status adalah 7 hari');
+					
+					return Redirect::back()->withErrors($errors)->withInput();
+				}
+			}
+
+			$ondate 							= date('Y-m-d', strtotime(Input::get('ondate')));
+			$start 								= date('Y-m-d', strtotime(Input::get('start')));
+			$end 								= date('Y-m-d', strtotime(Input::get('end')));
+
+		}
+
+		$this->layout->page 					= view('pages.organisation.report.attendance.create', compact('id', 'data', 'person', 'ondate', 'start', 'end'));
 
 		return $this->layout;
 	}
+
+	public function store($id = null)
+	{
+		if(Input::has('id'))
+		{
+			$id 								= Input::get('id');
+		}
+
+		if(Input::has('org_id'))
+		{
+			$org_id 							= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 							= Session::get('user.organisationid');
+		}
+
+		if(!in_array($org_id, Session::get('user.organisationids')))
+		{
+			App::abort(404);
+		}
+
+		if(Input::has('person_id'))
+		{
+			$person_id 							= Input::get('person_id');
+		}
+		else
+		{
+			App::abort(404);
+		}
+
+		$search['id'] 							= $person_id;
+		$search['organisationid'] 				= $org_id;
+		$sort 									= ['name' => 'asc'];
+		if(Session::get('user.menuid')>=5)
+		{
+			$search['chartchild'] 				= Session::get('user.chartpath');
+		}
+		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$attributes 							= Input::only('modified_status');
+		$attributes['modified_by']				= Session::get('loggedUser');
+		$attributes['modified_at']				= date('Y-m-d H:i:s');
+
+		$errors 								= new MessageBag();
+
+		DB::beginTransaction();
+		
+		$content 								= $this->dispatch(new Saving(new ProcessLog, $attributes, $id, new Person, $person_id));
+		$is_success 							= json_decode($content);
+		
+		if(!$is_success->meta->success)
+		{
+			foreach ($is_success->meta->errors as $key => $value) 
+			{
+				if(is_array($value))
+				{
+					foreach ($value as $key2 => $value2) 
+					{
+						$errors->add('ProcessLog', $value2);
+					}
+				}
+				else
+				{
+					$errors->add('ProcessLog', $value);
+				}
+			}
+		}
+
+		$start 									= date('Y-m-d', strtotime(Input::get('start')));
+		$end 									= date('Y-m-d', strtotime(Input::get('end')));
+
+		if(!$errors->count())
+		{
+			DB::commit();
+			return Redirect::route('hr.report.attendances.show', array_merge(['person_id' => $person_id, 'org_id' => $org_id], ['start' => $start, 'end' => $end]))->with('alert_success', 'Status kehadiran karyawan "' . $contents->data->name. '" sudah disimpan');
+		}
+		
+		DB::rollback();
+		return Redirect::back()->withErrors($errors)->withInput();
+	}
+
+	public function edit($id)
+	{
+		return $this->create($id);
+	}
+
 }

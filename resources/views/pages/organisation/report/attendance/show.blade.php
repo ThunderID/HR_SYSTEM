@@ -2,8 +2,8 @@
 	@include('widgets.common.nav_topbar', 
 	['breadcrumb' 	=> 	[	
 							['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
-							['name' => 'Laporan Aktivitas', 'route' => route('hr.report.activities.index', ['org_id' => $data['id'], 'start' => $start, 'end' => $end]) ],
-							['name' => $person['name'], 'route' => route('hr.attendance.persons.index', ['org_id' => $data['id'], 'person_id' => $person['id'], 'start' => $start, 'end' => $end]) ],
+							['name' => 'Laporan Kehadiran', 'route' => route('hr.report.attendances.index', ['org_id' => $data['id'], 'start' => $start, 'end' => $end]) ],
+							['name' => $person['name'], 'route' => route('hr.report.attendances.show', ['person_id' => $person['id'], 'start' => $start, 'end' => $end, 'org_id' => $data['id']]) ],
 						]
 	])
 @stop
@@ -34,7 +34,7 @@
 @section('content_body')	
 	@include('widgets.organisation.report.attendance.person.table', [
 		'widget_template'		=> 'panel',
-		'widget_title'			=> 'Laporan Aktivitas "'.$person['name'].'"<br/> Tanggal '.date('d-m-Y',strtotime($start)).' - '.date('d-m-Y',strtotime($end)).''.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
+		'widget_title'			=> 'Laporan Kehadiran "'.$person['name'].'"<br/> Tanggal '.date('d-m-Y',strtotime($start)).' - '.date('d-m-Y',strtotime($end)).''.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[
@@ -49,25 +49,6 @@
 										]
 									]
 	])	
-
-
-	@include('widgets.organisation.idle.table', [
-		'widget_template'		=> 'panel',
-		'widget_title'			=> '<h4 class="mt-30 pt-10">Catatan Perubahan Waktu Idle</h4>',
-		'widget_title_class'	=> 'text-uppercase ml-10',
-		'widget_body_class'		=> '',
-		'widget_options'		=> 	[
-										'idlelist'			=>
-										[
-											'organisation_id'	=> $data['id'],
-											'search'			=> ['ondate' => [$start, $end], 'withattributes' => ['createdby']],
-											'sort'				=> ['start' => 'asc'],
-											'page'				=> 1,
-											'per_page'			=> 100,
-											'route_create'		=> route('hr.idles.create', ['org_id' => $data['id']])
-										]
-									]
-	])
 @overwrite
 
 @section('content_footer')

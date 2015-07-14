@@ -25,6 +25,6 @@ trait HasProcessLogsTrait {
 
 	public function ScopeProcessLogsOndate($query, $variable)
 	{
-		return $query->with(['processlogs' => function($q)use($variable){$q->ondate($variable['on']);}, 'processlogs.modifiedby']);
+		return $query->with(['processlogs' => function($q)use($variable){$q->ondate($variable['on'])->orderby('on', 'asc');}, 'processlogs.modifiedby']);
 	}
 }
