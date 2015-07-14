@@ -17,7 +17,9 @@
 	@overwrite
 
 	@section('widget_body')
-		<a href="{{ $IdleComposer['widget_data']['idlelist']['route_create'] }}" class="btn btn-primary">Tambah</a>
+		@if((int)Session::get('user.menuid')<=3)
+			<a href="{{ $IdleComposer['widget_data']['idlelist']['route_create'] }}" class="btn btn-primary">Tambah</a>
+		@endif
 		@if(isset($IdleComposer['widget_data']['idlelist']['idle']))
 			<div class="clearfix">&nbsp;</div>			
 			<table class="table table-hover">
@@ -55,8 +57,12 @@
 								{{gmdate('H:i:s', ($value['idle_2'] + 1))}} - Infinite
 							</td>
 							<td class="text-right">
-								<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.idles.delete', [$value['id'], 'org_id' => $data['id'] ]) }}"><i class="fa fa-trash"></i></a>
-								<a href="{{route('hr.idles.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+								@if((int)Session::get('user.menuid')<=2)
+									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.idles.delete', [$value['id'], 'org_id' => $data['id'] ]) }}"><i class="fa fa-trash"></i></a>
+								@endif
+								@if((int)Session::get('user.menuid')<=3)
+									<a href="{{route('hr.idles.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+								@endif
 							</td>
 						</tr>
 						<?php $i++;?>

@@ -26,8 +26,11 @@
                         case 3:
                             ?> @include('widgets.common.nav_bar_3') <?php
                         break;
+                        case 4:
+                            ?> @include('widgets.common.nav_bar_4') <?php
+                        break;
                     	default :
-                    		?> @include('widgets.common.nav_bar_4') <?php
+                    		?> @include('widgets.common.nav_bar_5') <?php
                     	break;
                     }
                 ;?>

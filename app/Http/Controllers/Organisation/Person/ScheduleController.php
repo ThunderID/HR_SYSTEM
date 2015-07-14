@@ -388,6 +388,7 @@ class ScheduleController extends BaseController
 		$flag 									= 0;
 		$flag2 									= 0;
 		$flag_date 								= 0;
+
 		foreach ( $periods as $period )
 		{
 			foreach($pschedule as $i => $sh)	

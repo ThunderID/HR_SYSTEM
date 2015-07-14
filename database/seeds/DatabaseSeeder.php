@@ -17,9 +17,9 @@ class DatabaseSeeder extends Seeder {
 		// $this->call('FingerTableSeeder');
 		// $this->call('FingerPrintTableSeeder');
 
-		$this->call('ApplicationTableSeeder');
-		$this->call('MenuTableSeeder');
-		$this->call('AuthGroupTableSeeder');
+		// $this->call('ApplicationTableSeeder');
+		// $this->call('MenuTableSeeder');
+		// $this->call('AuthGroupTableSeeder');
 
 		// $this->call('OrganisationTableSeeder');
 		// $this->call('BranchTableSeeder');
@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder {
 		// $this->call('PersonScheduleTableSeeder');
 		
 		// $this->call('WorkTableSeeder');
-		$this->call('WorkAuthenticationTableSeeder');
+		// $this->call('WorkAuthenticationTableSeeder');
 
 		// $this->call('DocumentTableSeeder');
 		// $this->call('PersonDocumentTableSeeder');

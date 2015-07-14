@@ -11,6 +11,10 @@
                 <li @if(Input::get('org_id')==$value) @if(isset($branch['id'])||(Input::has('branch_id'))) class="active" @endif @endif>
                     <a @if(Input::get('org_id')==$value) @if(isset($branch['id'])||(Input::has('branch_id'))) class="active" @endif @endif href="javascript:;"><i class="fa fa-building fa-fw" @if(isset($branch['id'])||(Input::get('branch_id'))) class="active" @endif ></i> Cabang <span class="fa arrow"></span></a>
                     <ul class="nav nav-fourty-level">
+                        <li @if(isset($widget_options['sidebar']['active_form'])&&($widget_options['sidebar']['active_form']=='active_create_branch')&&Input::get('org_id')==$value) class="active-li" @endif>
+                            <a href="{{route('hr.branches.create', ['org_id' => $value, 'branch_id' => 0])}}">Tambah Cabang</a>
+                        </li>
+
                         <li @if(isset($widget_options['sidebar']['active_all_branch'])&&Input::get('org_id')==$value) class="active-li" @endif>
                             <a href="{{route('hr.branches.index', ['org_id' => $value, 'branch_id' => 0])}}">Semua Cabang</a>
                         </li>
@@ -18,6 +22,9 @@
                             <li @if(isset($branch['id'])||(Input::has('branch_id'))) class="active" @endif>
                                 <a href="javascript:;" @if(isset($branch['id'])&&(Input::has('branch_id')&&Input::get('org_id')==$value)) class="active-flag-show" @endif>{{ $branch['name'] }} <span class="fa arrow"></span></a>
                                 <ul class="nav nav-fifty-level">
+                                    <li @if(isset($widget_options['sidebar']['active_form'])&&($widget_options['sidebar']['active_form']=='active_edit_branch')&&Input::get('org_id')==$value) class="active-li" @endif>
+                                        <a href="{{ route('hr.branches.edit', [$branch['id'], 'org_id' => $value, 'branch_id' => $branch['id']]) }}">Ubah</a>
+                                    </li>
                                     <li @if(isset($widget_options['sidebar']['active_contact_branch'])&&Input::get('org_id')==$value) class="active-li" @endif>
                                         <a href="{{ route('hr.branch.contacts.index', ['org_id' => $value, 'branch_id' => $branch['id']]) }}" @if(isset($widget_options['sidebar']['active_contact_branch'])&&Input::get('org_id')==$value) class="active" @endif>Kontak</a>
                                     </li>
@@ -31,6 +38,9 @@
                 </li>
                 <li @if(isset($widget_options['sidebar']['active_calendar'])&&Input::get('org_id')==$value) class="active-li" @endif>
                     <a href="{{route('hr.calendars.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_calendar'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-calendar fa-fw"></i> Kalender</a>
+                </li>
+                <li @if(isset($widget_options['sidebar']['active_cuti'])) class="active-li" @endif>
+                    <a href="{{route('hr.workleaves.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_cuti'])) class="active" @endif><i class="fa fa-calendar-o fa-fw"></i> Template Cuti</a>
                 </li>
                 <li @if(isset($widget_options['sidebar']['active_document'])&&Input::get('org_id')==$value) class="active-li" @endif>
                     <a href="{{route('hr.documents.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_document'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-archive fa-fw"></i> Template Dokumen</a>
@@ -60,9 +70,6 @@
                                 <ul class="nav nav-fifty-level">
                                     <li @if(isset($widget_options['sidebar']['active_form'])&&($widget_options['sidebar']['active_form']=='active_edit_person')&&Input::get('org_id')==$value) class="active-li" @endif>
                                         <a href="{{route('hr.persons.edit', [$person['id'], 'org_id' => $value, 'person_id' => $person['id']])}}" @if(isset($widget_options['sidebar']['active_form'])&&($widget_options['sidebar']['active_form']=='active_edit_person')&&Input::get('org_id')==$value) class="active" @endif>Ubah</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;" data-target="#deleteorg" data-toggle="modal" data-delete-action="{{ route('hr.persons.delete', [$person['id'], 'org_id' => $value, 'person_id' => $person['id']]) }}">Hapus</a>
                                     </li>
                                     <li @if(isset($widget_options['sidebar']['active_contact_person'])&&Input::get('org_id')==$value) class="active-li" @endif>
                                         <a href="{{ route('hr.person.contacts.index', ['org_id' => $value, 'person_id' => $person['id']]) }}" @if(isset($widget_options['sidebar']['active_contact_person'])&&Input::get('org_id')==$value) class="active" @endif>Kontak</a>

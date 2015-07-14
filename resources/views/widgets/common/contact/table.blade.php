@@ -17,7 +17,7 @@
 	@overwrite
 
 	@section('widget_body')
-			@if((int)Session::get('user.menuid')<4)
+			@if((int)Session::get('user.menuid')<5)
 				<a href="{{ $ContactComposer['widget_data']['contactlist']['route_create'] }}" class="btn btn-primary">Tambah</a>
 			@endif
 			@if(isset($ContactComposer['widget_data']['contactlist']['contact']))
@@ -53,8 +53,10 @@
 										@endif
 									</td>
 									<td class="text-right">
-										@if((int)Session::get('user.menuid')<4)
+										@if((int)Session::get('user.menuid')<=2)
 											<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route($ContactComposer['widget_data']['contactlist']['route_delete'], ['id' => $value['id'], 'org_id' => $data['id'], $ContactComposer['widget_data']['contactlist']['next'] => $ContactComposer['widget_data']['contactlist']['nextid'] ]) }}"><i class="fa fa-trash"></i></a>
+										@endif
+										@if((int)Session::get('user.menuid')<=3)
 											<a href="{{route($ContactComposer['widget_data']['contactlist']['route_edit'], ['id' => $value['id'], 'org_id' => $data['id'],  $ContactComposer['widget_data']['contactlist']['next'] => $ContactComposer['widget_data']['contactlist']['nextid'] ])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 										@endif
 									</td>

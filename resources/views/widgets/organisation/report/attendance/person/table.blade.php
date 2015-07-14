@@ -154,7 +154,9 @@
 								@endif
 							</td>
 							<td class="text-right">
-								<a href="{{route('hr.report.attendances.edit', array_merge(['id' => $value['id'], 'start' => $start, 'end' => $end, 'person_id' => $person['id'], 'org_id' => $data['id'], 'ondate' => $value['on']])) }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+								@if((int)Session::get('user.menuid')<=3)
+									<a href="{{route('hr.report.attendances.edit', array_merge(['id' => $value['id'], 'start' => $start, 'end' => $end, 'person_id' => $person['id'], 'org_id' => $data['id'], 'ondate' => $value['on']])) }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+								@endif
 							</td>
 						</tr>
 					@endforeach
