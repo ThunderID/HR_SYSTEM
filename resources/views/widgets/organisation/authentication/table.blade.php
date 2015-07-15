@@ -12,41 +12,43 @@
 			<a href="{{ $WorkAuthenticationComposer['widget_data']['workauthlist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
 		@endif
 		<div class="clearfix">&nbsp;</div>
-		<div class="table-responsive">
-			<table class="table table-hover">
-				<thead>
+		<table class="table table-hover table-affix">
+			<thead>
+				<tr>
+					<th>No</th>
+					<th>Nama</th>
+					<th>Level</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php $i = $WorkAuthenticationComposer['widget_data']['workauthlist']['workauth-display']['from'];?>
+				@forelse($WorkAuthenticationComposer['widget_data']['workauthlist']['workauth'] as $key => $value)
 					<tr>
-						<th>No</th>
-						<th>Nama</th>
-						<th>Level</th>
-						<th></th>
+						<td>{{$i}}</td>
+						<td>{{$value['work']['person']['name']}}</td>
+						<td>{{$value['authgroup']['name']}}</td>
+						<td class="text-right">
+							@if((int)Session::get('user.menuid') <= 2)
+							<div class="btn-group">
+								<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pengaturan <span class="caret"></span></button>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li>
+										<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.authentications.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash fa-fw"></i> Hapus</a>
+									</li>
+								</ul>
+							</div>
+							@endif
+						</td>
 					</tr>
-				</thead>
-				<tbody>
-					<?php $i = $WorkAuthenticationComposer['widget_data']['workauthlist']['workauth-display']['from'];?>
-					@foreach($WorkAuthenticationComposer['widget_data']['workauthlist']['workauth'] as $key => $value)
-						<tr>
-							<td>{{$i}}</td>
-							<td>{{$value['work']['person']['name']}}</td>
-							<td>{{$value['authgroup']['name']}}</td>
-							<td class="text-right">
-								@if((int)Session::get('user.menuid') <= 2)
-								<div class="btn-group">
-									<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pengaturan <span class="caret"></span></button>
-									<ul class="dropdown-menu dropdown-menu-right">
-										<li>
-											<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.authentications.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash fa-fw"></i> Hapus</a>
-										</li>
-									</ul>
-								</div>
-								@endif
-							</td>
-						</tr>
-						<?php $i++;?>
-					@endforeach
-				</tbody>
-			</table>
-		</div>
+					<?php $i++;?>
+				@empty 
+					<tr>
+						<td class="text-center" colspan="4">Tidak ada data</td>
+					</tr>
+				@endforelse
+			</tbody>
+		</table>
 		<div class="row">
 			<div class="col-sm-12 text-center">
 				<p>Menampilkan {!!$WorkAuthenticationComposer['widget_data']['workauthlist']['workauth-display']['from']!!} - {!!$WorkAuthenticationComposer['widget_data']['workauthlist']['workauth-display']['to']!!}</p>

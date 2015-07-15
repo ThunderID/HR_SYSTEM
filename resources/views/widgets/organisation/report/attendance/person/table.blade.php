@@ -20,7 +20,7 @@
 
 	@section('widget_body')
 		@if(isset($PersonComposer['widget_data']['personlist']['person']['processlogs']))
-			<table class="table table-hover table-condensed report">
+			<table class="table table-hover report table-affix">
 				<thead>
 					<tr>
 						<th class="text-center" style="width:5%">No<br/>&nbsp;</th>
@@ -154,7 +154,7 @@
 							</td>
 							<td class="text-right">
 								@if((int)Session::get('user.menuid')<=3)
-									<a href="{{route('hr.report.attendances.edit', array_merge(['id' => $value['id'], 'start' => $start, 'end' => $end, 'person_id' => $person['id'], 'org_id' => $data['id'], 'ondate' => $value['on']])) }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									<a href="{{route('hr.report.attendances.edit', array_merge(['id' => $value['id'], 'start' => $start, 'end' => $end, 'person_id' => $person['id'], 'org_id' => $data['id'], 'ondate' => $value['on']])) }}" class="btn btn-sm btn-default"><i class="fa fa-pencil"></i></a>
 								@endif
 							</td>
 						</tr>

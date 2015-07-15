@@ -22,50 +22,52 @@
 			@endif
 			@if(isset($ContactComposer['widget_data']['contactlist']['contact']))
 				<div class="clearfix">&nbsp;</div>
-				<div class="table-responsive">
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th>No</th>
-								<th colspan="2">Kontak</th>
-								<th>Aktif</th>
-								<th>&nbsp;</th>
-							</tr>
-						</thead>
+				<table class="table table-hover table-affix">
+					<thead>
+						<tr>
+							<th>No</th>
+							<th colspan="2">Kontak</th>
+							<th>Aktif</th>
+							<th>&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
 						<?php $i = $ContactComposer['widget_data']['contactlist']['contact-display']['from'];?>
-						@foreach($ContactComposer['widget_data']['contactlist']['contact'] as $key => $value)
-							<tbody>
-								<tr>
-									<td>
-										{{$i}}
-									</td>
-									<td>
-										{{$value['item']}}
-									</td>
-									<td>
-										{{$value['value']}}
-									</td>
-									<td>
-										@if($value['is_default'])
-											<i class="fa fa-check"></i>
-										@else
-											<i class="fa fa-minus"></i>
-										@endif
-									</td>
-									<td class="text-right">
-										@if((int)Session::get('user.menuid')<=2)
-											<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route($ContactComposer['widget_data']['contactlist']['route_delete'], ['id' => $value['id'], 'org_id' => $data['id'], $ContactComposer['widget_data']['contactlist']['next'] => $ContactComposer['widget_data']['contactlist']['nextid'] ]) }}"><i class="fa fa-trash"></i></a>
-										@endif
-										@if((int)Session::get('user.menuid')<=3)
-											<a href="{{route($ContactComposer['widget_data']['contactlist']['route_edit'], ['id' => $value['id'], 'org_id' => $data['id'],  $ContactComposer['widget_data']['contactlist']['next'] => $ContactComposer['widget_data']['contactlist']['nextid'] ])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-										@endif
-									</td>
-								</tr>
-							</tbody>
+						@forelse($ContactComposer['widget_data']['contactlist']['contact'] as $key => $value)
+							<tr>
+								<td>
+									{{$i}}
+								</td>
+								<td>
+									{{$value['item']}}
+								</td>
+								<td>
+									{{$value['value']}}
+								</td>
+								<td>
+									@if($value['is_default'])
+										<i class="fa fa-check"></i>
+									@else
+										<i class="fa fa-minus"></i>
+									@endif
+								</td>
+								<td class="text-right">
+									@if((int)Session::get('user.menuid')<=2)
+										<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route($ContactComposer['widget_data']['contactlist']['route_delete'], ['id' => $value['id'], 'org_id' => $data['id'], $ContactComposer['widget_data']['contactlist']['next'] => $ContactComposer['widget_data']['contactlist']['nextid'] ]) }}"><i class="fa fa-trash"></i></a>
+									@endif
+									@if((int)Session::get('user.menuid')<=3)
+										<a href="{{route($ContactComposer['widget_data']['contactlist']['route_edit'], ['id' => $value['id'], 'org_id' => $data['id'],  $ContactComposer['widget_data']['contactlist']['next'] => $ContactComposer['widget_data']['contactlist']['nextid'] ])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									@endif
+								</td>
+							</tr>
 							<?php $i++;?>
-						@endforeach
-					</table>
-				</div>
+						@empty
+							<tr>
+								<td class="text-center" colspan="4">Tidak ada data</td>
+							</tr>
+						@endforelse
+					</tbody>
+				</table>
 
 				<div class="row">
 					<div class="col-sm-12 text-center">

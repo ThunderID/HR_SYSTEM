@@ -21,7 +21,7 @@
 
 	@section('widget_body')
 		@if(isset($PersonComposer['widget_data']['personlist']['person']['processlogs']))
-			<table class="table">
+			<table class="table table-affix">
 				<thead>
 					<tr>
 						<th rowspan="2" class="text-center font-11" style="width:4%">No<br/>&nbsp;</th>

@@ -18,60 +18,62 @@
 		@endif
 		@if(isset($PersonWorkleaveComposer['widget_data']['workleavelist']['workleave']))
 			<div class="clearfix">&nbsp;</div>
-			<div class="table-responsive">
-				<table class="table table-hover">
-					<thead>
-						<tr class="row">
-							<th class="">No</th>
-							<th class="">Cuti</th>
-							<th class="text-center">Quota</th>
-							<th class="">Status</th>
-							<th class="">Diberikan Oleh</th>
-							<th class="">Masa Berlaku</th>
-							<th class="">&nbsp;</th>
-						</tr>
-					</thead>
+			<table class="table table-hover table-affix">
+				<thead>
+					<tr class="row">
+						<th class="">No</th>
+						<th class="">Cuti</th>
+						<th class="text-center">Quota</th>
+						<th class="">Status</th>
+						<th class="">Diberikan Oleh</th>
+						<th class="">Masa Berlaku</th>
+						<th class="">&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
 					<?php $i = $PersonWorkleaveComposer['widget_data']['workleavelist']['workleave-display']['from'];?>
-					@foreach($PersonWorkleaveComposer['widget_data']['workleavelist']['workleave'] as $key => $value)
-						<tbody>
-							<tr class="row">
-								<td class="">
-									{{$i}}
-								</td>
-								<td class="">
-									{{$value['name']}}
-								</td>
-								<td class="text-center">
-									{{$value['quota']}}
-								</td>
-								<td class="">
-									{{$value['status']}}
-								</td>
-								<td class="">
-									{{$value['createdby']['name']}}
-								</td>
-								<td class="">
-									{{ date('d-m-Y', strtotime($value['start'])) }} - 
-									{{ date('d-m-Y', strtotime($value['end'])) }}
-								</td>
-								<td class="text-right ">
-									@if((int)Session::get('user.menuid') <= 2)
-										<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.workleaves.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']]) }}"><i class="fa fa-trash"></i></a>
+					@forelse($PersonWorkleaveComposer['widget_data']['workleavelist']['workleave'] as $key => $value)
+						<tr class="row">
+							<td class="">
+								{{$i}}
+							</td>
+							<td class="">
+								{{$value['name']}}
+							</td>
+							<td class="text-center">
+								{{$value['quota']}}
+							</td>
+							<td class="">
+								{{$value['status']}}
+							</td>
+							<td class="">
+								{{$value['createdby']['name']}}
+							</td>
+							<td class="">
+								{{ date('d-m-Y', strtotime($value['start'])) }} - 
+								{{ date('d-m-Y', strtotime($value['end'])) }}
+							</td>
+							<td class="text-right ">
+								@if((int)Session::get('user.menuid') <= 2)
+									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.person.workleaves.delete', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id']]) }}"><i class="fa fa-trash"></i></a>
+								@endif
+								@if((int)Session::get('user.menuid')<=3)
+									@if($value['workleave_id']!=0)
+										<a href="{{route('hr.person.workleaves.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'type' => 'given'])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									@else
+										<a href="{{route('hr.person.workleaves.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'type' => 'taken'])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 									@endif
-									@if((int)Session::get('user.menuid')<=3)
-										@if($value['workleave_id']!=0)
-											<a href="{{route('hr.person.workleaves.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'type' => 'given'])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-										@else
-											<a href="{{route('hr.person.workleaves.edit', [$value['id'], 'org_id' => $data['id'], 'person_id' => $person['id'], 'type' => 'taken'])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-										@endif
-									@endif
-								</td>
-							</tr>
-						</tbody>
+								@endif
+							</td>
+						</tr>
 						<?php $i++;?>
-					@endforeach
-				</table>
-			</div>
+					@empty 
+						<tr>
+							<td class="text-center" colspan="7">Tidak ada data</td>
+						</tr>
+					@endforelse
+				</tbody>
+			</table>
 			<div class="row">
 				<div class="col-sm-12 text-center">
 					<p>Menampilkan {!!$PersonWorkleaveComposer['widget_data']['workleavelist']['workleave-display']['from']!!} - {!!$PersonWorkleaveComposer['widget_data']['workleavelist']['workleave-display']['to']!!}</p>
