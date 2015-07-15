@@ -7,7 +7,7 @@
 @overwrite
 
 @section('widget_body')
-    <ul class="nav in sidemenu" id="side-menu" style="margin-top:47px">
+    <ul class="nav in sidemenu" id="side-menu">
         @if((int)Session::get('user.menuid')<=1)
             <li @if(isset($widget_options['sidebar']['active_form'])&&($widget_options['sidebar']['active_form']=='active_create_org')) class="active-li" @endif>
                 <a href="{{route('hr.organisations.create')}}"><i class="fa fa-plus-circle fa-fw"></i> Tambah Organisasi</a>
