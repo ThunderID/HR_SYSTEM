@@ -40,6 +40,11 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		View::composer(['widgets.form.form_login'], 'App\Http\ViewComposers\Common\LoginFormComposer');
 
 		// -----------------------------------------------------------------------------
+		// APPLICATION
+		// -----------------------------------------------------------------------------
+		View::composer(['widgets.application.table', 'widgets.application.form'], 'App\Http\ViewComposers\ApplicationComposer');
+
+		// -----------------------------------------------------------------------------
 		// ORGANISATION
 		// -----------------------------------------------------------------------------
 		View::composer(['widgets.organisation.select', 'widgets.common.sidebar', 'widgets.organisation.form'], 	'App\Http\ViewComposers\OrganisationComposer');
@@ -102,7 +107,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// AUTHGROUP
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.authgroup.select'], 	'App\Http\ViewComposers\AuthGroupComposer');
+		View::composer(['widgets.authgroup.select', 'widgets.authgroup.table', 'widgets.authgroup.form'], 	'App\Http\ViewComposers\AuthGroupComposer');
 
 		// -----------------------------------------------------------------------------
 		// FOLLOW

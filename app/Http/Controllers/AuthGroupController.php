@@ -18,7 +18,7 @@ class AuthGroupController extends BaseController
 
 	public function index()
 	{		
-		$this->layout->page 					= view('pages.authgorup.index');
+		$this->layout->page 					= view('pages.authgroup.index');
 
 		return $this->layout;
 	}
@@ -27,7 +27,7 @@ class AuthGroupController extends BaseController
 	{
 		if(is_null($id))
 		{
-			$this->layout->page 				= view('pages.authgorup.create', compact('id'));
+			$this->layout->page 				= view('pages.authgroup.create', compact('id'));
 		}
 		else
 		{
@@ -41,7 +41,7 @@ class AuthGroupController extends BaseController
 			}
 		
 			$authgorup 				 		= json_decode(json_encode($content->data), true);
-			$this->layout->page 				= view('pages.authgorup.create', compact('id', 'authgorup'));
+			$this->layout->page 				= view('pages.authgroup.create', compact('id', 'authgorup'));
 		}
 
 		return $this->layout;
@@ -87,7 +87,7 @@ class AuthGroupController extends BaseController
 		{
 			DB::commit();
 
-			return Redirect::route('hr.authgorups.show', [$is_success->data->id)->with('local_msg', $errors)->with('alert_success', 'Auth Group "' . $is_success->data->name. '" sudah disimpan');
+			return Redirect::route('hr.authgroups.show', [$is_success->data->id])->with('local_msg', $errors)->with('alert_success', 'Auth Group "' . $is_success->data->name. '" sudah disimpan');
 		}
 
 		DB::rollback();
@@ -105,7 +105,7 @@ class AuthGroupController extends BaseController
 			App::abort(404);
 		}
 
-		$this->layout->page 				= view('pages.authgorup.show', compact('data', 'id'));
+		$this->layout->page 				= view('pages.authgroup.show', compact('data', 'id'));
 
 		return $this->layout;
 	}
@@ -134,7 +134,7 @@ class AuthGroupController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.authgorups.index')->with('alert_success', 'Auth Group "' . $contents->data->name. '" sudah dihapus');
+				return Redirect::route('hr.authgroups.index')->with('alert_success', 'Auth Group "' . $contents->data->name. '" sudah dihapus');
 			}
 		}
 		else

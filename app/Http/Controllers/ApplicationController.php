@@ -87,7 +87,7 @@ class ApplicationController extends BaseController
 		{
 			DB::commit();
 
-			return Redirect::route('hr.applications.show', [$is_success->data->id)->with('local_msg', $errors)->with('alert_success', 'Aplikasi "' . $is_success->data->name. '" sudah disimpan');
+			return Redirect::route('hr.applications.show', [$is_success->data->id])->with('local_msg', $errors)->with('alert_success', 'Aplikasi "' . $is_success->data->name. '" sudah disimpan');
 		}
 
 		DB::rollback();
