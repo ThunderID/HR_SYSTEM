@@ -8,7 +8,7 @@
 @section('widget_body')	
 	@if(isset($ScheduleComposer['widget_data']['schedulelist']['schedule']))
 		<div class="clearfix">&nbsp;</div>
-		<table class="table">
+		<table class="table table-affix">
 			<thead>
 				<tr>
 					<th>Label</th>
@@ -18,8 +18,8 @@
 					<th>&nbsp;</th>
 				</tr>
 			</thead>
-			@foreach($ScheduleComposer['widget_data']['schedulelist']['schedule'] as $key => $value)
-				<tbody>
+			<tbody>
+				@forelse($ScheduleComposer['widget_data']['schedulelist']['schedule'] as $key => $value)
 					<tr>
 						<td>
 							{{$value['name']}}
@@ -40,8 +40,12 @@
 							<a href="{{route('hr.calendar.schedules.show', [$value['id'], 'org_id' => $data['id'], 'cal_id' => $calendar['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
 						</td>
 					</tr>
-				</tbody>
-			@endforeach
+				@empty
+					<tr>
+						<td class="text-center" colspan="5">Tidak ada data</td>
+					</tr>
+				@endforelse
+			</tbody>
 		</table>
 
 		<div class="row">
@@ -50,7 +54,6 @@
 				{!!$ScheduleComposer['widget_data']['schedulelist']['schedule-pagination']->appends(Input::all())->render()!!}
 			</div>
 		</div>
-
 		<div class="clearfix">&nbsp;</div>
 	@endif
 @overwrite

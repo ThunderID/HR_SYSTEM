@@ -22,7 +22,7 @@
 		@endif
 		@if(isset($IdleComposer['widget_data']['idlelist']['idle']))
 			<div class="clearfix">&nbsp;</div>			
-			<table class="table table-hover">
+			<table class="table table-hover table-affix">
 				<thead>
 					<tr>
 						<th>No</th>
@@ -36,7 +36,7 @@
 				</thead>
 				<tbody>
 					<?php $i = $IdleComposer['widget_data']['idlelist']['idle-display']['from'];?>
-					@foreach($IdleComposer['widget_data']['idlelist']['idle'] as $key => $value)
+					@forelse($IdleComposer['widget_data']['idlelist']['idle'] as $key => $value)
 						<tr>
 							<td>
 								{{$i}}
@@ -66,7 +66,11 @@
 							</td>
 						</tr>
 						<?php $i++;?>
-					@endforeach
+					@empty 
+						<tr>
+							<td class="text-center" colspan="7">Tidak ada data</td>
+						</tr>
+					@endforelse
 				</tbody>
 			</table>
 
