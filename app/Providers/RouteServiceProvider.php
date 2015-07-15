@@ -143,8 +143,31 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.idles.delete'								=> 48,
 
 							//49-52 application
-							//53-56 menu
+							'hr.applications.index'							=> 49,
+							'hr.applications.show'							=> 49,
+							'hr.applications.create'						=> 50,
+							'hr.applications.store'							=> 50,
+							'hr.applications.edit'							=> 51,
+							'hr.applications.update'						=> 51,
+							'hr.applications.delete'						=> 52,
+
+							//53-56 menu 
+							'hr.application.menu.index'						=> 53,
+							'hr.application.menu.show'						=> 53,
+							'hr.application.menu.create'					=> 54,
+							'hr.application.menu.store'						=> 54,
+							'hr.application.menu.edit'						=> 55,
+							'hr.application.menu.update'					=> 55,
+							'hr.application.menu.delete'					=> 56,
+
 							//57-60 authgroup
+							'hr.authgroups.index'							=> 49,
+							'hr.authgroups.show'							=> 49,
+							'hr.authgroups.create'							=> 50,
+							'hr.authgroups.store'							=> 50,
+							'hr.authgroups.edit'							=> 51,
+							'hr.authgroups.update'							=> 51,
+							'hr.authgroups.delete'							=> 52,
 
 							'hr.persons.index'								=> 61,
 							'hr.persons.show'								=> 61,

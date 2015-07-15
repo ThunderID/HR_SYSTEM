@@ -42,6 +42,23 @@ Route::group(['middleware' => 'csrfverify'], function()
 		});
 
 		// ------------------------------------------------------------------------------------
+		// SYSTEM SETTINGS
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('applications',			'ApplicationController',								['names' => ['index' => 'hr.applications.index', 'create' => 'hr.applications.create', 'store' => 'hr.applications.store', 'show' => 'hr.applications.show', 'edit' => 'hr.applications.edit', 'update' => 'hr.applications.update', 'destroy' => 'hr.applications.delete']]);
+		
+		Route::group(['namespace' => 'Application\\'], function() 
+		{
+			// ------------------------------------------------------------------------------------
+			// APP MENUS RESOURCE
+			// ------------------------------------------------------------------------------------
+
+			Route::resource('menus',			'MenuController',										['names' => ['index' => 'hr.menus.index', 'create' => 'hr.menus.create', 'store' => 'hr.menus.store', 'show' => 'hr.menus.show', 'edit' => 'hr.menus.edit', 'update' => 'hr.menus.update', 'destroy' => 'hr.menus.delete']]);
+		});
+		
+		Route::resource('authgroups',			'AuthGroupController',									['names' => ['index' => 'hr.authgroups.index', 'create' => 'hr.authgroups.create', 'store' => 'hr.authgroups.store', 'show' => 'hr.authgroups.show', 'edit' => 'hr.authgroups.edit', 'update' => 'hr.authgroups.update', 'destroy' => 'hr.authgroups.delete']]);
+
+		// ------------------------------------------------------------------------------------
 		// LANDING PAGE (CHOOSE ORGANISATION OR CREATE ORGANISATION), SHOW ORGANISATION (STARTED WITH DASHBOARD)
 		// ------------------------------------------------------------------------------------
 
@@ -272,7 +289,10 @@ Route::group(['namespace' => 'Tracker\\'], function()
 	Route::post('api/time/test/',				['uses' => 'TimeController@test',					'as' => 'hr.time.test']);
 });
 
-
+Route::group(['namespace' => 'Tracker\\'], function() 
+{
+	Route::post('api/tracker/verse3/',			['uses' => 'TimeController@testv3',					'as' => 'hr.t3.post']);
+});
 
 Blade::extend(function ($value, $compiler)
 {
