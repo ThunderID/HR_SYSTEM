@@ -31,7 +31,7 @@ class AuthGroupController extends BaseController
 		}
 		else
 		{
-			$result								= $this->dispatch(new Getting(new AuthGroup, ['ID' => $id], ['created_at' => 'asc'] ,1, 1));
+			$result								= $this->dispatch(new Getting(new AuthGroup, ['ID' => $id], ['id' => 'asc'] ,1, 1));
 
 			$content 							= json_decode($result);
 
@@ -96,7 +96,7 @@ class AuthGroupController extends BaseController
 
 	public function show($id = null)
 	{
-		$result								= $this->dispatch(new Getting(new AuthGroup, ['ID' => $id], ['created_at' => 'asc'] ,1, 1));
+		$result								= $this->dispatch(new Getting(new AuthGroup, ['ID' => $id], ['id' => 'asc'] ,1, 1));
 
 		$content 							= json_decode($result);
 
