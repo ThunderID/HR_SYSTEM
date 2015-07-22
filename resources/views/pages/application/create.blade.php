@@ -1,5 +1,12 @@
 @section('nav_topbar')
-	
+	@include('widgets.common.nav_topbar', 
+	[
+		'breadcrumb' 	=> 	[
+								['name' => 'Aplikasi', 'route' => route('hr.applications.index')],
+								['name' => $data['name'], 'route' => route('hr.applications.show', $data['id'])],
+								['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.branches.create', ['org_id' => $data['id']]) : route('hr.branches.edit', ['id' => $id, 'org_id' => $data['id']]) )]
+							]
+	])
 @stop
 
 @section('nav_sidebar')

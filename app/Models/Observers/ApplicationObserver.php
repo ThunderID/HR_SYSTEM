@@ -29,9 +29,9 @@ class ApplicationObserver
 	public function deleting($model)
 	{
 		//
-		if($model->persons->count())
+		if($model->menus()->count())
 		{
-			$model['errors'] 	= ['Tidak dapat menghapus menu yang memiliki pengguna'];
+			$model['errors'] 	= ['Tidak dapat menghapus aplikasi yang memiliki menu pilihan'];
 
 			return false;
 		}

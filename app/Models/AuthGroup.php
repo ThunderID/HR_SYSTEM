@@ -31,6 +31,7 @@ class AuthGroup extends BaseModel {
 
 	use \App\Models\Traits\BelongsToMany\HasMenusTrait;
 	use \App\Models\Traits\HasMany\HasWorkAuthenticationsTrait;
+	use \App\Models\Traits\HasMany\HasGroupMenusTrait;
 
 	public 		$timestamps 		= true;
 

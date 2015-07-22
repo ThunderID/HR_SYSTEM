@@ -1,5 +1,10 @@
 @section('nav_topbar')
-	
+	@include('widgets.common.nav_topbar', 
+	[
+		'breadcrumb' 	=> 	[
+								['name' => 'Aplikasi', 'route' => route('hr.applications.index')],
+							]
+	])
 @stop
 
 @section('nav_sidebar')
@@ -22,7 +27,6 @@
 @overwrite
 
 @section('content_filter')
-	
 @overwrite
 
 @section('content_body')

@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 	created_by 						: Foreign Key From Person, Integer, Required
  * 	name 		 					: Required max 255
  * 	on 		 						: Required, Datetime
- * 	last_time_input 		 		: Nullable, Datetime
+ * 	last_input_time 		 		: Nullable, Datetime
+ * 	app_version 		 			: max 255
+ * 	ip 		 						: max 255
  * 	pc 			 					: Required max 255
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
@@ -40,16 +42,20 @@ class Log extends BaseModel {
 											'created_by' 				,
 											'name' 						,
 											'on' 						,
-											'last_time_input' 			,
+											'last_input_time' 			,
 											'pc' 						,
+											'ip' 						,
+											'app_version' 				,
 										];
 
 	protected 	$rules				= 	[
 											'created_by'				=> 'exists:persons,id',
 											'name'						=> 'required|max:255',
 											'on'						=> 'required|date_format:"Y-m-d H:i:s"',
-											'last_time_input'			=> 'date_format:"Y-m-d H:i:s"',
+											'last_input_time'			=> 'date_format:"Y-m-d H:i:s"',
 											'pc'						=> 'required|max:255',
+											'app_version'				=> 'max:255',
+											'ip'						=> 'max:255',
 										];
 
 	public $searchable 				= 	[

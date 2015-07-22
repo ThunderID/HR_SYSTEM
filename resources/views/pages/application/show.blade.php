@@ -1,5 +1,12 @@
 @section('nav_topbar')
-	
+	@include('widgets.common.nav_topbar', 
+	[
+		'breadcrumb' 	=> 	[
+								['name' => 'Aplikasi', 'route' => route('hr.applications.index')],
+								['name' => $data['name'], 'route' => route('hr.applications.show', $data['id'])],
+								['name' => 'Menu', 'route' => route('hr.applications.show', $data['id'])],
+							]
+	])
 @stop
 
 @section('nav_sidebar')
@@ -27,7 +34,7 @@
 
 @section('content_body')
 	@include('widgets.menu.table', [
-		'widget_title'			=> 'Menu Aplikasi',
+		'widget_title'			=> 'Menu "'.$data['name'].'"',
 		'widget_template'		=> 'panel',
 		'widget_options'		=> [ 'menu' 				=>
 										[

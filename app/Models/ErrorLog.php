@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * 	on 		 						: Datetime
  * 	pc 			 					: max 255
  * 	message 						: text
+ * 	ip 		 						: max 255
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -42,6 +43,7 @@ class ErrorLog extends BaseModel {
 											'on' 						,
 											'pc' 						,
 											'message' 					,
+											'ip' 						,
 										];
 
 	protected 	$rules				= 	[
@@ -49,6 +51,7 @@ class ErrorLog extends BaseModel {
 											'name'						=> 'max:255',
 											'on'						=> 'date_format:"Y-m-d H:i:s"',
 											'pc'						=> 'max:255',
+											'ip'						=> 'max:255',
 										];
 
 	public $searchable 				= 	[

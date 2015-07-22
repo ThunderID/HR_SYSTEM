@@ -21,6 +21,7 @@ class CreateErrorLogsTable extends Migration {
 			$table->string('pc', 255);
 			$table->datetime('on');
 			$table->text('message');
+			$table->string('ip', 255);
 			$table->timestamps();
 			$table->softDeletes();
 			
