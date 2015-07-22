@@ -18,6 +18,6 @@ trait HasGroupMenusTrait {
 
 	public function GroupMenus()
 	{
-		return $this->hasMany('App\Models\GroupMenu');
+		return $this->hasMany('App\Models\GroupMenu', 'tmp_auth_group_id');
 	}
 }
