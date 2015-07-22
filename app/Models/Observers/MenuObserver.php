@@ -29,7 +29,7 @@ class MenuObserver
 	public function deleting($model)
 	{
 		//
-		$model['errors'] 	= ['Tidak dapat menghapus'];
+		$model['errors'] 	= ['Tidak dapat menghapus menu.'];
 
 		return false;
 	}

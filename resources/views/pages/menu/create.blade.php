@@ -1,6 +1,15 @@
 @section('nav_topbar')
-	
+	@include('widgets.common.nav_topbar', 
+	[
+		'breadcrumb' 	=> 	[
+								['name' => 'Aplikasi', 'route' => route('hr.applications.index')],
+								['name' => $data['name'], 'route' => route('hr.applications.show', $data['id'])],
+								['name' => 'Menu', 'route' => route('hr.applications.show', $data['id'])],
+								['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.application.menus.create', ['app_id' => $data['id']]) : route('hr.application.menus.edit', ['id' => $id, 'app_id' => $data['id']]) )]
+							]
+	])
 @stop
+
 
 @section('nav_sidebar')
 	@include('widgets.common.nav_sidebar', [
@@ -33,7 +42,7 @@
 		'widget_options'		=> [
 									'menu' 				=>
 										[	
-											'form_url' 			=> route('hr.application.menus.store', ['id' => $id]),
+											'form_url' 			=> route('hr.application.menus.store', ['id' => $id, 'app_id' => $data['id']]),
 											'search'			=> ['id' => $id],
 											'sort'				=> [],
 											'page'				=> 1,
