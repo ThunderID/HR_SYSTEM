@@ -27,7 +27,7 @@ class AuthGroupController extends BaseController
 	{
 		if(is_null($id))
 		{
-			$this->layout->page 				= view('pages.authgroup.create', compact('id'));
+			$data 				 				= null;
 		}
 		else
 		{
@@ -40,9 +40,10 @@ class AuthGroupController extends BaseController
 				App::abort(404);
 			}
 		
-			$authgorup 				 		= json_decode(json_encode($content->data), true);
-			$this->layout->page 				= view('pages.authgroup.create', compact('id', 'authgorup'));
+			$data 				 				= json_decode(json_encode($content->data), true);
 		}
+
+		$this->layout->page 					= view('pages.authgroup.create', compact('id', 'data'));
 
 		return $this->layout;
 	}

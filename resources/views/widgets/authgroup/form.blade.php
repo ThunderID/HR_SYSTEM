@@ -3,7 +3,7 @@
 @if (!$widget_error_count)
 
 	@section('widget_title')
-	<h1> {{ (is_null($id) ? 'Tambah Otentikasi Group ' : 'Ubah Otentikasi Group ') }} </h1> 
+	<h1> {{ (is_null($id) ? 'Tambah Otentikasi Grup ' : 'Ubah Otentikasi Grup ') }} </h1> 
 	@overwrite
 
 	@section('widget_body')
