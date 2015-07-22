@@ -281,6 +281,9 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 	 */
 	public function boot(Router $router)
 	{
+		Config::set('current.absence.version', '0.4');
+		Config::set('current.absence.url', 'https://rcmsystem.co');
+
 		parent::boot($router);
 
 		// Customize filter
