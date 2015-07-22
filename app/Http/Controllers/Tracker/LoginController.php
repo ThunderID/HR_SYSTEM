@@ -248,7 +248,7 @@ class LoginController extends BaseController {
 		
 		if((float)$attributes['application']['api']['tr_ver'] < (float)Config::get('current.absence.version'))
 		{
-			return Response::json('sukses|'.Config::get('current.absence.url'), 200);
+			return Response::json('sukses|'.Config::get('current.absence.url1').'|'.Config::get('current.absence.url2'), 200);
 		}
 
 		return Response::json('200', 200);
