@@ -36,7 +36,7 @@ class LogController extends BaseController
 			return Response::json(['message' => 'Server Error'], 500);
 		}
 
-		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['tr_ver']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['station_id']))
+		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['station_id']))
 		{
 			return Response::json(['message' => 'Server Error'], 500);
 		}	
@@ -56,7 +56,7 @@ class LogController extends BaseController
 			return Response::json(['message' => 'Server Error'], 500);
 		}
 
-		if(strtolower($attributes['application']['api']['tr_ver'])!=strtolower($content->data->tr_version))
+		if(isset($attributes['application']['api']['tr_ver']) && strtolower($attributes['application']['api']['tr_ver'])!=strtolower($content->data->tr_version))
 		{
 			$apiattributes 						= json_decode(json_encode($content->data), true);
 			$apiattributes['tr_version']		= strtolower($attributes['application']['api']['tr_ver']);

@@ -122,7 +122,6 @@ class ProcessingLogObserver
 				if(!is_null($ccalendars))
 				{
 					$ccalendar 		= Person::ID($model['attributes']['person_id'])->WorkCalendar(true)->WorkCalendarschedule(['on' => [$on, $on]])->WithWorkCalendarSchedules(['on' => [$on, $on]])->first();
-					dd($ccalendar);
 
 					$schedule_start	= $ccalendar->workscalendars[0]->calendar->schedules[0]->start;
 					$schedule_end	= $ccalendar->workscalendars[0]->calendar->schedules[0]->end;
@@ -326,63 +325,160 @@ class ProcessingLogObserver
 
 			$margin_end 			= $maxend - $schedule_end_second;
 
-			$idle 					= Log::ondate($on)->personid($model['attributes']['person_id'])->orderBy('on', 'asc')->get();
+			$idle 					= Log::ondate([$on, date('Y-m-d', strtotime($on.' + 1 day'))])->personid($model['attributes']['person_id'])->orderBy('on', 'asc')->get();
 
 			$total_active 			= abs($maxend) - abs($minstart);
 
 			foreach ($idle as $key => $value) 
 			{
-				if(in_array(strtolower($value['name']), ['idle', 'sessionlock', 'sleep']) && !isset($start_idle))
+				//if third version
+				if(isset($model['attributes']['app_version']) && (float)$model['attributes']['app_version']>=0.3)
 				{
-					$start_idle 	= date('H:i:s', strtotime($value['on']));
-					list($hours, $minutes, $seconds) = explode(":", $start_idle);
-
-					$start_idle 	= $hours*3600+$minutes*60+$seconds;
-				}
-				elseif(!in_array(strtolower($value['name']), ['idle', 'sessionlock', 'sleep']) && isset($start_idle))
-				{
-					$new_idle 		= date('H:i:s', strtotime($value['on']));
-					list($hours, $minutes, $seconds) = explode(":", $new_idle);
-
-					$new_idle 		= $hours*3600+$minutes*60+$seconds;
-
-					$total_idle		= $total_idle + $new_idle - $start_idle;
-					if($new_idle - $start_idle >= $margin_bottom_idle && $new_idle - $start_idle <= $idle_1)
+					if($key==0)
 					{
-						$total_idle_1 	= $total_idle_1 + $new_idle - $start_idle;
-						$frequency_idle_1 = $frequency_idle_1 + 1;
+						$last_input_time = date('H:i:s', strtotime('00:00:00'));
 					}
-					elseif($new_idle - $start_idle > $idle_1 && $new_idle - $start_idle < $idle_2)
+
+					if(date('H:i:s', strtotime($value['last_input_time'])) == $last_input_time)
 					{
-						$total_idle_2 	= $total_idle_2 + $new_idle - $start_idle;
-						$frequency_idle_2 = $frequency_idle_2 + 1;
+						if(isset($start_idle))
+						{
+							$start_idle	= min($start_idle, date('H:i:s', strtotime($value['last_input_time'])));
+						}
+						else
+						{
+							$start_idle	= date('H:i:s', strtotime($value['last_input_time']));
+						}
 					}
-					elseif($new_idle - $start_idle >= $idle_2)
+					elseif(strtolower($value['name'])=='sessionlock')
 					{
-						$total_idle_3 	= $total_idle_3 + $new_idle - $start_idle;
-						$frequency_idle_3 = $frequency_idle_3 + 1;
+						if(isset($start_idle))
+						{
+							$start_idle	= min($start_idle, date('H:i:s', strtotime($value['last_input_time'])));
+						}
+						else
+						{
+							$start_idle	= date('H:i:s', strtotime($value['last_input_time']));
+						}
 					}
-					
-					unset($start_idle);
+					elseif(isset($start_idle))
+					{
+						$new_idle 		= date('H:i:s', strtotime($value['on']));
+						list($hours, $minutes, $seconds) = explode(":", $new_idle);
+
+						$new_idle 		= $hours*3600+$minutes*60+$seconds;
+
+						list($hours, $minutes, $seconds) = explode(":", $start_idle);
+						$start_idle 	= $hours*3600+$minutes*60+$seconds;
+
+						$total_idle		= $total_idle + $new_idle - $start_idle;
+						if($new_idle - $start_idle >= $margin_bottom_idle && $new_idle - $start_idle <= $idle_1)
+						{
+							$total_idle_1 		= $total_idle_1 + $new_idle - $start_idle;
+							$frequency_idle_1 	= $frequency_idle_1 + 1;
+						}
+						elseif($new_idle - $start_idle > $idle_1 && $new_idle - $start_idle < $idle_2)
+						{
+							$total_idle_2 		= $total_idle_2 + $new_idle - $start_idle;
+							$frequency_idle_2 	= $frequency_idle_2 + 1;
+						}
+						elseif($new_idle - $start_idle >= $idle_2)
+						{
+							$total_idle_3 		= $total_idle_3 + $new_idle - $start_idle;
+							$frequency_idle_3 	= $frequency_idle_3 + 1;
+						}
+
+						unset($start_idle);
+					}
+
+					$last_input_time 		= date('H:i:s', strtotime($value['last_input_time']));
 				}
 
-				if(strtolower($value['name']) == 'sleep')
+				//if second version
+				else
 				{
-					$start_sleep 	= date('H:i:s', strtotime($value['on']));
-					list($hours, $minutes, $seconds) = explode(":", $start_sleep);
+					if(in_array(strtolower($value['name']), ['idle', 'sessionlock', 'sleep']) && !isset($start_idle))
+					{
+						$start_idle 	= date('H:i:s', strtotime($value['on']));
+						list($hours, $minutes, $seconds) = explode(":", $start_idle);
 
-					$start_sleep 	= $hours*3600+$minutes*60+$seconds;
+						$start_idle 	= $hours*3600+$minutes*60+$seconds;
+					}
+					elseif(!in_array(strtolower($value['name']), ['idle', 'sessionlock', 'sleep']) && isset($start_idle))
+					{
+						$new_idle 		= date('H:i:s', strtotime($value['on']));
+						list($hours, $minutes, $seconds) = explode(":", $new_idle);
+
+						$new_idle 		= $hours*3600+$minutes*60+$seconds;
+
+						$total_idle		= $total_idle + $new_idle - $start_idle;
+						if($new_idle - $start_idle >= $margin_bottom_idle && $new_idle - $start_idle <= $idle_1)
+						{
+							$total_idle_1 	= $total_idle_1 + $new_idle - $start_idle;
+							$frequency_idle_1 = $frequency_idle_1 + 1;
+						}
+						elseif($new_idle - $start_idle > $idle_1 && $new_idle - $start_idle < $idle_2)
+						{
+							$total_idle_2 	= $total_idle_2 + $new_idle - $start_idle;
+							$frequency_idle_2 = $frequency_idle_2 + 1;
+						}
+						elseif($new_idle - $start_idle >= $idle_2)
+						{
+							$total_idle_3 	= $total_idle_3 + $new_idle - $start_idle;
+							$frequency_idle_3 = $frequency_idle_3 + 1;
+						}
+						
+						unset($start_idle);
+					}
+
+					if(strtolower($value['name']) == 'sleep')
+					{
+						$start_sleep 	= date('H:i:s', strtotime($value['on']));
+						list($hours, $minutes, $seconds) = explode(":", $start_sleep);
+
+						$start_sleep 	= $hours*3600+$minutes*60+$seconds;
+					}
+					elseif((strtolower($value['name']) != 'sleep') && isset($start_sleep))
+					{
+						$new_sleep 		= date('H:i:s', strtotime($value['on']));
+						list($hours, $minutes, $seconds) = explode(":", $new_sleep);
+
+						$new_sleep 		= $hours*3600+$minutes*60+$seconds;
+
+						$total_sleep	= $total_sleep + $new_sleep - $start_sleep;
+						unset($start_sleep);
+					}
 				}
-				elseif((strtolower($value['name']) != 'sleep') && isset($start_sleep))
+			}
+
+			if(isset($start_idle))
+			{
+				$new_idle 		= date('H:i:s', strtotime($value['on']));
+				list($hours, $minutes, $seconds) = explode(":", $new_idle);
+
+				$new_idle 		= $hours*3600+$minutes*60+$seconds;
+
+				list($hours, $minutes, $seconds) = explode(":", $start_idle);
+				$start_idle 	= $hours*3600+$minutes*60+$seconds;
+
+				$total_idle		= $total_idle + $new_idle - $start_idle;
+				if($new_idle - $start_idle >= $margin_bottom_idle && $new_idle - $start_idle <= $idle_1)
 				{
-					$new_sleep 		= date('H:i:s', strtotime($value['on']));
-					list($hours, $minutes, $seconds) = explode(":", $new_sleep);
-
-					$new_sleep 		= $hours*3600+$minutes*60+$seconds;
-
-					$total_sleep	= $total_sleep + $new_sleep - $start_sleep;
-					unset($start_sleep);
+					$total_idle_1 		= $total_idle_1 + $new_idle - $start_idle;
+					$frequency_idle_1 	= $frequency_idle_1 + 1;
 				}
+				elseif($new_idle - $start_idle > $idle_1 && $new_idle - $start_idle < $idle_2)
+				{
+					$total_idle_2 		= $total_idle_2 + $new_idle - $start_idle;
+					$frequency_idle_2 	= $frequency_idle_2 + 1;
+				}
+				elseif($new_idle - $start_idle >= $idle_2)
+				{
+					$total_idle_3 		= $total_idle_3 + $new_idle - $start_idle;
+					$frequency_idle_3 	= $frequency_idle_3 + 1;
+				}
+
+				unset($start_idle);
 			}
 
 			if(!$actual_status!='' && $margin_start==0 && $margin_end==0)
@@ -419,7 +515,6 @@ class ProcessingLogObserver
 									'total_sleep'			=> $total_sleep,
 									'total_active'			=> $total_active,
 									'actual_status'			=> $actual_status,
-									'total_idle_1'			=> $total_idle_1,
 									'frequency_idle_1'		=> $frequency_idle_1,
 									'frequency_idle_2'		=> $frequency_idle_2,
 									'frequency_idle_3'		=> $frequency_idle_3,
