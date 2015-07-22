@@ -152,13 +152,13 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.applications.delete'						=> 52,
 
 							//53-56 menu 
-							'hr.application.menu.index'						=> 53,
-							'hr.application.menu.show'						=> 53,
-							'hr.application.menu.create'					=> 54,
-							'hr.application.menu.store'						=> 54,
-							'hr.application.menu.edit'						=> 55,
-							'hr.application.menu.update'					=> 55,
-							'hr.application.menu.delete'					=> 56,
+							'hr.application.menus.index'					=> 53,
+							'hr.application.menus.show'						=> 53,
+							'hr.application.menus.create'					=> 54,
+							'hr.application.menus.store'					=> 54,
+							'hr.application.menus.edit'						=> 55,
+							'hr.application.menus.update'					=> 55,
+							'hr.application.menus.delete'					=> 56,
 
 							//57-60 authgroup
 							'hr.authgroups.index'							=> 49,

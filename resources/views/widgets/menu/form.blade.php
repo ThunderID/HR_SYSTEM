@@ -3,7 +3,7 @@
 @if (!$widget_error_count)
 
 	@section('widget_title')
-	<h1> {{ (is_null($id) ? 'Tambah Otentikasi Group ' : 'Ubah Otentikasi Group ') }} </h1> 
+	<h1> {{ (is_null($id) ? 'Tambah Menu Apliaksi ' : 'Ubah Menu Apliaksi') }} </h1> 
 	@overwrite
 
 	@section('widget_body')
@@ -12,15 +12,7 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="form-group">
-						<label class="control-label">Aplikasi</label>
-						{!! Form::input('text', 'application_id', $MenuComposer['widget_data']['menu']['menu']['application_id'], ['class' => 'form-control']) !!}
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="form-group">
-						<label class="control-label">Nama Menu</label>
+						<label class="control-label">Nama</label>
 						{!! Form::input('text', 'name', $MenuComposer['widget_data']['menu']['menu']['name'], ['class' => 'form-control']) !!}
 					</div>
 				</div>
@@ -28,8 +20,16 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="form-group">
-						<label class="control-label">Deskripsi</label>
+						<label class="control-label">Tag</label>
 						{!! Form::input('text', 'tag', $MenuComposer['widget_data']['menu']['menu']['tag'], ['class' => 'form-control']) !!}
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-group">
+						<label class="control-label">Deskripsi</label>
+						{!! Form::input('text', 'description', $MenuComposer['widget_data']['menu']['menu']['description'], ['class' => 'form-control']) !!}
 					</div>
 				</div>
 			</div>

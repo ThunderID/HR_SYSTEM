@@ -106,13 +106,13 @@ class CalendarController extends BaseController
 		}
 
 		$search['id'] 							= $chart_id;
-		$search['branchhid'] 					= $branch_id;
+		// $search['branchhid'] 					= $branch_id;
 		$search['organisationid'] 				= $org_id;
 		$search['withattributes'] 				= ['branch', 'branch.organisation'];
 		$sort 									= ['name' => 'asc'];
 		$results 								= $this->dispatch(new Getting(new Chart, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
-
+// dd($contents);
 		if(!$contents->meta->success)
 		{
 			App::abort(404);

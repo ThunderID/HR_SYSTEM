@@ -26,8 +26,8 @@
 @overwrite
 
 @section('content_body')
-	@include('widgets.menu.table', [
-		'widget_title'			=> 'Menu Aplikasi',
+	@include('widgets.groupmenu.table', [
+		'widget_title'			=> 'Menu Otentikasi',
 		'widget_template'		=> 'panel',
 		'widget_options'		=> [ 'menu' 				=>
 										[

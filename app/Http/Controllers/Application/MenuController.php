@@ -7,6 +7,7 @@ use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
 use App\Console\Commands\Checking;
 use App\Console\Commands\Deleting;
+use App\Models\Application;
 use App\Models\Menu;
 use App\Models\Work;
 use App\Models\Person;
@@ -74,7 +75,7 @@ class MenuController extends BaseController
 			$result								= $this->dispatch(new Getting(new Menu, ['ID' => $id, 'applicationid' => $app_id], ['created_at' => 'asc'] ,1, 1));
 
 			$content 							= json_decode($result);
-
+			
 			if(!$content->meta->success)
 			{
 				App::abort(404);
@@ -144,7 +145,7 @@ class MenuController extends BaseController
 		{
 			DB::commit();
 
-			return Redirect::route('hr.application.menus.show', [$is_success->data->id)->with('local_msg', $errors)->with('alert_success', 'Menu "' . $is_success->data->name. '" sudah disimpan');
+			return Redirect::route('hr.application.menus.show', [$is_success->data->id])->with('local_msg', $errors)->with('alert_success', 'Menu "' . $is_success->data->name. '" sudah disimpan');
 		}
 
 		DB::rollback();

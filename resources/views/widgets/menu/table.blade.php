@@ -29,9 +29,9 @@
 							<td>{{ $value['name'] }}</td>
 							<td>{{ $value['tag'] }}</td>
 							<td class="text-right">
-								<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.menus.delete', [$value['id']]) }}"><i class="fa fa-trash"></i></a>
+								<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.application.menus.delete', ['id' => $value['id'], 'app_id' => $id]) }}"><i class="fa fa-trash"></i></a>
 
-								<a href="{{ route('hr.menus.edit', [$value['id']]) }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+								<a href="{{ route('hr.application.menus.edit', ['id' => $value['id'], 'app_id' => $id]) }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 							</td>
 						</tr>
 					@empty 

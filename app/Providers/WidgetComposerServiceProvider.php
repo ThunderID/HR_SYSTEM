@@ -47,7 +47,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// MENU
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.menu.table'], 'App\Http\ViewComposers\MenuComposer');
+		View::composer(['widgets.menu.table', 'widgets.menu.form'], 'App\Http\ViewComposers\MenuComposer');
 
 		// -----------------------------------------------------------------------------
 		// ORGANISATION
