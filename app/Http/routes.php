@@ -53,7 +53,7 @@ Route::group(['middleware' => 'csrfverify'], function()
 			// APP MENUS RESOURCE
 			// ------------------------------------------------------------------------------------
 
-			Route::resource('menus',			'MenuController',										['names' => ['index' => 'hr.menus.index', 'create' => 'hr.menus.create', 'store' => 'hr.menus.store', 'show' => 'hr.menus.show', 'edit' => 'hr.menus.edit', 'update' => 'hr.menus.update', 'destroy' => 'hr.menus.delete']]);
+			Route::resource('menus',			'MenuController',										['names' => ['index' => 'hr.application.menus.index', 'create' => 'hr.application.menus.create', 'store' => 'hr.application.menus.store', 'show' => 'hr.application.menus.show', 'edit' => 'hr.application.menus.edit', 'update' => 'hr.application.menus.update', 'destroy' => 'hr.application.menus.delete']]);
 		});
 		
 		Route::resource('authgroups',			'AuthGroupController',									['names' => ['index' => 'hr.authgroups.index', 'create' => 'hr.authgroups.create', 'store' => 'hr.authgroups.store', 'show' => 'hr.authgroups.show', 'edit' => 'hr.authgroups.edit', 'update' => 'hr.authgroups.update', 'destroy' => 'hr.authgroups.delete']]);

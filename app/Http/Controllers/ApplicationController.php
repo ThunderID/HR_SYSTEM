@@ -27,7 +27,8 @@ class ApplicationController extends BaseController
 	{
 		if(is_null($id))
 		{
-			$this->layout->page 				= view('pages.application.create', compact('id'));
+			$data 								= null;
+			$this->layout->page 				= view('pages.application.create', compact('id', 'data'));
 		}
 		else
 		{
@@ -40,8 +41,8 @@ class ApplicationController extends BaseController
 				App::abort(404);
 			}
 		
-			$application 				 		= json_decode(json_encode($content->data), true);
-			$this->layout->page 				= view('pages.application.create', compact('id', 'application'));
+			$data 				 				= json_decode(json_encode($content->data), true);
+			$this->layout->page 				= view('pages.application.create', compact('id', 'data'));
 		}
 
 		return $this->layout;
@@ -104,6 +105,8 @@ class ApplicationController extends BaseController
 		{
 			App::abort(404);
 		}
+
+		$data 								= json_decode(json_encode($content->data), true);
 
 		$this->layout->page 				= view('pages.application.show', compact('data', 'id'));
 

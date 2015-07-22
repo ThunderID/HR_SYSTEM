@@ -3,7 +3,7 @@
 @if (!$widget_error_count)
 
 	@section('widget_title')
-	<h1> {{ (is_null($id) ? 'Tambah Aplikasi ' : 'Ubah Aplikasi ') }} </h1> 
+	<h1> {{ is_null($id) ? 'Tambah Aplikasi' : 'Ubah Aplikasi "'. $ApplicationComposer['widget_data']['application']['application']['name'].'"'}} </h1> 
 	@overwrite
 
 	@section('widget_body')

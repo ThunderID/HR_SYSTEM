@@ -144,7 +144,7 @@ class MenuController extends BaseController
 		{
 			DB::commit();
 
-			return Redirect::route('hr.application.menus.show', [$is_success->data->id)->with('local_msg', $errors)->with('alert_success', 'Menu "' . $is_success->data->name. '" sudah disimpan');
+			return Redirect::route('hr.application.menus.show', $is_success->data->id)->with('local_msg', $errors)->with('alert_success', 'Menu "' . $is_success->data->name. '" sudah disimpan');
 		}
 
 		DB::rollback();
