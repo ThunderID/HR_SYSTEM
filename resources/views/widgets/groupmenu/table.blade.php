@@ -31,7 +31,15 @@
 								</td>
 								<td>{{ $value['name'] }}</td>
 								<td class="text-center">
-									<input type="checkbox" name="active">
+									@foreach($data['menus'] as $key2 => $value2)
+										@if($value2['id'] == $value['id'])
+											<input type="checkbox" name="active" checked>
+											<?php $flag = true;?>
+										@endif
+									@endforeach
+									@if(!isset($flag))
+										<input type="checkbox" name="active">
+									@endif
 								</td>
 							</tr>
 							<?php $prev = $value['application']['id'];?>

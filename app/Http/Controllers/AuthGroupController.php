@@ -97,7 +97,7 @@ class AuthGroupController extends BaseController
 
 	public function show($id = null)
 	{
-		$result								= $this->dispatch(new Getting(new AuthGroup, ['ID' => $id], ['id' => 'asc'] ,1, 1));
+		$result								= $this->dispatch(new Getting(new AuthGroup, ['ID' => $id, 'withattributes' => 'menus'], ['id' => 'asc'] ,1, 1));
 
 		$content 							= json_decode($result);
 
@@ -105,6 +105,8 @@ class AuthGroupController extends BaseController
 		{
 			App::abort(404);
 		}
+
+		$data 				 				= json_decode(json_encode($content->data), true);
 
 		$this->layout->page 				= view('pages.authgroup.show', compact('data', 'id'));
 

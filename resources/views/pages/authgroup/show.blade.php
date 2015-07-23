@@ -1,5 +1,11 @@
 @section('nav_topbar')
-	
+	@include('widgets.common.nav_topbar', 
+	[
+		'breadcrumb' 	=> 	[
+								['name' => 'Otentikasi Grup', 'route' => route('hr.authgroups.index')],
+								['name' => $data['name'], 'route' => route('hr.authgroups.show', $data['id'])],
+							]
+	])
 @stop
 
 @section('nav_sidebar')
@@ -32,7 +38,7 @@
 		'widget_options'		=> [ 'menu' 				=>
 										[
 											'form_url' 			=> null,
-											'search'			=> ['withattributes' => 'application'],
+											'search'			=> ['withattributes' => 'application', 'hasapplication' => true],
 											'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['application_id' => 'asc']),
 											'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
