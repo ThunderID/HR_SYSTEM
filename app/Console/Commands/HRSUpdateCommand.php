@@ -41,7 +41,7 @@ class HRSUpdateCommand extends Command {
 	public function fire()
 	{
 		//
-		$result 		= $this->update1572015();
+		$result 		= $this->update2372015();
 		
 		return true;
 	}
@@ -76,17 +76,9 @@ class HRSUpdateCommand extends Command {
 	 * @return void
 	 * @author 
 	 **/
-	public function update1572015()
+	public function update2372015()
 	{
 		//not yet
-		Schema::table('logs', function($table)
-		{
-			$table->string('ip', 255);
-			$table->string('app_version', 255);
-		});
-
-		$this->info("Add ip and tr version on logs table");
-
 		Schema::table('error_logs', function($table)
 		{
 			$table->string('ip', 255);
