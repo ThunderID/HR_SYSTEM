@@ -49,7 +49,11 @@
 									]
 	])
 	
-	
+	{!! Form::open(array('route' => array('hr.application.menus.delete', 0),'method' => 'DELETE')) !!}
+		@include('widgets.modal.delete', [
+			'widget_template'		=> 'plain_no_title'
+		])
+	{!! Form::close() !!}
 @overwrite
 
 @section('content_footer')

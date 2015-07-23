@@ -21,12 +21,12 @@ class TimeController extends BaseController {
 		//cek apa ada aplication
 		if(!$attributes['application'])
 		{
-			return Response::json(['message' => 'Server Error'], 500);
+			return Response::json('101', 200);
 		}		
 
 		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['station_id']))
 		{
-			return Response::json(['message' => 'Server Error'], 500);
+			return Response::json('102', 200);
 		}
 
 		//cek API key & secret
@@ -47,18 +47,18 @@ class TimeController extends BaseController {
 		        fwrite($fh, $template); 
 		        fclose($fh);
 
-				return Response::json(['message' => 'Server Error'], 500);
+				return Response::json('401', 200);
 			}
 			else
 			{
-				return Response::json(['message' => 'Konek'], 200);
+				return Response::json('201', 200);
 			}
 		}
 
 		$GMT 										= new DateTimeZone("GMT");
 		$date 										= new DateTime( "now", $GMT );
 
-		return Response::json(['message' => 'sukses|'.$date->format('Y/m/d H:i:s')], 200);
+		return Response::json('sukses|'.$date->format('Y/m/d H:i:s'), 200);
 	}
 
 	public function testv3()
@@ -68,12 +68,12 @@ class TimeController extends BaseController {
 		//cek apa ada aplication
 		if(!$attributes['application'])
 		{
-			return Response::json(['message' => 'Error'], 200);
+			return Response::json('101', 200);
 		}
 
 		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['station_id']))
 		{
-			return Response::json(['message' => 'Tidak ada api client, secret atau app id'], 200);
+			return Response::json('102', 200);
 		}	
 
 		//cek API key & secret
@@ -87,7 +87,7 @@ class TimeController extends BaseController {
 			$elog['ip'] 						= $_SERVER['REMOTE_ADDR'];
 			$saved_error_log 					= $this->dispatch(new Saving(new ErrorLog, $elog, null));
 
-			return Response::json(['message' => 'Aplikasi tidak terdaftar'], 200);
+			return Response::json('402', 200);
 		}
 
 		if(isset($attributes['application']['api']['tr_ver']) && strtolower($attributes['application']['api']['tr_ver'])!=strtolower($content->data->tr_version))
@@ -100,7 +100,7 @@ class TimeController extends BaseController {
 			
 			if(!$is_success->meta->success)
 			{
-				return Response::json(['message' => 'System tidak dapat update versi absence system'], 200);
+				return Response::json('301', 200);
 			}
 		}
 
@@ -109,7 +109,7 @@ class TimeController extends BaseController {
 		//cek apa ada data log
 		if(!$attributes['log'])
 		{
-			return Response::json(['message' => 'Error'], 200);
+			return Response::json('103', 200);
 		}
 
 		//cek apa data bisa disimpan
@@ -151,6 +151,6 @@ class TimeController extends BaseController {
 			}
 		}
 		DB::commit();
-		return Response::json(['message' => 'Sukses'], 200);
+		return Response::json('Sukses', 200);
 	}
 }

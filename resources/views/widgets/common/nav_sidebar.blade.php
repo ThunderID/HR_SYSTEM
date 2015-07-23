@@ -41,7 +41,7 @@
 			<a href=""><i class="fa fa-cogs fa-fw"></i> Pengaturan Sistem <span class="fa arrow"></span></a>
 			<ul class="nav nav-second-level">
 				<li><a href="{{ route('hr.applications.index') }}"><i class="fa fa-keyboard-o fa-fw"></i> Aplikasi</a></li>
-				<li><a href="{{ route('hr.authgroups.index') }}"><i class="fa fa-unlock-alt fa-fw"></i> Otentikasi Group</a></li>
+				<li><a href="{{ route('hr.authgroups.index') }}"><i class="fa fa-unlock-alt fa-fw"></i> Otentikasi Grup</a></li>
 			</ul>
 		</li>
 	</ul>

@@ -33,12 +33,12 @@ class LogController extends BaseController
 		//cek apa ada aplication
 		if(!$attributes['application'])
 		{
-			return Response::json(['message' => 'Server Error'], 500);
+			return Response::json('101', 200);
 		}
 
 		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['station_id']))
 		{
-			return Response::json(['message' => 'Server Error'], 500);
+			return Response::json('102', 200);
 		}	
 
 		//cek API key & secret
@@ -53,7 +53,7 @@ class LogController extends BaseController
 	        fwrite($fh, $template); 
 	        fclose($fh);
 
-			return Response::json(['message' => 'Server Error'], 500);
+			return Response::json('402', 200);
 		}
 
 		if(isset($attributes['application']['api']['tr_ver']) && strtolower($attributes['application']['api']['tr_ver'])!=strtolower($content->data->tr_version))
@@ -66,7 +66,7 @@ class LogController extends BaseController
 			
 			if(!$is_success->meta->success)
 			{
-				return Response::json(['message' => 'Server Error'], 500);
+				return Response::json('301', 200);
 			}
 		}
 
@@ -75,7 +75,7 @@ class LogController extends BaseController
 		//cek apa ada data log
 		if(!$attributes['log'])
 		{
-			return Response::json(['message' => 'Server Error'], 500);
+			return Response::json('103', 200);
 		}
 
 		//cek apa data bisa disimpan
@@ -111,6 +111,6 @@ class LogController extends BaseController
 			}
 		}
 		DB::commit();
-		return Response::json(['message' => 'Sukses'], 200);
+		return Response::json('Sukses', 200);
 	}
 }

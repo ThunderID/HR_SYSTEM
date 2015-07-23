@@ -1,5 +1,11 @@
 @section('nav_topbar')
-	
+	@include('widgets.common.nav_topbar', 
+	[
+		'breadcrumb' 	=> 	[
+								['name' => 'Otentikasi Grup', 'route' => route('hr.authgroups.index')],
+								['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.authgroups.create', ['org_id' => $data['id']]) : route('hr.authgroups.edit', ['id' => $id, 'org_id' => $data['id']]) )]
+							]
+	])
 @stop
 
 @section('nav_sidebar')
@@ -27,7 +33,7 @@
 @section('content_body')	
 	@include('widgets.authgroup.form', [
 		'widget_template'		=> 'panel',
-		'widget_title'			=> 'Aplikasi',
+		'widget_title'			=> 'Otentikasi Grup',
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> [

@@ -1,6 +1,12 @@
 @section('nav_topbar')
-	
+	@include('widgets.common.nav_topbar', 
+	[
+		'breadcrumb' 	=> 	[
+								['name' => 'Otentikasi Grup', 'route' => route('hr.authgroups.index')],
+							]
+	])
 @stop
+
 
 @section('nav_sidebar')
 	@include('widgets.common.nav_sidebar', [
@@ -27,7 +33,7 @@
 
 @section('content_body')
 	@include('widgets.authgroup.table', [
-		'widget_title'			=> 'Otentikasi Group',
+		'widget_title'			=> 'Otentikasi Grup',
 		'widget_template'		=> 'panel',
 		'widget_options'		=> [ 'authgroup' 				=>
 										[

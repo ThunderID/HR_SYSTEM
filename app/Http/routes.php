@@ -286,6 +286,11 @@ Route::group(['namespace' => 'Tracker\\'], function()
 
 Route::group(['namespace' => 'Tracker\\'], function() 
 {
+	Route::post('api/tracker/update/',			['uses' => 'LoginController@updateversion',			'as' => 'hr.tracker.update']);
+});
+
+Route::group(['namespace' => 'Tracker\\'], function() 
+{
 	Route::post('api/time/test/',				['uses' => 'TimeController@test',					'as' => 'hr.time.test']);
 });
 

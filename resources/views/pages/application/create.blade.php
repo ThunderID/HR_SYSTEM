@@ -3,8 +3,7 @@
 	[
 		'breadcrumb' 	=> 	[
 								['name' => 'Aplikasi', 'route' => route('hr.applications.index')],
-								['name' => $data['name'], 'route' => route('hr.applications.show', $data['id'])],
-								['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.branches.create', ['org_id' => $data['id']]) : route('hr.branches.edit', ['id' => $id, 'org_id' => $data['id']]) )]
+								['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.applications.create', ['org_id' => $data['id']]) : route('hr.applications.edit', ['id' => $id, 'org_id' => $data['id']]) )]
 							]
 	])
 @stop
