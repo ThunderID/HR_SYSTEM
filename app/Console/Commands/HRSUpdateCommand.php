@@ -78,20 +78,20 @@ class HRSUpdateCommand extends Command {
 	 **/
 	public function update2372015()
 	{
-		//not yet
-		Schema::table('logs', function($table)
-		{
-			$table->string('ip', 255);
-		});
+		//latest update (done but not in rcmsystem real package)
+		// Schema::table('logs', function($table)
+		// {
+		// 	$table->string('ip', 255);
+		// });
 
-		$this->info("Add ip and on logs table");
+		// $this->info("Add ip logs table");
 
-		Schema::table('error_logs', function($table)
-		{
-			$table->string('ip', 255);
-		});
+		// Schema::table('error_logs', function($table)
+		// {
+		// 	$table->string('ip', 255);
+		// });
 
-		$this->info("Add ip on error logs table");
+		// $this->info("Add ip on error logs table");
 
 		return true;
 	}
