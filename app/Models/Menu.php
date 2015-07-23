@@ -57,6 +57,7 @@ class Menu extends BaseModel {
 	public $searchable 				= 	[
 											'id' 							=> 'ID', 
 											'applicationid' 				=> 'ApplicationID', 
+											'hasapplication' 				=> 'HasApplication', 
 											'name' 							=> 'Name', 
 											'level' 						=> 'Level', 
 											'withattributes' 				=> 'WithAttributes',
@@ -65,6 +66,7 @@ class Menu extends BaseModel {
 	public $searchableScope 		= 	[
 											'id' 						=> 'Could be array or integer', 
 											'applicationid' 			=> 'Could be array or integer', 
+											'hasapplication' 			=> 'Null', 
 											'name' 						=> 'Must be string', 
 											'level' 					=> 'Must be integer', 
 											'withattributes' 			=> 'Must be array of relationship'
