@@ -147,11 +147,11 @@ class AuthGroupController extends BaseController
 
 			if(strtolower(Input::Get('type')) == 'check')
 			{
-				return $this->storemenu($authgroupid, $menuid);
+				return $this->storemenu($authgroupid, $menuid, Input::get('page'));
 			}
 			elseif(strtolower(Input::Get('type')) == 'uncheck')
 			{
-				return $this->destroymenu($authgroupid, $groupmenuid);
+				return $this->destroymenu($authgroupid, $groupmenuid, Input::get('page'));
 			}
 			else
 			{
@@ -197,7 +197,7 @@ class AuthGroupController extends BaseController
 		}
 	}
 
-	public function storemenu($authgroupid, $menuid)
+	public function storemenu($authgroupid, $menuid, $page = 1)
 	{
 		$attributes 							= ['tmp_auth_group_id' => $authgroupid];
 		
@@ -231,14 +231,14 @@ class AuthGroupController extends BaseController
 		{
 			DB::commit();
 
-			return Redirect::route('hr.authgroups.show', [$authgroupid])->with('local_msg', $errors)->with('alert_success', 'Auth Group sudah disimpan');
+			return Redirect::route('hr.authgroups.show', [$authgroupid, 'page' => $page])->with('local_msg', $errors)->with('alert_success', 'Auth Group sudah disimpan');
 		}
 
 		DB::rollback();
 		return Redirect::back()->withErrors($errors)->withInput();
 	}
 
-	public function destroymenu($authgroupid, $groupmenuid)
+	public function destroymenu($authgroupid, $groupmenuid, $page = 1)
 	{
 		$results							= $this->dispatch(new Getting(new GroupMenu, ['ID' => $groupmenuid, 'authgroupid' => $authgroupid], ['tmp_auth_group_id' => 'asc'] ,1, 1));
 
@@ -255,7 +255,7 @@ class AuthGroupController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.authgroups.show', $authgroupid)->with('alert_success', 'Group Menu  sudah dihapus');
+				return Redirect::route('hr.authgroups.show', [$authgroupid, 'page' => $page])->with('alert_success', 'Group Menu  sudah dihapus');
 			}
 		}
 		else
