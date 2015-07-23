@@ -70,7 +70,7 @@ class Menu extends BaseModel {
 											'withattributes' 			=> 'Must be array of relationship'
 										];
 
-	public $sortable 				= 	['name', 'tag', 'created_at', 'tmp_applications.id'];
+	public $sortable 				= 	['name', 'tag', 'created_at', 'tmp_applications.id', 'application_id'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**
