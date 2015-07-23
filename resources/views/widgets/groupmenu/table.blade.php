@@ -9,7 +9,6 @@
 	@overwrite
 
 	@section('widget_body')
-
 		@if(isset($MenuComposer['widget_data']['menu']['menu']))
 			<div class="clearfix">&nbsp;</div>
 			<table class="table table-hover table-affix">
@@ -23,7 +22,7 @@
 				<tbody>
 					<?php $prev = null; $count = 0;?>
 					<?php $i = $MenuComposer['widget_data']['menu']['menu-display']['from'];?>
-					<form class="check" action="" method="post">
+
 						@forelse($MenuComposer['widget_data']['menu']['menu'] as $key => $value)
 							<tr>
 								<td> 
@@ -33,22 +32,23 @@
 								<td class="text-center">
 									@foreach($data['menus'] as $key2 => $value2)
 										@if($value2['id'] == $value['id'])
-											<input type="checkbox" name="active" checked>
-											<?php $flag = true;?>
-										@endif
+											<a href="{{ route('hr.authgroups.show', [$id, 'group_menu_id' => $value2['pivot']['id'], 'type' => 'uncheck', 'auth_group_id' => $value2['pivot']['tmp_auth_group_id'], 'page' => Input::get('page')]) }}"><i class="fa fa-check-square-o" style="color:black"></i></a>
+											<?php $flag = true;?>											
+										@endif										
 									@endforeach
 									@if(!isset($flag))
-										<input type="checkbox" name="active">
+										<a href="{{ route('hr.authgroups.show', [$id, 'type' => 'check', 'menu_id' => $value['id'], 'auth_group_id' => $data['id'], 'page' => Input::get('page')]) }}"><i class="fa fa-square-o" style="color:black"></i></a>
+									@else
+										<?php unset($flag);?>
 									@endif
 								</td>
-							</tr>
-							<?php $prev = $value['application']['id'];?>
+							</tr>							
 						@empty 
 							<tr>
 								<td class="text-center" colspan="3">Tidak ada data</td>
 							</tr>
 						@endforelse
-					</form>
+
 				</tbody>
 			</table>
 		
