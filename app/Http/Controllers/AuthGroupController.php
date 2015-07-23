@@ -115,7 +115,7 @@ class AuthGroupController extends BaseController
 			{
 				$menuid 	 				= Input::get('menu_id');
 			}
-			else
+			elseif(strtolower(Input::Get('type')) == 'check')
 			{
 				App::abort(404);
 			}
@@ -140,7 +140,7 @@ class AuthGroupController extends BaseController
 					$groupmenuid 	 		= null;
 				}
 			}
-			else
+			elseif(strtolower(Input::Get('type')) == 'uncheck')
 			{
 				App::abort(404);
 			}
@@ -231,7 +231,7 @@ class AuthGroupController extends BaseController
 		{
 			DB::commit();
 
-			return Redirect::route('hr.authgroups.show', [$authgroupid])->with('local_msg', $errors)->with('alert_success', 'Auth Group "' . $is_success->data->name. '" sudah disimpan');
+			return Redirect::route('hr.authgroups.show', [$authgroupid])->with('local_msg', $errors)->with('alert_success', 'Auth Group sudah disimpan');
 		}
 
 		DB::rollback();
@@ -240,7 +240,7 @@ class AuthGroupController extends BaseController
 
 	public function destroymenu($authgroupid, $groupmenuid)
 	{
-		$result								= $this->dispatch(new Getting(new GroupMenu, ['ID' => $groupmenuid, 'authgroupid' => $authgroupid], ['tmp_auth_group_id' => 'asc'] ,1, 1));
+		$results							= $this->dispatch(new Getting(new GroupMenu, ['ID' => $groupmenuid, 'authgroupid' => $authgroupid], ['tmp_auth_group_id' => 'asc'] ,1, 1));
 
 		$content 							= json_decode($results);
 
@@ -255,12 +255,12 @@ class AuthGroupController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.authgroups.show', $authgroupid)->with('alert_success', 'Group Menu "' . $contents->data->name. '" sudah dihapus');
+				return Redirect::route('hr.authgroups.show', $authgroupid)->with('alert_success', 'Group Menu  sudah dihapus');
 			}
 		}
 		else
 		{
-			return Redirect::back()->withErrors($contents->meta->errors);
+			return Redirect::back()->withErrors($content->meta->errors);
 		}
 	}
 }
