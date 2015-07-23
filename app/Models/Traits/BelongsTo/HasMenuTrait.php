@@ -18,7 +18,7 @@ trait HasMenuTrait {
 
 	public function Menu()
 	{
-		return $this->belongsTo('App\Models\Menu');
+		return $this->belongsTo('App\Models\Menu', 'tmp_menu_id');
 	}
 
 	public function scopeMenuID($query, $variable)
