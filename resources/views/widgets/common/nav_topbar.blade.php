@@ -33,7 +33,11 @@
 			@endif
 			<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-					{!! HTML::image(Session::get('user.avatar'), '', array( 'width' => 32, 'height' => 32, 'class' => 'img-rounded' )) !!} {{Session::get('user.name')}} &nbsp;&nbsp; <i class="fa fa-caret-down"></i>
+					@if ((File::exists(Session::get('user.avatar')))&&(!Session::get('user.avatar')))
+						{!! HTML::image(Session::get('user.avatar'), '', array( 'width' => 32, 'height' => 32, 'class' => 'img-rounded' )) !!} 
+					@else
+					 	{!! HTML::image('/tmp_avatar.png', '', array( 'width' => 32, 'height' => 32, 'class' => 'img-rounded' )) !!} 
+					@endif &nbsp; {{Session::get('user.name')}} &nbsp;&nbsp; <i class="fa fa-caret-down"></i>
 				</a>
 				<ul class="dropdown-menu dropdown-user">					
 					<li><a href="{{route('hr.password.get')}}"><i class="fa fa-gear fa-fw"></i> Ubah Password</a></li>					
