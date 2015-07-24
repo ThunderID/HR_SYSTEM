@@ -48,7 +48,7 @@
 						<a href="{{ route('hr.authgroups.index') }}" @if(isset($widget_options['sidebar']['auth_group'])&&($widget_options['sidebar']['auth_group']=='yes')) class="active" @endif><i class="fa fa-unlock-alt fa-fw"></i> Otentikasi Grup</a>
 					</li>
 					<li @if(isset($widget_options['sidebar']['info_device'])&&($widget_options['sidebar']['info_device']=='yes')) class="active-li" @endif>
-						<a href="{{ route('hr.infomessage.index') }}" @if(isset($widget_options['sidebar']['info_device'])&&($widget_options['sidebar']['info_device']=='yes')) class="active" @endif><i class="fa fa-info-circle fa-fw"></i> Pesan Error Device</a>
+						<a href="{{ route('hr.infomessage.index') }}" @if(isset($widget_options['sidebar']['info_device'])&&($widget_options['sidebar']['info_device']=='yes')) class="active" @endif><i class="fa fa-info-circle fa-fw"></i> Pesan Error</a>
 					</li>
 				</ul>
 			</li>

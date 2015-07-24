@@ -2,7 +2,7 @@
 	@include('widgets.common.nav_topbar', 
 	[
 		'breadcrumb' 	=> 	[
-								['name' => 'Info Pesan Error Device', 'route' => route('hr.infomessage.index')],
+								['name' => 'Pesan Error', 'route' => route('hr.infomessage.index')],
 							]
 	])
 @stop
