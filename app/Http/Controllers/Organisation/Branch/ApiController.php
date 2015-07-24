@@ -265,7 +265,7 @@ class ApiController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.branch.apis.index', ['branch_id' => $branch_id, 'org_id' => $org_id])->with('alert_success', 'Sidik Jari Cabang "' . $contents->data->name. '" sudah disimpan');
+			return Redirect::route('hr.branch.apis.index', ['branch_id' => $branch_id, 'org_id' => $org_id])->with('alert_success', 'API Cabang "' . $contents->data->name. '" sudah disimpan');
 		}
 		
 		DB::rollback();
