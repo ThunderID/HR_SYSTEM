@@ -1,5 +1,11 @@
 @section('nav_topbar')
-	@include('widgets.common.nav_topbar', ['breadcrumb' => [['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ]]])
+	@include('widgets.common.nav_topbar', 
+		['breadcrumb' 			=> 	[
+										['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
+										['name' => 'Otentikasi', 'route' => route('hr.authentications.index', ['org_id' => $data['id']]) ],
+										['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.authentications.create', ['org_id' => $data['id']]) : route('hr.authentications.edit', ['id' => $id, 'org_id' => $data['id']]) )]
+									]
+		])
 @stop
 
 @section('nav_sidebar')
