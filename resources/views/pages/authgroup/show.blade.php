@@ -33,7 +33,7 @@
 
 @section('content_body')
 	@include('widgets.groupmenu.table', [
-		'widget_title'			=> 'Menu Otentikasi',
+		'widget_title'			=> 'Otentikasi "'.$data['name'].'" '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_template'		=> 'panel',
 		'widget_options'		=> [ 'menu' 				=>
 										[

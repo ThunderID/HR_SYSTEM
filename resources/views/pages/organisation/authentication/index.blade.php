@@ -1,5 +1,10 @@
 @section('nav_topbar')
-	@include('widgets.common.nav_topbar', ['breadcrumb' => [['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ]]])
+	@include('widgets.common.nav_topbar', 
+	['breadcrumb' => 	[
+							['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
+							['name' => 'Otentikasi', 'route' => route('hr.authentications.index', ['org_id' => $data['id']]) ]
+						]
+	])
 @stop
 
 @section('nav_sidebar')
@@ -28,7 +33,7 @@
 @section('content_body')
 	@include('widgets.organisation.authentication.table', [
 		'widget_template'		=> 'panel',
-		'widget_title'			=> 'Otentikasi',
+		'widget_title'			=> 'Otentikasi "'.$data['name'].'" '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_options'		=> [ 'workauthlist' 				=>
 											[
 												'form_url' 			=> null,

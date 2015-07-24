@@ -1,7 +1,7 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 @if (!$widget_error_count)
 	@section('widget_title')
-	<h1> {{ $widget_title or 'Data Karyawan'}} </h1>
+	<h1> {!! $widget_title or 'Data Karyawan'!!} </h1>
 	<small>Total data {{$PersonWorkleaveComposer['widget_data']['workleavelist']['workleave-pagination']->total()}}</small>
 
 	@if(isset($PersonWorkleaveComposer['widget_data']['workleavelist']['active_filter']) && !is_null($PersonWorkleaveComposer['widget_data']['workleavelist']['active_filter']))

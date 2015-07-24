@@ -31,7 +31,7 @@
 
 @section('content_body')
 	@include('widgets.application.table', [
-		'widget_title'			=> 'Aplikasi',
+		'widget_title'			=> 'Aplikasi '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_template'		=> 'panel',
 		'widget_options'		=> [ 'application' 				=>
 										[

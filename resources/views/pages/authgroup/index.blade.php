@@ -33,7 +33,7 @@
 
 @section('content_body')
 	@include('widgets.authgroup.table', [
-		'widget_title'			=> 'Otentikasi Grup',
+		'widget_title'			=> 'Otentikasi Grup '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_template'		=> 'panel',
 		'widget_options'		=> [ 'authgroup' 				=>
 										[

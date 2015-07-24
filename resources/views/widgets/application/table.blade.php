@@ -3,7 +3,7 @@
 @if (!$widget_error_count)
 
 	@section('widget_title')
-		<h1> {!! $widget_title  or 'Cabang' !!} </h1>
+		<h1> {!! $widget_title  or 'Aplikasi' !!} </h1>
 		<small>Total data {{$ApplicationComposer['widget_data']['application']['application-pagination']->total()}}</small>
 	@overwrite
 
