@@ -5,6 +5,7 @@ use App\Models\Work;
 use App\Models\Chart;
 use App\Models\Follow;
 use App\Models\Person;
+use App\Models\Finger;
 use App\Models\WorkAuthentication;
 use Illuminate\Support\MessageBag;
 
