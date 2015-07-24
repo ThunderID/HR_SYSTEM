@@ -58,6 +58,8 @@ Route::group(['middleware' => 'csrfverify'], function()
 		
 		Route::resource('authgroups',			'AuthGroupController',									['names' => ['index' => 'hr.authgroups.index', 'create' => 'hr.authgroups.create', 'store' => 'hr.authgroups.store', 'show' => 'hr.authgroups.show', 'edit' => 'hr.authgroups.edit', 'update' => 'hr.authgroups.update', 'destroy' => 'hr.authgroups.delete']]);
 
+		Route::get('info-error-message-device',	['uses' => 'InfoMessageDeviceController@index', 		'as' => 'hr.infomessage.index']);
+
 		// ------------------------------------------------------------------------------------
 		// LANDING PAGE (CHOOSE ORGANISATION OR CREATE ORGANISATION), SHOW ORGANISATION (STARTED WITH DASHBOARD)
 		// ------------------------------------------------------------------------------------
@@ -311,6 +313,13 @@ Blade::extend(function ($value, $compiler)
 {
 	$pattern = $compiler->createMatcher('date_indo');
 	$replace = '<?php echo date("d-m-Y", strtotime($2)); ?>';
+
+	return preg_replace($pattern, '$1'.$replace, $value);
+});
+Blade::extend(function ($value, $compiler)
+{
+	$pattern = $compiler->createMatcher('break_foreach');
+	$replace = '<?php break; ?>';
 
 	return preg_replace($pattern, '$1'.$replace, $value);
 });
