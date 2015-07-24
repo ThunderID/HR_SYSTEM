@@ -22,7 +22,7 @@
 											'page'				=> 1,
 											'per_page'			=> 100,
 											'sistem'			=> 'yes',
-											'auth_group'		=> 'yes'
+											'application'		=> 'yes'
 										]
 									]
 	])
@@ -34,7 +34,7 @@
 
 @section('content_body')
 	@include('widgets.menu.table', [
-		'widget_title'			=> 'Menu "'.$data['name'].'"',
+		'widget_title'			=> 'Menu "'.$data['name'].'" '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_template'		=> 'panel',
 		'widget_options'		=> [ 'menu' 				=>
 										[
@@ -43,7 +43,7 @@
 											'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['tag' => 'asc']),
 											'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
-											'per_page'			=> 100,
+											'per_page'			=> 12,
 											'route_create'		=> route('hr.application.menus.create', ['app_id' => $id])
 											]
 									]

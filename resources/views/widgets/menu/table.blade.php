@@ -3,7 +3,7 @@
 @if (!$widget_error_count)
 
 	@section('widget_title')
-		<h1> {!! $widget_title  or 'Otentikasi Group' !!} </h1>
+		<h1> {!! $widget_title  or 'Menu' !!} </h1>
 		<small>Total data {{$MenuComposer['widget_data']['menu']['menu-pagination']->total()}}</small>
 	@overwrite
 

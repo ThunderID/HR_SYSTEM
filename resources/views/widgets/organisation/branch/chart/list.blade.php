@@ -2,7 +2,7 @@
 
 @if (!$widget_error_count)
 	@section('widget_title')
-		<h1> {{ $widget_title or 'Jabatan' }} </h1>
+		<h1> {!! $widget_title or 'Jabatan' !!} </h1>
 		<small>Total data {{$ChartComposer['widget_data']['chartlist']['chart-pagination']->total()}}</small>
 		@if(isset($ChartComposer['widget_data']['chartlist']['active_filter']) && !is_null($ChartComposer['widget_data']['chartlist']['active_filter']))
 			 <div class="clearfix">&nbsp;</div>

@@ -26,7 +26,7 @@ class LoginController extends BaseController {
 
 		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['tr_ver']) || !isset($attributes['application']['api']['station_id']) || !isset($attributes['application']['api']['email']) || !isset($attributes['application']['api']['password']))
 		{
-			return Response::json('102', 500);
+			return Response::json('102', 200);
 		}
 
 		//cek API key & secret
@@ -140,12 +140,12 @@ class LoginController extends BaseController {
 		//cek apa ada aplication
 		if(!$attributes['application'])
 		{
-			return Response::json('101', 500);
+			return Response::json('101', 200);
 		}		
 
 		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['tr_ver']) || !isset($attributes['application']['api']['station_id']))
 		{
-			return Response::json('102', 500);
+			return Response::json('102', 200);
 		}
 
 		//cek API key & secret
@@ -198,12 +198,12 @@ class LoginController extends BaseController {
 		//cek apa ada aplication
 		if(!$attributes['application'])
 		{
-			return Response::json('101', 500);
+			return Response::json('101', 200);
 		}		
 
 		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['tr_ver']) || !isset($attributes['application']['api']['station_id']))
 		{
-			return Response::json('102', 500);
+			return Response::json('102', 200);
 		}
 
 		//cek API key & secret
