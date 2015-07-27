@@ -79,6 +79,13 @@ class ProcessingLogObserver
 				$schedule_start		= $pschedules->schedules[0]->start;
 				$schedule_end		= $pschedulee->schedules[0]->end;
 
+				$working 			= Person::ID($model['attributes']['person_id'])->CurrentWork($on)->first();
+				
+				if(isset($working['works'][0]))
+				{
+					$workid 		= $working['works'][0]['pivot']['id'];
+				}
+
 				if(strtoupper($model['attributes']['name'])=='DN')
 				{
 					if(!in_array($model['attributes']['name'], $tooltip))
