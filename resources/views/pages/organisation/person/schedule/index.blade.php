@@ -49,13 +49,13 @@
 									]
 	])
 
-	{!! Form::open(array('route' => array('hr.calendar.schedules.delete', 0),'method' => 'POST', 'class' => 'no_enter')) !!}
+	{!! Form::open(array('url' => route('hr.person.schedules.store', ['org_id' => $data['id'], 'person_id' => $person['id']]), 'method' => 'POST', 'class' => 'no_enter')) !!}
 		@include('widgets.modal.modal_create_schedule', [
 			'widget_template'		=> 'plain_no_title'
 		])
 	{!! Form::close() !!}
 
-	{!! Form::open(array('route' => array('hr.calendar.schedules.delete', 0),'method' => 'DELETE')) !!}
+	{!! Form::open(array('route' => array('hr.person.schedules.delete', 0),'method' => 'DELETE')) !!}
 		@include('widgets.modal.delete', [
 			'widget_template'		=> 'plain_no_title'
 		])
