@@ -23,6 +23,7 @@
 					<tr>
 						<th class="text-center font-11" style="width:6%">No</th>
 						<th class="text-center font-11" style="width:28%">Waktu</th>
+						<th class="text-center font-11" style="width:28%">Aktivitas Terakhir</th>
 						<th class="text-center font-11" style="width:32%">Aktivitas</th>
 						<th class="text-center font-11" style="width:40%">PC</th>
 					</tr>
@@ -35,6 +36,9 @@
 							</td>
 							<td class="text-center font-11">
 								{{ date('d-m-Y H:i:s', strtotime($value['on'])) }}
+							</td>
+							<td class="text-center font-11">
+								{{ date('d-m-Y H:i:s', strtotime($value['last_input_time'])) }}
 							</td>
 							<td class="text-center font-11">
 								{{$value['name']}}
