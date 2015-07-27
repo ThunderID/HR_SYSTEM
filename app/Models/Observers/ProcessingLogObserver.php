@@ -350,7 +350,7 @@ class ProcessingLogObserver
 							$start_idle	= date('H:i:s', strtotime($value['last_input_time']));
 						}
 					}
-					elseif(strtolower($value['name'])=='sessionlock')
+					elseif(strtolower($value['name'])=='sessionlock' || strtolower($value['name'])=='consoledisconnect' || strtolower($value['name'])=='sessionlogout')
 					{
 						if(isset($start_idle))
 						{
