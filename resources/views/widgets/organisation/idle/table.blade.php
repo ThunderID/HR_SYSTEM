@@ -48,7 +48,7 @@
 								{{$value['createdby']['name']}}
 							</td>
 							<td>
-								00:15:00 - {{gmdate('H:i:s', $value['idle_1'])}}
+								{{gmdate('H:i:s', $value['margin_bottom_idle'])}} - {{gmdate('H:i:s', $value['idle_1'])}}
 							</td>
 							<td>
 								{{gmdate('H:i:s', ($value['idle_1'] + 1))}} - {{gmdate('H:i:s', $value['idle_2'])}}

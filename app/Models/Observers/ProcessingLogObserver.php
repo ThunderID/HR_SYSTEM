@@ -35,6 +35,10 @@ class ProcessingLogObserver
 			{
 				$idle_1 			= $idle_rule->idle_1;
 				$idle_2 			= $idle_rule->idle_2;
+				if(isset($idle_rule->margin_bottom_idle))
+				{
+					$margin_bottom_idle 	= $idle_rule->margin_bottom_idle;
+				}
 			}
 			else
 			{
@@ -78,6 +82,13 @@ class ProcessingLogObserver
 			{
 				$schedule_start		= $pschedules->schedules[0]->start;
 				$schedule_end		= $pschedulee->schedules[0]->end;
+
+				$working 			= Person::ID($model['attributes']['person_id'])->CurrentWork($on)->first();
+				
+				if(isset($working['works'][0]))
+				{
+					$workid 		= $working['works'][0]['pivot']['id'];
+				}
 
 				if(strtoupper($model['attributes']['name'])=='DN')
 				{

@@ -185,13 +185,14 @@ class IdleController extends BaseController
 			App::abort(404);
 		}
 
-		$attributes 							= Input::only('idle_1', 'idle_2');
+		$attributes 							= Input::only('idle_1', 'idle_2', 'margin_bottom_idle');
 		$attributes['created_by']				= Session::get('loggedUser');
 		if(Input::has('start'))
 		{
 			$attributes['start'] 				= date('Y-m-d', strtotime(Input::get('start')));
 		}
 
+		$attributes['margin_bottom_idle']		= (Input::get('margin_bottom_idle')*60);
 		$attributes['idle_1']					= (Input::get('idle_1')*60);
 		$attributes['idle_2']					= (Input::get('idle_2')*60);
 		$errors 								= new MessageBag();

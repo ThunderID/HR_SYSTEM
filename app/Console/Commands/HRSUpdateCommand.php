@@ -78,6 +78,13 @@ class HRSUpdateCommand extends Command {
 	 **/
 	public function update2372015()
 	{
+		//latest update (not done both rcmsystem real package)
+		Schema::table('setting_idles', function($table)
+		{
+			$table->double('margin_bottom_idle');
+		});
+		$this->info("Add margin bottom idle on setting idles table");
+
 		//latest update (done but not in rcmsystem real package)
 		// Schema::table('logs', function($table)
 		// {
