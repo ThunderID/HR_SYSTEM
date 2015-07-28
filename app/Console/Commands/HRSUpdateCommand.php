@@ -85,20 +85,20 @@ class HRSUpdateCommand extends Command {
 		});
 		$this->info("Add margin bottom idle on setting idles table");
 
-		//latest update (done but not in rcmsystem real package)
-		// Schema::table('logs', function($table)
-		// {
-		// 	$table->string('ip', 255);
-		// });
+		// latest update (done but not in rcmsystem real package)
+		Schema::table('logs', function($table)
+		{
+			$table->string('ip', 255);
+		});
 
-		// $this->info("Add ip logs table");
+		$this->info("Add ip logs table");
 
-		// Schema::table('error_logs', function($table)
-		// {
-		// 	$table->string('ip', 255);
-		// });
+		Schema::table('error_logs', function($table)
+		{
+			$table->string('ip', 255);
+		});
 
-		// $this->info("Add ip on error logs table");
+		$this->info("Add ip on error logs table");
 
 		return true;
 	}
