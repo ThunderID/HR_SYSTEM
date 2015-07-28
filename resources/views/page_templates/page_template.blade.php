@@ -7,7 +7,7 @@
 	<title>Reliance - HRIS</title>	
 	<link rel="stylesheet" href="{{ elixir('css/app.css') }}">
 	{!! HTML::style('plugins/font-awesome/css/font-awesome.min.css') !!}	
-	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
 	<link rel="shortcut icon" href="{{ url('fav_reliance.ico') }} "/>
 </head>
 <body>	

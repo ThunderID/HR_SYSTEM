@@ -40,9 +40,9 @@
 							</td>
 							<td class="">
 								@if ((File::exists($value['avatar']))&&(!$value['avatar']))
-									{!! HTML::image($value['avatar'], '', array( 'width' => 64, 'height' => 64, 'class' => 'img-rounded' )) !!} 
+									{!! HTML::image($value['avatar'], '', array( 'width' => 64, 'height' => 64, 'class' => 'img-rounded' ), ['secure' => 'yes']) !!} 
 								@else
-									{!! HTML::image('/tmp_avatar.png', '', array( 'width' => 64, 'height' => 64, 'class' => 'img-rounded' )) !!} 
+									{!! HTML::image('/tmp_avatar.png', '', array( 'width' => 64, 'height' => 64, 'class' => 'img-rounded' ), ['secure' => 'yes']) !!} 
 								@endif
 							</td>
 							<td class="">
