@@ -7,6 +7,7 @@
  * 	organisation_id 				: Required, Integer, FK from Organisation
  * 	created_by 						: Required, Integer, FK from Person
  * 	start 			 				: Required, date
+ * 	margin_bottom_idle 			 	: Required, numeric
  * 	idle_1 			 				: Required, numeric
  * 	idle_2 			 				: Required, numeric
  *	created_at						: Timestamp
@@ -37,6 +38,7 @@ class SettingIdle extends BaseModel {
 	protected 	$fillable			= 	[
 											'created_by' 						,
 											'start' 							,
+											'margin_bottom_idle' 				,
 											'idle_1' 							,
 											'idle_2' 							,
 										];
@@ -44,6 +46,7 @@ class SettingIdle extends BaseModel {
 	protected 	$rules				= 	[
 											'created_by' 						=> 'required|exists:persons,id',
 											'start' 							=> 'required|date_format:"Y-m-d"',
+											'margin_bottom_idle' 				=> 'required|numeric',
 											'idle_1' 							=> 'required|numeric',
 											'idle_2' 							=> 'required|numeric',
 										];
@@ -135,14 +138,15 @@ class SettingIdle extends BaseModel {
 			}
 			elseif(!is_null($variable[0]))
 			{
-				return $query->where('start', '>=', date('Y-m-d', strtotime($variable[0])));
+				return $query->where('start', '<=', date('Y-m-d', strtotime($variable[0])));
 			}
 			else
 			{
-				return $query->where('start', '>=', date('Y-m-d', strtotime('now')));
+				return $query->where('start', '<=', date('Y-m-d', strtotime('now')));
 			}
 		}
-		return $query->where('start', '>=', date('Y-m-d', strtotime($variable)));
+
+		return $query->where('start', '<=', date('Y-m-d', strtotime($variable)));
 	}
 
 	public function CreatedBy()

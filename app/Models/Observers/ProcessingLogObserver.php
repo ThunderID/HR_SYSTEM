@@ -35,6 +35,10 @@ class ProcessingLogObserver
 			{
 				$idle_1 			= $idle_rule->idle_1;
 				$idle_2 			= $idle_rule->idle_2;
+				if(isset($idle_rule->margin_bottom_idle))
+				{
+					$margin_bottom_idle 	= $idle_rule->margin_bottom_idle;
+				}
 			}
 			else
 			{

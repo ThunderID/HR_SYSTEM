@@ -13,13 +13,19 @@
 				{!!Form::input('text', 'start', date('d-m-Y', strtotime($IdleComposer['widget_data']['idlelist']['idle']['start'])), ['class' => 'form-control date-mask', 'placeholder' => 'Start', 'tabindex' => '1'])!!}				
 			</div>
 			<div class="row">
-				<div class="col-sm-6">
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label class="control-label">Margin Bottom Idle (dalam menit)</label>
+						{!!Form::input('number', 'margin_bottom_idle', ($IdleComposer['widget_data']['idlelist']['idle']['margin_bottom_idle']/60), ['class' => 'form-control', 'placeholder' => 'Idle Pertama', 'tabindex' => '2', 'min' => '0'])!!}
+					</div>
+				</div>
+				<div class="col-sm-4">
 					<div class="form-group">
 						<label class="control-label">Flag Idle Pertama (dalam menit)</label>
 						{!!Form::input('number', 'idle_1', ($IdleComposer['widget_data']['idlelist']['idle']['idle_1']/60), ['class' => 'form-control', 'placeholder' => 'Idle Pertama', 'tabindex' => '2', 'min' => '0'])!!}
 					</div>
 				</div>
-				<div class="col-sm-6">
+				<div class="col-sm-4">
 					<div class="form-group">
 						<label class="control-label">Flag Idle Kedua (dalam menit)</label>
 						{!!Form::input('number', 'idle_2', ($IdleComposer['widget_data']['idlelist']['idle']['idle_2']/60), ['class' => 'form-control', 'placeholder' => 'Idle Kedua', 'tabindex' => '3'])!!}

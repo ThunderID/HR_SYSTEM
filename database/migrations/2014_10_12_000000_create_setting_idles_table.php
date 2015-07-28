@@ -18,6 +18,7 @@ class CreateSettingIdlesTable extends Migration {
 			$table->integer('organisation_id')->unsigned()->index();
 			$table->integer('created_by')->unsigned()->index();
 			$table->date('start');
+			$table->double('margin_bottom_idle');
 			$table->double('idle_1');
 			$table->double('idle_2');
 			$table->timestamps();
