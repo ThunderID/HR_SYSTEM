@@ -41,7 +41,7 @@ class HRSUpdateCommand extends Command {
 	public function fire()
 	{
 		//
-		$result 		= $this->update2372015();
+		$result 		= $this->update2772015();
 		
 		return true;
 	}
@@ -76,30 +76,8 @@ class HRSUpdateCommand extends Command {
 	 * @return void
 	 * @author 
 	 **/
-	public function update2372015()
+	public function update2772015()
 	{
-		//latest update (not done both rcmsystem real package)
-		Schema::table('setting_idles', function($table)
-		{
-			$table->double('margin_bottom_idle');
-		});
-		$this->info("Add margin bottom idle on setting idles table");
-
-		// latest update (done but not in rcmsystem real package)
-		Schema::table('logs', function($table)
-		{
-			$table->string('ip', 255);
-		});
-
-		$this->info("Add ip logs table");
-
-		Schema::table('error_logs', function($table)
-		{
-			$table->string('ip', 255);
-		});
-
-		$this->info("Add ip on error logs table");
-
 		return true;
 	}
 }
