@@ -313,7 +313,7 @@ class CalendarController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.calendars.index', ['org_id' => $org_id])->with('alert_success', 'Cabang "' . $contents->data->name. '" sudah dihapus');
+				return Redirect::route('hr.calendars.index', ['org_id' => $org_id])->with('alert_success', 'Kalender "' . $contents->data->name. '" sudah dihapus');
 			}
 		}
 		else

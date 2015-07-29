@@ -45,7 +45,7 @@ class WorkleaveObserver
 
 	public function deleting($model)
 	{
-		$model['errors'] 	= ['Tidak dapat menghapus data cuti.'];
+		$model['errors'] 	= ['Tidak dapat menghapus data cuti. Silahkan non aktif kan data cuti yang tidak berlaku lagi.'];
 
 		return false;
 	}

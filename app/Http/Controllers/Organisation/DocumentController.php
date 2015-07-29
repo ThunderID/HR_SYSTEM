@@ -481,7 +481,7 @@ class DocumentController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.documents.index', ['org_id' => $org_id])->with('alert_success', 'Cabang "' . $contents->data->name. '" sudah dihapus');
+				return Redirect::route('hr.documents.index', ['org_id' => $org_id])->with('alert_success', 'Dokumen "' . $contents->data->name. '" sudah dihapus');
 			}
 		}
 		else

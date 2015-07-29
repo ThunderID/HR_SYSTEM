@@ -245,7 +245,7 @@ class TemplateController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.document.templates.index', ['org_id' => $org_id, 'doc_id' => $document_id])->with('local_msg', $errors)->with('alert_success', 'Cabang "' . $contents->data->name. '" sudah dihapus');
+				return Redirect::route('hr.document.templates.index', ['org_id' => $org_id, 'doc_id' => $document_id])->with('alert_success', 'Template Dokumen "' . $contents->data->name. '" sudah dihapus');
 			}
 		}
 		else
