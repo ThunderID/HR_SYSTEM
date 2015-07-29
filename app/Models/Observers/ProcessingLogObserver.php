@@ -505,7 +505,7 @@ class ProcessingLogObserver
 				$actual_status 			= 'HC';
 			}
 
-			$total_active 				= abs($total_active) - abs($total_sleep) - abs($total_idle);
+			$total_active 				= abs($total_active) - abs($total_idle_1) - abs($total_idle_2) - abs($total_idle_3);
 
 			$plog->fill([
 									'name'					=> $name,
