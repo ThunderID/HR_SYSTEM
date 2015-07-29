@@ -62,7 +62,7 @@ class OrganisationObserver
 
 		if ($validator->passes())
 		{
-			$validator 			= Validator::make($model['attributes'], ['code' => 'unique:organisations,code,'.(isset($model['attributes']['id']) ? $model['attributes']['id'].',NULL,deleted_at' : 'NULL,deleted_at')], ['code.unique' => 'Kode sudah terpakai']);
+			$validator 			= Validator::make($model['attributes'], ['code' => 'unique:organisations,code,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : '')], ['code.unique' => 'Kode sudah terpakai']);
 
 			if ($validator->passes())
 			{
