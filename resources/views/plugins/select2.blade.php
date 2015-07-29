@@ -10,7 +10,7 @@
 		
 		$('.select2-tag-contact').select2({
 	 		tokenSeparators: [",", " ", "_", "-"],
-			tags: ['alamat', 'bbm', 'email', 'line', 'phone', 'whatsapp'],			
+			tags: ['alamat', 'bbm', 'email', 'line', 'mobile', 'whatsapp'],			
 			maximumSelectionSize: 1,
 			selectOnBlur: true,
 			multiple: false

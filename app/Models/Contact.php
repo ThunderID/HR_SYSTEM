@@ -165,7 +165,7 @@ class Contact extends BaseModel {
 
 	public function scopeMessageServices($query, $variable)
 	{
-		return $query->whereNotIn('item', ['email', 'address' , 'phone']);
+		return $query->whereNotIn('item', ['email', 'address' , 'mobile']);
 	}
 
 	public function scopeDefault($query, $variable)
