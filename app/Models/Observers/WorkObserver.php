@@ -6,6 +6,7 @@ use App\Models\Chart;
 use App\Models\Follow;
 use App\Models\Person;
 use App\Models\Finger;
+use App\Models\Organisation;
 use App\Models\WorkAuthentication;
 use Illuminate\Support\MessageBag;
 
@@ -27,7 +28,6 @@ class WorkObserver
 			$auth 								= new WorkAuthentication;
 			$auth->fill([
 						'tmp_auth_group_id'		=> 1,
-						'organisation_id'		=> $model->chart->branch->organisation_id,
 			]);
 		}
 		else
@@ -35,11 +35,14 @@ class WorkObserver
 			$auth 								= new WorkAuthentication;
 			$auth->fill([
 						'tmp_auth_group_id'		=> 5,
-						'organisation_id'		=> $model->chart->branch->organisation_id,
 			]);
 		}
 
+		$organisation 							= Organisation::find($model->chart->branch->organisation_id);
+
 		$auth->Work()->associate($model);
+
+		$auth->Organisation()->associate($organisation);
 
 		if(!$auth->save())
 		{
