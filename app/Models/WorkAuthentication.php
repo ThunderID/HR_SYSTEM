@@ -24,10 +24,12 @@
 
  * ---------------------------------------------------------------------- */
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Str, Validator, DateTime, Exception;
 
 class WorkAuthentication extends BaseModel {
 
+	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasAuthGroupTrait;
 	use \App\Models\Traits\BelongsTo\HasOrganisationTrait;
 	use \App\Models\Traits\BelongsTo\HasWorkTrait;

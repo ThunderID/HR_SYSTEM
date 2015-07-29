@@ -25,10 +25,12 @@
 
  * ---------------------------------------------------------------------- */
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Str, Validator, DateTime, Exception;
 
 class AuthGroup extends BaseModel {
 
+	use SoftDeletes;
 	use \App\Models\Traits\BelongsToMany\HasMenusTrait;
 	use \App\Models\Traits\HasMany\HasWorkAuthenticationsTrait;
 	use \App\Models\Traits\HasMany\HasGroupMenusTrait;

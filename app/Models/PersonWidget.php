@@ -25,10 +25,12 @@
 
  * ---------------------------------------------------------------------- */
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Str, Validator, DateTime, Exception;
 
 class PersonWidget extends BaseModel {
 
+	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasPersonTrait;
 
 	public 		$timestamps 		= true;

@@ -25,10 +25,12 @@
 
  * ---------------------------------------------------------------------- */
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Str, Validator, DateTime, Exception;
 
 class SettingIdle extends BaseModel {
 
+	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasOrganisationTrait;
 
 	public 		$timestamps 		= true;

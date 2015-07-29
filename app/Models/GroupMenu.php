@@ -22,10 +22,12 @@
 
  * ---------------------------------------------------------------------- */
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Str, Validator, DateTime, Exception;
 
 class GroupMenu extends BaseModel {
 
+	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasMenuTrait;
 	use \App\Models\Traits\BelongsTo\HasAuthGroupTrait;
 

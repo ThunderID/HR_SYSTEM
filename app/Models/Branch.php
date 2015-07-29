@@ -29,10 +29,12 @@
 	}
  * ---------------------------------------------------------------------- */
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Str, Validator, DateTime, Exception;
 
 class Branch extends BaseModel {
 
+	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasOrganisationTrait;
 	use \App\Models\Traits\MorphMany\HasOfficeContactsTrait;
 	use \App\Models\Traits\HasMany\HasChartsTrait;

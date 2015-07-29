@@ -25,10 +25,12 @@
 
  * ---------------------------------------------------------------------- */
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Str, Validator, DateTime, Exception;
 
 class Contact extends BaseModel {
 
+	use SoftDeletes;
 	use \App\Models\Traits\MorphTo\HasBranchTrait;
 	use \App\Models\Traits\MorphTo\HasPersonTrait;
 

@@ -30,10 +30,12 @@
 
  * ---------------------------------------------------------------------- */
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Str, Validator, DateTime, Exception;
 
 class Menu extends BaseModel {
 
+	use SoftDeletes;
 	use \App\Models\Traits\BelongsToMany\HasAuthGroupsTrait;
 	use \App\Models\Traits\BelongsTo\HasApplicationTrait;
 

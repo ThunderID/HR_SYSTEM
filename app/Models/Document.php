@@ -31,10 +31,12 @@
 	}
  * ---------------------------------------------------------------------- */
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Str, Validator, DateTime, Exception;
 
 class Document extends BaseModel {
 
+	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasOrganisationTrait;
 	use \App\Models\Traits\BelongsToMany\HasPersonDocumentsTrait;
 	use \App\Models\Traits\HasMany\HasTemplatesTrait;

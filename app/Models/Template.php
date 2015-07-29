@@ -30,10 +30,12 @@
 
  * ---------------------------------------------------------------------- */
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Str, Validator, DateTime, Exception;
 
 class Template extends BaseModel {
 	
+	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasDocumentTrait;
 	use \App\Models\Traits\BelongsToMany\HasDocumentDetailsTrait;
 	use \App\Models\Traits\HasMany\HasDetailsTrait;

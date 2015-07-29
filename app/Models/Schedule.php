@@ -1,7 +1,5 @@
 <?php namespace App\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
-use DB;
 
 /* ----------------------------------------------------------------------
  * Document Model:
@@ -27,6 +25,8 @@ use DB;
 
  * ---------------------------------------------------------------------- */
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+use DB;
 use Str, Validator, DateTime, Exception;
 
 class Schedule extends BaseModel {

@@ -21,10 +21,12 @@
 
  * ---------------------------------------------------------------------- */
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Str, Validator, DateTime, Exception;
 
 class Application extends BaseModel {
 
+	use SoftDeletes;
 	use \App\Models\Traits\HasMany\HasMenusTrait;
 
 	public 		$timestamps 		= true;

@@ -1,8 +1,5 @@
 <?php namespace App\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
-use DB;
-
 /* ----------------------------------------------------------------------
  * Document Model:
  * 	ID 								: Auto Increment, Integer, PK
@@ -56,11 +53,13 @@ use DB;
 	}
  * ---------------------------------------------------------------------- */
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+use DB;
 use Str, Validator, DateTime, Exception;
 
 class Person extends BaseModel {
 
-	//use SoftDeletes;
+	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasOrganisationTrait;
 	use \App\Models\Traits\MorphMany\HasContactsTrait;
 	use \App\Models\Traits\BelongsToMany\HasRelativesTrait;
