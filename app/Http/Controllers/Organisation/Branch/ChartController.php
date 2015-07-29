@@ -292,7 +292,7 @@ class ChartController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.branch.charts.index', ['branch_id' => $branch_id, 'org_id' => $org_id])->with('alert_success', 'Kontak cabang "' . $contents->data->name. '" sudah disimpan');
+			return Redirect::route('hr.branch.charts.index', ['branch_id' => $branch_id, 'org_id' => $org_id])->with('alert_success', 'Struktur Organisasi cabang "' . $contents->data->name. '" sudah disimpan');
 		}
 		
 		DB::rollback();
@@ -402,7 +402,7 @@ class ChartController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.branch.apis.index', ['org_id' => $org_id, 'branch_id' => $branch_id])->with('alert_success', 'Cabang "' . $contents->data->name. '" sudah dihapus');
+				return Redirect::route('hr.branch.charts.index', ['org_id' => $org_id, 'branch_id' => $branch_id])->with('alert_success', 'Struktur Organisasi "' . $contents->data->name. '" sudah dihapus');
 			}
 		}
 		else
