@@ -41,12 +41,20 @@ class CalendarObserver
 
 	public function deleting($model)
 	{
+		if($model->child->count())
+		{
+			$model['errors'] 	= ['Tidak dapat menghapus kalender yang diikuti oleh kalender lain'];
+
+			return false;
+		}
+
 		if($model->charts->count())
 		{
 			$model['errors'] 	= ['Tidak dapat menghapus kalender yang berkaitan dengan karyawan'];
 
 			return false;
 		}
+
 		if($model->schedules->count())
 		{
 			$model['errors'] 	= ['Tidak dapat menghapus kalender yang memiliki jadwal'];
