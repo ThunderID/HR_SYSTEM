@@ -94,7 +94,7 @@ class Person extends BaseModel {
 
 	protected 	$rules				= 	[
 											'uniqid' 						=> 'required|max:255',
-											'username' 						=> 'required|max:255',
+											'username' 						=> 'max:255',
 											'name' 							=> 'required|max:255',
 											'prefix_title' 					=> 'max:255',
 											'suffix_title' 					=> 'max:255',

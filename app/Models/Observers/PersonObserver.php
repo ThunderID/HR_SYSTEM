@@ -16,7 +16,14 @@ class PersonObserver
 
 		if ($validator->passes())
 		{
-			$validator 				= Validator::make($model['attributes'], ['uniqid' => 'unique:persons,uniqid,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : ''), 'username' => 'unique:persons,username,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : '')], ['uniqid.unique' => 'N I K sudah terpakai']);
+			if(isset($model['attributes']['username']) && $model['attributes']['username']!='')
+			{
+				$validator 			= Validator::make($model['attributes'], ['uniqid' => 'unique:persons,uniqid,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : ''), 'username' => 'unique:persons,username,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : '')], ['uniqid.unique' => 'N I K sudah terpakai']);
+			}
+			else
+			{
+				$validator 			= Validator::make($model['attributes'], ['uniqid' => 'unique:persons,uniqid,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : '')], ['uniqid.unique' => 'N I K sudah terpakai']);
+			}
 
 			if ($validator->passes())
 			{
