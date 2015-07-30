@@ -302,12 +302,10 @@ class RelativeController extends BaseController
 
 		if(Input::has('uniqid') && isset($is_success->data->id))
 		{
-			dd($is_success->data->id);
 			$attributes['relative_id']			= $is_success->data->id;
 		}
 		else
 		{
-			dd(2);
 			$attributes['relative_id']			= $relative_id;
 		}
 
