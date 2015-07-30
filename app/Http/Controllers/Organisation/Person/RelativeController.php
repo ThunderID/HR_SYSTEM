@@ -248,11 +248,6 @@ class RelativeController extends BaseController
 
 		DB::beginTransaction();
 
-		if(Input::has('id'))
-		{
-			$id 								= Input::get('id');
-		}
-
 		if(Input::has('uniqid'))
 		{
 			$attributes 							= Input::only('uniqid','name', 'prefix_title', 'suffix_title', 'gender', 'date_of_birth', 'place_of_birth');
@@ -307,10 +302,12 @@ class RelativeController extends BaseController
 
 		if(Input::has('uniqid') && isset($is_success->data->id))
 		{
+			dd(1);
 			$attributes['relative_id']			= $is_success->data->id;
 		}
 		else
 		{
+			dd(2);
 			$attributes['relative_id']			= $relative_id;
 		}
 
