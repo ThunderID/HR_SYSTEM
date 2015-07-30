@@ -30,14 +30,7 @@
 						<td>{{$value['authgroup']['name']}}</td>
 						<td class="text-right">
 							@if((int)Session::get('user.menuid') <= 2)
-							<div class="btn-group">
-								<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pengaturan <span class="caret"></span></button>
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li>
-										<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.authentications.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash fa-fw"></i> Hapus</a>
-									</li>
-								</ul>
-							</div>
+								<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.authentications.delete', [$value['id'], 'org_id' => $data['id']]) }}" title="hapus"><i class="fa fa-trash fa-fw"></i></a>
 							@endif
 						</td>
 					</tr>
