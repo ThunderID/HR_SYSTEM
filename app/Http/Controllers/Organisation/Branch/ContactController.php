@@ -181,7 +181,7 @@ class ContactController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.branch.contacts.index', ['branch_id' => $branch_id, 'org_id' => $org_id])->with('alert_success', 'Jabatan cabang "' . $contents->data->name. '" sudah disimpan');
+			return Redirect::route('hr.branch.contacts.index', ['branch_id' => $branch_id, 'org_id' => $org_id])->with('alert_success', 'Kontak cabang "' . $contents->data->name. '" sudah disimpan');
 		}
 		
 		DB::rollback();

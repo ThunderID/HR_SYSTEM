@@ -335,7 +335,7 @@ class RelativeController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.person.relatives.index', ['person_id' => $person_id, 'org_id' => $org_id])->with('alert_success', 'Jabatan cabang "' . $contents->data->name. '" sudah disimpan');
+			return Redirect::route('hr.person.relatives.index', ['person_id' => $person_id, 'org_id' => $org_id])->with('alert_success', 'Data Kerabat "' . $contents->data->name. '" sudah disimpan');
 		}
 		
 		DB::rollback();
