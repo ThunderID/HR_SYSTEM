@@ -82,7 +82,7 @@
 				'widget_options'		=> 	[
 												'url_old'		=> route('hr.person.relatives.create', ['org_id' => $data['id'], 'person_id' => $person['id'], 'employee' => true]),
 												'url_new'		=> route('hr.person.relatives.create', ['org_id' => $data['id'], 'person_id' => $person['id'], 'employee' => false]),
-												'caption_old'	=> 'Data Karyawan',
+												'caption_old'	=> '  Data Lama  ',
 												'caption_new'	=> '  Data Baru  ',
 											],
 				])
