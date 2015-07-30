@@ -75,7 +75,7 @@
 												'worklist'			=>
 												[
 													'organisation_id'	=> $data['id'],
-													'search'			=> ['personid' => $person['id'], 'withattributes' => ['chart', 'chart.branch', 'chart.branch.organisation'], 'active' => true],
+													'search'			=> ['personid' => $person['id'], 'withattributes' => ['chart', 'chart.branch', 'chart.branch.organisation']],
 													'sort'				=> ['end' => 'asc'],
 													'page'				=> (Input::has('page') ? Input::get('page') : 1),
 													'per_page'			=> 100,
