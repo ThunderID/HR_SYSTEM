@@ -36,13 +36,6 @@ class AuthGroupObserver
 			return false;
 		}
 
-		if($model->workauthentications()->count())
-		{
-			$model['errors'] 	= ['Tidak dapat menghapus grup otentikasi yang diikuti karyawan'];
-
-			return false;
-		}
-
 		return true;
 	}
 }
