@@ -22,7 +22,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-md-2">
-					<label class="control-label">Karyawan</label>
+					<label class="control-label">Kerabat</label>
 				</div>	
 				<div class="col-md-10">
 					@include('widgets.organisation.person.select', [

@@ -70,8 +70,9 @@
 
 								$schedule_start_second	= $hours*3600+$minutes*60+$seconds;
 
-								$tlr = ($total_absence!=0 ? $total_absence : 1) / (abs($schedule_end_second - $schedule_start_second)!=0 ? abs($schedule_end_second - $schedule_start_second) : 1);?>
-							{{round(abs($tlr) * 100, 2)}} %
+								$tlr = ($total_absence!=0 ? $total_absence : 1) / (abs($schedule_end_second - $schedule_start_second)!=0 ? abs($schedule_end_second - $schedule_start_second) : 1);
+							?>
+							{{(round(abs($tlr) * 100, 2) <= 100 ? round(abs($tlr) * 100, 2) : 100 )}} %
 						</td>
 
 						<td class="hidden-xs font-11 text-center" style="height:35%">

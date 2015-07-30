@@ -15,12 +15,13 @@
 	//other package
 	1 Relationship belongsToMany
 	{
-		Menu
+		Menus
 	}
 
 	1 Relationship hasMany
 	{
-		WorkAuthentication
+		WorkAuthentications
+		GroupMenus
 	}
 
  * ---------------------------------------------------------------------- */
