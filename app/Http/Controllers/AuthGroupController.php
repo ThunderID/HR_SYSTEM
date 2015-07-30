@@ -231,7 +231,7 @@ class AuthGroupController extends BaseController
 		{
 			DB::commit();
 
-			return Redirect::route('hr.authgroups.show', [$authgroupid, 'page' => $page])->with('local_msg', $errors)->with('alert_success', 'Auth Group sudah disimpan');
+			return Redirect::route('hr.authgroups.show', [$authgroupid, 'page' => $page])->with('local_msg', $errors)->with('alert_success', 'Pengaturan menu sudah disimpan');
 		}
 
 		DB::rollback();
@@ -255,7 +255,7 @@ class AuthGroupController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.authgroups.show', [$authgroupid, 'page' => $page])->with('alert_success', 'Group Menu  sudah dihapus');
+				return Redirect::route('hr.authgroups.show', [$authgroupid, 'page' => $page])->with('alert_success', 'Pengaturan menu sudah disimpan');
 			}
 		}
 		else

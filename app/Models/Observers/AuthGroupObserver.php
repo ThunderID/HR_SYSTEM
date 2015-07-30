@@ -5,6 +5,7 @@ use \Validator;
 /* ----------------------------------------------------------------------
  * Event:
  * 	Saving						
+ * 	Deleting						
  * ---------------------------------------------------------------------- */
 
 class AuthGroupObserver
@@ -23,5 +24,25 @@ class AuthGroupObserver
 
 			return false;
 		}
+	}
+
+	public function deleting($model)
+	{
+		//
+		if($model->menus()->count())
+		{
+			$model['errors'] 	= ['Tidak dapat menghapus grup otentikasi yang memiliki menu pilihan'];
+
+			return false;
+		}
+
+		if($model->workauthentications()->count())
+		{
+			$model['errors'] 	= ['Tidak dapat menghapus grup otentikasi yang diikuti karyawan'];
+
+			return false;
+		}
+
+		return true;
 	}
 }
