@@ -19,7 +19,7 @@ class PersonWorkleaveObserver
 {
 	public function saving($model)
 	{
-		$validator 					= Validator::make($model['attributes'], $model['rules']);
+		$validator 					= Validator::make($model['attributes'], $model['rules'], ['work_id.required' => 'Cuti hanya dapat ditambahkan untuk pegawai aktif', 'work_id.exists' => 'Cuti hanya dapat ditambahkan untuk pegawai aktif']);
 
 		if ($validator->passes())
 		{
