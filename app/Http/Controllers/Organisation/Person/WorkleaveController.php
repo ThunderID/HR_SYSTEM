@@ -251,6 +251,7 @@ class WorkleaveController extends BaseController
 		{
 			App::abort(404);
 		}
+dD($contents->data->works[0]);
 
 		$errors 								= new MessageBag();
 
