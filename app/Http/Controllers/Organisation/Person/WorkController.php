@@ -79,11 +79,11 @@ class WorkController extends BaseController
 					switch (strtolower($filter_search)) 
 					{
 						case 'start':
-							$active = 'Cari Karir ';
+							$active = 'Cari Pekerjaan ';
 							break;
 
 						default:
-							$active = 'Cari Karir ';
+							$active = 'Cari Pekerjaan ';
 							break;
 					}
 
@@ -282,7 +282,7 @@ class WorkController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.person.works.index', ['person_id' => $person_id, 'org_id' => $org_id])->with('alert_success', 'Karir karyawan "' . $contents->data->name. '" sudah disimpan');
+			return Redirect::route('hr.person.works.index', ['person_id' => $person_id, 'org_id' => $org_id])->with('alert_success', 'Pekerjaan karyawan "' . $contents->data->name. '" sudah disimpan');
 		}
 		
 		DB::rollback();
@@ -390,7 +390,7 @@ class WorkController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.person.works.index', ['org_id' => $org_id, 'person_id' => $person_id])->with('alert_success', 'Karir sudah dihapus');
+				return Redirect::route('hr.person.works.index', ['org_id' => $org_id, 'person_id' => $person_id])->with('alert_success', 'Pekerjaan sudah dihapus');
 			}
 		}
 		else
