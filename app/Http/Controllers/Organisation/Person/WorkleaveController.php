@@ -303,7 +303,7 @@ class WorkleaveController extends BaseController
 			$attributes['end'] 					= date('Y-m-d', strtotime(Input::get('end')));
 		}
 
-		$attributes['work_id'] 					= $contents->data->works[0]->id;
+		$attributes['work_id'] 					= $contents->data->works[0]->pivot->id;
 		$attributes['created_by'] 				= Session::get('loggedUser');
 
 		DB::beginTransaction();

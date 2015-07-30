@@ -248,11 +248,6 @@ class RelativeController extends BaseController
 
 		DB::beginTransaction();
 
-		if(Input::has('id'))
-		{
-			$id 								= Input::get('id');
-		}
-
 		if(Input::has('uniqid'))
 		{
 			$attributes 							= Input::only('uniqid','name', 'prefix_title', 'suffix_title', 'gender', 'date_of_birth', 'place_of_birth');

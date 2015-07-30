@@ -23,32 +23,35 @@ class WorkObserver
 {
 	public function created($model)
 	{
-		if(strtolower($model['status'])=='admin')
+		if(isset($model->chart))
 		{
-			$auth 								= new WorkAuthentication;
-			$auth->fill([
-						'tmp_auth_group_id'		=> 1,
-			]);
-		}
-		else
-		{
-			$auth 								= new WorkAuthentication;
-			$auth->fill([
-						'tmp_auth_group_id'		=> 5,
-			]);
-		}
+			if(strtolower($model['status'])=='admin')
+			{
+				$auth 								= new WorkAuthentication;
+				$auth->fill([
+							'tmp_auth_group_id'		=> 1,
+				]);
+			}
+			else
+			{
+				$auth 								= new WorkAuthentication;
+				$auth->fill([
+							'tmp_auth_group_id'		=> 5,
+				]);
+			}
 
-		$organisation 							= Organisation::find($model->chart->branch->organisation_id);
+			$auth->Work()->associate($model);
 
-		$auth->Work()->associate($model);
+			$organisation 						= Organisation::find($model->chart->branch->organisation_id);
 
-		$auth->Organisation()->associate($organisation);
+			$auth->Organisation()->associate($organisation);
 
-		if(!$auth->save())
-		{
-			$model['errors'] = $auth->getError();
+			if(!$auth->save())
+			{
+				$model['errors'] = $auth->getError();
 
-			return false;
+				return false;
+			}
 		}
 
 		return true;
