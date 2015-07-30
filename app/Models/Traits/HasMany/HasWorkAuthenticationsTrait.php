@@ -18,6 +18,6 @@ trait HasWorkAuthenticationsTrait {
 
 	public function WorkAuthentications()
 	{
-		return $this->hasMany('App\Models\WorkAuthentication', 'tmp_auth_group_id');
+		return $this->hasMany('App\Models\WorkAuthentication');
 	}
 }
