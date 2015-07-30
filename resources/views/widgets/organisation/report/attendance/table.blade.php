@@ -107,7 +107,7 @@
 							<td class="text-center font-11">
 								@if($value['position']!='')
 									<?php $tlr = ($value['total_absence']!=0 ? $value['total_absence'] : 1) / ($value['possible_total_effective']!=0 ? $value['possible_total_effective'] : 1);?>
-									{{round(abs($tlr) * 100, 2)}} %
+									{{(round(abs($tlr) * 100, 2) <= 100 ? round(abs($tlr) * 100, 2) : 100 )}} %
 								@else
 									100 %
 								@endif
