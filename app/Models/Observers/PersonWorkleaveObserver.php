@@ -23,24 +23,25 @@ class PersonWorkleaveObserver
 
 		if ($validator->passes())
 		{
-			if(isset($model['attributes']['person_workleave_id']) && $model['attributes']['person_workleave_id']!=0 && strtolower($model['attributes']['status'])=='confirmed' && (int)$model->parent->quota <= (int)$model['attributes']['quota'])
-			{
-				$validator 				= Validator::make($model['attributes'], ['person_workleave_id' => 'exists:person_workleaves,person_workleave_id']);
+			// $works 					= Work::id($model['attributes']['work_id'])->CalendarQuota($model['attributes']['quota'])->get();
+			// if(isset($model['attributes']['person_workleave_id']) && $model['attributes']['person_workleave_id']!=0 && strtolower($model['attributes']['status'])=='confirmed' && (int)$model->parent->quota <= (int)$model['attributes']['quota'])
+			// {
+			// 	$validator 				= Validator::make($model['attributes'], ['person_workleave_id' => 'exists:person_workleaves,person_workleave_id']);
 
-				if (!$validator->passes())
-				{
-					$model['errors'] 		= $validator->errors();
+			// 	if (!$validator->passes())
+			// 	{
+			// 		$model['errors'] 		= $validator->errors();
 
-					return false;
-				}
+			// 		return false;
+			// 	}
 
-				$errors 			= new MessageBag;
-				$errors->add('quota', 'Quota cuti yang tersedia tidak mencukupi. Sisa cuti = '.(int)$model->parent->quota.'. Jika cuti merupakan kasus khusus silahkan tambahkan cuti istimewa.');
+			// 	$errors 			= new MessageBag;
+			// 	$errors->add('quota', 'Quota cuti yang tersedia tidak mencukupi. Sisa cuti = '.(int)$model->parent->quota.'. Jika cuti merupakan kasus khusus silahkan tambahkan cuti istimewa.');
 				
-				$model['errors'] 	= $errors;
+			// 	$model['errors'] 	= $errors;
 
-				return false;
-			}
+			// 	return false;
+			// }
 
 			return true;
 		}

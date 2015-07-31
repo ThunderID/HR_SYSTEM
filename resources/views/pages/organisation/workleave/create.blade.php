@@ -1,12 +1,22 @@
 @section('nav_topbar')
+	@if(isset($workleave))
 	@include('widgets.common.nav_topbar', 
 		['breadcrumb' 			=> 	[
 										['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
 										['name' => 'Template Cuti', 'route' => route('hr.workleaves.index', ['org_id' => $data['id']]) ],
 										['name' => $workleave['name'], 'route' => route('hr.workleaves.index', ['org_id' => $data['id']]) ],
-										['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.workleave.batch.create', ['org_id' => $data['id'], 'workleave_id' => $workleave['id']]) : route('hr.workleaves.edit', ['id' => $id, 'org_id' => $data['id']]) )]
+										['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.workleaves.batch.create', ['org_id' => $data['id'], 'workleave_id' => $workleave['id']]) : route('hr.workleaves.edit', ['id' => $id, 'org_id' => $data['id']]) )]
 									]
 		])
+	@else
+	@include('widgets.common.nav_topbar', 
+		['breadcrumb' 			=> 	[
+										['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
+										['name' => 'Template Cuti', 'route' => route('hr.workleaves.index', ['org_id' => $data['id']]) ],
+										['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => route('hr.workleaves.edit', ['id' => $id, 'org_id' => $data['id']])]
+									]
+		])
+	@endif
 @stop
 
 @section('nav_sidebar')

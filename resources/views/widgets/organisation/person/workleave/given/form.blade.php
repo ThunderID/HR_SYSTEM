@@ -1,7 +1,7 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 @if (!$widget_error_count)
 	@section('widget_title')
-		<h1> {{ is_null($id) ? 'Tambah Pengaturan Cuti ' : 'Ubah Pengaturan Cuti '}} "{{$person['name']}}" </h1> 
+		<h1> {{ is_null($id) ? 'Tambah Pemberian Cuti ' : 'Ubah Pemberian Cuti '}} "{{$person['name']}}" </h1> 
 	@overwrite
 
 	@section('widget_body')
@@ -14,7 +14,7 @@
 													'workleavelist'			=>
 													[
 														'organisation_id'	=> $data['id'],
-														'search'			=> ['active' => true],
+														'search'			=> ['active' => true, 'status' => ['CI', 'CN']],
 														'sort'				=> ['name' => 'asc'],
 														'page'				=> (Input::has('page') ? Input::get('page') : 1),
 														'per_page'			=> 100,
@@ -28,13 +28,13 @@
 			<div class="row">
 				<div class="col-sm-6">
 					<div class="form-group">
-						<label class="control-label">Start</label>
+						<label class="control-label">Berlaku Sejak</label>
 						{!!Form::input('text', 'start', isset($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['start']) ? date('d-m-Y', strtotime($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['start'])) : '', ['class' => 'form-control date-mask', 'tabindex' => 5])!!}
 					</div>
 				</div>
 				<div class="col-sm-6">
 					<div class="form-group">
-						<label class="control-label">End</label>
+						<label class="control-label">Berlaku Hingga</label>
 						{!!Form::input('text', 'end', isset($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['end']) ? date('d-m-Y', strtotime($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['end'])) : '', ['class' => 'form-control date-mask', 'tabindex' => 6])!!}
 					</div>	
 				</div>

@@ -216,7 +216,7 @@ class BatchController extends BaseController
 					$attributes2['start'] 			= date('Y-m-d', strtotime($begin->format('Y-m-d')));
 					$attributes2['end'] 			= date('Y-m-d', strtotime($end->format('Y-m-d'). ' - 1 day'));
 					$attributes2['name'] 			= 'Cuti Bersama '.date('Y', strtotime($attributes2['start']));
-					$attributes2['quota'] 			= $total_l;
+					$attributes2['quota'] 			= 0 - (int)$total_l;
 					$attributes2['status'] 			= 'CB';
 					$attributes2['notes'] 			= 'Batch '.$attributes2['name'];
 

@@ -14,7 +14,7 @@
 													'workleavelist'			=>
 													[
 														'organisation_id'	=> $data['id'],
-														'search'			=> ['personid' => $person['id'],'status' => 'CN', 'ondate' => [date('Y-m-d', strtotime('first day of January this year')), date('Y-m-d', strtotime('last day of December this year'))]],
+														'search'			=> ['personid' => $person['id'],'status' => 'CN', 'ondate' => date('Y-m-d', strtotime('first day of January this year'))],
 														'sort'				=> ['name' => 'asc'],
 														'page'				=> (Input::has('page') ? Input::get('page') : 1),
 														'per_page'			=> 100,
@@ -28,7 +28,7 @@
 			{!!Form::hidden('type', 'taken')!!}
 			{!!Form::hidden('status', 'confirmed')!!}
 
-			<div class="row">
+			<!-- <div class="row">
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label class="control-label">Keterangan (Singkat)</label>
@@ -49,7 +49,7 @@
 						{!!Form::input('number', 'quota', $PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['quota'], ['class' => 'form-control', 'tabindex' => 3])!!}
 					</div>	
 				</div>
-			</div>
+			</div> -->
 
 			<div class="row">
 				<div class="col-sm-6">

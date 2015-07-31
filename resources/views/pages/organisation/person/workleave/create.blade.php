@@ -5,7 +5,7 @@
 						['name' => 'Data Karyawan', 'route' => route('hr.persons.index', ['org_id' => $data['id']]) ],
 						['name' => $person['name'], 'route' => route('hr.persons.show', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
 						['name' => 'Pengaturan Cuti', 'route' => route('hr.person.workleaves.index', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
-						['name' => (is_null($id) ? 'Tambah' : 'Ubah '), 'route' => (is_null($id) ? route('hr.person.workleaves.create', ['org_id' => $data['id'], 'person_id' => $person['id']]) : route('hr.person.workleaves.edit', ['org_id' => $data['id'], 'person_id' => $person['id'], 'id' => $id]) )]
+						['name' => (is_null($id) ? 'Tambah ' : 'Ubah ').(strtolower(Input::get('type'))=='given' ? 'Pemberian Cuti' : 'Pengambilan Cuti'), 'route' => (is_null($id) ? route('hr.person.workleaves.create', ['org_id' => $data['id'], 'person_id' => $person['id']]) : route('hr.person.workleaves.edit', ['org_id' => $data['id'], 'person_id' => $person['id'], 'id' => $id]) )]
 					]
 	])
 @stop

@@ -131,6 +131,10 @@ class Workleave extends BaseModel {
 
 	public function scopeStatus($query, $variable)
 	{
-		return $query->where('status', $variable);
+			if(is_array($variable))
+		{
+			return $query->whereIn('tmp_workleaves.status', $variable);
+		}
+		return $query->where('tmp_workleaves.status', $variable);
 	}
 }

@@ -58,11 +58,11 @@ class PersonWorkleave extends BaseModel {
 	protected 	$rules				= 	[
 											'work_id'					=> 'required|exists:works,id',
 											'person_workleave_id'		=> 'required_if:status,CB',
-											'workleave_id'				=> 'required_if:status,CN,CI',
+											'workleave_id'				=> '',
 											'created_by'				=> 'required|exists:persons,id',
 											'name'						=> 'required|max:255',
 											'start'						=> 'required|date_format:"Y-m-d"',
-											'end'						=> 'required|date_format:"Y-m-d"',
+											'end'						=> 'required_if:status,CB|date_format:"Y-m-d"',
 											'quota'						=> 'required|numeric',
 											'status'					=> 'required|in:OFFER,CB,CN,CI,CONFIRMED',
 										];
@@ -71,6 +71,7 @@ class PersonWorkleave extends BaseModel {
 											'id' 						=> 'ID', 
 											'personid' 					=> 'PersonID', 
 											'workleaveid' 				=> 'WorkleaveID',
+											'parentid' 					=> 'ParentID',
 											'name' 						=> 'Name',
 											'status' 					=> 'Status',
 											 
@@ -82,6 +83,7 @@ class PersonWorkleave extends BaseModel {
 											'id' 						=> 'Could be array or integer', 
 											'personid' 					=> 'Could be array or integer', 
 											'workleaveid' 				=> 'Could be array or integer', 
+											'parentid' 					=> 'Could be array or integer', 
 											'name' 						=> 'Must be string',
 											'status' 					=> 'Could be array or string',
 
@@ -147,6 +149,15 @@ class PersonWorkleave extends BaseModel {
 	}
 
 	public function scopeWorkleaveID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('person_workleaves.workleave_id', $variable);
+		}
+		return $query->where('person_workleaves.workleave_id', $variable);
+	}
+
+	public function scopeParentID($query, $variable)
 	{
 		if(is_array($variable))
 		{
