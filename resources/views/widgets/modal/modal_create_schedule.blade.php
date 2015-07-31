@@ -73,6 +73,19 @@
 									</div>
 								</div>
 							</div>
+							@if(isset($calendar) && count($calendar['child']))
+								<div class="form-group">
+									<div class="checkbox">
+										<label>
+											{!!Form::checkbox('affect', '1', '', ['class' => '', 'tabindex' => '6'])!!} Perubahan Pada Kalender ini akan mempengaruhi : 
+										</label>
+									</div>
+								</div>
+								
+								@foreach($calendar['child'] as $key => $value)
+									{{$value['name']}} <br/> 
+								@endforeach
+							@endif
 						</div>
 					</div>
 				</div>

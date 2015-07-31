@@ -250,7 +250,7 @@ class CalendarController extends BaseController
 			App::abort(404);
 		}
 
-		$search 								= ['id' => $id, 'organisationid' => $org_id, 'withattributes' => ['organisation']];
+		$search 								= ['id' => $id, 'organisationid' => $org_id, 'withattributes' => ['organisation', 'child']];
 		$results 								= $this->dispatch(new Getting(new Calendar, $search, [] , 1, 1));
 		$contents 								= json_decode($results);
 		

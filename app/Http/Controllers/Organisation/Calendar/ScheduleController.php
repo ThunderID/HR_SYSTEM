@@ -276,6 +276,7 @@ class ScheduleController extends BaseController
 
 		$search['id'] 							= $cal_id;
 		$search['organisationid'] 				= $org_id;
+		$search['withattributes'] 				= ['child'];
 		$sort 									= ['name' => 'asc'];
 		$results 								= $this->dispatch(new Getting(new Calendar, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
@@ -284,6 +285,8 @@ class ScheduleController extends BaseController
 		{
 			App::abort(404);
 		}
+
+		$calendar 								= json_decode(json_encode($contents->data), true);
 
 		$attributes 							= Input::only('name', 'status', 'start', 'end');
 		$attributes['created_by'] 				= Session::get('loggedUser');
@@ -347,6 +350,33 @@ class ScheduleController extends BaseController
 						else
 						{
 							$errors->add('Calendar', $value);
+						}
+					}
+				}
+
+				if(count($calendar['child']) && Input::has('affect'))
+				{
+					foreach ($calendar['child'] as $key => $value) 
+					{
+						$content 						= $this->dispatch(new Saving(new Schedule, $attributes, $id, new Calendar, $value['id']));
+						$is_success_2 					= json_decode($content);
+
+						if(!$is_success_2->meta->success)
+						{
+							foreach ($is_success_2->meta->errors as $key => $value) 
+							{
+								if(is_array($value))
+								{
+									foreach ($value as $key2 => $value2) 
+									{
+										$errors->add('Calendar', $value2);
+									}
+								}
+								else
+								{
+									$errors->add('Calendar', $value);
+								}
+							}
 						}
 					}
 				}

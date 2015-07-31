@@ -46,7 +46,7 @@
 						{!!Form::input('text', 'end', $CalendarComposer['widget_data']['calendarlist']['calendar']['end'], ['class' => 'form-control time-mask', 'tabindex' => '5'])!!}
 					</div>
 				</div>
-			</div>				
+			</div>
 			<div class="form-group text-right">				
 				<a href="{{ $CalendarComposer['widget_data']['calendarlist']['route_back'] }}" class="btn btn-default mr-5" tabindex="6">Batal</a>
 				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="7">				
