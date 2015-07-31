@@ -288,7 +288,12 @@ class PersonController extends BaseController
 			$org_id 							= Session::get('user.organisationid');
 		}
 
-		if (Input::has('import'))
+		$errors 								= new MessageBag();
+
+
+		DB::beginTransaction();
+
+		if(Input::has('import'))
 		{
 			if (Input::hasFile('file_csv')) 
 			{
@@ -297,14 +302,35 @@ class PersonController extends BaseController
 				$sheet = Excel::load($file_csv)->toArray();				
 				foreach($sheet as $i => $row)
 				{
-					$attributes[$i]['username']			= '';
+					$attributes[$i]['username']			= date('Ymdhis').'.org.'.rand(0,12000000).$org_id;
 					$attributes[$i]['name']				= $row['nama'];
 					$attributes[$i]['place_of_birth']	= $row['tempatlahir'];
 					$attributes[$i]['uniqid']			= $row['nik'];
 					$attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime($row['tanggallahir']));
 					$attributes[$i]['gender']			= $row['kelamin']=='L' ? 'male' : 'female';
 					$attributes[$i]['org_id']			= $org_id;
-				}						
+
+					$content 							= $this->dispatch(new Saving(new Person, $attributes[$i], null, new Organisation, $org_id));
+
+					$is_success 						= json_decode($content);
+					if(!$is_success->meta->success)
+					{
+						foreach ($is_success->meta->errors as $key => $value) 
+						{
+							if(is_array($value))
+							{
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Person', $value);
+							}
+						}
+					}
+				}
 			}
 		}
 		else
@@ -336,33 +362,29 @@ class PersonController extends BaseController
 			{
 				$attributes['password']				= Hash::make(Input::get('password'));
 			}
-		}
 
-		$errors 								= new MessageBag();
+			$content 								= $this->dispatch(new Saving(new Person, $attributes, $id, new Organisation, $org_id));
 
-
-		DB::beginTransaction();
-		$content 								= $this->dispatch(new Saving(new Person, $attributes, $id, new Organisation, $org_id));
-
-		$is_success 							= json_decode($content);
-		if(!$is_success->meta->success)
-		{
-			foreach ($is_success->meta->errors as $key => $value) 
+			$is_success 							= json_decode($content);
+			if(!$is_success->meta->success)
 			{
-				if(is_array($value))
+				foreach ($is_success->meta->errors as $key => $value) 
 				{
-					foreach ($value as $key2 => $value2) 
+					if(is_array($value))
 					{
-						$errors->add('Person', $value2);
+						foreach ($value as $key2 => $value2) 
+						{
+							$errors->add('Person', $value2);
+						}
 					}
-				}
-				else
-				{
-					$errors->add('Person', $value);
+					else
+					{
+						$errors->add('Person', $value);
+					}
 				}
 			}
 		}
-
+		
 		if(!$errors->count())
 		{
 			DB::commit();
