@@ -1,7 +1,7 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 @if (!$widget_error_count)
 	@section('widget_title')
-		<h1> {{ is_null($id) ? 'Tambah Jatah Cuti ' : 'Ubah Jatah Cuti '}} "{{$person['name']}}" </h1> 
+		<h1> {{ is_null($id) ? 'Tambah Pengaturan Cuti ' : 'Ubah Pengaturan Cuti '}} "{{$person['name']}}" </h1> 
 	@overwrite
 
 	@section('widget_body')
@@ -41,7 +41,7 @@
 								<option value="confirmed" @if($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['status']=='confirmed') selected @endif>Konfirmasi Cuti</option>
 							@else
 								<option value="offer" @if($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['status']=='offer') selected @endif>Pengajuan Cuti</option>
-								<option value="annual" @if($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['status']=='annual') selected @endif>Jatah Cuti Tahunan</option>
+								<option value="annual" @if($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['status']=='annual') selected @endif>Pengaturan Cuti Tahunan</option>
 								<option value="special" @if($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['status']=='special') selected @endif>Cuti Istimewa</option>
 							@endif
 						</select>

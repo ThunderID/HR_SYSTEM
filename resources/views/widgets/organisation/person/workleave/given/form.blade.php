@@ -1,7 +1,7 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 @if (!$widget_error_count)
 	@section('widget_title')
-		<h1> {{ is_null($id) ? 'Tambah Jatah Cuti ' : 'Ubah Jatah Cuti '}} "{{$person['name']}}" </h1> 
+		<h1> {{ is_null($id) ? 'Tambah Pengaturan Cuti ' : 'Ubah Pengaturan Cuti '}} "{{$person['name']}}" </h1> 
 	@overwrite
 
 	@section('widget_body')

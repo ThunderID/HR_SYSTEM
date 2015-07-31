@@ -84,7 +84,7 @@
                                         <a href="{{ route('hr.person.schedules.index', ['org_id' => $value, 'person_id' => $person['id']]) }}" @if(isset($widget_options['sidebar']['active_schedule_person'])&&Input::get('org_id')==$value) class="active" @endif>Jadwal</a>
                                     </li>
                                     <li @if(isset($widget_options['sidebar']['active_workleave_person'])&&Input::get('org_id')==$value) class="active-li" @endif>
-                                        <a href="{{ route('hr.person.workleaves.index', ['org_id' => $value, 'person_id' => $person['id']]) }}" @if(isset($widget_options['sidebar']['active_workleave_person'])&&Input::get('org_id')==$value) class="active" @endif>Jatah Cuti</a>
+                                        <a href="{{ route('hr.person.workleaves.index', ['org_id' => $value, 'person_id' => $person['id']]) }}" @if(isset($widget_options['sidebar']['active_workleave_person'])&&Input::get('org_id')==$value) class="active" @endif>Pengaturan Cuti</a>
                                     </li>
                                     <li @if(isset($widget_options['sidebar']['active_document_person'])&&Input::get('org_id')==$value) class="active-li" @endif>
                                         <a href="{{ route('hr.person.documents.index', ['org_id' => $value, 'person_id' => $person['id']]) }}" @if(isset($widget_options['sidebar']['active_document_person'])&&Input::get('org_id')==$value) class="active" @endif>Dokumen</a>

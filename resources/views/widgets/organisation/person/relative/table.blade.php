@@ -17,7 +17,16 @@
 
 	@section('widget_body')
 		@if((int)Session::get('user.menuid')<5)
-			<a href="{{ $RelativeComposer['widget_data']['relativelist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
+			@include('widgets.common.selectblock', [
+				'widget_title'			=> 'Pilih Data',
+				'widget_template'		=> 'panel',
+				'widget_options'		=> 	[
+												'url_old'		=> route('hr.person.relatives.create', ['org_id' => $data['id'], 'person_id' => $person['id'], 'employee' => true]),
+												'url_new'		=> route('hr.person.relatives.create', ['org_id' => $data['id'], 'person_id' => $person['id'], 'employee' => false]),
+												'caption_old'	=> '  Data Lama  ',
+												'caption_new'	=> '  Data Baru  ',
+											],
+				])
 		@endif
 		@if(isset($RelativeComposer['widget_data']['relativelist']['relative']))
 			<div class="clearfix">&nbsp;</div>

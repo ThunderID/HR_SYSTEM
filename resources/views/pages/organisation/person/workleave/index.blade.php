@@ -4,7 +4,7 @@
 						['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
 						['name' => 'Data Karyawan', 'route' => route('hr.persons.index', ['org_id' => $data['id']]) ],
 						['name' => $person['name'], 'route' => route('hr.persons.show', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
-						['name' => 'Jatah Cuti', 'route' => route('hr.person.workleaves.index', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
+						['name' => 'Pengaturan Cuti', 'route' => route('hr.person.workleaves.index', ['id' => $person['id'], 'person_id' => $person['id'],'org_id' => $data['id'] ])], 
 					]
 	])
 @stop
@@ -57,7 +57,7 @@
 
 	@include('widgets.organisation.person.workleave.table', [
 		'widget_template'		=> 'panel',
-		'widget_title'			=> 'Jatah Cuti "'.$person['name'].'"'.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
+		'widget_title'			=> 'Pengaturan Cuti "'.$person['name'].'"'.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> 	[

@@ -14,7 +14,15 @@
 
 	@section('widget_body')
 		@if((int)Session::get('user.menuid')<5)
-			<a href="{{ $PersonWorkleaveComposer['widget_data']['workleavelist']['route_create'] }}" class="btn btn-primary">Tambah</a>
+			@include('widgets.common.selectblock', [
+					'widget_title'			=> 'Pilih Data',
+					'widget_options'		=> 	[
+													'url_old'		=> route('hr.person.workleaves.create', ['org_id' => $data['id'], 'person_id' => $person['id'], 'type' => 'given']),
+													'url_new'		=> route('hr.person.workleaves.create', ['org_id' => $data['id'], 'person_id' => $person['id'], 'type' => 'taken']),
+													'caption_old'	=> 'Pemberian Cuti',
+													'caption_new'	=> 'Pengambilan Cuti',
+												],
+					])
 		@endif
 		@if(isset($PersonWorkleaveComposer['widget_data']['workleavelist']['workleave']))
 			<div class="clearfix">&nbsp;</div>

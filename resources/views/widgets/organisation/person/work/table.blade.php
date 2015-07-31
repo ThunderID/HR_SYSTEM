@@ -19,7 +19,16 @@
 
 	@section('widget_body')	
 		@if((int)Session::get('user.menuid')<5)
-			<a href="{{ $WorkComposer['widget_data']['worklist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
+			@include('widgets.common.selectblock', [
+				'widget_title'			=> 'Pilih Data',
+				'widget_template'		=> 'panel',
+				'widget_options'		=> 	[
+												'url_old'		=> route('hr.person.works.create', ['org_id' => $data['id'], 'person_id' => $person['id'], 'prev' => true]),
+												'url_new'		=> route('hr.person.works.create', ['org_id' => $data['id'], 'person_id' => $person['id'], 'prev' => false]),
+												'caption_old'	=> 'Pengalaman Kerja',
+												'caption_new'	=> 'Pekerjaan Saat Ini',
+											],
+				])
 		@endif
 		@if(isset($WorkComposer['widget_data']['worklist']['work']))
 			<div class="clearfix">&nbsp;</div>
