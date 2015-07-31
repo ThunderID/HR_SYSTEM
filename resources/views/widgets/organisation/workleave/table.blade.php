@@ -53,13 +53,15 @@
 								@endif
 							</td>
 							<td class="text-right">
+								@if(strtoupper($value['status'])=='CN')
+									<a href="{{route('hr.workleaves.batch.create', ['workleave_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-plus"></i></a>
+								@endif
 								@if((int)Session::get('user.menuid') <= 2)
 									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.workleaves.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash"></i></a>
 								@endif
 								@if((int)Session::get('user.menuid') <= 3)
 									<a href="{{route('hr.workleaves.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 								@endif
-								<?php //<a href="{{route('hr.workleave.charts.create', ['workleave_id' => $value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-plus"></i></a>;?>
 							</td>
 						</tr>
 					</tbody>

@@ -213,6 +213,9 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.person.workleaves.update'					=> 79,
 							'hr.person.workleaves.delete'					=> 80,
 
+							'hr.workleaves.batch.create'					=> 78,
+							'hr.workleaves.batch.store'						=> 78,
+
 							'hr.person.documents.index'						=> 81,
 							'hr.person.documents.show'						=> 81,
 							'hr.person.documents.create'					=> 82,
@@ -284,9 +287,9 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 	 */
 	public function boot(Router $router)
 	{
-		Config::set('current.absence.version', '0.3');
-		Config::set('current.absence.url1', 'https://rcmsystem.co');
-		Config::set('current.absence.url2', 'https://rcmsystem.co');
+		Config::set('current.absence.version', '1.1');
+		Config::set('current.absence.url1', 'http://192.168.1.184:9000/AbsentSystem.exe');
+		Config::set('current.absence.url2', 'http://192.168.1.184:9000/config.exe');
 
 		parent::boot($router);
 

@@ -49,7 +49,7 @@ class Workleave extends BaseModel {
 	protected 	$rules				= 	[
 											'name'						=> 'required|max:255',
 											'quota'						=> 'required|numeric',
-											'status'					=> 'required|in:CI,CB,CN',
+											'status'					=> 'required|in:CI,CN',
 											'is_active'					=> 'boolean',
 										];
 
@@ -58,6 +58,7 @@ class Workleave extends BaseModel {
 											'organisationid' 			=> 'OrganisationID', 
 											'name' 						=> 'Name', 
 											'active' 					=> 'Active', 
+											'status' 					=> 'Status', 
 											'withattributes' 			=> 'WithAttributes'
 										];
 
@@ -66,6 +67,7 @@ class Workleave extends BaseModel {
 											'organisationid' 			=> 'Could be array or integer', 
 											'name' 						=> 'Must be string', 
 											'active' 					=> 'Must be true or false', 
+											'status' 					=> 'Must be string', 
 											'withattributes' 			=> 'Must be array of relationship',
 										];
 
@@ -125,5 +127,10 @@ class Workleave extends BaseModel {
 	public function scopeActive($query, $variable)
 	{
 		return $query->where('is_active', $variable);
+	}
+
+	public function scopeStatus($query, $variable)
+	{
+		return $query->where('status', $variable);
 	}
 }

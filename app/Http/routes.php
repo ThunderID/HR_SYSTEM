@@ -92,7 +92,7 @@ Route::group(['middleware' => 'csrfverify'], function()
 			// ------------------------------------------------------------------------------------
 
 			Route::resource('workleaves',			'WorkleaveController',								['names' => ['index' => 'hr.workleaves.index', 'create' => 'hr.workleaves.create', 'store' => 'hr.workleaves.store', 'show' => 'hr.workleaves.show', 'edit' => 'hr.workleaves.edit', 'update' => 'hr.workleaves.update', 'destroy' => 'hr.workleaves.delete']]);
-
+			
 			// ------------------------------------------------------------------------------------
 			// IDLES RESOURCE
 			// ------------------------------------------------------------------------------------
@@ -154,6 +154,15 @@ Route::group(['middleware' => 'csrfverify'], function()
 				});
 
 			});
+
+		Route::group(['namespace' => 'Workleave\\', 'prefix' => 'workleave'], function() 
+		{
+			// ------------------------------------------------------------------------------------
+			// BATCH FOR WORKLEAVE RESOURCE
+			// ------------------------------------------------------------------------------------
+
+			Route::resource('batch',			'BatchController',										['names' => ['index' => 'hr.workleaves.batch.index', 'create' => 'hr.workleaves.batch.create', 'store' => 'hr.workleaves.batch.store', 'show' => 'hr.workleaves.batch.show', 'edit' => 'hr.workleaves.batch.edit', 'update' => 'hr.workleaves.batch.update', 'destroy' => 'hr.workleaves.batch.delete']]);
+		});
 
 		Route::group(['namespace' => 'Calendar\\', 'prefix' => 'calendar'], function() 
 		{

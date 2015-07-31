@@ -146,6 +146,9 @@ class Person extends BaseModel {
 											'currentwork' 					=> 'CurrentWork',
 											'previouswork' 					=> 'PreviousWork',
 
+											'workcalendar' 					=> 'WorkCalendar',
+											'withworkcalendarschedules' 	=> 'WithWorkCalendarSchedules',
+
 											'displayupdatedfinger'			=> 'DisplayUpdatedFinger',
 
 											'globalattendance'	 			=> 'GlobalAttendance',
@@ -204,6 +207,9 @@ class Person extends BaseModel {
 											'checkwork'	 					=> 'Could be false or string (date)',
 											'currentwork' 					=> 'Could be null or integer of ID',
 											'previouswork' 					=> 'Null',
+
+											'workcalendar' 					=> 'Need to be true',
+											'withworkcalendarschedules' 	=> 'Need to be true',
 
 											'displayupdatedfinger'			=> 'Must be string (datetime)',
 
