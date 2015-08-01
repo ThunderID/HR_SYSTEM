@@ -184,7 +184,7 @@ class CalendarController extends BaseController
 			$org_id 							= Session::get('user.organisationid');
 		}
 
-		if(Input::has('calendar_id'))
+		if(Input::has('calendar_id') && (int)Input::get('calendar_id')!=0)
 		{
 			$attributes['import_from_id'] 		= Input::get('calendar_id');
 		}
