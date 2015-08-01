@@ -54,7 +54,37 @@
 						{!!Form::input('number', 'max_employee', $ChartComposer['widget_data']['chartlist']['chart']['max_employee'], ['class' => 'form-control', 'min' => '0', 'tabindex' => '7'])!!}
 					</div>
 				</div>
-			</div>			
+			</div>
+
+			@if(is_null($id))
+				<div class="form-group">
+					<div class="checkbox">
+						<label>
+							{!!Form::checkbox('affect', '1', '', ['class' => '', 'tabindex' => '8'])!!} Set Kalender Default : 
+						</label>
+					</div>
+				</div>
+				
+				@include('widgets.organisation.calendar.simplelist', [
+					'widget_template'		=> 'panel',
+					'widget_title'			=> 'Kalender '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
+					'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
+					'widget_body_class'		=> '',
+					'widget_options'		=> 	[
+													'calendarlist'			=>
+													[
+														'organisation_id'	=> $data['id'],
+														'search'			=> array_merge([], (isset($filtered['search']) ? $filtered['search'] : [])),
+														'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['name' => 'asc']),
+														'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
+														'page'				=> (Input::has('page') ? Input::get('page') : 1),
+														'per_page'			=> 100,
+														'route_create'		=> route('hr.calendars.create', ['org_id' => $data['id']])
+													]
+												]
+				])
+				@endif
+
 			<div class="form-group text-right">				
 				<a href="{{ $ChartComposer['widget_data']['chartlist']['route_back'] }}" class="btn btn-default mr-5" tabindex="9">Batal</a>
 				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="8">

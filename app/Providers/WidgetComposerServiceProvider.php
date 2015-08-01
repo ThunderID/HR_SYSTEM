@@ -62,7 +62,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// CALENDAR
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.calendar.table', 'widgets.organisation.calendar.form', 'widgets.organisation.calendar.calendar', 'widgets.organisation.calendar.select'], 	'App\Http\ViewComposers\CalendarComposer');
+		View::composer(['widgets.organisation.calendar.table', 'widgets.organisation.calendar.form', 'widgets.organisation.calendar.simplelist', 'widgets.organisation.calendar.calendar', 'widgets.organisation.calendar.select'], 	'App\Http\ViewComposers\CalendarComposer');
 
 		// -----------------------------------------------------------------------------
 		// DOCUMENT
