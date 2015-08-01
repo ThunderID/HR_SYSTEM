@@ -25,8 +25,8 @@
 				<thead>
 					<tr>
 						<th>No</th>
-						<th>CLIENT</th>
-						<th>SECRET</th>
+						<th>API KEY</th>
+						<th>API SECRET</th>
 						<th>APP ID</th>
 						<th>PC Name</th>
 						<th>Aktif</th>
