@@ -163,7 +163,7 @@ class CalendarController extends BaseController
 			App::abort(404);
 		}
 
-		if(Input::has('calendar_id'))
+		if(Input::has('calendar_id') && (int)Input::has('calendar_id')!=0)
 		{
 			$cal_id 							= Input::get('calendar_id');
 		}
