@@ -9,6 +9,8 @@ use App\Console\Commands\Deleting;
 use App\Models\Chart;
 use App\Models\Branch;
 use App\Models\Person;
+use App\Models\Follow;
+use App\Models\Calendar;
 
 class ChartController extends BaseController
 {
@@ -285,6 +287,50 @@ class ChartController extends BaseController
 				else
 				{
 					$errors->add('Branch', $value);
+				}
+			}
+		}
+		elseif(Input::has('affect'))
+		{
+			unset($search);
+			unset($sort);
+
+			$search['organisationid'] 				= $org_id;
+			$sort 									= ['name' => 'asc'];
+			$results 								= $this->dispatch(new Getting(new Calendar, $search, $sort , 1, 100));
+			$contents_c 							= json_decode($results);
+
+			if(!$contents_c->meta->success)
+			{
+				App::abort(404);
+			}
+
+			$calendars 								= json_decode(json_encode($contents_c->data), true);
+
+			foreach ($calendars as $key => $value) 
+			{
+				unset($attributes);
+				$attributes['chart_id']				= $is_success->data->id;
+
+				$content 							= $this->dispatch(new Saving(new Follow, $attributes, $id, new Calendar, $value['id']));
+				$is_success_2 						= json_decode($content);
+
+				if(!$is_success_2->meta->success)
+				{
+					foreach ($is_success_2->meta->errors as $key2 => $value2) 
+					{
+						if(is_array($value2))
+						{
+							foreach ($value2 as $key3 => $value3) 
+							{
+								$errors->add('Chart', $value3);
+							}
+						}
+						else
+						{
+							$errors->add('Chart', $value2);
+						}
+					}
 				}
 			}
 		}
