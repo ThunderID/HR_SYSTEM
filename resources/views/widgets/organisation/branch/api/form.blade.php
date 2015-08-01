@@ -40,7 +40,7 @@
 			<div class="form-group">				
 				<div class="checkbox">
 					<label>
-						{!!Form::checkbox('is_active', '1', $ApiComposer['widget_data']['apilist']['api']['is_active'], ['class' => '', 'tabindex' => '5'])!!} Aktif
+						{!!Form::checkbox('is_active', '1', ($ApiComposer['widget_data']['apilist']['api']['is_active'] ? $ApiComposer['widget_data']['apilist']['api']['is_active'] : 'checked'), ['class' => '', 'tabindex' => '5'])!!} Aktif
 					</label>
 				</div>				
 			</div>
