@@ -17,13 +17,16 @@
 			<table class="table table-hover table-affix">
 				<thead>
 					<tr>
+						<th>No</th>
 						<th>Kalender</th>
 						<th>&nbsp;</th>
 					</tr>
 				</thead>
 				<tbody>
+					<?php $i = $FollowComposer['widget_data']['followlist']['follow-display']['from'];?>
 					@forelse($FollowComposer['widget_data']['followlist']['follow'] as $key => $value)
 						<tr>
+							<td>{{$i}}</td>
 							<td>
 								{{$value['calendar']['name']}}
 							</td>
@@ -31,6 +34,7 @@
 								<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.chart.calendars.delete', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id'], 'chart_id' => $chart['id']]) }}"><i class="fa fa-trash"></i></a>
 							</td>
 						</tr>
+						<?php $i++;?>
 					@empty 
 						<tr>
 							<td class="text-center" colspan="2">Tidak ada data</td>
