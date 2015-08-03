@@ -321,6 +321,30 @@ class WorkleaveController extends BaseController
 				$errors->add('Person', 'Maksimal range adalah satu minggu (7 Hari) ');
 			}
 
+			if((int)Session::Get('user.menuid')==2)
+			{
+				$dateline 						= date('Y-m-d', strtotime(Input::get('start'). ' + 2 months'));
+
+				if($dateline < date('Y-m-d'))
+				{
+					$errors->add('ProcessLog', 'Batas Akhir Perubahan Status adalah 2 Bulan');
+					
+					return Redirect::back()->withErrors($errors)->withInput();
+				}
+			}
+
+			if((int)Session::Get('user.menuid')==3)
+			{
+				$dateline 						= date('Y-m-d', strtotime(Input::get('start'). ' + 7 days'));
+
+				if($dateline < date('Y-m-d'))
+				{
+					$errors->add('ProcessLog', 'Batas Akhir Perubahan Status adalah 7 hari');
+					
+					return Redirect::back()->withErrors($errors)->withInput();
+				}
+			}
+
 			unset($search);
 			unset($sort);
 

@@ -211,12 +211,12 @@ class PersonScheduleObserver
 
 	public function deleting($model)
 	{
-		if(date('Y-m-d',strtotime($model['attributes']['on'])) <= date('Y-m-d'))
-		{
-			$model['errors'] 				= ['Tidak dapat menghapus jadwal pribadi seseorang pada waktu yang telah lewat atau hari ini. Silahkan tambahkan jadwal perorangan yang baru.'];
+		// if(date('Y-m-d',strtotime($model['attributes']['on'])) <= date('Y-m-d'))
+		// {
+		// 	$model['errors'] 				= ['Tidak dapat menghapus jadwal pribadi seseorang pada waktu yang telah lewat atau hari ini. Silahkan tambahkan jadwal perorangan yang baru.'];
 
-			return false;
-		}
+		// 	return false;
+		// }
 
 		$logs 								= Log::personid($model['attributes']['person_id'])->ondate([date('Y-m-d',strtotime($model['attributes']['on'])), date('Y-m-d',strtotime($model['attributes']['on'].' + 1 Day'))])->get();
 

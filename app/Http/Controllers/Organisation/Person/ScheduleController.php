@@ -193,6 +193,30 @@ class ScheduleController extends BaseController
 			$errors->add('Person', 'Maksimal range adalah satu minggu (7 Hari) ');
 		}
 
+		if((int)Session::Get('user.menuid')==2)
+		{
+			$dateline 						= date('Y-m-d', strtotime($begin->format('Y-m-d'). ' + 2 months'));
+
+			if($dateline < date('Y-m-d'))
+			{
+				$errors->add('ProcessLog', 'Batas Akhir Perubahan Status adalah 2 Bulan');
+				
+				return Redirect::back()->withErrors($errors)->withInput();
+			}
+		}
+
+		if((int)Session::Get('user.menuid')==3)
+		{
+			$dateline 						= date('Y-m-d', strtotime($begin->format('Y-m-d'). ' + 7 days'));
+
+			if($dateline < date('Y-m-d'))
+			{
+				$errors->add('ProcessLog', 'Batas Akhir Perubahan Status adalah 7 hari');
+				
+				return Redirect::back()->withErrors($errors)->withInput();
+			}
+		}
+
 		if(!$errors->count())
 		{
 			$interval 								= DateInterval::createFromDateString('1 day');
