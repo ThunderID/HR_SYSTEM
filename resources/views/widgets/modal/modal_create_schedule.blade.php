@@ -32,7 +32,7 @@
 									<option value="L">Libur</option>
 									<option value="CB">Cuti Bersama</option>
 									@if(Input::has('person_id'))
-										<option value="CI">Cuti Istimewa</option>
+										<!-- <option value="CI">Cuti Istimewa</option> -->
 										<option value="CN">Cuti Pribadi</option>
 										<option value="UL">Cuti Tidak Dibayar</option>
 										<option value="SS">Sakit (dalam waktu pendek)</option>

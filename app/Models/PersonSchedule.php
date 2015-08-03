@@ -51,7 +51,7 @@ class PersonSchedule extends BaseModel {
 											'on'						=> 'required|date_format:"Y-m-d"',
 											'start'						=> 'required|date_format:"H:i:s"',
 											'end'						=> 'required|date_format:"H:i:s"',
-											'status'					=> 'required|in:DN,SS,SL,CN,CB,CI,UL,HB,L',
+											'status'					=> 'required|in:DN,SS,SL,CN,CB,UL,HB,L',
 										];
 
 	public $searchable 				= 	[

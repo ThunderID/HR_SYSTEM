@@ -5,6 +5,8 @@ use App\Models\PersonSchedule;
 use App\Models\ProcessLog;
 use App\Models\Person;
 use App\Models\Log;
+use App\Models\Work;
+use App\Models\PersonWorkleave;
 use \Illuminate\Support\MessageBag as MessageBag;
 
 /* ----------------------------------------------------------------------
@@ -22,50 +24,6 @@ class PersonScheduleObserver
 
 		if ($validator->passes())
 		{
-			if(isset($model['attributes']['person_id']))
-			{
-				// if(strtolower($model['attributes']['status'])=='absence_workleave')
-				// {
-				// 	$person 				= new Person;
-				// 	$data					= $person->id($model['attributes']['person_id'])->CheckWork(true)->CheckWorkleave([date('Y-m-d',strtotime('first day of january this year')), date('Y-m-d',strtotime('last day of december this year'))])->withattributes(['personworkleaves', 'personworkleaves'])->first();
-					
-				// 	if(count($data))
-				// 	{
-				// 		$quota 				= 0;
-				// 		foreach($data->personworkleaves as $key => $value)
-				// 		{
-				// 			$quota 			= $quota + $value->quota;
-				// 		}
-
-				// 		$on 				= [date('Y-m-d',strtotime('first day of january this year')), date('Y-m-d',strtotime('last day of december this year'))];
-				// 		$data				= $person->id($model['attributes']['person_id'])->takenworkleave(['status' => 'workleave', 'on' => $on])->first();
-				// 		if(count($data))
-				// 		{
-				// 			if(count($data->takenworkleave) + 1 <= $quota)
-				// 			{
-				// 				return true;
-				// 			}
-				// 			else
-				// 			{
-				// 				$errors 	= new MessageBag;
-				// 				$errors->add('ondate', 'Jatah cuti tidak mencukupi. Sisa jatah cuti : '.$quota-count($data->workleaves).' hari');
-								
-				// 				$model['errors'] = $errors;
-				// 				return false;
-				// 			}
-				// 		}
-				// 		return true;
-				// 	}
-				// 	else
-				// 	{
-				// 		$errors 			= new MessageBag;
-				// 		$errors->add('ondate', 'Karyawan tidak memiliki jatah cuti.');
-
-				// 		$model['errors'] 	= $errors;
-				// 	}
-				// }
-			}
-
 			return true;
 		}
 		else
@@ -78,6 +36,7 @@ class PersonScheduleObserver
 
 	public function saved($model)
 	{
+		$errors 							= new MessageBag;
 		if(date('Y-m-d', strtotime($model['attributes']['on']))<=date('Y-m-d') && isset($model['attributes']['person_id']) && $model['attributes']['person_id'] != 0)
 		{
 			$processlogs 					= ProcessLog::ondate([date('Y-m-d', strtotime($model['attributes']['on'])), date('Y-m-d', strtotime($model['attributes']['on']))])->personid($model['attributes']['person_id'])->get();
@@ -156,42 +115,94 @@ class PersonScheduleObserver
 			}
 		}
 
+		//cek pengambilan cuti
 		if((strtoupper($model['attributes']['status'])=='DN' || strtoupper($model['attributes']['status'])=='CN' || strtoupper($model['attributes']['status'])=='CB' || strtoupper($model['attributes']['status'])=='CI'  || strtoupper($model['attributes']['status'])=='UL'  || strtoupper($model['attributes']['status'])=='SS' || strtoupper($model['attributes']['status'])=='SL' || strtoupper($model['attributes']['status'])=='UL') && isset($model['attributes']['person_id']))
 		{
-			$person 						= Person::find($model['attributes']['person_id']);
-			$log 							= new Log;
-			$log->fill([
-						'name' 				=> strtoupper($model['attributes']['status']),
-						'on' 				=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' '.$model['attributes']['start'])),
-						'pc' 				=> 'hr',
-						'created_by' 		=> $model['attributes']['created_by'],
-			]);
-
-			$log->Person()->associate($person);
-
-			if(!$log->save())
+			//check if log on that day were provided
+			$logged 						= Log::personid($model['attributes']['person_id'])->ondate([$model['attributes']['on'], date('Y-m-d', strtotime($model['attributes']['on'].' + 1 day'))])->Name(strtoupper($model['attributes']['status']))->first();
+			if(!$logged)
 			{
+				$person 					= Person::find($model['attributes']['person_id']);
+				$log 						= new Log;
+				$log->fill([
+							'name' 			=> strtoupper($model['attributes']['status']),
+							'on' 			=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' '.$model['attributes']['start'])),
+							'pc' 			=> 'hr',
+							'created_by' 	=> $model['attributes']['created_by'],
+				]);
 
-				$model['errors'] 	= $log->getError();
+				$log->Person()->associate($person);
 
-				return false;
+				if(!$log->save())
+				{
+
+					$model['errors'] 		= $log->getError();
+
+					return false;
+				}
+
+				$log 						= new Log;
+				$log->fill([
+							'name' 			=> strtoupper($model['attributes']['status']),
+							'on' 			=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' '.$model['attributes']['end'])),
+							'pc' 			=> 'hr',
+							'created_by' 	=> $model['attributes']['created_by'],
+				]);
+
+				$log->Person()->associate($person);
+
+				if(!$log->save())
+				{
+					$model['errors'] 		= $log->getError();
+
+					return false;
+				}
 			}
 
-			$log 							= new Log;
-			$log->fill([
-						'name' 				=> strtoupper($model['attributes']['status']),
-						'on' 				=> date('Y-m-d H:i:s', strtotime($model['attributes']['on'].' '.$model['attributes']['end'])),
-						'pc' 				=> 'hr',
-						'created_by' 		=> $model['attributes']['created_by'],
-			]);
-
-			$log->Person()->associate($person);
-
-			if(!$log->save())
+			
+			if(in_array(strtoupper($model['attributes']['status']),['CN','CB']))
 			{
-				$model['errors'] 	= $log->getError();
+				$workid 					= Work::personid($model['attributes']['person_id'])->active(true)->wherehas('calendar', function($q){$q;})->orderBy('end', 'desc')->first();
+				//check if pw on that day were provided
+				$pwM 						= PersonWorkleave::personid($model['attributes']['person_id'])->ondate([date('Y-m-d', strtotime($model['attributes']['on'])), date('Y-m-d', strtotime($model['attributes']['on']))])->status('CN')->quota(false)->first();
+				if($pwM)
+				{
+					return true;
+				}
+				//check if pw on that day were not provided
+				else
+				{
+					$pwP 					= PersonWorkleave::personid($model['attributes']['person_id'])->ondate([date('Y-m-d', strtotime($model['attributes']['on'])), null])->status('CN')->quota(true)->first();
+					if(!$pwP)
+					{
+						$errors->add('Workleave', 'Quota Cuti Tidak Tersedia. Jika ingin menambahkan hutang cuti, silahkan tambahkan quota cuti tahun depan.');
+						$model['errors'] 	= $errors;
 
-				return false;
+						return false;
+					}
+
+					$pworkleave 			= new PersonWorkleave;
+					$pworkleave->fill([
+							'work_id'				=> $workid->id,
+							'person_workleave_id'	=> $pwP->id,
+							'created_by'			=> $model['attributes']['created_by'],
+							'name'					=> $model['attributes']['name'],
+							'status'				=> $model['attributes']['status'],
+							'notes'					=> $model['attributes']['name'].'<br/>Auto generated dari schedule.',
+							'start'					=> $model['attributes']['on'],
+							'end'					=> $model['attributes']['on'],
+							'quota'					=> -1
+					]);
+
+					$pworkleave->Person()->associate($person);
+
+					if(!$pworkleave->save())
+					{
+						$model['errors'] 	= $pworkleave->getError();
+
+						return false;
+					}
+				}
 			}
 		}
 	}
@@ -218,5 +229,25 @@ class PersonScheduleObserver
 				return false;
 			}
 		}
+	}
+
+	public function deleted($model)
+	{
+		$plog 								= ProcessLog::$personid($model['attributes']['person_id'])->ondate([$model['attributes']['on'], date('Y-m-d', strtotime($model['attributes']['on'].' + 1 day'))])->modifiedstatus(strtoupper($model['attributes']['status']))->get();
+		if($plog->count())
+		{
+			foreach ($plog as $key => $value) 
+			{
+				$dplog 						= ProcessLog::find($value->id);
+				if(!$dplog->delete())
+				{
+					$model['errors']		= $dplog->getError();
+				
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 }

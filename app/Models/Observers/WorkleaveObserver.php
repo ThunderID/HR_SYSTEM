@@ -45,8 +45,11 @@ class WorkleaveObserver
 
 	public function deleting($model)
 	{
-		$model['errors'] 	= ['Tidak dapat menghapus data cuti. Silahkan non aktif kan data cuti yang tidak berlaku lagi.'];
+		if($model->personworkleaves->count())
+		{
+			$model['errors'] 	= ['Tidak dapat menghapus data cuti yang menjadi acuan cuti karyawan. Silahkan non aktif kan data cuti yang tidak berlaku lagi.'];
 
-		return false;
+			return false;
+		}
 	}
 }

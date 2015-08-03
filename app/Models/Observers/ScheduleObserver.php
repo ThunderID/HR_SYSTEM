@@ -26,11 +26,11 @@ class ScheduleObserver
 				$schedule 					= new Schedule;
 				if(isset($model['attributes']['id']))
 				{
-					$data 					= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->calendarid($model['attributes']['calendar_id'])->notid($model['attributes']['id'])->first();
+					$data 					= $schedule->ondate([$model['attributes']['on'], date('Y-m-d', strtotime($model['attributes']['on'].' + 1 day'))])->calendarid($model['attributes']['calendar_id'])->notid($model['attributes']['id'])->first();
 				}
 				else
 				{
-					$data 					= $schedule->ondate([$model['attributes']['on'], $model['attributes']['on']])->calendarid($model['attributes']['calendar_id'])->first();
+					$data 					= $schedule->ondate([$model['attributes']['on'], date('Y-m-d', strtotime($model['attributes']['on'].' + 1 day'))])->calendarid($model['attributes']['calendar_id'])->first();
 				}
 
 				if(count($data))

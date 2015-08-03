@@ -34,6 +34,7 @@ class Workleave extends BaseModel {
 
 	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasOrganisationTrait;
+	use \App\Models\Traits\HasMany\HasPersonWorkleavesTrait;
 
 	public 		$timestamps 		= 	true;
 

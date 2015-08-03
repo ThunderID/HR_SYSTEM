@@ -4,6 +4,7 @@ use DB, Validator;
 use App\Models\Person;
 use App\Models\PersonSchedule;
 use App\Models\Work;
+use App\Models\PersonWorkleave;
 use \Illuminate\Support\MessageBag as MessageBag;
 use DateTime, DateInterval, DatePeriod;
 
@@ -19,29 +20,32 @@ class PersonWorkleaveObserver
 {
 	public function saving($model)
 	{
-		$validator 					= Validator::make($model['attributes'], $model['rules'], ['work_id.required' => 'Cuti hanya dapat ditambahkan untuk pegawai aktif', 'work_id.exists' => 'Cuti hanya dapat ditambahkan untuk pegawai aktif']);
+		$validator 						= Validator::make($model['attributes'], $model['rules'], ['work_id.required' => 'Cuti hanya dapat ditambahkan untuk pegawai aktif', 'work_id.exists' => 'Cuti hanya dapat ditambahkan untuk pegawai aktif']);
 
 		if ($validator->passes())
 		{
-			// $works 					= Work::id($model['attributes']['work_id'])->CalendarQuota($model['attributes']['quota'])->get();
-			// if(isset($model['attributes']['person_workleave_id']) && $model['attributes']['person_workleave_id']!=0 && strtolower($model['attributes']['status'])=='confirmed' && (int)$model->parent->quota <= (int)$model['attributes']['quota'])
-			// {
-			// 	$validator 				= Validator::make($model['attributes'], ['person_workleave_id' => 'exists:person_workleaves,person_workleave_id']);
+			if(isset($model['attributes']['person_workleave_id']) && $model['attributes']['person_workleave_id']!=0)
+			{
+				$left_quota 			= PersonWorkleave::id($model['attributes']['person_workleave_id'])->first();
+				$add_quota 				= PersonWorkleave::parentid($model['attributes']['person_workleave_id'])->sum('quota');
 
-			// 	if (!$validator->passes())
-			// 	{
-			// 		$model['errors'] 		= $validator->errors();
+				$validator 				= Validator::make($model['attributes'], ['person_workleave_id' => 'exists:person_workleaves,person_workleave_id']);
 
-			// 		return false;
-			// 	}
+				if (!$validator->passes())
+				{
+					$model['errors'] 		= $validator->errors();
 
-			// 	$errors 			= new MessageBag;
-			// 	$errors->add('quota', 'Quota cuti yang tersedia tidak mencukupi. Sisa cuti = '.(int)$model->parent->quota.'. Jika cuti merupakan kasus khusus silahkan tambahkan cuti istimewa.');
-				
-			// 	$model['errors'] 	= $errors;
-
-			// 	return false;
-			// }
+					return false;
+				}
+				elseif(($left_quota->quota + $add_quota + $model['attributes']['quota']) < 0)
+				{
+					$errors 			= new MessageBag;
+					$errors->add('quota', 'Quota '.$left_quota->name.' yang tersedia tidak mencukupi. <br/>Sisa cuti = '.(int)($left_quota->quota + $add_quota).' hari, Cuti yang hendak diambil = '.abs($model['attributes']['quota']).' hari.<br/>Jika cuti merupakan kasus khusus silahkan tambahkan cuti istimewa.');
+					
+					$model['errors'] 	= $errors;
+					return false;
+				}
+			}
 
 			return true;
 		}
@@ -55,7 +59,7 @@ class PersonWorkleaveObserver
 
 	public function saved($model)
 	{
-		if (isset($model['attributes']['person_id']) && (strtoupper($model['attributes']['status'])=='CB' || strtoupper($model['attributes']['status'])=='CI'  || strtoupper($model['attributes']['status'])=='CONFIRMED'))
+		if ((isset($model['attributes']['person_id']) && (strtoupper($model['attributes']['status'])=='CB' || strtoupper($model['attributes']['status'])=='CN')) && $model['attributes']['quota'] < 0)
 		{
 			$errors 				= new MessageBag;
 			
@@ -69,28 +73,27 @@ class PersonWorkleaveObserver
 
 			foreach ( $periods as $period )
 			{
+				//check if schedule were provided
 				$schedule 			= new PersonSchedule;
-				$psch 				= $schedule->ondate([$period->format('Y-m-d'), $period->format('Y-m-d')])->status(strtoupper($model['attributes']['status'])=='CONFIRMED' ? 'CN' : strtoupper($model['attributes']['status']))->first();
-				if($psch)
+				$psch 				= $schedule->personid($model['attributes']['person_id'])->ondate([$period->format('Y-m-d'), $period->format('Y-m-d')])->status(strtoupper($model['attributes']['status']))->first();
+				if(!$psch)
 				{
-					$schedule 		= $psch;
-				}
-
-				$schedule->fill([
-					'created_by'	=>  $model['attributes']['created_by'],
-					'name'			=>  $model['attributes']['name'],
-					'status'		=>  (strtoupper($model['attributes']['status'])=='CONFIRMED' ? 'CN' : strtoupper($model['attributes']['status'])),
-					'on'			=>  $period->format('Y-m-d'),
-					'start'			=>  '00:00:00',
-					'end'			=>  '00:00:00',
-				]);
-				
-				$schedule->Person()->associate($person);
-				
-				if (!$schedule->save())
-				{
-					$model['errors'] = $schedule->getError();
-					return false;
+					$schedule->fill([
+						'created_by'	=>  $model['attributes']['created_by'],
+						'name'			=>  $model['attributes']['name'],
+						'status'		=>  strtoupper($model['attributes']['status']),
+						'on'			=>  $period->format('Y-m-d'),
+						'start'			=>  '00:00:00',
+						'end'			=>  '00:00:00',
+					]);
+					
+					$schedule->Person()->associate($person);
+					
+					if (!$schedule->save())
+					{
+						$model['errors'] = $schedule->getError();
+						return false;
+					}
 				}
 			}
 		}
@@ -107,60 +110,39 @@ class PersonWorkleaveObserver
 
 			return false;
 		}
-
-		// $start 					= $model['attributes']['start'];
-		// $end 					= $model['attributes']['end'];
-		// if(isset($model->getDirty()['start']))
-		// {
-		// 	$start 				= $model->getOriginal()['start'];
-		// }
-
-		// if(isset($model->getDirty()['end']))
-		// {
-		// 	$end 				= $model->getOriginal()['end'];
-		// }
-
-		// $takenworkleave 		= Person::id($model['attributes']['person_id'])->takenworkleave(['on' => [$start, $end], 'status' => 'workleave'])->first();
-	
-		// $workleavequota 		= Person::id($model['attributes']['person_id'])->Quotas(['ondate' => [$start, $end]])->first();
-
-		// if(isset($takenworkleave->takenworkleaves))
-		// {
-		// 	$taken 				= count($takenworkleave->takenworkleaves);
-		// }
-		// else
-		// {
-		// 	$taken 				= 0;
-		// }
-		// if(isset($workleavequota->quota) && ($workleavequota->quota + $workleavequota->plus_quota - $model->workleave->quota) < $taken)
-		// {
-		// 	$errors 			= new MessageBag;
-		// 	$errors->add('quota', 'Tidak dapat mengubah data cuti yang sudah terpakai.');
-			
-		// 	$model['errors'] 	= $errors;
-			
-		// 	return false;
-		// }
 	}
 
 	public function deleting($model)
 	{
-		if(isset($model['attributes']['person_workleave_id']) && $model['attributes']['person_workleave_id']!=0)
+		if(isset($model['attributes']['person_workleave_id']) && $model['attributes']['person_workleave_id']!=0 && date('Y-m-d',strtotime($model['attributes']['start'])) <= date('Y-m-d'))
 		{
-			$model['errors']	= ['Tidak dapat menghapus hak cuti. Silahkan ubah hak cuti sebelum menghapus.'];
+			$model['errors']	= ['Tidak dapat menghapus pengambilan cuti yang telah lewat.'];
 				
 			return false;
 		}
 
-		// $takenworkleave 		= Person::id($model['attributes']['person_id'])->takenworkleave(['on' => [$model['attributes']['start'], $model['attributes']['end']], 'status' => 'workleave'])->first();
-	
-		// $workleavequota 		= Person::id($model['attributes']['person_id'])->Quotas(['ondate' => [$model['attributes']['start'], $model['attributes']['end']]])->first();
-		
-		// if(($workleavequota->quota + $workleavequota->plus_quota - $model->workleave->quota) < count($takenworkleave->takenworkleaves))
-		// {
-		// 	$model['errors'] 	= ['Tidak dapat menghapus data cuti yang sudah terpakai.'];
+		if($model->childs->count())
+		{
+			$model['errors']	= ['Tidak dapat menghapus cuti yang telah dipakai.'];
+				
+			return false;
+		}
+	}
 
-		// 	return false;
-		// }
+	public function deleted($model)
+	{
+		$pschedules 			= PersonSchedule::$personid($model['attributes']['person_id'])->ondate([$model['attributes']['start'], $model['attributes']['end']])->status(strtoupper($model['attributes']['status']))->get();
+		foreach ($pschedules as $key => $value) 
+		{
+			$dschedule 		= PersonSchedule::find($value->id);
+			if(!$dschedule->delete())
+			{
+				$model['errors']	= $dschedule->getError();
+			
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

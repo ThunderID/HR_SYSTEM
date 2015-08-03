@@ -37,17 +37,22 @@ class LogObserver
 			return false;
 		}
 
-		$processes 							= ProcessLog::personid($model['attributes']['person_id'])->ondate([date('Y-m-d',strtotime($model['attributes']['on'])), date('Y-m-d',strtotime($model['attributes']['on'].' + 1 Day'))])->get();
+		$logs 								= Log::personid($model['attributes']['person_id'])->ondate([date('Y-m-d',strtotime($model['attributes']['on'])), date('Y-m-d',strtotime($model['attributes']['on'].' + 1 Day'))])->get();
 
-		foreach ($processes as $key => $value) 
+		if($logs->count() && $logs->count() <= 1)
 		{
-			$process 						= ProcessLog::find($value->id);
+			$processes 							= ProcessLog::personid($model['attributes']['person_id'])->ondate([date('Y-m-d',strtotime($model['attributes']['on'])), date('Y-m-d',strtotime($model['attributes']['on'].' + 1 Day'))])->get();
 
-			if(!$process->delete())
+			foreach ($processes as $key => $value) 
 			{
-				$model['errors'] 			= $process->getError();
-				
-				return false;
+				$process 						= ProcessLog::find($value->id);
+
+				if(!$process->delete())
+				{
+					$model['errors'] 			= $process->getError();
+					
+					return false;
+				}
 			}
 		}
 	}

@@ -37,6 +37,7 @@ class PersonWorkleave extends BaseModel {
 	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasPersonTrait;
 	use \App\Models\Traits\BelongsTo\HasPersonWorkleaveTrait;
+	use \App\Models\Traits\HasMany\HasPersonWorkleavesTrait;
 
 	public 		$timestamps 		= 	true;
 
@@ -64,7 +65,7 @@ class PersonWorkleave extends BaseModel {
 											'start'						=> 'required|date_format:"Y-m-d"',
 											'end'						=> 'required_if:status,CB|date_format:"Y-m-d"',
 											'quota'						=> 'required|numeric',
-											'status'					=> 'required|in:OFFER,CB,CN,CI,CONFIRMED',
+											'status'					=> 'required|in:OFFER,CB,CN,CI',
 										];
 
 	public $searchable 				= 	[
@@ -190,5 +191,14 @@ class PersonWorkleave extends BaseModel {
 			}
 		}
 		return $query->where('end', '>=', date('Y-m-d', strtotime($variable)));
+	}
+
+	public function scopeQuota($query, $variable)
+	{
+		if($variable)
+		{
+			return $query->where('quota', '>', 0);
+		}
+		return $query->where('quota', '<', 0);
 	}
 }

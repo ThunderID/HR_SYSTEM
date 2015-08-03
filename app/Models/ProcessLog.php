@@ -121,6 +121,7 @@ class ProcessLog extends BaseModel {
 											'branchid' 					=> 'BranchID', 
 											'charttag' 					=> 'ChartTag', 
 											
+											'modifiedstatus' 			=> 'ModifiedStatus', 
 											'ondate' 					=> 'OnDate', 
 											'global' 					=> 'Global', 
 											'local' 					=> 'Local', 
@@ -135,6 +136,7 @@ class ProcessLog extends BaseModel {
 											'organisationid' 			=> 'Could be array or integer', 
 											'branchid' 					=> 'Could be array or integer', 
 											'charttag' 					=> 'Must be string', 
+											'modifiedstatus' 			=> 'Could be array or string', 
 											'ondate' 					=> 'Could be array or string (date)', 
 											'global' 					=> 'Null', 
 											'local' 					=> 'Null', 
@@ -226,6 +228,15 @@ class ProcessLog extends BaseModel {
 			return $query->whereIn('process_logs.id', $variable);
 		}
 		return $query->where('process_logs.id', $variable);
+	}
+
+	public function scopeModifiedStatus($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('process_logs.modified_status', $variable);
+		}
+		return $query->where('process_logs.modified_status', $variable);
 	}
 	
 	public function scopeOnDate($query, $variable)
