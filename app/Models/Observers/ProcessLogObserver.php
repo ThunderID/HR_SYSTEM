@@ -2,6 +2,7 @@
 
 use DB, Validator;
 use App\Models\PersonWorkleave;
+use App\Models\Person;
 use \Illuminate\Support\MessageBag as MessageBag;
 
 /* ----------------------------------------------------------------------
@@ -84,7 +85,7 @@ class ProcessLogObserver
 		if(strtoupper($model->actual_status)=='AS' && (in_array(strtoupper($model->modified_status), ['CN','CI','CB'])))
 		{
 			//check if pw on that day were provided
-			$pwM 						= PersonWorkleave::personid($model['attributes']['person_id'])->ondate([date('Y-m-d', strtotime($model['attributes']['on'])), date('Y-m-d', strtotime($model['attributes']['on']))])->status('CN')->quota(false)->first();
+			$pwM 						= PersonWorkleave::personid($model['attributes']['person_id'])->ondate([date('Y-m-d', strtotime($model['attributes']['on'])), null])->status(strtoupper($model->modified_status))->quota(false)->first();
 			if($pwM)
 			{
 				return true;
@@ -101,13 +102,15 @@ class ProcessLogObserver
 					return false;
 				}
 
+				$person 				= Person::find($model['attributes']['person_id']);
+
 				$pworkleave 			= new PersonWorkleave;
 				$pworkleave->fill([
 						'work_id'				=> $model['attributes']['work_id'],
 						'person_workleave_id'	=> $pwP->id,
-						'created_by'			=> $model['attributes']['created_by'],
+						'created_by'			=> $model['attributes']['modified_by'],
 						'name'					=> 'Pengambilan '.$pwP->name,
-						'status'				=> $model['attributes']['status'],
+						'status'				=> $model['attributes']['modified_status'],
 						'notes'					=> $model['attributes']['name'].'<br/>Auto generated dari process log.',
 						'start'					=> $model['attributes']['on'],
 						'end'					=> $model['attributes']['on'],
@@ -125,7 +128,7 @@ class ProcessLogObserver
 			}
 		}
 	}
-	
+
 	public function deleting($model)
 	{
 		if(date('Y-m-d',strtotime($model['attributes']['on'])) <= date('Y-m-d'))
@@ -138,7 +141,7 @@ class ProcessLogObserver
 
 	public function deleted($model)
 	{
-		$pworkleaves 					= PersonWorkleave::$personid($model['attributes']['person_id'])->ondate([$model['attributes']['on'], date('Y-m-d', strtotime($model['attributes']['on'].' + 1 day'))])->status(strtoupper($model['attributes']['modified_status']))->get();
+		$pworkleaves 					= PersonWorkleave::personid($model['attributes']['person_id'])->ondate([$model['attributes']['on'], date('Y-m-d', strtotime($model['attributes']['on'].' + 1 day'))])->status(strtoupper($model['attributes']['modified_status']))->get();
 		foreach ($pworkleaves as $key => $value) 
 		{
 			$dworkleave 				= PersonWorkleave::find($value->id);

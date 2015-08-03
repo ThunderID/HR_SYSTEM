@@ -30,7 +30,7 @@
 				<thead>
 					<tr class="row">
 						<th class="">No</th>
-						<th class="">Cuti</th>
+						<th class="">Keterangan</th>
 						<th class="text-center">Quota</th>
 						<th class="">Status</th>
 						<th class="">Diberikan Oleh</th>
@@ -49,7 +49,7 @@
 								{{$value['name']}}
 							</td>
 							<td class="text-center">
-								{{$value['quota']}}
+								{{abs($value['quota'])}}
 							</td>
 							<td class="">
 								{{$value['status']}}

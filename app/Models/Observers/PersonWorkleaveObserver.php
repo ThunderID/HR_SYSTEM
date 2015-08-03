@@ -29,7 +29,7 @@ class PersonWorkleaveObserver
 				$left_quota 			= PersonWorkleave::id($model['attributes']['person_workleave_id'])->first();
 				$add_quota 				= PersonWorkleave::parentid($model['attributes']['person_workleave_id'])->sum('quota');
 
-				$validator 				= Validator::make($model['attributes'], ['person_workleave_id' => 'exists:person_workleaves,person_workleave_id']);
+				$validator 				= Validator::make($model['attributes'], ['person_workleave_id' => 'exists:person_workleaves,id']);
 
 				if (!$validator->passes())
 				{
@@ -37,7 +37,7 @@ class PersonWorkleaveObserver
 
 					return false;
 				}
-				elseif(($left_quota->quota + $add_quota + $model['attributes']['quota']) < 0)
+				elseif(in_array(strtoupper($model['attributes']['status']), ['CB', 'CN']) && ($left_quota->quota + $add_quota + $model['attributes']['quota']) < 0)
 				{
 					$errors 			= new MessageBag;
 					$errors->add('quota', 'Quota '.$left_quota->name.' yang tersedia tidak mencukupi. <br/>Sisa cuti = '.(int)($left_quota->quota + $add_quota).' hari, Cuti yang hendak diambil = '.abs($model['attributes']['quota']).' hari.<br/>Jika cuti merupakan kasus khusus silahkan tambahkan cuti istimewa.');
@@ -131,7 +131,7 @@ class PersonWorkleaveObserver
 
 	public function deleted($model)
 	{
-		$pschedules 			= PersonSchedule::$personid($model['attributes']['person_id'])->ondate([$model['attributes']['start'], $model['attributes']['end']])->status(strtoupper($model['attributes']['status']))->get();
+		$pschedules 			= PersonSchedule::personid($model['attributes']['person_id'])->ondate([$model['attributes']['start'], $model['attributes']['end']])->status(strtoupper($model['attributes']['status']))->get();
 		foreach ($pschedules as $key => $value) 
 		{
 			$dschedule 		= PersonSchedule::find($value->id);

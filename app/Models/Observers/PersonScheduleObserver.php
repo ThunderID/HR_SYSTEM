@@ -181,12 +181,14 @@ class PersonScheduleObserver
 						return false;
 					}
 
+					$person 				= Person::find($model['attributes']['person_id']);
+
 					$pworkleave 			= new PersonWorkleave;
 					$pworkleave->fill([
 							'work_id'				=> $workid->id,
 							'person_workleave_id'	=> $pwP->id,
 							'created_by'			=> $model['attributes']['created_by'],
-							'name'					=> $model['attributes']['name'],
+							'name'					=> 'Pengambilan '.$pwP->name,
 							'status'				=> $model['attributes']['status'],
 							'notes'					=> $model['attributes']['name'].'<br/>Auto generated dari schedule.',
 							'start'					=> $model['attributes']['on'],
@@ -233,7 +235,7 @@ class PersonScheduleObserver
 
 	public function deleted($model)
 	{
-		$plog 								= ProcessLog::$personid($model['attributes']['person_id'])->ondate([$model['attributes']['on'], date('Y-m-d', strtotime($model['attributes']['on'].' + 1 day'))])->modifiedstatus(strtoupper($model['attributes']['status']))->get();
+		$plog 								= ProcessLog::personid($model['attributes']['person_id'])->ondate([$model['attributes']['on'], date('Y-m-d', strtotime($model['attributes']['on'].' + 1 day'))])->modifiedstatus(strtoupper($model['attributes']['status']))->get();
 		if($plog->count())
 		{
 			foreach ($plog as $key => $value) 

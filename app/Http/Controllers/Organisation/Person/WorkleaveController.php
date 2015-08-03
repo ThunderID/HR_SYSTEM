@@ -267,6 +267,22 @@ class WorkleaveController extends BaseController
 		$attributes['work_id'] 					= $person['workscalendars'][0]['id'];
 		$attributes['created_by'] 				= Session::get('loggedUser');
 
+		if(Input::has('start'))
+		{
+			$begin 								= new DateTime( Input::get('start') );
+			$ended 								= new DateTime( Input::get('end') );
+			$maxend 							= new DateTime( Input::get('end').' + 7 days' );
+		}
+		else
+		{
+			$errors->add('Person', 'Tanggal Tidak Valid');
+		}
+
+		if(isset($ended) && ($ended->format('Y-m-d') < $begin->format('Y-m-d')))
+		{
+			$errors->add('Person', 'Tanggal akhir harus lebih besar atau sama dengan dari tanggal mulai.');
+		}
+
 		if(strtolower($type)=='given')
 		{
 			unset($search);
@@ -298,6 +314,11 @@ class WorkleaveController extends BaseController
 				$errors->add('Person', 'Pengambilan cuti harus menyertakan referensi pengambilan cuti');
 
 				return Redirect::back()->withErrors($errors)->withInput();
+			}
+
+			if(isset($ended) && $ended->format('Y-m-d') > $maxend->format('Y-m-d'))
+			{
+				$errors->add('Person', 'Maksimal range adalah satu minggu (7 Hari) ');
 			}
 
 			unset($search);
@@ -360,14 +381,10 @@ class WorkleaveController extends BaseController
 			$attributes['quota']				= 0 - (int)$total_l;
 		}
 
-		if(Input::has('start'))
-		{
-			$attributes['start'] 				= date('Y-m-d', strtotime(Input::get('start')));
-		}
-		if(Input::has('end'))
-		{
-			$attributes['end'] 					= date('Y-m-d', strtotime(Input::get('end')));
-		}
+
+
+		$attributes['start'] 					= $begin->format('Y-m-d');
+		$attributes['end'] 						= $ended->format('Y-m-d');
 
 		DB::beginTransaction();
 
@@ -421,8 +438,8 @@ class WorkleaveController extends BaseController
 				$attributes1['work_id'] 		= $is_success->data->work_id;
 				$attributes1['person_workleave_id'] 	= $is_success->data->id;
 				$attributes1['created_by'] 		= $is_success->data->created_by;
-				$attributes1['start'] 			= date('Y-m-d', strtotime($attributes['start']));
-				$attributes1['end'] 			= date('Y-m-d', strtotime($attributes['end']));
+				$attributes1['start'] 			= $begin->format('Y-m-d');
+				$attributes1['end'] 			= $ended->format('Y-m-d');
 				$attributes1['name'] 			= 'Pengambilan '.$is_success->data->name.' '.date('Y', strtotime($attributes1['start']));
 				$attributes1['quota'] 			= 0 - (int)$is_success->data->quota;
 				$attributes1['status'] 			= $is_success->data->status;

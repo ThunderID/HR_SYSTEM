@@ -3,6 +3,7 @@
 use DB, Validator;
 use App\Models\ProcessLog;
 use App\Models\Person;
+use App\Models\Log;
 
 /* ----------------------------------------------------------------------
  * Event:

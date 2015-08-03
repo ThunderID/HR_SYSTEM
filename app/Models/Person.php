@@ -388,8 +388,8 @@ class Person extends BaseModel {
 		{
 			if(!is_null($variable['on'][1]))
 			{
-				$start 	= date('Y-m-d', strtotime($variable['on'][1]));
-				$end 	= date('Y-m-d', strtotime($variable['on'][0]));
+				$start 	= date('Y-m-d', strtotime($variable['on'][0]));
+				$end 	= date('Y-m-d', strtotime($variable['on'][1]));
 			}
 			elseif(!is_null($variable['on'][0]))
 			{
@@ -438,10 +438,11 @@ class Person extends BaseModel {
 					->selectraw('sum(if(modified_status="HC" || modified_status="AS" || modified_status="UL" || modified_status="SS" || modified_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_end), 0), if(modified_status=0, if(actual_status="HC" || actual_status="AS" || actual_status="UL" || actual_status="SS" || actual_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_end), 0), 0),0) )) as total_absence')
 					->leftjoin('process_logs', function ($join) use($start, $end) {
 							$join->on('persons.id', '=', 'process_logs.person_id')
-								->where('process_logs.on', '<=', $start)
-								->where('process_logs.on', '>=', $end)
-								->where('schedule_start', '<>', '00:00:00')
-								->where('schedule_end', '<>', '00:00:00')
+								->where('process_logs.on', '>=', $start)
+								->where('process_logs.on', '<=', $end)
+								->wherenull('process_logs.deleted_at')
+								// ->where('schedule_start', '<>', '00:00:00')
+								// ->where('schedule_end', '<>', '00:00:00')
 							;
 						})
 					->leftjoin('works', 'process_logs.work_id', '=', 'works.id')
@@ -513,8 +514,8 @@ class Person extends BaseModel {
 		{
 			if(!is_null($variable['on'][1]))
 			{
-				$start 	= date('Y-m-d', strtotime($variable['on'][1]));
-				$end 	= date('Y-m-d', strtotime($variable['on'][0]));
+				$start 	= date('Y-m-d', strtotime($variable['on'][0]));
+				$end 	= date('Y-m-d', strtotime($variable['on'][1]));
 			}
 			elseif(!is_null($variable['on'][0]))
 			{
@@ -557,16 +558,18 @@ class Person extends BaseModel {
 					->selectraw('sum(total_active + total_sleep + total_idle) as total_presence')
 					->leftjoin('process_logs', function ($join) use($start, $end) {
 							$join->on('persons.id', '=', 'process_logs.person_id')
-								->where('process_logs.on', '<=', $start)
-								->where('process_logs.on', '>=', $end)
-								->where('schedule_start', '<>', '00:00:00')
-								->where('schedule_end', '<>', '00:00:00')
+								->where('process_logs.on', '>=', $start)
+								->where('process_logs.on', '<=', $end)
+								->wherenull('process_logs.deleted_at')
+								// ->where('schedule_start', '<>', '00:00:00')
+								// ->where('schedule_end', '<>', '00:00:00')
 							;
 						})
 					->leftjoin('works', 'process_logs.work_id', '=', 'works.id')
 					->leftjoin('charts', 'works.chart_id', '=', 'charts.id')
 					->leftjoin('branches', 'charts.branch_id', '=', 'branches.id')
 					;
+
 		if(isset($variable['name']))
 		{
 			$query =  $query->where('persons.name', 'like', '%'.$variable['name'].'%');
@@ -754,8 +757,8 @@ class Person extends BaseModel {
 		{
 			if(!is_null($variable['on'][1]))
 			{
-				$start 	= date('Y-m-d', strtotime($variable['on'][1]));
-				$end 	= date('Y-m-d', strtotime($variable['on'][0]));
+				$start 	= date('Y-m-d', strtotime($variable['on'][0]));
+				$end 	= date('Y-m-d', strtotime($variable['on'][1]));
 			}
 			elseif(!is_null($variable['on'][0]))
 			{
@@ -778,13 +781,13 @@ class Person extends BaseModel {
 			$start 	=   date('Y-m-d');
 			$end 	=   date('Y-m-d');
 		}
-
+		
 		$query =  $query->selectraw('persons.*')
 					->wherehas('works', function($q)use($start){$q->wherenull('end')->orwhere('end', '>=',  $start);})
 					->with(['works' => function($q)use($start){$q->wherenull('end')->orwhere('end', '>=',  $start);}])
-					->selectraw('(SELECT sum(if(person_workleaves.status="CN", if(person_workleaves.quota>0, person_workleaves.quota, 0), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.') as quotas')
-					->selectraw('(SELECT sum(if(person_workleaves.status="CI", if(person_workleaves.quota>0, person_workleaves.quota, 0), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.') as plus_quotas')
-					->selectraw('(SELECT sum(if(person_workleaves.quota<0, abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.') as minus_quotas')
+					->selectraw('(SELECT sum(if(person_workleaves.status="CN", if(person_workleaves.quota>0, person_workleaves.quota, 0), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.' and deleted_at is null) as quotas')
+					->selectraw('(SELECT sum(if(person_workleaves.status="CI", if(person_workleaves.quota>0, person_workleaves.quota, 0), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.' and deleted_at is null) as plus_quotas')
+					->selectraw('(SELECT sum(if(person_workleaves.quota<0, abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.' and deleted_at is null) as minus_quotas')
 					// ->selectraw('(SELECT sum(if(person_workleaves.status="CN", abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.') as quotas')
 					// ->selectraw('(SELECT sum(if(person_workleaves.status="CB", abs(person_workleaves.quota), if(person_workleaves.status="CN", abs(person_workleaves.quota), 0))) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.') as plus_quotas')
 					// ->selectraw('(SELECT sum(if(person_workleaves.status="CONFIRMED", abs(person_workleaves.quota), if(person_workleaves.status="CB", abs(person_workleaves.quota), if(person_workleaves.status="CN", abs(person_workleaves.quota), 0)))) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.') as minus_quotas')
