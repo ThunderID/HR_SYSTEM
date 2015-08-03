@@ -70,6 +70,7 @@
 	@include('plugins.single_submit')
 	@include('plugins.no_enter_form')	
 	@include('plugins.stickytableheader')
+	@include('plugins.ajax_batch')
 
 	<script>
 		$(function() {

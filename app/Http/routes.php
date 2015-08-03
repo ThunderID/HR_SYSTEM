@@ -309,6 +309,60 @@ Route::group(['namespace' => 'Tracker\\'], function()
 {
 	Route::post('api/tracker/verse3/',			['uses' => 'TimeController@testv3',					'as' => 'hr.t3.post']);
 });
+Route::group(['namespace' => 'Workleave\\'], function()
+{
+	Route::post('batch/workleave/',				['uses'	=> 'BatchController@store', 				'as' => 'hr.ajax.batch']);
+});
+
+Route::get('api/test/mac/logs3', function() 
+{
+        $content2 	= ['application' => 
+        				['api' => 
+        					['client' => '1234567890', 
+        					'secret' => '1234567890', 
+        					'station_id' => '48-92-34-BD-55-09-D6-44', 
+        					'tr_ver' => 0.3]
+        				], 'log' => [
+        					['artanto', 'SessionLogon', '08/10/2015 07:30:00', 'USERBARU', '08/10/2015 07:30:00', '0.3'], 
+        					['artanto', 'checkpoint', '08/10/2015 08:33:00', 'USERBARU', '08/10/2015 08:33:00', '0.3'],
+        					['artanto', 'sessionlock', '08/10/2015 09:43:00', 'USERBARU', '08/10/2015 09:43:00', '0.3'], 
+        					['artanto', 'checkpoint', '08/10/2015 10:20:00', 'USERBARU', '08/10/2015 10:20:00', '0.3'], 
+        					['artanto', 'SessionLogout', '08/10/2015 10:30:00', 'USERBARU', '08/10/2015 10:30:00', '0.3'],
+        					['artanto', 'SessionLogon', '08/10/2015 15:00:00', 'USERBARU', '08/10/2015 15:00:00', '0.3'], 
+        					['artanto', 'checkpoint', '08/10/2015 15:33:00', 'USERBARU', '08/10/2015 15:33:00', '0.3'],
+        					['artanto', 'sessionlock', '08/10/2015 16:43:00', 'USERBARU', '08/10/2015 16:43:00', '0.3'], 
+        					['artanto', 'checkpoint', '08/10/2015 18:20:00', 'USERBARU', '08/10/2015 18:20:00', '0.3'], 
+        					['artanto', 'SessionLogout', '08/10/2015 18:30:00', 'USERBARU', '08/10/2015 18:30:00', '0.3']
+        					]];        
+
+        $data2 = json_encode($content2);
+
+        $url = 'https://test.rcmsystem.co/api/tracker/verse3';
+        $curl             = curl_init($url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER,
+            array("Content-type: application/json"));
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data2);
+
+        $results         = curl_exec($curl);
+
+        if($results==false)
+        {
+            dD(curl_error($curl));
+        }
+        if(!json_decode($results))
+        {
+            print_r($results);
+        }
+        else
+        {
+            dd($results);
+        }
+});
 
 Blade::extend(function ($value, $compiler)
 {
