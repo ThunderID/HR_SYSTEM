@@ -92,11 +92,12 @@ class BatchController extends BaseController
 		$input['workleave_id'] 					= $workleave_id;
 		$input['org_id'] 						= $org_id;
 
-		// $job 									= (new BatchHRProcess($input))->onQueue();
+		// $job 									= (new BatchHRProcess($input));
 		// $job->dispatch();
-		Queue::later(date('Y-m-d H:i:s', strtotime('+ 10 second')), new BatchHRProcess($input));
+		// $this->dispatch(new BatchHRProcess($input));
+		// Queue::later(date('Y-m-d H:i:s', strtotime('+ 10 second')), new BatchHRProcess($input));
 
-		return Redirect::route('hr.workleaves.index', ['workleave_id' => $workleave_id, 'org_id' => $org_id])->with('alert_info', 'Sedang menyimpan Cuti');
+		// return Redirect::route('hr.workleaves.index', ['workleave_id' => $workleave_id, 'org_id' => $org_id])->with('alert_info', 'Sedang menyimpan Cuti');
 		
 		$start 									= date('Y',strtotime($input['start']));
 		$begin 									= new DateTime( Input::get('joint_start') );
