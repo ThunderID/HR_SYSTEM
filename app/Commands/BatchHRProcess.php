@@ -203,8 +203,7 @@ class BatchHRProcess extends Command implements SelfHandling, ShouldBeQueued {
 
 			if($key%10==0 && !$errors->count())
 			{
-				var_dump('Menyimpan '.$key.' dari '.count($persons));
-				Session::put('batch.success', 'Menyimpan '.$key.' dari '.count($persons));
+				Session::put('batch.progress', 'Menyimpan '.$key.' dari '.count($persons));
 			}
 
 			unset($attributes1);
