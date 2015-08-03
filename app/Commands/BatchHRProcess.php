@@ -1,6 +1,16 @@
-<?php namespace App\Http\Controllers\Organisation\Workleave;
-use Input, Session, App, Paginator, Redirect, DB, Config, DateInterval, DatePeriod, DateTime, Queue;
-use App\Http\Controllers\BaseController;
+<?php namespace App\Commands;
+
+use App\Commands\Command;
+
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Bus\SelfHandling;
+use Illuminate\Contracts\Queue\ShouldBeQueued;
+
+use Illuminate\Foundation\Bus\DispatchesCommands;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+
+use Input, Session, App, Paginator, Redirect, DB, Config, DateInterval, DatePeriod, DateTime;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
@@ -8,96 +18,34 @@ use App\Models\Chart;
 use App\Models\Person;
 use App\Models\Workleave;
 use App\Models\PersonWorkleave;
-use App\Commands\BatchHRProcess;
 
-class BatchController extends BaseController
-{
-	protected $controller_name = 'batch';
-	
-	public function create($id = null)
+class BatchHRProcess extends Command implements SelfHandling, ShouldBeQueued {
+	use DispatchesCommands, ValidatesRequests;
+
+	// use InteractsWithQueue, SerializesModels;
+
+	/**
+	 * Create a new command instance.
+	 *
+	 * @return void
+	 */
+	public function __construct($input)
 	{
-		if(Input::has('org_id'))
-		{
-			$org_id 							= Input::get('org_id');
-		}
-		else
-		{
-			$org_id 							= Session::get('user.organisationid');
-		}
-
-		if(Input::has('workleave_id'))
-		{
-			$workleave_id 						= Input::get('workleave_id');
-		}
-		else
-		{
-			App::abort(404);
-		}
-
-		if(!in_array($org_id, Session::get('user.organisationids')))
-		{
-			App::abort(404);
-		}
-
-		$search['id'] 							= $workleave_id;
-		$search['organisationid'] 				= $org_id;
-		$search['status'] 						= 'CN';
-		$search['withattributes'] 				= ['organisation'];
-		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Workleave, $search, $sort , 1, 1));
-		$contents 								= json_decode($results);
-
-		if(!$contents->meta->success)
-		{
-			App::abort(404);
-		}
-
-		$workleave 								= json_decode(json_encode($contents->data), true);
-		$data 									= $workleave['organisation'];
-
-		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.organisation.workleave.batch.create', compact('id', 'data', 'workleave'));
-
-		return $this->layout;
+		//
+		$this->input 							= $input;
 	}
-	
-	public function store($id = null)
+
+	/**
+	 * Execute the command.
+	 *
+	 * @return void
+	 */
+	public function handle()
 	{
-		if(Input::has('id'))
-		{
-			$id 								= Input::get('id');
-		}
-
-		if(Input::has('org_id'))
-		{
-			$org_id 							= Input::get('org_id');
-		}
-		else
-		{
-			$org_id 							= Session::get('user.organisationid');
-		}
-
-		if(Input::has('workleave_id'))
-		{
-			$workleave_id 						= Input::get('workleave_id');
-		}
-		else
-		{
-			App::abort(404);
-		}
-
 		$errors 								= new MessageBag();
 
-		$input 									= Input::only('start', 'joint_start', 'joint_end');
-		$input['workleave_id'] 					= $workleave_id;
-		$input['org_id'] 						= $org_id;
+		$input 									= $this->input;
 
-		// $job 									= (new BatchHRProcess($input))->onQueue();
-		// $job->dispatch();
-		Queue::later(date('Y-m-d H:i:s', strtotime('+ 1 minute')), new BatchHRProcess($input));
-
-		return Redirect::route('hr.workleaves.index', ['workleave_id' => $workleave_id, 'org_id' => $org_id])->with('alert_warning', 'Sedang menyimpan Cuti');
-		
 		$start 									= date('Y',strtotime($input['start']));
 		$begin 									= new DateTime( Input::get('joint_start') );
 		$end 									= new DateTime( Input::get('joint_end').' + 1 day' );
@@ -107,8 +55,8 @@ class BatchController extends BaseController
 			$errors->add('Workleave', 'Batch pemberian cuti hanya dapat dilakukan untuk tahun berikut.');
 		}
 
-		$search['id'] 							= $workleave_id;
-		$search['organisationid'] 				= $org_id;
+		$search['id'] 							= $input['workleave_id'];
+		$search['organisationid'] 				= $input['org_id'];
 		$search['withattributes'] 				= ['organisation'];
 		$sort 									= ['name' => 'asc'];
 		$results 								= $this->dispatch(new Getting(new Workleave, $search, $sort , 1, 1));
@@ -123,7 +71,7 @@ class BatchController extends BaseController
 		unset($search);
 		unset($sort);
 
-		$search['organisationid'] 				= $org_id;
+		$search['organisationid'] 				= $input['org_id'];
 		$search['WorkCalendar'] 				= true;
 		$search['WithWorkCalendarSchedules'] 	= ['on' => [$begin->format('Y-m-d'), $end->format('Y-m-d')]];
 
@@ -189,7 +137,7 @@ class BatchController extends BaseController
 				}
 
 				$attributes1['work_id'] 		= $value['workscalendars'][0]['id'];
-				$attributes1['workleave_id'] 	= $workleave_id;
+				$attributes1['workleave_id'] 	= $input['workleave_id'];
 				$attributes1['created_by'] 		= Session::get('loggedUser');
 				$attributes1['start'] 			= date('Y-m-d', strtotime($entry_date. ' + 1 year'));
 				$attributes1['end'] 			= date('Y-m-d', strtotime(' last day of december '.date('Y', strtotime($attributes1['start'])).' + 3 months'));
@@ -253,17 +201,27 @@ class BatchController extends BaseController
 				}
 			}
 
+			if($key%10==0 && !$errors->count())
+			{
+				var_dump('Menyimpan '.$key.' dari '.count($persons));
+				Session::put('batch.success', 'Menyimpan '.$key.' dari '.count($persons));
+			}
+
 			unset($attributes1);
 			unset($attributes2);
 		}
 
-		if(!$errors->count())
+		if($errors->count())
+		{
+			DB::rollback();
+			Session::put('batch.error', 'Gagal menyimpan');
+			Session::put('batch.errormsg', $errors);
+		}
+		else
 		{
 			DB::commit();
-			return Redirect::route('hr.workleaves.index', [$workleave_id, 'workleave_id' => $workleave_id, 'org_id' => $org_id])->with('alert_success', 'Batch "' . $workleave['name']. '" sudah disimpan');
+			Session::put('batch.success', 'Menyimpan Cuti untuk '.count($persons).' karyawan');
 		}
-
-		DB::rollback();
-		return Redirect::back()->withErrors($errors)->withInput();
 	}
+
 }

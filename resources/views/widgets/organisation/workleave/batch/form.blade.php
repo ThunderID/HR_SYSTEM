@@ -6,7 +6,7 @@
 
 @section('widget_body')
 	<div class="clearfix">&nbsp;</div>
-	{!! Form::open(['url' => '', 'class' => 'form no_enter formbatch', 'data-action' => $widget_options['workleavelist']['form_url']]) !!}	
+	{!! Form::open(['class' => 'form no_enter formbatch', 'url' => $widget_options['workleavelist']['form_url']]) !!}	
 		{!! Form::hidden('workleave_id', Input::get('workleave_id'), ['class' => 'workleaveid']) !!}
 		{!! Form::hidden('org_id', Input::get('org_id'), ['class' => 'orgid']) !!}
 		<div class="row">
