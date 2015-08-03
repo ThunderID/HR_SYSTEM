@@ -5,6 +5,9 @@
 		<h1> {!! $widget_title  or 'Otentikasi' !!} </h1>
 		<small>Total data {{$WorkAuthenticationComposer['widget_data']['workauthlist']['workauth-pagination']->total()}}</small>
 		
+		<?php
+			$WorkAuthenticationComposer['widget_data']['workauthlist']['workauth-pagination']->setPath(route('hr.authentications.index'));
+		?>
 	@overwrite
 
 	@section('widget_body')

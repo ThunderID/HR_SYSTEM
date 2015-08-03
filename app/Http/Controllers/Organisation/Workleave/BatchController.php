@@ -94,7 +94,7 @@ class BatchController extends BaseController
 
 		// $job 									= (new BatchHRProcess($input))->onQueue();
 		// $job->dispatch();
-		Queue::later(date('Y-m-d H:i:s', strtotime('+ 1 minute')), new BatchHRProcess($input));
+		Queue::later(date('Y-m-d H:i:s', strtotime('+ 10 second')), new BatchHRProcess($input));
 
 		return Redirect::route('hr.workleaves.index', ['workleave_id' => $workleave_id, 'org_id' => $org_id])->with('alert_info', 'Sedang menyimpan Cuti');
 		

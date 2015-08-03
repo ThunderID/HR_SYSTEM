@@ -6,7 +6,7 @@
 	<small>Total data {{ $ContactComposer['widget_data']['contactlist']['contact-pagination']->total() }}</small>
 	<?php
 		$ContactComposer['widget_data']['contactlist']['contact-pagination']->setPath($ContactComposer['widget_data']['contactlist']['route']);
-	 ?>
+	?>
 
 	@if(isset($ContactComposer['widget_data']['contactlist']['active_filter']) && !is_null($ContactComposer['widget_data']['contactlist']['active_filter']))
 		 <div class="clearfix">&nbsp;</div>

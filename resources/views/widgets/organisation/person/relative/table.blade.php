@@ -5,6 +5,10 @@
 	<h1> {!! $widget_title  or 'Data Kerabat' !!} </h1>
 	<small>Total data {{$RelativeComposer['widget_data']['relativelist']['relative-pagination']->total()}}</small>
 
+	<?php
+		$RelativeComposer['widget_data']['relativelist']['relative-pagination']->setPath(route('hr.person.relatives.index'));
+	?>
+
 	<?php $relationship = ['child' => 'Anak', 'parent' => 'Orang Tua', 'spouse' => 'Pasangan (Menikah)', 'partner' => 'Pasangan (Tidak Menikah)'];?>
 
 	<div class="clearfix">&nbsp;</div>
