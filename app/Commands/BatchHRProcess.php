@@ -221,6 +221,8 @@ class BatchHRProcess extends Command implements SelfHandling, ShouldBeQueued {
 			DB::commit();
 			Session::put('batch.success', 'Menyimpan Cuti untuk '.count($persons).' karyawan');
 		}
+
+		return true;
 	}
 
 }
