@@ -464,7 +464,15 @@ class ProcessingLogObserver
 
 			if(isset($start_idle))
 			{
-				$new_idle 		= date('H:i:s', strtotime($value['on']));
+				if(isset($value['on']))
+				{
+					$new_idle 	= date('H:i:s', strtotime($value['on']));
+				}
+				else
+				{
+					$new_idle 	= date('H:i:s', strtotime($model['attributes']['on']));
+				}
+
 				list($hours, $minutes, $seconds) = explode(":", $new_idle);
 
 				$new_idle 		= $hours*3600+$minutes*60+$seconds;
