@@ -38,7 +38,7 @@
 						<th rowspan="2" class="text-center font-11">Total Idle I <br/>(Freq)</th>
 						<th rowspan="2" class="text-center font-11">Total Idle II <br/>(Freq)</th>
 						<th rowspan="2" class="text-center font-11">Total Idle III <br/>(Freq)</th>
-						<th rowspan="2" class="text-center font-11">Performance Rate</th>
+						<!-- <th rowspan="2" class="text-center font-11">Performance Rate</th> -->
 						<th rowspan="2">&nbsp;</th>
 					</tr>
 					<tr></tr>
@@ -93,12 +93,12 @@
 									Tidak ada aktivitas
 								@endif
 							</td>
-							<td class="font-11 text-center">
+							<!-- <td class="font-11 text-center">
 								@if($value['position']!='')
 									<?php $pr = ($value['total_active']!=0 ? $value['total_active'] : 1) / ($value['total_presence']!=0 ? $value['total_presence'] : 1);?>
 									{{round(abs($pr) * 100, 2)}} %
 								@endif
-							</td>
+							</td> -->
 							<td class="text-center font-11">
 								@if($value['position']!='')
 									<a href="{{route('hr.report.activities.show', ['person_id' => $value['id'], 'org_id' => $data['id'], 'start' => $start, 'end' => $end])}}" class="btn btn-sm btn-default"><i class="fa fa-eye"></i></a>

@@ -21,7 +21,7 @@
 					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Idle I <br/>(Freq)</th>
 					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Idle II <br/>(Freq)</th>
 					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Idle III <br/>(Freq)</th>
-					<th rowspan="2" class="text-center" style="width:20%; height:35%">Performance Rate<br/>&nbsp;</th>
+					<!-- <th rowspan="2" class="text-center" style="width:20%; height:35%">Performance Rate<br/>&nbsp;</th> -->
 				</tr>
 				<tr></tr>
 			</thead>
@@ -54,10 +54,10 @@
 							{{floor(($value['total_idle_3']%3600)/60)}} Menit&nbsp; 
 							({{$value['frequency_idle_3']}})
 						</td>
-						<td class="hidden-xs font-11 text-center" style="height:35%">
+						<!-- <td class="hidden-xs font-11 text-center" style="height:35%">
 							<?php $pr = ($value['total_active']!=0 ? $value['total_active'] : 1) / (($value['total_active']+$value['total_sleep']+$value['total_idle'])!=0 ? ($value['total_active']+$value['total_sleep']+$value['total_idle']) : 1);?>
 							{{round(abs($pr) * 100, 2)}} %
-						</td>
+						</td> -->
 					</tr>
 				@endforeach
 			</tbody>

@@ -22,7 +22,7 @@
 					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Idle I <br/>(Freq)</th>
 					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Idle II <br/>(Freq)</th>
 					<th rowspan="2" class="text-center" style="width:20%; height:35%">Total Idle III <br/>(Freq)</th>
-					<th rowspan="2" class="text-center" style="width:20%; height:35%">Performance Rate</th>
+					<!-- <th rowspan="2" class="text-center" style="width:20%; height:35%">Performance Rate</th> -->
 				</tr>
 				<tr></tr>
 			</thead>
@@ -77,12 +77,12 @@
 								Tidak ada aktivitas
 							@endif
 						</td>
-						<td class="hidden-xs font-11 text-center" style="height:35%">
+						<!-- <td class="hidden-xs font-11 text-center" style="height:35%">
 							@if($value['position']!='')
 								<?php $pr = ($value['total_active']!=0 ? $value['total_active'] : 1) / ($value['total_presence']!=0 ? $value['total_presence'] : 1);?>
 								{{round(abs($pr) * 100, 2)}} %
 							@endif
-						</td>
+						</td> -->
 					</tr>
 				@endforeach
 			</tbody>

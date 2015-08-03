@@ -30,7 +30,7 @@
 						<th rowspan="2" class="text-center font-11">Total Idle I <br/>(Freq)</th>
 						<th rowspan="2" class="text-center font-11">Total Idle II <br/>(Freq)</th>
 						<th rowspan="2" class="text-center font-11">Total Idle III <br/>(Freq)</th>
-						<th rowspan="2" class="text-center font-11">Performance Rate<br/>&nbsp;</th>
+						<!-- <th rowspan="2" class="text-center font-11">Performance Rate<br/>&nbsp;</th> -->
 						<th rowspan="2">&nbsp;</th>
 					</tr>
 					<tr></tr>
@@ -63,10 +63,10 @@
 								{{floor(($value['total_idle_3']%3600)/60)}} Menit<br/> 
 								({{$value['frequency_idle_3']}})
 							</td>
-							<td class="font-11 text-center">
+							<!-- <td class="font-11 text-center">
 								<?php $pr = ($value['total_active']!=0 ? $value['total_active'] : 1) / (($value['total_active']+$value['total_sleep']+$value['total_idle'])!=0 ? ($value['total_active']+$value['total_sleep']+$value['total_idle']) : 1);?>
 								{{round(abs($pr) * 100, 2)}} %
-							</td>
+							</td> -->
 							<td class="text-right font-11">
 								<a href="{{route('hr.activity.logs.index', ['person_id' => $value['person_id'], 'org_id' => $data['id'], 'start' => $start, 'end' => $end, 'ondate' => $value['on']])}}" class="btn btn-sm btn-default"><i class="fa fa-eye"></i></a>
 							</td>
