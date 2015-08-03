@@ -215,6 +215,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 
 							'hr.workleaves.batch.create'					=> 78,
 							'hr.workleaves.batch.store'						=> 78,
+							'hr.ajax.batch'									=> 78,
 
 							'hr.person.documents.index'						=> 81,
 							'hr.person.documents.show'						=> 81,
