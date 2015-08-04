@@ -463,7 +463,7 @@ class Person extends BaseModel {
 
 		if(isset($variable['chartchild']))
 		{
-			$query =  $query->where('charts.path', 'like', $variable['chartchild'].'%');
+			$query =  $query->wherehas('works', function($q)use($variable){$q->child($variable['chartchild']);});
 		}
 
 		if(isset($variable['charttag']))
@@ -582,7 +582,7 @@ class Person extends BaseModel {
 
 		if(isset($variable['chartchild']))
 		{
-			$query =  $query->where('charts.path', 'like', $variable['chartchild'].'%');
+			$query =  $query->wherehas('works', function($q)use($variable){$q->child($variable['chartchild']);});
 		}
 
 		if(isset($variable['charttag']))
