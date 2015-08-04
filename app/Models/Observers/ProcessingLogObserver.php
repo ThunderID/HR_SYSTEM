@@ -360,6 +360,8 @@ class ProcessingLogObserver
 						{
 							$start_idle	= date('H:i:s', strtotime($value['last_input_time']));
 						}
+				
+						$start_idle 	= $hours*3600+$minutes*60+$seconds;
 					}
 					elseif(strtolower($value['name'])=='sessionlock' || strtolower($value['name'])=='consoledisconnect' || strtolower($value['name'])=='sessionlogout')
 					{
@@ -371,6 +373,8 @@ class ProcessingLogObserver
 						{
 							$start_idle	= date('H:i:s', strtotime($value['last_input_time']));
 						}
+						
+						$start_idle 	= $hours*3600+$minutes*60+$seconds;
 					}
 					elseif(isset($start_idle))
 					{
@@ -476,9 +480,6 @@ class ProcessingLogObserver
 				list($hours, $minutes, $seconds) = explode(":", $new_idle);
 
 				$new_idle 		= $hours*3600+$minutes*60+$seconds;
-
-				list($hours, $minutes, $seconds) = explode(":", $start_idle);
-				$start_idle 	= $hours*3600+$minutes*60+$seconds;
 
 				$total_idle		= $total_idle + $new_idle - $start_idle;
 				if($new_idle - $start_idle >= $margin_bottom_idle && $new_idle - $start_idle <= $idle_1)
