@@ -63,7 +63,6 @@ class BatchController extends BaseController
 	
 	public function store($id = null)
 	{
-		// return Input::all(); exit;
 		if(Input::has('id'))
 		{
 			$id 								= Input::get('id');
@@ -106,8 +105,8 @@ class BatchController extends BaseController
 
 		if($start < date('Y') || $begin->format('Y') < date('Y') || $end->format('Y') < date('Y'))
 		{
-			// $errors->add('Workleave', 'Batch pemberian cuti hanya dapat dilakukan untuk tahun berikut.');
-			return Response::json(['message' => 'Batch pemberian cuti hanya dapat dilakukan untuk tahun berikut.', 'mode' => 'alert-danger', 'icon' => 'fa fa-exclamation-circle'], 200);
+			$errors->add('Workleave', 'Batch pemberian cuti hanya dapat dilakukan untuk tahun berikut.');
+			// return Response::json(['message' => 'Batch pemberian cuti hanya dapat dilakukan untuk tahun berikut.', 'mode' => 'alert-danger', 'icon' => 'fa fa-exclamation-circle'], 200);
 
 		}
 
@@ -267,8 +266,8 @@ class BatchController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			// return Redirect::route('hr.workleaves.index', [$workleave_id, 'workleave_id' => $workleave_id, 'org_id' => $org_id])->with('alert_success', 'Batch "' . $workleave['name']. '" sudah disimpan');
-			return Response::json(['message' => 'Batch cuti sedang diproses..', 'mode' => 'alert-info', 'icon' => 'fa fa-info-circle'], 200);
+			return Redirect::route('hr.workleaves.index', [$workleave_id, 'workleave_id' => $workleave_id, 'org_id' => $org_id])->with('alert_success', 'Batch "' . $workleave['name']. '" sudah disimpan');
+			// return Response::json(['message' => 'Batch cuti sedang diproses..', 'mode' => 'alert-info', 'icon' => 'fa fa-info-circle'], 200);
 		}
 
 		DB::rollback();

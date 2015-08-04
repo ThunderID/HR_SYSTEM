@@ -19,6 +19,9 @@
 			<input type="hidden" class="form-control" id="text" name="org_id" value="{{$data['id']}}">
 			<div class="form-group text-right">
 				<input type="submit" class="btn btn-primary" value="Generate">
+				@if(Route::currentRouteName()=='hr.report.attendances.index')
+					<input type="submit" name="PersonalRep" class="btn btn-primary" value="Laporan Saya">
+				@endif
 			</div>
 		{!! Form::close() !!}
 	@overwrite
