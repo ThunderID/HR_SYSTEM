@@ -38,7 +38,9 @@
 								{{ date('d-m-Y H:i:s', strtotime($value['on'])) }}
 							</td>
 							<td class="text-center font-11">
-								{{ date('d-m-Y H:i:s', strtotime($value['last_input_time'])) }}
+								@if(!is_null($value['last_input_time']))
+									{{ date('d-m-Y H:i:s', strtotime($value['last_input_time'])) }}
+								@endif
 							</td>
 							<td class="text-center font-11">
 								{{$value['name']}}
