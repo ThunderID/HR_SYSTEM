@@ -4,12 +4,15 @@
  * Document Model:
  * 	ID 								: Auto Increment, Integer, PK
  * 	person_id 						: Foreign key from Person
- * 	title 	 						: Varchar, 255, Required
- * 	type 	 						: Required in panel or table or stat
- * 	order 	 						: Required, tiny int
- * 	query 	 	 					: Varchar, 255, Required in json format
- * 	field 	 	 					: Varchar, 255, in json format
- * 	function 	 	 				: Varchar, 255, Required in total_documents or total_branches or total_employees or index_branches or index_employees or index_documents
+ * 	type 	 						: Required in list or table or stat
+ * 	widget 	 						: Required, Varchar, 255, Required
+ * 	search 	 	 					: Required
+ * 	sort 	 	 					: Required
+ * 	page 	 						: Required, int
+ * 	per_page 	 					: Required, int
+ * 	row 		 					: Required, tiny int
+ * 	col 		 					: Required, tiny int
+ * 	is_active 		 				: Boolean
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -38,30 +41,34 @@ class PersonWidget extends BaseModel {
 	protected 	$table 				= 'person_widgets';
 
 	protected 	$fillable			= 	[
-											'title' 					,
 											'type' 						,
+											'widget' 					,
+											'search' 					,
+											'sort' 						,
+											'page' 						,
+											'per_page' 					,
 											'row' 						,
 											'col' 						,
-											'query' 					,
-											'field' 					,
-											'function' 					,
+											'is_active' 				,
 										];
 	protected	$dates 				= ['created_at', 'updated_at', 'deleted_at'];
 
 	protected 	$rules				= 	[
-											'title' 					=> 'required|max:255',
-											'type' 						=> 'required|in:table,panel,stat',
+											'type' 						=> 'required|in:table,list,stat',
+											'widget' 					=> 'required|max:255',
+											'search' 					=> 'required',
+											'sort' 						=> 'required',
+											'page' 						=> 'required|numeric',
+											'per_page' 					=> 'required|numeric',
 											'row' 						=> 'required|numeric',
 											'col' 						=> 'required|numeric',
-											'query' 					=> 'required|max:255',
-											'field' 					=> 'max:255',
-											'function' 					=> 'required|in:total_documents,total_branches,total_employees,index_branches,index_employees,index_documents|max:255',
+											'is_active' 				=> 'boolean',
 										];
 
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'personid' 					=> 'PersonID', 
-											'title' 					=> 'Title', 
+											'widget' 					=> 'Widget', 
 											'type' 						=> 'Type', 
 											'withattributes' 			=> 'WithAttributes',
 										];
@@ -69,12 +76,12 @@ class PersonWidget extends BaseModel {
 	public $searchableScope 		= 	[
 											'id' 						=> 'Could be array or integer', 
 											'personid' 					=> 'Could be array or integer', 
-											'title' 					=> 'Must be string', 
+											'widget' 					=> 'Must be string', 
 											'type' 						=> 'Must be string', 
 											'withattributes' 			=> 'Must be array of relationship',
 										];
 
-	public $sortable 				= 	['title', 'row', 'created_at'];
+	public $sortable 				= 	['col', 'row', 'created_at'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**
@@ -134,9 +141,9 @@ class PersonWidget extends BaseModel {
 		return $query->where('person_widgets.id', $variable);
 	}
 	
-	public function scopeTitle($query, $variable)
+	public function scopeWidget($query, $variable)
 	{
-		return $query->where('title', 'like' ,'%'.$variable.'%');
+		return $query->where('widget', 'like' ,'%'.$variable.'%');
 	}
 
 	public function scopeType($query, $variable)

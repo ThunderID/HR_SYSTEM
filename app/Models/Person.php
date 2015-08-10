@@ -14,6 +14,7 @@
  * 	gender 							: Enum Female or Male, Required
  *	password						: Varchar, 255
  *	avatar							: 
+ * 	last_password_updated_at 		: Date, Y-m-d H:i:s, Required
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -88,6 +89,7 @@ class Person extends BaseModel {
 											'gender' 						,
 											'password'						,
 											'avatar'						,
+											'last_password_updated_at'		,
 										];
 
 	protected	$dates 				= 	['created_at', 'updated_at', 'deleted_at'];
@@ -102,6 +104,7 @@ class Person extends BaseModel {
 											'date_of_birth' 				=> 'required|date_format:"Y-m-d"|before:tomorrow',
 											'gender' 						=> 'required|in:female,male',
 											'password'						=> 'max:255',
+											'last_password_updated_at'		=> 'date_format:"Y-m-d H:i:s"|before:tomorrow',
 										];
 
 	public $searchable 				= 	[

@@ -30,6 +30,11 @@ trait HasPersonTrait {
 		return $this->belongsTo('App\Models\Person', 'modified_by', 'id');
 	}
 
+	public function SettlementBy()
+	{
+		return $this->belongsTo('App\Models\Person', 'settlement_by', 'id');
+	}
+
 	public function scopePersonID($query, $variable)
 	{
 		if(is_array($variable))

@@ -5,7 +5,6 @@
  * 	ID 								: Auto Increment, Integer, PK
  * 	person_id 						: Foreign Key From Person, Integer, Required
  * 	work_id 						: Foreign Key From Work, Integer, Required
- * 	modified_by 					: Foreign Key From Person, Integer, Required
  * 	name 		 					: Required max 255
  * 	on 		 						: Required, Date
  * 	start 		 					: Required, Time
@@ -16,19 +15,7 @@
  * 	schedule_end 		 			: Required, Time
  * 	margin_start 		 			: Double
  * 	margin_end 		 				: Double
- * 	total_idle 	 					: Double
- * 	total_idle_1 	 				: Double
- * 	total_idle_2 	 				: Double
- * 	total_idle_3 	 				: Double
- * 	total_sleep 					: Double
- * 	total_active 					: Double
- * 	actual_status		 		 	: Required max 255
- * 	modified_status		 		 	: Required max 255
- * 	tolerance_time 					: Double
- * 	frequency_idle_1 	 			: Integer
- * 	frequency_idle_2 	 			: Integer
- * 	frequency_idle_3 	 			: Integer
- *	modified_at						: Timestamp
+ * 	tooltip 	 					: 
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -59,7 +46,6 @@ class ProcessLog extends BaseModel {
 	protected 	$table 				= 	'process_logs';
 	
 	protected 	$fillable			= 	[
-											'modified_by' 					,
 											'name' 							,
 											'on' 							,
 											'start' 						,
@@ -70,24 +56,10 @@ class ProcessLog extends BaseModel {
 											'schedule_end' 					,
 											'margin_start' 					,
 											'margin_end' 					,
-											'total_idle' 					,
-											'total_idle_1' 					,
-											'total_idle_2' 					,
-											'total_idle_3' 					,
-											'frequency_idle_1' 				,
-											'frequency_idle_2' 				,
-											'frequency_idle_3' 				,
-											'total_sleep' 					,
-											'total_active' 					,
-											'actual_status' 				,
-											'modified_status' 				,
-											'tolerance_time' 				,
-											'modified_at' 					,
 											'tooltip' 						,
 										];
 
 	protected 	$rules				= 	[
-											'modified_by'				=> 'exists:persons,id|required_with:modified_status',
 											'name'						=> 'required|max:255',
 											'on'						=> 'required|date_format:"Y-m-d"',
 											'start'						=> 'date_format:"H:i:s"',
@@ -98,19 +70,6 @@ class ProcessLog extends BaseModel {
 											'schedule_end'				=> 'required|date_format:"H:i:s"',
 											'margin_start'				=> 'numeric',
 											'margin_end'				=> 'numeric',
-											'total_idle'				=> 'numeric',
-											'total_idle_1'				=> 'numeric',
-											'total_idle_2'				=> 'numeric',
-											'total_idle_3'				=> 'numeric',
-											'frequency_idle_1'			=> 'numeric',
-											'frequency_idle_2'			=> 'numeric',
-											'frequency_idle_3'			=> 'numeric',
-											'total_sleep'				=> 'numeric',
-											'total_active'				=> 'numeric',
-											'actual_status'	 			=> 'required|max:255',
-											'modified_status'	 		=> 'max:255',
-											'modified_at'				=> 'date_format:"Y-m-d H:i:s"|required_with:modified_status',
-											'tolerance_time'			=> 'numeric',
 										];
 
 	public $searchable 				= 	[

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSettingIdlesTable extends Migration {
+class CreateTmpQueuesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,21 +12,21 @@ class CreateSettingIdlesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('setting_idles', function(Blueprint $table)
-		{
+		Schema::create('tmp_queues', function(Blueprint $table) {
 			$table->increments('id');
-			$table->integer('organisation_id')->unsigned()->index();
 			$table->integer('created_by')->unsigned()->index();
-			$table->date('start');
-			$table->double('margin_bottom_idle');
-			$table->double('idle_1');
-			$table->double('idle_2');
+			$table->string('process_name', 255);
+			$table->text('parameter');
+			$table->integer('total_process');
+			$table->integer('task_per_process');
+			$table->integer('process_number');
+			$table->integer('total_task');
+			$table->text('message');
 			$table->timestamps();
 			$table->softDeletes();
-			
-			$table->index(['deleted_at', 'organisation_id', 'start']);
 		});
 	}
+
 
 	/**
 	 * Reverse the migrations.
@@ -35,7 +35,7 @@ class CreateSettingIdlesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('setting_idles');
+		Schema::drop('tmp_queues');
 	}
 
 }
