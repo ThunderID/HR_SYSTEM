@@ -35,8 +35,8 @@ class AppServiceProvider extends ServiceProvider {
 		\App\Models\ErrorLog::observe(new \App\Models\Observers\ErrorLogObserver);
 
 		\App\Models\IdleLog::observe(new \App\Models\Observers\IdleLogObserver);
-		\App\Models\AttendanceLog::observe(new \App\Models\Observers\AttendaceLogObserver);
-		\App\Models\AttendanceDetail::observe(new \App\Models\Observers\AttendaceDetailObserver);
+		\App\Models\AttendanceLog::observe(new \App\Models\Observers\AttendanceLogObserver);
+		\App\Models\AttendanceDetail::observe(new \App\Models\Observers\AttendanceDetailObserver);
 
 
 		\App\Models\Organisation::observe(new \App\Models\Observers\OrganisationObserver);
@@ -101,8 +101,8 @@ class AppServiceProvider extends ServiceProvider {
 		\App\Models\ErrorLog::observe(new \App\Models\Observers\ErrorLogObserver);
 
 		\App\Models\IdleLog::observe(new \App\Models\Observers\IdleLogObserver);
-		\App\Models\AttendanceLog::observe(new \App\Models\Observers\AttendaceLogObserver);
-		\App\Models\AttendanceDetail::observe(new \App\Models\Observers\AttendaceDetailObserver);
+		\App\Models\AttendanceLog::observe(new \App\Models\Observers\AttendanceLogObserver);
+		\App\Models\AttendanceDetail::observe(new \App\Models\Observers\AttendanceDetailObserver);
 
 		\App\Models\Organisation::observe(new \App\Models\Observers\OrganisationObserver);
 		\App\Models\Branch::observe(new \App\Models\Observers\BranchObserver);
