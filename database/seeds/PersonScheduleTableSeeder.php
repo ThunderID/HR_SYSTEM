@@ -20,7 +20,7 @@ class PersonScheduleTableSeeder extends Seeder
 		$end 									= ['16:00:00', '16:00:00', '00:00:00', '00:00:00', '15:00:00', '10:00:00', '00:00:00', '00:00:00'];
 		try
 		{
-			foreach(range(1, 500) as $index)
+			foreach(range(1, 20) as $index)
 			{
 				$rand 							= rand(0,3);
 				$randay 						= rand(2,40);

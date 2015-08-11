@@ -19,8 +19,8 @@ class ScheduleTableSeeder extends Seeder
 		$start 										= ['08:00:00', '12:00:00', '00:00:00', '00:00:00', '08:00:00', '08:00:00', '20:00:00'];
 		$end 										= ['16:00:00', '16:00:00', '00:00:00', '00:00:00', '15:00:00', '10:00:00', '00:00:00'];
 		$status 									= ['HB', 'DN', 'CN', 'L'];
-		try
-		{
+		// try
+		// {
 			foreach(range(1, $total_cals) as $index)
 			{
 				$rand 								= rand(0,3);
@@ -53,10 +53,10 @@ class ScheduleTableSeeder extends Seeder
 					}
 				}
 			} 
-		}
-		catch (Exception $e) 
-		{
-    		echo 'Caught exception: ',  $e->getMessage(), "\n";
-		}	
+		// }
+		// catch (Exception $e) 
+		// {
+  //   		echo 'Caught exception: ',  $e->getMessage(), "\n";
+		// }	
 	}
 }
