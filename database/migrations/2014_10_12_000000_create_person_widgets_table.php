@@ -18,10 +18,8 @@ class CreatePersonWidgetsTable extends Migration {
 			$table->integer('person_id')->unsigned()->index();
 			$table->enum('type', ['list', 'table', 'stat']);
 			$table->string('widget', 255);
-			$table->text('search');
-			$table->text('sort');
-			$table->integer('page');
-			$table->integer('per_page');
+			$table->text('query');
+			$table->string('dashboard', 255);
 			$table->tinyinteger('row');
 			$table->tinyinteger('col');
 			$table->boolean('is_active');

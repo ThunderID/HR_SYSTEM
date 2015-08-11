@@ -6,11 +6,9 @@
  * 	person_id 						: Foreign key from Person
  * 	type 	 						: Required in list or table or stat
  * 	widget 	 						: Required, Varchar, 255, Required
- * 	search 	 	 					: Required
- * 	sort 	 	 					: Required
- * 	page 	 						: Required, int
- * 	per_page 	 					: Required, int
- * 	row 		 					: Required, tiny int
+ * 	query 	 	 					: Required
+ * 	dashboard 		 				: Required in organisation or person
+* 	row 		 					: Required, tiny int
  * 	col 		 					: Required, tiny int
  * 	is_active 		 				: Boolean
  *	created_at						: Timestamp
@@ -43,10 +41,8 @@ class PersonWidget extends BaseModel {
 	protected 	$fillable			= 	[
 											'type' 						,
 											'widget' 					,
-											'search' 					,
-											'sort' 						,
-											'page' 						,
-											'per_page' 					,
+											'query' 					,
+											'dashboard' 				,
 											'row' 						,
 											'col' 						,
 											'is_active' 				,
@@ -56,10 +52,8 @@ class PersonWidget extends BaseModel {
 	protected 	$rules				= 	[
 											'type' 						=> 'required|in:table,list,stat',
 											'widget' 					=> 'required|max:255',
-											'search' 					=> 'required',
-											'sort' 						=> 'required',
-											'page' 						=> 'required|numeric',
-											'per_page' 					=> 'required|numeric',
+											'query' 					=> 'required',
+											'dashboard' 				=> 'required|in:organisation,person',
 											'row' 						=> 'required|numeric',
 											'col' 						=> 'required|numeric',
 											'is_active' 				=> 'boolean',
