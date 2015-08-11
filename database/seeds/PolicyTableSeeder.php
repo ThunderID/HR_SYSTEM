@@ -22,7 +22,7 @@ class PolicyTableSeeder extends Seeder
 				{
 					$data 								= new Policy;
 					$data->fill([
-						'updated_by'					=> 1,
+						'created_by'					=> 1,
 						'type'							=> $types[$key2],
 						'value'							=> $values[$key2],
 						'started_at'					=> date('Y-m-d'),

@@ -6,6 +6,8 @@ use App\Models\Work;
 use App\Models\Log;
 use App\Models\Person;
 use App\Models\Policy;
+use App\Models\AttendanceLog;
+use App\Models\IdleLog;
 use Illuminate\Support\MessageBag;
 
 /* ----------------------------------------------------------------------

@@ -104,7 +104,7 @@ class PersonWidgetTableSeeder extends Seeder
 				$data 								= new PersonWidget;
 				$data->fill([
 					'type'							=>$type[$index],
-					'widget'						=>$widget[$index],
+					'widget'						=>$widgets[$index],
 					'query'							=>$query[$index],
 					'dashboard'						=>'organisation',
 					'row'							=>$row[$index],

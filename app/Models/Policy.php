@@ -116,6 +116,11 @@ class Policy extends BaseModel {
 		return $query->where('tmp_policies.id', $variable);
 	}
 
+	public function scopeType($query, $variable)
+	{
+		return $query->where('type', $variable);
+	}
+
 	public function scopeOnDate($query, $variable)
 	{
 		if(is_array($variable))
