@@ -5,6 +5,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Database\Schema\Blueprint;
 use Schema;
+use App\Models\ProcessLog;
+use App\Models\AttendanceLog;
+use App\Models\IdleLog;
 use DB;
 
 class HRSUpdateCommand extends Command {
@@ -40,7 +43,7 @@ class HRSUpdateCommand extends Command {
 	 */
 	public function fire()
 	{
-		//update table (consider to migrate data from process logs to chunk of reporting)
+		//Also moved process log to older process log
 		$result 		= $this->update11082015();
 		
 		return true;
@@ -208,6 +211,65 @@ class HRSUpdateCommand extends Command {
 
 		$this->info("Add queues tables table");
 
+		//migrating processlog to attendance log and idle log
+		$plogs 							= ProcessLog::all();
+
+		DB::beginTransaction();
+		foreach ($plogs as $key => $value) 
+		{
+			$alog 						= new AttendanceLog;
+			$ilog 						= new IdleLog;
+
+			$alog->fill([
+								'margin_start'				=> $value->margin_start,
+								'margin_end'				=> $value->margin_end,
+								//working on count status
+								'count_status'				=> 1,
+								'actual_status'				=> $value->actual_status,
+			]);
+
+			$ilog->fill([
+								'total_active'				=> $value->total_active,
+								'total_idle'				=> $value->total_idle,
+								'total_idle_1'				=> $value->total_idle_1,
+								'total_idle_2'				=> $value->total_idle_2,
+								'total_idle_3'				=> $value->total_idle_3,
+								'frequency_idle_1'			=> $value->frequency_idle_1,
+								'frequency_idle_2'			=> $value->frequency_idle_2,
+								'frequency_idle_3'			=> $value->frequency_idle_3,
+			]);
+
+			$plog 						= ProcessLog::find($value->id);
+
+			$alog->ProcessLog()->associate($plog);
+			$ilog->ProcessLog()->associate($plog);
+
+			if (!$alog->save())
+			{
+				DB::rollback();
+				dd($alog->getError());
+
+				return false;
+			}
+
+			if (!$ilog->save())
+			{
+				DB::rollback();
+				dd($ilog->getError());
+
+				return false;
+			}
+
+			if($key%100==0)
+			{
+				$this->info("Chunked P.log ".$key.' From '.count($plogs));
+			}
+		}
+
+		DB::commit();
+
+		$this->info("Chunked P.log ");
+
 		Schema::table('process_logs', function(Blueprint $table)
 		{
 			$table->dropColumn('modified_by');
@@ -241,6 +303,10 @@ class HRSUpdateCommand extends Command {
 			$table->dropColumn('type');
 			$table->dropColumn('field');
 			$table->dropColumn('function');
+		});
+
+		Schema::table('person_widgets', function(Blueprint $table)
+		{
 			$table->enum('type', ['list', 'table', 'stat']);
 			$table->string('widget', 255);
 			$table->string('dashboard', 255);
