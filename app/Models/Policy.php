@@ -54,12 +54,16 @@ class Policy extends BaseModel {
 											'id' 						=> 'ID', 
 											'organisationid' 			=> 'OrganisationID', 
 
+											'ondate' 					=> 'OnDate', 
+
 											'withattributes' 			=> 'WithAttributes'
 										];
 										
 	public $searchableScope 		= 	[
 											'id' 						=> 'Could be array or integer', 
 											'organisationid' 			=> 'Could be array or integer', 
+
+											'ondate' 					=> 'Could be array or string (date)', 
 
 											'withattributes' 			=> 'Must be array of relationship'
 										];
@@ -110,5 +114,26 @@ class Policy extends BaseModel {
 			return $query->whereIn('tmp_policies.id', $variable);
 		}
 		return $query->where('tmp_policies.id', $variable);
+	}
+
+	public function scopeOnDate($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			if(!is_null($variable[1]))
+			{
+				return $query->where('started_at', '<=', date('Y-m-d', strtotime($variable[1])))
+							 ->where('started_at', '>=', date('Y-m-d', strtotime($variable[0])));
+			}
+			elseif(!is_null($variable[0]))
+			{
+				return $query->where('started_at', '>=', date('Y-m-d', strtotime($variable[0])));
+			}
+			else
+			{
+				return $query->where('started_at', '>=', date('Y-m-d'));
+			}
+		}
+		return $query->where('started_at', '>=', date('Y-m-d', strtotime($variable)));
 	}
 }

@@ -38,7 +38,6 @@ class AppServiceProvider extends ServiceProvider {
 		\App\Models\AttendanceLog::observe(new \App\Models\Observers\AttendanceLogObserver);
 		\App\Models\AttendanceDetail::observe(new \App\Models\Observers\AttendanceDetailObserver);
 
-
 		\App\Models\Organisation::observe(new \App\Models\Observers\OrganisationObserver);
 		\App\Models\Branch::observe(new \App\Models\Observers\BranchObserver);
 		\App\Models\Chart::observe(new \App\Models\Observers\ChartObserver);

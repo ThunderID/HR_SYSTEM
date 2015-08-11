@@ -5,7 +5,7 @@ use App\Models\ProcessLog;
 use App\Models\Work;
 use App\Models\Log;
 use App\Models\Person;
-use App\Models\SettingIdle;
+use App\Models\Policy;
 use Illuminate\Support\MessageBag;
 
 /* ----------------------------------------------------------------------
@@ -26,24 +26,26 @@ class ProcessingLogObserver
 
 			$person 				= Person::find($model['attributes']['person_id']);
 			
-			$idle_rule 				= new SettingIdle;
-			$idle_rule 				= $idle_rule->organisationid($person->organisation_id)->OnDate($on)->orderBy('start', 'desc')->first();
+			$idle_rule 				= new Policy;
+			$idle_rule_1 			= $idle_rule->organisationid($person->organisation_id)->type('firstidle')->OnDate($on)->orderBy('started_at', 'desc')->first();
+			$idle_rule_2 			= $idle_rule->organisationid($person->organisation_id)->type('secondidle')->OnDate($on)->orderBy('started_at', 'desc')->first();
+			$idle_rule_3 			= $idle_rule->organisationid($person->organisation_id)->type('thirdidle')->OnDate($on)->orderBy('started_at', 'desc')->first();
 			
 			$margin_bottom_idle 	= 900;
+			$idle_1 				= 3600;
+			$idle_2 				= 7200;
 			
-			if($idle_rule)
+			if($idle_rule_1)
 			{
-				$idle_1 			= $idle_rule->idle_1;
-				$idle_2 			= $idle_rule->idle_2;
-				if(isset($idle_rule->margin_bottom_idle))
-				{
-					$margin_bottom_idle 	= $idle_rule->margin_bottom_idle;
-				}
+				$margin_bottom_idle = (int)$idle_rule_1->value;
 			}
-			else
+			if($idle_rule_2)
 			{
-				$idle_1 			= 3600;
-				$idle_2 			= 7200;
+				$idle_1 			= (int)$idle_rule_2->value;
+			}
+			if($idle_rule_3)
+			{
+				$idle_2 			= (int)$idle_rule_3->value;
 			}
 
 			$workid 				= null;
@@ -526,39 +528,38 @@ class ProcessingLogObserver
 									'end'					=> $end,
 									'fp_start'				=> $fp_start,
 									'fp_end'				=> $fp_end,
-									'margin_start'			=> $margin_start,
-									'margin_end'			=> $margin_end,
-									'total_idle'			=> $total_idle,
-									'total_idle_1'			=> $total_idle_1,
-									'total_idle_2'			=> $total_idle_2,
-									'total_idle_3'			=> $total_idle_3,
-									'total_sleep'			=> $total_sleep,
-									'total_active'			=> $total_active,
-									'actual_status'			=> $actual_status,
-									'frequency_idle_1'		=> $frequency_idle_1,
-									'frequency_idle_2'		=> $frequency_idle_2,
-									'frequency_idle_3'		=> $frequency_idle_3,
 							]
 					);
 
-			if(isset($modified_by))
+			if(isset($data->id))
 			{
-				$plog->fill(['modified_by' 					=> $modified_by]);
+				$alog 										= AttendanceLog::processlogid($data->id)->first();
+				$ilod 										= IdleLog::processlogid($data->id)->first();
 			}
 			else
 			{
-				unset($plog->modified_by);
+				$alog 										= new AttendanceLog;
+				$ilod 										= new IdleLog;
 			}
 
-			if(isset($modified_status))
-			{
-				$plog->fill(['modified_status' 				=> $modified_status]);
-			}
+			$alog->fill([
+								'margin_start'				=> $margin_start,
+								'margin_end'				=> $margin_end,
+								//working on count status
+								'count_status'				=> 1,
+								'actual_status'				=> $actual_status,
+			]);
 
-			if(isset($modified_at))
-			{
-				$plog->fill(['modified_at' 					=> $modified_at]);
-			}
+			$ilod->fill([
+								'total_active'				=> $total_active,
+								'total_idle'				=> $total_idle,
+								'total_idle_1'				=> $total_idle_1,
+								'total_idle_2'				=> $total_idle_2,
+								'total_idle_3'				=> $total_idle_3,
+								'frequency_idle_1'			=> $frequency_idle_1,
+								'frequency_idle_2'			=> $frequency_idle_2,
+								'frequency_idle_3'			=> $frequency_idle_3,
+			]);
 
 			$plog->Person()->associate($person);
 
@@ -576,6 +577,25 @@ class ProcessingLogObserver
 				$model['errors'] = $plog->getError();
 
 				return false;
+			}
+			else
+			{
+				$alog->ProcessLog()->associate($plog);
+				$ilog->ProcessLog()->associate($plog);
+
+				if (!$alog->save())
+				{
+					$model['errors'] = $alog->getError();
+
+					return false;
+				}
+
+				if (!$ilog->save())
+				{
+					$model['errors'] = $ilog->getError();
+
+					return false;
+				}
 			}
 
 			return true;
