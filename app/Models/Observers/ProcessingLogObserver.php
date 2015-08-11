@@ -67,8 +67,8 @@ class ProcessingLogObserver
 			$total_idle_1 			= 0;
 			$total_idle_2 			= 0;
 			$total_idle_3 			= 0;
-			$total_sleep 			= 0;
 			$total_active 			= 0;
+			$count_status 			= 1;
 
 			$frequency_idle_1 		= 0;
 			$frequency_idle_2 		= 0;
@@ -454,24 +454,6 @@ class ProcessingLogObserver
 						
 						unset($start_idle);
 					}
-
-					if(strtolower($value['name']) == 'sleep')
-					{
-						$start_sleep 	= date('H:i:s', strtotime($value['on']));
-						list($hours, $minutes, $seconds) = explode(":", $start_sleep);
-
-						$start_sleep 	= $hours*3600+$minutes*60+$seconds;
-					}
-					elseif((strtolower($value['name']) != 'sleep') && isset($start_sleep))
-					{
-						$new_sleep 		= date('H:i:s', strtotime($value['on']));
-						list($hours, $minutes, $seconds) = explode(":", $new_sleep);
-
-						$new_sleep 		= $hours*3600+$minutes*60+$seconds;
-
-						$total_sleep	= $total_sleep + $new_sleep - $start_sleep;
-						unset($start_sleep);
-					}
 				}
 			}
 
@@ -525,6 +507,8 @@ class ProcessingLogObserver
 
 			$total_active 				= abs($total_active) - abs($total_idle_1) - abs($total_idle_2) - abs($total_idle_3);
 
+			$prev_data 					= $plog->ondate([(date('Y-m-d',strtotime($on. ' -1 day'))), (date('Y-m-d',strtotime($on. ' -1 day')))])->status($actual_status)->personid($model['attributes']['person_id'])->first();
+
 			$plog->fill([
 									'name'					=> $name,
 									'on'					=> $on,
@@ -549,11 +533,16 @@ class ProcessingLogObserver
 				$ilog 										= new IdleLog;
 			}
 
+
+			if(isset($prev_data->id))
+			{
+				$count_status 								= $prev_data->count_status + 1;
+			}
+
 			$alog->fill([
 								'margin_start'				=> $margin_start,
 								'margin_end'				=> $margin_end,
-								//working on count status
-								'count_status'				=> 1,
+								'count_status'				=> $count_status,
 								'actual_status'				=> $actual_status,
 			]);
 
