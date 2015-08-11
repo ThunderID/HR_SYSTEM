@@ -18,6 +18,7 @@ class CreateTmpPoliciesTable extends Migration {
 			$table->integer('created_by')->unsigned()->index();
 			$table->string('type', 255);
 			$table->text('value');
+			$table->datetime('started_at');
 			$table->timestamps();
 			$table->softDeletes();
 		});
