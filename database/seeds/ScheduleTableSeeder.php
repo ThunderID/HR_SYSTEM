@@ -16,9 +16,9 @@ class ScheduleTableSeeder extends Seeder
 		$faker 										= Factory::create();
 		$total_cals  								= Calendar::count();
 		$schedule 									= ['shift pagi', 'shift malam', 'jam normal', 'hari sabtu', 'hari jumat', 'minggu', 'lembur'];
-		$start 										= ['08:00:00', '16:00:00', '08:00:00', '08:00:00', '08:00:00', '08:00:00', '20:00:00'];
-		$end 										= ['16:00:00', '00:00:00', '16:00:00', '12:00:00', '15:00:00', '10:00:00', '00:00:00'];
-		$status 									= ['presence_indoor', 'presence_outdoor', 'absence_workleave', 'absence_not_workleave'];
+		$start 										= ['08:00:00', '12:00:00', '00:00:00', '00:00:00', '08:00:00', '08:00:00', '20:00:00'];
+		$end 										= ['16:00:00', '16:00:00', '00:00:00', '00:00:00', '15:00:00', '10:00:00', '00:00:00'];
+		$status 									= ['HB', 'DN', 'CN', 'L'];
 		try
 		{
 			foreach(range(1, $total_cals) as $index)

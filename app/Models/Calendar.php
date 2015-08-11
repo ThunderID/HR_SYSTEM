@@ -65,7 +65,7 @@ class Calendar extends BaseModel {
 											'import_from_id'			=> 'exists:tmp_calendars,id',
 											'name'						=> 'required|max:255',
 											'start'						=> 'required|date_format:"H:i:s"',
-											'end'						=> 'required|date_format:"H:i:s"|after:start',
+											'end'						=> 'required|date_format:"H:i:s"',
 										];
 
 	public $searchable 				= 	[
