@@ -534,12 +534,12 @@ class ProcessingLogObserver
 			if(isset($data->id))
 			{
 				$alog 										= AttendanceLog::processlogid($data->id)->first();
-				$ilod 										= IdleLog::processlogid($data->id)->first();
+				$ilog 										= IdleLog::processlogid($data->id)->first();
 			}
 			else
 			{
 				$alog 										= new AttendanceLog;
-				$ilod 										= new IdleLog;
+				$ilog 										= new IdleLog;
 			}
 
 			$alog->fill([
@@ -550,7 +550,7 @@ class ProcessingLogObserver
 								'actual_status'				=> $actual_status,
 			]);
 
-			$ilod->fill([
+			$ilog->fill([
 								'total_active'				=> $total_active,
 								'total_idle'				=> $total_idle,
 								'total_idle_1'				=> $total_idle_1,
