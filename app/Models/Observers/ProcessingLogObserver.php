@@ -85,6 +85,7 @@ class ProcessingLogObserver
 			if($pschedulee && $pschedules)
 			{
 				$schedule_start		= $pschedules->schedules[0]->start;
+				
 				$schedule_end		= $pschedulee->schedules[0]->end;
 
 				$working 			= Person::ID($model['attributes']['person_id'])->CurrentWork($on)->first();
@@ -139,6 +140,7 @@ class ProcessingLogObserver
 					$ccalendar 		= Person::ID($model['attributes']['person_id'])->WorkCalendar(true)->WorkCalendarschedule(['on' => [$on, $on]])->WithWorkCalendarSchedules(['on' => [$on, $on]])->first();
 
 					$schedule_start	= $ccalendar->workscalendars[0]->calendar->schedules[0]->start;
+					
 					$schedule_end	= $ccalendar->workscalendars[0]->calendar->schedules[0]->end;
 					$workid 		= $ccalendar->workscalendars[0]->id;
 
@@ -192,6 +194,7 @@ class ProcessingLogObserver
 						if(isset($wd[strtolower($day)]) && in_array(strtolower($wd[strtolower($day)]), $lworkdays))
 						{
 							$schedule_start = $calendar->workscalendars[0]->calendar->start;
+							
 							$schedule_end 	= $calendar->workscalendars[0]->calendar->end;	
 
 							//sync schedule status with process log
@@ -221,12 +224,14 @@ class ProcessingLogObserver
 						else
 						{
 							$schedule_start = '00:00:00';
+							
 							$schedule_end 	= '00:00:00';
 						}
 					}
 					else
 					{
 						$schedule_start = '00:00:00';
+							
 						$schedule_end 	= '00:00:00';
 					}
 				}

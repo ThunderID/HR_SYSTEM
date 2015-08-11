@@ -31,7 +31,7 @@ class CalendarTableSeeder extends Seeder
 				$data->fill([
 					'organisation_id'				=> rand(1, $total_orgs),
 					'name'							=> $faker->country,
-					'workdays'						=> 'monday,tuesday,wednesday,thursday,friday',
+					'workdays'						=> 'senin,selasa,rabu,kamis,jumat',
 					'start'							=> $start,
 					'end'							=> date('H:i:s', strtotime($start.' + 9 hours')),
 				]);
