@@ -507,7 +507,7 @@ class ProcessingLogObserver
 
 			$total_active 				= abs($total_active) - abs($total_idle_1) - abs($total_idle_2) - abs($total_idle_3);
 
-			$prev_data 					= $plog->ondate([(date('Y-m-d',strtotime($on. ' -1 day'))), (date('Y-m-d',strtotime($on. ' -1 day')))])->status($actual_status)->personid($model['attributes']['person_id'])->first();
+			$prev_data 					= $plog->ondate([(date('Y-m-d',strtotime($on. ' -1 day'))), (date('Y-m-d',strtotime($on. ' -1 day')))])->attendanceactualstatus($actual_status)->personid($model['attributes']['person_id'])->first();
 
 			$plog->fill([
 									'name'					=> $name,
@@ -536,7 +536,7 @@ class ProcessingLogObserver
 
 			if(isset($prev_data->id))
 			{
-				$count_status 								= $prev_data->count_status + 1;
+				$count_status 								= $prev_data->attendancelogs[0]->count_status + 1;
 			}
 
 			$alog->fill([

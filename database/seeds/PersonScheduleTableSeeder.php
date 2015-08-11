@@ -40,8 +40,8 @@ class PersonScheduleTableSeeder extends Seeder
 
 				if (!$data->save())
 				{
-					// print_r($data->getError());
-					// exit;
+					print_r($data->getError());
+					exit;
 				}
 			} 
 		}

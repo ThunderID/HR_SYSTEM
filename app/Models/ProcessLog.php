@@ -38,6 +38,8 @@ class ProcessLog extends BaseModel {
 	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasPersonTrait;
 	use \App\Models\Traits\BelongsTo\HasWorkTrait;
+	use \App\Models\Traits\HasMany\HasAttendanceLogsTrait;
+	use \App\Models\Traits\HasMany\HasIdleLogsTrait;
 
 	public 		$timestamps 		= true;
 

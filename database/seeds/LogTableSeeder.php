@@ -14,6 +14,9 @@ class LogTableSeeder extends Seeder
 
 		DB::table('logs')->truncate();
 		DB::table('process_logs')->truncate();
+		DB::table('attendance_logs')->truncate();
+		DB::table('idle_logs')->truncate();
+		DB::table('attendance_details')->truncate();
 		$faker 										= Factory::create();
 		$total_persons  							= Person::count();
 		$logs 										= ['login', 'logout','presence', 'idle', 'lock', 'working', 'presence', 'sleep', 'presence'];

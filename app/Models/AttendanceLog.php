@@ -141,4 +141,9 @@ class AttendanceLog extends BaseModel {
 		}
 		return $query->where('attendance_logs.id', $variable);
 	}
+
+	public function scopeActualStatus($query, $variable)
+	{
+		return $query->where('actual_status', $variable);
+	}
 }
