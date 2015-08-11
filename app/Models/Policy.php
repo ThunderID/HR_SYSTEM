@@ -7,6 +7,7 @@
  * 	created_by 						: Foreign Key From Person, Integer, Required
  * 	type 		 					: Required : max 255
  * 	value 		 					: Required
+ * 	started_at 		 				: Require, datetime
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -39,12 +40,14 @@ class Policy extends BaseModel {
 											'created_by' 				,
 											'type' 						,
 											'value' 					,
+											'started_at' 				,
 										];
 
 	protected 	$rules				= 	[
 											'created_by'				=> 'required|exists:persons,id',
 											'type'						=> 'required|max:255',
 											'value'						=> 'required',
+											'started_at'				=> 'required|date_format:"Y-m-d"',
 										];
 
 	public $searchable 				= 	[
