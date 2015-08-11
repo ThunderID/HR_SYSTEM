@@ -10,6 +10,8 @@
  * 	actual_status 			 		: Required, max : 255
  * 	modified_status 			 	: Required, max : 255
  * 	count_status 			 		: Required, double
+ * 	margin_start 		 			: Double
+ * 	margin_end 		 				: Double
  * 	tolerance_time 			 		: Required, double
  * 	notes 			 				: Required, text
  * 	modified_at 			 		: Required, datetime
@@ -48,6 +50,8 @@ class AttendanceLog extends BaseModel {
 											'modified_status' 					,
 											'count_status' 						,
 											'tolerance_time' 					,
+											'margin_start' 						,
+											'margin_end' 						,
 											'notes' 							,
 											'modified_at' 						,
 											'settlement_at' 					,
@@ -61,6 +65,8 @@ class AttendanceLog extends BaseModel {
 											'notes' 							=> 'required',
 											'modified_at' 						=> 'required|date_format:"Y-m-d H:i:s"',
 											'settlement_at' 					=> 'required|date_format:"Y-m-d H:i:s"',
+											'margin_start'						=> 'numeric',
+											'margin_end'						=> 'numeric',
 										];
 
 	public $searchable 				= 	[
