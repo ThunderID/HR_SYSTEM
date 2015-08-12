@@ -252,6 +252,11 @@ Route::group(['middleware' => 'csrfverify'], function()
 	});	
 }); 
 
+Route::group(['namespace' => 'Organisation\\'], function()
+{
+	Route::any('documents-list', 				['uses' => 'DocumentController@getAjax', 				'as' => 'hr.documents.list']);
+});
+
 Route::group(['namespace' => 'Organisation\\Calendar\\', 'prefix' => 'calendar'], function() 
 {
 

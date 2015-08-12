@@ -10,7 +10,7 @@
 		{!! Form::open(['url' => $DocumentComposer['widget_data']['documentlist']['form_url'], 'class' => 'form', 'method' => 'get']) !!}	
 			<div class="form-group">				
 				<label class="control-label">Jenis Dokumen</label>				
-				<select name="doc_id" id="doc" class="form-control select2" tabindex="1">
+				<select name="doc_id[]" id="doc" class="form-control" tabindex="1">
 					@if(isset($DocumentComposer['widget_data']['documentlist']['document']))
 						@foreach($DocumentComposer['widget_data']['documentlist']['document'] as $key => $value)
 							<option value="{{ $value['id'] }}">{{ $value['name'] }}</option>
@@ -18,8 +18,12 @@
 					@endif
 				</select>				
 			</div>
+			<div id="doc_template"></div>
 			<input type="hidden" class="form-control" id="org_id" name="org_id" value="{{$data['id']}}">
 			<input type="hidden" class="form-control" id="person_id" name="person_id" value="{{$person['id']}}">
+			<div class="form-group">
+				<a href="javascript:;" class="btn btn-default btn_add_doclist">Tambah Jenis Dokumen</a>				
+			</div>
 			<div class="form-group text-right">
 				<input type="submit" class="btn btn-primary" value="Pilih" tabindex="2">				
 			</div>

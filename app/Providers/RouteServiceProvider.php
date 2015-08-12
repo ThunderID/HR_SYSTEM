@@ -125,6 +125,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.documents.edit'								=> 43,
 							'hr.documents.update'							=> 43,
 							'hr.documents.delete'							=> 44,
+							'hr.documents.list'								=> 41,
 
 							'hr.document.templates.index'					=> 41,
 							'hr.document.templates.show'					=> 41,

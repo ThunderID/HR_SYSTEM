@@ -10,6 +10,6 @@
 		@yield('widget_title','[widget_title]')
 	</h4>
 
-	<hr style="margin-bottom:0">
+	<!-- <hr style="margin-bottom:0"> -->
 	@yield('widget_body','[widget_body]')
 @endif
