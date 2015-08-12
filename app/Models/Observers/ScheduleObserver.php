@@ -3,6 +3,8 @@
 use DB, Validator;
 use App\Models\Schedule;
 use App\Models\ProcessLog;
+use App\Models\Work;
+use App\Models\Person;
 use \Illuminate\Support\MessageBag as MessageBag;
 
 /* ----------------------------------------------------------------------
@@ -56,47 +58,21 @@ class ScheduleObserver
 
 	public function saved($model)
 	{
-		if(date('Y-m-d', strtotime($model['attributes']['on']))<=date('Y-m-d') && isset($model['attributes']['calendar_id']) && $model['attributes']['calendar_id'] != 0)
+		//scheme change status to HB
+		$on 							 	= date('Y-m-d', strtotime($model['attributes']['on']));
+		if(isset($model['attributes']['calendar_id']) && $model['attributes']['calendar_id'] != 0)
 		{
-			$processlogs 					= ProcessLog::ondate([date('Y-m-d', strtotime($model['attributes']['on'])), date('Y-m-d', strtotime($model['attributes']['on']))])->hasnoschedule(['on' => date('Y-m-d', strtotime($model['attributes']['on']))])->WorkCalendar(['id' => $model['attributes']['calendar_id'], 'start' => date('Y-m-d', strtotime($model['attributes']['on']))])->get();
+			//check process log where not generated from persons schedule
+			$processlogs 					= ProcessLog::ondate([$on, $on])->hasnoschedule(['on' => $on])->WorkCalendar(['id' => $model['attributes']['calendar_id'], 'start' => $on])->get();
+			
 			if($processlogs->count())
 			{
 				foreach ($processlogs as $key => $value) 
 				{
 					$data					= ProcessLog::ID($value->id)->first();
-				
-					//hitung margin start
-					$schedule_start 		= $model['attributes']['start'];
-					list($hours, $minutes, $seconds) = explode(":", $schedule_start);
 
-					$schedule_start			= $hours*3600+$minutes*60+$seconds;
-
-					$start 					= $data->start;
-					list($hours, $minutes, $seconds) = explode(":", $start);
-
-					$start 					= $hours*3600+$minutes*60+$seconds;
-
-					$margin_start			= $schedule_start - $start;
-
-					//hitung margin end
-					$schedule_end 			= $model['attributes']['end'];
-					list($hours, $minutes, $seconds) = explode(":", $schedule_end);
-
-					$schedule_end			= $hours*3600+$minutes*60+$seconds;
-
-					$end 					= $data->end;
-					list($hours, $minutes, $seconds) = explode(":", $end);
-
-					$end 					= $hours*3600+$minutes*60+$seconds;
-
-					$margin_end				= $schedule_end - $end;
-
-					$data->fill(['schedule_start' => $model['attributes']['start'], 'schedule_end' => $model['attributes']['end'], 'margin_end' => $margin_end, 'margin_start' => $margin_start]);
-
-					if(strtoupper($model['attributes']['status'])=='DN')
-					{
-						$data->fill(['actual_status' => 'AS', 'modified_status' => 'DN', 'modified_at' => date('Y-m-d H:i:s', strtotime('now')), 'modified_by' => $model['attributes']['created_by']]);
-					}
+					//update schedule start and end of generated proess log
+					$data->fill(['schedule_start' => $model['attributes']['start'], 'schedule_end' => $model['attributes']['end']]);
 
 					if(!$data->save())
 					{
@@ -106,28 +82,13 @@ class ScheduleObserver
 				}
 				return true;
 			}
+			//if there is no plogs leave it to cron job
 		}
-	}
-
-	public function updating($model)
-	{
-		if(date('Y-m-d', strtotime($model['attributes']['on']))<date('Y-m-d'))
-		{
-			$errors 						= new MessageBag;
-			$errors->add('ondate', 'Tidak dapat mengubah jadwal yang sudah lewat atau sedang berlangsung. Silahkan tambahkan ke jadwal khusus perorangan.');
-			
-			$model['errors'] 				= $errors;
-
-			return false;
-		}
-
-		return true;
-		//
 	}
 
 	public function deleting($model)
 	{
-		if(date('Y-m-d', strtotime($model['attributes']['on']))<date('Y-m-d'))
+		if(date('Y-m-d', strtotime($model['attributes']['on'])) < date('Y-m-d'))
 		{
 			$model['errors'] 				= ['Tidak dapat menghapus jadwal.'];
 
