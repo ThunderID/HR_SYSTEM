@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers\Organisation;
 
-use Input, Session, App, Paginator, Redirect, DB, Config;
+use Input, Session, App, Paginator, Redirect, DB, Config,Response;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -488,5 +488,38 @@ class DocumentController extends BaseController
 		{
 			return Redirect::back()->withErrors(['Password yang Anda masukkan tidak sah!']);
 		}
+	}
+
+	public function getAjax()
+	{
+		if(Input::has('org_id'))
+		{
+			$org_id 								= Input::get('org_id');
+		}
+		else
+		{
+			$org_id 								= Session::get('user.organisationid');
+		}
+
+		if(!in_array($org_id, Session::get('user.organisationids')))
+		{
+			App::abort(404);
+		}
+
+		$search['organisationid']					= $org_id;
+		$sort 										= ['name' => 'asc'];
+
+		$results 									= $this->dispatch(new Getting(new Document, $search, [], 100, 100,false));
+		$contents 									= json_decode($results);
+		
+		if(!$contents->meta->success)
+		{
+			return Response::json(['data' => 'data tidak ada'], 500);
+		}
+
+		$document 									= json_decode(json_encode($contents->data), true);
+
+		return Response::json(['data' => $document], 200);
+		
 	}
 }
