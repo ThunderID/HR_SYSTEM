@@ -107,11 +107,30 @@ class AttendanceLogObserver
 				$pwP 							= PersonWorkleave::personid($model->processlog->person_id)->ondate([$on, null])->status('CN')->quota(true)->first();
 				if(!$pwP)
 				{
-					$errors->add('Workleave', 'Quota Cuti Tidak Tersedia. Jika ingin menambahkan hutang cuti, silahkan tambahkan quota cuti tahun berikutnya.');
-					
-					$model['errors'] 			= $errors;
+					$alog 						= new AttendanceLog;
+					$alog->fill([
+						'margin_start'			=> $margin_start,
+						'margin_end'			=> $margin_end,
+						'count_status'			=> $count_status,
+						'actual_status'			=> $actual_status,
+						'modified_status'		=> 'UL',
+						'modified_at'			=> $modified_at,
+						'modified_by'			=> $modified_by,
+						'notes'					=> 'Auto generated dari attendance log, karena tidak ada cuti.',
+					]);
 
-					return false;
+					$processlog 				= ProcessLog::find($model['attributes']['process_log_id']);
+
+					$alog->ProcessLog()->associate($processlog);
+
+					if(!$alog->save())
+					{
+						$model['errors'] 		= $alog->getError();
+
+						return false;
+					}
+
+					return true;
 				}
 
 				$person 						= Person::find($model->processlog->person_id);
