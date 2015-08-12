@@ -38,6 +38,7 @@ class Queue extends BaseModel {
 	protected 	$table 				= 'tmp_queues';
 
 	protected 	$fillable			= 	[
+											'created_by' 				,
 											'process_name' 				,
 											'parameter' 				,
 											'total_process' 			,
@@ -48,6 +49,7 @@ class Queue extends BaseModel {
 										];
 
 	protected 	$rules				= 	[
+											'created_by'				=> 'required|exists:persons,id',
 											'process_name'				=> 'required',
 											'parameter'					=> 'required',
 											'total_process'				=> 'required|numeric',

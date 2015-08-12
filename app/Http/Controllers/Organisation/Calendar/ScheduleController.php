@@ -9,6 +9,7 @@ use App\Console\Commands\Getting;
 use App\Models\Calendar;
 use App\Models\Schedule;
 use App\Models\Person;
+use App\Models\Queue;
 
 class ScheduleController extends BaseController
 {
@@ -276,7 +277,7 @@ class ScheduleController extends BaseController
 
 		$search['id'] 							= $cal_id;
 		$search['organisationid'] 				= $org_id;
-		$search['withattributes'] 				= ['child'];
+		$search['activeworks'] 					= true;
 		$sort 									= ['name' => 'asc'];
 		$results 								= $this->dispatch(new Getting(new Calendar, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
@@ -324,6 +325,43 @@ class ScheduleController extends BaseController
 		{
 			$errors->add('Calendar', 'Maksimal range adalah satu minggu (7 Hari) ');
 		}
+
+		if(Input::has('affect'))
+		{
+			if($calendar['import_from_id']==0)
+			{
+				unset($search);
+				unset($sort);
+
+				$search['id'] 							= $cal_id;
+				$search['organisationid'] 				= $org_id;
+				$search['activeworks'] 					= true;
+				$search['parentid'] 					= $calendar['id'];
+				$sort 									= ['name' => 'asc'];
+			}
+			else
+			{
+				unset($search);
+				unset($sort);
+
+				$search['id'] 							= $cal_id;
+				$search['organisationid'] 				= $org_id;
+				$search['activeworks'] 					= true;
+				$search['parentid'] 					= $calendar['import_from_id'];
+				$sort 									= ['name' => 'asc'];
+			}
+
+			$results 								= $this->dispatch(new Getting(new Calendar, $search, $sort , 1, 100));
+			$contents 								= json_decode($results);
+
+			if(!$contents->meta->success)
+			{
+				App::abort(404);
+			}
+
+			$calendars 								= json_decode(json_encode($contents->data), true);
+			$calendars[]							= $calendar;
+		}
 		
 		if(!$errors->count())
 		{
@@ -333,49 +371,74 @@ class ScheduleController extends BaseController
 			foreach ( $periods as $period )
 			{
 				$attributes['on'] 					= $period->format('Y-m-d');
-				$content 							= $this->dispatch(new Saving(new Schedule, $attributes, $id, new Calendar, $cal_id));
-				$is_success 						= json_decode($content);
-
-				if(!$is_success->meta->success)
+				
+				if(Input::has('affect'))
 				{
-					foreach ($is_success->meta->errors as $key => $value) 
+					foreach ($calendars as $key => $value) 
 					{
-						if(is_array($value))
-						{
-							foreach ($value as $key2 => $value2) 
-							{
-								$errors->add('Calendar', $value2);
-							}
-						}
-						else
-						{
-							$errors->add('Calendar', $value);
-						}
-					}
-				}
+						$attributes['associate'] 	= $value['id'];
 
-				if(count($calendar['child']) && Input::has('affect'))
-				{
-					foreach ($calendar['child'] as $key => $value) 
-					{
-						$content 						= $this->dispatch(new Saving(new Schedule, $attributes, $id, new Calendar, $value['id']));
-						$is_success_2 					= json_decode($content);
+						$queattr['created_by'] 		= Session::get('loggedUser');
+						$queattr['process_name'] 	= 'hr:batch schedulebatchcommand';
+						$queattr['parameter'] 		= json_encode($attributes);
+						$queattr['total_process'] 	= count($value['works']);
+						$queattr['task_per_process']= 10;
+						$queattr['process_number'] 	= 0;
+						$queattr['total_task'] 		= count($value['works'])/10;
+						$queattr['message'] 		= 'Initial Queue';
+
+						$content 					= $this->dispatch(new Saving(new Queue, $queattr, null));
+						$is_success_2 				= json_decode($content);
 
 						if(!$is_success_2->meta->success)
 						{
-							foreach ($is_success_2->meta->errors as $key => $value) 
+							foreach ($is_success_2->meta->errors as $key2 => $value2) 
 							{
-								if(is_array($value))
+								if(is_array($value2))
 								{
-									foreach ($value as $key2 => $value2) 
+									foreach ($value2 as $key3 => $value3) 
 									{
-										$errors->add('Calendar', $value2);
+										$errors->add('Batch', $value3);
 									}
 								}
 								else
 								{
-									$errors->add('Calendar', $value);
+									$errors->add('Batch', $value2);
 								}
+							}
+						}
+					}
+				}
+				else
+				{
+					$attributes['associate'] 	= $calendar['id'];
+
+					$queattr['created_by'] 		= Session::get('loggedUser');
+					$queattr['process_name'] 	= 'hr:batch schedulebatchcommand';
+					$queattr['parameter'] 		= json_encode($attributes);
+					$queattr['total_process'] 	= count($calendar['works']);
+					$queattr['task_per_process']= 10;
+					$queattr['process_number'] 	= 0;
+					$queattr['total_task'] 		= count($calendar['works'])/10;
+					$queattr['message'] 		= 'Initial Queue';
+
+					$content 					= $this->dispatch(new Saving(new Queue, $queattr, null));
+					$is_success_2 				= json_decode($content);
+
+					if(!$is_success_2->meta->success)
+					{
+						foreach ($is_success_2->meta->errors as $key2 => $value2) 
+						{
+							if(is_array($value2))
+							{
+								foreach ($value2 as $key3 => $value3) 
+								{
+									$errors->add('Batch', $value3);
+								}
+							}
+							else
+							{
+								$errors->add('Batch', $value2);
 							}
 						}
 					}
@@ -386,7 +449,7 @@ class ScheduleController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.calendars.show', [$cal_id, 'org_id' => $org_id])->with('alert_success', 'Jadwal kalender "' . $contents->data->name. '" sudah disimpan');
+			return Redirect::route('hr.calendars.show', [$cal_id, 'org_id' => $org_id])->with('alert_info', 'Jadwal kalender sedang disimpan');
 		}
 
 		DB::rollback();
