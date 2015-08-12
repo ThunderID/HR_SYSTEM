@@ -9,12 +9,12 @@
 		{!! Form::open(['url' => $RelativeComposer['widget_data']['relativelist']['form_url'], 'class' => 'form no-enter', 'files' => true]) !!}	
 			<div class="clearfix">&nbsp;</div>
 			<div class="row">
-				<div class="col-sm-3">
-					<div class="box-profile-picture p-15">
+				<!-- <div class="col-sm-3"> -->
+					<!-- <div class="box-profile-picture p-15">
 						<input name="link_profile_picture" type="file" class="thumbnail_image_upload" data-img="{{ isset($RelativeComposer['widget_data']['relativelist']['relative']['relative']['avatar']) ? $RelativeComposer['widget_data']['relativelist']['relative']['relative']['avatar'] : '' }}" tabindex="1">
-					</div>
-				</div>
-				<div class="col-sm-9">
+					</div> -->
+				<!-- </div> -->
+				<div class="col-sm-12">
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="form-group">
@@ -103,11 +103,25 @@
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+			<div id="duplicate_relative"></div>
+			<div class="row">
+				<div class="col-sm-12">
 					<input type="hidden" name="relative_id" value="{{$RelativeComposer['widget_data']['relativelist']['relative']['relative']['id']}}">
 					<div class="form-group">
-						<div class="col-md-12 text-right">
-							<a href="{{ $RelativeComposer['widget_data']['relativelist']['route_back'] }}" class="btn btn-default mr-5" tabindex="12">Batal</a>
-							<input type="submit" class="btn btn-primary" value="Simpan" tabindex="11">
+						<div class="row mt-20">
+							<div class="col-sm-12 col-md-12">
+								<a href="javascript:;" class="btn btn-default btn_duplicate_add_relative">Tambah Kerabat</a>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-12 text-right">
+								<a href="{{ $RelativeComposer['widget_data']['relativelist']['route_back'] }}" class="btn btn-default mr-5" tabindex="12">Batal</a>
+								<input type="submit" class="btn btn-primary" value="Simpan" tabindex="11">
+							</div>
 						</div>
 					</div>
 				</div>
