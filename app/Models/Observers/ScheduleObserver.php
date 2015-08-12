@@ -60,19 +60,18 @@ class ScheduleObserver
 	{
 		//scheme change status to HB
 		$on 							 	= date('Y-m-d', strtotime($model['attributes']['on']));
+		$on1 							 	= date('Y-m-d', strtotime($model['attributes']['on'].' + 1 day'));
 		if(isset($model['attributes']['calendar_id']) && $model['attributes']['calendar_id'] != 0)
 		{
 			//check process log where not generated from persons schedule
-			$processlogs 					= ProcessLog::ondate([$on, $on])->hasnoschedule(['on' => $on])->WorkCalendar(['id' => $model['attributes']['calendar_id'], 'start' => $on])->get();
+			$logs 							= Log::ondate([$on, $on1])->hasnoschedule(['on' => $on])->WorkCalendar(['id' => $model['attributes']['calendar_id'], 'start' => $on])->get();
 			
-			if($processlogs->count())
+			if($logs->count())
 			{
-				foreach ($processlogs as $key => $value) 
+				foreach ($logs as $key => $value) 
 				{
-					$data					= ProcessLog::ID($value->id)->first();
-
-					//update schedule start and end of generated proess log
-					$data->fill(['schedule_start' => $model['attributes']['start'], 'schedule_end' => $model['attributes']['end']]);
+					//update resave 
+					$data					= Log::ID($value->id)->first();
 
 					if(!$data->save())
 					{
@@ -82,7 +81,6 @@ class ScheduleObserver
 				}
 				return true;
 			}
-			//if there is no plogs leave it to cron job
 		}
 	}
 
