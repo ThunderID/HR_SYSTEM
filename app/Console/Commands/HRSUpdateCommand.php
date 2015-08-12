@@ -272,6 +272,8 @@ class HRSUpdateCommand extends Command {
 
 		Schema::table('process_logs', function(Blueprint $table)
 		{
+			$table->dropColumn('margin_start');
+			$table->dropColumn('margin_end');
 			$table->dropColumn('modified_by');
 			$table->dropColumn('total_idle');
 			$table->dropColumn('total_idle_1');
