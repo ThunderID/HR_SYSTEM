@@ -65,10 +65,10 @@ trait HasPersonTrait {
 		return $query->WhereHas('person', function($q)use($variable){$q->CurrentWork($variable);});
 	}
 
-	public function scopeOrganisationID($query, $variable)
-	{
-		return $query->WhereHas('person.works.branch', function($q)use($variable){$q->organisationid($variable);});
-	}
+	// public function scopeOrganisationID($query, $variable)
+	// {
+	// 	return $query->WhereHas('person.works.branch', function($q)use($variable){$q->organisationid($variable);});
+	// }
 
 	public function scopeBranchID($query, $variable)
 	{

@@ -15,20 +15,23 @@ class WorkAuthenticationTableSeeder extends Seeder
 		$app 										= ['web', 'tracker', 'fingerprint'];
 		try
 		{
-			foreach(range(0, count($works)-1) as $index)
+			if(count($works))
 			{
-				$data 								= new WorkAuthentication;
-				$data->fill([
-					'tmp_auth_group_id'				=> 1,
-					'organisation_id'				=> $works[$index]->chart->branch->organisation_id,
-				]);
-
-				$data->Work()->associate($works[$index]);
-
-				if (!$data->save())
+				foreach(range(0, count($works)-1) as $index)
 				{
-					print_r($data->getError());
-					exit;
+					$data 								= new WorkAuthentication;
+					$data->fill([
+						'tmp_auth_group_id'				=> 1,
+						'organisation_id'				=> $works[$index]->chart->branch->organisation_id,
+					]);
+
+					$data->Work()->associate($works[$index]);
+
+					if (!$data->save())
+					{
+						print_r($data->getError());
+						exit;
+					}
 				}
 			}
 		}

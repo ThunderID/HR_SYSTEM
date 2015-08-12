@@ -34,4 +34,14 @@ trait HasCalendarTrait {
 
 		return $query->where('calendar_id', $variable);
 	}
+
+	public function scopeParentID($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('import_from_id', $variable);
+		}
+
+		return $query->where('import_from_id', $variable);
+	}
 }

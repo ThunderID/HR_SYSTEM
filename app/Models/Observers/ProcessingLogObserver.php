@@ -5,7 +5,9 @@ use App\Models\ProcessLog;
 use App\Models\Work;
 use App\Models\Log;
 use App\Models\Person;
-use App\Models\SettingIdle;
+use App\Models\Policy;
+use App\Models\AttendanceLog;
+use App\Models\IdleLog;
 use Illuminate\Support\MessageBag;
 
 /* ----------------------------------------------------------------------
@@ -26,24 +28,26 @@ class ProcessingLogObserver
 
 			$person 				= Person::find($model['attributes']['person_id']);
 			
-			$idle_rule 				= new SettingIdle;
-			$idle_rule 				= $idle_rule->organisationid($person->organisation_id)->OnDate($on)->orderBy('start', 'desc')->first();
+			$idle_rule 				= new Policy;
+			$idle_rule_1 			= $idle_rule->organisationid($person->organisation_id)->type('firstidle')->OnDate($on)->orderBy('started_at', 'desc')->first();
+			$idle_rule_2 			= $idle_rule->organisationid($person->organisation_id)->type('secondidle')->OnDate($on)->orderBy('started_at', 'desc')->first();
+			$idle_rule_3 			= $idle_rule->organisationid($person->organisation_id)->type('thirdidle')->OnDate($on)->orderBy('started_at', 'desc')->first();
 			
 			$margin_bottom_idle 	= 900;
+			$idle_1 				= 3600;
+			$idle_2 				= 7200;
 			
-			if($idle_rule)
+			if($idle_rule_1)
 			{
-				$idle_1 			= $idle_rule->idle_1;
-				$idle_2 			= $idle_rule->idle_2;
-				if(isset($idle_rule->margin_bottom_idle))
-				{
-					$margin_bottom_idle 	= $idle_rule->margin_bottom_idle;
-				}
+				$margin_bottom_idle = (int)$idle_rule_1->value;
 			}
-			else
+			if($idle_rule_2)
 			{
-				$idle_1 			= 3600;
-				$idle_2 			= 7200;
+				$idle_1 			= (int)$idle_rule_2->value;
+			}
+			if($idle_rule_3)
+			{
+				$idle_2 			= (int)$idle_rule_3->value;
 			}
 
 			$workid 				= null;
@@ -63,8 +67,8 @@ class ProcessingLogObserver
 			$total_idle_1 			= 0;
 			$total_idle_2 			= 0;
 			$total_idle_3 			= 0;
-			$total_sleep 			= 0;
 			$total_active 			= 0;
+			$count_status 			= 1;
 
 			$frequency_idle_1 		= 0;
 			$frequency_idle_2 		= 0;
@@ -81,6 +85,7 @@ class ProcessingLogObserver
 			if($pschedulee && $pschedules)
 			{
 				$schedule_start		= $pschedules->schedules[0]->start;
+				
 				$schedule_end		= $pschedulee->schedules[0]->end;
 
 				$working 			= Person::ID($model['attributes']['person_id'])->CurrentWork($on)->first();
@@ -135,6 +140,7 @@ class ProcessingLogObserver
 					$ccalendar 		= Person::ID($model['attributes']['person_id'])->WorkCalendar(true)->WorkCalendarschedule(['on' => [$on, $on]])->WithWorkCalendarSchedules(['on' => [$on, $on]])->first();
 
 					$schedule_start	= $ccalendar->workscalendars[0]->calendar->schedules[0]->start;
+					
 					$schedule_end	= $ccalendar->workscalendars[0]->calendar->schedules[0]->end;
 					$workid 		= $ccalendar->workscalendars[0]->id;
 
@@ -188,6 +194,7 @@ class ProcessingLogObserver
 						if(isset($wd[strtolower($day)]) && in_array(strtolower($wd[strtolower($day)]), $lworkdays))
 						{
 							$schedule_start = $calendar->workscalendars[0]->calendar->start;
+							
 							$schedule_end 	= $calendar->workscalendars[0]->calendar->end;	
 
 							//sync schedule status with process log
@@ -217,12 +224,14 @@ class ProcessingLogObserver
 						else
 						{
 							$schedule_start = '00:00:00';
+							
 							$schedule_end 	= '00:00:00';
 						}
 					}
 					else
 					{
 						$schedule_start = '00:00:00';
+							
 						$schedule_end 	= '00:00:00';
 					}
 				}
@@ -445,24 +454,6 @@ class ProcessingLogObserver
 						
 						unset($start_idle);
 					}
-
-					if(strtolower($value['name']) == 'sleep')
-					{
-						$start_sleep 	= date('H:i:s', strtotime($value['on']));
-						list($hours, $minutes, $seconds) = explode(":", $start_sleep);
-
-						$start_sleep 	= $hours*3600+$minutes*60+$seconds;
-					}
-					elseif((strtolower($value['name']) != 'sleep') && isset($start_sleep))
-					{
-						$new_sleep 		= date('H:i:s', strtotime($value['on']));
-						list($hours, $minutes, $seconds) = explode(":", $new_sleep);
-
-						$new_sleep 		= $hours*3600+$minutes*60+$seconds;
-
-						$total_sleep	= $total_sleep + $new_sleep - $start_sleep;
-						unset($start_sleep);
-					}
 				}
 			}
 
@@ -516,6 +507,8 @@ class ProcessingLogObserver
 
 			$total_active 				= abs($total_active) - abs($total_idle_1) - abs($total_idle_2) - abs($total_idle_3);
 
+			$prev_data 					= $plog->ondate([(date('Y-m-d',strtotime($on. ' -1 day'))), (date('Y-m-d',strtotime($on. ' -1 day')))])->attendanceactualstatus($actual_status)->personid($model['attributes']['person_id'])->first();
+
 			$plog->fill([
 									'name'					=> $name,
 									'on'					=> $on,
@@ -526,39 +519,43 @@ class ProcessingLogObserver
 									'end'					=> $end,
 									'fp_start'				=> $fp_start,
 									'fp_end'				=> $fp_end,
-									'margin_start'			=> $margin_start,
-									'margin_end'			=> $margin_end,
-									'total_idle'			=> $total_idle,
-									'total_idle_1'			=> $total_idle_1,
-									'total_idle_2'			=> $total_idle_2,
-									'total_idle_3'			=> $total_idle_3,
-									'total_sleep'			=> $total_sleep,
-									'total_active'			=> $total_active,
-									'actual_status'			=> $actual_status,
-									'frequency_idle_1'		=> $frequency_idle_1,
-									'frequency_idle_2'		=> $frequency_idle_2,
-									'frequency_idle_3'		=> $frequency_idle_3,
 							]
 					);
 
-			if(isset($modified_by))
+			if(isset($data->id))
 			{
-				$plog->fill(['modified_by' 					=> $modified_by]);
+				$alog 										= AttendanceLog::processlogid($data->id)->first();
+				$ilog 										= IdleLog::processlogid($data->id)->first();
 			}
 			else
 			{
-				unset($plog->modified_by);
+				$alog 										= new AttendanceLog;
+				$ilog 										= new IdleLog;
 			}
 
-			if(isset($modified_status))
+
+			if(isset($prev_data->id))
 			{
-				$plog->fill(['modified_status' 				=> $modified_status]);
+				$count_status 								= $prev_data->attendancelogs[0]->count_status + 1;
 			}
 
-			if(isset($modified_at))
-			{
-				$plog->fill(['modified_at' 					=> $modified_at]);
-			}
+			$alog->fill([
+								'margin_start'				=> $margin_start,
+								'margin_end'				=> $margin_end,
+								'count_status'				=> $count_status,
+								'actual_status'				=> $actual_status,
+			]);
+
+			$ilog->fill([
+								'total_active'				=> $total_active,
+								'total_idle'				=> $total_idle,
+								'total_idle_1'				=> $total_idle_1,
+								'total_idle_2'				=> $total_idle_2,
+								'total_idle_3'				=> $total_idle_3,
+								'frequency_idle_1'			=> $frequency_idle_1,
+								'frequency_idle_2'			=> $frequency_idle_2,
+								'frequency_idle_3'			=> $frequency_idle_3,
+			]);
 
 			$plog->Person()->associate($person);
 
@@ -576,6 +573,25 @@ class ProcessingLogObserver
 				$model['errors'] = $plog->getError();
 
 				return false;
+			}
+			else
+			{
+				$alog->ProcessLog()->associate($plog);
+				$ilog->ProcessLog()->associate($plog);
+
+				if (!$alog->save())
+				{
+					$model['errors'] = $alog->getError();
+
+					return false;
+				}
+
+				if (!$ilog->save())
+				{
+					$model['errors'] = $ilog->getError();
+
+					return false;
+				}
 			}
 
 			return true;

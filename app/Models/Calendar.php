@@ -47,6 +47,7 @@ class Calendar extends BaseModel {
 	use \App\Models\Traits\BelongsTo\HasCalendarTrait;
 	use \App\Models\Traits\HasMany\HasSchedulesTrait;
 	use \App\Models\Traits\HasMany\HasCalendarsTrait;
+	use \App\Models\Traits\HasMany\HasWorksTrait;
 	use \App\Models\Traits\BelongsToMany\HasChartsTrait;
 
 	public 		$timestamps 		= 	true;
@@ -65,13 +66,15 @@ class Calendar extends BaseModel {
 											'import_from_id'			=> 'exists:tmp_calendars,id',
 											'name'						=> 'required|max:255',
 											'start'						=> 'required|date_format:"H:i:s"',
-											'end'						=> 'required|date_format:"H:i:s"|after:start',
+											'end'						=> 'required|date_format:"H:i:s"',
 										];
 
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'notid' 					=> 'NotID', 
 											'organisationid' 			=> 'OrganisationID', 
+											'parentid' 					=> 'ParentID', 
+											'activeworks' 				=> 'ActiveWorks', 
 											'name' 						=> 'Name', 
 											'orname' 					=> 'OrName', 
 
@@ -85,6 +88,8 @@ class Calendar extends BaseModel {
 											'id' 						=> 'Could be array or integer', 
 											'notid' 					=> 'Must be integer', 
 											'organisationid' 			=> 'Could be array or integer', 
+											'parentid' 					=> 'Could be array or integer', 
+											'activeworks' 				=> 'MUst be true', 
 											'name' 						=> 'Must be string', 
 											'orname' 					=> 'Could be array or string', 
 

@@ -13,8 +13,6 @@
  * 	fp_end 		 					: Time
  * 	schedule_start 		 			: Required, Time
  * 	schedule_end 		 			: Required, Time
- * 	margin_start 		 			: Double
- * 	margin_end 		 				: Double
  * 	tooltip 	 					: 
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
@@ -40,6 +38,8 @@ class ProcessLog extends BaseModel {
 	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasPersonTrait;
 	use \App\Models\Traits\BelongsTo\HasWorkTrait;
+	use \App\Models\Traits\HasMany\HasAttendanceLogsTrait;
+	use \App\Models\Traits\HasMany\HasIdleLogsTrait;
 
 	public 		$timestamps 		= true;
 
@@ -54,8 +54,6 @@ class ProcessLog extends BaseModel {
 											'fp_end' 						,
 											'schedule_start' 				,
 											'schedule_end' 					,
-											'margin_start' 					,
-											'margin_end' 					,
 											'tooltip' 						,
 										];
 
@@ -68,8 +66,7 @@ class ProcessLog extends BaseModel {
 											'fp_end'					=> 'date_format:"H:i:s"',
 											'schedule_start'			=> 'required|date_format:"H:i:s"',
 											'schedule_end'				=> 'required|date_format:"H:i:s"',
-											'margin_start'				=> 'numeric',
-											'margin_end'				=> 'numeric',
+											
 										];
 
 	public $searchable 				= 	[

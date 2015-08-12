@@ -15,18 +15,18 @@ class PersonWorkleaveTableSeeder extends Seeder
 		DB::table('person_workleaves')->truncate();
 		$faker 										= Factory::create();
 		$persons 									= Person::count();
-		$status 									= ['offer', 'annual', 'special', 'confirmed'];
-		$quota 										= [2, 7, 14, 30];
+		$status 									= ['CN', 'CB'];
+		$quota 										= [12, 5, 7, 2, 1];
 		try
 		{
-			foreach(range(1, $persons * 2) as $index)
+			foreach(range(1, $persons) as $index)
 			{
-				$rand 								= rand(0, 3);
-				$person 							= Person::where('id', ($index%50) + 1)->with(['works' => function($q){$q->wherenull('end');}])->first();
+				$rand 								= rand(0, 0);
+				$person 							= Person::where('id', ($index%50) + 1)->with(['works' => function($q){$q->wherenull('end')->orwhere('end', '>', date('Y-m-d'));}])->first();
 
 				if(isset($person->works[0]))
 				{
-					if($status[$rand]=='annual')
+					if($status[$rand]=='CN')
 					{
 						$start 						= date('Y-m-d',strtotime('first day of january 2015'));
 						$end 						= date('Y-m-d',strtotime('last day of december 2015'));
@@ -37,12 +37,14 @@ class PersonWorkleaveTableSeeder extends Seeder
 						$end 						= date('Y-m-d',strtotime($start.' + '.$quota[$rand].' days'));
 					}
 
+					//pemberian cuti tahunan
 					$data 								= new PersonWorkleave;
 					$data->fill([
+						'workleave_id'					=> 1,
 						'created_by'					=> 1,
 						'work_id'						=> $person->works[0]->id,
-						'name'							=> 'Cuti '.$status[$rand].' 2015',
-						'notes'							=> 'Cuti '.$status[$rand].' 2015',
+						'name'							=> 'Cuti Tahunan 2015',
+						'notes'							=> 'Cuti Tahunan 2015',
 						'start'							=> $start,
 						'end'							=> $end,
 						'status'						=> $status[$rand],
@@ -54,6 +56,29 @@ class PersonWorkleaveTableSeeder extends Seeder
 					if (!$data->save())
 					{
 						print_r($data->getError());
+						exit;
+					}
+
+
+					//pengambilan cuti bersama
+					$data2 								= new PersonWorkleave;
+					$data2->fill([
+						'person_workleave_id'			=> $data->id,
+						'created_by'					=> 1,
+						'work_id'						=> $person->works[0]->id,
+						'name'							=> 'Cuti Bersama 2015',
+						'notes'							=> 'Cuti Bersama 2015',
+						'start'							=> $start,
+						'end'							=> $end,
+						'status'						=> $status[$rand+1],
+						'quota'							=> $quota[$rand+1],
+					]);
+
+					$data2->Person()->associate($person);
+
+					if (!$data2->save())
+					{
+						print_r($data2->getError());
 						exit;
 					}
 				}

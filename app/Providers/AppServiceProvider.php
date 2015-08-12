@@ -34,12 +34,17 @@ class AppServiceProvider extends ServiceProvider {
 		\App\Models\ProcessLog::observe(new \App\Models\Observers\ProcessLogObserver);
 		\App\Models\ErrorLog::observe(new \App\Models\Observers\ErrorLogObserver);
 
+		\App\Models\IdleLog::observe(new \App\Models\Observers\IdleLogObserver);
+		\App\Models\AttendanceLog::observe(new \App\Models\Observers\AttendanceLogObserver);
+		\App\Models\AttendanceDetail::observe(new \App\Models\Observers\AttendanceDetailObserver);
 
 		\App\Models\Organisation::observe(new \App\Models\Observers\OrganisationObserver);
 		\App\Models\Branch::observe(new \App\Models\Observers\BranchObserver);
 		\App\Models\Chart::observe(new \App\Models\Observers\ChartObserver);
 
 		\App\Models\Person::observe(new \App\Models\Observers\PersonObserver);
+		\App\Models\Relative::observe(new \App\Models\Observers\RelativeObserver);
+		\App\Models\MaritalStatus::observe(new \App\Models\Observers\MaritalStatusObserver);
 
 		\App\Models\Calendar::observe(new \App\Models\Observers\CalendarObserver);
 		\App\Models\Schedule::observe(new \App\Models\Observers\ScheduleObserver);
@@ -50,10 +55,13 @@ class AppServiceProvider extends ServiceProvider {
 
 		\App\Models\Workleave::observe(new \App\Models\Observers\WorkleaveObserver);
 		\App\Models\PersonWorkleave::observe(new \App\Models\Observers\PersonWorkleaveObserver);
+		\App\Models\FollowWorkleave::observe(new \App\Models\Observers\FollowWorkleaveObserver);
 
 		\App\Models\Work::observe(new \App\Models\Observers\WorkObserver);
 		
-		\App\Models\SettingIdle::observe(new \App\Models\Observers\SettingIdleObserver);
+		\App\Models\Policy::observe(new \App\Models\Observers\PolicyObserver);
+		\App\Models\Queue::observe(new \App\Models\Observers\QueueObserver);
+		\App\Models\QueueTable::observe(new \App\Models\Observers\QueueTableObserver);
 		//
 	}
 
@@ -91,12 +99,18 @@ class AppServiceProvider extends ServiceProvider {
 		\App\Models\ProcessLog::observe(new \App\Models\Observers\ProcessLogObserver);
 		\App\Models\ErrorLog::observe(new \App\Models\Observers\ErrorLogObserver);
 
+		\App\Models\IdleLog::observe(new \App\Models\Observers\IdleLogObserver);
+		\App\Models\AttendanceLog::observe(new \App\Models\Observers\AttendanceLogObserver);
+		\App\Models\AttendanceDetail::observe(new \App\Models\Observers\AttendanceDetailObserver);
+
 		\App\Models\Organisation::observe(new \App\Models\Observers\OrganisationObserver);
 		\App\Models\Branch::observe(new \App\Models\Observers\BranchObserver);
 		\App\Models\Chart::observe(new \App\Models\Observers\ChartObserver);
 
 		\App\Models\Person::observe(new \App\Models\Observers\PersonObserver);
-
+		\App\Models\Relative::observe(new \App\Models\Observers\RelativeObserver);
+		\App\Models\MaritalStatus::observe(new \App\Models\Observers\MaritalStatusObserver);
+		
 		\App\Models\Calendar::observe(new \App\Models\Observers\CalendarObserver);
 		\App\Models\Schedule::observe(new \App\Models\Observers\ScheduleObserver);
 		\App\Models\PersonSchedule::observe(new \App\Models\Observers\PersonScheduleObserver);
@@ -106,10 +120,13 @@ class AppServiceProvider extends ServiceProvider {
 
 		\App\Models\Workleave::observe(new \App\Models\Observers\WorkleaveObserver);
 		\App\Models\PersonWorkleave::observe(new \App\Models\Observers\PersonWorkleaveObserver);
+		\App\Models\FollowWorkleave::observe(new \App\Models\Observers\FollowWorkleaveObserver);
 
 		\App\Models\Work::observe(new \App\Models\Observers\WorkObserver);
 
-		\App\Models\SettingIdle::observe(new \App\Models\Observers\SettingIdleObserver);
+		\App\Models\Policy::observe(new \App\Models\Observers\PolicyObserver);
+		\App\Models\Queue::observe(new \App\Models\Observers\QueueObserver);
+		\App\Models\QueueTable::observe(new \App\Models\Observers\QueueTableObserver);
 
 		$this->app->bind(
 			'Illuminate\Contracts\Auth\Registrar',

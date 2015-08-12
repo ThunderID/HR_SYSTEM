@@ -72,6 +72,7 @@ class Person extends BaseModel {
 	use \App\Models\Traits\HasMany\HasWidgetsTrait;
 	use \App\Models\Traits\HasMany\HasProcessLogsTrait;
 	use \App\Models\Traits\HasMany\HasLogsTrait;
+	use \App\Models\Traits\HasMany\HasMaritalStatusesTrait;
 	use \App\Models\Traits\HasOne\HasFingerTrait;
 
 	public 		$timestamps 		= 	true;

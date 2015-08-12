@@ -15,12 +15,12 @@ class ScheduleTableSeeder extends Seeder
 		DB::table('tmp_schedules')->truncate();
 		$faker 										= Factory::create();
 		$total_cals  								= Calendar::count();
-		$schedule 									= ['shift pagi', 'shift malam', 'jam normal', 'hari sabtu', 'hari jumat', 'minggu', 'lembur'];
-		$start 										= ['08:00:00', '16:00:00', '08:00:00', '08:00:00', '08:00:00', '08:00:00', '20:00:00'];
-		$end 										= ['16:00:00', '00:00:00', '16:00:00', '12:00:00', '15:00:00', '10:00:00', '00:00:00'];
-		$status 									= ['presence_indoor', 'presence_outdoor', 'absence_workleave', 'absence_not_workleave'];
-		try
-		{
+		$schedule 									= ['normal', 'dinas luar', 'cuti', 'libur', 'hari jumat', 'minggu', 'lembur'];
+		$start 										= ['08:00:00', '12:00:00', '00:00:00', '00:00:00', '08:00:00', '08:00:00', '20:00:00'];
+		$end 										= ['16:00:00', '16:00:00', '00:00:00', '00:00:00', '15:00:00', '10:00:00', '00:00:00'];
+		$status 									= ['HB', 'DN', 'CN', 'L'];
+		// try
+		// {
 			foreach(range(1, $total_cals) as $index)
 			{
 				$rand 								= rand(0,3);
@@ -37,7 +37,7 @@ class ScheduleTableSeeder extends Seeder
 						'created_by'				=> 1,
 						'on'						=> $period->format('Y-m-d'),
 						'status'					=> $status[$rand],
-						'name'						=> str_replace('_', ' ', $status[$rand]),
+						'name'						=> $schedule[$rand],
 						'start'						=> $start[$rand],
 						'end'						=> $end[$rand],
 					]);
@@ -53,10 +53,10 @@ class ScheduleTableSeeder extends Seeder
 					}
 				}
 			} 
-		}
-		catch (Exception $e) 
-		{
-    		echo 'Caught exception: ',  $e->getMessage(), "\n";
-		}	
+		// }
+		// catch (Exception $e) 
+		// {
+  //   		echo 'Caught exception: ',  $e->getMessage(), "\n";
+		// }	
 	}
 }

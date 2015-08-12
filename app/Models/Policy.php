@@ -7,6 +7,7 @@
  * 	created_by 						: Foreign Key From Person, Integer, Required
  * 	type 		 					: Required : max 255
  * 	value 		 					: Required
+ * 	started_at 		 				: Require, datetime
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -39,17 +40,21 @@ class Policy extends BaseModel {
 											'created_by' 				,
 											'type' 						,
 											'value' 					,
+											'started_at' 				,
 										];
 
 	protected 	$rules				= 	[
 											'created_by'				=> 'required|exists:persons,id',
 											'type'						=> 'required|max:255',
 											'value'						=> 'required',
+											'started_at'				=> 'required|date_format:"Y-m-d"',
 										];
 
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'organisationid' 			=> 'OrganisationID', 
+
+											'ondate' 					=> 'OnDate', 
 
 											'withattributes' 			=> 'WithAttributes'
 										];
@@ -57,6 +62,8 @@ class Policy extends BaseModel {
 	public $searchableScope 		= 	[
 											'id' 						=> 'Could be array or integer', 
 											'organisationid' 			=> 'Could be array or integer', 
+
+											'ondate' 					=> 'Could be array or string (date)', 
 
 											'withattributes' 			=> 'Must be array of relationship'
 										];
@@ -107,5 +114,31 @@ class Policy extends BaseModel {
 			return $query->whereIn('tmp_policies.id', $variable);
 		}
 		return $query->where('tmp_policies.id', $variable);
+	}
+
+	public function scopeType($query, $variable)
+	{
+		return $query->where('type', $variable);
+	}
+
+	public function scopeOnDate($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			if(!is_null($variable[1]))
+			{
+				return $query->where('started_at', '<=', date('Y-m-d', strtotime($variable[1])))
+							 ->where('started_at', '>=', date('Y-m-d', strtotime($variable[0])));
+			}
+			elseif(!is_null($variable[0]))
+			{
+				return $query->where('started_at', '>=', date('Y-m-d', strtotime($variable[0])));
+			}
+			else
+			{
+				return $query->where('started_at', '>=', date('Y-m-d'));
+			}
+		}
+		return $query->where('started_at', '>=', date('Y-m-d', strtotime($variable)));
 	}
 }

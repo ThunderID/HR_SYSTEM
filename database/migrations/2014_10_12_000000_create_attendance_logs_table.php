@@ -20,8 +20,13 @@ class CreateAttendanceLogsTable extends Migration {
 			$table->integer('modified_by')->unsigned()->index();
 			$table->string('actual_status', 255);
 			$table->string('modified_status', 255);
-			$table->double('count_status');
+
+			$table->double('margin_start');
+			$table->double('margin_end');
+
 			$table->double('tolerance_time');
+			
+			$table->double('count_status');
 			$table->text('notes');
 			$table->datetime('modified_at')->nullable();
 			$table->datetime('settlement_at')->nullable();

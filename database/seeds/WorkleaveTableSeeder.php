@@ -14,8 +14,8 @@ class WorkleaveTableSeeder extends Seeder
 		DB::table('tmp_workleaves')->truncate();
 		$faker 										= Factory::create();
 		$organisation 								= Organisation::find(1);
-		$workleaves 								= ['Cuti Tahunan', 'Cuti Bersama', 'Cuti Melahirkan', 'Cuti Menikah'];
-		$status 									= ['annual', 'annual', 'special', 'special'];
+		$workleaves 								= ['Cuti Tahunan', 'Cuti Melahirkan', 'Cuti Menikah'];
+		$status 									= ['CN', 'CI', 'CI'];
 		$quota 										= ['12', '15', '18', '14', '21', '6'];
 		try
 		{

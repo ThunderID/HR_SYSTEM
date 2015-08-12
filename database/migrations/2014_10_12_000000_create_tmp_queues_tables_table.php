@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateQueuesTablesTable extends Migration {
+class CreateTmpQueuesTablesTable extends Migration {
 
 	/**
 	 * Run the migrations.
