@@ -253,7 +253,7 @@ class ScheduleController extends BaseController
 			$attributes['onend'] 		= $ended;
 
 			$queattr['created_by'] 		= Session::get('loggedUser');
-			$queattr['process_name'] 	= 'hr:batch personschedulebatchcommand';
+			$queattr['process_name'] 	= 'hr:queue personschedulebatchcommand';
 			$queattr['parameter'] 		= json_encode($attributes);
 			$queattr['total_process'] 	= count($periods);
 			$queattr['task_per_process']= 10;

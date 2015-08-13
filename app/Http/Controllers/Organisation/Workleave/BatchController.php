@@ -141,7 +141,7 @@ class BatchController extends BaseController
 		$attributes['notes'] 					= 'Batch '.$attributes['name'];
 
 		$queattr['created_by'] 					= Session::get('loggedUser');
-		$queattr['process_name'] 				= 'hr:batch personworkleavebatchcommand';
+		$queattr['process_name'] 				= 'hr:queue personworkleavebatchcommand';
 		$queattr['parameter'] 					= json_encode($attributes);
 		$queattr['total_process'] 				= count($works);
 		$queattr['task_per_process']			= 10;

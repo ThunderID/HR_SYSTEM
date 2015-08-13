@@ -379,7 +379,7 @@ class ScheduleController extends BaseController
 						$attributes['associate'] 	= $value['id'];
 
 						$queattr['created_by'] 		= Session::get('loggedUser');
-						$queattr['process_name'] 	= 'hr:batch schedulebatchcommand';
+						$queattr['process_name'] 	= 'hr:queue schedulebatchcommand';
 						$queattr['parameter'] 		= json_encode($attributes);
 						$queattr['total_process'] 	= count($value['works']);
 						$queattr['task_per_process']= 10;
@@ -414,7 +414,7 @@ class ScheduleController extends BaseController
 					$attributes['associate'] 	= $calendar['id'];
 
 					$queattr['created_by'] 		= Session::get('loggedUser');
-					$queattr['process_name'] 	= 'hr:batch schedulebatchcommand';
+					$queattr['process_name'] 	= 'hr:queue schedulebatchcommand';
 					$queattr['parameter'] 		= json_encode($attributes);
 					$queattr['total_process'] 	= count($calendar['works']);
 					$queattr['task_per_process']= 10;
