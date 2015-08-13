@@ -3,8 +3,9 @@
 /* ----------------------------------------------------------------------
  * Document Model:
  * 	ID 								: Auto Increment, Integer, PK
- * 	queue_id 						: Foreign Key From Chart, Integer, Required
- * 	queue_type 						: Model Class, Required, Auto
+ * 	queue_id 						: Foreign Key From Queue, Integer, Required
+ * 	queue_morph_id 					: Foreign Key From Model, Integer, Required
+ * 	queue_morph_type 				: Model Class, Required, Auto
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp

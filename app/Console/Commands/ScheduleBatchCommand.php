@@ -126,7 +126,30 @@ class ScheduleBatchCommand extends Command {
 		else
 		{
 			$pending->fill(['message' => json_encode($errors)]);
+
+			$content 				= $this->dispatch(new Saving(new QueueMorph, ['queue_id' => $id], null, new Schedule, $is_success->data->id));
+
+			$is_success_2 				= json_decode($content);
+			if(!$is_success_2->meta->success)
+			{
+				foreach ($is_success_2->meta->errors as $key => $value) 
+				{
+					if(is_array($value))
+					{
+						foreach ($value as $key2 => $value2) 
+						{
+							$errors->add('BatchMorph', $value2);
+						}
+					}
+					else
+					{
+						$errors->add('BatchMorph', $value);
+					}
+				}
+				//save the morph
+			}
 		}
+
 
 		$pending->save();
 
