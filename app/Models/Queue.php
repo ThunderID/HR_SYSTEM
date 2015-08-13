@@ -32,6 +32,7 @@ class Queue extends BaseModel {
 
 	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasPersonTrait;
+	use \App\Models\Traits\HasMany\HasQueueMorphsTrait;
 
 	public 		$timestamps 		= true;
 

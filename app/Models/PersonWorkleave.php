@@ -44,6 +44,7 @@ class PersonWorkleave extends BaseModel {
 	use \App\Models\Traits\BelongsTo\HasPersonWorkleaveTrait;
 	use \App\Models\Traits\HasMany\HasPersonWorkleavesTrait;
 	use \App\Models\Traits\MorphMany\HasWorkleaveAttendanceDetailsTrait;
+	use \App\Models\Traits\MorphTo\HasQueueMorphTrait;
 
 	public 		$timestamps 		= 	true;
 

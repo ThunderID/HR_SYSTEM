@@ -201,15 +201,16 @@ class HRSUpdateCommand extends Command {
 
 		$this->info("Add queues table");
 
-		Schema::create('queues_tables', function(Blueprint $table) {
+		Schema::create('queues_morphs', function(Blueprint $table) {
 			$table->increments('id');
 			$table->integer('queue_id')->unsigned()->index();
-			$table->string('queue_type', 255);
+			$table->integer('queue_morph_id')->unsigned()->index();
+			$table->string('queue_morph_type', 255);
 			$table->timestamps();
 			$table->softDeletes();
 		});
 
-		$this->info("Add queues tables table");
+		$this->info("Add queues morphs table");
 
 		//migrating processlog to attendance log and idle log
 		$plogs 							= ProcessLog::all();

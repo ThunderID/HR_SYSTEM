@@ -28,7 +28,12 @@
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Str, Validator, DateTime, Exception;
 
-class QueueTable extends BaseModel {
+class QueueMorph extends BaseModel 
+{
+	use \App\Models\Traits\MorphMany\HasSchedulesTrait;
+	use \App\Models\Traits\MorphMany\HasPersonSchedulesTrait;
+	use \App\Models\Traits\MorphMany\HasPersonWorkleavesTrait;
+	use \App\Models\Traits\BelongsTo\HasQueueTrait;
 
 	use SoftDeletes;
 
