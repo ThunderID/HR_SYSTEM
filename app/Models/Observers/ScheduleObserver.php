@@ -2,9 +2,7 @@
 
 use DB, Validator;
 use App\Models\Schedule;
-use App\Models\ProcessLog;
-use App\Models\Work;
-use App\Models\Person;
+use App\Models\Log;
 use \Illuminate\Support\MessageBag as MessageBag;
 
 /* ----------------------------------------------------------------------
