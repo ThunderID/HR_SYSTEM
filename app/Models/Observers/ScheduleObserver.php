@@ -15,34 +15,38 @@ use \Illuminate\Support\MessageBag as MessageBag;
 
 class ScheduleObserver 
 {
+	public function creating($model)
+	{
+		if(isset($model['attributes']['calendar_id']) )
+		{
+			$schedule 					= new Schedule;
+			if(isset($model['attributes']['id']))
+			{
+				$data 					= $schedule->ondate([$model['attributes']['on'], date('Y-m-d', strtotime($model['attributes']['on'].' + 1 day'))])->calendarid($model['attributes']['calendar_id'])->notid($model['attributes']['id'])->first();
+			}
+			else
+			{
+				$data 					= $schedule->ondate([$model['attributes']['on'], date('Y-m-d', strtotime($model['attributes']['on'].' + 1 day'))])->calendarid($model['attributes']['calendar_id'])->first();
+			}
+
+			if(count($data))
+			{
+				$errors 				= new MessageBag;
+				$errors->add('ondate', 'Tidak dapat menyimpan dua jadwal di hari yang sama. Silahkan edit jadwal sebelumnya tambahkan jadwal khusus pada orang yang bersangkutan.');
+				
+				$model['errors'] 		= $errors;
+
+				return false;
+			}
+		}
+	}
+	
 	public function saving($model)
 	{
 		$validator 							= Validator::make($model['attributes'], $model['rules']);
 
 		if ($validator->passes())
 		{
-			if(isset($model['attributes']['calendar_id']))
-			{
-				$schedule 					= new Schedule;
-				if(isset($model['attributes']['id']))
-				{
-					$data 					= $schedule->ondate([$model['attributes']['on'], date('Y-m-d', strtotime($model['attributes']['on'].' + 1 day'))])->calendarid($model['attributes']['calendar_id'])->notid($model['attributes']['id'])->first();
-				}
-				else
-				{
-					$data 					= $schedule->ondate([$model['attributes']['on'], date('Y-m-d', strtotime($model['attributes']['on'].' + 1 day'))])->calendarid($model['attributes']['calendar_id'])->first();
-				}
-
-				if(count($data))
-				{
-					$errors 				= new MessageBag;
-					$errors->add('ondate', 'Tidak dapat menyimpan dua jadwal di hari yang sama. Silahkan edit jadwal sebelumnya tambahkan jadwal khusus pada orang yang bersangkutan.');
-					
-					$model['errors'] 		= $errors;
-
-					return false;
-				}
-			}
 
 			return true;
 		}

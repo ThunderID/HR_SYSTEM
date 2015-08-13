@@ -201,7 +201,7 @@ class HRSUpdateCommand extends Command {
 
 		$this->info("Add queues table");
 
-		Schema::create('queues_morphs', function(Blueprint $table) {
+		Schema::create('queue_morphs', function(Blueprint $table) {
 			$table->increments('id');
 			$table->integer('queue_id')->unsigned()->index();
 			$table->integer('queue_morph_id')->unsigned()->index();

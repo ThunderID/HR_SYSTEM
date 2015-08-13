@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use App\Models\Queue;
 use App\Models\Calendar;
 use App\Models\Schedule;
+use App\Models\QueueMorph;
 use \Illuminate\Support\MessageBag as MessageBag;
 
 class ScheduleBatchCommand extends Command {
@@ -49,7 +50,7 @@ class ScheduleBatchCommand extends Command {
 
 		$result 		= $this->batchSchedulefromwork($id);
 
-		return true;
+		return $result;
 	}
 
 	/**
@@ -97,8 +98,11 @@ class ScheduleBatchCommand extends Command {
 		{
 			$parameters['id']		= $data->id;
 		}
-
-		$content 					= $this->dispatch(new Saving(new Schedule, $parameters, (isset($parameters['id']) ? $parameters['id'] : null), new Calendar, $parameters['associate_calendar_id']));
+		else
+		{
+			$parameters['id']		= null;
+		}
+		$content 					= $this->dispatch(new Saving(new Schedule, $parameters, $parameters['id'], new Calendar, $parameters['associate_calendar_id']));
 
 		$is_success 				= json_decode($content);
 		if(!$is_success->meta->success)
@@ -121,35 +125,22 @@ class ScheduleBatchCommand extends Command {
 
 		if(!$errors->count())
 		{
-			$pending->fill(['message' => 'Success', 'process_number' => 1]);		
+			$pending->fill(['message' => 'Success', 'process_number' => 1]);
+
+			$morphed 						= new QueueMorph;
+
+			$morphed->fill([
+				'queue_id'						=> $id,
+				'queue_morph_id'				=> $is_success->data->id,
+				'queue_morph_type'				=> get_class(new Schedule),
+			]);
+
+			$morphed->save();
 		}
 		else
 		{
 			$pending->fill(['message' => json_encode($errors)]);
-
-			$content 				= $this->dispatch(new Saving(new QueueMorph, ['queue_id' => $id], null, new Schedule, $is_success->data->id));
-
-			$is_success_2 				= json_decode($content);
-			if(!$is_success_2->meta->success)
-			{
-				foreach ($is_success_2->meta->errors as $key => $value) 
-				{
-					if(is_array($value))
-					{
-						foreach ($value as $key2 => $value2) 
-						{
-							$errors->add('BatchMorph', $value2);
-						}
-					}
-					else
-					{
-						$errors->add('BatchMorph', $value);
-					}
-				}
-				//save the morph
-			}
 		}
-
 
 		$pending->save();
 

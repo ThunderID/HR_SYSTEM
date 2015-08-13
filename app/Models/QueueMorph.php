@@ -13,15 +13,17 @@
 /* ----------------------------------------------------------------------
  * Document Relationship :
 * 	//this package
- 	1 Relationship morphto 
+ 	3 Relationships MorphedByMany 
 	{
-		Calendar
+		Schedules
+		PersonSchedules
+		PersonWorkleaves
 	}
 
  * 	//other package
  	1 Relationship belongsTo 
 	{
-		Chart
+		Queue
 	}
 
  * ---------------------------------------------------------------------- */
@@ -40,14 +42,18 @@ class QueueMorph extends BaseModel
 
 	public 		$timestamps 		= 	true;
 
-	protected 	$table 				= 	'queues_table';
+	protected 	$table 				= 	'queue_morphs';
 
 	protected 	$fillable			= 	[
 											'queue_id' 					,
+											'queue_morph_id' 			,
+											'queue_morph_type' 			,
 										];
 
 	protected 	$rules				= 	[
 											'queue_id'					=> 'required|exists:tmp_queues,id',
+											'queue_morph_id'			=> 'required',
+											'queue_morph_type'			=> 'required',
 										];
 
 	public $searchable 				= 	[
@@ -107,8 +113,8 @@ class QueueMorph extends BaseModel
 	{
 		if(is_array($variable))
 		{
-			return $query->whereIn('queues_table.id', $variable);
+			return $query->whereIn('queue_morphs.id', $variable);
 		}
-		return $query->where('queues_table.id', $variable);
+		return $query->where('queue_morphs.id', $variable);
 	}
 }

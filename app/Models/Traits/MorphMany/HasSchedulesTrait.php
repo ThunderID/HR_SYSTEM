@@ -17,6 +17,6 @@ trait HasSchedulesTrait {
 	/* ------------------------------------------------------------------- RELATIONSHIP IN CONTACT PACKAGE -------------------------------------------------------------------*/
 	public function Schedules()
 	{
-		return $this->morphMany('App\Models\Schedule', 'queue_morph');
+		return $this->morphedByMany('App\Models\Schedule', 'queue_morph');
 	}
 }

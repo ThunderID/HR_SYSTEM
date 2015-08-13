@@ -12,7 +12,7 @@ class CreateTmpQueuesMorphsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('queues_morphs', function(Blueprint $table) {
+		Schema::create('queue_morphs', function(Blueprint $table) {
 			$table->increments('id');
 			$table->integer('queue_id')->unsigned()->index();
 			$table->integer('queue_morph_id')->unsigned()->index();
@@ -30,7 +30,7 @@ class CreateTmpQueuesMorphsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('queues_morphs');
+		Schema::drop('queue_morphs');
 	}
 
 }
