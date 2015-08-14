@@ -30,7 +30,6 @@
 								<select name="status" class="form-control schedule_status">
 									<option value="HB">Hadir</option>
 									<option value="L">Libur</option>
-									<option value="CB">Cuti Bersama</option>
 									@if(Input::has('person_id'))
 										<!-- <option value="CI">Cuti Istimewa</option> -->
 										<option value="CN">Cuti Pribadi</option>
@@ -38,6 +37,8 @@
 										<option value="SS">Sakit (dalam waktu pendek)</option>
 										<option value="SL">Sakit (dalam waktu panjang)</option>
 										<option value="DN">Dinas Luar</option>
+									@else
+										<option value="CB">Cuti Bersama</option>
 									@endif
 								</select>						
 							</div>

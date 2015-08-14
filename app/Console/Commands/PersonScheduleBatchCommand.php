@@ -94,8 +94,8 @@ class PersonScheduleBatchCommand extends Command {
 		$errors 					= new MessageBag;
 
 		//check work active on that day, please consider if that queue were written days
-		$begin 						= new DateTime( $parameters['onstart']->date );
-		$ended 						= new DateTime( $parameters['onend']->date );
+		$begin 						= new DateTime( $parameters['onstart'] );
+		$ended 						= new DateTime( $parameters['onend'] );
 
 		$interval 					= DateInterval::createFromDateString('1 day');
 		$periods 					= new DatePeriod($begin, $interval, $ended);
@@ -126,12 +126,12 @@ class PersonScheduleBatchCommand extends Command {
 						{
 							foreach ($value as $key2 => $value2) 
 							{
-								$errors->add('Person', $value2);
+								$errors->add('Batch', $value2);
 							}
 						}
 						else
 						{
-							$errors->add('Person', $value);
+							$errors->add('Batch', $value);
 						}
 					}
 				}

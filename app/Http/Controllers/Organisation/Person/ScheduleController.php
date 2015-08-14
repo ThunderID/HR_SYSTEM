@@ -138,16 +138,40 @@ class ScheduleController extends BaseController
 			App::abort(404);
 		}
 
-		$search['id'] 							= $person_id;
-		$search['organisationid'] 				= $org_id;
-		$search['withattributes'] 				= ['organisation'];
-		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
-		$contents 								= json_decode($results);
 
-		if(!$contents->meta->success)
+		if(Input::has('on'))
 		{
-			App::abort(404);
+			$begin 								= new DateTime( Input::get('on') );
+			$ended 								= new DateTime( Input::get('on').' + 1 day' );
+			$maxend 							= new DateTime( Input::get('on').' + 3 days' );
+		}
+		elseif(Input::has('onstart') && Input::has('onend'))
+		{
+			$begin 								= new DateTime( Input::get('onstart') );
+			$ended 								= new DateTime( Input::get('onend').' + 1 day' );
+			$maxend 							= new DateTime( Input::get('onstart').' + 3 days' );
+		}
+		else
+		{
+			$errors->add('Person', 'Tanggal Tidak Valid');
+		}
+
+		if(!$errors->count())
+		{
+			$search['id'] 							= $person_id;
+			$search['organisationid'] 				= $org_id;
+			$search['WorkCalendar'] 				= true;
+			$search['WithWorkCalendarSchedules'] 	= ['on' => [$begin->format('Y-m-d'), $end->format('Y-m-d')]];
+			$sort 									= ['name' => 'asc'];
+			$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
+			$contents 								= json_decode($results);
+
+			if(!$contents->meta->success || !isset($contents->data->workscalendars[0]) || is_null($contents->data->workscalendars[0]) || $contents->data->workscalendars[0]=='')
+			{
+				App::abort(404);
+			}
+			
+			$person 								= json_decode(json_encode($contents->data), true);
 		}
 
 		$attributes 							= Input::only('name', 'status', 'start', 'end');
@@ -167,22 +191,6 @@ class ScheduleController extends BaseController
 
 		DB::beginTransaction();
 
-		if(Input::has('on'))
-		{
-			$begin 								= new DateTime( Input::get('on') );
-			$ended 								= new DateTime( Input::get('on').' + 1 day' );
-			$maxend 							= new DateTime( Input::get('on').' + 3 days' );
-		}
-		elseif(Input::has('onstart') && Input::has('onend'))
-		{
-			$begin 								= new DateTime( Input::get('onstart') );
-			$ended 								= new DateTime( Input::get('onend').' + 1 day' );
-			$maxend 							= new DateTime( Input::get('onstart').' + 3 days' );
-		}
-		else
-		{
-			$errors->add('Person', 'Tanggal Tidak Valid');
-		}
 
 		if(isset($ended) && $ended->format('Y-m-d') <= $begin->format('Y-m-d'))
 		{
@@ -213,7 +221,7 @@ class ScheduleController extends BaseController
 			}
 		}
 
-		if(!$errors->count() && isset($ended) && $ended->format('Y-m-d') <= $maxend->format('Y-m-d'))
+		if(!$errors->count() && isset($ended) && $ended->format('Y-m-d') <= $maxend->format('Y-m-d') && !in_array(strtoupper($attributes['onend']), ['CB', 'CN', 'CI']))
 		{
 			$interval 								= DateInterval::createFromDateString('1 day');
 			$periods 								= new DatePeriod($begin, $interval, $ended);
@@ -249,17 +257,35 @@ class ScheduleController extends BaseController
 			$interval 					= DateInterval::createFromDateString('1 day');
 			$periods 					= new DatePeriod($begin, $interval, $ended);
 
-			$attributes['onstart'] 		= $begin;
-			$attributes['onend'] 		= $ended;
+			$attributes['work_id'] 		= $person['workscalendars'][0]['id'];
+			$attributes['workscalendars']	= $person['workscalendars'][0]['calendar'];
+			$attributes['onstart']		= $begin->format('Y-m-d');
+			$attributes['onend']		= $ended->format('Y-m-d');
+
 			$attributes['associate_person_id'] 	= $person_id;
 
 			$queattr['created_by'] 		= Session::get('loggedUser');
 			$queattr['process_name'] 	= 'hr:personschedulebatch';
-			$queattr['parameter'] 		= json_encode($attributes);
+
 			$queattr['total_process'] 	= ceil(iterator_count($periods)/10);
 			$queattr['task_per_process']= 10;
 			$queattr['process_number'] 	= 0;
 			$queattr['total_task'] 		= iterator_count($periods);
+			
+			if(in_array(strtoupper($attributes['onend']), ['CB', 'CN', 'CI']))
+			{
+				unset($attributes['onstart']);
+				unset($attributes['onend']);
+				$attributes['start']		= $begin->format('Y-m-d');
+				$attributes['end']			= $ended->format('Y-m-d');
+				$queattr['process_name']	= 'hr:personworkleavebatch';
+				$queattr['total_process']	= 1;
+				$queattr['task_per_process']= 10;
+				$queattr['process_number'] 	= 0;
+				$queattr['total_task'] 		= 1;
+			}
+
+			$queattr['parameter'] 		= json_encode($attributes);
 			$queattr['message'] 		= 'Initial Queue';
 
 			$content 					= $this->dispatch(new Saving(new Queue, $queattr, null));

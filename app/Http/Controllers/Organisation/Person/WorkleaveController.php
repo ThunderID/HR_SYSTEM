@@ -256,6 +256,7 @@ class WorkleaveController extends BaseController
 		{
 			App::abort(404);
 		}
+
 		$person 								= json_decode(json_encode($contents->data), true);
 
 		$errors 								= new MessageBag();
@@ -428,7 +429,7 @@ class WorkleaveController extends BaseController
 
 		if(isset($batch) && !$errors->count())
 		{
-			$attributes['associate'] 				= $person_id;
+			$attributes['associate_person_id'] 		= $person_id;
 			$attributes['workscalendars'] 			= $person['workscalendars'][0]['calendar'];
 			$attributes['periods'] 					= $periods;
 
