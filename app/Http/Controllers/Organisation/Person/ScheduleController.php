@@ -188,11 +188,6 @@ class ScheduleController extends BaseController
 			$errors->add('Person', 'Tanggal akhir harus lebih besar dari tanggal mulai. Gunakan single date untuk tanggal manual');
 		}
 
-		if(isset($ended) && $ended->format('Y-m-d') > $maxend->format('Y-m-d'))
-		{
-			$errors->add('Person', 'Maksimal range adalah satu minggu (7 Hari) ');
-		}
-
 		if((int)Session::Get('user.menuid')==2)
 		{
 			$dateline 						= date('Y-m-d', strtotime($begin->format('Y-m-d'). ' + 2 months'));
@@ -217,7 +212,7 @@ class ScheduleController extends BaseController
 			}
 		}
 
-		if(!$errors->count())
+		if(!$errors->count() && isset($ended) && $ended->format('Y-m-d') <= $maxend->format('Y-m-d'))
 		{
 			$interval 								= DateInterval::createFromDateString('1 day');
 			$periods 								= new DatePeriod($begin, $interval, $ended);
@@ -243,6 +238,46 @@ class ScheduleController extends BaseController
 						{
 							$errors->add('Person', $value);
 						}
+					}
+				}
+			}
+		}
+
+		elseif(!$errors->count())
+		{
+			$interval 					= DateInterval::createFromDateString('1 day');
+			$periods 					= new DatePeriod($begin, $interval, $ended);
+
+			$attributes['associate'] 	= $person['id'];
+			$attributes['onstart'] 		= $begin;
+			$attributes['onend'] 		= $ended;
+
+			$queattr['created_by'] 		= Session::get('loggedUser');
+			$queattr['process_name'] 	= 'hr:queue personschedulebatchcommand';
+			$queattr['parameter'] 		= json_encode($attributes);
+			$queattr['total_process'] 	= count($periods);
+			$queattr['task_per_process']= 10;
+			$queattr['process_number'] 	= 0;
+			$queattr['total_task'] 		= count($periods)/10;
+			$queattr['message'] 		= 'Initial Queue';
+
+			$content 					= $this->dispatch(new Saving(new Queue, $queattr, null));
+			$is_success_2 				= json_decode($content);
+
+			if(!$is_success_2->meta->success)
+			{
+				foreach ($is_success_2->meta->errors as $key2 => $value2) 
+				{
+					if(is_array($value2))
+					{
+						foreach ($value2 as $key3 => $value3) 
+						{
+							$errors->add('Batch', $value3);
+						}
+					}
+					else
+					{
+						$errors->add('Batch', $value2);
 					}
 				}
 			}

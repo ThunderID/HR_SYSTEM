@@ -7,7 +7,7 @@ use DB, Validator;
  * 	Saving						
  * ---------------------------------------------------------------------- */
 
-class QueueTableObserver 
+class QueueMorphObserver 
 {
 	public function saving($model)
 	{

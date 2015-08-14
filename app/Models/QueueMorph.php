@@ -3,8 +3,9 @@
 /* ----------------------------------------------------------------------
  * Document Model:
  * 	ID 								: Auto Increment, Integer, PK
- * 	queue_id 						: Foreign Key From Chart, Integer, Required
- * 	queue_type 						: Model Class, Required, Auto
+ * 	queue_id 						: Foreign Key From Queue, Integer, Required
+ * 	queue_morph_id 					: Foreign Key From Model, Integer, Required
+ * 	queue_morph_type 				: Model Class, Required, Auto
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -12,15 +13,17 @@
 /* ----------------------------------------------------------------------
  * Document Relationship :
 * 	//this package
- 	1 Relationship morphto 
+ 	3 Relationships MorphedByMany 
 	{
-		Calendar
+		Schedules
+		PersonSchedules
+		PersonWorkleaves
 	}
 
  * 	//other package
  	1 Relationship belongsTo 
 	{
-		Chart
+		Queue
 	}
 
  * ---------------------------------------------------------------------- */
@@ -28,20 +31,29 @@
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Str, Validator, DateTime, Exception;
 
-class QueueTable extends BaseModel {
+class QueueMorph extends BaseModel 
+{
+	use \App\Models\Traits\MorphMany\HasSchedulesTrait;
+	use \App\Models\Traits\MorphMany\HasPersonSchedulesTrait;
+	use \App\Models\Traits\MorphMany\HasPersonWorkleavesTrait;
+	use \App\Models\Traits\BelongsTo\HasQueueTrait;
 
 	use SoftDeletes;
 
 	public 		$timestamps 		= 	true;
 
-	protected 	$table 				= 	'queues_table';
+	protected 	$table 				= 	'queue_morphs';
 
 	protected 	$fillable			= 	[
 											'queue_id' 					,
+											'queue_morph_id' 			,
+											'queue_morph_type' 			,
 										];
 
 	protected 	$rules				= 	[
 											'queue_id'					=> 'required|exists:tmp_queues,id',
+											'queue_morph_id'			=> 'required',
+											'queue_morph_type'			=> 'required',
 										];
 
 	public $searchable 				= 	[
@@ -101,8 +113,8 @@ class QueueTable extends BaseModel {
 	{
 		if(is_array($variable))
 		{
-			return $query->whereIn('queues_table.id', $variable);
+			return $query->whereIn('queue_morphs.id', $variable);
 		}
-		return $query->where('queues_table.id', $variable);
+		return $query->where('queue_morphs.id', $variable);
 	}
 }

@@ -31,6 +31,7 @@ class PersonSchedule extends BaseModel {
 
 	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasPersonTrait;
+	use \App\Models\Traits\MorphTo\HasQueueMorphTrait;
 
 	public 		$timestamps 		= 	true;
 

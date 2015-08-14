@@ -267,7 +267,6 @@ class AttendanceController extends BaseController
 				});
 			})->export(Input::get('mode'));
 		}
-
 		return $this->layout;
 	}
 

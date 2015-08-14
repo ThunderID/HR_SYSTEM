@@ -33,6 +33,7 @@ class Schedule extends BaseModel {
 
 	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasCalendarTrait;
+	use \App\Models\Traits\MorphTo\HasQueueMorphTrait;
 
 	public 		$timestamps 		= 	true;
 

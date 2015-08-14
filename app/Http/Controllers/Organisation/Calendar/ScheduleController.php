@@ -328,41 +328,29 @@ class ScheduleController extends BaseController
 
 		if(Input::has('affect'))
 		{
-			if($calendar['import_from_id']==0)
+			if($calendar['import_from_id']!=0)
 			{
 				unset($search);
 				unset($sort);
 
-				$search['id'] 							= $cal_id;
 				$search['organisationid'] 				= $org_id;
 				$search['activeworks'] 					= true;
-				$search['parentid'] 					= $calendar['id'];
+				$search['parentid'] 					= $cal_id;
 				$sort 									= ['name' => 'asc'];
-			}
-			else
-			{
-				unset($search);
-				unset($sort);
+				$results 								= $this->dispatch(new Getting(new Calendar, $search, $sort , 1, 100));
+				$contents 								= json_decode($results);
 
-				$search['id'] 							= $cal_id;
-				$search['organisationid'] 				= $org_id;
-				$search['activeworks'] 					= true;
-				$search['parentid'] 					= $calendar['import_from_id'];
-				$sort 									= ['name' => 'asc'];
+				if(!$contents->meta->success)
+				{
+					App::abort(404);
+				}
+
+				$calendars 								= json_decode(json_encode($contents->data), true);
 			}
 
-			$results 								= $this->dispatch(new Getting(new Calendar, $search, $sort , 1, 100));
-			$contents 								= json_decode($results);
-
-			if(!$contents->meta->success)
-			{
-				App::abort(404);
-			}
-
-			$calendars 								= json_decode(json_encode($contents->data), true);
 			$calendars[]							= $calendar;
 		}
-		
+
 		if(!$errors->count())
 		{
 			$interval 								= DateInterval::createFromDateString('1 day');
@@ -376,10 +364,10 @@ class ScheduleController extends BaseController
 				{
 					foreach ($calendars as $key => $value) 
 					{
-						$attributes['associate'] 	= $value['id'];
+						$attributes['associate_calendar_id'] 	= $value['id'];
 
 						$queattr['created_by'] 		= Session::get('loggedUser');
-						$queattr['process_name'] 	= 'hr:batch schedulebatchcommand';
+						$queattr['process_name'] 	= 'hr:schedulebatch';
 						$queattr['parameter'] 		= json_encode($attributes);
 						$queattr['total_process'] 	= count($value['works']);
 						$queattr['task_per_process']= 10;
@@ -411,10 +399,10 @@ class ScheduleController extends BaseController
 				}
 				else
 				{
-					$attributes['associate'] 	= $calendar['id'];
+					$attributes['associate_calendar_id'] 	= $calendar['id'];
 
 					$queattr['created_by'] 		= Session::get('loggedUser');
-					$queattr['process_name'] 	= 'hr:batch schedulebatchcommand';
+					$queattr['process_name'] 	= 'hr:schedulebatch';
 					$queattr['parameter'] 		= json_encode($attributes);
 					$queattr['total_process'] 	= count($calendar['works']);
 					$queattr['task_per_process']= 10;

@@ -21,13 +21,16 @@ class ProcessingLogObserver
 	{
 		if(isset($model['attributes']['person_id']))
 		{
+			//preparing usable variable
 			$this->errors 			= new MessageBag;
 
 			$on 					= date("Y-m-d", strtotime($model['attributes']['on']));
 			$time 					= date("H:i:s", strtotime($model['attributes']['on']));
 
+			//find person
 			$person 				= Person::find($model['attributes']['person_id']);
 			
+			//check idle rule in policy (if doesn't exists use default)
 			$idle_rule 				= new Policy;
 			$idle_rule_1 			= $idle_rule->organisationid($person->organisation_id)->type('firstidle')->OnDate($on)->orderBy('started_at', 'desc')->first();
 			$idle_rule_2 			= $idle_rule->organisationid($person->organisation_id)->type('secondidle')->OnDate($on)->orderBy('started_at', 'desc')->first();
@@ -52,8 +55,11 @@ class ProcessingLogObserver
 
 			$workid 				= null;
 			$plog 					= new ProcessLog;
+
+			//check if process log exists
 			$data 					= $plog->ondate([$on, $on])->personid($model['attributes']['person_id'])->first();
 
+			//preparing default variable
 			$fp_start 				= '00:00:00';
 			$fp_end 				= '00:00:00';
 			$start 					= '00:00:00';
@@ -79,6 +85,7 @@ class ProcessingLogObserver
 			$name 					= 'Attendance';
 			$tooltip 				= [];
 
+			//check if person schedule were provided
 			$pschedulee 			= Person::ID($model['attributes']['person_id'])->maxendschedule(['on' => [$on, $on]])->first();
 			$pschedules 			= Person::ID($model['attributes']['person_id'])->minstartschedule(['on' => [$on, $on]])->first();
 
@@ -88,6 +95,7 @@ class ProcessingLogObserver
 				
 				$schedule_end		= $pschedulee->schedules[0]->end;
 
+				//set workid
 				$working 			= Person::ID($model['attributes']['person_id'])->CurrentWork($on)->first();
 				
 				if(isset($working['works'][0]))
@@ -95,6 +103,7 @@ class ProcessingLogObserver
 					$workid 		= $working['works'][0]['pivot']['id'];
 				}
 
+				//set modified status
 				if(strtoupper($model['attributes']['name'])=='DN')
 				{
 					if(!in_array($model['attributes']['name'], $tooltip))
@@ -134,6 +143,7 @@ class ProcessingLogObserver
 			}
 			else
 			{
+				//check if global schedule were provided
 				$ccalendars 		= Person::ID($model['attributes']['person_id'])->WorkCalendar(true)->WorkCalendarschedule(['on' => [$on, $on]])->first();
 				if(!is_null($ccalendars))
 				{
@@ -171,6 +181,7 @@ class ProcessingLogObserver
 				}
 				else
 				{
+					//check if default workdays provided
 					$calendar 		= Person::ID($model['attributes']['person_id'])->WorkCalendar(true)->WithWorkSchedules(true)->first();
 
 					if($calendar)
@@ -224,14 +235,12 @@ class ProcessingLogObserver
 						else
 						{
 							$schedule_start = '00:00:00';
-							
 							$schedule_end 	= '00:00:00';
 						}
 					}
 					else
 					{
 						$schedule_start = '00:00:00';
-							
 						$schedule_end 	= '00:00:00';
 					}
 				}
@@ -526,6 +535,11 @@ class ProcessingLogObserver
 			{
 				$alog 										= AttendanceLog::processlogid($data->id)->first();
 				$ilog 										= IdleLog::processlogid($data->id)->first();
+
+				if(isset($modified_status) && $alog->modified_status != $modified_status)
+				{
+					$alog 									= new AttendanceLog;
+				}
 			}
 			else
 			{
@@ -545,6 +559,11 @@ class ProcessingLogObserver
 								'count_status'				=> $count_status,
 								'actual_status'				=> $actual_status,
 			]);
+
+			if(isset($modified_status))
+			{
+				$alog->fill(['modified_status', $modified_status, 'modified_by' => $modified_by, 'modified_at' => $modified_at]);
+			}
 
 			$ilog->fill([
 								'total_active'				=> $total_active,

@@ -9,6 +9,7 @@ use App\Console\Commands\Deleting;
 use App\Models\Person;
 use App\Models\Workleave;
 use App\Models\PersonWorkleave;
+use App\Models\Queue;
 
 class WorkleaveController extends BaseController
 {
@@ -261,11 +262,12 @@ class WorkleaveController extends BaseController
 
 		$interval 								= DateInterval::createFromDateString('1 day');
 		$periods 								= new DatePeriod($begin, $interval, $end);
-		$wd										= ['senin' => 'monday', 'selasa' => 'tuesday', 'rabu' => 'wednesday', 'kamis' => 'thursday', 'jumat' => 'friday', 'sabtu' => 'saturday', 'minggu' => 'sunday', 'monday' => 'monday', 'tuesday' => 'tuesday', 'wednesday' => 'wednesday', 'thursday' => 'thursday', 'friday' => 'friday', 'saturday' => 'saturday', 'sunday' => 'sunday'];
 
 		$attributes 							= Input::only('notes');
 		$attributes['work_id'] 					= $person['workscalendars'][0]['id'];
 		$attributes['created_by'] 				= Session::get('loggedUser');
+
+		DB::beginTransaction();
 
 		if(Input::has('start'))
 		{
@@ -304,6 +306,69 @@ class WorkleaveController extends BaseController
 			$attributes['name']					= $contents_2->data->name;
 			$attributes['status']				= $contents_2->data->status;
 			$attributes['quota']				= $contents_2->data->quota;
+
+			$attributes['start'] 					= $begin->format('Y-m-d');
+			$attributes['end'] 						= $ended->format('Y-m-d');
+
+			DB::beginTransaction();
+
+			$content 								= $this->dispatch(new Saving(new PersonWorkleave, $attributes, $id, new Person, $person_id));
+			$is_success 							= json_decode($content);
+			
+			if(!$is_success->meta->success)
+			{
+				foreach ($is_success->meta->errors as $key => $value) 
+				{
+					if(is_array($value))
+					{
+						foreach ($value as $key2 => $value2) 
+						{
+							$errors->add('Person', $value2);
+						}
+					}
+					else
+					{
+						$errors->add('Person', $value);
+					}
+				}
+			}
+			elseif(strtoupper($is_success->data->status)=='CI')
+			{
+				//check apakah sudah ada CI sebelumnya
+				if(!is_null($id))
+				{
+					unset($search);
+					unset($sort);
+
+					$search['parent']				= $id;
+					$sort 							= ['name' => 'asc'];
+					$results_2 						= $this->dispatch(new Getting(new PersonWorkleave, $search, $sort , 1, 1));
+					$contents_2 					= json_decode($results_2);
+
+					if(!$contents_2->meta->success || !isset($contents->data->workscalendars[0]))
+					{
+						App::abort(404);
+					}
+				
+					$pid 						= $contents_2->data->id;
+				}
+				else
+				{
+					$pid 						= null;
+				}
+
+				unset($attributes);
+				$attributes['id'] 				= $pid;
+				$attributes['work_id'] 			= $is_success->data->work_id;
+				$attributes['person_workleave_id'] 	= $is_success->data->id;
+				$attributes['created_by'] 		= $is_success->data->created_by;
+				$attributes['name'] 			= 'Pengambilan '.$is_success->data->name.' '.date('Y', strtotime($attributes['start']));
+				$attributes['quota'] 			= 0 - (int)$is_success->data->quota;
+				$attributes['status'] 			= $is_success->data->status;
+				$attributes['notes'] 			= 'Pengambilan '.$is_success->data->name.' <> '.$is_success->data->notes;
+
+				$batch 							= true;
+			}
 		}
 		elseif(strtolower($type)=='taken')
 		{
@@ -314,11 +379,6 @@ class WorkleaveController extends BaseController
 				$errors->add('Person', 'Pengambilan cuti harus menyertakan referensi pengambilan cuti');
 
 				return Redirect::back()->withErrors($errors)->withInput();
-			}
-
-			if(isset($ended) && $ended->format('Y-m-d') > $maxend->format('Y-m-d'))
-			{
-				$errors->add('Person', 'Maksimal range adalah satu minggu (7 Hari) ');
 			}
 
 			if((int)Session::Get('user.menuid')==2)
@@ -362,131 +422,42 @@ class WorkleaveController extends BaseController
 			$attributes['name']					= 'Pengambilan '.$workleave['name'];
 			$attributes['status']				= $workleave['status'];
 
-			$total_l 							= 0;
-			$date_l 							= [];
-			$workdays 							= [];
-	
-			$workday 							= explode(',', $person['workscalendars'][0]['calendar']['workdays']);
-			
-			
-			foreach ($workday as $key2 => $value2) 
-			{
-				if($value2!='')
-				{
-					$value2 				= str_replace(' ', '', $value2);
-					$workdays[]				= $wd[strtolower($value2)];
-				}
-			}
+			$batch 								= true;
 
-			foreach ( $periods as $period )
-			{
-				if($person['workscalendars'][0]['calendar']['schedules'])
-				{
-					foreach ($person['workscalendars'][0]['calendar']['schedules'] as $key3 => $value3) 
-					{
-						if(date('Y-m-d', strtotime($value3['on'])) == $period->format('Y-m-d') && strtoupper($value3['status'])=='L')
-						{
-							$date_l[]		= $period->format('Y-m-d');
-						}
-					}
-				}
-
-				if(!in_array($period->format('Y-m-d'), $date_l))
-				{
-					if(in_array(strtolower($period->format('l')), $workdays))
-					{
-						$total_l++;
-					}
-
-					$date_l[]				= $period->format('Y-m-d');
-				}
-			}
-
-			$attributes['quota']				= 0 - (int)$total_l;
 		}
 
-
-
-		$attributes['start'] 					= $begin->format('Y-m-d');
-		$attributes['end'] 						= $ended->format('Y-m-d');
-
-		DB::beginTransaction();
-
-		$content 								= $this->dispatch(new Saving(new PersonWorkleave, $attributes, $id, new Person, $person_id));
-		$is_success 							= json_decode($content);
-		
-		if(!$is_success->meta->success)
+		if(isset($batch) && !$errors->count())
 		{
-			foreach ($is_success->meta->errors as $key => $value) 
+			$attributes['associate'] 				= $person_id;
+			$attributes['workscalendars'] 			= $person['workscalendars'][0]['calendar'];
+			$attributes['periods'] 					= $periods;
+
+			$queattr['created_by'] 					= Session::get('loggedUser');
+			$queattr['process_name'] 				= 'hr:queue personworkleavebatchcommand';
+			$queattr['parameter'] 					= json_encode($attributes);
+			$queattr['total_process'] 				= count($works);
+			$queattr['task_per_process']			= 10;
+			$queattr['process_number'] 				= 0;
+			$queattr['total_task'] 					= count($works)/10;
+			$queattr['message'] 					= 'Initial Queue';
+
+			$content 								= $this->dispatch(new Saving(new Queue, $queattr, null));
+			$is_success_2 							= json_decode($content);
+
+			if(!$is_success_2->meta->success)
 			{
-				if(is_array($value))
+				foreach ($is_success_2->meta->errors as $key2 => $value2) 
 				{
-					foreach ($value as $key2 => $value2) 
+					if(is_array($value2))
 					{
-						$errors->add('Person', $value2);
-					}
-				}
-				else
-				{
-					$errors->add('Person', $value);
-				}
-			}
-		}
-		else
-		{
-			if(strtoupper($is_success->data->status)=='CI')
-			{
-				//check apakah sudah ada CI sebelumnya
-				if(!is_null($id))
-				{
-					unset($search);
-					unset($sort);
-
-					$search['parent']				= $id;
-					$sort 							= ['name' => 'asc'];
-					$results_2 						= $this->dispatch(new Getting(new PersonWorkleave, $search, $sort , 1, 1));
-					$contents_2 					= json_decode($results_2);
-
-					if(!$contents_2->meta->success || !isset($contents->data->workscalendars[0]))
-					{
-						App::abort(404);
-					}
-				
-					$pid 						= $contents_2->data->id;
-				}
-				else
-				{
-					$pid 						= null;
-				}
-
-				$attributes1['work_id'] 		= $is_success->data->work_id;
-				$attributes1['person_workleave_id'] 	= $is_success->data->id;
-				$attributes1['created_by'] 		= $is_success->data->created_by;
-				$attributes1['start'] 			= $begin->format('Y-m-d');
-				$attributes1['end'] 			= $ended->format('Y-m-d');
-				$attributes1['name'] 			= 'Pengambilan '.$is_success->data->name.' '.date('Y', strtotime($attributes1['start']));
-				$attributes1['quota'] 			= 0 - (int)$is_success->data->quota;
-				$attributes1['status'] 			= $is_success->data->status;
-				$attributes1['notes'] 			= 'Pengambilan '.$is_success->data->name.' <> '.$is_success->data->notes;
-
-				$content 						= $this->dispatch(new Saving(new PersonWorkleave, $attributes1, $pid, new Person, $person_id));
-				$is_success_2 					= json_decode($content);
-
-				if(!$is_success_2->meta->success)
-				{
-					foreach ($is_success_2->meta->errors as $key => $value) 
-					{
-						if(is_array($value))
+						foreach ($value2 as $key3 => $value3) 
 						{
-							foreach ($value as $key2 => $value2) 
-							{
-								$errors->add('Workleave', $value2);
-							}
+							$errors->add('Batch', $value3);
 						}
-						else
-						{
-							$errors->add('Workleave', $value);
-						}
+					}
+					else
+					{
+						$errors->add('Batch', $value2);
 					}
 				}
 			}

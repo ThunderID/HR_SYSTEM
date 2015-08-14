@@ -43,6 +43,7 @@ class PersonWorkleaveObserver
 					$errors->add('quota', 'Quota '.$left_quota->name.' yang tersedia tidak mencukupi. <br/>Sisa cuti = '.(int)($left_quota->quota + $add_quota).' hari, Cuti yang hendak diambil = '.abs($model['attributes']['quota']).' hari.<br/>Jika cuti merupakan kasus khusus silahkan tambahkan cuti istimewa.');
 					
 					$model['errors'] 	= $errors;
+					
 					return false;
 				}
 			}
@@ -103,10 +104,10 @@ class PersonWorkleaveObserver
 	{
 		if(isset($model->getDirty()['person_workleave_id']) && !$model->getOriginal()['person_workleave_id']==0)
 		{
-			$errors 			= new MessageBag;
+			$errors 				= new MessageBag;
 			$errors->add('quota', 'Tidak dapat mengubah data cuti.');
 			
-			$model['errors'] 	= $errors;
+			$model['errors'] 		= $errors;
 
 			return false;
 		}
@@ -114,16 +115,9 @@ class PersonWorkleaveObserver
 
 	public function deleting($model)
 	{
-		if(isset($model['attributes']['person_workleave_id']) && $model['attributes']['person_workleave_id']!=0 && date('Y-m-d',strtotime($model['attributes']['start'])) <= date('Y-m-d'))
-		{
-			$model['errors']	= ['Tidak dapat menghapus pengambilan cuti yang telah lewat.'];
-				
-			return false;
-		}
-
 		if($model->childs->count())
 		{
-			$model['errors']	= ['Tidak dapat menghapus cuti yang telah dipakai.'];
+			$model['errors']		= ['Tidak dapat menghapus cuti yang telah dipakai.'];
 				
 			return false;
 		}
@@ -131,10 +125,10 @@ class PersonWorkleaveObserver
 
 	public function deleted($model)
 	{
-		$pschedules 			= PersonSchedule::personid($model['attributes']['person_id'])->ondate([$model['attributes']['start'], $model['attributes']['end']])->status(strtoupper($model['attributes']['status']))->get();
+		$pschedules 				= PersonSchedule::personid($model['attributes']['person_id'])->ondate([$model['attributes']['start'], $model['attributes']['end']])->status(strtoupper($model['attributes']['status']))->get();
 		foreach ($pschedules as $key => $value) 
 		{
-			$dschedule 		= PersonSchedule::find($value->id);
+			$dschedule 				= PersonSchedule::find($value->id);
 			if(!$dschedule->delete())
 			{
 				$model['errors']	= $dschedule->getError();

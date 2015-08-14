@@ -425,21 +425,7 @@ class Person extends BaseModel {
 					->selectraw('branches.name as branch')
 					->selectraw('charts.name as position')
 					->selectraw('charts.tag as department')
-					->selectraw('sum(if(actual_status="HB",1,0)) as HB')
-					->selectraw('sum(if(actual_status="HC",if(modified_status="HT", 1, 0),0)) as HT')
-					->selectraw('sum(if(actual_status="HC",if(modified_status="HP", 1, 0),0)) as HP')
-					->selectraw('sum(if(actual_status="HC",if(modified_status="HD", 1, 0),0)) as HD')
-					->selectraw('sum(if(actual_status="HC",if(modified_status="HC", 1, if(modified_status="", 1, 0)),0)) as HC')
-					->selectraw('sum(if(actual_status="AS",if(modified_status="DN", 1, 0),0)) as DN')
-					->selectraw('sum(if(actual_status="AS",if(modified_status="SS", 1, 0),0)) as SS')
-					->selectraw('sum(if(actual_status="AS",if(modified_status="SL", 1, 0),0)) as SL')
-					->selectraw('sum(if(actual_status="AS",if(modified_status="CN", 1, 0),0)) as CN')
-					->selectraw('sum(if(actual_status="AS",if(modified_status="CB", 1, 0),0)) as CB')
-					->selectraw('sum(if(actual_status="AS",if(modified_status="CI", 1, 0),0)) as CI')
-					->selectraw('sum(if(actual_status="AS",if(modified_status="UL", 1, 0),0)) as UL')
-					->selectraw('sum(if(actual_status="AS",if(modified_status="AS", 1, if(modified_status="", 1, 0)),0)) as `AS`')
 					->selectraw('sum(TIME_TO_SEC(schedule_end) - TIME_TO_SEC(schedule_start)) as possible_total_effective')
-					->selectraw('sum(if(modified_status="HC" || modified_status="AS" || modified_status="UL" || modified_status="SS" || modified_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_end), 0), if(modified_status=0, if(actual_status="HC" || actual_status="AS" || actual_status="UL" || actual_status="SS" || actual_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_end), 0), 0),0) )) as total_absence')
 					->leftjoin('process_logs', function ($join) use($start, $end) {
 							$join->on('persons.id', '=', 'process_logs.person_id')
 								->where('process_logs.on', '>=', $start)
@@ -449,6 +435,20 @@ class Person extends BaseModel {
 								// ->where('schedule_end', '<>', '00:00:00')
 							;
 						})
+					->selectraw('sum((SELECT if(actual_status="HB",1,0) FROM attendance_logs WHERE attendance_logs.process_log_id = process_logs.id  and actual_status <> "L" order by updated_at desc limit 1)) as HB')
+					->selectraw('sum((SELECT if(actual_status="HC",if(modified_status="HT", 1, 0),0) FROM attendance_logs WHERE attendance_logs.process_log_id = process_logs.id  and actual_status <> "L" order by updated_at desc limit 1)) as HT')
+					->selectraw('sum((SELECT if(actual_status="HC",if(modified_status="HP", 1, 0),0) FROM attendance_logs WHERE attendance_logs.process_log_id = process_logs.id  and actual_status <> "L" order by updated_at desc limit 1)) as HP')
+					->selectraw('sum((SELECT if(actual_status="HC",if(modified_status="HD", 1, 0),0) FROM attendance_logs WHERE attendance_logs.process_log_id = process_logs.id  and actual_status <> "L" order by updated_at desc limit 1)) as HD')
+					->selectraw('sum((SELECT if(actual_status="HC",if(modified_status="HC", 1, if(modified_status="", 1, 0)),0) FROM attendance_logs WHERE attendance_logs.process_log_id = process_logs.id  and actual_status <> "L" order by updated_at desc limit 1)) as HC')
+					->selectraw('sum((SELECT if(actual_status="AS",if(modified_status="DN", 1, 0),0) FROM attendance_logs WHERE attendance_logs.process_log_id = process_logs.id  and actual_status <> "L" order by updated_at desc limit 1)) as DN')
+					->selectraw('sum((SELECT if(actual_status="AS",if(modified_status="SS", 1, 0),0) FROM attendance_logs WHERE attendance_logs.process_log_id = process_logs.id  and actual_status <> "L" order by updated_at desc limit 1)) as SS')
+					->selectraw('sum((SELECT if(actual_status="AS",if(modified_status="SL", 1, 0),0) FROM attendance_logs WHERE attendance_logs.process_log_id = process_logs.id  and actual_status <> "L" order by updated_at desc limit 1)) as SL')
+					->selectraw('sum((SELECT if(actual_status="AS",if(modified_status="CN", 1, 0),0) FROM attendance_logs WHERE attendance_logs.process_log_id = process_logs.id  and actual_status <> "L" order by updated_at desc limit 1)) as CN')
+					->selectraw('sum((SELECT if(actual_status="AS",if(modified_status="CB", 1, 0),0) FROM attendance_logs WHERE attendance_logs.process_log_id = process_logs.id  and actual_status <> "L" order by updated_at desc limit 1)) as CB')
+					->selectraw('sum((SELECT if(actual_status="AS",if(modified_status="CI", 1, 0),0) FROM attendance_logs WHERE attendance_logs.process_log_id = process_logs.id  and actual_status <> "L" order by updated_at desc limit 1)) as CI')
+					->selectraw('sum((SELECT if(actual_status="AS",if(modified_status="UL", 1, 0),0) FROM attendance_logs WHERE attendance_logs.process_log_id = process_logs.id  and actual_status <> "L" order by updated_at desc limit 1)) as UL')
+					->selectraw('sum((SELECT if(actual_status="AS",if(modified_status="AS", 1, if(modified_status="", 1, 0)),0) FROM attendance_logs WHERE attendance_logs.process_log_id = process_logs.id  and actual_status <> "L" order by updated_at desc limit 1)) as `AS`')
+					->selectraw('sum((SELECT if(modified_status="HC" || modified_status="AS" || modified_status="UL" || modified_status="SS" || modified_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_end), 0), if(modified_status=0, if(actual_status="HC" || actual_status="AS" || actual_status="UL" || actual_status="SS" || actual_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_end), 0), 0),0) ) FROM attendance_logs WHERE attendance_logs.process_log_id = process_logs.id  and actual_status <> "L" order by updated_at desc limit 1)) as total_absence')
 					->leftjoin('works', 'process_logs.work_id', '=', 'works.id')
 					->leftjoin('charts', 'works.chart_id', '=', 'charts.id')
 					->leftjoin('branches', 'charts.branch_id', '=', 'branches.id')
@@ -552,14 +552,15 @@ class Person extends BaseModel {
 					->selectraw('charts.name as position')
 					->selectraw('charts.tag as department')
 					->selectraw('sum(if(schedule_start="00:00:00",0,1)) as total_days')
-					->selectraw('sum(total_idle_1) as total_idle_1')
-					->selectraw('sum(total_idle_2) as total_idle_2')
-					->selectraw('sum(total_idle_3) as total_idle_3')
-					->selectraw('sum(frequency_idle_1) as frequency_idle_1')
-					->selectraw('sum(frequency_idle_2) as frequency_idle_2')
-					->selectraw('sum(frequency_idle_3) as frequency_idle_3')
-					->selectraw('sum(total_active) as total_active')
-					->selectraw('sum(total_active + total_sleep + total_idle) as total_presence')
+					
+					->selectraw('sum((SELECT total_idle_1 FROM idle_logs WHERE idle_logs.process_log_id = process_logs.id order by updated_at desc limit 1)) as total_idle_1')
+					->selectraw('sum((SELECT total_idle_2 FROM idle_logs WHERE idle_logs.process_log_id = process_logs.id order by updated_at desc limit 1)) as total_idle_2')
+					->selectraw('sum((SELECT total_idle_3 FROM idle_logs WHERE idle_logs.process_log_id = process_logs.id order by updated_at desc limit 1)) as total_idle_3')
+					->selectraw('sum((SELECT frequency_idle_1 FROM idle_logs WHERE idle_logs.process_log_id = process_logs.id order by updated_at desc limit 1)) as frequency_idle_1')
+					->selectraw('sum((SELECT frequency_idle_2 FROM idle_logs WHERE idle_logs.process_log_id = process_logs.id order by updated_at desc limit 1)) as frequency_idle_2')
+					->selectraw('sum((SELECT frequency_idle_3 FROM idle_logs WHERE idle_logs.process_log_id = process_logs.id order by updated_at desc limit 1)) as frequency_idle_3')
+					->selectraw('sum((SELECT total_active FROM idle_logs WHERE idle_logs.process_log_id = process_logs.id order by updated_at desc limit 1)) as total_active')
+					->selectraw('sum((SELECT total_active + total_idle FROM idle_logs WHERE idle_logs.process_log_id = process_logs.id order by updated_at desc limit 1)) as total_presence')
 					->leftjoin('process_logs', function ($join) use($start, $end) {
 							$join->on('persons.id', '=', 'process_logs.person_id')
 								->where('process_logs.on', '>=', $start)
@@ -668,21 +669,7 @@ class Person extends BaseModel {
 					->selectraw('branches.name as branch')
 					->selectraw('charts.name as position')
 					->selectraw('charts.tag as department')
-					->selectraw('sum(if(actual_status="HB",1,0)) as HB')
-					->selectraw('sum(if(actual_status="HC",if(modified_status="HT", 1, 0),0)) as HT')
-					->selectraw('sum(if(actual_status="HC",if(modified_status="HP", 1, 0),0)) as HP')
-					->selectraw('sum(if(actual_status="HC",if(modified_status="HD", 1, 0),0)) as HD')
-					->selectraw('sum(if(actual_status="HC",if(modified_status="HC", 1, if(modified_status="", 1, 0)),0)) as HC')
-					->selectraw('sum(if(actual_status="AS",if(modified_status="DN", 1, 0),0)) as DN')
-					->selectraw('sum(if(actual_status="AS",if(modified_status="SS", 1, 0),0)) as SS')
-					->selectraw('sum(if(actual_status="AS",if(modified_status="SL", 1, 0),0)) as SL')
-					->selectraw('sum(if(actual_status="AS",if(modified_status="CN", 1, 0),0)) as CN')
-					->selectraw('sum(if(actual_status="AS",if(modified_status="CB", 1, 0),0)) as CB')
-					->selectraw('sum(if(actual_status="AS",if(modified_status="CI", 1, 0),0)) as CI')
-					->selectraw('sum(if(actual_status="AS",if(modified_status="UL", 1, 0),0)) as UL')
-					->selectraw('sum(if(actual_status="AS",if(modified_status="AS", 1, if(modified_status="", 1, 0)),0)) as `AS`')
 					->selectraw('sum(TIME_TO_SEC(schedule_end) - TIME_TO_SEC(schedule_start)) as possible_total_effective')
-					->selectraw('sum(if(modified_status="HC" || modified_status="AS" || modified_status="UL" || modified_status="SS" || modified_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_end), 0), if(modified_status=0, if(actual_status="HC" || actual_status="AS" || actual_status="UL" || actual_status="SS" || actual_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_end), 0), 0),0) )) as total_absence')
 					->leftjoin('process_logs', function ($join) use($start, $end) {
 							$join->on('persons.id', '=', 'process_logs.person_id')
 								->where('process_logs.on', '<=', $start)
@@ -691,6 +678,22 @@ class Person extends BaseModel {
 								->where('schedule_end', '<>', '00:00:00')
 							;
 						})
+					->selectraw('(SELECT 
+						sum(if(actual_status="HB",1,0)) as HB,
+						sum(if(actual_status="HC",if(modified_status="HT", 1, 0),0)) as HT,
+						sum(if(actual_status="HC",if(modified_status="HP", 1, 0),0)) as HP,
+						sum(if(actual_status="HC",if(modified_status="HD", 1, 0),0)) as HD,
+						sum(if(actual_status="HC",if(modified_status="HC", 1, if(modified_status="", 1, 0)),0)) as HC,
+						sum(if(actual_status="AS",if(modified_status="DN", 1, 0),0)) as DN,
+						sum(if(actual_status="AS",if(modified_status="SS", 1, 0),0)) as SS,
+						sum(if(actual_status="AS",if(modified_status="SL", 1, 0),0)) as SL,
+						sum(if(actual_status="AS",if(modified_status="CN", 1, 0),0)) as CN,
+						sum(if(actual_status="AS",if(modified_status="CB", 1, 0),0)) as CB,
+						sum(if(actual_status="AS",if(modified_status="CI", 1, 0),0)) as CI,
+						sum(if(actual_status="AS",if(modified_status="UL", 1, 0),0)) as UL,
+						sum(if(actual_status="AS",if(modified_status="AS", 1, if(modified_status="", 1, 0)),0)) as `AS`,
+						sum(if(modified_status="HC" || modified_status="AS" || modified_status="UL" || modified_status="SS" || modified_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_end), 0), if(modified_status=0, if(actual_status="HC" || actual_status="AS" || actual_status="UL" || actual_status="SS" || actual_status="SL", if(margin_start<0, abs(margin_start), 0) + if(margin_end<0, abs(margin_end), 0), 0),0) )) as total_absence)
+						FROM attendance_logs WHERE attendance_logs.process_log_id = process_logs.id orderby updated_at asc and actual_status <> `L`')
 					->leftjoin('works', 'process_logs.work_id', '=', 'works.id')
 					->leftjoin('charts', 'works.chart_id', '=', 'charts.id')
 					->leftjoin('branches', 'charts.branch_id', '=', 'branches.id')
@@ -789,7 +792,7 @@ class Person extends BaseModel {
 		$query =  $query->selectraw('persons.*')
 					->wherehas('works', function($q)use($start){$q->wherenull('end')->orwhere('end', '>=',  $start);})
 					->with(['works' => function($q)use($start){$q->wherenull('end')->orwhere('end', '>=',  $start);}])
-					->selectraw('(SELECT sum(if(person_workleaves.status="CN", if(person_workleaves.quota>0, person_workleaves.quota, 0), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.' and deleted_at is null) as quotas')
+					->selectraw('(SELECT sum(if(attendance_logs.status="CN", if(person_workleaves.quota>0, person_workleaves.quota, 0), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.' and deleted_at is null) as quotas')
 					->selectraw('(SELECT sum(if(person_workleaves.status="CI", if(person_workleaves.quota>0, person_workleaves.quota, 0), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.' and deleted_at is null) as plus_quotas')
 					->selectraw('(SELECT sum(if(person_workleaves.quota<0, abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.' and deleted_at is null) as minus_quotas')
 					// ->selectraw('(SELECT sum(if(person_workleaves.status="CN", abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.') as quotas')

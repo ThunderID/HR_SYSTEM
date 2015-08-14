@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTmpQueuesTablesTable extends Migration {
+class CreateTmpQueuesMorphsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,10 +12,11 @@ class CreateTmpQueuesTablesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('queues_tables', function(Blueprint $table) {
+		Schema::create('queue_morphs', function(Blueprint $table) {
 			$table->increments('id');
 			$table->integer('queue_id')->unsigned()->index();
-			$table->string('queue_type', 255);
+			$table->integer('queue_morph_id')->unsigned()->index();
+			$table->string('queue_morph_type', 255);
 			$table->timestamps();
 			$table->softDeletes();
 		});
@@ -29,7 +30,7 @@ class CreateTmpQueuesTablesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('queues_tables');
+		Schema::drop('queue_morphs');
 	}
 
 }
