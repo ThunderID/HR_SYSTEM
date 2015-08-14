@@ -39,10 +39,10 @@
 								{{$i}}
 							</td>
 							<td class="">
-								@if ((File::exists($value['avatar']))&&(!$value['avatar']))
-									{!! HTML::image($value['avatar'], '', array( 'width' => 64, 'height' => 64, 'class' => 'img-rounded' ), ['secure' => 'yes']) !!} 
+								@if ((File::exists($value['avatar']))||($value['avatar']))
+									{!! HTML::image($value['avatar'], '', ['width' => 64, 'height' => 64, 'class' => 'img-rounded'], ['secure' => 'yes'] ) !!} 
 								@else
-									{!! HTML::image('/tmp_avatar.png', '', array( 'width' => 64, 'height' => 64, 'class' => 'img-rounded' ), ['secure' => 'yes']) !!} 
+									{!! HTML::image('/tmp_avatar.png', '', ['width' => 64, 'height' => 64, 'class' => 'img-rounded'], ['secure' => 'yes'] ) !!} 
 								@endif
 							</td>
 							<td class="">
