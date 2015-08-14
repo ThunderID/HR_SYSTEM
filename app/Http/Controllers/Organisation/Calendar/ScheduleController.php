@@ -362,18 +362,29 @@ class ScheduleController extends BaseController
 				
 				if(Input::has('affect'))
 				{
+					$queattr['created_by'] 			= Session::get('loggedUser');
+					if(in_array(strtoupper($attributes['status']), ['CN', 'CB', 'CI']))
+					{
+						$queattr['process_name'] 		= 'hr:schedulebatch';
+						$queattr['process_option'] 		= 'personstaken';
+					}
+					else
+					{
+						$queattr['process_name'] 		= 'hr:personworkleavebatch';
+					}
+					
+					$queattr['parameter'] 			= json_encode($attributes);
+					$queattr['task_per_process']	= 10;
+					$queattr['process_number'] 		= 0;
+					$queattr['message'] 			= 'Initial Queue';
+
 					foreach ($calendars as $key => $value) 
 					{
 						$attributes['associate_calendar_id'] 	= $value['id'];
 
-						$queattr['created_by'] 		= Session::get('loggedUser');
-						$queattr['process_name'] 	= 'hr:schedulebatch';
-						$queattr['parameter'] 		= json_encode($attributes);
+					
 						$queattr['total_process'] 	= count($value['works']);
-						$queattr['task_per_process']= 10;
-						$queattr['process_number'] 	= 0;
 						$queattr['total_task'] 		= count($value['works'])/10;
-						$queattr['message'] 		= 'Initial Queue';
 
 						$content 					= $this->dispatch(new Saving(new Queue, $queattr, null));
 						$is_success_2 				= json_decode($content);

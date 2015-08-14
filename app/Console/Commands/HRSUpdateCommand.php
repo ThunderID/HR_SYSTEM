@@ -189,6 +189,7 @@ class HRSUpdateCommand extends Command {
 			$table->increments('id');
 			$table->integer('created_by')->unsigned()->index();
 			$table->string('process_name', 255);
+			$table->string('process_option', 255);
 			$table->text('parameter');
 			$table->integer('total_process');
 			$table->integer('task_per_process');

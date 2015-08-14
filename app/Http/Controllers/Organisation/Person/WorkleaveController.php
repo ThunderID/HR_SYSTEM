@@ -256,6 +256,7 @@ class WorkleaveController extends BaseController
 		{
 			App::abort(404);
 		}
+
 		$person 								= json_decode(json_encode($contents->data), true);
 
 		$errors 								= new MessageBag();
@@ -428,17 +429,16 @@ class WorkleaveController extends BaseController
 
 		if(isset($batch) && !$errors->count())
 		{
-			$attributes['associate'] 				= $person_id;
+			$attributes['associate_person_id'] 		= $person_id;
 			$attributes['workscalendars'] 			= $person['workscalendars'][0]['calendar'];
-			$attributes['periods'] 					= $periods;
 
 			$queattr['created_by'] 					= Session::get('loggedUser');
-			$queattr['process_name'] 				= 'hr:queue personworkleavebatchcommand';
+			$queattr['process_name'] 				= 'hr:personworkleavebatch';
 			$queattr['parameter'] 					= json_encode($attributes);
-			$queattr['total_process'] 				= count($works);
+			$queattr['total_process'] 				= 1;
 			$queattr['task_per_process']			= 10;
 			$queattr['process_number'] 				= 0;
-			$queattr['total_task'] 					= count($works)/10;
+			$queattr['total_task'] 					= 1;
 			$queattr['message'] 					= 'Initial Queue';
 
 			$content 								= $this->dispatch(new Saving(new Queue, $queattr, null));

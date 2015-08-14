@@ -43,7 +43,7 @@ class PersonScheduleObserver
 			$logs 							= Log::ondate([$on, $on1])->personid($model['attributes']['person_id'])->get();
 			if($logs->count())
 			{
-				foreach ($processlogs as $key => $value) 
+				foreach ($logs as $key => $value) 
 				{
 					$data					= Log::ID($value->id)->first();
 
@@ -65,7 +65,7 @@ class PersonScheduleObserver
 						'last_input_time'	=> date('Y-m-d H:i:s',strtotime($on)),
 						'pc'				=> 'HRIS',
 						'app_version'		=> 'WEB',
-						'ip'				=> $_SERVER['REMOTE_ADDR'],
+						'ip'				=> getenv("REMOTE_ADDR"),
 				]);
 
 				$person 					= Person::find($model['attributes']['person_id']);

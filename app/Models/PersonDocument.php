@@ -61,7 +61,7 @@ class PersonDocument extends BaseModel {
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'documentid' 				=> 'DocumentID', 
-											'organisationid' 			=> 'OrganisationID', 
+											'organisationid' 			=> 'PersonOrganisationID', 
 											'personid' 					=> 'PersonID', 
 											
 											'documenttag' 				=> 'DocumentTag', 
