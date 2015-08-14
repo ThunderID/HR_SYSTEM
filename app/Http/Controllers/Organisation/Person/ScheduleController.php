@@ -11,6 +11,7 @@ use App\Models\Person;
 use App\Models\Work;
 use App\Models\Schedule;
 use App\Models\PersonSchedule;
+use App\Models\Queue;
 
 class ScheduleController extends BaseController
 {
@@ -170,13 +171,13 @@ class ScheduleController extends BaseController
 		{
 			$begin 								= new DateTime( Input::get('on') );
 			$ended 								= new DateTime( Input::get('on').' + 1 day' );
-			$maxend 							= new DateTime( Input::get('on').' + 7 days' );
+			$maxend 							= new DateTime( Input::get('on').' + 3 days' );
 		}
 		elseif(Input::has('onstart') && Input::has('onend'))
 		{
 			$begin 								= new DateTime( Input::get('onstart') );
 			$ended 								= new DateTime( Input::get('onend').' + 1 day' );
-			$maxend 							= new DateTime( Input::get('onstart').' + 7 days' );
+			$maxend 							= new DateTime( Input::get('onstart').' + 3 days' );
 		}
 		else
 		{
@@ -248,17 +249,17 @@ class ScheduleController extends BaseController
 			$interval 					= DateInterval::createFromDateString('1 day');
 			$periods 					= new DatePeriod($begin, $interval, $ended);
 
-			$attributes['associate'] 	= $person['id'];
 			$attributes['onstart'] 		= $begin;
 			$attributes['onend'] 		= $ended;
+			$attributes['associate_person_id'] 	= $person_id;
 
 			$queattr['created_by'] 		= Session::get('loggedUser');
-			$queattr['process_name'] 	= 'hr:queue personschedulebatchcommand';
+			$queattr['process_name'] 	= 'hr:personschedulebatch';
 			$queattr['parameter'] 		= json_encode($attributes);
-			$queattr['total_process'] 	= count($periods);
+			$queattr['total_process'] 	= ceil(iterator_count($periods)/10);
 			$queattr['task_per_process']= 10;
 			$queattr['process_number'] 	= 0;
-			$queattr['total_task'] 		= count($periods)/10;
+			$queattr['total_task'] 		= iterator_count($periods);
 			$queattr['message'] 		= 'Initial Queue';
 
 			$content 					= $this->dispatch(new Saving(new Queue, $queattr, null));
@@ -286,7 +287,7 @@ class ScheduleController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.person.schedules.index', ['person_id' => $person_id, 'org_id' => $org_id])->with('alert_success', 'Jadwal kalender "' . $contents->data->name. '" sudah disimpan');
+			return Redirect::route('hr.person.schedules.index', ['person_id' => $person_id, 'org_id' => $org_id])->with('alert_info', 'Jadwal Pribadi sedang disimpan');
 		}
 
 		DB::rollback();
@@ -622,7 +623,9 @@ class ScheduleController extends BaseController
 		}
 
 		// log	
-		$search 								= ['personid' => $person_id, 'ondate'=> [$start, $end]];
+		unset($search);
+		unset($sort);
+		$search 								= ['personid' => $person_id, 'ondate'=> [$start, $end], 'lastattendancelog' => null];
 		$sort 									= ['on' => 'asc'];
 
 		$results 								= $this->dispatch(new Getting(new ProcessLog, $search, $sort , 1, 100));
@@ -646,7 +649,7 @@ class ScheduleController extends BaseController
 			$schedule[$k]['id']				= $log['id'];
 			$schedule[$k]['mode']			= 'edit';
 			$schedule[$k]['top_title'] 		= 'Log';
-			$schedule[$k]['title'] 			= $log['modified_status'] ? $log['modified_status'] : $log['actual_status'];
+			$schedule[$k]['title'] 			= $log['attendancelogs'][0]['modified_status'] ? $log['attendancelogs'][0]['modified_status'] : $log['attendancelogs'][0]['actual_status'];
 			$schedule[$k]['mode_info']		= 'log';
 
 			if ((strtotime($log['fp_start']) < strtotime($log['fp_end'])) | (strtotime($log['fp_start']) != strtotime($log['fp_end'])))

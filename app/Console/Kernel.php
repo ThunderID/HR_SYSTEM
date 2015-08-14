@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\HRSUpdateCommand',
 		'App\Console\Commands\HRQueueCheckers',
 		'App\Console\Commands\ScheduleBatchCommand',
+		'App\Console\Commands\PersonScheduleBatchCommand',
 	];
 
 	/**

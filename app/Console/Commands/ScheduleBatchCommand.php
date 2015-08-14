@@ -72,7 +72,7 @@ class ScheduleBatchCommand extends Command {
 	 */
 	protected function getOptions()
 	{
-		 return array(
+		return array(
             array('queueid', null, InputOption::VALUE_OPTIONAL, 'Queue ID', null),
         );
 	}
