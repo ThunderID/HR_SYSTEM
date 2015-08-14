@@ -6899,3 +6899,6 @@ div.line {
 	margin-top: 25px;
 	margin-bottom: 25px;
 }
+ul.nav li.wizard a {
+	padding: 1em 5em;
+}

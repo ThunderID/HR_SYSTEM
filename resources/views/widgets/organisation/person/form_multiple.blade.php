@@ -11,136 +11,219 @@
 	@section('widget_body')
 		{!! Form::open(['url' => $PersonComposer['widget_data']['personlist']['form_url'], 'class' => 'form no_enter', 'files' => true]) !!}				
 			<div class="clearfix">&nbsp;</div>
-			<div class="row">
-				<div class="col-sm-3">
-					<div class="box-profile-picture p-15">
-						<div class="fileinput fileinput-new" data-provides="fileinput">
-							<div class="fileinput-preview thumbnail" data-trigger="fileinput">
-								@if (!$PersonComposer['widget_data']['personlist']['person']['avatar'])
-									{!! HTML::image('https://placeholdit.imgix.net/~text?txtsize=25&bg=cccccc&txtclr=00000%26text%3Dupload%2Bphoto&txt=Upload+Photo&w=500&h=500') !!}
-								@else
-									{!! HTML::image($PersonComposer['widget_data']['personlist']['person']['avatar']) !!}
-								@endif
-							</div>
-							<div>
-								<input type="file" name="link_profile_picture" class="hide">
-							</div>
-						</div>
-						<!-- <input name="link_profile_picture" type="file" class="thumbnail_image_upload" data-img="{{ isset($PersonComposer['widget_data']['personlist']['person']['avatar']) ? $PersonComposer['widget_data']['personlist']['person']['avatar'] : '' }}"> -->
-					</div>
-				</div>
-				<div class="col-sm-9">
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="form-group">
-								<label class="control-label">N I K</label>
-								{!!Form::input('text', 'uniqid', $PersonComposer['widget_data']['personlist']['person']['uniqid'], ['class' => 'form-control'])!!}							
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="form-group">
-								<label class="control-label">Username</label>
-								{!!Form::input('text', 'username', $PersonComposer['widget_data']['personlist']['person']['username'], ['class' => 'form-control'])!!}							
-							</div>
-						</div>
-					</div>				
-					<div class="row">
-						<div class="col-sm-3">
-							<div class="form-group">
-								<label class="control-label">Gelar Depan</label>				
-								{!!Form::input('text', 'prefix_title', $PersonComposer['widget_data']['personlist']['person']['prefix_title'], ['class' => 'form-control'])!!}
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label class="control-label">Nama</label>
-								{!!Form::input('text', 'name', $PersonComposer['widget_data']['personlist']['person']['name'], ['class' => 'form-control'])!!}
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="form-group">
-								<label class="control-label">Gelar Akhir</label>
-								{!!Form::input('text', 'suffix_title', $PersonComposer['widget_data']['personlist']['person']['suffix_title'], ['class' => 'form-control'])!!}
-							</div>
-						</div>
-					</div>				
-					<div class="row">
-						<div class="col-sm-6">
-							<div class="form-group">					
-								<label class="control-label">Tempat Lahir</label>					
-								{!!Form::input('text', 'place_of_birth', $PersonComposer['widget_data']['personlist']['person']['place_of_birth'], ['class' => 'form-control'])!!}					
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label class="control-label">Tanggal Lahir</label>
-								{!!Form::input('text', 'date_of_birth', isset($PersonComposer['widget_data']['personlist']['person']['date_of_birth']) ? date('d-m-Y', strtotime($PersonComposer['widget_data']['personlist']['person']['date_of_birth'])) : '', ['class' => 'form-control date-mask']) !!}
-							</div>	
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-2">
-							<div class="form-group">
-								<label class="mt-10">Jenis Kelamin</label>
-							</div>
-						</div>
-						<div class="col-md-2 @if ($errors->first('gender')) has-error @endif">
-							<div class="radio">
-								<label>
-									<input name="gender" type="radio" value="male"
-									@if (isset($PersonComposer['widget_data']['personlist']['person']['gender']))
-										@if ($PersonComposer['widget_data']['personlist']['person']['gender'] == "male")
-											 checked="checked"
-										@Endif
-									@endif
-									>Laki-laki
-								</label>
-							</div>
-						</div>
-						<div class="col-md-2  @if ($errors->first('gender')) has-error @endif">
-							<div class="radio">
-								<label>
-									<input name="gender" type="radio" value="female"
-									@if (isset($PersonComposer['widget_data']['personlist']['person']['gender']))
-										@if ($PersonComposer['widget_data']['personlist']['person']['gender'] == "female")
-											 checked="checked"
-										@Endif
-									@endif
-									>Perempuan
-								</label>
-							</div>
-						</div>
-					</div>	
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="form-group">
-								<label class="control-label">Password</label>
-								{!!Form::input('password', 'password', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
-								<span id="helpBlock" class="help-block font-12">* Biarkan kosong jika tidak ingin mengubah password </span>
-							</div>	
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="form-group">
-								<label class="control-label">Konfirmasi Password</label>
-								{!!Form::input('password', 'confirmed_password', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
-							</div>	
-						</div>
-					</div>
-					<div class="form-group">
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="wizard active"><a href="#profil" aria-controls="profil" role="tab" data-toggle="tab">1. Profil</a></li>
+			    <li role="presentation" class="wizard"><a href="#contact" aria-controls="contact" role="tab" data-toggle="tab">2. Kontak</a></li>
+			    {{-- <li role="presentation" class="wizard"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Kontak</a></li> --}}
+			    <li role="presentation" class="wizard"><a href="#document" aria-controls="document" role="tab" data-toggle="tab">3. Dokumen</a></li>
+			  </ul>
+
+			  <!-- Tab panes -->
+			<div class="tab-content">
+			    <div role="tabpanel" class="tab-pane active" id="profil">
+			    	<div class="row mt-20">
+			    		<div class="col-sm-3">
+			    			<div class="box-profile-picture p-15">
+			    				<div class="fileinput fileinput-new" data-provides="fileinput">
+			    					<div class="fileinput-preview thumbnail" data-trigger="fileinput">
+			    						@if (!$PersonComposer['widget_data']['personlist']['person']['avatar'])
+			    							{!! HTML::image('https://placeholdit.imgix.net/~text?txtsize=25&bg=cccccc&txtclr=00000%26text%3Dupload%2Bphoto&txt=Upload+Photo&w=500&h=500') !!}
+			    						@else
+			    							{!! HTML::image($PersonComposer['widget_data']['personlist']['person']['avatar']) !!}
+			    						@endif
+			    					</div>
+			    					<div>
+			    						<input type="file" name="link_profile_picture" class="hide">
+			    					</div>
+			    				</div>
+			    				<!-- <input name="link_profile_picture" type="file" class="thumbnail_image_upload" data-img="{{ isset($PersonComposer['widget_data']['personlist']['person']['avatar']) ? $PersonComposer['widget_data']['personlist']['person']['avatar'] : '' }}"> -->
+			    			</div>
+			    		</div>
+			    		<div class="col-sm-9">
+			    			<div class="row">
+			    				<div class="col-sm-12">
+			    					<div class="form-group">
+			    						<label class="control-label">N I K</label>
+			    						{!!Form::input('text', 'uniqid', $PersonComposer['widget_data']['personlist']['person']['uniqid'], ['class' => 'form-control'])!!}							
+			    					</div>
+			    				</div>
+			    			</div>
+			    			<div class="row">
+			    				<div class="col-sm-12">
+			    					<div class="form-group">
+			    						<label class="control-label">Username</label>
+			    						{!!Form::input('text', 'username', $PersonComposer['widget_data']['personlist']['person']['username'], ['class' => 'form-control'])!!}							
+			    					</div>
+			    				</div>
+			    			</div>				
+			    			<div class="row">
+			    				<div class="col-sm-3">
+			    					<div class="form-group">
+			    						<label class="control-label">Gelar Depan</label>				
+			    						{!!Form::input('text', 'prefix_title', $PersonComposer['widget_data']['personlist']['person']['prefix_title'], ['class' => 'form-control'])!!}
+			    					</div>
+			    				</div>
+			    				<div class="col-sm-6">
+			    					<div class="form-group">
+			    						<label class="control-label">Nama</label>
+			    						{!!Form::input('text', 'name', $PersonComposer['widget_data']['personlist']['person']['name'], ['class' => 'form-control'])!!}
+			    					</div>
+			    				</div>
+			    				<div class="col-md-3">
+			    					<div class="form-group">
+			    						<label class="control-label">Gelar Akhir</label>
+			    						{!!Form::input('text', 'suffix_title', $PersonComposer['widget_data']['personlist']['person']['suffix_title'], ['class' => 'form-control'])!!}
+			    					</div>
+			    				</div>
+			    			</div>				
+			    			<div class="row">
+			    				<div class="col-sm-6">
+			    					<div class="form-group">					
+			    						<label class="control-label">Tempat Lahir</label>					
+			    						{!!Form::input('text', 'place_of_birth', $PersonComposer['widget_data']['personlist']['person']['place_of_birth'], ['class' => 'form-control'])!!}					
+			    					</div>
+			    				</div>
+			    				<div class="col-sm-6">
+			    					<div class="form-group">
+			    						<label class="control-label">Tanggal Lahir</label>
+			    						{!!Form::input('text', 'date_of_birth', isset($PersonComposer['widget_data']['personlist']['person']['date_of_birth']) ? date('d-m-Y', strtotime($PersonComposer['widget_data']['personlist']['person']['date_of_birth'])) : '', ['class' => 'form-control date-mask']) !!}
+			    					</div>	
+			    				</div>
+			    			</div>
+			    			<div class="row">
+			    				<div class="col-sm-2">
+			    					<div class="form-group">
+			    						<label class="mt-10">Jenis Kelamin</label>
+			    					</div>
+			    				</div>
+			    				<div class="col-md-2 @if ($errors->first('gender')) has-error @endif">
+			    					<div class="radio">
+			    						<label>
+			    							<input name="gender" type="radio" value="male"
+			    							@if (isset($PersonComposer['widget_data']['personlist']['person']['gender']))
+			    								@if ($PersonComposer['widget_data']['personlist']['person']['gender'] == "male")
+			    									 checked="checked"
+			    								@Endif
+			    							@endif
+			    							>Laki-laki
+			    						</label>
+			    					</div>
+			    				</div>
+			    				<div class="col-md-2  @if ($errors->first('gender')) has-error @endif">
+			    					<div class="radio">
+			    						<label>
+			    							<input name="gender" type="radio" value="female"
+			    							@if (isset($PersonComposer['widget_data']['personlist']['person']['gender']))
+			    								@if ($PersonComposer['widget_data']['personlist']['person']['gender'] == "female")
+			    									 checked="checked"
+			    								@Endif
+			    							@endif
+			    							>Perempuan
+			    						</label>
+			    					</div>
+			    				</div>
+			    			</div>	
+			    			<div class="row">
+			    				<div class="col-sm-12">
+			    					<div class="form-group">
+			    						<label class="control-label">Password</label>
+			    						{!!Form::input('password', 'password', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
+			    						<span id="helpBlock" class="help-block font-12">* Biarkan kosong jika tidak ingin mengubah password </span>
+			    					</div>	
+			    				</div>
+			    			</div>
+			    			<div class="row">
+			    				<div class="col-sm-12">
+			    					<div class="form-group">
+			    						<label class="control-label">Konfirmasi Password</label>
+			    						{!!Form::input('password', 'confirmed_password', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
+			    					</div>	
+			    				</div>
+			    			</div>
+			    		</div>
+			    	</div>
+			    </div>
+			    <div role="tabpanel" class="tab-pane" id="contact">
+			    	<div class="row mt-20">
+			    		<div class="col-sm-12">
+					    	<div class="form-group">				
+					    		<label class="control-label">Item</label>		
+					    		<input type="text" name="item[]" class="form-control select2-tag-contact" style="width:100%" value="alamat">		
+					    	</div>
+					    	<div class="form-group">				
+					    		<label class="control-label">Kontak</label>				
+					    		<input type="text" name="value[]" class="form-control val-contact">
+					    	</div>
+					    	<div class="form-group">
+					    		<div class="checkbox">
+					    			<label>
+					    				<input type="checkbox" name="is_default[]" > Aktif
+					    			</label>
+					    		</div>				
+					    	</div>
+					    	<div class="form-group">				
+					    		<label class="control-label">Item</label>		
+					    		<input type="text" name="item[]" class="form-control select2-tag-contact" style="width:100%" value="email">		
+					    	</div>
+					    	<div class="form-group">				
+					    		<label class="control-label">Kontak</label>				
+					    		<input type="text" name="value[]" class="form-control val-contact">
+					    	</div>
+					    	<div class="form-group">
+					    		<div class="checkbox">
+					    			<label>
+					    				<input type="checkbox" name="is_default[]" > Aktif
+					    			</label>
+					    		</div>				
+					    	</div>
+					    	<div class="form-group">				
+					    		<label class="control-label">Item</label>		
+					    		<input type="text" name="item[]" class="form-control select2-tag-contact" style="width:100%" value="mobile">		
+					    	</div>
+					    	<div class="form-group">				
+					    		<label class="control-label">Kontak</label>				
+					    		<input type="text" name="value[]" class="form-control val-contact">
+					    	</div>
+					    	<div class="form-group">
+					    		<div class="checkbox">
+					    			<label>
+					    				<input type="checkbox" name="is_default[]" > Aktif
+					    			</label>
+					    		</div>				
+					    	</div>
+			    		</div>
+			    	</div>
+			    </div>
+			    <div role="tabpanel" class="tab-pane" id="document">
+			    	
+			    </div>
+			</div>
+			
+				
+					{{-- <div class="form-group">
 						<div class="row">
 							<div class="col-sm-12">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="contact"> Tambah Kontak
+										<input type="checkbox" name="contact" id="person_add_contact"> Tambah Kontak
 									</label>
 								</div>	
 							</div>
 						</div>
 					</div>
+					<div id="template_person_add_contact"></div>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="contact" id="person_add_document"> Tambah Dokumen
+									</label>
+								</div>	
+							</div>
+						</div>
+					</div> --}}
+					{{-- <div id="template_person_add_document"></div> --}}
 					<div class="form-group">
 						<div class="col-md-12 text-right">
 							<a href="{{ $PersonComposer['widget_data']['personlist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
