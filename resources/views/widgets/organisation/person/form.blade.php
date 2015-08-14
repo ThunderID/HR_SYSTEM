@@ -9,7 +9,7 @@
 	@overwrite
 
 	@section('widget_body')
-		{!! Form::open(['url' => $PersonComposer['widget_data']['personlist']['form_url'], 'class' => 'form no_enter', 'files' => true]) !!}				
+		{!! Form::open(['url' => $PersonComposer['widget_data']['personlist']['form_url'], 'class' => 'form no_enter', 'files' => true, 'autocomplete' => 'off']) !!}				
 			<div class="clearfix">&nbsp;</div>
 			<div class="row">
 				<div class="col-sm-3">
@@ -76,7 +76,7 @@
 						<div class="col-sm-6">
 							<div class="form-group">
 								<label class="control-label">Tanggal Lahir</label>
-								{!!Form::input('text', 'date_of_birth', isset($PersonComposer['widget_data']['personlist']['person']['date_of_birth']) ? date('d-m-Y', strtotime($PersonComposer['widget_data']['personlist']['person']['date_of_birth'])) : '', ['class' => 'form-control date-mask']) !!}
+								{!!Form::input('text', 'date_of_birth', isset($PersonComposer['widget_data']['personlist']['person']['date_of_birth']) ? date('d-m-Y', strtotime($PersonComposer['widget_data']['personlist']['person']['date_of_birth'])) : null, ['class' => 'form-control date-mask']) !!}
 							</div>	
 						</div>
 					</div>
