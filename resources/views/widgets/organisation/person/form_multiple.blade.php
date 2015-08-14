@@ -131,6 +131,17 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="contact"> Tambah Kontak
+									</label>
+								</div>	
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
 						<div class="col-md-12 text-right">
 							<a href="{{ $PersonComposer['widget_data']['personlist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
 							<input type="submit" class="btn btn-primary" value="Simpan">

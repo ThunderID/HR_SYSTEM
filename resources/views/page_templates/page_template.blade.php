@@ -71,6 +71,7 @@
 	@include('plugins.no_enter_form')	
 	@include('plugins.stickytableheader')
 	@include('plugins.ajax_batch')
+	@include('plugins.bootstrap_fileinput')
 
 	<script>
 		$(function() {
