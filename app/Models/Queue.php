@@ -5,6 +5,7 @@
  * 	ID 								: Auto Increment, Integer, PK
  * 	created_by 						: Foreign Key From Person, Integer, Required
  * 	process_name 		 			: Required : max 255
+ * 	process_option 		 			: Required : max 255
  * 	parameter 		 				: Required
  * 	total_process 		 			: Required : numeric
  * 	task_per_process 		 		: Required : numeric
@@ -41,6 +42,7 @@ class Queue extends BaseModel {
 	protected 	$fillable			= 	[
 											'created_by' 				,
 											'process_name' 				,
+											'process_option' 			,
 											'parameter' 				,
 											'total_process' 			,
 											'task_per_process' 			,
@@ -52,6 +54,7 @@ class Queue extends BaseModel {
 	protected 	$rules				= 	[
 											'created_by'				=> 'required|exists:persons,id',
 											'process_name'				=> 'required',
+											'process_option'			=> 'max:255',
 											'parameter'					=> 'required',
 											'total_process'				=> 'required|numeric',
 											'task_per_process'			=> 'required|numeric',

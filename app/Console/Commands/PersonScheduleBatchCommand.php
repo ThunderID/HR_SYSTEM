@@ -47,7 +47,7 @@ class PersonScheduleBatchCommand extends Command {
 	public function fire()
 	{
 		//
-		$id 			= $this->option('queueid');
+		$id 			= $this->argument()['queueid'];
 
 		$result 		= $this->batchpersonchedule($id);
 
@@ -62,7 +62,7 @@ class PersonScheduleBatchCommand extends Command {
 	protected function getArguments()
 	{
 		return [
-			['argument', InputArgument::REQUIRED, 'An example argument.'],
+			['queueid', InputArgument::REQUIRED, 'An example argument.'],
 		];
 	}
 
@@ -89,7 +89,7 @@ class PersonScheduleBatchCommand extends Command {
 		$queue 						= new Queue;
 		$pending 					= $queue->find($id);
 
-		$parameters 				= (array)json_decode($pending->parameter);
+		$parameters 				= json_decode($pending->parameter, true);
 
 		$errors 					= new MessageBag;
 
@@ -102,7 +102,7 @@ class PersonScheduleBatchCommand extends Command {
 
 		foreach ( $periods as $key => $period )
 		{
-			if(floor($key/$pending->task_per_process) < $pending->total_process)
+			if(floor($key/$pending->task_per_process) < $pending->total_process && !$errors->count())
 			{
 				$psch 				= PersonSchedule::personid($parameters['associate_person_id'])->ondate([$period->format('Y-m-d'), $period->format('Y-m-d')])->status(strtoupper($parameters['status']))->first();
 				if(!$psch)
@@ -135,12 +135,22 @@ class PersonScheduleBatchCommand extends Command {
 						}
 					}
 				}
-				elseif(($key+1)%$pending->task_per_process==0)
+				elseif(($key+1)%$pending->task_per_process==0 && !$errors->count())
 				{
 					$pending->fill(['process_number' => ($key+1)/$pending->task_per_process, 'message' => 'Processing']);
 					$pending->save();
+
+					$morphed 						= new QueueMorph;
+
+					$morphed->fill([
+						'queue_id'					=> $id,
+						'queue_morph_id'			=> $is_success->data->id,
+						'queue_morph_type'			=> get_class(new PersonSchedule),
+					]);
+
+					$morphed->save();
 				}
-				else
+				elseif(!$errors->count())
 				{
 					$morphed 						= new QueueMorph;
 

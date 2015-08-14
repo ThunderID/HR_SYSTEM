@@ -86,7 +86,14 @@ class HRQueueCheckers extends Command {
 		{
 			foreach ($pendings as $key => $value) 
 			{
-				$check 				= $this->call($value->process_name, ['argument' => 'schedule', '--queueid' => $value->id]);
+				if($value->process_option!='')
+				{
+					$check 				= $this->call($value->process_name, ['queueid' => $value->id, '--queuefunc' => $value->option]);
+				}
+				else
+				{
+					$check 				= $this->call($value->process_name, ['queueid' => $value->id]);
+				}
 			}			
 		}
 

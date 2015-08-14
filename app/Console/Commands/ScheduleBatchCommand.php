@@ -46,7 +46,7 @@ class ScheduleBatchCommand extends Command {
 	public function fire()
 	{
 		//
-		$id 			= $this->option('queueid');
+		$id 			= $this->argument()['queueid'];
 
 		$result 		= $this->batchSchedulefromwork($id);
 
@@ -61,7 +61,7 @@ class ScheduleBatchCommand extends Command {
 	protected function getArguments()
 	{
 		return [
-			['argument', InputArgument::REQUIRED, 'An example argument.'],
+			['queueid', InputArgument::REQUIRED, 'An example argument.'],
 		];
 	}
 
@@ -73,7 +73,7 @@ class ScheduleBatchCommand extends Command {
 	protected function getOptions()
 	{
 		return array(
-            array('queueid', null, InputOption::VALUE_OPTIONAL, 'Queue ID', null),
+            array('queuefunc', null, InputOption::VALUE_OPTIONAL, 'Queue Function', null),
         );
 	}
 
@@ -88,7 +88,7 @@ class ScheduleBatchCommand extends Command {
 		$queue 						= new Queue;
 		$pending 					= $queue->find($id);
 
-		$parameters 				= (array)json_decode($pending->parameter);
+		$parameters 				= json_decode($pending->parameter, true);
 
 		$errors 					= new MessageBag;
 

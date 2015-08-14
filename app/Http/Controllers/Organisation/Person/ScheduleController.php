@@ -138,6 +138,7 @@ class ScheduleController extends BaseController
 			App::abort(404);
 		}
 
+		$errors 								= new MessageBag();
 
 		if(Input::has('on'))
 		{
@@ -161,7 +162,7 @@ class ScheduleController extends BaseController
 			$search['id'] 							= $person_id;
 			$search['organisationid'] 				= $org_id;
 			$search['WorkCalendar'] 				= true;
-			$search['WithWorkCalendarSchedules'] 	= ['on' => [$begin->format('Y-m-d'), $end->format('Y-m-d')]];
+			$search['WithWorkCalendarSchedules'] 	= ['on' => [$begin->format('Y-m-d'), $ended->format('Y-m-d')]];
 			$sort 									= ['name' => 'asc'];
 			$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 			$contents 								= json_decode($results);
@@ -187,10 +188,7 @@ class ScheduleController extends BaseController
 			$attributes['end'] 					= date('H:i:s', strtotime($attributes['end']));
 		}
 
-		$errors 								= new MessageBag();
-
 		DB::beginTransaction();
-
 
 		if(isset($ended) && $ended->format('Y-m-d') <= $begin->format('Y-m-d'))
 		{
@@ -272,10 +270,11 @@ class ScheduleController extends BaseController
 			$queattr['process_number'] 	= 0;
 			$queattr['total_task'] 		= iterator_count($periods);
 			
-			if(in_array(strtoupper($attributes['onend']), ['CB', 'CN', 'CI']))
+			if(in_array(strtoupper($attributes['status']), ['CB', 'CN', 'CI']))
 			{
 				unset($attributes['onstart']);
 				unset($attributes['onend']);
+				
 				$attributes['start']		= $begin->format('Y-m-d');
 				$attributes['end']			= $ended->format('Y-m-d');
 				$queattr['process_name']	= 'hr:personworkleavebatch';
