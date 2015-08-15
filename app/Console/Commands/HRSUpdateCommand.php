@@ -319,6 +319,11 @@ class HRSUpdateCommand extends Command {
 
 		$this->info("Add widget, dashboard, is_active, drop title, field and function on person widgets table");
 
+
+		Schema::drop('setting_idles');
+
+		$this->info("Table setting idles removed");
+
 		return true;
 	}
 }
