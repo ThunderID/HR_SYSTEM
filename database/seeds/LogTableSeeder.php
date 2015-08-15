@@ -64,7 +64,10 @@ class LogTableSeeder extends Seeder
 						$data->fill([
 							'name'					=> $logs[$state],
 							'on'					=> date("Y-m-d H:i:s", strtotime($period->format('Y-m-d').' + '.$hour.' + '.$minute.' + '.$second)),
+							'last_input_time'		=> date("Y-m-d H:i:s", strtotime($period->format('Y-m-d').' + '.$hour.' + '.$minute.' + '.$second)),
 							'pc'					=> $pcs[$rand],
+							'app_version'			=> '1.0',
+							'ip'					=> getenv("REMOTE_ADDR")
 						]);
 
 						$data->Person()->associate($person);
@@ -80,8 +83,6 @@ class LogTableSeeder extends Seeder
 		}
 		catch (Exception $e) 
 		{
-    		echo 'Caught exception: ',  $e->getLine(), "\n";
-    		echo 'Caught exception: ',  $e->getFile(), "\n";
     		echo 'Caught exception: ',  $e->getMessage(), "\n";
 		}	
 	}

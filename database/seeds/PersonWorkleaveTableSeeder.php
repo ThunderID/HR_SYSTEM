@@ -60,6 +60,9 @@ class PersonWorkleaveTableSeeder extends Seeder
 					}
 
 
+					$start 								= date('Y-m-d',strtotime(rand(1,12).'-'.rand(1,28).'-2015'));
+					$end 								= date('Y-m-d',strtotime($start.' + '.$quota[$rand+1].' days'));
+
 					//pengambilan cuti bersama
 					$data2 								= new PersonWorkleave;
 					$data2->fill([

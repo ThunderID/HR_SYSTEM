@@ -385,7 +385,7 @@ class ScheduleController extends BaseController
 		unset($sort);
 
 		//look for person calendar via work
-		$search['active'] 						= $end;
+		$search['active'] 						= true;
 		$search['personid'] 					= $person_id;
 		$search['status'] 						= ['contract','probation','internship','permanent','others'];
 		$search['withattributes'] 				= ['calendar'];
