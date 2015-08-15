@@ -135,6 +135,7 @@ class ProcessingLogObserver
 					}
 					if(strtoupper($pschedules->schedules[0]->status)!='HB')
 					{
+						$actual_status 	= 'HC';
 						$modified_status= $pschedules->schedules[0]->status;
 						$modified_by 	= $pschedules->schedules[0]->created_by;
 						$modified_at 	= $pschedules->schedules[0]->created_at;
@@ -161,10 +162,12 @@ class ProcessingLogObserver
 							if(count($ccalendar->workscalendars[0]->calendar->schedules) > 1)
 							{
 								$modified_status 		= 'DN';
+								$actual_status 			= 'AS';
 							}
 							else
 							{
 								$modified_status 		= 'HD';
+								$actual_status 			= 'HC';
 							}
 
 							$modified_by 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_by;
@@ -172,9 +175,13 @@ class ProcessingLogObserver
 							break;
 
 						case 'ss': case 'sl' : case 'cn' : case 'ci' : case 'cb' : case 'ul' :
+							$actual_status 				= 'AS';
 							$modified_status 			= strtoupper($ccalendar->workscalendars[0]->calendar->schedules[0]->status);
 							$modified_by 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_by;
 							$modified_at 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_at;
+							break;
+						case 'l': 
+							$actual_status 				= 'L';
 							break;
 					}
 
@@ -221,11 +228,13 @@ class ProcessingLogObserver
 										$modified_status 		= 'HD';
 									}
 
+									$actual_status 				= 'AS';
 									$modified_by 				= $calendar->workscalendars[0]->calendar->created_by;
 									$modified_at 				= $calendar->workscalendars[0]->calendar->created_at;
 									break;
 
 								case 'ss': case 'sl' : case 'cn' : case 'ci' : case 'cb' : case 'ul' :
+									$actual_status 				= 'AS';
 									$modified_status 			= strtoupper($calendar->workscalendars[0]->calendar->status);
 									$modified_by 				= $calendar->workscalendars[0]->calendar->created_by;
 									$modified_at 				= $calendar->workscalendars[0]->calendar->created_at;
@@ -234,12 +243,14 @@ class ProcessingLogObserver
 						}
 						else
 						{
+							$actual_status 	= 'L';
 							$schedule_start = '00:00:00';
 							$schedule_end 	= '00:00:00';
 						}
 					}
 					else
 					{
+						$actual_status 	= 'L';
 						$schedule_start = '00:00:00';
 						$schedule_end 	= '00:00:00';
 					}
@@ -501,15 +512,24 @@ class ProcessingLogObserver
 				unset($start_idle);
 			}
 
-			if(!$actual_status!='' && $margin_start==0 && $margin_end==0)
+			if($actual_status=='')
+			{
+
+			}
+
+			if($actual_status=='' && $schedule_start=='00:00:00' && $schedule_end=='00:00:00')
+			{
+				$actual_status 			= 'L';
+			}
+			elseif($actual_status=='' && gmdate('H:i:s',$margin_start)==$schedule_start && gmdate('H:i:s', (0 - $margin_start))==$schedule_end)
 			{
 				$actual_status 			= 'AS';
 			}
-			elseif(!$actual_status!='' && $margin_start>=0 && $margin_end>=0)
+			elseif($actual_status=='' && $margin_start>=0 && $margin_end>=0)
 			{
 				$actual_status 			= 'HB';
 			}
-			elseif(!$actual_status!='')
+			elseif($actual_status=='')
 			{
 				$actual_status 			= 'HC';
 			}
