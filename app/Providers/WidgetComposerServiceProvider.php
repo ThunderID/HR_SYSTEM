@@ -67,7 +67,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// DOCUMENT
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.document.table', 'widgets.organisation.document.form', 'widgets.organisation.document.select', 'widgets.common.persondocument.form', 'widgets.common.persondocument.form_multiple', 'widgets.organisation.document.stat.total_document'], 	'App\Http\ViewComposers\DocumentComposer');
+		View::composer(['widgets.organisation.document.table', 'widgets.organisation.document.form', 'widgets.organisation.document.select', 'widgets.common.persondocument.form', 'widgets.common.persondocument.form_no_title', 'widgets.common.persondocument.form_multiple', 'widgets.organisation.document.stat.total_document'], 	'App\Http\ViewComposers\DocumentComposer');
 
 		// -----------------------------------------------------------------------------
 		// IDLE
@@ -82,12 +82,12 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// PERSON
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.person.table', 'widgets.organisation.person.form', 'widgets.organisation.person.form_multiple', 'widgets.organisation.person.select', 'widgets.organisation.report.attendance.table', 'widgets.organisation.report.wage.table', 'widgets.organisation.person.stat.total_employee', 'widgets.organisation.person.stat.average_loss_rate','widgets.organisation.report.attendance.person.table','widgets.organisation.report.activity.person.log.table', 'widgets.organisation.report.attendance.table_csv', 'widgets.organisation.report.attendance.person.table_csv', 'widgets.organisation.report.attendance.person.log.table_csv', 'widgets.organisation.report.wage.table_csv', 'widgets.organisation.person.workleave.left_quota', 'widgets.organisation.person.upload_csv', 'widgets.organisation.report.activity.table', 'widgets.organisation.report.activity.person.table'], 	'App\Http\ViewComposers\PersonComposer');
+		View::composer(['widgets.organisation.person.table', 'widgets.organisation.person.form', 'widgets.organisation.person.form_multiple', 'widgets.organisation.person.form_no_title', 'widgets.organisation.person.select', 'widgets.organisation.report.attendance.table', 'widgets.organisation.report.wage.table', 'widgets.organisation.person.stat.total_employee', 'widgets.organisation.person.stat.average_loss_rate','widgets.organisation.report.attendance.person.table','widgets.organisation.report.activity.person.log.table', 'widgets.organisation.report.attendance.table_csv', 'widgets.organisation.report.attendance.person.table_csv', 'widgets.organisation.report.attendance.person.log.table_csv', 'widgets.organisation.report.wage.table_csv', 'widgets.organisation.person.workleave.left_quota', 'widgets.organisation.person.upload_csv', 'widgets.organisation.report.activity.table', 'widgets.organisation.report.activity.person.table'], 	'App\Http\ViewComposers\PersonComposer');
 
 		// -----------------------------------------------------------------------------
 		// CONTACT
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.common.contact.table', 'widgets.common.contact.form'], 	'App\Http\ViewComposers\ContactComposer');
+		View::composer(['widgets.common.contact.table', 'widgets.common.contact.form', 'widgets.common.contact.form_no_title'], 	'App\Http\ViewComposers\ContactComposer');
 
 		// -----------------------------------------------------------------------------
 		// CHART
