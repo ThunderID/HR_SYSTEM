@@ -1,15 +1,7 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
 @if (!$widget_error_count)
-	@section('widget_title')
-	<h1> {{ is_null($id) ? 'Tambah Data Karyawan' : 'Ubah Data Karyawan "'. $PersonComposer['widget_data']['personlist']['person']['name'].'"'}} </h1> 
-		
-	<div class="text-right">
-	<a href="{{ route('hr.persons.create', ['org_id' => $data['id'], 'import' => 'yes']) }}" class="btn btn-primary text-right">Import CSV</a>	</div>
-	@overwrite
-
 	@section('widget_body')
-		{!! Form::open(['url' => $PersonComposer['widget_data']['personlist']['form_url'], 'class' => 'form no_enter', 'files' => true, 'autocomplete' => 'off']) !!}				
 			<div class="clearfix">&nbsp;</div>
 			<div class="row">
 				<div class="col-sm-3">
@@ -17,7 +9,7 @@
 						<div class="fileinput fileinput-new" data-provides="fileinput">
 							<div class="fileinput-preview thumbnail" data-trigger="fileinput">
 								@if (!$PersonComposer['widget_data']['personlist']['person']['avatar'])
-									{!! HTML::image('/upload_foto.png') !!}
+									{!! HTML::image('https://placeholdit.imgix.net/~text?txtsize=25&bg=cccccc&txtclr=00000%26text%3Dupload%2Bphoto&txt=Upload+Photo&w=500&h=500') !!}
 								@else
 									{!! HTML::image($PersonComposer['widget_data']['personlist']['person']['avatar']) !!}
 								@endif
@@ -34,7 +26,7 @@
 						<div class="col-sm-12">
 							<div class="form-group">
 								<label class="control-label">N I K</label>
-								{!!Form::input('text', 'uniqid', $PersonComposer['widget_data']['personlist']['person']['uniqid'], ['class' => 'form-control'])!!}							
+								{!!Form::input('text', 'uniqid', $PersonComposer['widget_data']['personlist']['person']['uniqid'], ['class' => 'form-control', 'required' => 'required'])!!}							
 							</div>
 						</div>
 					</div>
@@ -42,7 +34,7 @@
 						<div class="col-sm-12">
 							<div class="form-group">
 								<label class="control-label">Username</label>
-								{!!Form::input('text', 'username', $PersonComposer['widget_data']['personlist']['person']['username'], ['class' => 'form-control'])!!}							
+								{!!Form::input('text', 'username', $PersonComposer['widget_data']['personlist']['person']['username'], ['class' => 'form-control', 'required' => 'required'])!!}							
 							</div>
 						</div>
 					</div>				
@@ -130,16 +122,8 @@
 							</div>	
 						</div>
 					</div>
-					<div class="form-group">
-						<div class="col-md-12 text-right">
-							<a href="{{ $PersonComposer['widget_data']['personlist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
-							<input type="submit" class="btn btn-primary" value="Simpan">
-						</div>
-					</div>
 				</div>
 			</div>
-			
-		{!! Form::close() !!}
 	@overwrite	
 @else
 	@section('widget_title')
