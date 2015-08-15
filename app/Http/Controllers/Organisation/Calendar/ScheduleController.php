@@ -295,6 +295,12 @@ class ScheduleController extends BaseController
 		$attributes['start'] 					= date('H:i:s', strtotime($attributes['start']));
 		$attributes['end'] 						= date('H:i:s', strtotime($attributes['end']));
 
+		if(in_array(strtoupper($attributes['status']), ['CN', 'CB', 'CI', 'L']))
+		{
+			$attributes['start'] 				= '00:00:00';
+			$attributes['end'] 					= '00:00:00';
+		}
+
 		$errors 								= new MessageBag();
 
 		DB::beginTransaction();
@@ -307,9 +313,9 @@ class ScheduleController extends BaseController
 		}
 		elseif(Input::has('onstart') && Input::has('onend'))
 		{
-			$begin 									= new DateTime( Input::get('onstart') );
-			$ended 									= new DateTime( Input::get('onend').' + 1 day' );
-			$maxend 								= new DateTime( Input::get('onstart').' + 7 days' );
+			$begin 								= new DateTime( Input::get('onstart') );
+			$ended 								= new DateTime( Input::get('onend').' + 1 day' );
+			$maxend 							= new DateTime( Input::get('onstart').' + 7 days' );
 		}
 		else
 		{
@@ -333,19 +339,19 @@ class ScheduleController extends BaseController
 				unset($search);
 				unset($sort);
 
-				$search['organisationid'] 				= $org_id;
-				$search['activeworks'] 					= true;
-				$search['parentid'] 					= $cal_id;
-				$sort 									= ['name' => 'asc'];
-				$results 								= $this->dispatch(new Getting(new Calendar, $search, $sort , 1, 100));
-				$contents 								= json_decode($results);
+				$search['organisationid'] 			= $org_id;
+				$search['activeworks'] 				= true;
+				$search['parentid'] 				= $cal_id;
+				$sort 								= ['name' => 'asc'];
+				$results 							= $this->dispatch(new Getting(new Calendar, $search, $sort , 1, 100));
+				$contents 							= json_decode($results);
 
 				if(!$contents->meta->success)
 				{
 					App::abort(404);
 				}
 
-				$calendars 								= json_decode(json_encode($contents->data), true);
+				$calendars 							= json_decode(json_encode($contents->data), true);
 			}
 
 			$calendars[]							= $calendar;
@@ -365,12 +371,12 @@ class ScheduleController extends BaseController
 					$queattr['created_by'] 			= Session::get('loggedUser');
 					if(in_array(strtoupper($attributes['status']), ['CN', 'CB', 'CI']))
 					{
-						$queattr['process_name'] 		= 'hr:schedulebatch';
-						$queattr['process_option'] 		= 'personstaken';
+						$queattr['process_name'] 	= 'hr:personworkleavebatch';
+						$queattr['process_option'] 	= 'personstaken';
 					}
 					else
 					{
-						$queattr['process_name'] 		= 'hr:personworkleavebatch';
+						$queattr['process_name'] 	= 'hr:schedulebatch';
 					}
 					
 					$queattr['parameter'] 			= json_encode($attributes);
