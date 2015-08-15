@@ -44,7 +44,7 @@ class AttendanceLog extends BaseModel {
 	public 		$timestamps 		= true;
 
 	protected 	$table 				= 	'attendance_logs';
-
+	
 	protected 	$fillable			= 	[
 											'actual_status' 					,
 											'modified_status' 					,

@@ -122,7 +122,7 @@ class ProcessingLogObserver
 						$actual_status 			= 'AS';
 					}
 					$modified_by 	= $model['attributes']['created_by'];
-					$modified_at 	= $model['attributes']['created_at'];
+					$modified_at 	= $model['attributes']['created_at']->format('Y-m-d H:i:s');
 				}
 				else
 				{
@@ -138,7 +138,7 @@ class ProcessingLogObserver
 						$actual_status 	= 'HC';
 						$modified_status= $pschedules->schedules[0]->status;
 						$modified_by 	= $pschedules->schedules[0]->created_by;
-						$modified_at 	= $pschedules->schedules[0]->created_at;
+						$modified_at 	= $pschedules->schedules[0]->created_at->format('Y-m-d H:i:s');
 					}
 				}
 			}
@@ -171,14 +171,14 @@ class ProcessingLogObserver
 							}
 
 							$modified_by 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_by;
-							$modified_at 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_at;
+							$modified_at 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_at->format('Y-m-d H:i:s');
 							break;
 
 						case 'ss': case 'sl' : case 'cn' : case 'ci' : case 'cb' : case 'ul' :
 							$actual_status 				= 'AS';
 							$modified_status 			= strtoupper($ccalendar->workscalendars[0]->calendar->schedules[0]->status);
 							$modified_by 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_by;
-							$modified_at 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_at;
+							$modified_at 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_at->format('Y-m-d H:i:s');
 							break;
 						case 'l': 
 							$actual_status 				= 'L';
@@ -197,7 +197,6 @@ class ProcessingLogObserver
 						{
 							return true;
 						}
-						
 						$workid 	= $calendar->workscalendars[0]->id;
 						$workdays  	= explode(',', $calendar->workscalendars[0]->calendar->workdays);
 						$lworkdays 	= [];
@@ -230,14 +229,14 @@ class ProcessingLogObserver
 
 									$actual_status 				= 'AS';
 									$modified_by 				= $calendar->workscalendars[0]->calendar->created_by;
-									$modified_at 				= $calendar->workscalendars[0]->calendar->created_at;
+									$modified_at 				= $calendar->workscalendars[0]->calendar->created_at->format('Y-m-d H:i:s');
 									break;
 
 								case 'ss': case 'sl' : case 'cn' : case 'ci' : case 'cb' : case 'ul' :
 									$actual_status 				= 'AS';
 									$modified_status 			= strtoupper($calendar->workscalendars[0]->calendar->status);
 									$modified_by 				= $calendar->workscalendars[0]->calendar->created_by;
-									$modified_at 				= $calendar->workscalendars[0]->calendar->created_at;
+									$modified_at 				= $calendar->workscalendars[0]->calendar->created_at->format('Y-m-d H:i:s');
 									break;
 							}
 						}
@@ -512,11 +511,6 @@ class ProcessingLogObserver
 				unset($start_idle);
 			}
 
-			if($actual_status=='')
-			{
-
-			}
-
 			if($actual_status=='' && $schedule_start=='00:00:00' && $schedule_end=='00:00:00')
 			{
 				$actual_status 			= 'L';
@@ -556,7 +550,7 @@ class ProcessingLogObserver
 				$alog 										= AttendanceLog::processlogid($data->id)->first();
 				$ilog 										= IdleLog::processlogid($data->id)->first();
 
-				if(isset($modified_status) && $alog->modified_status != $modified_status)
+				if(!$alog || (isset($modified_status) && $alog->modified_status != $modified_status))
 				{
 					$alog 									= new AttendanceLog;
 				}
@@ -567,22 +561,31 @@ class ProcessingLogObserver
 				$ilog 										= new IdleLog;
 			}
 
-
 			if(isset($prev_data->id))
 			{
 				$count_status 								= $prev_data->attendancelogs[0]->count_status + 1;
 			}
 
-			$alog->fill([
+			if(isset($modified_status))
+			{
+				$alog->fill([
 								'margin_start'				=> $margin_start,
 								'margin_end'				=> $margin_end,
 								'count_status'				=> $count_status,
 								'actual_status'				=> $actual_status,
-			]);
-
-			if(isset($modified_status))
+								'modified_status'			=> $modified_status,
+								'modified_by'				=> $modified_by,
+								'modified_at'				=> $modified_at,
+				]);
+			}
+			else
 			{
-				$alog->fill(['modified_status', $modified_status, 'modified_by' => $modified_by, 'modified_at' => $modified_at]);
+				$alog->fill([
+								'margin_start'				=> $margin_start,
+								'margin_end'				=> $margin_end,
+								'count_status'				=> $count_status,
+								'actual_status'				=> $actual_status,
+				]);
 			}
 
 			$ilog->fill([

@@ -22,6 +22,8 @@ class AttendanceLogObserver
 
 		if ($validator->passes())
 		{
+			$errors 							= new MessageBag;
+			
 			//save actual status for both start and end
 			if(!isset($model['attributes']['actual_status']))
 			{
