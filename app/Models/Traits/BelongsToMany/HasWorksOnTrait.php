@@ -101,9 +101,14 @@ trait HasWorksOnTrait {
 			return $query->whereHas('workscalendars' ,function($q)use($variable){$q->calendarid($variable['id']);});
 		}
 		$bool 						= filter_var($variable, FILTER_VALIDATE_BOOLEAN);
+		$date 						= date('Y-m-d', strtotime($variable));
 		if($bool==true)
 		{
 			return $query->whereHas('workscalendars' ,function($q)use($variable){$q->whereNull('end')->orwhere('end', '>=', date('Y-m-d'));});
+		}
+		elseif($date)
+		{
+			return $query->whereHas('workscalendars' ,function($q)use($date){$q->whereNull('end')->orwhere('end', '>=', $date);});
 		}
 		return $query->whereHas('workscalendars' ,function($q)use($variable){$q;});
 	}

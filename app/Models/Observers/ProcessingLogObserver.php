@@ -145,46 +145,47 @@ class ProcessingLogObserver
 			else
 			{
 				//check if global schedule were provided
-				$ccalendars 		= Person::ID($model['attributes']['person_id'])->WorkCalendar(true)->WorkCalendarschedule(['on' => [$on, $on]])->first();
+				$ccalendars 		= Person::ID($model['attributes']['person_id'])->WorkCalendar($on)->WorkCalendarschedule(['on' => [$on, $on]])->first();
 				if(!is_null($ccalendars))
 				{
-					$ccalendar 		= Person::ID($model['attributes']['person_id'])->WorkCalendar(true)->WorkCalendarschedule(['on' => [$on, $on]])->WithWorkCalendarSchedules(['on' => [$on, $on]])->first();
+					$ccalendar 		= Person::ID($model['attributes']['person_id'])->WorkCalendar($on)->WorkCalendarschedule(['on' => [$on, $on]])->WithWorkCalendarSchedules(['on' => [$on, $on]])->first();
 
-					$schedule_start	= $ccalendar->workscalendars[0]->calendar->schedules[0]->start;
-					
-					$schedule_end	= $ccalendar->workscalendars[0]->calendar->schedules[0]->end;
-					$workid 		= $ccalendar->workscalendars[0]->id;
-
-					//sync schedule status with process log
-					switch (strtolower($ccalendar->workscalendars[0]->calendar->schedules[0]->status)) 
+					if(isset($ccalendar->workscalendars[0]))
 					{
-						case 'dn':
-							if(count($ccalendar->workscalendars[0]->calendar->schedules) > 1)
-							{
-								$modified_status 		= 'DN';
-								$actual_status 			= 'AS';
-							}
-							else
-							{
-								$modified_status 		= 'HD';
-								$actual_status 			= 'HC';
-							}
+						$schedule_start	= $ccalendar->workscalendars[0]->calendar->schedules[0]->start;
+						$schedule_end	= $ccalendar->workscalendars[0]->calendar->schedules[0]->end;
+						$workid 		= $ccalendar->workscalendars[0]->id;
 
-							$modified_by 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_by;
-							$modified_at 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_at->format('Y-m-d H:i:s');
-							break;
+						//sync schedule status with process log
+						switch (strtolower($ccalendar->workscalendars[0]->calendar->schedules[0]->status)) 
+						{
+							case 'dn':
+								if(count($ccalendar->workscalendars[0]->calendar->schedules) > 1)
+								{
+									$modified_status 		= 'DN';
+									$actual_status 			= 'AS';
+								}
+								else
+								{
+									$modified_status 		= 'HD';
+									$actual_status 			= 'HC';
+								}
 
-						case 'ss': case 'sl' : case 'cn' : case 'ci' : case 'cb' : case 'ul' :
-							$actual_status 				= 'AS';
-							$modified_status 			= strtoupper($ccalendar->workscalendars[0]->calendar->schedules[0]->status);
-							$modified_by 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_by;
-							$modified_at 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_at->format('Y-m-d H:i:s');
-							break;
-						case 'l': 
-							$actual_status 				= 'L';
-							break;
+								$modified_by 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_by;
+								$modified_at 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_at->format('Y-m-d H:i:s');
+								break;
+
+							case 'ss': case 'sl' : case 'cn' : case 'ci' : case 'cb' : case 'ul' :
+								$actual_status 				= 'AS';
+								$modified_status 			= strtoupper($ccalendar->workscalendars[0]->calendar->schedules[0]->status);
+								$modified_by 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_by;
+								$modified_at 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_at->format('Y-m-d H:i:s');
+								break;
+							case 'l': 
+								$actual_status 				= 'L';
+								break;
+						}
 					}
-
 				}
 				else
 				{
