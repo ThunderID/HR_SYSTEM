@@ -98,7 +98,7 @@ class AttendanceLogObserver
 		elseif(strtoupper($model->actual_status)=='AS' && (in_array(strtoupper($model->modified_status), ['CN','CI','CB'])))
 		{
 			//check if pw on that day were provided
-			$pwM 								= PersonWorkleave::personid($model->processlog->person_id)->ondate([$on, null])->status(strtoupper($model->modified_status))->quota(false)->first();
+			$pwM 								= PersonWorkleave::personid($model->processlog->person_id)->ondate([$on, $on])->status(strtoupper($model->modified_status))->quota(false)->first();
 			if($pwM)
 			{
 				return true;
@@ -107,33 +107,6 @@ class AttendanceLogObserver
 			else
 			{
 				$pwP 							= PersonWorkleave::personid($model->processlog->person_id)->ondate([$on, null])->status('CN')->quota(true)->first();
-				if(!$pwP)
-				{
-					$alog 						= new AttendanceLog;
-					$alog->fill([
-						'margin_start'			=> $margin_start,
-						'margin_end'			=> $margin_end,
-						'count_status'			=> $count_status,
-						'actual_status'			=> $actual_status,
-						'modified_status'		=> 'UL',
-						'modified_at'			=> $modified_at,
-						'modified_by'			=> $modified_by,
-						'notes'					=> 'Auto generated dari attendance log, karena tidak ada cuti.',
-					]);
-
-					$processlog 				= ProcessLog::find($model['attributes']['process_log_id']);
-
-					$alog->ProcessLog()->associate($processlog);
-
-					if(!$alog->save())
-					{
-						$model['errors'] 		= $alog->getError();
-
-						return false;
-					}
-
-					return true;
-				}
 
 				$person 						= Person::find($model->processlog->person_id);
 
@@ -158,6 +131,41 @@ class AttendanceLogObserver
 
 					return false;
 				}
+
+				$pwP2 							= PersonWorkleave::personid($model->processlog->person_id)->ondate([$on, null])->status('CN')->quota(true)->sum('quota');
+				if($pwP)
+				{
+					$pwP3 						= PersonWorkleave::parentid($pwP->id)->status(['CN', 'CB'])->quota(false)->sum('quota');
+				}
+
+				if(!$pwP || (isset($pwP3) && ($pwP2 + $pwP3) <= 0 ))
+				{
+					$alog 						= new AttendanceLog;
+					$alog->fill([
+						'margin_start'			=> $model['attributes']['margin_start'],
+						'margin_end'			=> $model['attributes']['margin_end'],
+						'count_status'			=> $model['attributes']['count_status'],
+						'actual_status'			=> $model['attributes']['actual_status'],
+						'modified_status'		=> 'UL',
+						'modified_at'			=> $model['attributes']['modified_at'],
+						'modified_by'			=> $model['attributes']['modified_by'],
+						'notes'					=> 'Auto generated dari attendance log, karena tidak ada cuti.',
+					]);
+
+					$processlog 				= ProcessLog::find($model['attributes']['process_log_id']);
+
+					$alog->ProcessLog()->associate($processlog);
+
+					if(!$alog->save())
+					{
+						$model['errors'] 		= $alog->getError();
+
+						return false;
+					}
+
+					return true;
+				}
+
 			}
 		}
 		//check if current status was as or ul and cut workleave off (sync with policies bout cutting). to be considered : cut workleave when hc
@@ -180,13 +188,13 @@ class AttendanceLogObserver
 
 				$alog 							= new AttendanceLog;
 				$alog->fill([
-					'margin_start'				=> $margin_start,
-					'margin_end'				=> $margin_end,
-					'count_status'				=> $count_status,
-					'actual_status'				=> $actual_status,
+					'margin_start'				=> $model['attributes']['margin_start'],
+					'margin_end'				=> $model['attributes']['margin_end'],
+					'count_status'				=> $model['attributes']['count_status'],
+					'actual_status'				=> $model['attributes']['actual_status'],
 					'modified_status'			=> 'CN',
-					'modified_at'				=> $modified_at,
-					'modified_by'				=> $modified_by,
+					'modified_at'				=> $model['attributes']['modified_at'],
+					'modified_by'				=> $model['attributes']['modified_by'],
 					'notes'						=> 'Auto generated dari attendance log, sebagai bentuk sanksi.',
 				]);
 

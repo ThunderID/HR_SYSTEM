@@ -37,15 +37,15 @@ class PersonWorkleaveObserver
 
 					return false;
 				}
-				elseif(in_array(strtoupper($model['attributes']['status']), ['CB', 'CN']) && ($left_quota->quota + $add_quota + $model['attributes']['quota']) < 0)
-				{
-					$errors 			= new MessageBag;
-					$errors->add('quota', 'Quota '.$left_quota->name.' yang tersedia tidak mencukupi. <br/>Sisa cuti = '.(int)($left_quota->quota + $add_quota).' hari, Cuti yang hendak diambil = '.abs($model['attributes']['quota']).' hari.<br/>Jika cuti merupakan kasus khusus silahkan tambahkan cuti istimewa.');
+				// elseif(in_array(strtoupper($model['attributes']['status']), ['CB', 'CN']) && ($left_quota->quota + $add_quota + $model['attributes']['quota']) < 0)
+				// {
+				// 	$errors 			= new MessageBag;
+				// 	$errors->add('quota', 'Quota '.$left_quota->name.' yang tersedia tidak mencukupi. <br/>Sisa cuti = '.(int)($left_quota->quota + $add_quota).' hari, Cuti yang hendak diambil = '.abs($model['attributes']['quota']).' hari.<br/>Jika cuti merupakan kasus khusus silahkan tambahkan cuti istimewa.');
 					
-					$model['errors'] 	= $errors;
+				// 	$model['errors'] 	= $errors;
 					
-					return false;
-				}
+				// 	return false;
+				// }
 			}
 
 			return true;
