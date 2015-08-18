@@ -8,6 +8,7 @@ use App\Models\PersonWorkleave;
 use App\Models\Queue;
 use App\Models\QueueMorph;
 use App\Models\Calendar;
+use App\Models\Work;
 use \Illuminate\Support\MessageBag as MessageBag;
 use DateTime, DateInterval, DatePeriod;
 
@@ -210,7 +211,7 @@ class PersonWorkleaveBatchCommand extends Command {
 
 		if(!$errors->count())
 		{
-			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Success']);
+			$pending->fill(['process_number' => $pending->total_task, 'message' => 'Success']);
 		}
 		else
 		{
@@ -343,7 +344,7 @@ class PersonWorkleaveBatchCommand extends Command {
 
 		if(!$errors->count())
 		{
-			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Success']);
+			$pending->fill(['process_number' => $pending->total_task, 'message' => 'Success']);
 		}
 		else
 		{
@@ -369,8 +370,8 @@ class PersonWorkleaveBatchCommand extends Command {
 
 		$parameters 				= (array)json_decode($pending->parameter);
 
-		$begin 						= new DateTime( $parameters['onstart'] );
-		$ended 						= new DateTime( $parameters['onend'] );
+		$begin 						= new DateTime( $parameters['on'] );
+		$ended 						= new DateTime( $parameters['on'].' + 1 day' );
 
 		$interval 					= DateInterval::createFromDateString('1 day');
 		$periods 					= new DatePeriod($begin, $interval, $ended);
@@ -378,8 +379,8 @@ class PersonWorkleaveBatchCommand extends Command {
 		$errors 					= new MessageBag;
 
 		//check work active on that day, please consider if that queue were written days
-		$works 						= Work::active(true)->status(['contract', 'permanent'])->calendarid($parameters['calendar_id'])->get();
-		$calendar 					= Calendar::id($parameters['calendar_id'])->schedulesondate([$begin->format('Y-m-d'), $ended->format('Y-m-d')])->first();
+		$works 						= Work::active(true)->status(['contract', 'permanent'])->calendarid($parameters['associate_calendar_id'])->get();
+		$calendar 					= Calendar::id($parameters['associate_calendar_id'])->schedulesondate([$begin->format('Y-m-d'), $ended->format('Y-m-d')])->first();
 		
 		// if($pending->updated_at==$pending->created_at && $process_number==0)
 		// {
@@ -445,19 +446,34 @@ class PersonWorkleaveBatchCommand extends Command {
 					$endwork 			= new DateTime( $value->end );
 				}
 				
-				$pwP 					= PersonWorkleave::personid($value['person_id'])->ondate([$begin->format('Y-m-d'), $ended->format('Y-m-d')])->status($parameters['status'])->quota(true)->first();
+				$pwG 					= PersonWorkleave::personid($value['person_id'])->ondate([$begin->format('Y-m-d'), $ended->format('Y-m-d')])->status($parameters['status'])->quota(true)->first();
+				$pw 					= PersonWorkleave::personid($value['person_id'])->ondate([$begin->format('Y-m-d'), $ended->format('Y-m-d')])->status($parameters['status'])->quota(false)->first();
 
-				if(!$pwP)
+				if(!$pwG)
 				{
 					$pwid 				= null;
 				}
 				else
 				{
-					$pwid 				= $pwP->id;
+					$pwid 				= $pwG->id;
+				}
+
+				if(!$pw)
+				{
+					$pid 				= null;
+				}
+				else
+				{
+					$pid 				= $pw->id;
 				}
 				 
-				
-				$content 				= $this->dispatch(new Saving(new PersonWorkleave, $parameters, $pwid, new Person, $value->person_id));
+				$attributes 						= $parameters;
+				$attributes['start'] 				= $parameters['on'];
+				$attributes['end'] 					= $parameters['on'];
+				$attributes['work_id'] 				= $value->id;
+				$attributes['person_workleave_id'] 	= $pwid;
+
+				$content 				= $this->dispatch(new Saving(new PersonWorkleave, $attributes, $pid, new Person, $value->person_id));
 				$is_success 			= json_decode($content);
 
 				if(!$is_success->meta->success)
@@ -509,7 +525,7 @@ class PersonWorkleaveBatchCommand extends Command {
 
 		if(!$errors->count())
 		{
-			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Success']);
+			$pending->fill(['process_number' => $pending->total_task, 'message' => 'Success']);
 		}
 		else
 		{

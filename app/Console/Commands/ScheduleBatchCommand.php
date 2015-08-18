@@ -102,6 +102,7 @@ class ScheduleBatchCommand extends Command {
 		{
 			$parameters['id']		= null;
 		}
+		
 		$content 					= $this->dispatch(new Saving(new Schedule, $parameters, $parameters['id'], new Calendar, $parameters['associate_calendar_id']));
 
 		$is_success 				= json_decode($content);

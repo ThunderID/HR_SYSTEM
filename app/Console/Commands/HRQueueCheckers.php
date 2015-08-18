@@ -43,7 +43,7 @@ class HRQueueCheckers extends Command {
 	{
 		//Check Queue
 		$result 		= $this->checkpendingjobs();
-		
+
 		return true;
 	}
 
@@ -88,7 +88,7 @@ class HRQueueCheckers extends Command {
 			{
 				if($value->process_option!='')
 				{
-					$check 				= $this->call($value->process_name, ['queueid' => $value->id, '--queuefunc' => $value->option]);
+					$check 				= $this->call($value->process_name, ['queueid' => $value->id, '--queuefunc' => $value->process_option]);
 				}
 				else
 				{
