@@ -102,9 +102,11 @@ class ScheduleBatchCommand extends Command {
 		{
 			$parameters['id']		= null;
 		}
+		
 		$content 					= $this->dispatch(new Saving(new Schedule, $parameters, $parameters['id'], new Calendar, $parameters['associate_calendar_id']));
 
 		$is_success 				= json_decode($content);
+
 		if(!$is_success->meta->success)
 		{
 			foreach ($is_success->meta->errors as $key => $value) 
@@ -125,7 +127,7 @@ class ScheduleBatchCommand extends Command {
 
 		if(!$errors->count())
 		{
-			$pending->fill(['message' => 'Success', 'process_number' => $pending->total_process]);
+			$pending->fill(['message' => 'Success', 'process_number' => $pending->total_task]);
 
 			$morphed 						= new QueueMorph;
 

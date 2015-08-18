@@ -1,5 +1,5 @@
 <?php namespace App\Http\Controllers\Organisation\Workleave;
-use Input, Session, App, Paginator, Redirect, DB, Config, DateInterval, DatePeriod, DateTime, Queue, Response;
+use Input, Session, App, Paginator, Redirect, DB, Config, DateInterval, DatePeriod, DateTime, Response;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -7,6 +7,7 @@ use App\Console\Commands\Getting;
 use App\Models\Chart;
 use App\Models\Person;
 use App\Models\Workleave;
+use App\Models\FollowWorkleave;
 use App\Models\Queue;
 use App\Models\PersonWorkleave;
 use App\Commands\BatchHRProcess;

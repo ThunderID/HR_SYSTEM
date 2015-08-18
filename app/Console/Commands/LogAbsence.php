@@ -106,6 +106,9 @@ class LogAbsence extends Command {
 			{
 				$log['name']				= strtolower('Absence');
 				$log['on']					= $value->format('Y-m-d'.' 00:00:00');
+				$log['last_input_time']		= $value->format('Y-m-d'.' 00:00:00');
+				$log['app_version']			= '1.0';
+				$log['ip']					= getenv("REMOTE_ADDR");
 				$log['pc']					= 'cron';
 
 				$saved_log 					= $this->dispatch(new Saving(new Log, $log, null, new Person, $value2->id));
