@@ -418,9 +418,9 @@ class Person extends BaseModel {
 		}
 
 		$query =  $query->selectraw('persons.*')
-					->wherehas('works', function($q)use($start){$q->wherenull('end')->orwhere('end', '>=', $start);})
+					->wherehas('works', function($q)use($end){$q->where(DB::raw('`end` >= '. $end));})
 					->wherehas('workscalendars', function($q)use($variable){$q->status(['permanent', 'contract', 'probation', 'internship', 'permanent','others']);})
-					->with(['works' => function($q)use($start){$q->wherenull('end')->orwhere('end', '>=', $start);}])
+					->with(['works' => function($q)use($end){$q->where(DB::raw('`end` >= '. $end));}])
 					->with(['works.branch'])
 					->selectraw('branches.name as branch')
 					->selectraw('charts.name as position')
@@ -544,9 +544,9 @@ class Person extends BaseModel {
 		}
 
 		$query =  $query->selectraw('persons.*')
-					->wherehas('works', function($q)use($start){$q->wherenull('end')->orwhere('end', '>=',  $start);})
+					->wherehas('works', function($q)use($end){$q->where(DB::raw('`end` >= '. $end));})
 					->wherehas('workscalendars', function($q)use($variable){$q->status(['permanent', 'contract', 'probation', 'internship', 'permanent','others']);})
-					->with(['works' => function($q)use($start){$q->wherenull('end')->orwhere('end', '>=',  $start);}])
+					->with(['works' => function($q)use($end){$q->where(DB::raw('`end` >= '. $end));}])
 					->with(['works.branch'])
 					->selectraw('branches.name as branch')
 					->selectraw('charts.name as position')
