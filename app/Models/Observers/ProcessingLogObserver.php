@@ -205,7 +205,6 @@ class ProcessingLogObserver
 						if(isset($wd[strtolower($day)]) && in_array(strtolower($wd[strtolower($day)]), $lworkdays))
 						{
 							$schedule_start = $calendar->workscalendars[0]->calendar->start;
-							
 							$schedule_end 	= $calendar->workscalendars[0]->calendar->end;	
 						}
 						else
@@ -516,8 +515,8 @@ class ProcessingLogObserver
 
 			if(isset($data->id))
 			{
-				$alog 										= AttendanceLog::processlogid($data->id)->first();
-				$ilog 										= IdleLog::processlogid($data->id)->first();
+				$alog 										= AttendanceLog::processlogid($data->id)->orderBy('updated_at', 'desc')->first();
+				$ilog 										= IdleLog::processlogid($data->id)->orderBy('updated_at', 'desc')->first();
 
 				if(!$alog || (isset($modified_status) && $alog->modified_status != $modified_status) || (isset($actual_status) && $alog->actual_status != $actual_status))
 				{
