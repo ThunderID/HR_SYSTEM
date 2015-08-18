@@ -22,6 +22,6 @@ trait HasSchedulesTrait {
 
 	public function ScopeSchedulesOndate($query, $variable)
 	{
-		return $query->whereHas('schedules' ,function($q)use($variable){$q->ondate($variable);})->with(['schedules' => function($q)use($variable){$q->ondate($variable);}]);
+		return $query->with(['schedules' => function($q)use($variable){$q->ondate($variable);}]);
 	}
 }

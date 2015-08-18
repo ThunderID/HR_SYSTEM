@@ -67,7 +67,7 @@ class ScheduleObserver
 		{
 			//check process log where not generated from persons schedule
 			$logs 							= Log::ondate([$on, $on1])->hasnoschedule(['on' => $on])->WorkCalendar(['id' => $model['attributes']['calendar_id'], 'start' => $on])->get();
-			
+
 			if($logs->count())
 			{
 				foreach ($logs as $key => $value) 
