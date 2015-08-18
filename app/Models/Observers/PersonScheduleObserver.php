@@ -46,6 +46,7 @@ class PersonScheduleObserver
 				foreach ($logs as $key => $value) 
 				{
 					$data					= Log::ID($value->id)->first();
+					$data->fill(['created_by' => $model['attributes']['created_by']]);
 
 					if(!$data->save())
 					{
