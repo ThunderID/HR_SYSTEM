@@ -191,10 +191,6 @@ class ProcessingLogObserver
 
 					if($calendar)
 					{
-						if(!isset($calendar->workscalendars[0]))
-						{
-							return true;
-						}
 						$workid 	= $calendar->workscalendars[0]->id;
 						$workdays  	= explode(',', $calendar->workscalendars[0]->calendar->workdays);
 						$lworkdays 	= [];
@@ -523,7 +519,7 @@ class ProcessingLogObserver
 				$alog 										= AttendanceLog::processlogid($data->id)->first();
 				$ilog 										= IdleLog::processlogid($data->id)->first();
 
-				if(!$alog || (isset($modified_status) && $alog->modified_status != $modified_status))
+				if(!$alog || (isset($modified_status) && $alog->modified_status != $modified_status) || (isset($actual_status) && $alog->actual_status != $actual_status))
 				{
 					$alog 									= new AttendanceLog;
 				}
