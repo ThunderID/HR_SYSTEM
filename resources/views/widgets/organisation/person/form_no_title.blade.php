@@ -9,7 +9,7 @@
 						<div class="fileinput fileinput-new" data-provides="fileinput">
 							<div class="fileinput-preview thumbnail" data-trigger="fileinput">
 								@if (!$PersonComposer['widget_data']['personlist']['person']['avatar'])
-									{!! HTML::image('https://placeholdit.imgix.net/~text?txtsize=25&bg=cccccc&txtclr=00000%26text%3Dupload%2Bphoto&txt=Upload+Photo&w=500&h=500') !!}
+									{!! HTML::image('/upload_foto.png') !!}
 								@else
 									{!! HTML::image($PersonComposer['widget_data']['personlist']['person']['avatar']) !!}
 								@endif
