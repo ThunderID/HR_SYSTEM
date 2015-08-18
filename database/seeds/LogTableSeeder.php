@@ -12,13 +12,15 @@ class LogTableSeeder extends Seeder
 	function run()
 	{
 
+		DB::table('tmp_queues')->truncate();
+		DB::table('queue_morphs')->truncate();
 		DB::table('logs')->truncate();
 		DB::table('process_logs')->truncate();
 		DB::table('attendance_logs')->truncate();
 		DB::table('idle_logs')->truncate();
 		DB::table('attendance_details')->truncate();
 		$faker 										= Factory::create();
-		$total_persons  							= Person::activeworks(true)->count();
+		$total_persons  							= Person::checkwork(true)->count();
 		$logs 										= ['login', 'logout','presence', 'idle', 'lock', 'working', 'presence', 'sleep', 'presence'];
 		$pcs 										= ['redhat', 'ubuntu', 'debian', 'mint', 'centos', '7', 'xp', 'fp', 'fp', 'fp'];
 		try
