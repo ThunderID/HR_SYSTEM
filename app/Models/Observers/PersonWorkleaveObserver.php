@@ -78,6 +78,7 @@ class PersonWorkleaveObserver
 				
 				//check if schedule were provided
 				$schedule 			= new PersonSchedule;
+
 				$psch 				= $schedule->personid($model['attributes']['person_id'])->ondate([$period->format('Y-m-d'), $period1->format('Y-m-d')])->status(strtoupper($model['attributes']['status']))->first();
 				if(!$psch)
 				{
@@ -95,6 +96,25 @@ class PersonWorkleaveObserver
 					if (!$schedule->save())
 					{
 						$model['errors'] = $schedule->getError();
+						return false;
+					}
+				}
+				else
+				{
+					$psch->fill([
+						'created_by'	=>  $model['attributes']['created_by'],
+						'name'			=>  $model['attributes']['name'],
+						'status'		=>  strtoupper($model['attributes']['status']),
+						'on'			=>  $period->format('Y-m-d'),
+						'start'			=>  '00:00:00',
+						'end'			=>  '00:00:00',
+					]);
+					
+					$psch->Person()->associate($person);
+					
+					if (!$psch->save())
+					{
+						$model['errors'] = $psch->getError();
 						return false;
 					}
 				}

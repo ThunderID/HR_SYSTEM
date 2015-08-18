@@ -140,6 +140,13 @@ class ProcessingLogObserver
 						$modified_by 	= $pschedules->schedules[0]->created_by;
 						$modified_at 	= $pschedules->schedules[0]->created_at->format('Y-m-d H:i:s');
 					}
+					elseif(in_array(strtoupper($pschedules->schedules[0]->status),['CN', 'CB', 'CI']))
+					{
+						$actual_status 	= 'AS';
+						$modified_status= $pschedules->schedules[0]->status;
+						$modified_by 	= $pschedules->schedules[0]->created_by;
+						$modified_at 	= $pschedules->schedules[0]->created_at->format('Y-m-d H:i:s');
+					}
 					elseif(strtoupper($pschedules->schedules[0]->status)!='HB')
 					{
 						$actual_status 	= 'HC';
