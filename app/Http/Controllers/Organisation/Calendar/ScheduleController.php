@@ -420,10 +420,6 @@ class ScheduleController extends BaseController
 						$queattr['process_name'] 	= 'hr:personworkleavebatch';
 						$queattr['process_option'] 	= 'personstaken';
 					}
-					else
-					{
-						$queattr['process_name'] 	= 'hr:schedulebatch';
-					}
 					
 					$attributes['associate_calendar_id'] 	= $calendar['id'];
 
@@ -452,6 +448,31 @@ class ScheduleController extends BaseController
 							else
 							{
 								$errors->add('Batch', $value2);
+							}
+						}
+					}
+					else
+					{
+						$queattr['process_name'] 	= 'hr:schedulebatch';
+						unset($queattr['process_option']);
+						$content 					= $this->dispatch(new Saving(new Queue, $queattr, null));
+						$is_success_2 				= json_decode($content);
+
+						if(!$is_success_2->meta->success)
+						{
+							foreach ($is_success_2->meta->errors as $key2 => $value2) 
+							{
+								if(is_array($value2))
+								{
+									foreach ($value2 as $key3 => $value3) 
+									{
+										$errors->add('Batch', $value3);
+									}
+								}
+								else
+								{
+									$errors->add('Batch', $value2);
+								}
 							}
 						}
 					}

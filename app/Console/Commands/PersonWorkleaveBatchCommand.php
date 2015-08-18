@@ -8,6 +8,8 @@ use App\Models\PersonWorkleave;
 use App\Models\Queue;
 use App\Models\QueueMorph;
 use App\Models\Calendar;
+use App\Models\Workleave;
+use App\Models\Policy;
 use App\Models\Work;
 use \Illuminate\Support\MessageBag as MessageBag;
 use DateTime, DateInterval, DatePeriod;
@@ -277,17 +279,18 @@ class PersonWorkleaveBatchCommand extends Command {
 				if($start == $begin->format('Y-m-d'))
 				{
 					$end 				= min($ended->format('Y-m-d'), date('Y-m-d'));
-					$extendpolicy 		= Policy::type('extendsworkleave')->OnDate(date('Y-m-d'))->orderby('start', 'desc')->first();
+					$extendpolicy 		= Policy::type('extendsworkleave')->OnDate(date('Y-m-d'))->orderby('started_at', 'desc')->first();
 					$couldbetaken 		= $begin->format('Y-m-d');
 				}
 				//if start != beginning of this year then end count as one (consider first year's policies)
 				else
 				{
 					$end 				= min($ended->format('Y-m-d'), $endwork->format('Y-m-d'));
-					$extendpolicy 		= Policy::type('extendsmidworkleave')->OnDate(date('Y-m-d'))->orderby('start', 'desc')->first();
+					$extendpolicy 		= Policy::type('extendsmidworkleave')->OnDate(date('Y-m-d'))->orderby('started_at', 'desc')->first();
 					$couldbetaken 		= date('Y-m-d', strtotime($start. ' + 1 year'));
 				}
 
+				$parameters['work_id']	= $value->id;
 				$parameters['quota']	= ((date('m', strtotime($end)) - date('m', strtotime($start)))/$workleave->quota)*12;
 				$parameters['start']	= $couldbetaken;
 				$parameters['end']		= date('Y-m-d', strtotime($ended->format('Y-m-d').' '.$extendpolicy->value));
@@ -446,17 +449,8 @@ class PersonWorkleaveBatchCommand extends Command {
 					$endwork 			= new DateTime( $value->end );
 				}
 				
-				$pwG 					= PersonWorkleave::personid($value['person_id'])->ondate([$begin->format('Y-m-d'), $ended->format('Y-m-d')])->status($parameters['status'])->quota(true)->first();
+				$pwG 					= PersonWorkleave::personid($value['person_id'])->ondate([$begin->format('Y-m-d'), $ended->format('Y-m-d')])->status('CN')->quota(true)->first();
 				$pw 					= PersonWorkleave::personid($value['person_id'])->ondate([$begin->format('Y-m-d'), $ended->format('Y-m-d')])->status($parameters['status'])->quota(false)->first();
-
-				if(!$pwG)
-				{
-					$pwid 				= null;
-				}
-				else
-				{
-					$pwid 				= $pwG->id;
-				}
 
 				if(!$pw)
 				{
@@ -471,25 +465,30 @@ class PersonWorkleaveBatchCommand extends Command {
 				$attributes['start'] 				= $parameters['on'];
 				$attributes['end'] 					= $parameters['on'];
 				$attributes['work_id'] 				= $value->id;
-				$attributes['person_workleave_id'] 	= $pwid;
+
+				if($pwG)
+				{
+					$attributes['person_workleave_id'] 	= $pwG->id;
+				}
+
 
 				$content 				= $this->dispatch(new Saving(new PersonWorkleave, $attributes, $pid, new Person, $value->person_id));
 				$is_success 			= json_decode($content);
 
 				if(!$is_success->meta->success)
 				{
-					foreach ($is_success->meta->errors as $key => $value) 
+					foreach ($is_success->meta->errors as $key2 => $value2) 
 					{
-						if(is_array($value))
+						if(is_array($value2))
 						{
-							foreach ($value as $key2 => $value2) 
+							foreach ($value2 as $key3 => $value3) 
 							{
-								$errors->add('Batch', $value2);
+								$errors->add('Batch', $value3);
 							}
 						}
 						else
 						{
-							$errors->add('Batch', $value);
+							$errors->add('Batch', $value2);
 						}
 					}
 				}

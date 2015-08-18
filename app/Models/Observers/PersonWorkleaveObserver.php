@@ -74,9 +74,11 @@ class PersonWorkleaveObserver
 
 			foreach ( $periods as $period )
 			{
+				$period1 			= new DateTime( $period->format('Y-m-d').' + 1 day' );
+				
 				//check if schedule were provided
 				$schedule 			= new PersonSchedule;
-				$psch 				= $schedule->personid($model['attributes']['person_id'])->ondate([$period->format('Y-m-d'), $period->format('Y-m-d')])->status(strtoupper($model['attributes']['status']))->first();
+				$psch 				= $schedule->personid($model['attributes']['person_id'])->ondate([$period->format('Y-m-d'), $period1->format('Y-m-d')])->status(strtoupper($model['attributes']['status']))->first();
 				if(!$psch)
 				{
 					$schedule->fill([

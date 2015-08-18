@@ -144,7 +144,7 @@ class AttendanceLogObserver
 						'created_by'			=> $model['attributes']['modified_by'],
 						'name'					=> 'Pengambilan '.$pwP->name,
 						'status'				=> $model['attributes']['modified_status'],
-						'notes'					=> $model['attributes']['notes'],
+						'notes'					=> (isset($model['attributes']['notes']) ? $model['attributes']['notes'] : ''),
 						'start'					=> $model->processlog->on,
 						'end'					=> $model->processlog->on,
 						'quota'					=> -1
@@ -219,10 +219,11 @@ class AttendanceLogObserver
 		}
 
 		//check if current status wasn't workleave but previously marked as workleave
-		$prev_data 								= AttendanceLog::processlogid($model['attributes']['process_log_id'])->orderBy('created_at', 'desc')->first();
-		if($prev_data->modified_status && in_array($prev_data, ['CN', 'CB']) && !in_array($model['attributes']['modified_status'], ['CN', 'CB']))
+		$prev_data 								= AttendanceLog::processlogid($model['attributes']['process_log_id'])->orderBy('created_at', 'asc')->first();
+
+		if($prev_data && in_array($prev_data->modified_status, ['CN', 'CB']) && !in_array($model['attributes']['modified_status'], ['CN', 'CB']))
 		{
-			$pwM 								= PersonWorkleave::personid($model->processlog->person_id)->ondate([$on, null])->status(strtoupper($prev_data->modified_status))->quota(false)->first();
+			$pwM 								= PersonWorkleave::personid($model->processlog->person_id)->ondate([$on, $on])->status(strtoupper($prev_data->modified_status))->quota(false)->first();
 
 			if(!$pwM->delete())
 			{

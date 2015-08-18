@@ -529,6 +529,11 @@ class ProcessingLogObserver
 				{
 					$alog 									= new AttendanceLog;
 				}
+
+				if(!$ilog)
+				{
+					$ilog 									= new IdleLog;
+				}
 			}
 			else
 			{
