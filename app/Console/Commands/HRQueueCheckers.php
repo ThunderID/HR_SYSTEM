@@ -43,6 +43,8 @@ class HRQueueCheckers extends Command {
 	{
 		//Check Queue
 		$result 		= $this->checkpendingjobs();
+		
+		$this->info("Sukses Simpan \n");
 
 		return true;
 	}
@@ -80,7 +82,7 @@ class HRQueueCheckers extends Command {
 	public function checkpendingjobs()
 	{
 		$queue 						= new Queue;
-		$pendings 					= $queue->whereRaw('`process_number` <> `total_task`')->orderby('updated_at', 'desc')->get();
+		$pendings 					= $queue->whereRaw('`process_number` < `total_task`')->orderby('updated_at', 'desc')->get();
 
 		if(count($pendings) > 0)
 		{

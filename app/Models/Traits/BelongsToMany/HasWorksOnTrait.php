@@ -90,7 +90,7 @@ trait HasWorksOnTrait {
 
 	public function scopeChartNotAdmin($query, $variable)
 	{
-		return $query->WhereHas('workscalendars', function($q)use($variable){$q->status(['permanent', 'contract', 'probation', 'internship', 'permanent','others'])->whereNull('end')->orwhere('end', '>=', date('Y-m-d'));});
+		return $query->WhereHas('workscalendars', function($q)use($variable){$q->status(['permanent', 'contract', 'probation', 'internship', 'permanent','others'])->where(DB::raw('`end` >= '.$variable));});
 	}
 
 	public function ScopeWorkCalendar($query, $variable)
@@ -103,11 +103,11 @@ trait HasWorksOnTrait {
 		$date 						= date('Y-m-d', strtotime($variable));
 		if($bool==true)
 		{
-			return $query->whereHas('workscalendars' ,function($q)use($variable){$q->whereNull('end')->orwhere('end', '>=', date('Y-m-d'));});
+			return $query->whereHas('workscalendars', function($q)use($variable){$q->where(DB::raw('`end` >= '.date('Y-m-d')));});
 		}
 		elseif($date)
 		{
-			return $query->whereHas('workscalendars' ,function($q)use($date){$q->whereNull('end')->orwhere('end', '>=', $date);});
+			return $query->whereHas('workscalendars', function($q)use($date){$q->where(DB::raw('`end` >= '.$date));});
 		}
 		return $query->whereHas('workscalendars' ,function($q)use($variable){$q;});
 	}
