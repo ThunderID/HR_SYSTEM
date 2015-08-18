@@ -25,7 +25,7 @@ class WorkObserver
 {
 	public function created($model)
 	{
-		if(isset($model->chart))
+		if(isset($model['attributes']['chart_id']) && $model['attributes']['chart_id']!=0)
 		{
 			if(strtolower($model['status'])=='admin')
 			{
