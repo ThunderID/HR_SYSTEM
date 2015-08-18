@@ -67,9 +67,9 @@ trait HasWorksOnTrait {
 		}
 		if(!is_null($variable))
 		{
-			return $query->with(['works' => function($q)use($variable){$q->whereNull('end')->orwhere('end', '>=', date('Y-m-d'))->orderBy('start', 'asc')->id($variable);}]);
+			return $query->with(['works' => function($q)use($variable){$q->where(DB::raw('`end` >= '.date('Y-m-d')))->orderBy('start', 'asc')->id($variable);}]);
 		}
-		return $query->with(['works' => function($q){$q->whereNull('end')->orwhere('end', '>=', date('Y-m-d'))->orderBy('start', 'asc');}]);
+		return $query->with(['works' => function($q){$q->where(DB::raw('`end` >= '.date('Y-m-d')))->orderBy('start', 'asc');}]);
 	}
 
 	public function scopePreviousWork($query, $variable)
@@ -80,7 +80,7 @@ trait HasWorksOnTrait {
 
 	public function scopeChartTag($query, $variable)
 	{
-		return $query->WhereHas('works', function($q)use($variable){$q->tag($variable)->wherenull('end');});
+		return $query->WhereHas('works', function($q)use($variable){$q->tag($variable)->where(DB::raw('`end` >= '.date('Y-m-d')));});
 	}
 
 	public function scopeChartChild($query, $variable)
@@ -121,14 +121,14 @@ trait HasWorksOnTrait {
 		$bool 						= filter_var($variable, FILTER_VALIDATE_BOOLEAN);
 		if($bool==true)
 		{
-			return $query->with(['workscalendars' => function($q)use($variable){$q->whereNull('end')->orwhere('end', '>=', date('Y-m-d'));}, 'workscalendars.calendar']);
+			return $query->with(['workscalendars' => function($q)use($variable){$q->where(DB::raw('`end` >= '.date('Y-m-d')));}, 'workscalendars.calendar']);
 		}
 		return $query->with(['workscalendars' => function($q)use($variable){$q;}, 'workscalendars.calendar']);
 	}
 
 	public function ScopeWithWorkCalendarSchedules($query, $variable)
 	{
-		return $query->with(['workscalendars' => function($q)use($variable){$q->whereNull('end')->orwhere('end', '>=', date('Y-m-d'));}, 'workscalendars.calendar', 'workscalendars.calendar.schedules' => function($q)use($variable){$q->ondate($variable['on']);}]);
+		return $query->with(['workscalendars' => function($q)use($variable){$q->where(DB::raw('`end` >= '.date('Y-m-d')));}, 'workscalendars.calendar', 'workscalendars.calendar.schedules' => function($q)use($variable){$q->ondate($variable['on']);}]);
 	}
 
 	public function ScopeWorkCalendarSchedule($query, $variable)

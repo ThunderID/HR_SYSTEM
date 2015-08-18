@@ -29,7 +29,7 @@
  * ---------------------------------------------------------------------- */
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Str, Validator, DateTime, Exception;
+use Str, Validator, DateTime, Exception, DB;
 
 class Work extends BaseModel {
 
