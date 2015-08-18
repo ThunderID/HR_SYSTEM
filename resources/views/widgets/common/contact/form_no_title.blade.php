@@ -3,9 +3,10 @@
 @if (!$widget_error_count)
 	@section('widget_body')		
 		<div class="clearfix">&nbsp;</div>
+		@for ($x=0; $x<=2; $x++)
 			<div class="form-group">				
 				<label class="control-label">Item</label>				
-				{!!Form::input('text', 'item[]', $ContactComposer['widget_data']['contactlist']['contact']['item'], ['class' => 'form-control select2-tag-contact', 'style' => 'width:100%', 'tabindex' => '1'])!!}				
+				{!!Form::input('text', 'item[]', $ContactComposer['widget_data']['contactlist']['value'][$x], ['class' => 'form-control select2-tag-contact', 'style' => 'width:100%', 'tabindex' => '1'])!!}				
 			</div>
 			<div class="form-group">				
 				<label class="control-label">Kontak</label>				
@@ -18,12 +19,13 @@
 					</label>
 				</div>				
 			</div>
-			@if (isset($ContactComposer['widget_data']['contactlist']['multiple']))
-				<div id="duplicate_contact"></div>
-				<div class="form-group">
-					<a href="javascript:;" class="btn btn-default btn_duplicate_add_contact">Tambah Kontak</a>
-				</div>
-			@endif
+		@endfor
+		@if (isset($ContactComposer['widget_data']['contactlist']['multiple']))
+			<div id="duplicate_contact"></div>
+			<div class="form-group">
+				<a href="javascript:;" class="btn btn-default btn_duplicate_add_contact">Tambah Kontak</a>
+			</div>
+		@endif
 	@overwrite	
 @else
 	@section('widget_title')

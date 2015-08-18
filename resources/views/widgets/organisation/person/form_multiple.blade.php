@@ -50,7 +50,8 @@
 			    										'sort'				=> [],
 			    										'new'				=> (is_null($id) ? true : false),
 			    										'page'				=> 1,
-			    										'per_page'			=> 1
+			    										'per_page'			=> 1,
+			    										'value'				=> ['alamat', 'email', 'mobile']
 			    									]
 			    								]
 			    	])
@@ -77,12 +78,6 @@
 					<input type="submit" class="btn btn-primary pull-right" value="Simpan">
 					<button class="btn btn-primary prevBtn pull-right mr-10" type="button">Kembali</button>
 			    </div>
-			</div>
-					<div class="form-group">
-						<div class="col-md-12 text-right">
-						</div>
-					</div>
-				</div>
 			</div>
 		{!! Form::close() !!}
 	@overwrite	
