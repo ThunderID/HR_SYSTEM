@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('ContactTableSeeder');
 
 		$this->call('CalendarTableSeeder');
+		$this->call('WorkleaveTableSeeder');
 		
 		$this->call('WorkTableSeeder');
 		$this->call('WorkAuthenticationTableSeeder');
@@ -43,7 +44,6 @@ class DatabaseSeeder extends Seeder {
 
 		$this->call('PersonWidgetTableSeeder');
 
-		$this->call('WorkleaveTableSeeder');
 		$this->call('ScheduleTableSeeder');
 		
 		$this->call('PersonWorkleaveTableSeeder');

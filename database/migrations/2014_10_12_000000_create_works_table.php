@@ -27,8 +27,8 @@ class CreateWorksTable extends Migration {
 			$table->timestamps();
 			$table->softDeletes();
 			
-			$table->index(['deleted_at', 'start', 'end']);
-			$table->index(['end']);
+			$table->index(['deleted_at', 'person_id', 'end', 'status']);
+			$table->index(['start']);
 		});
 	}
 

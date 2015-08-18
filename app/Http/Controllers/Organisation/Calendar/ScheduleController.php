@@ -295,6 +295,12 @@ class ScheduleController extends BaseController
 		$attributes['start'] 					= date('H:i:s', strtotime($attributes['start']));
 		$attributes['end'] 						= date('H:i:s', strtotime($attributes['end']));
 
+		if(in_array(strtoupper($attributes['status']), ['CN', 'CB', 'CI', 'L']))
+		{
+			$attributes['start'] 				= '00:00:00';
+			$attributes['end'] 					= '00:00:00';
+		}
+
 		$errors 								= new MessageBag();
 
 		DB::beginTransaction();
@@ -307,9 +313,9 @@ class ScheduleController extends BaseController
 		}
 		elseif(Input::has('onstart') && Input::has('onend'))
 		{
-			$begin 									= new DateTime( Input::get('onstart') );
-			$ended 									= new DateTime( Input::get('onend').' + 1 day' );
-			$maxend 								= new DateTime( Input::get('onstart').' + 7 days' );
+			$begin 								= new DateTime( Input::get('onstart') );
+			$ended 								= new DateTime( Input::get('onend').' + 1 day' );
+			$maxend 							= new DateTime( Input::get('onstart').' + 7 days' );
 		}
 		else
 		{
@@ -333,19 +339,19 @@ class ScheduleController extends BaseController
 				unset($search);
 				unset($sort);
 
-				$search['organisationid'] 				= $org_id;
-				$search['activeworks'] 					= true;
-				$search['parentid'] 					= $cal_id;
-				$sort 									= ['name' => 'asc'];
-				$results 								= $this->dispatch(new Getting(new Calendar, $search, $sort , 1, 100));
-				$contents 								= json_decode($results);
+				$search['organisationid'] 			= $org_id;
+				$search['activeworks'] 				= true;
+				$search['parentid'] 				= $cal_id;
+				$sort 								= ['name' => 'asc'];
+				$results 							= $this->dispatch(new Getting(new Calendar, $search, $sort , 1, 100));
+				$contents 							= json_decode($results);
 
 				if(!$contents->meta->success)
 				{
 					App::abort(404);
 				}
 
-				$calendars 								= json_decode(json_encode($contents->data), true);
+				$calendars 							= json_decode(json_encode($contents->data), true);
 			}
 
 			$calendars[]							= $calendar;
@@ -362,18 +368,28 @@ class ScheduleController extends BaseController
 				
 				if(Input::has('affect'))
 				{
+					$queattr['created_by'] 			= Session::get('loggedUser');
+					if(in_array(strtoupper($attributes['status']), ['CN', 'CB', 'CI']))
+					{
+						$queattr['process_name'] 	= 'hr:personworkleavebatch';
+						$queattr['process_option'] 	= 'personstaken';
+					}
+					else
+					{
+						$queattr['process_name'] 	= 'hr:schedulebatch';
+					}
+					
+					$queattr['parameter'] 			= json_encode($attributes);
+					$queattr['task_per_process']	= 10;
+					$queattr['process_number'] 		= 0;
+					$queattr['message'] 			= 'Initial Queue';
+
 					foreach ($calendars as $key => $value) 
 					{
 						$attributes['associate_calendar_id'] 	= $value['id'];
 
-						$queattr['created_by'] 		= Session::get('loggedUser');
-						$queattr['process_name'] 	= 'hr:schedulebatch';
-						$queattr['parameter'] 		= json_encode($attributes);
 						$queattr['total_process'] 	= count($value['works']);
-						$queattr['task_per_process']= 10;
-						$queattr['process_number'] 	= 0;
-						$queattr['total_task'] 		= count($value['works'])/10;
-						$queattr['message'] 		= 'Initial Queue';
+						$queattr['total_task'] 		= ceil(count($value['works'])/10);
 
 						$content 					= $this->dispatch(new Saving(new Queue, $queattr, null));
 						$is_success_2 				= json_decode($content);
@@ -399,15 +415,24 @@ class ScheduleController extends BaseController
 				}
 				else
 				{
+					if(in_array(strtoupper($attributes['status']), ['CN', 'CB', 'CI']))
+					{
+						$queattr['process_name'] 	= 'hr:personworkleavebatch';
+						$queattr['process_option'] 	= 'personstaken';
+					}
+					else
+					{
+						$queattr['process_name'] 	= 'hr:schedulebatch';
+					}
+					
 					$attributes['associate_calendar_id'] 	= $calendar['id'];
 
 					$queattr['created_by'] 		= Session::get('loggedUser');
-					$queattr['process_name'] 	= 'hr:schedulebatch';
 					$queattr['parameter'] 		= json_encode($attributes);
 					$queattr['total_process'] 	= count($calendar['works']);
 					$queattr['task_per_process']= 10;
 					$queattr['process_number'] 	= 0;
-					$queattr['total_task'] 		= count($calendar['works'])/10;
+					$queattr['total_task'] 		= ceil(count($calendar['works'])/10);
 					$queattr['message'] 		= 'Initial Queue';
 
 					$content 					= $this->dispatch(new Saving(new Queue, $queattr, null));

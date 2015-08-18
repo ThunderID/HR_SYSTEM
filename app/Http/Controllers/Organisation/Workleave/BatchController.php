@@ -1,5 +1,5 @@
 <?php namespace App\Http\Controllers\Organisation\Workleave;
-use Input, Session, App, Paginator, Redirect, DB, Config, DateInterval, DatePeriod, DateTime, Queue, Response;
+use Input, Session, App, Paginator, Redirect, DB, Config, DateInterval, DatePeriod, DateTime, Response;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -7,6 +7,7 @@ use App\Console\Commands\Getting;
 use App\Models\Chart;
 use App\Models\Person;
 use App\Models\Workleave;
+use App\Models\FollowWorkleave;
 use App\Models\Queue;
 use App\Models\PersonWorkleave;
 use App\Commands\BatchHRProcess;
@@ -133,15 +134,16 @@ class BatchController extends BaseController
 
 		$attributes['workleave_id'] 			= $workleave_id;
 		$attributes['created_by'] 				= Session::get('loggedUser');
-		$attributes['start'] 					= date('Y-m-d', strtotime($entry_date. ' + 1 year'));
-		$attributes['end'] 						= date('Y-m-d', strtotime(' last day of december '.date('Y', strtotime($attributes['start'])).' + 3 months'));
+		$attributes['start'] 					= date('Y-m-d', strtotime($input['start']. ' + 1 year'));
+		$attributes['end'] 						= date('Y-m-d', strtotime(' last day of december '.date('Y', strtotime($attributes['start']))));
 		$attributes['name'] 					= $workleave['name'].' '.date('Y', strtotime($attributes['start']));
 		$attributes['quota'] 					= $workleave['quota'];
 		$attributes['status'] 					= 'CN';
 		$attributes['notes'] 					= 'Batch '.$attributes['name'];
 
 		$queattr['created_by'] 					= Session::get('loggedUser');
-		$queattr['process_name'] 				= 'hr:queue personworkleavebatchcommand';
+		$queattr['process_name'] 				= 'hr:personworkleavebatch';
+		$queattr['process_option'] 				= 'personsgiven';
 		$queattr['parameter'] 					= json_encode($attributes);
 		$queattr['total_process'] 				= count($works);
 		$queattr['task_per_process']			= 10;

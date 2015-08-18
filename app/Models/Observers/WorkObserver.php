@@ -7,6 +7,8 @@ use App\Models\Follow;
 use App\Models\Person;
 use App\Models\Finger;
 use App\Models\Organisation;
+use App\Models\FollowWorkleave;
+use App\Models\Workleave;
 use App\Models\WorkAuthentication;
 use Illuminate\Support\MessageBag;
 
@@ -34,6 +36,25 @@ class WorkObserver
 			}
 			else
 			{
+				$defaultworkleave 					= Workleave::status('CN')->organisationid($model->chart->branch->organisation_id)->active(true)->first();
+				if($defaultworkleave)
+				{
+					$follow 						= new FollowWorkleave;
+					$follow->fill([
+								'work_id'			=> $model->id,
+					]);
+
+					$follow->workleave()->associate($defaultworkleave);
+
+					if(!$follow->save())
+					{
+						$model['errors'] 			= $follow->getError();
+
+						return false;
+					}
+
+				}
+
 				$auth 								= new WorkAuthentication;
 				$auth->fill([
 							'tmp_auth_group_id'		=> 5,
@@ -42,13 +63,13 @@ class WorkObserver
 
 			$auth->Work()->associate($model);
 
-			$organisation 						= Organisation::find($model->chart->branch->organisation_id);
+			$organisation 							= Organisation::find($model->chart->branch->organisation_id);
 
 			$auth->Organisation()->associate($organisation);
 
 			if(!$auth->save())
 			{
-				$model['errors'] = $auth->getError();
+				$model['errors'] 		= $auth->getError();
 
 				return false;
 			}

@@ -46,7 +46,7 @@ class ScheduleBatchCommand extends Command {
 	public function fire()
 	{
 		//
-		$id 			= $this->option('queueid');
+		$id 			= $this->argument()['queueid'];
 
 		$result 		= $this->batchSchedulefromwork($id);
 
@@ -61,7 +61,7 @@ class ScheduleBatchCommand extends Command {
 	protected function getArguments()
 	{
 		return [
-			['argument', InputArgument::REQUIRED, 'An example argument.'],
+			['queueid', InputArgument::REQUIRED, 'An example argument.'],
 		];
 	}
 
@@ -72,8 +72,8 @@ class ScheduleBatchCommand extends Command {
 	 */
 	protected function getOptions()
 	{
-		 return array(
-            array('queueid', null, InputOption::VALUE_OPTIONAL, 'Queue ID', null),
+		return array(
+            array('queuefunc', null, InputOption::VALUE_OPTIONAL, 'Queue Function', null),
         );
 	}
 
@@ -88,7 +88,7 @@ class ScheduleBatchCommand extends Command {
 		$queue 						= new Queue;
 		$pending 					= $queue->find($id);
 
-		$parameters 				= (array)json_decode($pending->parameter);
+		$parameters 				= json_decode($pending->parameter, true);
 
 		$errors 					= new MessageBag;
 
@@ -102,9 +102,11 @@ class ScheduleBatchCommand extends Command {
 		{
 			$parameters['id']		= null;
 		}
+		
 		$content 					= $this->dispatch(new Saving(new Schedule, $parameters, $parameters['id'], new Calendar, $parameters['associate_calendar_id']));
 
 		$is_success 				= json_decode($content);
+
 		if(!$is_success->meta->success)
 		{
 			foreach ($is_success->meta->errors as $key => $value) 
@@ -125,7 +127,7 @@ class ScheduleBatchCommand extends Command {
 
 		if(!$errors->count())
 		{
-			$pending->fill(['message' => 'Success', 'process_number' => 1]);
+			$pending->fill(['message' => 'Success', 'process_number' => $pending->total_task]);
 
 			$morphed 						= new QueueMorph;
 

@@ -12,8 +12,8 @@ class PolicyTableSeeder extends Seeder
 		DB::table('tmp_policies')->truncate();
 
 		$org_totals 								= Organisation::count();
-		$types 										= ['passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle'];
-		$values 									= ['+ 3 months', '1', '1', '2', '2', '2', '+ 31 days', '+ 5 days', '900', '3600','7200'];
+		$types 										= ['passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle', 'extendsworkleave', 'extendsmidworkleave'];
+		$values 									= ['+ 3 months', '1', '1', '2', '2', '2', '+ 31 days', '+ 5 days', '900', '3600','7200', '+ 3 months', '+ 15 months'];
 		try
 		{
 			foreach(range(0, count($org_totals)-1) as $index)

@@ -6903,3 +6903,7 @@ div.line {
 	width: 230px;
 	height: 230px;
 }
+
+ul.nav li.wizard a {
+	padding: 1em 5em;
+}

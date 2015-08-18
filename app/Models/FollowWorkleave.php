@@ -4,7 +4,7 @@
  * Document Model:
  * 	ID 								: Auto Increment, Integer, PK
  * 	work_id 						: Foreign Key From Work, Integer, Required
- * 	calendar_id 					: Foreign Key From Calendar, Integer, Required
+ * 	workleave_id 					: Foreign Key From Workleave, Integer, Required
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp

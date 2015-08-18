@@ -11,6 +11,7 @@ use App\Models\Person;
 use App\Models\Work;
 use App\Models\Schedule;
 use App\Models\PersonSchedule;
+use App\Models\Queue;
 
 class ScheduleController extends BaseController
 {
@@ -137,16 +138,41 @@ class ScheduleController extends BaseController
 			App::abort(404);
 		}
 
-		$search['id'] 							= $person_id;
-		$search['organisationid'] 				= $org_id;
-		$search['withattributes'] 				= ['organisation'];
-		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
-		$contents 								= json_decode($results);
+		$errors 								= new MessageBag();
 
-		if(!$contents->meta->success)
+		if(Input::has('on'))
 		{
-			App::abort(404);
+			$begin 								= new DateTime( Input::get('on') );
+			$ended 								= new DateTime( Input::get('on').' + 1 day' );
+			$maxend 							= new DateTime( Input::get('on').' + 3 days' );
+		}
+		elseif(Input::has('onstart') && Input::has('onend'))
+		{
+			$begin 								= new DateTime( Input::get('onstart') );
+			$ended 								= new DateTime( Input::get('onend').' + 1 day' );
+			$maxend 							= new DateTime( Input::get('onstart').' + 3 days' );
+		}
+		else
+		{
+			$errors->add('Person', 'Tanggal Tidak Valid');
+		}
+
+		if(!$errors->count())
+		{
+			$search['id'] 							= $person_id;
+			$search['organisationid'] 				= $org_id;
+			$search['WorkCalendar'] 				= true;
+			$search['WithWorkCalendarSchedules'] 	= ['on' => [$begin->format('Y-m-d'), $ended->format('Y-m-d')]];
+			$sort 									= ['name' => 'asc'];
+			$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
+			$contents 								= json_decode($results);
+
+			if(!$contents->meta->success || !isset($contents->data->workscalendars[0]) || is_null($contents->data->workscalendars[0]) || $contents->data->workscalendars[0]=='')
+			{
+				App::abort(404);
+			}
+			
+			$person 								= json_decode(json_encode($contents->data), true);
 		}
 
 		$attributes 							= Input::only('name', 'status', 'start', 'end');
@@ -162,26 +188,7 @@ class ScheduleController extends BaseController
 			$attributes['end'] 					= date('H:i:s', strtotime($attributes['end']));
 		}
 
-		$errors 								= new MessageBag();
-
 		DB::beginTransaction();
-
-		if(Input::has('on'))
-		{
-			$begin 								= new DateTime( Input::get('on') );
-			$ended 								= new DateTime( Input::get('on').' + 1 day' );
-			$maxend 							= new DateTime( Input::get('on').' + 7 days' );
-		}
-		elseif(Input::has('onstart') && Input::has('onend'))
-		{
-			$begin 								= new DateTime( Input::get('onstart') );
-			$ended 								= new DateTime( Input::get('onend').' + 1 day' );
-			$maxend 							= new DateTime( Input::get('onstart').' + 7 days' );
-		}
-		else
-		{
-			$errors->add('Person', 'Tanggal Tidak Valid');
-		}
 
 		if(isset($ended) && $ended->format('Y-m-d') <= $begin->format('Y-m-d'))
 		{
@@ -212,7 +219,7 @@ class ScheduleController extends BaseController
 			}
 		}
 
-		if(!$errors->count() && isset($ended) && $ended->format('Y-m-d') <= $maxend->format('Y-m-d'))
+		if(!$errors->count() && isset($ended) && $ended->format('Y-m-d') <= $maxend->format('Y-m-d') && !in_array(strtoupper($attributes['onend']), ['CB', 'CN', 'CI']))
 		{
 			$interval 								= DateInterval::createFromDateString('1 day');
 			$periods 								= new DatePeriod($begin, $interval, $ended);
@@ -248,17 +255,36 @@ class ScheduleController extends BaseController
 			$interval 					= DateInterval::createFromDateString('1 day');
 			$periods 					= new DatePeriod($begin, $interval, $ended);
 
-			$attributes['associate'] 	= $person['id'];
-			$attributes['onstart'] 		= $begin;
-			$attributes['onend'] 		= $ended;
+			$attributes['work_id'] 		= $person['workscalendars'][0]['id'];
+			$attributes['workscalendars']	= $person['workscalendars'][0]['calendar'];
+			$attributes['onstart']		= $begin->format('Y-m-d');
+			$attributes['onend']		= $ended->format('Y-m-d');
+
+			$attributes['associate_person_id'] 	= $person_id;
 
 			$queattr['created_by'] 		= Session::get('loggedUser');
-			$queattr['process_name'] 	= 'hr:queue personschedulebatchcommand';
-			$queattr['parameter'] 		= json_encode($attributes);
-			$queattr['total_process'] 	= count($periods);
+			$queattr['process_name'] 	= 'hr:personschedulebatch';
+
+			$queattr['total_process'] 	= ceil(iterator_count($periods)/10);
 			$queattr['task_per_process']= 10;
 			$queattr['process_number'] 	= 0;
-			$queattr['total_task'] 		= count($periods)/10;
+			$queattr['total_task'] 		= iterator_count($periods);
+			
+			if(in_array(strtoupper($attributes['status']), ['CB', 'CN', 'CI']))
+			{
+				unset($attributes['onstart']);
+				unset($attributes['onend']);
+				
+				$attributes['start']		= $begin->format('Y-m-d');
+				$attributes['end']			= $ended->format('Y-m-d');
+				$queattr['process_name']	= 'hr:personworkleavebatch';
+				$queattr['total_process']	= 1;
+				$queattr['task_per_process']= 10;
+				$queattr['process_number'] 	= 0;
+				$queattr['total_task'] 		= 1;
+			}
+
+			$queattr['parameter'] 		= json_encode($attributes);
 			$queattr['message'] 		= 'Initial Queue';
 
 			$content 					= $this->dispatch(new Saving(new Queue, $queattr, null));
@@ -286,7 +312,7 @@ class ScheduleController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.person.schedules.index', ['person_id' => $person_id, 'org_id' => $org_id])->with('alert_success', 'Jadwal kalender "' . $contents->data->name. '" sudah disimpan');
+			return Redirect::route('hr.person.schedules.index', ['person_id' => $person_id, 'org_id' => $org_id])->with('alert_info', 'Jadwal Pribadi sedang disimpan');
 		}
 
 		DB::rollback();
@@ -359,7 +385,7 @@ class ScheduleController extends BaseController
 		unset($sort);
 
 		//look for person calendar via work
-		$search['active'] 						= $end;
+		$search['active'] 						= true;
 		$search['personid'] 					= $person_id;
 		$search['status'] 						= ['contract','probation','internship','permanent','others'];
 		$search['withattributes'] 				= ['calendar'];
@@ -622,7 +648,9 @@ class ScheduleController extends BaseController
 		}
 
 		// log	
-		$search 								= ['personid' => $person_id, 'ondate'=> [$start, $end]];
+		unset($search);
+		unset($sort);
+		$search 								= ['personid' => $person_id, 'ondate'=> [$start, $end], 'lastattendancelog' => null];
 		$sort 									= ['on' => 'asc'];
 
 		$results 								= $this->dispatch(new Getting(new ProcessLog, $search, $sort , 1, 100));
@@ -646,7 +674,7 @@ class ScheduleController extends BaseController
 			$schedule[$k]['id']				= $log['id'];
 			$schedule[$k]['mode']			= 'edit';
 			$schedule[$k]['top_title'] 		= 'Log';
-			$schedule[$k]['title'] 			= $log['modified_status'] ? $log['modified_status'] : $log['actual_status'];
+			$schedule[$k]['title'] 			= $log['attendancelogs'][0]['modified_status'] ? $log['attendancelogs'][0]['modified_status'] : $log['attendancelogs'][0]['actual_status'];
 			$schedule[$k]['mode_info']		= 'log';
 
 			if ((strtotime($log['fp_start']) < strtotime($log['fp_end'])) | (strtotime($log['fp_start']) != strtotime($log['fp_end'])))

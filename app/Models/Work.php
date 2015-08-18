@@ -29,7 +29,7 @@
  * ---------------------------------------------------------------------- */
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Str, Validator, DateTime, Exception;
+use Str, Validator, DateTime, Exception, DB;
 
 class Work extends BaseModel {
 
@@ -38,6 +38,7 @@ class Work extends BaseModel {
 	use \App\Models\Traits\BelongsTo\HasPersonTrait;
 	use \App\Models\Traits\BelongsTo\HasCalendarTrait;
 	use \App\Models\Traits\HasMany\HasWorkAuthenticationsTrait;
+	use \App\Models\Traits\HasOne\HasFollowWorkleaveTrait;
 
 	public 		$timestamps 		= 	true;
 
@@ -150,7 +151,7 @@ class Work extends BaseModel {
 		$bool 						= filter_var($variable, FILTER_VALIDATE_BOOLEAN);
 		if($bool==true)
 		{
-			return $query->whereNull('end')->orwhere('end', '>=', date('Y-m-d'));
+			return $query->where(DB::raw('`end` >= '.date('Y-m-d')));
 		}
 
 		return $query->whereHas('calendar', function($q){$q;});

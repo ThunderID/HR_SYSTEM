@@ -73,10 +73,11 @@ class ProcessLog extends BaseModel {
 											'id' 						=> 'ID', 
 											'personid' 					=> 'PersonID', 
 
-											'organisationid' 			=> 'OrganisationID', 
+											// 'organisationid' 			=> 'OrganisationID', 
 											'branchid' 					=> 'BranchID', 
 											'charttag' 					=> 'ChartTag', 
 											
+											'lastattendancelog' 		=> 'LastAttendanceLog', 
 											'modifiedstatus' 			=> 'ModifiedStatus', 
 											'ondate' 					=> 'OnDate', 
 											'global' 					=> 'Global', 
@@ -89,7 +90,8 @@ class ProcessLog extends BaseModel {
 	public $searchableScope 		= 	[
 											'id' 						=> 'Could be array or integer', 
 											'personid' 					=> 'Could be array or integer', 
-											'organisationid' 			=> 'Could be array or integer', 
+											// 'organisationid' 			=> 'Could be array or integer', 
+											'lastattendancelog' 		=> 'Null', 
 											'branchid' 					=> 'Could be array or integer', 
 											'charttag' 					=> 'Must be string', 
 											'modifiedstatus' 			=> 'Could be array or string', 

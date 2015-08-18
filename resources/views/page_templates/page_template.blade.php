@@ -72,6 +72,7 @@
 	@include('plugins.stickytableheader')
 	@include('plugins.ajax_batch')
 	@include('plugins.bootstrap_fileinput')
+	@include('plugins.wizard')
 
 	<script>
 		$(function() {

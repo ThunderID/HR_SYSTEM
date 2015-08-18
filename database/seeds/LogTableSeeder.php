@@ -12,13 +12,15 @@ class LogTableSeeder extends Seeder
 	function run()
 	{
 
+		DB::table('tmp_queues')->truncate();
+		DB::table('queue_morphs')->truncate();
 		DB::table('logs')->truncate();
 		DB::table('process_logs')->truncate();
 		DB::table('attendance_logs')->truncate();
 		DB::table('idle_logs')->truncate();
 		DB::table('attendance_details')->truncate();
 		$faker 										= Factory::create();
-		$total_persons  							= Person::count();
+		$total_persons  							= Person::checkwork(true)->count();
 		$logs 										= ['login', 'logout','presence', 'idle', 'lock', 'working', 'presence', 'sleep', 'presence'];
 		$pcs 										= ['redhat', 'ubuntu', 'debian', 'mint', 'centos', '7', 'xp', 'fp', 'fp', 'fp'];
 		try
@@ -64,7 +66,10 @@ class LogTableSeeder extends Seeder
 						$data->fill([
 							'name'					=> $logs[$state],
 							'on'					=> date("Y-m-d H:i:s", strtotime($period->format('Y-m-d').' + '.$hour.' + '.$minute.' + '.$second)),
+							'last_input_time'		=> date("Y-m-d H:i:s", strtotime($period->format('Y-m-d').' + '.$hour.' + '.$minute.' + '.$second)),
 							'pc'					=> $pcs[$rand],
+							'app_version'			=> '1.0',
+							'ip'					=> getenv("REMOTE_ADDR")
 						]);
 
 						$data->Person()->associate($person);
@@ -80,8 +85,6 @@ class LogTableSeeder extends Seeder
 		}
 		catch (Exception $e) 
 		{
-    		echo 'Caught exception: ',  $e->getLine(), "\n";
-    		echo 'Caught exception: ',  $e->getFile(), "\n";
     		echo 'Caught exception: ',  $e->getMessage(), "\n";
 		}	
 	}

@@ -19,4 +19,9 @@ trait HasSchedulesTrait {
 	{
 		return $this->hasMany('App\Models\Schedule');
 	}
+
+	public function ScopeSchedulesOndate($query, $variable)
+	{
+		return $query->with(['schedules' => function($q)use($variable){$q->ondate($variable);}]);
+	}
 }
