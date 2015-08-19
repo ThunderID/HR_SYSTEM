@@ -66,7 +66,7 @@ class Queue extends BaseModel {
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'personid' 					=> 'PersonID', 
-											'createdbywho' 				=> 'CreatedByWho', 
+											'createdbyid' 				=> 'CreatedByID', 
 											'running' 					=> 'Running', 
 											'processname' 				=> 'ProcessName', 
 
@@ -77,7 +77,7 @@ class Queue extends BaseModel {
 											'id' 						=> 'Could be array or integer', 
 											'personid' 					=> 'Could be array or integer', 
 											'running' 					=> 'Null', 
-											'createdbywho' 				=> 'Must be id of person', 
+											'createdbyid' 				=> 'Must be id of person', 
 											'processname' 				=> 'Must be string', 
 
 											'withattributes' 			=> 'Must be array of relationship'
@@ -141,7 +141,7 @@ class Queue extends BaseModel {
 		return $query->whereRaw('`process_number` < `total_task`');
 	}
 
-	public function scopeCreatedByWho($query, $variable)
+	public function scopeCreatedByID($query, $variable)
 	{
 		if(is_array($variable))
 		{
