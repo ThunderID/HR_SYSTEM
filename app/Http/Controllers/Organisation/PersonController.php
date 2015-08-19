@@ -522,17 +522,40 @@ class PersonController extends BaseController
 
 	private function importcsv($sheet, $org_id)
 	{
+		$prev_org_code 							= 0;
 		foreach($sheet as $i => $row)
 		{
+			if($prev_org_code!=$row['kodeorganisasi'])
+			{
+				unset($search);
+				unset($sort);
+
+				$search['code']					= $row['kodeorganisasi'];
+				$sort 							= ['created_at' => 'asc'];
+				$results 						= $this->dispatch(new Getting(new Organisation, $search, $sort , 1, 1));
+				$contents 						= json_decode($results);		
+
+				if(!$contents->meta->success)
+				{
+					App::abort(404);
+				}
+
+				$organisation 					= json_decode(json_encode($contents->data), true);
+				$org_id_code 					= $organisation['id'];
+				$prev_org_code 					= $row['kodeorganisasi'];
+			}
+
 			$attributes[$i]['uniqid']			= $row['nik'];
+			$attributes[$i]['prefix_title']		= $row['prefixtitle'];
+			$attributes[$i]['name']				= $row['namalengkap'];
+			$attributes[$i]['suffix_title']		= $row['suffixtitle'];
 			$attributes[$i]['username']			= date('Ymdhis').'.org.'.rand(0,12000000).$org_id;
-			$attributes[$i]['name']				= $row['nama'];
 			$attributes[$i]['place_of_birth']	= $row['tempatlahir'];
 			$attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime($row['tanggallahir']));
-			$attributes[$i]['gender']			= $row['kelamin']=='L' ? 'male' : 'female';
-			$attributes[$i]['org_id']			= $org_id;
+			$attributes[$i]['gender']			= $row['gender']=='L' ? 'male' : 'female';
+			$attributes[$i]['org_id']			= $org_id_code;
 
-			$content 							= $this->dispatch(new Saving(new Person, $attributes[$i], null, new Organisation, $org_id));
+			$content 							= $this->dispatch(new Saving(new Person, $attributes[$i], null, new Organisation, $org_id_code));
 
 			$is_success 						= json_decode($content);
 			if(!$is_success->meta->success)
@@ -549,6 +572,908 @@ class PersonController extends BaseController
 					else
 					{
 						$errors->add('Person', $value);
+					}
+				}
+			}
+			
+			//save contact
+			if(!$errors->count())
+			{
+				if($row['email']!='')
+				{
+					$email[$i]['item']				= 'email';
+					$email[$i]['value']				= $row['email'];
+					$email[$i]['is_default']		= true;
+
+					$content 						= $this->dispatch(new Saving(new Contact, $email[$i], null, new Person, $is_success->data->id));
+
+					$is_mail_success 				= json_decode($content);
+					if(!$is_mail_success->meta->success)
+					{
+						foreach ($is_mail_success->meta->errors as $key => $value) 
+						{
+							if(is_array($value))
+							{
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Person', $value);
+							}
+						}
+					}
+				}
+
+				if($row['phone']!='')
+				{
+					$phone[$i]['item']				= 'phone';
+					$phone[$i]['value']				= $row['phone'];
+					$phone[$i]['is_default']		= true;
+
+					$content 						= $this->dispatch(new Saving(new Contact, $phone[$i], null, new Person, $is_success->data->id));
+
+					$is_phone_success 				= json_decode($content);
+					if(!$is_phone_success->meta->success)
+					{
+						foreach ($is_phone_success->meta->errors as $key => $value) 
+						{
+							if(is_array($value))
+							{
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Person', $value);
+							}
+						}
+					}
+				}
+
+
+				if($row['alamat']!='')
+				{
+					$address[$i]['item']			= 'address';
+					$address[$i]['value']			= $row['alamat'];
+					$address[$i]['is_default']		= true;
+
+					$content 						= $this->dispatch(new Saving(new Contact, $address[$i], null, new Person, $is_success->data->id));
+
+					$is_address_success 				= json_decode($content);
+					if(!$is_address_success->meta->success)
+					{
+						foreach ($is_address_success->meta->errors as $key => $value) 
+						{
+							if(is_array($value))
+							{
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Person', $value);
+							}
+						}
+					}
+				}
+			}
+
+			//save marital statuses
+			if(!$errors->count())
+			{
+				$marital[$i]['status']			= $row['statuskawin'];
+				$marital[$i]['on']				= date('Y-m-d H:i:s');
+
+				$content 						= $this->dispatch(new Saving(new MaritalStatus, $marital[$i], null, new Person, $is_success->data->id));
+
+				$is_marital_success 				= json_decode($content);
+				if(!$is_marital_success->meta->success)
+				{
+					foreach ($is_marital_success->meta->errors as $key => $value) 
+					{
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Person', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Person', $value);
+						}
+					}
+				}
+			}
+
+			//save ktp
+			if(!$errors->count())
+			{
+				unset($search);
+				unset($sort);
+
+				$search['organisationid']				= $org_id_code;
+				$search['name']							= 'KTP';
+				$search['tag']							= 'Identity';
+				$search['withattributes']				= ['templates'];
+				$sort 									= ['created_at' => 'asc'];
+				$results 								= $this->dispatch(new Getting(new Document, $search, $sort , 1, 1));
+				$contents 								= json_decode($results);		
+
+				if(!$contents->meta->success)
+				{
+					App::abort(404);
+				}
+
+				$document 								= json_decode(json_encode($contents->data), true);
+
+				$ktp[$i]['document_id']					= $document['id'];
+
+				$content 								= $this->dispatch(new Saving(new PersonDocument, $ktp[$i], null, new Person, $is_success->data->id));
+				$is_ktp_success 						= json_decode($content);
+				
+				if(!$is_ktp_success->meta->success)
+				{
+					foreach ($is_ktp_success->meta->errors as $key => $value) 
+					{
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Person', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Person', $value);
+						}
+					}
+				}
+
+				if(!$errors->count())
+				{
+					foreach ($document['templates'] as $key => $value) 
+					{
+						switch($key)
+						{
+							case '0': 
+								$ktpdetail[$i][$key]['template_id']	= $value['id'];
+								$ktpdetail[$i][$key]['string']		= $row['nomorktp'];
+								break;
+							case '1':
+								$ktpdetail[$i][$key]['template_id']	= $value['id'];
+								$ktpdetail[$i][$key]['text']		= $row['alamat'];
+								break;
+							case '2':
+								$ktpdetail[$i][$key]['template_id']	= $value['id'];
+								$ktpdetail[$i][$key]['string']		= $row['kota'];
+								break;
+							case '3':
+								$ktpdetail[$i][$key]['template_id']	= $value['id'];
+								$ktpdetail[$i][$key]['string']		= $row['agama'];
+								break;
+							case '4':
+								$ktpdetail[$i][$key]['template_id']	= $value['id'];
+								$ktpdetail[$i][$key]['string']		= $row['statuskawin'];
+								break;
+							case '5':
+								$ktpdetail[$i][$key]['template_id']	= $value['id'];
+								$ktpdetail[$i][$key]['string']		= $row['kewarganegaraan'];
+								break;
+							case '6':
+								$ktpdetail[$i][$key]['template_id']	= $value['id'];
+								$ktpdetail[$i][$key]['on']			= $row['berlakuhingga'];
+								break;
+						}
+
+						if(isset($ktpdetail[$i][$key]) && !$errors->count())
+						{
+							$content 								= $this->dispatch(new Saving(new DocumentDetail, $ktpdetail[$i][$key], null, new PersonDocument, $is_ktp_success->data->id));
+							$is_ktpd_success 						= json_decode($content);
+							
+							if(!$is_ktpd_success->meta->success)
+							{
+								foreach ($is_ktpd_success->meta->errors as $key => $value) 
+								{
+									if(is_array($value))
+									{
+										foreach ($value as $key2 => $value2) 
+										{
+											$errors->add('Person', $value2);
+										}
+									}
+									else
+									{
+										$errors->add('Person', $value);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			//save bank account
+			if(!$errors->count())
+			{
+				unset($search);
+				unset($sort);
+
+				$search['organisationid']				= $org_id_code;
+				$search['name']							= 'Akun Bank';
+				$search['tag']							= 'Akun';
+				$search['withattributes']				= ['templates'];
+				$sort 									= ['created_at' => 'asc'];
+				$results 								= $this->dispatch(new Getting(new Document, $search, $sort , 1, 1));
+				$contents 								= json_decode($results);		
+
+				if(!$contents->meta->success)
+				{
+					App::abort(404);
+				}
+
+				$document 								= json_decode(json_encode($contents->data), true);
+
+				$bank[$i]['document_id']				= $document['id'];
+
+				$content 								= $this->dispatch(new Saving(new PersonDocument, $bank[$i], null, new Person, $is_success->data->id));
+				$is_bank_success 						= json_decode($content);
+				
+				if(!$is_bank_success->meta->success)
+				{
+					foreach ($is_bank_success->meta->errors as $key => $value) 
+					{
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Person', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Person', $value);
+						}
+					}
+				}
+
+				if(!$errors->count())
+				{
+					foreach ($document['templates'] as $key => $value) 
+					{
+						switch($key)
+						{
+							case '0': 
+								$bankdetail[$i][$key]['template_id']	= $value['id'];
+								$bankdetail[$i][$key]['string']			= $row['nomorrekening'];
+								break;
+							case '1':
+								$bankdetail[$i][$key]['template_id']	= $value['id'];
+								$bankdetail[$i][$key]['string']			= $row['namabank'];
+								break;
+							case '2':
+								$bankdetail[$i][$key]['template_id']	= $value['id'];
+								$bankdetail[$i][$key]['string']			= $row['namanasabah'];
+								break;
+						}
+
+						if(isset($bankdetail[$i][$key]) && !$errors->count())
+						{
+							$content 								= $this->dispatch(new Saving(new DocumentDetail, $bankdetail[$i][$key], null, new PersonDocument, $is_bank_success->data->id));
+							$is_bankd_success 						= json_decode($content);
+							
+							if(!$is_bankd_success->meta->success)
+							{
+								foreach ($is_bankd_success->meta->errors as $key => $value) 
+								{
+									if(is_array($value))
+									{
+										foreach ($value as $key2 => $value2) 
+										{
+											$errors->add('Person', $value2);
+										}
+									}
+									else
+									{
+										$errors->add('Person', $value);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			//save npwp
+			if(!$errors->count())
+			{
+				unset($search);
+				unset($sort);
+
+				$search['organisationid']				= $org_id_code;
+				$search['name']							= 'NPWP';
+				$search['tag']							= 'Pajak';
+				$search['withattributes']				= ['templates'];
+				$sort 									= ['created_at' => 'asc'];
+				$results 								= $this->dispatch(new Getting(new Document, $search, $sort , 1, 1));
+				$contents 								= json_decode($results);		
+
+				if(!$contents->meta->success)
+				{
+					App::abort(404);
+				}
+
+				$document 								= json_decode(json_encode($contents->data), true);
+
+				$npwp[$i]['document_id']				= $document['id'];
+
+				$content 								= $this->dispatch(new Saving(new PersonDocument, $npwp[$i], null, new Person, $is_success->data->id));
+				$is_npwp_success 						= json_decode($content);
+				
+				if(!$is_npwp_success->meta->success)
+				{
+					foreach ($is_npwp_success->meta->errors as $key => $value) 
+					{
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Person', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Person', $value);
+						}
+					}
+				}
+
+				if(!$errors->count())
+				{
+					foreach ($document['templates'] as $key => $value) 
+					{
+						switch($key)
+						{
+							case '0': 
+								$npwpdetail[$i][$key]['template_id']	= $value['id'];
+								$npwpdetail[$i][$key]['string']			= $row['npwp'];
+								break;
+						}
+
+						if(isset($npwpdetail[$i][$key]) && !$errors->count())
+						{
+							$content 								= $this->dispatch(new Saving(new DocumentDetail, $npwpdetail[$i][$key], null, new PersonDocument, $is_npwp_success->data->id));
+							$is_npwpd_success 						= json_decode($content);
+							
+							if(!$is_npwpd_success->meta->success)
+							{
+								foreach ($is_npwpd_success->meta->errors as $key => $value) 
+								{
+									if(is_array($value))
+									{
+										foreach ($value as $key2 => $value2) 
+										{
+											$errors->add('Person', $value2);
+										}
+									}
+									else
+									{
+										$errors->add('Person', $value);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			//save bpjstk
+			if(!$errors->count())
+			{
+				unset($search);
+				unset($sort);
+
+				$search['organisationid']				= $org_id_code;
+				$search['name']							= 'BPJS Ketenagakerjaan';
+				$search['tag']							= 'Pajak';
+				$search['withattributes']				= ['templates'];
+				$sort 									= ['created_at' => 'asc'];
+				$results 								= $this->dispatch(new Getting(new Document, $search, $sort , 1, 1));
+				$contents 								= json_decode($results);		
+
+				if(!$contents->meta->success)
+				{
+					App::abort(404);
+				}
+
+				$document 								= json_decode(json_encode($contents->data), true);
+
+				$bpjstk[$i]['document_id']				= $document['id'];
+
+				$content 								= $this->dispatch(new Saving(new PersonDocument, $bpjstk[$i], null, new Person, $is_success->data->id));
+				$is_bpjstk_success 						= json_decode($content);
+				
+				if(!$is_bpjstk_success->meta->success)
+				{
+					foreach ($is_bpjstk_success->meta->errors as $key => $value) 
+					{
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Person', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Person', $value);
+						}
+					}
+				}
+
+				if(!$errors->count())
+				{
+					foreach ($document['templates'] as $key => $value) 
+					{
+						switch($key)
+						{
+							case '0': 
+								$bpjstkdetail[$i][$key]['template_id']	= $value['id'];
+								$bpjstkdetail[$i][$key]['string']		= $row['bpjsketenagakerjaan'];
+								break;
+						}
+
+						if(isset($bpjstkdetail[$i][$key]) && !$errors->count())
+						{
+							$content 								= $this->dispatch(new Saving(new DocumentDetail, $bpjstkdetail[$i][$key], null, new PersonDocument, $is_bpjstk_success->data->id));
+							$is_bpjstkd_success 						= json_decode($content);
+							
+							if(!$is_bpjstkd_success->meta->success)
+							{
+								foreach ($is_bpjstkd_success->meta->errors as $key => $value) 
+								{
+									if(is_array($value))
+									{
+										foreach ($value as $key2 => $value2) 
+										{
+											$errors->add('Person', $value2);
+										}
+									}
+									else
+									{
+										$errors->add('Person', $value);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			//save bpjs kesehatan
+			if(!$errors->count())
+			{
+				unset($search);
+				unset($sort);
+
+				$search['organisationid']				= $org_id_code;
+				$search['name']							= 'BPJS Kesehatan';
+				$search['tag']							= 'Pajak';
+				$search['withattributes']				= ['templates'];
+				$sort 									= ['created_at' => 'asc'];
+				$results 								= $this->dispatch(new Getting(new Document, $search, $sort , 1, 1));
+				$contents 								= json_decode($results);		
+
+				if(!$contents->meta->success)
+				{
+					App::abort(404);
+				}
+
+				$document 								= json_decode(json_encode($contents->data), true);
+
+				$bpjsk[$i]['document_id']				= $document['id'];
+
+				$content 								= $this->dispatch(new Saving(new PersonDocument, $bpjsk[$i], null, new Person, $is_success->data->id));
+				$is_bpjsk_success 						= json_decode($content);
+				
+				if(!$is_bpjsk_success->meta->success)
+				{
+					foreach ($is_bpjsk_success->meta->errors as $key => $value) 
+					{
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Person', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Person', $value);
+						}
+					}
+				}
+
+				if(!$errors->count())
+				{
+					foreach ($document['templates'] as $key => $value) 
+					{
+						switch($key)
+						{
+							case '0': 
+								$bpjskdetail[$i][$key]['template_id']	= $value['id'];
+								$bpjskdetail[$i][$key]['string']		= $row['bpjskesehatan'];
+								break;
+						}
+
+						if(isset($bpjskdetail[$i][$key]) && !$errors->count())
+						{
+							$content 								= $this->dispatch(new Saving(new DocumentDetail, $bpjskdetail[$i][$key], null, new PersonDocument, $is_bpjsk_success->data->id));
+							$is_bpjskd_success 						= json_decode($content);
+							
+							if(!$is_bpjskd_success->meta->success)
+							{
+								foreach ($is_bpjskd_success->meta->errors as $key => $value) 
+								{
+									if(is_array($value))
+									{
+										foreach ($value as $key2 => $value2) 
+										{
+											$errors->add('Person', $value2);
+										}
+									}
+									else
+									{
+										$errors->add('Person', $value);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			//save kalender
+			if(!$errors->count())
+			{
+				unset($search);
+				unset($sort);
+
+				$search['organisationid']				= $org_id_code;
+				$search['starthour']					= date('H:i:s', strtotime($row['jammasukkerja']));
+				$search['endhour']						= date('H:i:s', strtotime($row['jampulangkerja']));
+				$sort 									= ['created_at' => 'asc'];
+				$results 								= $this->dispatch(new Getting(new Calendar, $search, $sort , 1, 1));
+				$contents 								= json_decode($results);		
+
+				if(!$contents->meta->success)
+				{
+					$calendar[$i]['import_from_id'] 	= 1;
+					$calendar[$i]['name'] 				= 'Costum Kalender Untuk'.$row['namacabang'];
+					$calendar[$i]['workdays'] 			= 'senin,selasa,rabu,kamis,jumat';
+					$calendar[$i]['start'] 				= date('H:i:s', strtotime($row['jammasukkerja']));
+					$calendar[$i]['end'] 				= date('H:i:s', strtotime($row['jampulangkerja']));
+
+					$content 							= $this->dispatch(new Saving(new Calendar, $calendar[$i], null, new Organisation, $org_id_code));
+
+					$is_calendar_success 				= json_decode($content);
+					if(!$is_calendar_success->meta->success)
+					{
+						foreach ($is_calendar_success->meta->errors as $key => $value) 
+						{
+							if(is_array($value))
+							{
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Person', $value);
+							}
+						}
+					}
+				}
+				else
+				{
+					$is_calendar_success 				= $contents->data;
+				}
+			}
+
+			//save branch
+			if(!$errors->count())
+			{
+				unset($search);
+				unset($sort);
+
+				$search['organisationid']				= $org_id_code;
+				$search['name']							= $row['namacabang'];
+				$sort 									= ['created_at' => 'asc'];
+				$results 								= $this->dispatch(new Getting(new Branch, $search, $sort , 1, 1));
+				$contents 								= json_decode($results);		
+
+				if(!$contents->meta->success)
+				{
+					$branch[$i]['name'] 				= $row['namacabang'];
+
+					$content 							= $this->dispatch(new Saving(new Branch, $branch[$i], null, new Organisation, $org_id_code));
+
+					$is_branch_success 					= json_decode($content);
+					if(!$is_branch_success->meta->success)
+					{
+						foreach ($is_branch_success->meta->errors as $key => $value) 
+						{
+							if(is_array($value))
+							{
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Person', $value);
+							}
+						}
+					}
+				}
+				else
+				{
+					$is_branch_success 					= $contents->data;
+				}
+			}
+
+			//save Chart
+			if(!$errors->count())
+			{
+				unset($search);
+				unset($sort);
+
+				$search['organisationid']				= $org_id_code;
+				$search['branchid']						= $is_branch_success->id;
+				$search['tag']							= $row['namadepartemen'];
+				$search['name']							= $row['jabatan'];
+				$sort 									= ['created_at' => 'asc'];
+				$results 								= $this->dispatch(new Getting(new Chart, $search, $sort , 1, 1));
+				$contents 								= json_decode($results);		
+
+				if(!$contents->meta->success)
+				{
+					$chart[$i]['name'] 					= $row['jabatan'];
+					$chart[$i]['tag'] 					= $row['namadepartemen'];
+					$chart[$i]['min_employee'] 			= 10;
+					$chart[$i]['ideal_employee'] 		= 10;
+					$chart[$i]['max_employee'] 			= 10;
+
+					$content 							= $this->dispatch(new Saving(new Chart, $chart[$i], null, new Branch, $is_branch_success->id));
+
+					$is_chart_success 					= json_decode($content);
+					if(!$is_chart_success->meta->success)
+					{
+						foreach ($is_chart_success->meta->errors as $key => $value) 
+						{
+							if(is_array($value))
+							{
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Person', $value);
+							}
+						}
+					}
+				}
+				else
+				{
+					$is_chart_success 					= $contents->data;
+				}
+			}
+
+			//save Follow
+			if(!$errors->count())
+			{
+				unset($search);
+				unset($sort);
+
+				$search['chartid']						= $is_chart_success->id;
+				$search['calendarid']					= $is_calendar_success->id;
+				$sort 									= ['created_at' => 'asc'];
+				$results 								= $this->dispatch(new Getting(new Follow, $search, $sort , 1, 1));
+				$contents 								= json_decode($results);		
+
+				if(!$contents->meta->success)
+				{
+					$follow[$i]['chart_id'] 			= $is_chart_success->id;
+
+					$content 							= $this->dispatch(new Saving(new Follow, $follow[$i], null, new Calendar, $is_calendar_success->id));
+
+					$is_follow_success 					= json_decode($content);
+					if(!$is_follow_success->meta->success)
+					{
+						foreach ($is_follow_success->meta->errors as $key => $value) 
+						{
+							if(is_array($value))
+							{
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Person', $value);
+							}
+						}
+					}
+				}
+			}
+
+			//Check Cuti 
+			if(!$errors->count())
+			{
+				unset($search);
+				unset($sort);
+
+				$search['quota']						= $row['kuotacutitahunan'];
+				$search['status']						= 'CN';
+				$search['active']						= true;
+				$sort 									= ['created_at' => 'asc'];
+				$results 								= $this->dispatch(new Getting(new Workleave, $search, $sort , 1, 1));
+				$contents 								= json_decode($results);		
+
+				if(!$contents->meta->success)
+				{
+					$workleave[$i]['name'] 				= 'Custom Cuti '.$row['namacabang'];
+					$workleave[$i]['quota'] 			= $row['kuotacutitahunan'];
+					$workleave[$i]['status'] 			= 'CN';
+					$workleave[$i]['is_active'] 		= true;
+
+					$content 							= $this->dispatch(new Saving(new Workleave, $workleave[$i], null, new Organisation, $org_id_code));
+
+					$is_workleave_success 				= json_decode($content);
+					if(!$is_workleave_success->meta->success)
+					{
+						foreach ($is_workleave_success->meta->errors as $key => $value) 
+						{
+							if(is_array($value))
+							{
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Person', $value);
+							}
+						}
+					}
+				}
+				else
+				{
+					$is_workleave_success 				= $contents->data;
+				}
+			}
+
+			//save Work
+			if(!$errors->count())
+			{
+				unset($search);
+				unset($sort);
+
+				$search['chartid']						= $is_chart_success->id;
+				$search['calendarid']					= $is_calendar_success->id;
+				$search['personid']						= $is_success->id;
+				$search['status']						= $row['statuskerja'];
+				
+				$sort 									= ['created_at' => 'asc'];
+				$results 								= $this->dispatch(new Getting(new Work, $search, $sort , 1, 1));
+				$contents 								= json_decode($results);		
+
+				if(!$contents->meta->success)
+				{
+					$work[$i]['chart_id'] 				= $is_chart_success->id;
+					$work[$i]['calendar_id'] 			= $is_calendar_success->id;
+					$work[$i]['status'] 				= $is_chart_success->id;
+					$work[$i]['start'] 					= $row['statuskerja'];
+					if($row['berhentikerja']!='')
+					{
+						$work[$i]['end'] 				= date('Y-m-d', strtotime($row['berhentikerja']));
+						$work[$i]['reason_end_job'] 	= 'Akhir '.$row['statuskerja'];
+					}
+
+					$content 							= $this->dispatch(new Saving(new Work, $work[$i], null, new Person, $is_success->id));
+
+					$is_work_success 					= json_decode($content);
+					if(!$is_work_success->meta->success)
+					{
+						foreach ($is_work_success->meta->errors as $key => $value) 
+						{
+							if(is_array($value))
+							{
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Person', $value);
+							}
+						}
+					}
+				}
+			}
+
+			//save FolloWorkleve //Pending
+			if(!$errors->count())
+			{
+				
+			}
+			//save Batch Cuti //Pending
+			if(!$errors->count())
+			{
+				
+			}
+
+			//save Sisa Cuti //Pending
+			if(!$errors->count())
+			{
+				$pwleave[$i]['work_id'] 				= $is_work_success->id;
+				$pwleave[$i]['person_workleave_id'] 	= $is_person_workleave_success->id;
+				$pwleave[$i]['created_by'] 				= Session::get('loggedUser');
+				$pwleave[$i]['name'] 					= 'Pengambilan (awal) '.$is_workleave_success->name;
+				$pwleave[$i]['notes'] 					= 'Auto generated dari import csv. Hanya Quota yang valid';
+				$pwleave[$i]['start'] 					= date('Y-m- d', strtotime($row['mulaikerja']));
+				
+				$leave 									= $row['kuotacutitahunan'] - $row['sisacuti'];
+				if($leave == 1)
+				{
+					$leaves 							= '';
+				}
+				elseif($leave==2)
+				{
+					$leaves 							= ' + 1 day';
+				}
+				else
+				{
+					$leaves 							= ' + '.$leave.' days';
+				}
+
+				$pwleave[$i]['start'] 					= date('Y-m-d', strtotime($row['mulaikerja']));
+				$pwleave[$i]['end'] 					= date('Y-m-d', strtotime($row['mulaikerja'].$leaves));
+				$pwleave[$i]['quota'] 					= 0 - $leave;
+				$pwleave[$i]['status'] 					= 'CN';
+
+				$content 							= $this->dispatch(new Saving(new PersonWorkleave, $pwleave[$i], null, new Person, $is_success->id));
+
+				$is_pwleave_success 					= json_decode($content);
+				if(!$is_pwleave_success->meta->success)
+				{
+					foreach ($is_pwleave_success->meta->errors as $key => $value) 
+					{
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Person', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Person', $value);
+						}
 					}
 				}
 			}
