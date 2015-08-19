@@ -17,7 +17,7 @@ class CreateDocumentsDetailsTable extends Migration {
 			$table->increments('id');
 			$table->integer('person_document_id')->unsigned()->index();
 			$table->integer('template_id')->unsigned()->index();
-			$table->varchar('string', 255);
+			$table->string('string', 255);
 			$table->datetime('on');
 			$table->double('numeric');
 			$table->text('text');

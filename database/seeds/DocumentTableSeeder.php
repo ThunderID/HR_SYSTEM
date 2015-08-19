@@ -50,6 +50,7 @@ class DocumentTableSeeder extends Seeder
 														'Pendidikan', 
 														'Pendidikan', 
 														'Pendidikan', 
+														'Pendidikan', 
 														
 														'Kontrak', 
 														'SP', 
@@ -124,7 +125,7 @@ class DocumentTableSeeder extends Seeder
 															'Penyelenggara',
 															'Bidang',
 															'Tanggal Mulai',
-															'Tanggal Selesai'
+															'Tanggal Selesai',
 															'Predikat',
 														], 
 														[
@@ -229,7 +230,7 @@ class DocumentTableSeeder extends Seeder
 															'string',
 															'string',
 															'date',
-															'date'
+															'date',
 															'string',
 														], 
 														[
@@ -300,7 +301,7 @@ class DocumentTableSeeder extends Seeder
 					$doc_template[$key] 			= new Template;
 					$doc_template[$key]->fill([
 						'field'						=> $value,
-						'type'						=> $type[$key],
+						'type'						=> $type[$index][$key],
 					]);
 
 

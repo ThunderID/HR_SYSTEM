@@ -81,6 +81,20 @@ class HRSUpdateCommand extends Command {
 	 **/
 	public function update11082015()
 	{
+		Schema::table('documents_details', function(Blueprint $table)
+		{
+			$table->string('string', 255);
+			$table->datetime('on');
+
+			$table->index(['deleted_at', 'on']);
+			$table->index(['deleted_at', 'numeric']);
+		});
+		$this->info("Add string and on, on document detail table");
+
+		shell_exec('php artisan db:seed');
+		
+		$this->info("Seeding template document");
+
 		Schema::create('idle_logs', function(Blueprint $table)
 		{
 			$table->increments('id');

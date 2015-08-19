@@ -14,43 +14,43 @@ class DatabaseSeeder extends Seeder {
 	{
 		Model::unguard();
 
-		$this->call('FingerTableSeeder');
-		$this->call('FingerPrintTableSeeder');
+		// $this->call('FingerTableSeeder');
+		// $this->call('FingerPrintTableSeeder');
 
-		$this->call('ApplicationTableSeeder');
-		$this->call('MenuTableSeeder');
-		$this->call('AuthGroupTableSeeder');
+		// $this->call('ApplicationTableSeeder');
+		// $this->call('MenuTableSeeder');
+		// $this->call('AuthGroupTableSeeder');
 
-		$this->call('OrganisationTableSeeder');
-		$this->call('BranchTableSeeder');
-		$this->call('ChartTableSeeder');
-		$this->call('ApiTableSeeder');
+		// $this->call('OrganisationTableSeeder');
+		// $this->call('BranchTableSeeder');
+		// $this->call('ChartTableSeeder');
+		// $this->call('ApiTableSeeder');
 
-		$this->call('PersonTableSeeder');
-		$this->call('RelativeTableSeeder');
-		$this->call('MaritalStatusTableSeeder');
+		// $this->call('PersonTableSeeder');
+		// $this->call('RelativeTableSeeder');
+		// $this->call('MaritalStatusTableSeeder');
 
-		$this->call('ContactTableSeeder');
+		// $this->call('ContactTableSeeder');
 
-		$this->call('CalendarTableSeeder');
-		$this->call('WorkleaveTableSeeder');
+		// $this->call('CalendarTableSeeder');
+		// $this->call('WorkleaveTableSeeder');
 		
-		$this->call('WorkTableSeeder');
-		$this->call('WorkAuthenticationTableSeeder');
+		// $this->call('WorkTableSeeder');
+		// $this->call('WorkAuthenticationTableSeeder');
 
 		$this->call('DocumentTableSeeder');
-		$this->call('PersonDocumentTableSeeder');
-		$this->call('DocumentDetailTableSeeder');
+		// $this->call('PersonDocumentTableSeeder');
+		// $this->call('DocumentDetailTableSeeder');
 
-		$this->call('PersonWidgetTableSeeder');
+		// $this->call('PersonWidgetTableSeeder');
 
-		$this->call('ScheduleTableSeeder');
+		// $this->call('ScheduleTableSeeder');
 		
-		$this->call('PersonWorkleaveTableSeeder');
-		$this->call('PersonScheduleTableSeeder');
+		// $this->call('PersonWorkleaveTableSeeder');
+		// $this->call('PersonScheduleTableSeeder');
 
-		$this->call('PolicyTableSeeder');
-		$this->call('LogTableSeeder');
+		// $this->call('PolicyTableSeeder');
+		// $this->call('LogTableSeeder');
 	}
 
 }
