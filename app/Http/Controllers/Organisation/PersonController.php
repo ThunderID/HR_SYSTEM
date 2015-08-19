@@ -330,7 +330,12 @@ class PersonController extends BaseController
 
 			if(Input::has('password'))
 			{
-				$attributes['password']				= Hash::make(Input::get('password'));
+				$attributes['password']					= Hash::make(Input::get('password'));
+				$attributes['last_password_updated_at']	= date('Y-m-d');
+			}
+			else
+			{
+				unset($attributes['last_password_updated_at']);
 			}
 
 			$content 								= $this->dispatch(new Saving(new Person, $attributes, $id, new Organisation, $org_id));
@@ -522,6 +527,8 @@ class PersonController extends BaseController
 
 	private function importcsv($sheet, $org_id)
 	{
+		DB::beginTransaction();
+
 		$prev_org_code 							= 0;
 		foreach($sheet as $i => $row)
 		{
@@ -1386,7 +1393,24 @@ class PersonController extends BaseController
 					$work[$i]['chart_id'] 				= $is_chart_success->id;
 					$work[$i]['calendar_id'] 			= $is_calendar_success->id;
 					$work[$i]['status'] 				= $is_chart_success->id;
-					$work[$i]['start'] 					= $row['statuskerja'];
+					switch (strtolower($row['statuskerja'])) 
+					{
+						case 'kontrak': case 'contract' :
+							$work[$i]['start'] 			= 'contract';
+							break;						
+						case 'tetap': case 'permanent' : case 'permanen' :
+							$work[$i]['start'] 			= 'permanent';
+							break;
+						case 'percobaan': case 'probation' :
+							$work[$i]['start'] 			= 'probation';
+							break;
+						case 'magang': case 'internship' : case 'training' :
+							$work[$i]['start'] 			= 'training';
+							break;
+						default:
+							$work[$i]['start'] 			= 'others';
+							break;
+					}
 					if($row['berhentikerja']!='')
 					{
 						$work[$i]['end'] 				= date('Y-m-d', strtotime($row['berhentikerja']));
@@ -1416,26 +1440,82 @@ class PersonController extends BaseController
 				}
 			}
 
-			//save FolloWorkleve //Pending
+			//save FolloWorkleve
 			if(!$errors->count())
 			{
-				
-			}
-			//save Batch Cuti //Pending
-			if(!$errors->count())
-			{
-				
+				$fwleave[$i]['work_id'] 		= $is_work_success->id;
+
+				$content 						= $this->dispatch(new Saving(new FollowWorkleve, $fwleave[$i], null, new Workleave, $is_workleave_success->id));
+
+				$is_fwleave_success 			= json_decode($content);
+				if(!$is_fwleave_success->meta->success)
+				{
+					foreach ($is_fwleave_success->meta->errors as $key => $value) 
+					{
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Person', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Person', $value);
+						}
+					}
+				}
 			}
 
-			//save Sisa Cuti //Pending
+			//save Pemberian Cuti
+			if(!$errors->count())
+			{
+				if(in_array($is_work_success->status, ['contract', 'permanent']))
+				{
+					$personworkleave[$i]['work_id'] 		= $is_work_success->id;
+					$personworkleave[$i]['workleave_id'] 	= $is_workleave_success->id;
+					$personworkleave[$i]['created_by'] 		= Session::get('loggedUser');
+					$personworkleave[$i]['name'] 			= 'Pemberian (awal) '.$is_workleave_success->name;
+					$personworkleave[$i]['notes'] 			= 'Auto generated dari import csv.';
+					$personworkleave[$i]['start'] 			= date('Y-m-d', strtotime('first day of January this year'));
+					$personworkleave[$i]['end'] 			= date('Y-m-d', strtotime('last day of December this year'));
+					$personworkleave[$i]['quota'] 			= $is_workleave->quota;
+					$personworkleave[$i]['status'] 			= 'CN';
+
+					$content 								= $this->dispatch(new Saving(new PersonWorkleave, $personworkleave[$i], null, new Person, $is_success->id));
+
+					$is_personworkleave_success 			= json_decode($content);
+					if(!$is_personworkleave_success->meta->success)
+					{
+						foreach ($is_personworkleave_success->meta->errors as $key => $value) 
+						{
+							if(is_array($value))
+							{
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Person', $value);
+							}
+						}
+					}
+				}
+			}
+
+			//save Sisa Cuti
 			if(!$errors->count())
 			{
 				$pwleave[$i]['work_id'] 				= $is_work_success->id;
-				$pwleave[$i]['person_workleave_id'] 	= $is_person_workleave_success->id;
+				if(isset($is_personworkleave_success->id))
+				{
+					$pwleave[$i]['person_workleave_id'] = $is_personworkleave_success->id;
+				}
 				$pwleave[$i]['created_by'] 				= Session::get('loggedUser');
 				$pwleave[$i]['name'] 					= 'Pengambilan (awal) '.$is_workleave_success->name;
 				$pwleave[$i]['notes'] 					= 'Auto generated dari import csv. Hanya Quota yang valid';
-				$pwleave[$i]['start'] 					= date('Y-m- d', strtotime($row['mulaikerja']));
 				
 				$leave 									= $row['kuotacutitahunan'] - $row['sisacuti'];
 				if($leave == 1)
@@ -1478,5 +1558,14 @@ class PersonController extends BaseController
 				}
 			}
 		}
+
+		if(!$errors->count())
+		{
+			DB::commit();
+			return Redirect::route('hr.persons.index', ['org_id' => $org_id])->with('alert_success', 'Data Import Sudah Disimpan');
+		}
+
+		DB::rollback();
+		return Redirect::back()->withErrors($errors);
 	}
 }
