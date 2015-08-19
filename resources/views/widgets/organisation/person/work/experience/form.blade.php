@@ -24,13 +24,23 @@
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label class="control-label">Start</label>
-						{!!Form::input('text', 'start', $WorkComposer['widget_data']['worklist']['work']['start'], ['class' => 'form-control date-mask'])!!}
+						@if (isset($WorkComposer['widget_data']['worklist']['work']['start'])&&($WorkComposer['widget_data']['worklist']['work']['start']!=null))
+							<?php $date_start = date('d-m-Y', strtotime($WorkComposer['widget_data']['worklist']['work']['start'])); ?>
+						@else
+							<?php $date_start = null; ?>
+						@endif
+						{!!Form::input('text', 'start', $date_start, ['class' => 'form-control date-mask'])!!}
 					</div>
 				</div>	
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label class="control-label">End</label>
-						{!!Form::input('text', 'end', $WorkComposer['widget_data']['worklist']['work']['end'], ['class' => 'form-control date-mask'])!!}
+						@if (isset($WorkComposer['widget_data']['worklist']['work']['end'])&&($WorkComposer['widget_data']['worklist']['work']['end']!=null))
+							<?php $date_end = date('d-m-Y', strtotime($WorkComposer['widget_data']['worklist']['work']['end'])); ?>
+						@else
+							<?php $date_end = null; ?>
+						@endif
+						{!!Form::input('text', 'end', $date_end, ['class' => 'form-control date-mask'])!!}
 					</div>
 				</div>
 			</div>
