@@ -14,6 +14,14 @@ use App\Models\PersonDocument;
 use App\Models\DocumentDetail;
 use App\Models\Contact;
 use App\Models\Branch;
+use App\Models\MaritalStatus;
+use App\Models\Document;
+use App\Models\Calendar;
+use App\Models\Chart;
+use App\Models\Follow;
+use App\Models\Workleave;
+use App\Models\FollowWorkleave;
+use App\Models\PersonWorkleave;
 use App\Models\PersonSchedule;
 
 class PersonController extends BaseController 
@@ -290,9 +298,6 @@ class PersonController extends BaseController
 
 		$errors 								= new MessageBag();
 
-
-		DB::beginTransaction();
-
 		if(Input::has('import'))
 		{
 			if (Input::hasFile('file_csv')) 
@@ -300,11 +305,14 @@ class PersonController extends BaseController
 				$file_csv 		= Input::file('file_csv');
 				$attributes = [];				
 				$sheet = Excel::load($file_csv)->toArray();				
+				
 				return $this->importcsv($sheet, $org_id);
 			}
 		}
 		else
 		{
+			DB::beginTransaction();
+
 			if(Input::has('id'))
 			{
 				$id 								= Input::get('id');
@@ -529,7 +537,10 @@ class PersonController extends BaseController
 	{
 		DB::beginTransaction();
 
+		$errors 								= new MessageBag();
+
 		$prev_org_code 							= 0;
+		$org_id_code 							= $org_id;
 		foreach($sheet as $i => $row)
 		{
 			if($prev_org_code!=$row['kodeorganisasi'])
@@ -553,12 +564,15 @@ class PersonController extends BaseController
 			}
 
 			$attributes[$i]['uniqid']			= $row['nik'];
-			$attributes[$i]['prefix_title']		= $row['prefixtitle'];
+			$attributes[$i]['prefix_title']		= (!is_null($row['prefixtitle']) ? $row['prefixtitle'] : '');
 			$attributes[$i]['name']				= $row['namalengkap'];
-			$attributes[$i]['suffix_title']		= $row['suffixtitle'];
-			$attributes[$i]['username']			= date('Ymdhis').'.org.'.rand(0,12000000).$org_id;
+			$attributes[$i]['suffix_title']		= (!is_null($row['suffixtitle']) ? $row['suffixtitle'] : '');
+			$attributes[$i]['username']			= str_replace(' ', '', strtolower($attributes[$i]['name'])).$row['kodeorganisasi'];
 			$attributes[$i]['place_of_birth']	= $row['tempatlahir'];
-			$attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime($row['tanggallahir']));
+
+			list($d, $m, $y) 					= explode("/", $row['tanggallahir']);
+			$attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime("$y-$m-$d"));
+
 			$attributes[$i]['gender']			= $row['gender']=='L' ? 'male' : 'female';
 			$attributes[$i]['org_id']			= $org_id_code;
 
@@ -582,17 +596,21 @@ class PersonController extends BaseController
 					}
 				}
 			}
+			else
+			{
+				$is_success 					= $is_success->data;
+			}
 			
 			//save contact
 			if(!$errors->count())
 			{
-				if($row['email']!='')
+				if(!is_null($row['email']))
 				{
 					$email[$i]['item']				= 'email';
 					$email[$i]['value']				= $row['email'];
 					$email[$i]['is_default']		= true;
 
-					$content 						= $this->dispatch(new Saving(new Contact, $email[$i], null, new Person, $is_success->data->id));
+					$content 						= $this->dispatch(new Saving(new Contact, $email[$i], null, new Person, $is_success->id));
 
 					$is_mail_success 				= json_decode($content);
 					if(!$is_mail_success->meta->success)
@@ -614,13 +632,13 @@ class PersonController extends BaseController
 					}
 				}
 
-				if($row['phone']!='')
+				if(!is_null($row['phone']))
 				{
 					$phone[$i]['item']				= 'phone';
 					$phone[$i]['value']				= $row['phone'];
 					$phone[$i]['is_default']		= true;
 
-					$content 						= $this->dispatch(new Saving(new Contact, $phone[$i], null, new Person, $is_success->data->id));
+					$content 						= $this->dispatch(new Saving(new Contact, $phone[$i], null, new Person, $is_success->id));
 
 					$is_phone_success 				= json_decode($content);
 					if(!$is_phone_success->meta->success)
@@ -643,13 +661,13 @@ class PersonController extends BaseController
 				}
 
 
-				if($row['alamat']!='')
+				if(!is_null($row['alamat']))
 				{
 					$address[$i]['item']			= 'address';
 					$address[$i]['value']			= $row['alamat'];
 					$address[$i]['is_default']		= true;
 
-					$content 						= $this->dispatch(new Saving(new Contact, $address[$i], null, new Person, $is_success->data->id));
+					$content 						= $this->dispatch(new Saving(new Contact, $address[$i], null, new Person, $is_success->id));
 
 					$is_address_success 				= json_decode($content);
 					if(!$is_address_success->meta->success)
@@ -678,7 +696,7 @@ class PersonController extends BaseController
 				$marital[$i]['status']			= $row['statuskawin'];
 				$marital[$i]['on']				= date('Y-m-d H:i:s');
 
-				$content 						= $this->dispatch(new Saving(new MaritalStatus, $marital[$i], null, new Person, $is_success->data->id));
+				$content 						= $this->dispatch(new Saving(new MaritalStatus, $marital[$i], null, new Person, $is_success->id));
 
 				$is_marital_success 				= json_decode($content);
 				if(!$is_marital_success->meta->success)
@@ -708,7 +726,7 @@ class PersonController extends BaseController
 
 				$search['organisationid']				= $org_id_code;
 				$search['name']							= 'KTP';
-				$search['tag']							= 'Identity';
+				$search['tag']							= 'Identitas';
 				$search['withattributes']				= ['templates'];
 				$sort 									= ['created_at' => 'asc'];
 				$results 								= $this->dispatch(new Getting(new Document, $search, $sort , 1, 1));
@@ -723,7 +741,7 @@ class PersonController extends BaseController
 
 				$ktp[$i]['document_id']					= $document['id'];
 
-				$content 								= $this->dispatch(new Saving(new PersonDocument, $ktp[$i], null, new Person, $is_success->data->id));
+				$content 								= $this->dispatch(new Saving(new PersonDocument, $ktp[$i], null, new Person, $is_success->id));
 				$is_ktp_success 						= json_decode($content);
 				
 				if(!$is_ktp_success->meta->success)
@@ -830,7 +848,7 @@ class PersonController extends BaseController
 
 				$bank[$i]['document_id']				= $document['id'];
 
-				$content 								= $this->dispatch(new Saving(new PersonDocument, $bank[$i], null, new Person, $is_success->data->id));
+				$content 								= $this->dispatch(new Saving(new PersonDocument, $bank[$i], null, new Person, $is_success->id));
 				$is_bank_success 						= json_decode($content);
 				
 				if(!$is_bank_success->meta->success)
@@ -921,7 +939,7 @@ class PersonController extends BaseController
 
 				$npwp[$i]['document_id']				= $document['id'];
 
-				$content 								= $this->dispatch(new Saving(new PersonDocument, $npwp[$i], null, new Person, $is_success->data->id));
+				$content 								= $this->dispatch(new Saving(new PersonDocument, $npwp[$i], null, new Person, $is_success->id));
 				$is_npwp_success 						= json_decode($content);
 				
 				if(!$is_npwp_success->meta->success)
@@ -1004,7 +1022,7 @@ class PersonController extends BaseController
 
 				$bpjstk[$i]['document_id']				= $document['id'];
 
-				$content 								= $this->dispatch(new Saving(new PersonDocument, $bpjstk[$i], null, new Person, $is_success->data->id));
+				$content 								= $this->dispatch(new Saving(new PersonDocument, $bpjstk[$i], null, new Person, $is_success->id));
 				$is_bpjstk_success 						= json_decode($content);
 				
 				if(!$is_bpjstk_success->meta->success)
@@ -1087,7 +1105,7 @@ class PersonController extends BaseController
 
 				$bpjsk[$i]['document_id']				= $document['id'];
 
-				$content 								= $this->dispatch(new Saving(new PersonDocument, $bpjsk[$i], null, new Person, $is_success->data->id));
+				$content 								= $this->dispatch(new Saving(new PersonDocument, $bpjsk[$i], null, new Person, $is_success->id));
 				$is_bpjsk_success 						= json_decode($content);
 				
 				if(!$is_bpjsk_success->meta->success)
@@ -1188,6 +1206,10 @@ class PersonController extends BaseController
 							}
 						}
 					}
+					else
+					{
+						$is_calendar_success 			= $is_calendar_success->data;
+					}
 				}
 				else
 				{
@@ -1230,6 +1252,10 @@ class PersonController extends BaseController
 								$errors->add('Person', $value);
 							}
 						}
+					}
+					else
+					{
+						$is_branch_success 				= $is_branch_success->data;
 					}
 				}
 				else
@@ -1279,6 +1305,10 @@ class PersonController extends BaseController
 								$errors->add('Person', $value);
 							}
 						}
+					}
+					else
+					{
+						$is_chart_success 				= $is_chart_success->data;
 					}
 				}
 				else
@@ -1366,6 +1396,10 @@ class PersonController extends BaseController
 							}
 						}
 					}
+					else
+					{
+						$is_workleave_success 			= $is_workleave_success->data;
+					}
 				}
 				else
 				{
@@ -1382,8 +1416,25 @@ class PersonController extends BaseController
 				$search['chartid']						= $is_chart_success->id;
 				$search['calendarid']					= $is_calendar_success->id;
 				$search['personid']						= $is_success->id;
-				$search['status']						= $row['statuskerja'];
-				
+				switch (strtolower($row['statuskerja'])) 
+				{
+					case 'kontrak': case 'contract' :
+						$search['status'] 				= 'contract';
+						break;						
+					case 'tetap': case 'permanent' : case 'permanen' :
+						$search['status'] 				= 'permanent';
+						break;
+					case 'percobaan': case 'probation' :
+						$search['status'] 				= 'probation';
+						break;
+					case 'magang': case 'internship' : case 'training' :
+						$search['status'] 				= 'training';
+						break;
+					default:
+						$search['status'] 				= 'others';
+						break;
+				}
+
 				$sort 									= ['created_at' => 'asc'];
 				$results 								= $this->dispatch(new Getting(new Work, $search, $sort , 1, 1));
 				$contents 								= json_decode($results);		
@@ -1392,28 +1443,16 @@ class PersonController extends BaseController
 				{
 					$work[$i]['chart_id'] 				= $is_chart_success->id;
 					$work[$i]['calendar_id'] 			= $is_calendar_success->id;
-					$work[$i]['status'] 				= $is_chart_success->id;
-					switch (strtolower($row['statuskerja'])) 
-					{
-						case 'kontrak': case 'contract' :
-							$work[$i]['start'] 			= 'contract';
-							break;						
-						case 'tetap': case 'permanent' : case 'permanen' :
-							$work[$i]['start'] 			= 'permanent';
-							break;
-						case 'percobaan': case 'probation' :
-							$work[$i]['start'] 			= 'probation';
-							break;
-						case 'magang': case 'internship' : case 'training' :
-							$work[$i]['start'] 			= 'training';
-							break;
-						default:
-							$work[$i]['start'] 			= 'others';
-							break;
-					}
+					$work[$i]['status'] 				= $search['status'];
+					
+					list($d, $m, $y) 					= explode("/", $row['mulaikerja']);
+					$work[$i]['start']					= date('Y-m-d', strtotime("$y-$m-$d"));
+					
 					if($row['berhentikerja']!='')
 					{
-						$work[$i]['end'] 				= date('Y-m-d', strtotime($row['berhentikerja']));
+						list($d, $m, $y) 				= explode("/", $row['berhentikerja']);
+						$work[$i]['end']				= date('Y-m-d', strtotime("$y-$m-$d"));
+
 						$work[$i]['reason_end_job'] 	= 'Akhir '.$row['statuskerja'];
 					}
 
@@ -1437,6 +1476,14 @@ class PersonController extends BaseController
 							}
 						}
 					}
+					else
+					{
+						$is_work_success 				= $is_work_success->data;
+					}
+				}
+				else
+				{
+					$is_work_success 					= $contents->data;
 				}
 			}
 
@@ -1445,7 +1492,7 @@ class PersonController extends BaseController
 			{
 				$fwleave[$i]['work_id'] 		= $is_work_success->id;
 
-				$content 						= $this->dispatch(new Saving(new FollowWorkleve, $fwleave[$i], null, new Workleave, $is_workleave_success->id));
+				$content 						= $this->dispatch(new Saving(new FollowWorkleave, $fwleave[$i], null, new Workleave, $is_workleave_success->id));
 
 				$is_fwleave_success 			= json_decode($content);
 				if(!$is_fwleave_success->meta->success)
@@ -1479,7 +1526,7 @@ class PersonController extends BaseController
 					$personworkleave[$i]['notes'] 			= 'Auto generated dari import csv.';
 					$personworkleave[$i]['start'] 			= date('Y-m-d', strtotime('first day of January this year'));
 					$personworkleave[$i]['end'] 			= date('Y-m-d', strtotime('last day of December this year'));
-					$personworkleave[$i]['quota'] 			= $is_workleave->quota;
+					$personworkleave[$i]['quota'] 			= $is_workleave_success->quota;
 					$personworkleave[$i]['status'] 			= 'CN';
 
 					$content 								= $this->dispatch(new Saving(new PersonWorkleave, $personworkleave[$i], null, new Person, $is_success->id));
@@ -1531,8 +1578,8 @@ class PersonController extends BaseController
 					$leaves 							= ' + '.$leave.' days';
 				}
 
-				$pwleave[$i]['start'] 					= date('Y-m-d', strtotime($row['mulaikerja']));
-				$pwleave[$i]['end'] 					= date('Y-m-d', strtotime($row['mulaikerja'].$leaves));
+				$pwleave[$i]['start'] 					= date('Y-m-d', strtotime($work[$i]['start']));
+				$pwleave[$i]['end'] 					= date('Y-m-d', strtotime($work[$i]['start'].$leaves));
 				$pwleave[$i]['quota'] 					= 0 - $leave;
 				$pwleave[$i]['status'] 					= 'CN';
 

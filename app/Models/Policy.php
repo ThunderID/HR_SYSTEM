@@ -127,18 +127,18 @@ class Policy extends BaseModel {
 		{
 			if(!is_null($variable[1]))
 			{
-				return $query->where('started_at', '<=', date('Y-m-d', strtotime($variable[1])))
-							 ->where('started_at', '>=', date('Y-m-d', strtotime($variable[0])));
+				return $query->where('started_at', '<=', date('Y-m-d H:i:s', strtotime($variable[1])))
+							 ->where('started_at', '>=', date('Y-m-d H:i:s', strtotime($variable[0])));
 			}
 			elseif(!is_null($variable[0]))
 			{
-				return $query->where('started_at', '>=', date('Y-m-d', strtotime($variable[0])));
+				return $query->where('started_at', '>=', date('Y-m-d H:i:s', strtotime($variable[0])));
 			}
 			else
 			{
-				return $query->where('started_at', '>=', date('Y-m-d'));
+				return $query->where('started_at', '>=', date('Y-m-d H:i:s'));
 			}
 		}
-		return $query->where('started_at', '>=', date('Y-m-d', strtotime($variable)));
+		return $query->where('started_at', '<=', date('Y-m-d H:i:s', strtotime($variable)));
 	}
 }

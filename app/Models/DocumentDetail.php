@@ -47,10 +47,10 @@ class DocumentDetail extends BaseModel {
 
 	protected 	$rules				= 	[
 											'template_id'			=> 'required|exists:tmp_templates,id',
-											'on'					=> 'required_without:text,string,numeric',
-											'numeric'				=> 'required_without:text,string,on',
-											'string'				=> 'required_without:text,on,numeric',
-											'text'					=> 'required_without:numeric,on,string',
+											'on'					=> 'required_without_all:text,string,numeric',
+											'numeric'				=> 'required_without_all:text,string,on',
+											'string'				=> 'required_without_all:text,on,numeric',
+											'text'					=> 'required_without_all:numeric,on,string',
 										];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/

@@ -38,17 +38,8 @@ class PersonWorkleaveObserver
 
 					return false;
 				}
-				// elseif(in_array(strtoupper($model['attributes']['status']), ['CB', 'CN']) && ($left_quota->quota + $add_quota + $model['attributes']['quota']) < 0)
-				// {
-				// 	$errors 			= new MessageBag;
-				// 	$errors->add('quota', 'Quota '.$left_quota->name.' yang tersedia tidak mencukupi. <br/>Sisa cuti = '.(int)($left_quota->quota + $add_quota).' hari, Cuti yang hendak diambil = '.abs($model['attributes']['quota']).' hari.<br/>Jika cuti merupakan kasus khusus silahkan tambahkan cuti istimewa.');
-					
-				// 	$model['errors'] 	= $errors;
-					
-				// 	return false;
-				// }
 			}
-			elseif(isset($model['attributes']['workleave_id']) && $model['attributes']['workleave_id']!=0)
+			elseif(isset($model['attributes']['workleave_id']) && $model['attributes']['workleave_id']!=0 && !isset($model->getDirty()['end']))
 			{
 				$work 					= Work::find($model['attributes']['work_id']);
 
@@ -58,20 +49,20 @@ class PersonWorkleaveObserver
 				if($start == date('Y-m-d', strtotime($model['attributes']['start'])))
 				{
 					$end 				= min(date('Y-m-d', strtotime($model['attributes']['end'])), date('Y-m-d'));
-					$extendpolicy 		= Policy::type('extendsworkleave')->OnDate(date('Y-m-d'))->orderby('started_at', 'desc')->first();
+					$extendpolicy 		= Policy::type('extendsworkleave')->OnDate(date('Y-m-d H:i:s'))->orderby('started_at', 'desc')->first();
 					$couldbetaken 		= date('Y-m-d', strtotime($model['attributes']['start']));
 				}
 				//if start != beginning of this year then end count as one (consider first year's policies)
 				else
 				{
 					$end 				= min(date('Y-m-d', strtotime($model['attributes']['end'])), (!is_null($work->end) ? date('Y-m-d', strtotime($work->end)) : date('Y-m-d', strtotime($model['attributes']['end']))));
-					$extendpolicy 		= Policy::type('extendsmidworkleave')->OnDate(date('Y-m-d'))->orderby('started_at', 'desc')->first();
+					$extendpolicy 		= Policy::type('extendsmidworkleave')->OnDate(date('Y-m-d H:i:s'))->orderby('started_at', 'desc')->first();
 					$couldbetaken 		= date('Y-m-d', strtotime($start. ' + 1 year'));
 				}
 
-				$model->quota			= ((date('m', strtotime($end)) - date('m', strtotime($start)))/$model->workleave->quota)*12;
+				$model->quota			= ((date('m', strtotime($end)) - date('m', strtotime($start)) + 1 )/$model->workleave->quota)*12;
 				$model->start			= $couldbetaken;
-				$model->end				= date('Y-m-d', strtotime(date('Y-m-d', strtotime($model['attributes']['end'])).' '.$extendpolicy->value));
+				$model->end				= date('Y-m-d', strtotime($model['attributes']['end'].' '.$extendpolicy->value));
 			}
 
 			return true;

@@ -156,7 +156,7 @@ class Document extends BaseModel {
 
 	public function scopeTag($query, $variable)
 	{
-		return $query->where('tag' ,$variable);
+		return $query->where('tag', $variable);
 	}
 
 	public function scopeRequired($query, $variable)
