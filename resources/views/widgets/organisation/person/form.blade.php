@@ -116,6 +116,14 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="form-group">
+								<label class="control-label">Status Kawin</label>
+								@include('widgets.organisation.person.select_married')
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
 								<label class="control-label">Password</label>
 								{!!Form::input('password', 'password', null, ['class' => 'form-control', 'autocomplete' => 'off']) !!}
 								<span id="helpBlock" class="help-block font-12">* Biarkan kosong jika tidak ingin mengubah password </span>
