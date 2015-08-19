@@ -9,6 +9,7 @@ use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
 
 use App\Models\Queue;
+use App\Models\QueueMorph;
 use App\Models\Organisation;
 use App\Models\Person;
 use App\Models\Work;
@@ -65,29 +66,8 @@ class PersonBatchCommand extends Command {
 	public function fire()
 	{
 		$id 			= $this->argument()['queueid'];
-		if($this->option('queuefunc'))
-		{
-			$queuefunc 	= $this->option('queuefunc');
-			//spec case
-			// switch ($queuefunc) 
-			// {
-			// 	case 'personsgiven':
-			// 		$result = $this->batchpersonsgivenworkleave($id);
-			// 		break;
-				
-			// 	case 'personstaken':
-			// 		$result = $this->batchpersonstakenworkleave($id);
-			// 		break;
-				
-			// 	default:
-			// 		$result = $this->batchpersonworkleave($id);
-			// 		break;
-			// }
-		}
-		else
-		{
-			$result 		= $this->batchcompleteperson($id);
-		}
+		
+		$result 		= $this->batchcompleteperson($id);
 
 		return $result;
 	}
@@ -192,9 +172,20 @@ class PersonBatchCommand extends Command {
 				}
 				else
 				{
+					
 					$is_success 					= $is_success->data;
+					
+					$morphed 						= new QueueMorph;
+
+					$morphed->fill([
+						'queue_id'					=> $pending->id,
+						'queue_morph_id'			=> $is_success->id,
+						'queue_morph_type'			=> get_class(new Person),
+					]);
+
+					$morphed->save();
 				}
-				
+
 				//save contact
 				if(!$errors->count())
 				{
@@ -224,6 +215,18 @@ class PersonBatchCommand extends Command {
 								}
 							}
 						}
+						else
+						{
+							$morphed 						= new QueueMorph;
+
+							$morphed->fill([
+								'queue_id'					=> $pending->id,
+								'queue_morph_id'			=> $is_mail_success->data->id,
+								'queue_morph_type'			=> get_class(new Contact),
+							]);
+
+							$morphed->save();
+						}
 					}
 
 					if(!is_null($row['phone']))
@@ -251,6 +254,18 @@ class PersonBatchCommand extends Command {
 									$errors->add('Person', $value);
 								}
 							}
+						}
+						else
+						{
+							$morphed 						= new QueueMorph;
+
+							$morphed->fill([
+								'queue_id'					=> $pending->id,
+								'queue_morph_id'			=> $is_phone_success->data->id,
+								'queue_morph_type'			=> get_class(new Contact),
+							]);
+
+							$morphed->save();
 						}
 					}
 
@@ -281,6 +296,18 @@ class PersonBatchCommand extends Command {
 								}
 							}
 						}
+						else
+						{
+							$morphed 						= new QueueMorph;
+
+							$morphed->fill([
+								'queue_id'					=> $pending->id,
+								'queue_morph_id'			=> $is_address_success->data->id,
+								'queue_morph_type'			=> get_class(new Contact),
+							]);
+
+							$morphed->save();
+						}
 					}
 				}
 
@@ -309,6 +336,18 @@ class PersonBatchCommand extends Command {
 								$errors->add('Person', $value);
 							}
 						}
+					}
+					else
+					{
+						$morphed 						= new QueueMorph;
+
+						$morphed->fill([
+							'queue_id'					=> $pending->id,
+							'queue_morph_id'			=> $is_marital_success->data->id,
+							'queue_morph_type'			=> get_class(new MaritalStatus),
+						]);
+
+						$morphed->save();
 					}
 				}
 
@@ -355,6 +394,19 @@ class PersonBatchCommand extends Command {
 							}
 						}
 					}
+					else
+					{
+						$morphed 						= new QueueMorph;
+
+						$morphed->fill([
+							'queue_id'					=> $pending->id,
+							'queue_morph_id'			=> $is_ktp_success->data->id,
+							'queue_morph_type'			=> get_class(new PersonDocument),
+						]);
+
+						$morphed->save();
+					}
+
 
 					if(!$errors->count())
 					{
@@ -414,6 +466,18 @@ class PersonBatchCommand extends Command {
 										}
 									}
 								}
+								else
+								{
+									$morphed 						= new QueueMorph;
+
+									$morphed->fill([
+										'queue_id'					=> $pending->id,
+										'queue_morph_id'			=> $is_ktpd_success->data->id,
+										'queue_morph_type'			=> get_class(new DocumentDetail),
+									]);
+
+									$morphed->save();
+								}
 							}
 						}
 					}
@@ -462,6 +526,18 @@ class PersonBatchCommand extends Command {
 							}
 						}
 					}
+					else
+					{
+						$morphed 						= new QueueMorph;
+
+						$morphed->fill([
+							'queue_id'					=> $pending->id,
+							'queue_morph_id'			=> $is_bank_success->data->id,
+							'queue_morph_type'			=> get_class(new PersonDocument),
+						]);
+
+						$morphed->save();
+					}
 
 					if(!$errors->count())
 					{
@@ -504,6 +580,18 @@ class PersonBatchCommand extends Command {
 											$errors->add('Person', $value);
 										}
 									}
+								}
+								else
+								{
+									$morphed 						= new QueueMorph;
+
+									$morphed->fill([
+										'queue_id'					=> $pending->id,
+										'queue_morph_id'			=> $is_bankd_success->data->id,
+										'queue_morph_type'			=> get_class(new DocumentDetail),
+									]);
+
+									$morphed->save();
 								}
 							}
 						}
@@ -553,6 +641,18 @@ class PersonBatchCommand extends Command {
 							}
 						}
 					}
+					else
+					{
+						$morphed 						= new QueueMorph;
+
+						$morphed->fill([
+							'queue_id'					=> $pending->id,
+							'queue_morph_id'			=> $is_npwp_success->data->id,
+							'queue_morph_type'			=> get_class(new PersonDocument),
+						]);
+
+						$morphed->save();
+					}
 
 					if(!$errors->count())
 					{
@@ -587,6 +687,18 @@ class PersonBatchCommand extends Command {
 											$errors->add('Person', $value);
 										}
 									}
+								}
+								else
+								{
+									$morphed 						= new QueueMorph;
+
+									$morphed->fill([
+										'queue_id'					=> $pending->id,
+										'queue_morph_id'			=> $is_npwpd_success->data->id,
+										'queue_morph_type'			=> get_class(new DocumentDetail),
+									]);
+
+									$morphed->save();
 								}
 							}
 						}
@@ -636,6 +748,18 @@ class PersonBatchCommand extends Command {
 							}
 						}
 					}
+					else
+					{
+						$morphed 						= new QueueMorph;
+
+						$morphed->fill([
+							'queue_id'					=> $pending->id,
+							'queue_morph_id'			=> $is_bpjstk_success->data->id,
+							'queue_morph_type'			=> get_class(new PersonDocument),
+						]);
+
+						$morphed->save();
+					}
 
 					if(!$errors->count())
 					{
@@ -670,6 +794,18 @@ class PersonBatchCommand extends Command {
 											$errors->add('Person', $value);
 										}
 									}
+								}
+								else
+								{
+									$morphed 						= new QueueMorph;
+
+									$morphed->fill([
+										'queue_id'					=> $pending->id,
+										'queue_morph_id'			=> $is_bpjstkd_success->data->id,
+										'queue_morph_type'			=> get_class(new DocumentDetail),
+									]);
+
+									$morphed->save();
 								}
 							}
 						}
@@ -719,6 +855,19 @@ class PersonBatchCommand extends Command {
 							}
 						}
 					}
+					else
+					{
+						$morphed 						= new QueueMorph;
+
+						$morphed->fill([
+							'queue_id'					=> $pending->id,
+							'queue_morph_id'			=> $is_bpjsk_success->data->id,
+							'queue_morph_type'			=> get_class(new PersonDocument),
+						]);
+
+						$morphed->save();
+					}
+
 
 					if(!$errors->count())
 					{
@@ -753,6 +902,18 @@ class PersonBatchCommand extends Command {
 											$errors->add('Person', $value);
 										}
 									}
+								}
+								else
+								{
+									$morphed 						= new QueueMorph;
+
+									$morphed->fill([
+										'queue_id'					=> $pending->id,
+										'queue_morph_id'			=> $is_bpjskd_success->data->id,
+										'queue_morph_type'			=> get_class(new DocumentDetail),
+									]);
+
+									$morphed->save();
 								}
 							}
 						}
@@ -803,6 +964,16 @@ class PersonBatchCommand extends Command {
 						else
 						{
 							$is_calendar_success 			= $is_calendar_success->data;
+
+							$morphed 							= new QueueMorph;
+
+							$morphed->fill([
+								'queue_id'					=> $pending->id,
+								'queue_morph_id'			=> $is_calendar_success->id,
+								'queue_morph_type'			=> get_class(new Calendar),
+							]);
+
+							$morphed->save();
 						}
 					}
 					else
@@ -850,6 +1021,16 @@ class PersonBatchCommand extends Command {
 						else
 						{
 							$is_branch_success 				= $is_branch_success->data;
+
+							$morphed 							= new QueueMorph;
+
+							$morphed->fill([
+								'queue_id'					=> $pending->id,
+								'queue_morph_id'			=> $is_branch_success->id,
+								'queue_morph_type'			=> get_class(new Branch),
+							]);
+
+							$morphed->save();
 						}
 					}
 					else
@@ -903,6 +1084,16 @@ class PersonBatchCommand extends Command {
 						else
 						{
 							$is_chart_success 				= $is_chart_success->data;
+
+							$morphed 						= new QueueMorph;
+
+							$morphed->fill([
+								'queue_id'					=> $pending->id,
+								'queue_morph_id'			=> $is_chart_success->id,
+								'queue_morph_type'			=> get_class(new Chart),
+							]);
+
+							$morphed->save();
 						}
 					}
 					else
@@ -947,6 +1138,19 @@ class PersonBatchCommand extends Command {
 								}
 							}
 						}
+						else
+						{
+							$morphed 						= new QueueMorph;
+
+							$morphed->fill([
+								'queue_id'					=> $pending->id,
+								'queue_morph_id'			=> $is_follow_success->data->id,
+								'queue_morph_type'			=> get_class(new Follow),
+							]);
+
+							$morphed->save();
+						}
+
 					}
 				}
 
@@ -993,6 +1197,16 @@ class PersonBatchCommand extends Command {
 						else
 						{
 							$is_workleave_success 			= $is_workleave_success->data;
+
+							$morphed 						= new QueueMorph;
+
+							$morphed->fill([
+								'queue_id'					=> $pending->id,
+								'queue_morph_id'			=> $is_workleave_success->id,
+								'queue_morph_type'			=> get_class(new Workleave),
+							]);
+
+							$morphed->save();
 						}
 					}
 					else
@@ -1073,6 +1287,16 @@ class PersonBatchCommand extends Command {
 						else
 						{
 							$is_work_success 				= $is_work_success->data;
+
+							$morphed 						= new QueueMorph;
+
+							$morphed->fill([
+								'queue_id'					=> $pending->id,
+								'queue_morph_id'			=> $is_work_success->id,
+								'queue_morph_type'			=> get_class(new Work),
+							]);
+
+							$morphed->save();
 						}
 					}
 					else
@@ -1105,6 +1329,18 @@ class PersonBatchCommand extends Command {
 								$errors->add('Person', $value);
 							}
 						}
+					}
+					else
+					{
+						$morphed 						= new QueueMorph;
+
+						$morphed->fill([
+							'queue_id'					=> $pending->id,
+							'queue_morph_id'			=> $is_fwleave_success->data->id,
+							'queue_morph_type'			=> get_class(new FollowWorkleave),
+						]);
+
+						$morphed->save();
 					}
 				}
 
@@ -1142,6 +1378,18 @@ class PersonBatchCommand extends Command {
 									$errors->add('Person', $value);
 								}
 							}
+						}
+						else
+						{
+							$morphed 						= new QueueMorph;
+
+							$morphed->fill([
+								'queue_id'					=> $pending->id,
+								'queue_morph_id'			=> $is_personworkleave_success->data->id,
+								'queue_morph_type'			=> get_class(new PersonWorkleave),
+							]);
+
+							$morphed->save();
 						}
 					}
 				}
@@ -1199,6 +1447,18 @@ class PersonBatchCommand extends Command {
 								}
 							}
 						}
+						else
+						{
+							$morphed 						= new QueueMorph;
+
+							$morphed->fill([
+								'queue_id'					=> $pending->id,
+								'queue_morph_id'			=> $is_pwleave_success->data->id,
+								'queue_morph_type'			=> get_class(new PersonWorkleave),
+							]);
+
+							$morphed->save();
+						}
 					}
 				}
 				
@@ -1206,7 +1466,8 @@ class PersonBatchCommand extends Command {
 				{
 					DB::commit();
 
-					$pending->fill(['process_number' => ($pending->process_number+1), 'message' => 'Working']);
+					$pnumber 								= $pending->process_number+1;
+					$pending->fill(['process_number' => $pnumber, 'message' => 'Working']);
 				}
 				else
 				{
