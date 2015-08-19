@@ -91,10 +91,6 @@ class HRSUpdateCommand extends Command {
 		});
 		$this->info("Add string and on, on document detail table");
 
-		shell_exec('php artisan db:seed');
-		
-		$this->info("Seeding template document");
-
 		Schema::create('idle_logs', function(Blueprint $table)
 		{
 			$table->increments('id');
@@ -338,6 +334,10 @@ class HRSUpdateCommand extends Command {
 
 		$this->info("Table setting idles removed");
 
+		shell_exec('php artisan db:seed');
+		
+		$this->info("Seeding template document and template policies");
+		
 		return true;
 	}
 }

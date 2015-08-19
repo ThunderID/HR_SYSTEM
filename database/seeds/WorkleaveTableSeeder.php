@@ -12,31 +12,37 @@ class WorkleaveTableSeeder extends Seeder
 	{
 
 		DB::table('tmp_workleaves')->truncate();
-		$faker 										= Factory::create();
-		$organisation 								= Organisation::find(1);
-		$workleaves 								= ['Cuti Tahunan', 'Cuti Melahirkan', 'Cuti Menikah'];
-		$status 									= ['CN', 'CI', 'CI'];
-		$quota 										= ['12', '15', '18', '14', '21', '6'];
+		$organisations 								= Organisation::get();
+		// $workleaves 								= ['Cuti Tahunan', 'Cuti Melahirkan', 'Cuti Menikah'];
+		// $status 									= ['CN', 'CI', 'CI'];
+		// $quota 									= ['12', '15', '18', '14', '21', '6'];
+		$workleaves 								= ['Cuti Tahunan'];
+		$status 									= ['CN'];
+		$quota 										= ['12'];
 		try
 		{
-			foreach(range(0, count($workleaves)-1) as $index)
+			foreach(range(0, count($organisations)-1) as $org)
 			{
-				$data 								= new Workleave;
-				$data->fill([
-					'name'							=> $workleaves[$index],
-					'quota'							=> $quota[rand(0, count($quota)-1)],
-					'status'						=> $status[$index],
-					'is_active'						=> true,
-				]);
-
-				$data->Organisation()->associate($organisation);
-
-				if (!$data->save())
+				$organisation 						= Organisation::find($organisations[$org]->id);
+				foreach(range(0, count($workleaves)-1) as $index)
 				{
-					print_r($data->getError());
-					exit;
-				}
-			} 
+					$data 							= new Workleave;
+					$data->fill([
+						'name'						=> $workleaves[$index],
+						'quota'						=> $quota[rand(0, count($quota)-1)],
+						'status'					=> $status[$index],
+						'is_active'					=> true,
+					]);
+
+					$data->Organisation()->associate($organisation);
+
+					if (!$data->save())
+					{
+						print_r($data->getError());
+						exit;
+					}
+				} 
+			}
 		}
 		catch (Exception $e) 
 		{

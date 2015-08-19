@@ -11,12 +11,12 @@ class PolicyTableSeeder extends Seeder
 	{
 		DB::table('tmp_policies')->truncate();
 
-		$org_totals 								= Organisation::count();
+		$orgs 										= Organisation::get();
 		$types 										= ['passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle', 'extendsworkleave', 'extendsmidworkleave'];
 		$values 									= ['+ 3 months', '1', '1', '2', '2', '2', '+ 31 days', '+ 5 days', '900', '3600','7200', '+ 3 months', '+ 15 months'];
 		try
 		{
-			foreach(range(0, count($org_totals)-1) as $index)
+			foreach(range(0, count($orgs)-1) as $index)
 			{
 				foreach(range(0, count($types)-1) as $key2 => $index2)
 				{
@@ -28,7 +28,7 @@ class PolicyTableSeeder extends Seeder
 						'started_at'					=> date('Y-m-d'),
 					]);
 
-					$data->organisation()->associate(Organisation::find($index+1));
+					$data->organisation()->associate(Organisation::find($orgs[$index]->id));
 
 					if (!$data->save())
 					{
