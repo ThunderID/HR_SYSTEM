@@ -5,6 +5,7 @@ use App\Models\Person;
 use App\Models\PersonSchedule;
 use App\Models\Work;
 use App\Models\PersonWorkleave;
+use App\Models\Policy;
 use \Illuminate\Support\MessageBag as MessageBag;
 use DateTime, DateInterval, DatePeriod;
 
@@ -46,6 +47,31 @@ class PersonWorkleaveObserver
 					
 				// 	return false;
 				// }
+			}
+			elseif(isset($model['attributes']['workleave_id']) && $model['attributes']['workleave_id']!=0)
+			{
+				$work 					= Work::find($model['attributes']['work_id']);
+
+				$start 					= max(date('Y-m-d', strtotime($model['attributes']['start'])), date('Y-m-d', strtotime($work->start)));
+		
+				//if start = beginning of this year then end count one by one
+				if($start == date('Y-m-d', strtotime($model['attributes']['start'])))
+				{
+					$end 				= min(date('Y-m-d', strtotime($model['attributes']['end'])), date('Y-m-d'));
+					$extendpolicy 		= Policy::type('extendsworkleave')->OnDate(date('Y-m-d'))->orderby('started_at', 'desc')->first();
+					$couldbetaken 		= date('Y-m-d', strtotime($model['attributes']['start']));
+				}
+				//if start != beginning of this year then end count as one (consider first year's policies)
+				else
+				{
+					$end 				= min(date('Y-m-d', strtotime($model['attributes']['end'])), (!is_null($work->end) ? date('Y-m-d', strtotime($work->end)) : date('Y-m-d', strtotime($model['attributes']['end']));
+					$extendpolicy 		= Policy::type('extendsmidworkleave')->OnDate(date('Y-m-d'))->orderby('started_at', 'desc')->first();
+					$couldbetaken 		= date('Y-m-d', strtotime($start. ' + 1 year'));
+				}
+
+				$model->quota			= ((date('m', strtotime($end)) - date('m', strtotime($start)))/$model->workleave->quota)*12;
+				$model->start			= $couldbetaken;
+				$model->end				= date('Y-m-d', strtotime(date('Y-m-d', strtotime($model['attributes']['end'])).' '.$extendpolicy->value));
 			}
 
 			return true;
