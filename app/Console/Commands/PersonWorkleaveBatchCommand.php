@@ -3,6 +3,9 @@
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+
+use \Illuminate\Support\MessageBag as MessageBag;
+
 use App\Models\Person;
 use App\Models\PersonWorkleave;
 use App\Models\Queue;
@@ -11,8 +14,8 @@ use App\Models\Calendar;
 use App\Models\Workleave;
 use App\Models\Policy;
 use App\Models\Work;
-use \Illuminate\Support\MessageBag as MessageBag;
-use DateTime, DateInterval, DatePeriod;
+
+use DateTime, DateInterval, DatePeriod, DB;
 
 class PersonWorkleaveBatchCommand extends Command {
 
@@ -250,17 +253,10 @@ class PersonWorkleaveBatchCommand extends Command {
 
 		foreach ($works as $key => $value) 
 		{
-			if(floor($key/$pending->task_per_process) < $pending->total_process && !$errors->count())
+
+			if(($pending->process_number-1) < $key)
 			{
-				// $startwork 				= new DateTime( $value->start );
-				// if(is_null($value->end))
-				// {
-				// 	$endwork 			= $ended;
-				// }
-				// else
-				// {
-				// 	$endwork 			= new DateTime( $value->end );
-				// }
+				DB::beginTransaction();
 				
 				$pwP 					= PersonWorkleave::personid($value['person_id'])->ondate([$begin->format('Y-m-d'), $ended->format('Y-m-d')])->status($parameters['status'])->quota(true)->first();
 
@@ -273,28 +269,6 @@ class PersonWorkleaveBatchCommand extends Command {
 					$pwid 				= $pwP->id;
 				}
 				 
-				// $start 					= max($begin->format('Y-m-d'), $startwork->format('Y-m-d'));
-		
-				// //if start = beginning of this year then end count one by one
-				// if($start == $begin->format('Y-m-d'))
-				// {
-				// 	$end 				= min($ended->format('Y-m-d'), date('Y-m-d'));
-				// 	$extendpolicy 		= Policy::type('extendsworkleave')->OnDate(date('Y-m-d'))->orderby('started_at', 'desc')->first();
-				// 	$couldbetaken 		= $begin->format('Y-m-d');
-				// }
-				// //if start != beginning of this year then end count as one (consider first year's policies)
-				// else
-				// {
-				// 	$end 				= min($ended->format('Y-m-d'), $endwork->format('Y-m-d'));
-				// 	$extendpolicy 		= Policy::type('extendsmidworkleave')->OnDate(date('Y-m-d'))->orderby('started_at', 'desc')->first();
-				// 	$couldbetaken 		= date('Y-m-d', strtotime($start. ' + 1 year'));
-				// }
-
-				// $parameters['work_id']	= $value->id;
-				// $parameters['quota']	= ((date('m', strtotime($end)) - date('m', strtotime($start)))/$workleave->quota)*12;
-				// $parameters['start']	= $couldbetaken;
-				// $parameters['end']		= date('Y-m-d', strtotime($ended->format('Y-m-d').' '.$extendpolicy->value));
-
 				$parameters['work_id']	= $value->id;
 				$parameters['quota']	= $workleave->quota;
 				$parameters['start']	= $begin->format('Y-m-d');
@@ -320,10 +294,12 @@ class PersonWorkleaveBatchCommand extends Command {
 						}
 					}
 				}
-				elseif(($key+1)%$pending->task_per_process==0 && !$errors->count())
+				
+				if(!$errors->count())
 				{
-					$pending->fill(['process_number' => ($key+1)/$pending->task_per_process, 'message' => 'Processing']);
-					$pending->save();
+					DB::commit();
+
+					$pending->fill(['process_number' => ($pending->process_number+1), 'message' => 'Working']);
 
 					$morphed 						= new QueueMorph;
 
@@ -335,28 +311,24 @@ class PersonWorkleaveBatchCommand extends Command {
 
 					$morphed->save();
 				}
-				elseif(!$errors->count())
+				else
 				{
-					$morphed 						= new QueueMorph;
-
-					$morphed->fill([
-						'queue_id'					=> $id,
-						'queue_morph_id'			=> $is_success->data->id,
-						'queue_morph_type'			=> get_class(new PersonWorkleave),
-					]);
-
-					$morphed->save();
+					DB::rollback();
+					
+					$pending->fill(['message' => json_encode($errors)]);
 				}
+
+				$pending->save();
 			}
 		}
 
-		if(!$errors->count())
+		if($errors->count())
 		{
-			$pending->fill(['process_number' => $pending->total_task, 'message' => 'Success']);
+			$pending->fill(['message' => json_encode($errors)]);
 		}
 		else
 		{
-			$pending->fill(['message' => json_encode($errors)]);
+			$pending->fill(['process_number' => ($pending->total_task), 'message' => 'Success']);
 		}
 
 		$pending->save();
@@ -389,13 +361,6 @@ class PersonWorkleaveBatchCommand extends Command {
 		//check work active on that day, please consider if that queue were written days
 		$works 						= Work::active(true)->status(['contract', 'permanent'])->calendarid($parameters['associate_calendar_id'])->get();
 		$calendar 					= Calendar::id($parameters['associate_calendar_id'])->schedulesondate([$begin->format('Y-m-d'), $ended->format('Y-m-d')])->first();
-		
-		// if($pending->updated_at==$pending->created_at && $process_number==0)
-		// {
-		// 	$pending->total_task 		= count($works);
-		// 	$pending->total_process 	= count($works)/10;
-		// 	$pending->save();
-		// }
 
 		$wd							= ['senin' => 'monday', 'selasa' => 'tuesday', 'rabu' => 'wednesday', 'kamis' => 'thursday', 'jumat' => 'friday', 'sabtu' => 'saturday', 'minggu' => 'sunday', 'monday' => 'monday', 'tuesday' => 'tuesday', 'wednesday' => 'wednesday', 'thursday' => 'thursday', 'friday' => 'friday', 'saturday' => 'saturday', 'sunday' => 'sunday'];
 
@@ -442,8 +407,11 @@ class PersonWorkleaveBatchCommand extends Command {
 
 		foreach ($works as $key => $value) 
 		{
-			if(floor($key/$pending->task_per_process) < $pending->total_process && !$errors->count())
+
+			if(($pending->process_number-1) < $key)
 			{
+				DB::beginTransaction();
+				
 				$startwork 				= new DateTime( $value->start );
 				if(is_null($value->end))
 				{
@@ -497,10 +465,12 @@ class PersonWorkleaveBatchCommand extends Command {
 						}
 					}
 				}
-				elseif(($key+1)%$pending->task_per_process==0 && !$errors->count())
+				
+				if(!$errors->count())
 				{
-					$pending->fill(['process_number' => ($key+1)/$pending->task_per_process, 'message' => 'Processing']);
-					$pending->save();
+					DB::commit();
+
+					$pending->fill(['process_number' => ($pending->process_number+1), 'message' => 'Working']);
 
 					$morphed 						= new QueueMorph;
 
@@ -512,33 +482,28 @@ class PersonWorkleaveBatchCommand extends Command {
 
 					$morphed->save();
 				}
-				elseif(!$errors->count())
+				else
 				{
-					$morphed 						= new QueueMorph;
-
-					$morphed->fill([
-						'queue_id'					=> $id,
-						'queue_morph_id'			=> $is_success->data->id,
-						'queue_morph_type'			=> get_class(new PersonWorkleave),
-					]);
-
-					$morphed->save();
+					DB::rollback();
+					
+					$pending->fill(['message' => json_encode($errors)]);
 				}
+
+				$pending->save();
 			}
 		}
 
-		if(!$errors->count())
+		if($errors->count())
 		{
-			$pending->fill(['process_number' => $pending->total_task, 'message' => 'Success']);
+			$pending->fill(['message' => json_encode($errors)]);
 		}
 		else
 		{
-			$pending->fill(['message' => json_encode($errors)]);
+			$pending->fill(['process_number' => ($pending->total_task), 'message' => 'Success']);
 		}
 
 		$pending->save();
 
 		return true;
-
 	}
 }

@@ -102,8 +102,10 @@ class PersonScheduleBatchCommand extends Command {
 
 		foreach ( $periods as $key => $period )
 		{
-			if(floor($key/$pending->task_per_process) < $pending->total_process && !$errors->count())
+			if(($pending->process_number-1) < $key)
 			{
+				DB::beginTransaction();
+
 				$psch 				= PersonSchedule::personid($parameters['associate_person_id'])->ondate([$period->format('Y-m-d'), $period->format('Y-m-d')])->status(strtoupper($parameters['status']))->first();
 				if(!$psch)
 				{
@@ -135,10 +137,12 @@ class PersonScheduleBatchCommand extends Command {
 						}
 					}
 				}
-				elseif(($key+1)%$pending->task_per_process==0 && !$errors->count())
+				
+				if(!$errors->count())
 				{
-					$pending->fill(['process_number' => ($key+1)/$pending->task_per_process, 'message' => 'Processing']);
-					$pending->save();
+					DB::commit();
+
+					$pending->fill(['process_number' => ($pending->process_number+1), 'message' => 'Working']);
 
 					$morphed 						= new QueueMorph;
 
@@ -150,34 +154,30 @@ class PersonScheduleBatchCommand extends Command {
 
 					$morphed->save();
 				}
-				elseif(!$errors->count())
+				else
 				{
-					$morphed 						= new QueueMorph;
-
-					$morphed->fill([
-						'queue_id'					=> $id,
-						'queue_morph_id'			=> $is_success->data->id,
-						'queue_morph_type'			=> get_class(new PersonSchedule),
-					]);
-
-					$morphed->save();
+					DB::rollback();
+					
+					$pending->fill(['message' => json_encode($errors)]);
 				}
+
+				$pending->save();
 			}
+
 		}
 
-		if(!$errors->count())
-		{
-			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Success']);
-		}
-		else
+		if($errors->count())
 		{
 			$pending->fill(['message' => json_encode($errors)]);
 		}
+		else
+		{
+			$pending->fill(['process_number' => ($pending->total_task), 'message' => 'Success']);
+		}
 
 		$pending->save();
-
+		
 		return true;
-
 	}
 
 }
