@@ -44,20 +44,45 @@
 				])
 			</div>
 			<div class="form-group">
+				<label class="control-label">Mengikuti Cuti</label>
+				@include('widgets.organisation.person.work.select_workleave', [
+						'widget_options'		=> 	[
+														'workleavelist'			=>
+														[
+															'organisation_id'	=> $data['id'],
+															'search'			=> [],
+															'sort'				=> ['name' => 'asc'],
+															'page'				=> 1,
+															'per_page'			=> 100
+														]
+													]
+					])
+			</div>
+			<div class="form-group">
 				<label class="control-label">Status</label>
-				{!!Form::select('status', ['contract' => 'Kontrak', 'internship' => 'Magang', 'probation' => 'Probation', 'permanent' => 'Tetap', 'others' => 'Lainnya'], $WorkComposer['widget_data']['worklist']['work']['status'], ['class' => 'form-control select2', 'tabindex' => 3]) !!}
+				{!!Form::select('status', ['contract' => 'Kontrak', 'internship' => 'Magang', 'probation' => 'Probation', 'permanent' => 'Tetap', 'others' => 'Lainnya'], date('d-m-Y', strtotime($WorkComposer['widget_data']['worklist']['work']['status'])), ['class' => 'form-control select2', 'tabindex' => 3]) !!}
 			</div>
 			<div class="row">
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label class="control-label">Start</label>
-						{!!Form::input('text', 'start', $WorkComposer['widget_data']['worklist']['work']['start'], ['class' => 'form-control date-mask', 'tabindex' => 4])!!}
+						@if (isset($WorkComposer['widget_data']['worklist']['work']['start'])&&($WorkComposer['widget_data']['worklist']['work']['start']!=null))
+							<?php $date_start = date('d-m-Y', strtotime($WorkComposer['widget_data']['worklist']['work']['start'])); ?>
+						@else
+							<?php $date_start = null; ?>
+						@endif
+						{!!Form::input('text', 'start', $date_start, ['class' => 'form-control date-mask', 'tabindex' => 4])!!}
 					</div>	
 				</div>
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label class="control-label">End</label>
-						{!!Form::input('text', 'end', $WorkComposer['widget_data']['worklist']['work']['end'], ['class' => 'form-control date-mask', 'tabindex' => 5])!!}
+						@if (isset($WorkComposer['widget_data']['worklist']['work']['end'])&&($WorkComposer['widget_data']['worklist']['work']['end']!=null))
+							<?php $date_end = date('d-m-Y', strtotime($WorkComposer['widget_data']['worklist']['work']['end'])); ?>
+						@else
+							<?php $date_end = null; ?>
+						@endif
+						{!!Form::input('text', 'end', $date_end, ['class' => 'form-control date-mask', 'tabindex' => 5])!!}
 					</div>
 				</div>
 			</div>
