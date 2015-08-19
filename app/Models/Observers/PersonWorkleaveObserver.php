@@ -64,7 +64,7 @@ class PersonWorkleaveObserver
 				//if start != beginning of this year then end count as one (consider first year's policies)
 				else
 				{
-					$end 				= min(date('Y-m-d', strtotime($model['attributes']['end'])), (!is_null($work->end) ? date('Y-m-d', strtotime($work->end)) : date('Y-m-d', strtotime($model['attributes']['end']));
+					$end 				= min(date('Y-m-d', strtotime($model['attributes']['end'])), (!is_null($work->end) ? date('Y-m-d', strtotime($work->end)) : date('Y-m-d', strtotime($model['attributes']['end']))));
 					$extendpolicy 		= Policy::type('extendsmidworkleave')->OnDate(date('Y-m-d'))->orderby('started_at', 'desc')->first();
 					$couldbetaken 		= date('Y-m-d', strtotime($start. ' + 1 year'));
 				}
