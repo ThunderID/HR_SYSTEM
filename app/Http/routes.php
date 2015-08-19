@@ -252,6 +252,14 @@ Route::group(['middleware' => 'csrfverify'], function()
 	});	
 }); 
 
+// ------------------------------------------------------------------------------------
+// BATCH
+// ------------------------------------------------------------------------------------
+Route::group(['prefix' => 'batch'], function()
+{
+	Route::any('schedules', 					['uses' => 'Organisation\\Calendar\\ScheduleController@batch_schedule', 	'as' => 'hr.batch.schedules']);
+});
+
 Route::group(['namespace' => 'Organisation\\'], function()
 {
 	Route::any('documents-list', 				['uses' => 'DocumentController@getAjax', 				'as' => 'hr.documents.list']);
