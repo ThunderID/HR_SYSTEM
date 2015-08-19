@@ -78,6 +78,9 @@ class Calendar extends BaseModel {
 											'name' 						=> 'Name', 
 											'orname' 					=> 'OrName', 
 
+											'starthour' 				=> 'StartHour', 
+											'endhour' 					=> 'EndHour', 
+
 											'branchid' 					=> 'BranchID', 
 											'charttag' 					=> 'ChartTag', 
 											
@@ -92,6 +95,9 @@ class Calendar extends BaseModel {
 											'activeworks' 				=> 'MUst be true', 
 											'name' 						=> 'Must be string', 
 											'orname' 					=> 'Could be array or string', 
+
+											'starthour' 				=> 'Must be string', 
+											'endhour' 					=> 'Must be string', 
 
 											'branchid' 					=> 'Could be array or integer', 
 											'charttag' 					=> 'Must be string', 
@@ -165,4 +171,13 @@ class Calendar extends BaseModel {
 		return $query->where('name', 'like', '%'.$variable.'%');
 	}
 
+	public function scopeStartHour($query, $variable)
+	{
+		return $query->where('start', '=', $variable);
+	}
+
+	public function scopeEndHour($query, $variable)
+	{
+		return $query->where('end', '=', $variable);
+	}
 }
