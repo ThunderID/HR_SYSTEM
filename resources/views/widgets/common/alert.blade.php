@@ -63,14 +63,14 @@
 		@endif
 
 		<div class="clearfix">&nbsp;</div>
-		<div class='alert  mt-10 alert_batch hide'>
+		<div class='alert alert-info mt-10 alert_batch hide'>
 			<div class="row">
 				<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 text-center">
-					<i class="icon" style="font-size:40px"></i>
+					<i class="fa fa-info-circle" style="font-size:40px"></i>
 				</div>
 				<div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
 					<p class="message_batch">Batch cuti sedang diproses..</p>
-					<div class="progress mt-10 hide">
+					<div class="progress mt-10">
 						<div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="500" style="width: 50%;">
 							100 / 500 Person
 						</div>

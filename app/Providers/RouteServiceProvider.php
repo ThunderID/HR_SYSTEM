@@ -101,6 +101,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.calendar.schedules.edit'					=> 35,
 							'hr.calendar.schedules.update'					=> 35,
 							'hr.calendar.schedules.delete'					=> 36,
+							'hr.batch.schedules'							=> 33,
 
 							'hr.calendar.charts.index'						=> 13,
 							'hr.calendar.charts.show'						=> 13,

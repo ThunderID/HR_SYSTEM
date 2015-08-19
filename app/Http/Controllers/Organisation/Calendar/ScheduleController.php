@@ -420,6 +420,10 @@ class ScheduleController extends BaseController
 						$queattr['process_name'] 	= 'hr:personworkleavebatch';
 						$queattr['process_option'] 	= 'personstaken';
 					}
+					else
+					{
+						$queattr['process_name'] 	= 'hr:schedulebatch';
+					}
 					
 					$attributes['associate_calendar_id'] 	= $calendar['id'];
 
@@ -563,5 +567,17 @@ class ScheduleController extends BaseController
 		{
 			return Redirect::back()->withErrors(['Password yang Anda masukkan tidak sah!']);
 		}
+	}
+
+	public function batch_schedule()
+	{
+		$queattr['createdbyid'] 		= Session::get('loggedUser');
+		$queattr['running'] 			= null;
+
+		$results 						= $this->dispatch(new Getting(new Queue, $queattr, ['created_at' => 'asc'], 1, 1));		
+		$success 	 					= json_decode($results);
+
+		Return Response::json(['data' => $success], 200);
+
 	}
 }

@@ -29,24 +29,37 @@
 				}
 			}
 		});
-
 	});
 
-	// var x = 0;
-	// var intervalID	= setInterval(
-	// 	$.ajax, 10000, 
-	// 	{
-	// 		url: '/coba1',
-	// 		success: function(result) {
-	// 			x=x+1;
-	// 			if (x==4)
-	// 			{
-	// 				clearInterval(intervalID);
-	// 				alert('interval selesai');
-	// 			}
 
-	// 		}
-	// 	}
-	// );
+	@if (Route::is('hr.calendars.show'))
+		var x =0;
+		var intervalID	= setInterval(
+			$.ajax, 1000, 
+			{
+				url: '{{ route("hr.batch.schedules") }}',
+				success: function(result) {
+					var valuemax = result.data.data.total_process;
+					var valuenow = x;
+
+					$('.message_batch').html('Progres batch jadwal "'+jQuery.parseJSON(result.data.data.parameter).name+'"');
+					$('.alert_batch').removeClass('hide');
+					$('.progress-bar').attr('aria-valuemax', valuemax).attr('aria-valuenow', valuenow);
+					$('.progress-bar').css('width', ((valuenow/valuemax)*100)+'%');
+					$('.progress-bar').html(valuenow+' / '+valuemax+' proses');
+
+					if (x==85)
+					{
+						$('.progress-bar').attr('aria-valuemax', valuemax).attr('aria-valuenow', valuenow);
+						$('.progress-bar').css('width', '100%');
+						$('.progress-bar').html(valuemax+' / '+valuemax+' proses');
+						clearInterval(intervalID);
+					}
+					
+					x=x+5;
+				}
+			}
+		);
+	@endif
 	
 </script>
