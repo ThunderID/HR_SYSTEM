@@ -122,6 +122,11 @@ class Saving extends Command implements SelfHandling {
 					$this->syncModel = $this->syncModel->findorfail($this->syncid);
 					$this->model->Calendar()->associate($this->syncModel);
 				}
+				elseif($this->syncModel == new \App\Models\Workleave)
+				{
+					$this->syncModel = $this->syncModel->findorfail($this->syncid);
+					$this->model->Workleave()->associate($this->syncModel);
+				}
 				elseif($this->syncModel == new \App\Models\Menu)
 				{
 					$this->syncModel = $this->syncModel->findorfail($this->syncid);

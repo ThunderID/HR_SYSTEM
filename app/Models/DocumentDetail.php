@@ -5,9 +5,10 @@
  * 	ID 								: Auto Increment, Integer, PK
  * 	person_document_id 				: Foreign Key From Pivot PersonDocument, Integer, Required
  * 	template_id 					: Foreign Key From Template, Integer, Required
- * 	item 							: Varchar, 255, Required
- * 	numeric 		 				: Required if text not present
- * 	text 		 					: Required if numeric not present
+ * 	on 			 					: Required if text, string, numeric not present
+ * 	numeric 		 				: Required if string, date, text not present
+ * 	string 			 				: Required if date, numeric, text not present
+ * 	text 		 					: Required if numeric, date, string not present
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -38,14 +39,18 @@ class DocumentDetail extends BaseModel {
 	
 	protected 	$fillable			= 	[
 											'template_id' 				,
+											'on' 						,
 											'numeric' 					,
+											'string' 					,
 											'text' 						,
 										];
 
 	protected 	$rules				= 	[
 											'template_id'			=> 'required|exists:tmp_templates,id',
-											'numeric'				=> 'required_without:text',
-											'text'					=> 'required_without:numeric',
+											'on'					=> 'required_without:text,string,numeric',
+											'numeric'				=> 'required_without:text,string,on',
+											'string'				=> 'required_without:text,on,numeric',
+											'text'					=> 'required_without:numeric,on,string',
 										];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/

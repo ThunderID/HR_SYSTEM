@@ -125,6 +125,11 @@ class Workleave extends BaseModel {
 		return $query->where('name', 'like', '%'.$variable.'%');
 	}
 
+	public function scopeQuota($query, $variable)
+	{
+		return $query->where('quota', $variable);
+	}
+
 	public function scopeActive($query, $variable)
 	{
 		return $query->where('is_active', $variable);

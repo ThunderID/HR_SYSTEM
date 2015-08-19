@@ -252,15 +252,15 @@ class PersonWorkleaveBatchCommand extends Command {
 		{
 			if(floor($key/$pending->task_per_process) < $pending->total_process && !$errors->count())
 			{
-				$startwork 				= new DateTime( $value->start );
-				if(is_null($value->end))
-				{
-					$endwork 			= $ended;
-				}
-				else
-				{
-					$endwork 			= new DateTime( $value->end );
-				}
+				// $startwork 				= new DateTime( $value->start );
+				// if(is_null($value->end))
+				// {
+				// 	$endwork 			= $ended;
+				// }
+				// else
+				// {
+				// 	$endwork 			= new DateTime( $value->end );
+				// }
 				
 				$pwP 					= PersonWorkleave::personid($value['person_id'])->ondate([$begin->format('Y-m-d'), $ended->format('Y-m-d')])->status($parameters['status'])->quota(true)->first();
 
@@ -273,27 +273,32 @@ class PersonWorkleaveBatchCommand extends Command {
 					$pwid 				= $pwP->id;
 				}
 				 
-				$start 					= max($begin->format('Y-m-d'), $startwork->format('Y-m-d'));
+				// $start 					= max($begin->format('Y-m-d'), $startwork->format('Y-m-d'));
 		
-				//if start = beginning of this year then end count one by one
-				if($start == $begin->format('Y-m-d'))
-				{
-					$end 				= min($ended->format('Y-m-d'), date('Y-m-d'));
-					$extendpolicy 		= Policy::type('extendsworkleave')->OnDate(date('Y-m-d'))->orderby('started_at', 'desc')->first();
-					$couldbetaken 		= $begin->format('Y-m-d');
-				}
-				//if start != beginning of this year then end count as one (consider first year's policies)
-				else
-				{
-					$end 				= min($ended->format('Y-m-d'), $endwork->format('Y-m-d'));
-					$extendpolicy 		= Policy::type('extendsmidworkleave')->OnDate(date('Y-m-d'))->orderby('started_at', 'desc')->first();
-					$couldbetaken 		= date('Y-m-d', strtotime($start. ' + 1 year'));
-				}
+				// //if start = beginning of this year then end count one by one
+				// if($start == $begin->format('Y-m-d'))
+				// {
+				// 	$end 				= min($ended->format('Y-m-d'), date('Y-m-d'));
+				// 	$extendpolicy 		= Policy::type('extendsworkleave')->OnDate(date('Y-m-d'))->orderby('started_at', 'desc')->first();
+				// 	$couldbetaken 		= $begin->format('Y-m-d');
+				// }
+				// //if start != beginning of this year then end count as one (consider first year's policies)
+				// else
+				// {
+				// 	$end 				= min($ended->format('Y-m-d'), $endwork->format('Y-m-d'));
+				// 	$extendpolicy 		= Policy::type('extendsmidworkleave')->OnDate(date('Y-m-d'))->orderby('started_at', 'desc')->first();
+				// 	$couldbetaken 		= date('Y-m-d', strtotime($start. ' + 1 year'));
+				// }
+
+				// $parameters['work_id']	= $value->id;
+				// $parameters['quota']	= ((date('m', strtotime($end)) - date('m', strtotime($start)))/$workleave->quota)*12;
+				// $parameters['start']	= $couldbetaken;
+				// $parameters['end']		= date('Y-m-d', strtotime($ended->format('Y-m-d').' '.$extendpolicy->value));
 
 				$parameters['work_id']	= $value->id;
-				$parameters['quota']	= ((date('m', strtotime($end)) - date('m', strtotime($start)))/$workleave->quota)*12;
-				$parameters['start']	= $couldbetaken;
-				$parameters['end']		= date('Y-m-d', strtotime($ended->format('Y-m-d').' '.$extendpolicy->value));
+				$parameters['quota']	= $workleave->quota;
+				$parameters['start']	= $begin->format('Y-m-d');
+				$parameters['end']		= $ended->format('Y-m-d');
 				
 				$content 				= $this->dispatch(new Saving(new PersonWorkleave, $parameters, $pwid, new Person, $value->person_id));
 				$is_success 			= json_decode($content);

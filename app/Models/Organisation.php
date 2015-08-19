@@ -56,13 +56,14 @@ class Organisation extends BaseModel {
 
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
+											'code' 						=> 'Code', 
 											'name' 						=> 'Name', 
 											'withattributes' 			=> 'WithAttributes',
 										];
 	
 	public $searchableScope 		= 	[
 											'id' 						=> 'Could be array or integer', 
-											'name' 						=> 'Must be string', 
+											'code' 						=> 'Must be string', 
 											'withattributes' 			=> 'Must be array of relationship',
 										];
 
@@ -163,6 +164,15 @@ class Organisation extends BaseModel {
 		return $query->where('organisations.id', $variable);
 	}
 	
+	public function scopeCode($query, $variable)
+	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('organisations.code', $variable);
+		}
+		return $query->where('organisations.code', $variable);
+	}
+
 	public function scopeName($query, $variable)
 	{
 		return $query->where('name', 'like' ,'%'.$variable.'%');

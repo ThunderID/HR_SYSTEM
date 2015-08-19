@@ -345,9 +345,20 @@ class DocumentController extends BaseController
 			foreach ($template_ids as $key => $value) 
 			{
 				$attributes_2 					= ['template_id' => $value];
-				if((int)$contents[$key])
+				$checkdate						= strtotime($contents[$key]);
+				$checknumeric					= int($contents[$key]);
+				$checkstring					= strlen($contents[$key]);
+				if($checkdate)
+				{
+					$attributes_2['on']			= $contents[$key];
+				}
+				elseif($checknumeric)
 				{
 					$attributes_2['numeric']	= $contents[$key];
+				}
+				elseif($checkstring <= 255)
+				{
+					$attributes_2['string']		= $contents[$key];
 				}
 				else
 				{
