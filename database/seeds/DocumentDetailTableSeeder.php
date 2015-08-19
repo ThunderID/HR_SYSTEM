@@ -31,10 +31,37 @@ class DocumentDetailTableSeeder extends Seeder
 						foreach ($person2->documents[$key]->templates as $key2 => $value2)
 						{
 							$detail[$key2] 			= new DocumentDetail;
-							$detail[$key2]->fill([
-								'template_id'		=> $value2->id,
-								'text'				=> $faker->word,
-							]);
+							
+							switch ($value2->type) 
+							{
+								case 'date':
+									$detail[$key2]->fill([
+										'template_id'		=> $value2->id,
+										'on'				=> $faker->date,
+									]);
+									break;
+								
+								case 'numeric':
+									$detail[$key2]->fill([
+										'template_id'		=> $value2->id,
+										'numeric'			=> rand(20,100),
+									]);
+									break;
+
+								case 'string':
+									$detail[$key2]->fill([
+										'template_id'		=> $value2->id,
+										'string'			=> $faker->name,
+									]);
+									break;
+
+								default:
+									$detail[$key2]->fill([
+										'template_id'		=> $value2->id,
+										'text'				=> $faker->word,
+									]);
+									break;
+							}
 							$detail[$key2]->PersonDocument()->associate($person);
 							$detail[$key2]->save();
 						} 

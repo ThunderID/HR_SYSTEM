@@ -15,79 +15,257 @@ class DocumentTableSeeder extends Seeder
 		DB::table('tmp_documents')->truncate();
 		DB::table('tmp_templates')->truncate();
 		$name 										= [
-														'surat peringatan', 
-														'kontrak kerja', 
-														'penilaian kinerja', 
-														'pendidikan formal', 
-														'pendidikan non formal', 
-														'ktp',
-														'bpjs',
-														'npwp',
-														'bank',
-														'reksa dana',
+														'KTP',
+														'Akun Bank',
+														'NPWP',
+														'BPJS Ketenagakerjaan',
+														'BPJS Kesehatan',
+														
+														'Akun Reksa Dana',
+														'SD', 
+														'SMP', 
+														'SMA', 
+														'Universitas', 
+														'Seminar', 
+														'Training', 
+														
+														'Kontrak Kerja', 
+														'Surat Peringatan I', 
+														'Surat Peringatan II', 
+														'Surat Peringatan III', 
+														'Penilaian Kinerja I', 
+														'Penilaian Kinerja II', 
+														'Penilaian Kinerja III', 
 														];
 		$tag 										= [
-														'SP', 
-														'Kontrak', 
-														'Appraisal', 
-														'Pendidikan', 
-														'Pendidikan', 
 														'Identitas',
+														'Akun',
 														'Pajak',
 														'Pajak',
+														'Pajak',
+
 														'Akun',
-														'Akun',
+														'Pendidikan', 
+														'Pendidikan', 
+														'Pendidikan', 
+														'Pendidikan', 
+														'Pendidikan', 
+														
+														'Kontrak', 
+														'SP', 
+														'SP', 
+														'SP', 
+														'Apraisal', 
+														'Apraisal', 
+														'Apraisal', 
 														];
 		$template 									= [
 														[
-															'nama',
-															'tanggal',
-															'content',
+															'Nomor KTP',
+															'Alamat',
+															'Kota',
+															'Agama',
+															'Status Kawin',
+															'Kewarganegaraan',
+															'Berlaku Hingga',
 														], 
 														[
-															'nama',
-															'tanggal',
-															'content',
+															'Nomor Rekening',
+															'Nama Bank',
+															'Nama Nasabah',
 														], 
 														[
-															'nama',
-															'tanggal',
-															'content'
+															'NPWP',
 														], 
 														[
-															'nama pendidikan',
-															'institusi',
-															'bidang studi',
-															'tanggal masuk',
-															'tanggal lulus',
-															'grade'
+															'Nomor BPJS-TK',
 														], 
 														[
-															'nama seminar/training',
-															'penyelenggara',
-															'bidang',
-															'tanggal mulai',
-															'tanggal selesai'
+															'Nomor BPJS-K',
 														], 
 														[
-															'ktp',
+															'Nomor Reksa Dana',
+															'Nama Reksa Dana',
+															'Nama Pemilik Akun',
 														], 
 														[
-															'bpjs',
+															'Institusi',
+															'Tanggal Masuk',
+															'Tanggal Lulus',
+															'Nilai',
 														], 
 														[
-															'npwp',
+															'Institusi',
+															'Tanggal Masuk',
+															'Tanggal Lulus',
+															'Nilai',
 														], 
 														[
-															'nama bank',
-															'cabang',
-															'produk akun',
-															'nomor akun',
+															'Institusi',
+															'Tanggal Masuk',
+															'Tanggal Lulus',
+															'Nilai',
 														], 
 														[
-															'nama reksa dana',
-															'produk reksa dana',
-															'nomor reksa dana',
+															'Institusi',
+															'Tanggal Masuk',
+															'Tanggal Lulus',
+															'IPK',
+														], 
+														[
+															'Nama Seminar',
+															'Penyelenggara',
+															'Bidang',
+															'Tanggal Mulai',
+															'Tanggal Selesai'
+														], 
+														[
+															'Nama Training',
+															'Penyelenggara',
+															'Bidang',
+															'Tanggal Mulai',
+															'Tanggal Selesai'
+															'Predikat',
+														], 
+														[
+															'Nomor Surat',
+															'Tanggal',
+															'Isi Surat Perjanjian',
+														], 
+														[
+															'Nomor Surat',
+															'Tanggal',
+															'Isi Surat Peringatan',
+														], 
+														[
+															'Nomor Surat',
+															'Tanggal',
+															'Isi Surat Peringatan',
+														], 
+														[
+															'Nomor Surat',
+															'Tanggal',
+															'Isi Surat Peringatan',
+														], 
+														[
+															'Nomor Surat',
+															'Tanggal',
+															'Isi Penilaian Kinerja',
+														], 
+														[
+															'Nomor Surat',
+															'Tanggal',
+															'Isi Penilaian Kinerja',
+														], 
+														[
+															'Nomor Surat',
+															'Tanggal',
+															'Isi Penilaian Kinerja',
+														], 
+													];
+
+				$type 								= [
+														[
+															'string',
+															'text',
+															'string',
+															'string',
+															'string',
+															'string',
+															'date',
+														], 
+														[
+															'string',
+															'string',
+															'string',
+														], 
+														[
+															'string',
+														], 
+														[
+															'string',
+														], 
+														[
+															'string',
+														], 
+														[
+															'string',
+															'string',
+															'string',
+														], 
+														[
+															'string',
+															'date',
+															'date',
+															'numeric',
+														], 
+														[
+															'string',
+															'date',
+															'date',
+															'numeric',
+														], 
+														[
+															'string',
+															'date',
+															'date',
+															'numeric',
+														], 
+														[
+															'string',
+															'date',
+															'date',
+															'numeric',
+														], 
+														[
+															'string',
+															'string',
+															'string',
+															'date',
+															'date'
+														], 
+														[
+															'string',
+															'string',
+															'string',
+															'date',
+															'date'
+															'string',
+														], 
+														[
+															'string',
+															'date',
+															'text',
+														], 
+														[
+															'string',
+															'date',
+															'text',
+														], 
+														[
+															'string',
+															'date',
+															'text',
+														], 
+														[
+															'string',
+															'date',
+															'text',
+														], 
+														[
+															'string',
+															'date',
+															'text',
+														], 
+														[
+															'string',
+															'date',
+															'text',
+														], 
+														[
+															'string',
+															'date',
+															'text',
 														], 
 													];
 		$organisation 								= Organisation::find(1);
@@ -95,7 +273,7 @@ class DocumentTableSeeder extends Seeder
 		{
 			foreach(range(0, count($name)-1) as $index)
 			{
-				if($index>4 && $index<7)
+				if($index<4)
 				{
 					$required 						= true;
 				}
@@ -122,7 +300,7 @@ class DocumentTableSeeder extends Seeder
 					$doc_template[$key] 			= new Template;
 					$doc_template[$key]->fill([
 						'field'						=> $value,
-						'type'						=> 'string',
+						'type'						=> $type[$key],
 					]);
 
 
