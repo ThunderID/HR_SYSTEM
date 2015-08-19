@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\ScheduleBatchCommand',
 		'App\Console\Commands\PersonScheduleBatchCommand',
 		'App\Console\Commands\PersonWorkleaveBatchCommand',
+		'App\Console\Commands\PersonBatchCommand',
 	];
 
 	/**
