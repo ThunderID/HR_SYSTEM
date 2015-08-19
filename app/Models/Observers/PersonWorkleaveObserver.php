@@ -37,15 +37,15 @@ class PersonWorkleaveObserver
 
 					return false;
 				}
-				elseif(in_array(strtoupper($model['attributes']['status']), ['CB', 'CN']) && ($left_quota->quota + $add_quota + $model['attributes']['quota']) < 0)
-				{
-					$errors 			= new MessageBag;
-					$errors->add('quota', 'Quota '.$left_quota->name.' yang tersedia tidak mencukupi. <br/>Sisa cuti = '.(int)($left_quota->quota + $add_quota).' hari, Cuti yang hendak diambil = '.abs($model['attributes']['quota']).' hari.<br/>Jika cuti merupakan kasus khusus silahkan tambahkan cuti istimewa.');
+				// elseif(in_array(strtoupper($model['attributes']['status']), ['CB', 'CN']) && ($left_quota->quota + $add_quota + $model['attributes']['quota']) < 0)
+				// {
+				// 	$errors 			= new MessageBag;
+				// 	$errors->add('quota', 'Quota '.$left_quota->name.' yang tersedia tidak mencukupi. <br/>Sisa cuti = '.(int)($left_quota->quota + $add_quota).' hari, Cuti yang hendak diambil = '.abs($model['attributes']['quota']).' hari.<br/>Jika cuti merupakan kasus khusus silahkan tambahkan cuti istimewa.');
 					
-					$model['errors'] 	= $errors;
+				// 	$model['errors'] 	= $errors;
 					
-					return false;
-				}
+				// 	return false;
+				// }
 			}
 
 			return true;
@@ -74,9 +74,12 @@ class PersonWorkleaveObserver
 
 			foreach ( $periods as $period )
 			{
+				$period1 			= new DateTime( $period->format('Y-m-d').' + 1 day' );
+				
 				//check if schedule were provided
 				$schedule 			= new PersonSchedule;
-				$psch 				= $schedule->personid($model['attributes']['person_id'])->ondate([$period->format('Y-m-d'), $period->format('Y-m-d')])->status(strtoupper($model['attributes']['status']))->first();
+
+				$psch 				= $schedule->personid($model['attributes']['person_id'])->ondate([$period->format('Y-m-d'), $period1->format('Y-m-d')])->status(strtoupper($model['attributes']['status']))->first();
 				if(!$psch)
 				{
 					$schedule->fill([
@@ -93,6 +96,25 @@ class PersonWorkleaveObserver
 					if (!$schedule->save())
 					{
 						$model['errors'] = $schedule->getError();
+						return false;
+					}
+				}
+				else
+				{
+					$psch->fill([
+						'created_by'	=>  $model['attributes']['created_by'],
+						'name'			=>  $model['attributes']['name'],
+						'status'		=>  strtoupper($model['attributes']['status']),
+						'on'			=>  $period->format('Y-m-d'),
+						'start'			=>  '00:00:00',
+						'end'			=>  '00:00:00',
+					]);
+					
+					$psch->Person()->associate($person);
+					
+					if (!$psch->save())
+					{
+						$model['errors'] = $psch->getError();
 						return false;
 					}
 				}

@@ -133,7 +133,21 @@ class ProcessingLogObserver
 							$tooltip[] 	= $value->status;
 						}
 					}
-					if(strtoupper($pschedules->schedules[0]->status)!='HB')
+					if(strtoupper($pschedules->schedules[0]->status)=='L')
+					{
+						$actual_status 	= 'L';
+						$modified_status= $pschedules->schedules[0]->status;
+						$modified_by 	= $pschedules->schedules[0]->created_by;
+						$modified_at 	= $pschedules->schedules[0]->created_at->format('Y-m-d H:i:s');
+					}
+					elseif(in_array(strtoupper($pschedules->schedules[0]->status),['CN', 'CB', 'CI']))
+					{
+						$actual_status 	= 'AS';
+						$modified_status= $pschedules->schedules[0]->status;
+						$modified_by 	= $pschedules->schedules[0]->created_by;
+						$modified_at 	= $pschedules->schedules[0]->created_at->format('Y-m-d H:i:s');
+					}
+					elseif(strtoupper($pschedules->schedules[0]->status)!='HB')
 					{
 						$actual_status 	= 'HC';
 						$modified_status= $pschedules->schedules[0]->status;
@@ -205,7 +219,6 @@ class ProcessingLogObserver
 						if(isset($wd[strtolower($day)]) && in_array(strtolower($wd[strtolower($day)]), $lworkdays))
 						{
 							$schedule_start = $calendar->workscalendars[0]->calendar->start;
-							
 							$schedule_end 	= $calendar->workscalendars[0]->calendar->end;	
 						}
 						else
@@ -516,12 +529,17 @@ class ProcessingLogObserver
 
 			if(isset($data->id))
 			{
-				$alog 										= AttendanceLog::processlogid($data->id)->first();
-				$ilog 										= IdleLog::processlogid($data->id)->first();
+				$alog 										= AttendanceLog::processlogid($data->id)->orderBy('updated_at', 'desc')->first();
+				$ilog 										= IdleLog::processlogid($data->id)->orderBy('updated_at', 'desc')->first();
 
 				if(!$alog || (isset($modified_status) && $alog->modified_status != $modified_status) || (isset($actual_status) && $alog->actual_status != $actual_status))
 				{
 					$alog 									= new AttendanceLog;
+				}
+
+				if(!$ilog)
+				{
+					$ilog 									= new IdleLog;
 				}
 			}
 			else

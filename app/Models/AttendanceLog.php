@@ -54,6 +54,7 @@ class AttendanceLog extends BaseModel {
 											'margin_end' 						,
 											'notes' 							,
 											'modified_at' 						,
+											'modified_by' 						,
 											'settlement_at' 					,
 										];
 

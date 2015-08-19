@@ -300,37 +300,7 @@ class PersonController extends BaseController
 				$file_csv 		= Input::file('file_csv');
 				$attributes = [];				
 				$sheet = Excel::load($file_csv)->toArray();				
-				foreach($sheet as $i => $row)
-				{
-					$attributes[$i]['username']			= date('Ymdhis').'.org.'.rand(0,12000000).$org_id;
-					$attributes[$i]['name']				= $row['nama'];
-					$attributes[$i]['place_of_birth']	= $row['tempatlahir'];
-					$attributes[$i]['uniqid']			= $row['nik'];
-					$attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime($row['tanggallahir']));
-					$attributes[$i]['gender']			= $row['kelamin']=='L' ? 'male' : 'female';
-					$attributes[$i]['org_id']			= $org_id;
-
-					$content 							= $this->dispatch(new Saving(new Person, $attributes[$i], null, new Organisation, $org_id));
-
-					$is_success 						= json_decode($content);
-					if(!$is_success->meta->success)
-					{
-						foreach ($is_success->meta->errors as $key => $value) 
-						{
-							if(is_array($value))
-							{
-								foreach ($value as $key2 => $value2) 
-								{
-									$errors->add('Person', $value2);
-								}
-							}
-							else
-							{
-								$errors->add('Person', $value);
-							}
-						}
-					}
-				}
+				return $this->importcsv($sheet, $org_id);
 			}
 		}
 		else
@@ -548,5 +518,40 @@ class PersonController extends BaseController
 		$image = Image::make(public_path() . '/' . $image_path)->resize($width, $height)->save(public_path($path['dirname'] . '/' . $new_file_name));
 
 		return $path['dirname'] . '/' . $new_file_name;
+	}
+
+	private function importcsv($sheet, $org_id)
+	{
+		foreach($sheet as $i => $row)
+		{
+			$attributes[$i]['uniqid']			= $row['nik'];
+			$attributes[$i]['username']			= date('Ymdhis').'.org.'.rand(0,12000000).$org_id;
+			$attributes[$i]['name']				= $row['nama'];
+			$attributes[$i]['place_of_birth']	= $row['tempatlahir'];
+			$attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime($row['tanggallahir']));
+			$attributes[$i]['gender']			= $row['kelamin']=='L' ? 'male' : 'female';
+			$attributes[$i]['org_id']			= $org_id;
+
+			$content 							= $this->dispatch(new Saving(new Person, $attributes[$i], null, new Organisation, $org_id));
+
+			$is_success 						= json_decode($content);
+			if(!$is_success->meta->success)
+			{
+				foreach ($is_success->meta->errors as $key => $value) 
+				{
+					if(is_array($value))
+					{
+						foreach ($value as $key2 => $value2) 
+						{
+							$errors->add('Person', $value2);
+						}
+					}
+					else
+					{
+						$errors->add('Person', $value);
+					}
+				}
+			}
+		}
 	}
 }

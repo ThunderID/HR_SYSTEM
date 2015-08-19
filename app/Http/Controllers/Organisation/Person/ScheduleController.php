@@ -219,7 +219,7 @@ class ScheduleController extends BaseController
 			}
 		}
 
-		if(!$errors->count() && isset($ended) && $ended->format('Y-m-d') <= $maxend->format('Y-m-d') && !in_array(strtoupper($attributes['onend']), ['CB', 'CN', 'CI']))
+		if(!$errors->count() && isset($ended) && $ended->format('Y-m-d') <= $maxend->format('Y-m-d') && !in_array(strtoupper($attributes['status']), ['CB', 'CN', 'CI']))
 		{
 			$interval 								= DateInterval::createFromDateString('1 day');
 			$periods 								= new DatePeriod($begin, $interval, $ended);
