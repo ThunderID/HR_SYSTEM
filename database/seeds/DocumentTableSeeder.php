@@ -269,45 +269,49 @@ class DocumentTableSeeder extends Seeder
 															'text',
 														], 
 													];
-		$organisation 								= Organisation::find(1);
+		$orgs 											= Organisation::count();
 		try
 		{
-			foreach(range(0, count($name)-1) as $index)
+			foreach(range(0, count($orgs)-1) as $org)
 			{
-				if($index<4)
+				$organisation 							= Organisation::find($org->id)
+				foreach(range(0, count($name)-1) as $index)
 				{
-					$required 						= true;
-				}
-				else
-				{
-					$required 						= false;
-				}
-				$data = new Document;
-				$data->fill([
-					'name'							=> $name[$index],
-					'tag'							=> $tag[$index],
-					'is_required'					=> $required,
-				]);
-				$data->organisation()->associate($organisation);
-
-				if (!$data->save())
-				{
-					print_r($data->getError());
-					exit;
-				}
-
-				foreach ($template[$index] as $key => $value) 
-				{
-					$doc_template[$key] 			= new Template;
-					$doc_template[$key]->fill([
-						'field'						=> $value,
-						'type'						=> $type[$index][$key],
+					if($index<4)
+					{
+						$required 						= true;
+					}
+					else
+					{
+						$required 						= false;
+					}
+					$data = new Document;
+					$data->fill([
+						'name'							=> $name[$index],
+						'tag'							=> $tag[$index],
+						'is_required'					=> $required,
 					]);
+					$data->organisation()->associate($organisation);
+
+					if (!$data->save())
+					{
+						print_r($data->getError());
+						exit;
+					}
+
+					foreach ($template[$index] as $key => $value) 
+					{
+						$doc_template[$key] 			= new Template;
+						$doc_template[$key]->fill([
+							'field'						=> $value,
+							'type'						=> $type[$index][$key],
+						]);
 
 
+					}
+					$data->templates()->saveMany($doc_template);
+					unset($doc_template);
 				}
-				$data->templates()->saveMany($doc_template);
-				unset($doc_template);
 			}
 		}
 		catch (Exception $e) 
