@@ -1536,23 +1536,26 @@ class PersonController extends BaseController
 				$pwleave[$i]['quota'] 					= 0 - $leave;
 				$pwleave[$i]['status'] 					= 'CN';
 
-				$content 							= $this->dispatch(new Saving(new PersonWorkleave, $pwleave[$i], null, new Person, $is_success->id));
-
-				$is_pwleave_success 					= json_decode($content);
-				if(!$is_pwleave_success->meta->success)
+				if($leave>0)
 				{
-					foreach ($is_pwleave_success->meta->errors as $key => $value) 
+					$content 							= $this->dispatch(new Saving(new PersonWorkleave, $pwleave[$i], null, new Person, $is_success->id));
+
+					$is_pwleave_success 				= json_decode($content);
+					if(!$is_pwleave_success->meta->success)
 					{
-						if(is_array($value))
+						foreach ($is_pwleave_success->meta->errors as $key => $value) 
 						{
-							foreach ($value as $key2 => $value2) 
+							if(is_array($value))
 							{
-								$errors->add('Person', $value2);
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
 							}
-						}
-						else
-						{
-							$errors->add('Person', $value);
+							else
+							{
+								$errors->add('Person', $value);
+							}
 						}
 					}
 				}
