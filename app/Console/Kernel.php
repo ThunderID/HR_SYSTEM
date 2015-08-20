@@ -13,6 +13,7 @@ class Kernel extends ConsoleKernel {
 	protected $commands = [
 		'App\Console\Commands\Inspire',
 		'App\Console\Commands\LogAbsenceCommand',
+		'App\Console\Commands\FirstLockCommand',
 		'App\Console\Commands\HRSUpdateCommand',
 		'App\Console\Commands\HRQueueCommand',
 		'App\Console\Commands\ScheduleBatchCommand',
@@ -31,6 +32,8 @@ class Kernel extends ConsoleKernel {
 	{
 		$schedule->command('hr:absence LogAbsenceCommand')
 				 ->weekly();
+		$schedule->command('hr:firstlock FirstLockCommand')
+				 ->monthly();
 	}
 
 }

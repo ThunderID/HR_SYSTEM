@@ -46,6 +46,7 @@ class LogAbsenceCommand extends Command {
 	{
 		//
 		$result 		= $this->generatelog();
+		
 		return true;
 	}
 

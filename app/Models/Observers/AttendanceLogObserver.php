@@ -86,16 +86,7 @@ class AttendanceLogObserver
 	public function saved($model)
 	{
 		$on 									= date('Y-m-d', strtotime($model->processlog->on));
-		if(!is_null($model->settlement_at))
-		{
-			$errors 							= new MessageBag;
-			$errors->add('settle', 'Tidak dapat mengubah status yang sudah settle');
-
-			$model['errors'] 					= $validator->errors();
-			
-			return false;
-		}
-		elseif(strtoupper($model->actual_status)=='AS' && (in_array(strtoupper($model->modified_status), ['CN','CI','CB'])))
+		if(strtoupper($model->actual_status)=='AS' && (in_array(strtoupper($model->modified_status), ['CN','CI','CB'])))
 		{
 			//check if pw on that day were provided
 			$pwM 								= PersonWorkleave::personid($model->processlog->person_id)->ondate([$on, $on])->status(strtoupper($model->modified_status))->quota(false)->first();

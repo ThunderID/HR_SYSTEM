@@ -33,4 +33,9 @@ trait HasWorkTrait {
 
 		return $query->where('work_id', $variable);
 	}
+
+	public function scopeWorkOrganisationID($query, $variable)
+	{
+		return $query->WhereHas('work.chart.branch', function($q)use($variable){$q->organisationid($variable);});
+	}
 }

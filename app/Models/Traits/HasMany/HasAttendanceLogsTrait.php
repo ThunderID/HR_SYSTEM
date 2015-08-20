@@ -32,4 +32,10 @@ trait HasAttendanceLogsTrait {
 		return $query->whereHas('attendancelogs', function($q)use($variable){$q;})
 					->with(['attendancelogs' => function($q)use($variable){$q->orderBy('updated_at', 'desc');}]);
 	}
+
+	public function ScopeUnsettleAttendanceLog($query, $variable)
+	{
+		return $query->whereHas('attendancelogs', function($q)use($variable){$q->wherenull('settlement_at');})
+					->with(['attendancelogs' => function($q)use($variable){$q->wherenull('settlement_at')->orderBy('updated_at', 'desc');}]);
+	}
 }

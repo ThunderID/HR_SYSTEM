@@ -55,6 +55,7 @@ class Policy extends BaseModel {
 											'organisationid' 			=> 'OrganisationID', 
 
 											'ondate' 					=> 'OnDate', 
+											'type' 						=> 'Type', 
 
 											'withattributes' 			=> 'WithAttributes'
 										];
@@ -64,6 +65,7 @@ class Policy extends BaseModel {
 											'organisationid' 			=> 'Could be array or integer', 
 
 											'ondate' 					=> 'Could be array or string (date)', 
+											'type' 						=> 'Must be string', 
 
 											'withattributes' 			=> 'Must be array of relationship'
 										];
