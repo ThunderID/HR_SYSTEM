@@ -2,10 +2,10 @@
 
 @if (!$widget_error_count)
 	@section('widget_title')
-	<h1> {{ is_null($id) ? 'Tambah Data Karyawan' : 'Ubah Data Karyawan "'. $PersonComposer['widget_data']['personlist']['person']['name'].'"'}} </h1> 
-		
-	<div class="text-right">
-	<a href="{{ route('hr.persons.create', ['org_id' => $data['id'], 'import' => 'yes']) }}" class="btn btn-primary text-right">Import CSV</a>	</div>
+		<h1> Tambah Data Karyawan</h1> 
+			
+		<div class="text-right">
+		<a href="{{ route('hr.persons.create', ['org_id' => $data['id'], 'import' => 'yes']) }}" class="btn btn-primary text-right">Import CSV</a>	</div>
 	@overwrite
 
 	@section('widget_body')
@@ -20,8 +20,7 @@
 			  <!-- Tab panes -->
 			<div class="tab-content">
 			    <div role="tabpanel" class="tab-pane active setup-content" id="step-1">
-			    	@include('widgets.organisation.person.form_no_title', [
-			    		'widget_template'		=> 'plain_no_title',
+			    	@include('widgets.organisation.person.form_no_title', [			    		
 			    		'widget_options'		=> 	[
 			    										'personlist'			=>
 			    										[
@@ -31,16 +30,14 @@
 			    											'sort'				=> [],
 			    											'new'				=> (is_null($id) ? true : false),
 			    											'page'				=> 1,
-			    											'per_page'			=> 1
+			    											'per_page'			=> 1,
+			    											'route_back'		=> $PersonComposer['widget_data']['personlist']['route_back']
 			    										]
 			    									]
 			    	])
-			    	<button class="btn btn-primary nextBtn pull-right" type="button" >Lanjut</button>
-			    	<a href="{{ $PersonComposer['widget_data']['personlist']['route_back'] }}" class="btn btn-default pull-right mr-10">Batal</a>
 			    </div>
 			    <div role="tabpanel" class="tab-pane setup-content" id="step-2">
-			    	@include('widgets.common.contact.form_no_title', [
-			    		'widget_template'	=> 'plain_no_title',
+			    	@include('widgets.common.contact.form_no_title', [			    		
 			    		'widget_options'	=> 	[
 			    									'contactlist'			=>
 			    									[
@@ -55,28 +52,23 @@
 			    									]
 			    								]
 			    	])
-			    	<button class="btn btn-primary nextBtn pull-right" type="button" >Lanjut</button>
-			    	<button class="btn btn-primary prevBtn pull-right mr-10" type="button" >Kembali</button>
 			    </div>
 
 			    <div role="tabpanel" class="tab-pane setup-content" id="step-3">
-			    	@include('widgets.common.persondocument.form_no_title', [
-			    		'widget_template'	=> 'plain_no_title',
+			    	@include('widgets.common.persondocument.form_no_title', [			    		
 			    		'widget_options'	=> 	[
 			    									'documentlist'			=>
 													[
 														'form_url'			=> route('hr.person.documents.store', ['id' => $id, 'doc_id' => Input::get('doc_id'), 'org_id' => $data['id']]),
-														'search'			=> ['id' => ['6', '7'] , 'withattributes' => ['templates']],
+														'search'			=> ['id' => ['1', '3', '4', '5'] , 'withattributes' => ['templates']],
 														'organisation_id'	=> $data['id'],
 														'sort'				=> [],
 														'new'				=> true,
 														'page'				=> 1,
-														'per_page'			=> 2
+														'per_page'			=> 10
 													]
 			    								]
 			    	])
-					<input type="submit" class="btn btn-primary pull-right" value="Simpan">
-					<button class="btn btn-primary prevBtn pull-right mr-10" type="button">Kembali</button>
 			    </div>
 			</div>
 		{!! Form::close() !!}

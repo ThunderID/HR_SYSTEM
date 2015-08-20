@@ -57,7 +57,7 @@
 											]
 			])
 		@else
-			@include('widgets.organisation.person.form', [
+			@include('widgets.organisation.person.form_multiple', [
 				'widget_template'		=> 'panel',
 				'widget_options'		=> 	[
 												'personlist'			=>

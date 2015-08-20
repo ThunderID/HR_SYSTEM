@@ -29,6 +29,7 @@
 		allNextBtn.click(function(){
 			var curStep = $(this).closest(".setup-content"),
 			  curStepBtn = curStep.attr("id"),
+			  nowStepWizard = $('ul.setup-panel li a[href="#' + curStepBtn + '"]').parent(),
 			  nextStepWizard = $('ul.setup-panel li a[href="#' + curStepBtn + '"]').parent().next().children("a"),
 			  curInputs = curStep.find("input[type='text']");
 			  isValid = true;
@@ -43,16 +44,21 @@
 
 			if (isValid)
 			nextStepWizard.removeAttr('disabled').trigger('click');
+			nowStepWizard.removeClass('active').addClass('disabled');
+			nextStepWizard.parent().addClass('active').removeClass('disabled');
 		});
 
 		allPrevBtn.click(function(){
 		    var curStep = $(this).closest(".setup-content"),
 		  	  curStepBtn = curStep.attr("id"),
-		  	  nextStepWizard = $('ul.setup-panel li a[href="#' + curStepBtn + '"]').parent().prev().children("a"),
+		  	  nowStepWizard = $('ul.setup-panel li a[href="#' + curStepBtn + '"]').parent(),
+		  	  prevStepWizard = $('ul.setup-panel li a[href="#' + curStepBtn + '"]').parent().prev().children("a"),
 		  	  isValid = true;
 
 		  	if (isValid)
-		  		nextStepWizard.removeAttr('disabled').trigger('click');
+		  		prevStepWizard.removeAttr('disabled').trigger('click');
+			  	nowStepWizard.removeClass('active').addClass('disabled');
+				prevStepWizard.parent().addClass('active').removeClass('disabled');
 		});
 
 	  $('ul.setup-panel li a').trigger('click');
