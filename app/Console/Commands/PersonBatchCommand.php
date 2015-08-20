@@ -27,7 +27,7 @@ use App\Models\FollowWorkleave;
 use App\Models\PersonWorkleave;
 use App\Models\PersonSchedule;
 
-use DB;
+use DB, Hash;
 
 class PersonBatchCommand extends Command {
 
@@ -152,7 +152,9 @@ class PersonBatchCommand extends Command {
 					$attributes[$i]['name']				= $row['namalengkap'];
 					$attributes[$i]['suffix_title']		= (!is_null($row['suffixtitle']) ? $row['suffixtitle'] : '');
 					$attributes[$i]['username']			= str_replace(' ', '', strtolower($attributes[$i]['name'])).'.'.$row['kodeorganisasi'];
+					$attributes[$i]['password']			= Hash::make($row['nik']);
 					$attributes[$i]['place_of_birth']	= $row['tempatlahir'];
+					$attributes[$i]['last_password_updated_at'] = date('Y-m-d H:i:s', strtotime('- 3 month'));
 
 					list($d, $m, $y) 					= explode("/", $row['tanggallahir']);
 					$attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime("$y-$m-$d"));
