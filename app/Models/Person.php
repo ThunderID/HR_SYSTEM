@@ -160,6 +160,7 @@ class Person extends BaseModel {
 											'globalactivity'	 			=> 'GlobalActivity',
 											'globalwage'	 				=> 'GlobalWage',
 											'globalworkleave'	 			=> 'GlobalWorkleave',
+											'globalsanction'	 			=> 'GlobalSanction',
 											
 											'processlogsondate'	 			=> 'ProcessLogsOndate',
 											'logsondate'	 				=> 'LogsOndate',
@@ -184,6 +185,7 @@ class Person extends BaseModel {
 											'globalwage'	 				=> 'Must be array of string and or case and or sort',
 											'globalactivity'	 			=> 'Must be array of string and or case and or sort',
 											'globalworkleave'	 			=> 'Must be array of string and or case and or sort',
+											'globalsanction'	 			=> 'Must be array of string and or case',
 											
 											'withattributes' 				=> 'Must be array of relationship',
 											
@@ -876,4 +878,57 @@ class Person extends BaseModel {
 					->where('created_at', '<=', $variable[1]);
 	}
 
+	public function scopeGlobalSanction($query, $variable)
+	{
+		if(isset($variable['on']) && is_array($variable['on']))
+		{
+			if(!is_null($variable['on'][1]))
+			{
+				$start 	= date('Y-m-d', strtotime($variable['on'][0]));
+				$end 	= date('Y-m-d', strtotime($variable['on'][1]));
+			}
+			elseif(!is_null($variable['on'][0]))
+			{
+				$start 	= date('Y-m-d', strtotime($variable['on'][0]));
+				$end 	= date('Y-m-d', strtotime($variable['on'][1]));
+			}
+			else
+			{
+				$start 	=   date('Y-m-d');
+				$end 	=   date('Y-m-d');
+			}
+		}
+		elseif(isset($variable['on']))
+		{
+			$start 	= date('Y-m-d', strtotime($variable['on']));
+			$end 	= date('Y-m-d', strtotime($variable['on']));
+		}
+		else
+		{
+			$start 	=   date('Y-m-d');
+			$end 	=   date('Y-m-d');
+		}
+
+		$query =  $query->selectraw('persons.*')
+					->wheredoesnthave('processlogs.attendancelogs.attendancedetails', function($q){$q;})
+					->wherehas('processlogs.attendancelogs', function($q){$q->wherenotin('actual_status', ['HB', 'L'])->wherenotin('modified_status', ['HD', 'SS', 'SL', 'CN', 'CB', 'CI', 'DN', 'L']);})
+					->join('process_logs', function ($join) use($start, $end) {
+							$join->on('persons.id', '=', 'process_logs.person_id')
+								->where('process_logs.on', '>=', $start)
+								->where('process_logs.on', '<=', $end)
+								->wherenull('process_logs.deleted_at')
+							;
+						})
+					->selectraw('sum((SELECT if(actual_status="HC",if(modified_status="HT", 1, 0),0) FROM attendance_logs left join attendance_details on attendance_logs.id = attendance_details.attendance_log_id WHERE attendance_logs.process_log_id = process_logs.id  and attendance_logs.deleted_at is null and attendance_details.deleted_at is null and actual_status <> "L" and attendance_details.attendance_log_id is null order by attendance_logs.updated_at desc limit 1)) as HT')
+					->selectraw('sum((SELECT if(actual_status="HC",if(modified_status="HP", 1, 0),0) FROM attendance_logs left join attendance_details on attendance_logs.id = attendance_details.attendance_log_id WHERE attendance_logs.process_log_id = process_logs.id  and attendance_logs.deleted_at is null and attendance_details.deleted_at is null and actual_status <> "L" and attendance_details.attendance_log_id is null order by attendance_logs.updated_at desc limit 1)) as HP')
+					->selectraw('sum((SELECT if(actual_status="HC",if(modified_status="HC", 1, if(modified_status="", 1, 0)),0) FROM attendance_logs left join attendance_details on attendance_logs.id = attendance_details.attendance_log_id WHERE attendance_logs.process_log_id = process_logs.id  and attendance_logs.deleted_at is null and attendance_details.deleted_at is null and actual_status <> "L" AND attendance_details.attendance_log_id is null order by attendance_logs.updated_at desc limit 1)) as HC')
+					->selectraw('sum((SELECT if(actual_status="AS",if(modified_status="UL", 1, 0),0) FROM attendance_logs left join attendance_details on attendance_logs.id = attendance_details.attendance_log_id WHERE attendance_logs.process_log_id = process_logs.id  and attendance_logs.deleted_at is null and attendance_details.deleted_at is null and actual_status <> "L" and attendance_details.attendance_log_id is null order by attendance_logs.updated_at desc limit 1)) as UL')
+					->selectraw('sum((SELECT if(actual_status="AS",if(modified_status="AS", 1, if(modified_status="", 1, 0)),0) FROM attendance_logs left join attendance_details on attendance_logs.id = attendance_details.attendance_log_id WHERE attendance_logs.process_log_id = process_logs.id  and attendance_logs.deleted_at is null and attendance_details.deleted_at is null and actual_status <> "L" AND attendance_details.attendance_log_id is null order by attendance_logs.updated_at desc limit 1)) as `AS`')
+					->selectraw('count((SELECT attendance_details.attendance_log_id FROM attendance_logs join attendance_details on attendance_logs.id = attendance_details.attendance_log_id WHERE attendance_logs.process_log_id = process_logs.id  and attendance_logs.deleted_at is null and attendance_details.deleted_at is null and actual_status <> "L" AND attendance_details.attendance_log_id is null and attendance_details.person_workleave_id <> 0 order by attendance_logs.updated_at desc limit 1)) as lastwl')
+					->selectraw('count((SELECT attendance_details.attendance_log_id FROM attendance_logs join attendance_details on attendance_logs.id = attendance_details.attendance_log_id WHERE attendance_logs.process_log_id = process_logs.id  and attendance_logs.deleted_at is null and attendance_details.deleted_at is null and actual_status <> "L" AND attendance_details.attendance_log_id is null and attendance_details.person_document_id <> 0 order by attendance_logs.updated_at desc limit 1)) as lastdoc')
+					;
+
+		return $query->groupBy('persons.id')
+					;
+	}
 }

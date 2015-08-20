@@ -113,13 +113,13 @@ class LogAbsenceCommand extends Command {
 				unset($search);
 				unset($sort);
 
-				$search['organisationid']		= $value['id']);
+				$search['organisationid']		= $value['id'];
 				$search['fullschedule']			= date('Y-m-d', strtotime($settlementdate['value']));
 				$sort 							= ['created_at' => 'desc'];
 				$results 						= $this->dispatch(new Getting(new Person, $search, $sort ,1, 100));
 				$contents 						= json_decode($results);
 
-				if($contents->meta->success))
+				if($contents->meta->success)
 				{
 					$persons 						= json_decode(json_encode($contents->data));
 

@@ -40,6 +40,7 @@ class AttendanceLog extends BaseModel {
 	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasProcessLogTrait;
 	use \App\Models\Traits\BelongsTo\HasPersonTrait;
+	use \App\Models\Traits\HasMany\HasAttendanceDetailsTrait;
 
 	public 		$timestamps 		= true;
 
@@ -146,5 +147,63 @@ class AttendanceLog extends BaseModel {
 	public function scopeActualStatus($query, $variable)
 	{
 		return $query->where('actual_status', $variable);
+	}
+
+	public function scopeGlobalSanction($query, $variable)
+	{
+		if(isset($variable['on']) && is_array($variable['on']))
+		{
+			if(!is_null($variable['on'][1]))
+			{
+				$start 	= date('Y-m-d', strtotime($variable['on'][0]));
+				$end 	= date('Y-m-d', strtotime($variable['on'][1]));
+			}
+			elseif(!is_null($variable['on'][0]))
+			{
+				$start 	= date('Y-m-d', strtotime($variable['on'][0]));
+				$end 	= date('Y-m-d', strtotime($variable['on'][1]));
+			}
+			else
+			{
+				$start 	=   date('Y-m-d');
+				$end 	=   date('Y-m-d');
+			}
+		}
+		elseif(isset($variable['on']))
+		{
+			$start 	= date('Y-m-d', strtotime($variable['on']));
+			$end 	= date('Y-m-d', strtotime($variable['on']));
+		}
+		else
+		{
+			$start 	=   date('Y-m-d');
+			$end 	=   date('Y-m-d');
+		}
+
+		if(isset($variable['personid']))
+		{
+			$personid 			= $variable['personid'];
+		}
+		else
+		{
+			$personid 			= null;
+		}
+
+		$query =  $query->selectraw('attendance_logs.*')
+					->wherenotin('actual_status', ['HB', 'L'])->wherenotin('modified_status', ['HD', 'SS', 'SL', 'CN', 'CB', 'CI', 'DN', 'L'])
+					->wheredoesnthave('attendancedetails', function($q){$q;})
+					->join('process_logs', function ($join) use($start, $end, $personid) {
+							$join->on('attendance_logs.process_log_id', '=', 'process_logs.id')
+								->where('process_logs.on', '>=', $start)
+								->where('process_logs.on', '<=', $end)
+								->where('process_logs.person_id', '=', $personid)
+								->wherenull('process_logs.deleted_at')
+							;
+						})
+					->orderBy('updated_at', 'desc')
+					;
+
+		return $query->groupBy('attendance_logs.process_log_id')
+					;
 	}
 }

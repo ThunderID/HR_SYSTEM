@@ -14,12 +14,14 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\Inspire',
 		'App\Console\Commands\LogAbsenceCommand',
 		'App\Console\Commands\FirstLockCommand',
-		'App\Console\Commands\HRSUpdateCommand',
+		'App\Console\Commands\SanctionCommand',
 		'App\Console\Commands\HRQueueCommand',
 		'App\Console\Commands\ScheduleBatchCommand',
 		'App\Console\Commands\PersonScheduleBatchCommand',
 		'App\Console\Commands\PersonWorkleaveBatchCommand',
 		'App\Console\Commands\PersonBatchCommand',
+
+		'App\Console\Commands\HRSUpdateCommand',
 	];
 
 	/**
@@ -31,9 +33,13 @@ class Kernel extends ConsoleKernel {
 	protected function schedule(Schedule $schedule)
 	{
 		$schedule->command('hr:absence LogAbsenceCommand')
-				 ->weekly();
+				 ->daily();
 		$schedule->command('hr:firstlock FirstLockCommand')
 				 ->monthly();
+		$schedule->command('hr:firstlock SanctionCommand')
+				 ->daily();
+		$schedule->command('hr:queue HRQueueCommand')
+				 ->everyFiveMinutes();
 	}
 
 }
