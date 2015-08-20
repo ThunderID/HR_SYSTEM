@@ -105,7 +105,7 @@ class Person extends BaseModel {
 											'date_of_birth' 				=> 'required|date_format:"Y-m-d"|before:tomorrow',
 											'gender' 						=> 'required|in:female,male',
 											'password'						=> 'max:255',
-											'last_password_updated_at'		=> 'date_format:"Y-m-d H:i:s"|before:tomorrow',
+											'last_password_updated_at'		=> 'date_format:"Y-m-d"|before:tomorrow',
 										];
 
 	public $searchable 				= 	[
@@ -114,6 +114,7 @@ class Person extends BaseModel {
 											'organisationid' 				=> 'OrganisationID', 
 											
 											'name' 							=> 'Name', 
+											'uniqid' 						=> 'Uniqid', 
 											'username' 						=> 'Username', 
 											'prefixtitle' 					=> 'PrefixTitle', 
 											'suffixtitle' 					=> 'SuffixTitle', 
@@ -172,6 +173,7 @@ class Person extends BaseModel {
 											'organisationid' 				=> 'Could be array or integer', 
 											
 											'name' 							=> 'Must be string', 
+											'uniqid' 						=> 'Must be string', 
 											'username' 						=> 'Must be string', 
 											'prefixtitle' 					=> 'Must be string', 
 											'suffixtitle' 					=> 'Must be string', 
@@ -341,6 +343,11 @@ class Person extends BaseModel {
 		return $query->where('persons.id', $variable);
 	}
 	
+	public function scopeUniqid($query, $variable)
+	{
+		return $query->where('uniqid', $variable);
+	}
+
 	public function scopeUsername($query, $variable)
 	{
 		return $query->where('username', $variable);

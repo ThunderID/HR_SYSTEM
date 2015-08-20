@@ -436,7 +436,7 @@ class WorkleaveController extends BaseController
 			$queattr['process_name'] 				= 'hr:personworkleavebatch';
 			$queattr['parameter'] 					= json_encode($attributes);
 			$queattr['total_process'] 				= 1;
-			$queattr['task_per_process']			= 10;
+			$queattr['task_per_process']			= 1;
 			$queattr['process_number'] 				= 0;
 			$queattr['total_task'] 					= 1;
 			$queattr['message'] 					= 'Initial Queue';

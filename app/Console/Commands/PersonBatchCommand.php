@@ -27,7 +27,7 @@ use App\Models\FollowWorkleave;
 use App\Models\PersonWorkleave;
 use App\Models\PersonSchedule;
 
-use DB;
+use DB, Hash;
 
 class PersonBatchCommand extends Command {
 
@@ -137,53 +137,70 @@ class PersonBatchCommand extends Command {
 					$prev_org_code 					= $row['kodeorganisasi'];
 				}
 
-				$attributes[$i]['uniqid']			= $row['nik'];
-				$attributes[$i]['prefix_title']		= (!is_null($row['prefixtitle']) ? $row['prefixtitle'] : '');
-				$attributes[$i]['name']				= $row['namalengkap'];
-				$attributes[$i]['suffix_title']		= (!is_null($row['suffixtitle']) ? $row['suffixtitle'] : '');
-				$attributes[$i]['username']			= str_replace(' ', '', strtolower($attributes[$i]['name'])).'.'.$row['kodeorganisasi'];
-				$attributes[$i]['place_of_birth']	= $row['tempatlahir'];
+				unset($search);
+				unset($sort);
 
-				list($d, $m, $y) 					= explode("/", $row['tanggallahir']);
-				$attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime("$y-$m-$d"));
+				$search['uniqid']						= $row['nik'];
+				$sort 									= ['created_at' => 'asc'];
+				$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
+				$contents 								= json_decode($results);		
 
-				$attributes[$i]['gender']			= $row['gender']=='L' ? 'male' : 'female';
-				$attributes[$i]['org_id']			= $org_id_code;
-
-				$content 							= $this->dispatch(new Saving(new Person, $attributes[$i], null, new Organisation, $org_id_code));
-
-				$is_success 						= json_decode($content);
-				if(!$is_success->meta->success)
+				if(!$contents->meta->success)
 				{
-					foreach ($is_success->meta->errors as $key => $value) 
+					$attributes[$i]['uniqid']			= $row['nik'];
+					$attributes[$i]['prefix_title']		= (!is_null($row['prefixtitle']) ? $row['prefixtitle'] : '');
+					$attributes[$i]['name']				= $row['namalengkap'];
+					$attributes[$i]['suffix_title']		= (!is_null($row['suffixtitle']) ? $row['suffixtitle'] : '');
+					$attributes[$i]['username']			= str_replace(' ', '', strtolower($attributes[$i]['name'])).'.'.$row['kodeorganisasi'];
+					$attributes[$i]['password']			= Hash::make($row['nik']);
+					$attributes[$i]['place_of_birth']	= $row['tempatlahir'];
+					$attributes[$i]['last_password_updated_at'] = date('Y-m-d H:i:s', strtotime('- 3 month'));
+
+					list($d, $m, $y) 					= explode("/", $row['tanggallahir']);
+					$attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime("$y-$m-$d"));
+
+					$attributes[$i]['gender']			= $row['gender']=='L' ? 'male' : 'female';
+					$attributes[$i]['org_id']			= $org_id_code;
+
+					$content 							= $this->dispatch(new Saving(new Person, $attributes[$i], null, new Organisation, $org_id_code));
+
+					$is_success 						= json_decode($content);
+					if(!$is_success->meta->success)
 					{
-						if(is_array($value))
+						foreach ($is_success->meta->errors as $key => $value) 
 						{
-							foreach ($value as $key2 => $value2) 
+							if(is_array($value))
 							{
-								$errors->add('Person', $value2);
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Person', $value);
 							}
 						}
-						else
-						{
-							$errors->add('Person', $value);
-						}
+					}
+					else
+					{
+						
+						$is_success 					= $is_success->data;
+						
+						$morphed 						= new QueueMorph;
+
+						$morphed->fill([
+							'queue_id'					=> $pending->id,
+							'queue_morph_id'			=> $is_success->id,
+							'queue_morph_type'			=> get_class(new Person),
+						]);
+
+						$morphed->save();
 					}
 				}
 				else
 				{
-					
-					$is_success 					= $is_success->data;
-					
-					$morphed 						= new QueueMorph;
-
-					$morphed->fill([
-						'queue_id'					=> $pending->id,
-						'queue_morph_id'			=> $is_success->id,
-						'queue_morph_type'			=> get_class(new Person),
-					]);
-
-					$morphed->save();
+					$is_success 						= $contents->data;
 				}
 
 				//save contact
@@ -1486,7 +1503,7 @@ class PersonBatchCommand extends Command {
 		}
 		else
 		{
-			$pending->fill(['process_number' => ($pending->total_task), 'message' => 'Success']);
+			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Success']);
 		}
 
 		$pending->save();

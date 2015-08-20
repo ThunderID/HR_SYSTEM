@@ -380,7 +380,7 @@ class ScheduleController extends BaseController
 					}
 					
 					$queattr['parameter'] 			= json_encode($attributes);
-					$queattr['task_per_process']	= 10;
+					$queattr['task_per_process']	= 1;
 					$queattr['process_number'] 		= 0;
 					$queattr['message'] 			= 'Initial Queue';
 
@@ -389,7 +389,7 @@ class ScheduleController extends BaseController
 						$attributes['associate_calendar_id'] 	= $value['id'];
 
 						$queattr['total_process'] 	= count($value['works']);
-						$queattr['total_task'] 		= ceil(count($value['works'])/10);
+						$queattr['total_task'] 		= count($value['works']);
 
 						$content 					= $this->dispatch(new Saving(new Queue, $queattr, null));
 						$is_success_2 				= json_decode($content);
@@ -430,9 +430,9 @@ class ScheduleController extends BaseController
 					$queattr['created_by'] 		= Session::get('loggedUser');
 					$queattr['parameter'] 		= json_encode($attributes);
 					$queattr['total_process'] 	= count($calendar['works']);
-					$queattr['task_per_process']= 10;
+					$queattr['task_per_process']= 1;
 					$queattr['process_number'] 	= 0;
-					$queattr['total_task'] 		= ceil(count($calendar['works'])/10);
+					$queattr['total_task'] 		= count($calendar['works']);
 					$queattr['message'] 		= 'Initial Queue';
 
 					$content 					= $this->dispatch(new Saving(new Queue, $queattr, null));
@@ -569,15 +569,51 @@ class ScheduleController extends BaseController
 		}
 	}
 
-	public function batch_schedule()
+	public function batchprogress()
 	{
-		$queattr['createdbyid'] 		= Session::get('loggedUser');
-		$queattr['running'] 			= null;
+		$progress 						= [];
+		$progress2 						= [];
+		$search['createdbyid'] 			= Session::get('loggedUser');
+		$search['running'] 				= null;
+		$search['processname'] 			= 'hr:schedulebatch';
 
-		$results 						= $this->dispatch(new Getting(new Queue, $queattr, ['created_at' => 'asc'], 1, 1));		
-		$success 	 					= json_decode($results);
+		$results 						= $this->dispatch(new Getting(new Queue, $search, ['created_at' => 'asc'], 1, 100));		
+		$contents 	 					= json_decode($results);
 
-		Return Response::json(['data' => $success], 200);
+		if (!$contents->meta->success)
+		{
+			return Response::json(['message' => $contents->meta->errors], 200);
+		}
+
+		foreach ($contents->data as $key => $value) 
+		{
+			$progress[$value->id]		= $value->process_number;
+		}
+
+
+		sleep(60);
+		
+		$results 						= $this->dispatch(new Getting(new Queue, $search, ['created_at' => 'asc'], 1, 100));		
+		$contents 	 					= json_decode($results);
+
+		if (!$contents->meta->success)
+		{
+			return Response::json(['message' => $contents->meta->errors], 200);
+		}
+
+		foreach ($contents->data as $key => $value) 
+		{
+			if(isset($progress[$value->id]) && $progress[$value->id]==$value->process_number)
+			{
+				$progress2[]			= 'Operasi berhenti pada '.$value->process_number.' / '.$value->total_process;
+			}
+			else
+			{
+				$progress2[]			= $value->message.' '.(($value->process_number/$value->total_process)*100);
+			}
+		}
+
+		return Response::json(['message' => $progress2], 200);
 
 	}
 }

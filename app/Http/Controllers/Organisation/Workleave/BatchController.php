@@ -146,9 +146,9 @@ class BatchController extends BaseController
 		$queattr['process_option'] 				= 'personsgiven';
 		$queattr['parameter'] 					= json_encode($attributes);
 		$queattr['total_process'] 				= count($works);
-		$queattr['task_per_process']			= 10;
+		$queattr['task_per_process']			= 1;
 		$queattr['process_number'] 				= 0;
-		$queattr['total_task'] 					= count($works)/10;
+		$queattr['total_task'] 					= count($works);
 		$queattr['message'] 					= 'Initial Queue';
 
 		$content 								= $this->dispatch(new Saving(new Queue, $queattr, null));

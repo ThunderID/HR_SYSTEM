@@ -138,7 +138,7 @@ class Queue extends BaseModel {
 
 	public function scopeRunning($query, $variable)
 	{
-		return $query->whereRaw('`process_number` < `total_task`');
+		return $query->whereRaw('`process_number` < `total_process`');
 	}
 
 	public function scopeCreatedByID($query, $variable)
