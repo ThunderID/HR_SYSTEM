@@ -195,29 +195,7 @@ class ScheduleController extends BaseController
 			$errors->add('Person', 'Tanggal akhir harus lebih besar dari tanggal mulai. Gunakan single date untuk tanggal manual');
 		}
 
-		if((int)Session::Get('user.menuid')==2)
-		{
-			$dateline 						= date('Y-m-d', strtotime($begin->format('Y-m-d'). ' + 2 months'));
-
-			if($dateline < date('Y-m-d'))
-			{
-				$errors->add('ProcessLog', 'Batas Akhir Perubahan Status adalah 2 Bulan');
-				
-				return Redirect::back()->withErrors($errors)->withInput();
-			}
-		}
-
-		if((int)Session::Get('user.menuid')==3)
-		{
-			$dateline 						= date('Y-m-d', strtotime($begin->format('Y-m-d'). ' + 7 days'));
-
-			if($dateline < date('Y-m-d'))
-			{
-				$errors->add('ProcessLog', 'Batas Akhir Perubahan Status adalah 7 hari');
-				
-				return Redirect::back()->withErrors($errors)->withInput();
-			}
-		}
+		Session::put('duedate', $begin->format('Y-m-d'));
 
 		if(!$errors->count() && isset($ended) && $ended->format('Y-m-d') <= $maxend->format('Y-m-d') && !in_array(strtoupper($attributes['status']), ['CB', 'CN', 'CI']))
 		{
@@ -785,6 +763,8 @@ class ScheduleController extends BaseController
 			{
 				App::abort(404);
 			}
+
+			Session::put('duedate', date('Y-m-d', strtotime($contents->data->on)));
 
 			$results 						= $this->dispatch(new Deleting(new PersonSchedule, $id));
 			$contents 						= json_decode($results);

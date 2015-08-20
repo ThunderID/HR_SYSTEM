@@ -308,13 +308,13 @@ class WorkleaveController extends BaseController
 			$attributes['status']				= $contents_2->data->status;
 			$attributes['quota']				= $contents_2->data->quota;
 
-			$attributes['start'] 					= $begin->format('Y-m-d');
-			$attributes['end'] 						= $ended->format('Y-m-d');
+			$attributes['start'] 				= $begin->format('Y-m-d');
+			$attributes['end'] 					= $ended->format('Y-m-d');
 
 			DB::beginTransaction();
 
-			$content 								= $this->dispatch(new Saving(new PersonWorkleave, $attributes, $id, new Person, $person_id));
-			$is_success 							= json_decode($content);
+			$content 							= $this->dispatch(new Saving(new PersonWorkleave, $attributes, $id, new Person, $person_id));
+			$is_success 						= json_decode($content);
 			
 			if(!$is_success->meta->success)
 			{
@@ -382,29 +382,7 @@ class WorkleaveController extends BaseController
 				return Redirect::back()->withErrors($errors)->withInput();
 			}
 
-			if((int)Session::Get('user.menuid')==2)
-			{
-				$dateline 						= date('Y-m-d', strtotime(Input::get('start'). ' + 2 months'));
-
-				if($dateline < date('Y-m-d'))
-				{
-					$errors->add('ProcessLog', 'Batas Akhir Perubahan Status adalah 2 Bulan');
-					
-					return Redirect::back()->withErrors($errors)->withInput();
-				}
-			}
-
-			if((int)Session::Get('user.menuid')==3)
-			{
-				$dateline 						= date('Y-m-d', strtotime(Input::get('start'). ' + 7 days'));
-
-				if($dateline < date('Y-m-d'))
-				{
-					$errors->add('ProcessLog', 'Batas Akhir Perubahan Status adalah 7 hari');
-					
-					return Redirect::back()->withErrors($errors)->withInput();
-				}
-			}
+			Session::put('duedate', $begin->format('Y-m-d'));
 
 			unset($search);
 			unset($sort);
@@ -566,6 +544,8 @@ class WorkleaveController extends BaseController
 			{
 				App::abort(404);
 			}
+			
+			Session::put('duedate', date('Y-m-d', strtotime($contents->data->on)));
 
 			$results 						= $this->dispatch(new Deleting(new PersonWorkleave, $id));
 			$contents 						= json_decode($results);

@@ -328,10 +328,8 @@ class ScheduleController extends BaseController
 			$errors->add('Calendar', 'Tanggal akhir harus lebih besar dari tanggal mulai. Gunakan single date untuk tanggal manual');
 		}
 
-		if(isset($ended)  && $ended->format('Y-m-d') > $maxend->format('Y-m-d'))
-		{
-			$errors->add('Calendar', 'Maksimal range adalah satu minggu (7 Hari) ');
-		}
+		Session::put('duedate', $begin->format('Y-m-d'));
+
 
 		if(Input::has('affect'))
 		{
@@ -551,6 +549,8 @@ class ScheduleController extends BaseController
 			{
 				App::abort(404);
 			}
+			
+			Session::put('duedate', date('Y-m-d', strtotime($contents->data->on)));
 
 			$results 						= $this->dispatch(new Deleting(new Schedule, $id));
 			$contents 						= json_decode($results);

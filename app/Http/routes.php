@@ -203,17 +203,22 @@ Route::group(['middleware' => 'csrfverify'], function()
 
 			Route::resource('works',			'WorkController',									['names' => ['index' => 'hr.person.works.index', 'create' => 'hr.person.works.create', 'store' => 'hr.person.works.store', 'show' => 'hr.person.works.show', 'edit' => 'hr.person.works.edit', 'update' => 'hr.person.works.update', 'destroy' => 'hr.person.works.delete']]);
 
+
+		Route::group(['middleware' => 'interfere'], function()
+		{
+
 			// ------------------------------------------------------------------------------------
 			// SCHEDULES FOR PERSON RESOURCE
 			// ------------------------------------------------------------------------------------
-
 			Route::resource('schedules',		'ScheduleController',								['names' => ['index' => 'hr.person.schedules.index', 'create' => 'hr.person.schedules.create', 'store' => 'hr.person.schedules.store', 'show' => 'hr.person.schedules.show', 'edit' => 'hr.person.schedules.edit', 'update' => 'hr.person.schedules.update', 'destroy' => 'hr.person.schedules.delete']]);
-
+	
 			// ------------------------------------------------------------------------------------
 			// WORKLEAVES FOR PERSON RESOURCE
 			// ------------------------------------------------------------------------------------
 
 			Route::resource('workleaves',		'WorkleaveController',								['names' => ['index' => 'hr.person.workleaves.index', 'create' => 'hr.person.workleaves.create', 'store' => 'hr.person.workleaves.store', 'show' => 'hr.person.workleaves.show', 'edit' => 'hr.person.workleaves.edit', 'update' => 'hr.person.workleaves.update', 'destroy' => 'hr.person.workleaves.delete']]);
+		});
+
 
 			// ------------------------------------------------------------------------------------
 			// DOCUMENTS FOR PERSON RESOURCE
@@ -261,7 +266,7 @@ Route::group(['namespace' => 'Organisation\\'], function()
 	Route::any('documents-list', 				['uses' => 'DocumentController@ajax', 					'as' => 'hr.documents.list']);
 });
 
-Route::group(['namespace' => 'Organisation\\Calendar\\', 'prefix' => 'calendar'], function() 
+Route::group(['namespace' => 'Organisation\\Calendar\\', 'prefix' => 'calendar', 'middleware' => 'interfere'], function() 
 {
 	// ------------------------------------------------------------------------------------
 	// SCHEDULES FOR CALENDAR RESOURCE
@@ -377,8 +382,6 @@ Route::group(['namespace' => 'Tracker\\'], function()
 
 	Route::post('api/tracker/verse3/',			['uses' => 'TimeController@testv3',					'as' => 'hr.t3.post']);
 });
-
-
 
 Blade::extend(function ($value, $compiler)
 {
