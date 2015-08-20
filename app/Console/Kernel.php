@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected $commands = [
 		'App\Console\Commands\Inspire',
-		'App\Console\Commands\LogAbsence',
+		'App\Console\Commands\LogAbsenceCommand',
 		'App\Console\Commands\HRSUpdateCommand',
 		'App\Console\Commands\HRQueueCheckers',
 		'App\Console\Commands\ScheduleBatchCommand',
@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected function schedule(Schedule $schedule)
 	{
-		$schedule->command('hr:absence LogAbsence')
+		$schedule->command('hr:absence LogAbsenceCommand')
 				 ->weekly();
 
 	}

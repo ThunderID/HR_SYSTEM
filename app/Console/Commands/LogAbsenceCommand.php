@@ -8,7 +8,7 @@ use App\Models\Person;
 use App\Models\Log;
 use App\Models\ErrorLog;
 
-class LogAbsence extends Command {
+class LogAbsenceCommand extends Command {
 
 	use \Illuminate\Foundation\Bus\DispatchesCommands;
 	use \Illuminate\Foundation\Validation\ValidatesRequests;
@@ -83,7 +83,7 @@ class LogAbsence extends Command {
 	{
 		$per_page 							= 100;
 
-		$begin 								= new DateTime( '- 1 week' );
+		$begin 								= new DateTime( '- 8 days' );
 		$ended 								= new DateTime( 'today'  );
 
 		$interval 							= DateInterval::createFromDateString('1 day');
