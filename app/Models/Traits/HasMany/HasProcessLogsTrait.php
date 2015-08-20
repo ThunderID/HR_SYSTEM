@@ -27,4 +27,12 @@ trait HasProcessLogsTrait {
 	{
 		return $query->with(['processlogs' => function($q)use($variable){$q->ondate($variable['on'])->orderby('on', 'asc');}, 'processlogs.modifiedby']);
 	}
+
+	public function ScopeFullSchedule($query, $variable)
+	{
+		return $query
+					->wheredoesnthave('processlogs', function($q)use($variable){$q->ondate([$variable, $variable]);})
+					->chartnotadmin(true)
+					;
+	}
 }

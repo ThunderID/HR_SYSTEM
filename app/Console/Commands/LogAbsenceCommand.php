@@ -80,50 +80,67 @@ class LogAbsenceCommand extends Command {
 	 * @return void
 	 * @author 
 	 **/
-	public function generatelog($page = 1)
+	public function generatelog()
 	{
-		$per_page 							= 100;
+		$search						= [];
+		$sort						= [];
+		$results 					= $this->dispatch(new Getting(new Organisation, $search, $sort ,1, 100));
+		$contents 					= json_decode($results);
 
-		$begin 								= new DateTime( '- 8 days' );
-		$ended 								= new DateTime( 'today'  );
-
-		$interval 							= DateInterval::createFromDateString('1 day');
-		$periods 							= new DatePeriod($begin, $interval, $ended);
-		foreach ($periods as $key => $value) 
+		if(!$contents->meta->success)
 		{
-			$search['fullschedule']			= $value->format('Y-m-d');
-			$sort 							= ['created_at' => 'desc'];
-			$results 						= $this->dispatch(new Getting(new Person, $search, $sort ,(int)$page, (int)$per_page));
-			$contents 						= json_decode($results);
+			return true;
+		}
 
-			if(!$contents->meta->success && !count($contents->data))
+		$organisations 				= json_decode(json_encode($contents->data));
+
+		foreach ($organisations as $key => $value) 
+		{
+			unset($search);
+			unset($sort);
+			$search['type']				= 'secondstatussettlement';
+			$search['ondate']			= date('Y-m-d');
+			$search['organisationid']	= $value['id'];
+			$sort						= ['created_at', 'desc'];
+
+			$results 					= $this->dispatch(new Getting(new Policy, $search, $sort ,1, 1));
+			$contents 					= json_decode($results);
+
+			if($contents->meta->success)
 			{
-				return false;
-			}
+				$settlementdate 		= json_decode(json_encode($contents->data));
 
-			$variable 						= json_decode(json_encode($contents->data));
+				unset($search);
+				unset($sort);
 
-			foreach ($variable as $key2 => $value2) 
-			{
-				$log['name']				= strtolower('Absence');
-				$log['on']					= $value->format('Y-m-d'.' 00:00:00');
-				$log['last_input_time']		= $value->format('Y-m-d'.' 00:00:00');
-				$log['app_version']			= '1.0';
-				$log['ip']					= getenv("REMOTE_ADDR");
-				$log['pc']					= 'cron';
+				$search['organisationid']		= $value['id']);
+				$search['fullschedule']			= date('Y-m-d', strtotime($settlementdate['value']));
+				$sort 							= ['created_at' => 'desc'];
+				$results 						= $this->dispatch(new Getting(new Person, $search, $sort ,1, 100));
+				$contents 						= json_decode($results);
 
-				$saved_log 					= $this->dispatch(new Saving(new Log, $log, null, new Person, $value2->id));
-				$is_success_2 				= json_decode($saved_log);
-				if(!$is_success_2->meta->success)
+				if($contents->meta->success))
 				{
-					$log['email']			= $value2->username;
-					$log['message']			= $is_success_2->meta->errors;
-					$saved_error_log 		= $this->dispatch(new Saving(new ErrorLog, $log, null, new Organisation, $value2->organisation_id));
-					$this->info("Gagal Simpan Log ".$is_success_2->meta->errors."\n");
-				}
-				else
-				{
-					$this->info("Sukses Simpan Log ".$value2->name." Tanggal : ".$value->format('Y-m-d')."\n");
+					$persons 						= json_decode(json_encode($contents->data));
+
+					foreach ($persons as $key2 => $value2) 
+					{
+						$log['name']				= strtolower('Absence');
+						$log['on']					= $value->format('Y-m-d'.' 00:00:00');
+						$log['last_input_time']		= $value->format('Y-m-d'.' 00:00:00');
+						$log['app_version']			= '1.0';
+						$log['ip']					= getenv("REMOTE_ADDR");
+						$log['pc']					= 'cron';
+
+						$saved_log 					= $this->dispatch(new Saving(new Log, $log, null, new Person, $value2->id));
+						$is_success_2 				= json_decode($saved_log);
+						if(!$is_success_2->meta->success)
+						{
+							$log['email']			= $value2->username;
+							$log['message']			= $is_success_2->meta->errors;
+							$saved_error_log 		= $this->dispatch(new Saving(new ErrorLog, $log, null, new Organisation, $value['id']));
+						}
+					}
 				}
 			}
 		}
