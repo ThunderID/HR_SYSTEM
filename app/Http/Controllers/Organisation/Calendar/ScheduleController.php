@@ -569,15 +569,51 @@ class ScheduleController extends BaseController
 		}
 	}
 
-	public function batch_schedule()
+	public function batchprogress()
 	{
-		$queattr['createdbyid'] 		= Session::get('loggedUser');
-		$queattr['running'] 			= null;
+		$progress 						= [];
+		$progress2 						= [];
+		$search['createdbyid'] 			= Session::get('loggedUser');
+		$search['running'] 				= null;
+		$search['processname'] 			= 'hr:schedulebatch';
 
-		$results 						= $this->dispatch(new Getting(new Queue, $queattr, ['created_at' => 'asc'], 1, 1));		
-		$success 	 					= json_decode($results);
+		$results 						= $this->dispatch(new Getting(new Queue, $search, ['created_at' => 'asc'], 1, 100));		
+		$contents 	 					= json_decode($results);
 
-		Return Response::json(['data' => $success], 200);
+		if (!$contents->meta->success)
+		{
+			return Response::json(['message' => $contents->meta->errors], 200);
+		}
+
+		foreach ($contents->data as $key => $value) 
+		{
+			$progress[$value->id]		= $value->process_number;
+		}
+
+
+		sleep(60);
+		
+		$results 						= $this->dispatch(new Getting(new Queue, $search, ['created_at' => 'asc'], 1, 100));		
+		$contents 	 					= json_decode($results);
+
+		if (!$contents->meta->success)
+		{
+			return Response::json(['message' => $contents->meta->errors], 200);
+		}
+
+		foreach ($contents->data as $key => $value) 
+		{
+			if(isset($progress[$value->id]) && $progress[$value->id]==$value->process_number)
+			{
+				$progress2[]			= 'Operasi berhenti pada '.$value->process_number.' / '.$value->total_process;
+			}
+			else
+			{
+				$progress2[]			= $value->message.' '.(($value->process_number/$value->total_process)*100);
+			}
+		}
+
+		return Response::json(['message' => $progress2], 200);
 
 	}
 }
