@@ -216,7 +216,7 @@ class PersonWorkleaveBatchCommand extends Command {
 
 		if(!$errors->count())
 		{
-			$pending->fill(['process_number' => $pending->total_task, 'message' => 'Success']);
+			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Success']);
 		}
 		else
 		{
