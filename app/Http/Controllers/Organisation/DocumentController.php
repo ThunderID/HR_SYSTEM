@@ -490,7 +490,7 @@ class DocumentController extends BaseController
 		}
 	}
 
-	public function getAjax()
+	public function ajax()
 	{
 		if(Input::has('org_id'))
 		{

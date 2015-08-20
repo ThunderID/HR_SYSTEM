@@ -254,12 +254,15 @@ Route::group(['middleware' => 'csrfverify'], function()
 
 Route::group(['namespace' => 'Organisation\\'], function()
 {
-	Route::any('documents-list', 				['uses' => 'DocumentController@getAjax', 				'as' => 'hr.documents.list']);
+	// ------------------------------------------------------------------------------------
+	// AJAX DOCUMENT FOR PERSON
+	// ------------------------------------------------------------------------------------
+
+	Route::any('documents-list', 				['uses' => 'DocumentController@ajax', 					'as' => 'hr.documents.list']);
 });
 
 Route::group(['namespace' => 'Organisation\\Calendar\\', 'prefix' => 'calendar'], function() 
 {
-
 	// ------------------------------------------------------------------------------------
 	// SCHEDULES FOR CALENDAR RESOURCE
 	// ------------------------------------------------------------------------------------
@@ -320,33 +323,58 @@ Route::group(['namespace' => 'Workleave\\'], function()
 // ------------------------------------------------------------------------------------
 // API ROUTE
 // ------------------------------------------------------------------------------------
+
 Route::group(['namespace' => 'Organisation\\Person\\'], function() 
 {
+	// ------------------------------------------------------------------------------------
+	// SAVE LOG ON TRACKER VERSION < 1.0
+	// ------------------------------------------------------------------------------------
+
 	Route::post('api/activity/logs/',			['uses' => 'LogController@store',					'as' => 'hr.log.store']);
 });
 
 Route::group(['namespace' => 'Tracker\\'], function() 
 {
+	// ------------------------------------------------------------------------------------
+	// ADMIN LOGIN TRACKER VERSION < 1.0
+	// ------------------------------------------------------------------------------------
+
 	Route::post('api/tracker/setting/',			['uses' => 'LoginController@postlogin',				'as' => 'hr.tracker.post']);
 });
 
 Route::group(['namespace' => 'Tracker\\'], function() 
 {
+	// ------------------------------------------------------------------------------------
+	// APPS TEST ROUTE TRACKER VERSION < 1.0 (COMPATIBILITY FOR VERSION 1.0)
+	// ------------------------------------------------------------------------------------
+
 	Route::post('api/tracker/test/',			['uses' => 'LoginController@testlogin',				'as' => 'hr.tracker.test']);
 });
 
 Route::group(['namespace' => 'Tracker\\'], function() 
 {
+	// ------------------------------------------------------------------------------------
+	// AUTO UPDATE ABSENT SYSTEM VERSION = 1.0
+	// ------------------------------------------------------------------------------------
+
 	Route::post('api/tracker/update/',			['uses' => 'LoginController@updateversion',			'as' => 'hr.tracker.update']);
 });
 
 Route::group(['namespace' => 'Tracker\\'], function() 
 {
+	// ------------------------------------------------------------------------------------
+	// TIME SYNC ABSENT SYSTEM VERSION = 1.0
+	// ------------------------------------------------------------------------------------
+
 	Route::post('api/time/test/',				['uses' => 'TimeController@test',					'as' => 'hr.time.test']);
 });
 
 Route::group(['namespace' => 'Tracker\\'], function() 
 {
+	// ------------------------------------------------------------------------------------
+	// SAVE LOG ON TRACKER VERSION = 1.0
+	// ------------------------------------------------------------------------------------
+
 	Route::post('api/tracker/verse3/',			['uses' => 'TimeController@testv3',					'as' => 'hr.t3.post']);
 });
 
