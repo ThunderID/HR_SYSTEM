@@ -1,13 +1,10 @@
-@extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
-
-@if (!$widget_error_count)
-	@section('widget_title')
-	@overwrite
-
-	@section('widget_body')	  
-		<div class="clearfix">&nbsp;</div>
-		{!! Form::open(['url' => $DocumentComposer['widget_data']['documentlist']['form_url'], 'class' => 'form no_enter']) !!}	
-			@foreach($DocumentComposer['widget_data']['documentlist']['document'] as $key => $value)
+<div class="clearfix">&nbsp;</div>
+{!! Form::open(['url' => $DocumentComposer['widget_data']['documentlist']['form_url'], 'class' => 'form no_enter']) !!}	
+	<?php $tabindex=1; ?>
+	@foreach($DocumentComposer['widget_data']['documentlist']['document'] as $key => $value)
+		<div class="row">
+			<div class="col-sm-12 mb-15">
+				<h3>{{ $value['name'] }}</h3>
 				@foreach($value['templates'] as $key2 => $value2)
 					<div class="form-group">
 						<label for="field" class="control-label">{{ucwords($value2['field'])}}</label>					
@@ -18,16 +15,20 @@
 							switch (strtolower($value2['type'])) 
 							{
 								case 'text':
-									$form 		= '<textarea name="content[]" value="" class="form-control">'.$content.'</textarea>';
+									$form 		= '<textarea name="content[]" value="" class="form-control" tabindex="'.$tabindex.'">'.$content.'</textarea>';
+									$tabindex++;
 									break;
 								case 'date':
-									$form 		= '<input type="date" class="form-control date-mask" id="text" name="content[]" value="'.$content.'">';
+									$form 		= '<input type="date" class="form-control date-mask" id="text" name="content[]" value="'.$content.'" tabindex="'.$tabindex.'">';
+									$tabindex++;
 									break;
 								case 'numeric':
-									$form 		= '<input type="numeric" class="form-control" id="text" name="content[]" value="'.$content.'">';
+									$form 		= '<input type="numeric" class="form-control" id="text" name="content[]" value="'.$content.'" tabindex="'.$tabindex.'">';
+									$tabindex++;
 									break;
 								default:
-									$form 		= '<input type="text" class="form-control" id="text" name="content[]" value="'.$content.'">';
+									$form 		= '<input type="text" class="form-control" id="text" name="content[]" value="'.$content.'" tabindex="'.$tabindex.'">';
+									$tabindex++;
 									break;
 							}
 						;?>					
@@ -36,13 +37,15 @@
 						<input type="hidden" class="form-control" id="text" name="detail_id[]" value="{{$detailid}}">
 					</div>
 				@endforeach
-			@endforeach
-		{!! Form::close() !!}
-	@overwrite	
-@else
-	@section('widget_title')
-	@overwrite
-
-	@section('widget_body')
-	@overwrite
-@endif
+			</div>
+		</div>
+	@endforeach
+	<div class="row">
+		<div class="col-sm-12 text-right">
+			<input type="submit" class="btn btn-primary pull-right" value="Simpan" tabindex="{{ $tabindex }}">
+			<?php $tabindex++; ?>
+			<button class="btn btn-primary prevBtn pull-right mr-10" type="button" tabindex="{{ $tabindex }}">Kembali</button>
+			<?php $tabindex++; ?>
+		</div>
+	</div>
+{!! Form::close() !!}

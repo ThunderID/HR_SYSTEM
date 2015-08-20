@@ -66,7 +66,7 @@
 	
 	@include('plugins.summernote')
 	@include('plugins.microtemplate')
-	@include('plugins.imageupload')
+	<!-- @include('plugins.imageupload') -->
 	@include('plugins.single_submit')
 	@include('plugins.no_enter_form')	
 	@include('plugins.stickytableheader')
