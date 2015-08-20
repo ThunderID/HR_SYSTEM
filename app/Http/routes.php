@@ -203,7 +203,6 @@ Route::group(['middleware' => 'csrfverify'], function()
 
 			Route::resource('works',			'WorkController',									['names' => ['index' => 'hr.person.works.index', 'create' => 'hr.person.works.create', 'store' => 'hr.person.works.store', 'show' => 'hr.person.works.show', 'edit' => 'hr.person.works.edit', 'update' => 'hr.person.works.update', 'destroy' => 'hr.person.works.delete']]);
 
-
 		Route::group(['middleware' => 'interfere'], function()
 		{
 
@@ -246,11 +245,14 @@ Route::group(['middleware' => 'csrfverify'], function()
 			});
 
 
-			// ------------------------------------------------------------------------------------
-			// REPORT FOR ATTENDANCES (PROCESS LOG) RESOURCE
-			// ------------------------------------------------------------------------------------
+			Route::group(['middleware' => 'interfere'], function()
+			{
+				// ------------------------------------------------------------------------------------
+				// REPORT FOR ATTENDANCES (PROCESS LOG) RESOURCE
+				// ------------------------------------------------------------------------------------
 
-			Route::resource('attendances',		'AttendanceController',								['names' => ['index' => 'hr.report.attendances.index', 'create' => 'hr.report.attendances.create', 'store' => 'hr.report.attendances.store', 'show' => 'hr.report.attendances.show', 'edit' => 'hr.report.attendances.edit', 'update' => 'hr.report.attendances.update', 'destroy' => 'hr.report.attendances.delete']]);
+				Route::resource('attendances',		'AttendanceController',								['names' => ['index' => 'hr.report.attendances.index', 'create' => 'hr.report.attendances.create', 'store' => 'hr.report.attendances.store', 'show' => 'hr.report.attendances.show', 'edit' => 'hr.report.attendances.edit', 'update' => 'hr.report.attendances.update', 'destroy' => 'hr.report.attendances.delete']]);
+			});
 		});
 
 		});
