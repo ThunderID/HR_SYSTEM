@@ -60,6 +60,7 @@ class ScheduleController extends BaseController
 
 		$search['id'] 							= $cal_id;
 		$search['organisationid'] 				= $org_id;
+		$search['withattributes'] 				= ['childs', 'parent', 'parent.childs'];
 		$sort 									= ['name' => 'asc'];
 		$results 								= $this->dispatch(new Getting(new Calendar, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);

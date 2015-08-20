@@ -41,7 +41,7 @@ class CalendarObserver
 
 	public function deleting($model)
 	{
-		if($model->child->count())
+		if($model->childs->count())
 		{
 			$model['errors'] 	= ['Tidak dapat menghapus kalender yang diikuti oleh kalender lain'];
 

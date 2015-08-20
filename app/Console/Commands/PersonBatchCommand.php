@@ -953,7 +953,7 @@ class PersonBatchCommand extends Command {
 					if(!$contents->meta->success)
 					{
 						$calendar[$i]['import_from_id'] 	= 1;
-						$calendar[$i]['name'] 				= 'Costum Kalender Untuk'.$row['namacabang'];
+						$calendar[$i]['name'] 				= 'Costum Kalender Untuk '.$row['namacabang'];
 						$calendar[$i]['workdays'] 			= 'senin,selasa,rabu,kamis,jumat';
 						$calendar[$i]['start'] 				= date('H:i:s', strtotime($row['jammasukkerja']));
 						$calendar[$i]['end'] 				= date('H:i:s', strtotime($row['jampulangkerja']));
