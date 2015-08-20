@@ -279,7 +279,7 @@ class ScheduleController extends BaseController
 				$attributes['end']			= $ended->format('Y-m-d');
 				$queattr['process_name']	= 'hr:personworkleavebatch';
 				$queattr['total_process']	= 1;
-				$queattr['task_per_process']= 10;
+				$queattr['task_per_process']= 1;
 				$queattr['process_number'] 	= 0;
 				$queattr['total_task'] 		= 1;
 			}

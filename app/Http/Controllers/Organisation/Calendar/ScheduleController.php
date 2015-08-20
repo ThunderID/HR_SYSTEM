@@ -380,7 +380,7 @@ class ScheduleController extends BaseController
 					}
 					
 					$queattr['parameter'] 			= json_encode($attributes);
-					$queattr['task_per_process']	= 10;
+					$queattr['task_per_process']	= 1;
 					$queattr['process_number'] 		= 0;
 					$queattr['message'] 			= 'Initial Queue';
 
@@ -389,7 +389,7 @@ class ScheduleController extends BaseController
 						$attributes['associate_calendar_id'] 	= $value['id'];
 
 						$queattr['total_process'] 	= count($value['works']);
-						$queattr['total_task'] 		= ceil(count($value['works'])/10);
+						$queattr['total_task'] 		= count($value['works']);
 
 						$content 					= $this->dispatch(new Saving(new Queue, $queattr, null));
 						$is_success_2 				= json_decode($content);
@@ -430,9 +430,9 @@ class ScheduleController extends BaseController
 					$queattr['created_by'] 		= Session::get('loggedUser');
 					$queattr['parameter'] 		= json_encode($attributes);
 					$queattr['total_process'] 	= count($calendar['works']);
-					$queattr['task_per_process']= 10;
+					$queattr['task_per_process']= 1;
 					$queattr['process_number'] 	= 0;
-					$queattr['total_task'] 		= ceil(count($calendar['works'])/10);
+					$queattr['total_task'] 		= count($calendar['works']);
 					$queattr['message'] 		= 'Initial Queue';
 
 					$content 					= $this->dispatch(new Saving(new Queue, $queattr, null));
