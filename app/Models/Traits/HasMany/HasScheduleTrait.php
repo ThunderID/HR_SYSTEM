@@ -50,14 +50,6 @@ trait HasScheduleTrait {
 		return $query->whereHas('schedules', function($q)use($variable){$q->status($variable['status'])->ondate($variable['on'])->affectsalary(true);});
 	}
 
-	public function ScopeFullSchedule($query, $variable)
-	{
-		return $query
-					->wheredoesnthave('processlogs', function($q)use($variable){$q->ondate([$variable, $variable]);})
-					->chartnotadmin(true)
-					;
-	}
-
 	public function ScopeMinusQuotas($query, $variable)
 	{
 		return $query->selectRaw('count(start) as minus_quota')

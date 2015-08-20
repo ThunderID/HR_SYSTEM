@@ -5,7 +5,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use App\Models\Queue;
 
-class HRQueueCheckers extends Command {
+class HRQueueCommand extends Command {
 
 	use \Illuminate\Foundation\Bus\DispatchesCommands;
 	use \Illuminate\Foundation\Validation\ValidatesRequests;
