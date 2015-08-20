@@ -1,3 +1,5 @@
+{!! HTML::script('plugins/ajax-progress/jquery.ajax-progress.js') !!}
+
 <script>
 	$('.batchsimpan').on('click', function()
 	{
@@ -32,34 +34,66 @@
 	});
 
 
-	@if (Route::is('hr.calendars.show'))
+	@if ((Route::is('hr.calendars.show'))&&(Input::get('batch')))
 		var x =0;
 		var intervalID	= setInterval(
 			$.ajax, 1000, 
+		// $.ajax(
 			{
 				url: '{{ route("hr.batch.schedules") }}',
-				success: function(result) {
-					var valuemax = result.data.data.total_process;
-					var valuenow = x;
+				dataType: 'json',
+				success: function(e) {
+			        var max = parseInt(e.total_process[0]);
+					var now = parseInt(e.process_number[0]);					
 
-					$('.message_batch').html('Progres batch jadwal "'+jQuery.parseJSON(result.data.data.parameter).name+'"');
+					$('.message_batch').html('Progres batch jadwal "'+e.message+'"');
 					$('.alert_batch').removeClass('hide');
-					$('.progress-bar').attr('aria-valuemax', valuemax).attr('aria-valuenow', valuenow);
-					$('.progress-bar').css('width', ((valuenow/valuemax)*100)+'%');
-					$('.progress-bar').html(valuenow+' / '+valuemax+' proses');
+					$('.progress-bar').attr('aria-valuemax', max).attr('aria-valuenow', (now+x));
+					$('.progress-bar').css('width', (((now+x)/max)*100)+'%');
+					$('.progress-bar').html((now+x)+' / '+max+' proses');
 
-					if (x==85)
+					if ((now+x)>=max)
 					{
-						$('.progress-bar').attr('aria-valuemax', valuemax).attr('aria-valuenow', valuenow);
+						$('.progress-bar').attr('aria-valuemax', max).attr('aria-valuenow', now+x);
 						$('.progress-bar').css('width', '100%');
-						$('.progress-bar').html(valuemax+' / '+valuemax+' proses');
+						$('.progress-bar').html(max+' / '+max+' proses');
+						setTimeout($('.progress-bar').html('Proses Selesai'), 200);
 						clearInterval(intervalID);
 					}
 					
-					x=x+5;
+					x=x+2;
 				}
-			}
-		);
+			});
+	@elseif ((Route::is('hr.person.schedules.index'))&&(Input::get('batch')))
+		var x =0;
+		var intervalID	= setInterval(
+			$.ajax, 1000, 
+		// $.ajax(
+			{
+				url: '{{ route("hr.batch.person.schedules") }}',
+				dataType: 'json',
+				success: function(e) {
+			        var max = parseInt(e.total_process[0]);
+					var now = parseInt(e.process_number[0]);					
+
+					$('.message_batch').html('Progres batch jadwal "'+e.message+'"');
+					$('.alert_batch').removeClass('hide');
+					$('.progress-bar').attr('aria-valuemax', max).attr('aria-valuenow', (now+x));
+					$('.progress-bar').css('width', (((now+x)/max)*100)+'%');
+					$('.progress-bar').html((now+x)+' / '+max+' proses');
+
+					if ((now+x)>=max)
+					{
+						$('.progress-bar').attr('aria-valuemax', max).attr('aria-valuenow', now+x);
+						$('.progress-bar').css('width', '100%');
+						$('.progress-bar').html(max+' / '+max+' proses');
+						setTimeout($('.progress-bar').html('Proses Selesai'), 200);
+						clearInterval(intervalID);
+					}
+					
+					x=x+2;
+				}
+			});
 	@endif
 	
 </script>
