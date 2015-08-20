@@ -267,10 +267,10 @@ Route::group(['namespace' => 'Organisation\\Calendar\\', 'prefix' => 'calendar']
 	Route::resource('schedules',				'ScheduleController',										['names' => ['index' => 'hr.calendar.schedules.index', 'create' => 'hr.calendar.schedules.create', 'store' => 'hr.calendar.schedules.store', 'show' => 'hr.calendar.schedules.show', 'edit' => 'hr.calendar.schedules.edit', 'update' => 'hr.calendar.schedules.update', 'destroy' => 'hr.calendar.schedules.delete']]);
 
 	// ------------------------------------------------------------------------------------
-	// CHECK BATCH PROGESS
+	// CHECK BATCH PROGESS ON SCHEDULE
 	// ------------------------------------------------------------------------------------
 
-	Route::any('batch', 						['uses' => 'ScheduleController@batchprogress', 				'as' => 'hr.batch.schedules']);
+	Route::any('progress', 						['uses' => 'ScheduleController@batchprogress', 				'as' => 'hr.batch.schedules']);
 });
 
 Route::group(['namespace' => 'Organisation\\Person\\', 'prefix' => 'person'], function() 
@@ -286,13 +286,32 @@ Route::group(['namespace' => 'Organisation\\Person\\', 'prefix' => 'person'], fu
 	// ------------------------------------------------------------------------------------
 
 	Route::any('follows-list',					['uses' => 'WorkController@ajax',							'as' => 'hr.person.work.ajax']);
+
+
+	// ------------------------------------------------------------------------------------
+	// CHECK BATCH PROGESS ON PERSON WORKLEAVE
+	// ------------------------------------------------------------------------------------
+
+	Route::any('workleave/progress', 				['uses' => 'WorkleaveController@batchprogress', 			'as' => 'hr.batch.person.workleaves']);
+
+	// ------------------------------------------------------------------------------------
+	// CHECK BATCH PROGESS ON PERSON SCHEDULE
+	// ------------------------------------------------------------------------------------
+
+	Route::any('schedule/progress', 				['uses' => 'ScheduleController@batchprogress', 				'as' => 'hr.batch.person.schedules']);
 });
 
 
 Route::group(['namespace' => 'Workleave\\'], function()
 {
 	// ------------------------------------------------------------------------------------
-	// AJAX CHECK BATCH
+	// CHECK BATCH PROGESS ON WORKLEAVE
+	// ------------------------------------------------------------------------------------
+
+	Route::any('workleave/progress', 			['uses' => 'WorkleaveController@batchprogress', 			'as' => 'hr.batch.workleaves']);
+
+	// ------------------------------------------------------------------------------------
+	// AJAX STORE BATCH
 	// ------------------------------------------------------------------------------------
 
 	Route::post('batch/workleave/',				['uses'	=> 'BatchController@store', 						'as' => 'hr.ajax.batch']);

@@ -69,6 +69,7 @@ class Queue extends BaseModel {
 											'createdbyid' 				=> 'CreatedByID', 
 											'running' 					=> 'Running', 
 											'processname' 				=> 'ProcessName', 
+											'processoption' 			=> 'ProcessOption', 
 
 											'withattributes' 			=> 'WithAttributes'
 										];
@@ -79,6 +80,7 @@ class Queue extends BaseModel {
 											'running' 					=> 'Null', 
 											'createdbyid' 				=> 'Must be id of person', 
 											'processname' 				=> 'Must be string', 
+											'processoption' 			=> 'Must be string', 
 
 											'withattributes' 			=> 'Must be array of relationship'
 										];
@@ -133,7 +135,17 @@ class Queue extends BaseModel {
 
 	public function scopeProcessName($query, $variable)
 	{
+		if(is_array($variable))
+		{
+			return $query->whereIn('process_name', $variable);
+		}
+
 		return $query->where('process_name', $variable);
+	}
+
+	public function scopeProcessOption($query, $variable)
+	{
+		return $query->where('process_option', $variable);
 	}
 
 	public function scopeRunning($query, $variable)

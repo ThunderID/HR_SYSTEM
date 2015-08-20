@@ -803,4 +803,58 @@ class ScheduleController extends BaseController
 			return Redirect::back()->withErrors(['Password yang Anda masukkan tidak sah!']);
 		}
 	}
+
+
+	public function batchprogress()
+	{
+		$progress 						= [];
+		$progress2 						= [];
+		$pnumbers 						= [];
+		$tprocesses 					= [];
+		$search['createdbyid'] 			= Session::get('loggedUser');
+		$search['running'] 				= null;
+		$search['processname'] 			= ['hr:personworkleavebatch', 'hr:personschedulebatch'];
+		$search['processoption'] 		= '';
+
+		$results 						= $this->dispatch(new Getting(new Queue, $search, ['created_at' => 'asc'], 1, 100));		
+		$contents 	 					= json_decode($results);
+
+		if (!$contents->meta->success)
+		{
+			return Response::json(['message' => $contents->meta->errors], 200);
+		}
+
+		foreach ($contents->data as $key => $value) 
+		{
+			$progress[$value->id]		= $value->process_number;
+		}
+
+
+		sleep(60);
+		
+		$results 						= $this->dispatch(new Getting(new Queue, $search, ['created_at' => 'asc'], 1, 100));		
+		$contents 	 					= json_decode($results);
+
+		if (!$contents->meta->success)
+		{
+			return Response::json(['message' => $contents->meta->errors], 200);
+		}
+
+		foreach ($contents->data as $key => $value) 
+		{
+			if(isset($progress[$value->id]) && $progress[$value->id]==$value->process_number)
+			{
+				$progress2[]			= 'Operasi berhenti pada '.$value->process_number.' / '.$value->total_process;
+			}
+			else
+			{
+				$progress2[]			= $value->message.' '.$value->process_number.' / '.$value->total_process;
+			}
+
+			$pnumbers[]					= $value->process_number;
+			$tprocesses[]				= $value->total_process;
+		}
+
+		return Response::json(['message' => $progress2, 'process_number' => $pnumbers, 'total_process' => $tprocesses], 200);
+	}
 }

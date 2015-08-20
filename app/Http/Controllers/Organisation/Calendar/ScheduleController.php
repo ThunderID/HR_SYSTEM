@@ -573,6 +573,8 @@ class ScheduleController extends BaseController
 	{
 		$progress 						= [];
 		$progress2 						= [];
+		$pnumbers 						= [];
+		$tprocesses 					= [];
 		$search['createdbyid'] 			= Session::get('loggedUser');
 		$search['running'] 				= null;
 		$search['processname'] 			= 'hr:schedulebatch';
@@ -609,11 +611,13 @@ class ScheduleController extends BaseController
 			}
 			else
 			{
-				$progress2[]			= $value->message.' '.(($value->process_number/$value->total_process)*100);
+				$progress2[]			= $value->message.' '.$value->process_number.' / '.$value->total_process;
 			}
+
+			$pnumbers[]					= $value->process_number;
+			$tprocesses[]				= $value->total_process;
 		}
 
-		return Response::json(['message' => $progress2], 200);
-
+		return Response::json(['message' => $progress2, 'process_number' => $pnumbers, 'total_process' => $tprocesses], 200);
 	}
 }
