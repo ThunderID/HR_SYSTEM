@@ -41,7 +41,24 @@
 @overwrite
 
 @section('content_body')	
-	@if(Input::has('start'))
+	@if(Input::has('start') && Input::has('withschedule'))
+		@include('widgets.organisation.report.attendance.global.table', [
+		'widget_template'		=> 'panel',
+		'widget_title'			=> 'Laporan Kehadiran "'.date('d-m-Y',strtotime($start)).' s/d '.date('d-m-Y',strtotime($end)).'"'.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
+		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
+		'widget_body_class'		=> '',
+		'widget_options'		=> 	[
+										'personlist'			=>
+										[
+											'organisation_id'	=> $data['id'],
+											'search'			=> ['processlogsondate' => ['on' => [$start, $end]]],
+											'sort'				=> ['persons.name' => 'asc'],
+											'page'				=> 1,
+											'per_page'			=> 100,
+										]
+									]
+	])	
+	@elseif(Input::has('start'))
 		@include('widgets.organisation.report.attendance.table', [
 			'widget_template'		=> 'panel',
 			'widget_title'			=> 'Laporan Kehadiran "'.date('d-m-Y',strtotime($start)).' s/d '.date('d-m-Y',strtotime($end)).'"'.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),

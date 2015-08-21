@@ -20,6 +20,7 @@
 			<div class="form-group text-right">
 				<input type="submit" class="btn btn-primary" value="Generate">
 				@if(Route::currentRouteName()=='hr.report.attendances.index')
+					<input type="submit" name="withschedule" class="btn btn-primary" value="Laporan Status">
 					<input type="submit" name="PersonalRep" class="btn btn-primary" value="Laporan Saya">
 				@endif
 			</div>

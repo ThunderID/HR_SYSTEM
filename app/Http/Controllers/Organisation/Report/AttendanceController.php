@@ -280,7 +280,7 @@ class AttendanceController extends BaseController
 		{
 			$org_id 								= Session::get('user.organisationid');
 		}
-
+		
 		if(Input::has('start'))
 		{
 			$start 									= date('Y-m-d', strtotime(Input::get('start')));

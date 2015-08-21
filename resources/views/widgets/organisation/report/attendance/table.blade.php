@@ -5,7 +5,7 @@
 	<h1> {!! $widget_title or 'Laporan Kehadiran' !!} </h1>
 	<small>Total data {{ count($PersonComposer['widget_data']['personlist']['person']) }}</small>
 	<?php
-		$PersonComposer['widget_data']['personlist']['person-pagination']->setPath('hr.report.activities.index');
+		$PersonComposer['widget_data']['personlist']['person-pagination']->setPath('hr.report.attendances.index');
 	 ?>
 
 	 <div class="btn-group pull-right">

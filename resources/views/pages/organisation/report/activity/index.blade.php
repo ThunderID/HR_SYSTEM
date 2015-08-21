@@ -60,7 +60,7 @@
 											]
 										]
 		])
-
+<?php /*
 		@include('widgets.organisation.idle.table', [
 			'widget_template'		=> 'panel',
 			'widget_title'			=> '<h4>Catatan Perubahan Waktu Idle</h4>',
@@ -78,6 +78,7 @@
 											]
 										]
 		])
+		*/?>
 	@else
 		@include('widgets.common.filter.date', [
 		'widget_template'		=> 'panel',

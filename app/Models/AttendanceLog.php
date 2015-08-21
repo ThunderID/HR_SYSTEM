@@ -149,6 +149,11 @@ class AttendanceLog extends BaseModel {
 		return $query->where('actual_status', $variable);
 	}
 
+	public function scopeNotActualStatus($query, $variable)
+	{
+		return $query->where('actual_status', '<>', $variable);
+	}
+
 	public function scopeGlobalSanction($query, $variable)
 	{
 		if(isset($variable['on']) && is_array($variable['on']))

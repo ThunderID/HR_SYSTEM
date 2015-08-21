@@ -29,6 +29,12 @@ trait HasAttendanceLogsTrait {
 
 	public function ScopeLastAttendanceLog($query, $variable)
 	{
+		if(!is_null($variable))
+		{
+			return $query->whereHas('attendancelogs', function($q)use($variable){$q;})
+						->with(['attendancelogs' => function($q)use($variable){$q->notactualstatus('L')->orderBy('updated_at', 'desc');}]);
+		}
+
 		return $query->whereHas('attendancelogs', function($q)use($variable){$q;})
 					->with(['attendancelogs' => function($q)use($variable){$q->orderBy('updated_at', 'desc');}]);
 	}
