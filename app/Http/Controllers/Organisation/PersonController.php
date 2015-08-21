@@ -357,7 +357,7 @@ class PersonController extends BaseController
 			if(Input::has('password'))
 			{
 				$attributes['password']					= Hash::make(Input::get('password'));
-				$attributes['last_password_updated_at']	= date('Y-m-d');
+				$attributes['last_password_updated_at']	= date('Y-m-d H:i:s');
 			}
 			else
 			{

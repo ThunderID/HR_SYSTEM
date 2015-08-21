@@ -29,7 +29,8 @@ class PasswordController extends BaseController {
 
 			if($validator->passes())
 			{
-				$attributes['password']			= Hash::make(Input::Get('password'));
+				$attributes['password']							= Hash::make(Input::Get('password'));
+				$attributes['last_password_updated_at']			= date('Y-m-d H:i:s');
 				$content 						= $this->dispatch(new Saving(new Person, $attributes, Session::get('loggedUser')));
 
 				$errors 						= new MessageBag;

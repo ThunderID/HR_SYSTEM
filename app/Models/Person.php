@@ -105,7 +105,7 @@ class Person extends BaseModel {
 											'date_of_birth' 				=> 'required|date_format:"Y-m-d"|before:tomorrow',
 											'gender' 						=> 'required|in:female,male',
 											'password'						=> 'max:255',
-											'last_password_updated_at'		=> 'date_format:"Y-m-d"|before:tomorrow',
+											'last_password_updated_at'		=> 'date_format:"Y-m-d H:i:s"|before:tomorrow',
 										];
 
 	public $searchable 				= 	[

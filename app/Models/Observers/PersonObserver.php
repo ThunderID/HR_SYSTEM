@@ -12,6 +12,11 @@ class PersonObserver
 {
 	public function saving($model)
 	{
+		if($model['attributes']['last_password_updated_at']=='0000-00-00 00:00:00')
+		{
+			$model->last_password_updated_at 	= $model->created_at->format('Y-m-d H:i:s');	
+		}
+
 		$validator 					= Validator::make($model['attributes'], $model['rules'], ['uniqid.required' => 'N I K tidak boleh kosong', 'uniqid.max' => 'Maksimal Panjang N I K : 255 Karakter']);
 
 		if ($validator->passes())
