@@ -8,11 +8,11 @@ use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
 use App\Models\Organisation;
 use App\Models\Person;
-use App\Models\SettingIdle;
+use App\Models\Policy;
 
-class IdleController extends BaseController
+class PolicyController extends BaseController
 {
-	protected $controller_name = 'idle';
+	protected $controller_name = 'policy';
 
 	public function index($page = 1)
 	{
@@ -116,7 +116,7 @@ class IdleController extends BaseController
 		}
 
 		$data 									= json_decode(json_encode($contents->data), true);
-		$this->layout->page 					= view('pages.organisation.idle.index');
+		$this->layout->page 					= view('pages.organisation.policy.index');
 		$this->layout->page->controller_name 	= $this->controller_name;
 		$this->layout->page->data 				= $data;
 		$this->layout->page->filter 			= 	[
@@ -160,7 +160,7 @@ class IdleController extends BaseController
 		$data 									= json_decode(json_encode($contents->data), true);
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.organisation.idle.create', compact('id', 'data'));
+		$this->layout->pages 					= view('pages.organisation.policy.create', compact('id', 'data'));
 		return $this->layout;
 	}
 	
@@ -185,21 +185,21 @@ class IdleController extends BaseController
 			App::abort(404);
 		}
 
-		$attributes 							= Input::only('idle_1', 'idle_2', 'margin_bottom_idle');
+		$attributes 							= Input::only('policy_1', 'policy_2', 'margin_bottom_policy');
 		$attributes['created_by']				= Session::get('loggedUser');
 		if(Input::has('start'))
 		{
 			$attributes['start'] 				= date('Y-m-d', strtotime(Input::get('start')));
 		}
 
-		$attributes['margin_bottom_idle']		= (Input::get('margin_bottom_idle')*60);
-		$attributes['idle_1']					= (Input::get('idle_1')*60);
-		$attributes['idle_2']					= (Input::get('idle_2')*60);
+		$attributes['margin_bottom_policy']		= (Input::get('margin_bottom_policy')*60);
+		$attributes['policy_1']					= (Input::get('policy_1')*60);
+		$attributes['policy_2']					= (Input::get('policy_2')*60);
 		$errors 								= new MessageBag();
 
 		DB::beginTransaction();
 
-		$content 								= $this->dispatch(new Saving(new SettingIdle, $attributes, $id, new Organisation, $org_id));
+		$content 								= $this->dispatch(new Saving(new Policy, $attributes, $id, new Organisation, $org_id));
 		$is_success 							= json_decode($content);
 
 		if(!$is_success->meta->success)
@@ -210,12 +210,12 @@ class IdleController extends BaseController
 				{
 					foreach ($value as $key2 => $value2) 
 					{
-						$errors->add('SettingIdle', $value2);
+						$errors->add('Policy', $value2);
 					}
 				}
 				else
 				{
-					$errors->add('SettingIdle', $value);
+					$errors->add('Policy', $value);
 				}
 			}
 		}
@@ -223,7 +223,7 @@ class IdleController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.idles.index', ['org_id' => $org_id])->with('alert_success', 'Idle "' . $is_success->data->start. '" sudah disimpan');
+			return Redirect::route('hr.policys.index', ['org_id' => $org_id])->with('alert_success', 'Policy "' . $is_success->data->start. '" sudah disimpan');
 		}
 		
 		DB::rollback();
@@ -248,7 +248,7 @@ class IdleController extends BaseController
 		}
 		
 		$search 						= ['id' => $id, 'organisationid' => $org_id, 'withattributes' => ['organisation']];
-		$results 						= $this->dispatch(new Getting(new SettingIdle, $search, [] , 1, 1));
+		$results 						= $this->dispatch(new Getting(new Policy, $search, [] , 1, 1));
 		$contents 						= json_decode($results);
 		
 		if(!$contents->meta->success)
@@ -256,14 +256,14 @@ class IdleController extends BaseController
 			App::abort(404);
 		}
 
-		$idle 						= json_decode(json_encode($contents->data), true);
-		$data 							= $idle['organisation'];
+		$policy 						= json_decode(json_encode($contents->data), true);
+		$data 							= $policy['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 				= view('pages.organisation.idle.show');
+		$this->layout->pages 				= view('pages.organisation.policy.show');
 		$this->layout->pages->data 			= $data;
-		$this->layout->pages->idle 		= $idle;
-		$this->layout->pages->route_back 	= route('hr.organisation.idles.index', ['org_id' => $org_id]);
+		$this->layout->pages->policy 		= $policy;
+		$this->layout->pages->route_back 	= route('hr.organisation.policys.index', ['org_id' => $org_id]);
 
 		return $this->layout;
 	}
@@ -298,7 +298,7 @@ class IdleController extends BaseController
 			}
 
 			$search 						= ['id' => $id, 'organisationid' => $org_id, 'withattributes' => ['organisation']];
-			$results 						= $this->dispatch(new Getting(new SettingIdle, $search, [] , 1, 1));
+			$results 						= $this->dispatch(new Getting(new Policy, $search, [] , 1, 1));
 			$contents 						= json_decode($results);
 			
 			if(!$contents->meta->success)
@@ -306,7 +306,7 @@ class IdleController extends BaseController
 				App::abort(404);
 			}
 
-			$results 						= $this->dispatch(new Deleting(new SettingIdle, $id));
+			$results 						= $this->dispatch(new Deleting(new Policy, $id));
 			$contents 						= json_decode($results);
 
 			if (!$contents->meta->success)
@@ -315,7 +315,7 @@ class IdleController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.idles.index', ['org_id' => $org_id])->with('alert_success', 'Pengaturan Idle "' . $contents->data->name. '" sudah dihapus');
+				return Redirect::route('hr.policys.index', ['org_id' => $org_id])->with('alert_success', 'Pengaturan Policy "' . $contents->data->name. '" sudah dihapus');
 			}
 		}
 		else
