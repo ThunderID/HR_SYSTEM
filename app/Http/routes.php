@@ -245,7 +245,7 @@ Route::group(['middleware' => 'csrfverify'], function()
 			});
 
 
-			Route::group(['middleware' => 'interfere	'], function()
+			Route::group(['middleware' => 'interfere'], function()
 			{
 				// ------------------------------------------------------------------------------------
 				// REPORT FOR ATTENDANCES (PROCESS LOG) RESOURCE
