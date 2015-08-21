@@ -85,13 +85,12 @@
 								
 								@if($calendar['parent'])
 									{{$calendar['parent']['name']}}
+									@foreach($calendar['parent']['childs'] as $key => $value)
+										@if($value['id']!=$calendar['id'])
+											{{$value['name']}} <br/> 
+										@endif
+									@endforeach
 								@endif
-								
-								@foreach($calendar['parent']['childs'] as $key => $value)
-									@if($value['id']!=$calendar['id'])
-										{{$value['name']}} <br/> 
-									@endif
-								@endforeach
 
 								@foreach($calendar['childs'] as $key => $value)
 									{{$value['name']}} <br/> 
