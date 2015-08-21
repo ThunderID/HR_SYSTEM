@@ -127,7 +127,7 @@ class ScheduleBatchCommand extends Command {
 
 		if(!$errors->count())
 		{
-			$pending->fill(['message' => 'Success', 'process_number' => $pending->total_process]);
+			$pending->fill(['message' => 'Sukses Menyimpan Jadwal '.(isset($parameters['name']) ? $parameters['name'] : ''), 'process_number' => $pending->total_process]);
 
 			$morphed 						= new QueueMorph;
 

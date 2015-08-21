@@ -142,7 +142,7 @@ class PersonScheduleBatchCommand extends Command {
 				{
 					DB::commit();
 
-					$pending->fill(['process_number' => ($pending->process_number+1), 'message' => 'Working']);
+					$pending->fill(['process_number' => ($pending->process_number+1), 'message' => 'Sedang Menyimpan Jadwal '.(isset($parameters['name']) ? $parameters['name'] : '')]);
 
 					$morphed 						= new QueueMorph;
 
@@ -172,7 +172,7 @@ class PersonScheduleBatchCommand extends Command {
 		}
 		else
 		{
-			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Success']);
+			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Sukses Menyimpan Jadwal '.(isset($parameters['name']) ? $parameters['name'] : '')]);
 		}
 
 		$pending->save();

@@ -216,7 +216,7 @@ class PersonWorkleaveBatchCommand extends Command {
 
 		if(!$errors->count())
 		{
-			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Success']);
+			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Sukses Menyimpan Cuti '.(isset($parameters['name']) ? $parameters['name'] : '')]);
 		}
 		else
 		{
@@ -299,7 +299,7 @@ class PersonWorkleaveBatchCommand extends Command {
 				{
 					DB::commit();
 
-					$pending->fill(['process_number' => ($pending->process_number+1), 'message' => 'Working']);
+					$pending->fill(['process_number' => ($pending->process_number+1), 'message' => 'Sedang Menyimpan Cuti '.(isset($parameters['name']) ? $parameters['name'] : '')]);
 
 					$morphed 						= new QueueMorph;
 
@@ -328,7 +328,7 @@ class PersonWorkleaveBatchCommand extends Command {
 		}
 		else
 		{
-			$pending->fill(['process_number' => ($pending->total_task), 'message' => 'Success']);
+			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Sukses Menyimpan Cuti '.(isset($parameters['name']) ? $parameters['name'] : '')]);
 		}
 
 		$pending->save();
@@ -470,7 +470,7 @@ class PersonWorkleaveBatchCommand extends Command {
 				{
 					DB::commit();
 
-					$pending->fill(['process_number' => ($pending->process_number+1), 'message' => 'Working']);
+					$pending->fill(['process_number' => ($pending->process_number+1), 'message' => 'Sedang Menyimpan Cuti '.(isset($parameters['name']) ? $parameters['name'] : '')]);
 
 					$morphed 						= new QueueMorph;
 
@@ -499,7 +499,7 @@ class PersonWorkleaveBatchCommand extends Command {
 		}
 		else
 		{
-			$pending->fill(['process_number' => ($pending->total_task), 'message' => 'Success']);
+			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Sukses Menyimpan Cuti '.(isset($parameters['name']) ? $parameters['name'] : '')]);
 		}
 
 		$pending->save();

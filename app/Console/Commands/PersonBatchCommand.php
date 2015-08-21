@@ -1484,7 +1484,7 @@ class PersonBatchCommand extends Command {
 					DB::commit();
 
 					$pnumber 								= $pending->process_number+1;
-					$pending->fill(['process_number' => $pnumber, 'message' => 'Working']);
+					$pending->fill(['process_number' => $pnumber, 'message' => 'Sedang Menyimpan Data '.(isset($is_success->name) ? $is_success->name : '')]);
 				}
 				else
 				{
@@ -1503,7 +1503,7 @@ class PersonBatchCommand extends Command {
 		}
 		else
 		{
-			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Success']);
+			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Sukses Menyimpan Data Karyawan']);
 		}
 
 		$pending->save();

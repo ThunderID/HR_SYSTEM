@@ -245,7 +245,7 @@ Route::group(['middleware' => 'csrfverify'], function()
 			});
 
 
-			Route::group(['middleware' => 'interfere'], function()
+			Route::group(['middleware' => 'interfere	'], function()
 			{
 				// ------------------------------------------------------------------------------------
 				// REPORT FOR ATTENDANCES (PROCESS LOG) RESOURCE
@@ -318,13 +318,13 @@ Route::group(['namespace' => 'Workleave\\'], function()
 	// CHECK BATCH PROGESS ON WORKLEAVE
 	// ------------------------------------------------------------------------------------
 
-	Route::any('workleave/progress', 			['uses' => 'WorkleaveController@batchprogress', 			'as' => 'hr.batch.workleaves']);
+	Route::any('workleave/progress', 				['uses' => 'WorkleaveController@batchprogress', 			'as' => 'hr.batch.workleaves']);
 
 	// ------------------------------------------------------------------------------------
 	// AJAX STORE BATCH
 	// ------------------------------------------------------------------------------------
 
-	Route::post('batch/workleave/',				['uses'	=> 'BatchController@store', 						'as' => 'hr.ajax.batch']);
+	Route::post('batch/workleave/',					['uses'	=> 'BatchController@store', 						'as' => 'hr.ajax.batch']);
 });
 
 // ------------------------------------------------------------------------------------
