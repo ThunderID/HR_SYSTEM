@@ -1,8 +1,7 @@
 <?php namespace App\Http\Middleware;
 
 use App\Models\Policy;
-use Closure, Input;
-use Illuminate\Support\Facades\Session;
+use Closure;
 use Illuminate\Support\Facades\Redirect;
 
 class ACLAttendanceInterfere {

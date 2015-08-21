@@ -18,7 +18,23 @@ class CalendarObserver
 
 		if ($validator->passes())
 		{
-			return true;
+			if(isset($model['attributes']['import_from_id']) && ($model['attributes']['import_from_id']!='0' && $model['attributes']['import_from_id']!=''))
+			{
+				$validator 		= Validator::make($model['attributes'], ['import_from_id' => 'exists:tmp_calendars,id']);
+				
+				if ($validator->passes())
+				{
+					return true;
+				}
+				
+				$model['errors'] 		= $validator->errors();
+
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		}
 		else
 		{
