@@ -2,7 +2,7 @@
 	@include('widgets.common.nav_topbar', 
 	['breadcrumb' => 	[
 							['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
-							['name' => 'Pengaturan Idle', 'route' => route('hr.idles.index', ['org_id' => $data['id']]) ]
+							['name' => 'Pengaturan Kebijakan', 'route' => route('hr.policies.index', ['org_id' => $data['id']]) ]
 						]
 	])
 @stop
@@ -39,12 +39,12 @@
 	@include('widgets.organisation.policy.table', [
 		'widget_title'			=> 'Pengaturan Kebijakan '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_template'		=> 'panel',
-		'widget_options'		=> [ 'idlelist' 				=>
+		'widget_options'		=> [ 'policylist' 				=>
 										[
 											'form_url' 			=> null,
 											'organisation_id'	=> $data['id'],
 											'search'			=> array_merge(['withattributes' => ['createdby']], (isset($filtered['search']) ? $filtered['search'] : [])),
-											'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['start' => 'asc']),
+											'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['created_at' => 'asc']),
 											'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
 											'per_page'			=> 12,
