@@ -5,7 +5,7 @@ use \App\Models\Organisation;
 use \App\Models\Branch;
 use \App\Models\Chart;
 use \App\Models\Work;
-use \App\Models\Menu;
+use \App\Models\Policy;
 
 /* ----------------------------------------------------------------------
  * Event:
@@ -43,6 +43,27 @@ class OrganisationObserver
 
 			if($chart->save())
 			{
+				$types 									= ['passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle', 'extendsworkleave', 'extendsmidworkleave', 'firstacleditor', 'secondacleditor'];
+				$values 								= ['+ 3 months', '1', '1', '2', '2', '2', '- 1 month', '- 5 days', '900', '3600','7200', '+ 3 months', '+ 15 months', '- 1 month', '- 5 days'];
+				foreach(range(0, count($types)-1) as $key => $index)
+				{
+					$policy 							= new Policy;
+					$policy->fill([
+						'type'							=> $types[$key],
+						'value'							=> $values[$key],
+						'started_at'					=> date('Y-m-d'),
+					]);
+
+					$policy->organisation()->associate($model);
+
+					if (!$policy->save())
+					{
+						$model['errors'] 	= $policy->getError();
+
+						return false;
+					}
+				}
+
 				return true;
 			}
 
@@ -50,6 +71,7 @@ class OrganisationObserver
 
 			return false;
 		}
+
 
 		$model['errors'] 		= $branch->getError();
 
@@ -120,14 +142,15 @@ class OrganisationObserver
 
 			return false;
 		}
+
 		foreach ($model->branches as $key => $value) 
 		{
 			foreach ($value->charts as $key2 => $value2) 
 			{
 				foreach ($value2->works as $key3 => $value3) 
 				{
-					$work 	 	= new Work;
-					$delete 	= $work->find($value3['pivot']['id']);
+					$work 	 				= new Work;
+					$delete 				= $work->find($value3['pivot']['id']);
 
 					if($delete && !$delete->delete())
 					{
@@ -137,8 +160,8 @@ class OrganisationObserver
 					}
 				}
 
-				$chart 	 		= new Chart;
-				$delete 		= $chart->id($value2->id)->first();
+				$chart 	 					= new Chart;
+				$delete 					= $chart->id($value2->id)->first();
 				if($delete && !$delete->delete())
 				{
 					$model['errors']		= $delete->getError();
@@ -147,8 +170,8 @@ class OrganisationObserver
 				}
 			}
 
-			$branch 	 		= new Branch;
-			$delete 			= $branch->id($value->id)->first();
+			$branch 	 					= new Branch;
+			$delete 						= $branch->id($value->id)->first();
 			if($delete && !$delete->delete())
 			{
 				$model['errors']			= $delete->getError();
@@ -156,6 +179,19 @@ class OrganisationObserver
 				return false;
 			}
 		}
+
+		foreach ($model->policies as $key => $value) 
+		{
+			$policy 	 					= new Policy;
+			$delete 						= $policy->id($value->id)->first();
+			if($delete && !$delete->delete())
+			{
+				$model['errors']			= $delete->getError();
+
+				return false;
+			}
+		}
+
 		return true;
 	}
 }

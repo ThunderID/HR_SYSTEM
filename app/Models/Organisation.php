@@ -37,6 +37,7 @@ class Organisation extends BaseModel {
 	use \App\Models\Traits\HasMany\HasPersonsTrait;
 	use \App\Models\Traits\HasMany\HasCalendarsTrait;
 	use \App\Models\Traits\HasMany\HasWorkleavesTrait;
+	use \App\Models\Traits\HasMany\HasPoliciesTrait;
 
 	public 		$timestamps 		= true;
 

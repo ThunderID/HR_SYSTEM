@@ -44,7 +44,7 @@ class Policy extends BaseModel {
 										];
 
 	protected 	$rules				= 	[
-											'created_by'				=> 'required|exists:persons,id',
+											'created_by'				=> 'exists:persons,id',
 											'type'						=> 'required|max:255',
 											'value'						=> 'required',
 											'started_at'				=> 'required|date_format:"Y-m-d"',

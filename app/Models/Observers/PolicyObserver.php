@@ -46,8 +46,8 @@ class PolicyObserver
 	public function deleting($model)
 	{
 		//
-		$model['errors'] 		= ['Tidak dapat menghapus pengaturan kebijakan. Silahkan Buat kebijakan yang baru.'];
+		// $model['errors'] 		= ['Tidak dapat menghapus pengaturan kebijakan. Silahkan Buat kebijakan yang baru.'];
 		
-		return false;
+		// return false;
 	}
 }
