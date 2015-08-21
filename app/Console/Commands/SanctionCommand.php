@@ -298,6 +298,10 @@ class SanctionCommand extends Command {
 							$quota 					= $as;
 						}
 
+						DB::beginTransaction();
+						
+						$errors 					= new MessageBag();
+
 						$pdoc 						= new PersonDocument;
 						switch($value2['lastdoc'])
 						{
@@ -316,7 +320,10 @@ class SanctionCommand extends Command {
 						}
 
 						$pdoc->Person()->associate(Person::find($value2['id']));
-						$pdoc->save();
+						if(!$pdoc->save())
+						{
+							$errors->add('Person', json_encode($pdoc->getError()));
+						}
 
 						foreach ($temp as $key3 => $value3) 
 						{
@@ -335,7 +342,11 @@ class SanctionCommand extends Command {
 							}
 						
 							$pdocdet->PersonDocument()->associate($pdoc);
-							$pdocdet->save();
+
+							if(!$pdocdet->save())
+							{
+								$errors->add('Person', json_encode($pdocdet->getError()));
+							}
 						}
 
 						$adetails 					= AttendanceLog::globalsanction(['on' => [$date1, $date2], 'personid' => $value2['id']])->get();
@@ -347,10 +358,22 @@ class SanctionCommand extends Command {
 								$adetail->fill(['attendance_log_id' => $value4->id]);
 
 								$adetail->PersonDocument()->associate($pdoc);
-								$adetail->save();
+								if(!$adetail->save())
+								{
+									$errors->add('Person', json_encode($adetail->getError()));
+								}
 							}
 						}
 
+						if($errors->count())
+						{
+							DB::rollback();
+							Log::error(json_encode($errors));
+						}
+						else
+						{
+							DB::commit();
+						}
 					}
 				}
 			}

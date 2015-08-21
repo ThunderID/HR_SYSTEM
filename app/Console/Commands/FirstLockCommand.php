@@ -11,7 +11,7 @@ use App\Models\Policy;
 use App\Models\ProcessLog;
 use App\Models\AttendanceLog;
 
-use Log;
+use Log, DB;
 
 class FirstLockCommand extends Command {
 
@@ -130,6 +130,7 @@ class FirstLockCommand extends Command {
 				{
 					$plogs 					= json_decode(json_encode($contents->data));
 
+					DB::beginTransaction();
 					foreach($plogs as $key2 => $value2) 
 					{
 						foreach ($value2['attendancelogs'] as $key3 => $value3) 
@@ -139,10 +140,12 @@ class FirstLockCommand extends Command {
 
 							if(!$alog->save())
 							{
+								DB::rollback();
 								Log::error(json_encode($alog->getError()));
 							}
 						}
 					}
+					DB::commit();
 				}
 			}
 		}
