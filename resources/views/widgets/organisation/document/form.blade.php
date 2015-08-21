@@ -19,7 +19,7 @@
 			<div class="form-group mb-30">										
 				<div class="checkbox">
 					<label for="">
-						{!!Form::checkbox('is_required', '1', $DocumentComposer['widget_data']['documentlist']['document']['is_required'])!!} Wajib
+						{!!Form::checkbox('is_required', '1', $DocumentComposer['widget_data']['documentlist']['document']['is_required'])!!} Dokumen Pribadi
 					</label>	
 				</div>								
 			</div>

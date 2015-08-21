@@ -74,7 +74,7 @@
 									</div>
 								</div>
 							</div>
-							@if(isset($calendar) && count($calendar['child']))
+							@if(isset($calendar) && (count($calendar['childs']) || count($calendar['parent']['childs'])))
 								<div class="form-group">
 									<div class="checkbox">
 										<label>
@@ -83,7 +83,17 @@
 									</div>
 								</div>
 								
-								@foreach($calendar['child'] as $key => $value)
+								@if($calendar['parent'])
+									{{$calendar['parent']['name']}}
+								@endif
+								
+								@foreach($calendar['parent']['childs'] as $key => $value)
+									@if($value['id']!=$calendar['id'])
+										{{$value['name']}} <br/> 
+									@endif
+								@endforeach
+
+								@foreach($calendar['childs'] as $key => $value)
 									{{$value['name']}} <br/> 
 								@endforeach
 							@endif

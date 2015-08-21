@@ -107,7 +107,7 @@
 													'search'			=> ['fullschedule' => date('Y-m-d', strtotime('- 1 day')), 'withattributes' => ['works.branch']],
 													'sort'				=> [],
 													'page'				=> 1,
-													'per_page'			=> 40,
+													'per_page'			=> 12,
 													'route_create'		=> route('hr.persons.create', ['org_id' => $data['id']])
 												]
 											]

@@ -16,7 +16,9 @@
 						$totalemployee = $totalemployee + 1;
 					?>
 				@endforeach
-				<strong class="text-xl">{{ abs(round($lossrate / ($totalemployee != 0 ? $totalemployee : 1) * 100, 2)) }} % </strong><br>
+				<?php
+					$total_tlr =abs(round($lossrate / ($totalemployee != 0 ? $totalemployee : 1) * 100, 2));?>
+				<strong class="text-xl">@if($total_tlr > 100) 100 @else {{$total_tlr}} @endif % </strong><br>
 				<span class="opacity-50">{!! $widget_title  or 'Rerata Time Loss "'.$data['name'].'" Bulan Ini' !!} </span>					
 			</div>
 		@endif
