@@ -62,7 +62,7 @@ class AttendanceLog extends BaseModel {
 	protected 	$rules				= 	[
 											'actual_status' 					=> 'required|max:255',
 											'modified_status' 					=> 'max:255',
-											'count_status' 						=> 'required|numeric',
+											'count_status' 						=> 'numeric',
 											'tolerance_time' 					=> 'numeric',
 											'modified_at' 						=> 'date_format:"Y-m-d H:i:s"',
 											'settlement_at' 					=> 'date_format:"Y-m-d H:i:s"',

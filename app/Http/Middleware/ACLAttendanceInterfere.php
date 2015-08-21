@@ -51,6 +51,12 @@ class ACLAttendanceInterfere {
         	}
         }
 
+        if ($request->session()->has('settlementattendance') && $request->session()->get('user')['menuid'] > 1) 
+        {
+            $request->session()->forget('settlementattendance');
+            return Redirect::route('hr.organisations.show', [$org_id, 'org_id' => $org_id])->with('alert_warning', 'Tidak dapat mengubah status yang sudah settle');
+        }
+
         return $next($request); 
     }
 }

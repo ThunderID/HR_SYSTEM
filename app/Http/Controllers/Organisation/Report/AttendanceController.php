@@ -12,6 +12,7 @@ use App\Models\Person;
 use App\Models\Work;
 use App\Models\Branch;
 use App\Models\ProcessLog;
+use App\Models\AttendanceLog;
 
 class AttendanceController extends BaseController 
 {
@@ -410,33 +411,12 @@ class AttendanceController extends BaseController
 				App::abort(404);
 			}
 
-			if((int)Session::Get('user.menuid')==2)
-			{
-				$dateline 						= date('Y-m-d', strtotime(Input::get('ondate'). ' + 2 months'));
-
-				if($dateline < date('Y-m-d'))
-				{
-					$errors->add('ProcessLog', 'Batas Akhir Perubahan Status adalah 2 Bulan');
-					
-					return Redirect::back()->withErrors($errors)->withInput();
-				}
-			}
-
-			if((int)Session::Get('user.menuid')==3)
-			{
-				$dateline 						= date('Y-m-d', strtotime(Input::get('ondate'). ' + 7 days'));
-
-				if($dateline < date('Y-m-d'))
-				{
-					$errors->add('ProcessLog', 'Batas Akhir Perubahan Status adalah 7 hari');
-					
-					return Redirect::back()->withErrors($errors)->withInput();
-				}
-			}
-
+			
 			$ondate 							= date('Y-m-d', strtotime(Input::get('ondate')));
 			$start 								= date('Y-m-d', strtotime(Input::get('start')));
 			$end 								= date('Y-m-d', strtotime(Input::get('end')));
+			
+			Session::put('duedate', $ondate);
 
 		}
 
@@ -447,6 +427,19 @@ class AttendanceController extends BaseController
 
 	public function store($id = null)
 	{
+		if(!is_null($id))
+		{
+			if(!Input::has('ondate'))
+			{
+				App::abort(404);
+			}
+
+			
+			$ondate 							= date('Y-m-d', strtotime(Input::get('ondate')));
+			
+			Session::put('duedate', $ondate);
+		}
+
 		if(Input::has('id'))
 		{
 			$id 								= Input::get('id');
@@ -490,7 +483,33 @@ class AttendanceController extends BaseController
 			App::abort(404);
 		}
 
-		$attributes 							= Input::only('modified_status');
+		unset($search);
+		unset($sort);
+
+		$search['lastattendancelog'] 			= null;
+		$search['personid'] 					= $person_id;
+		$search['id'] 							= $id;
+		$sort 									= ['created_at' => 'asc'];
+		$results 								= $this->dispatch(new Getting(new ProcessLog, $search, $sort , 1, 1));
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$plog 									= json_decode(json_encode($contents->data), true);
+
+		if(!is_null($plog['attendancelogs'][0]['settlement_at']))
+		{
+			Session::put('settlementattendance', true);
+		}
+
+		$attributes['actual_status'] 			= $plog['attendancelogs'][0]['actual_status'];
+		$attributes['margin_start'] 			= $plog['attendancelogs'][0]['margin_start'];
+		$attributes['margin_end'] 				= $plog['attendancelogs'][0]['margin_end'];
+		// $attributes['notes'] 					= $plog['attendancelogs'][0]['actual_status'];
+		$attributes['modified_status'] 			= Input::get('modified_status');
 		$attributes['modified_by']				= Session::get('loggedUser');
 		$attributes['modified_at']				= date('Y-m-d H:i:s');
 
@@ -498,7 +517,7 @@ class AttendanceController extends BaseController
 
 		DB::beginTransaction();
 		
-		$content 								= $this->dispatch(new Saving(new ProcessLog, $attributes, $id, new Person, $person_id));
+		$content 								= $this->dispatch(new Saving(new AttendanceLog, $attributes, null, new ProcessLog, $id));
 		$is_success 							= json_decode($content);
 		
 		if(!$is_success->meta->success)

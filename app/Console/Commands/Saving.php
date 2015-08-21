@@ -137,6 +137,11 @@ class Saving extends Command implements SelfHandling {
 					$this->syncModel = $this->syncModel->findorfail($this->syncid);
 					$this->model->Application()->associate($this->syncModel);
 				}
+				elseif($this->syncModel == new \App\Models\ProcessLog)
+				{
+					$this->syncModel = $this->syncModel->findorfail($this->syncid);
+					$this->model->ProcessLog()->associate($this->syncModel);
+				}
 			}
 
 			if($this->model->save())

@@ -73,11 +73,41 @@ class AttendanceLogObserver
 				$model->fill(['modified_at' => date('Y-m-d H:i:s', strtotime('now'))]);
 			}
 
+			if(isset($model['attributes']['process_log_id']))
+			{
+				//modify count status
+				$prev_data 								= ProcessLog::personid($model->processlog['person_id'])->notid($model['attributes']['process_log_id'])->lastattendancelog(null)->orderby('on', 'desc')->first();
+
+				//check prev data if modified and current data is modify
+				if($prev_data && isset($prev_data['attendancelogs'][0]) && ($prev_data['attendancelogs'][0]['modified_status'] != '' && $model['attributes']['modified_status']!='') && (strtoupper($prev_data['attendancelogs'][0]['modified_status']) == strtoupper($model['attributes']['modified_status'])))
+				{
+					$count 								= $prev_data['attendancelogs'][0]['count_status'] + 1;
+				}
+				elseif($prev_data && isset($prev_data['attendancelogs'][0]) && ($prev_data['attendancelogs'][0]['modified_status'] != '' && $model['attributes']['modified_status']=='') && (strtoupper($prev_data['attendancelogs'][0]['modified_status']) == strtoupper($model['attributes']['actual_status'])))
+				{
+					$count 								= $prev_data['attendancelogs'][0]['count_status'] + 1;
+				}
+				elseif($prev_data && isset($prev_data['attendancelogs'][0]) && ($prev_data['attendancelogs'][0]['modified_status'] == '' && $model['attributes']['modified_status']=='') && (strtoupper($prev_data['attendancelogs'][0]['actual_status']) == strtoupper($model['attributes']['actual_status'])))
+				{
+					$count 								= $prev_data['attendancelogs'][0]['count_status'] + 1;
+				}
+				elseif($prev_data && isset($prev_data['attendancelogs'][0]) && ($prev_data['attendancelogs'][0]['modified_status'] == '' && $model['attributes']['modified_status']!='') && (strtoupper($prev_data['attendancelogs'][0]['actual_status']) == strtoupper($model['attributes']['modified_status'])))
+				{
+					$count 								= $prev_data['attendancelogs'][0]['count_status'] + 1;
+				}
+				else
+				{
+					$count 								= 1;
+				}
+
+				$model->count_status 					= $count;
+			}
+
 			return true;
 		}
 		else
 		{
-			$model['errors'] 					= $validator->errors();
+			$model['errors'] 						= $validator->errors();
 
 			return false;
 		}
@@ -85,7 +115,7 @@ class AttendanceLogObserver
 
 	public function saved($model)
 	{
-		$on 									= date('Y-m-d', strtotime($model->processlog->on));
+		$on 									= date('Y-m-d', strtotime($model->processlog['on']));
 		if(strtoupper($model->actual_status)=='AS' && (in_array(strtoupper($model->modified_status), ['CN','CI','CB'])))
 		{
 			//check if pw on that day were provided
@@ -218,20 +248,23 @@ class AttendanceLogObserver
 		}
 
 		//check if current status wasn't workleave but previously marked as workleave
-		$prev_data 								= AttendanceLog::processlogid($model['attributes']['process_log_id'])->orderBy('created_at', 'asc')->first();
-
-		if($prev_data && in_array($prev_data->modified_status, ['CN', 'CB']) && !in_array($model['attributes']['modified_status'], ['CN', 'CB']))
+		if(isset($model['attributes']['process_log_id']))
 		{
-			$pwM 								= PersonWorkleave::personid($model->processlog->person_id)->ondate([$on, $on])->status(strtoupper($prev_data->modified_status))->quota(false)->first();
+			$prev_data 								= AttendanceLog::processlogid($model['attributes']['process_log_id'])->orderBy('created_at', 'asc')->first();
 
-			if(!$pwM->delete())
+			if($prev_data && in_array($prev_data->modified_status, ['CN', 'CB']) && !in_array($model['attributes']['modified_status'], ['CN', 'CB']))
 			{
-				$model['errors']				= $data->getError();
-				
-				return false;
-			}
+				$pwM 								= PersonWorkleave::personid($model->processlog->person_id)->ondate([$on, $on])->status(strtoupper($prev_data->modified_status))->quota(false)->first();
 
-			return true;
+				if(!$pwM->delete())
+				{
+					$model['errors']				= $data->getError();
+					
+					return false;
+				}
+
+				return true;
+			}
 		}
 
 	}

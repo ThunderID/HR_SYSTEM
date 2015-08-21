@@ -41,7 +41,7 @@
 										'form_url'			=> route('hr.report.attendances.store', array_merge(['id' => $id, 'org_id' => $data['id'], 'person_id' => $person['id']], Input::all())),
 										'new'				=> (is_null($id) ? true : false),
 										'organisation_id'	=> $data['id'],
-										'search'			=> ['id' => $id],
+										'search'			=> ['id' => $id, 'lastattendancelog' => null],
 										'sort'				=> [],
 										'page'				=> 1,
 										'per_page'			=> 1,

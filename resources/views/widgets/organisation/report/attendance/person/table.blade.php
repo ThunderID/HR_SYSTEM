@@ -27,7 +27,7 @@
 						<th style="width:12%">Tanggal<br/>&nbsp;</th>
 						<th class="text-center" style="width:12%">Jam Masuk<br/>(Jadwal)</th>
 						<th class="text-center" style="width:12%">Jam Keluar<br/>(Jadwal)</th>
-						<th class="text-center" style="width:10%">Time Loss Rate</th>
+						<!-- <th class="text-center" style="width:10%">Time Loss Rate</th> -->
 						<th class="text-center" style="width:8%">Status Awal</th>
 						<th class="text-center" style="width:8%">Status Modifikasi</th>
 						<th class="text-center" style="width:12%">Dimodifikasi Oleh</th>
@@ -52,108 +52,114 @@
 								{{ date('H:i:s', strtotime($value['end'])) }}
 								({{ date('H:i:s', strtotime($value['schedule_end'])) }})
 							</td>
-							<td class="text-center font-11">
+							@if(isset($value['attendancelogs'][0]))
+							<!-- <td class="text-center font-11">
 								<?php
-									$margin_start = 0;
-									$margin_end = 0;
-									if(in_array($value['modified_status'], ['HC', 'AS', 'UL', 'SS', 'LL']) || ($value['modified_status']=='' && in_array($value['actual_status'], ['HC', 'AS'])))
-									{
-										if($value['margin_start']<0)
-										{
-											$margin_start=abs($value['margin_start']);
-										}
-										if($value['margin_end']<0)
-										{
-											$margin_end=abs($value['margin_end']);
-										}
-									}
+									// $margin_start = 0;
+									// $margin_end = 0;
+									// if(in_array($value['attendancelogs'][0]['modified_status'], ['HC', 'AS', 'UL', 'SS', 'LL']) || ($value['attendancelogs'][0]['modified_status']=='' && in_array($value['attendancelogs'][0]['actual_status'], ['HC', 'AS'])))
+									// {
+									// 	if($value['attendancelogs'][0]['margin_start']<0)
+									// 	{
+									// 		$margin_start=abs($value['attendancelogs'][0]['margin_start']);
+									// 	}
+									// 	if($value['attendancelogs'][0]['margin_end']<0)
+									// 	{
+									// 		$margin_end=abs($value['attendancelogs'][0]['margin_end']);
+									// 	}
+									// }
 
-									$total_absence = $margin_end + $margin_start;
+									// $total_absence = $margin_end + $margin_start;
 
-									list($hours, $minutes, $seconds) = explode(":", $value['schedule_end']);
+									// list($hours, $minutes, $seconds) = explode(":", $value['schedule_end']);
 
-									$schedule_end_second	= $hours*3600+$minutes*60+$seconds;
+									// $schedule_end_second	= $hours*3600+$minutes*60+$seconds;
 
-									list($hours, $minutes, $seconds) = explode(":", $value['schedule_start']);
+									// list($hours, $minutes, $seconds) = explode(":", $value['schedule_start']);
 
-									$schedule_start_second	= $hours*3600+$minutes*60+$seconds;
+									// $schedule_start_second	= $hours*3600+$minutes*60+$seconds;
 
-									$tlr = ($total_absence!=0 ? $total_absence : 1) / (abs($schedule_end_second - $schedule_start_second)!=0 ? abs($schedule_end_second - $schedule_start_second) : 1);
+									// $tlr = ($total_absence!=0 ? $total_absence : 1) / (abs($schedule_end_second - $schedule_start_second)!=0 ? abs($schedule_end_second - $schedule_start_second) : 1);
+								// {{(round(abs($tlr) * 100, 2) <= 100 ? round(abs($tlr) * 100, 2) : 100 )}} %
 								?>
 								
-								{{(round(abs($tlr) * 100, 2) <= 100 ? round(abs($tlr) * 100, 2) : 100 )}} %
-							</td>
-
+							</td> -->
 							<td class="hidden-xs font-11 text-center">
 								<a href="javascript:;" class="black cursor-text" data-toggle-tooltip="tooltip" data-placement="bottom" title="
-									@if ($value['actual_status']=='AS')
+									@if ($value['attendancelogs'][0]['actual_status']=='AS')
 										Ketidakhadiran Tanpa Penjelasan
-									@elseif ($value['actual_status']=='CB')
+									@elseif ($value['attendancelogs'][0]['actual_status']=='CB')
 										Cuti Bersama
-									@elseif ($value['actual_status']=='CI')
+									@elseif ($value['attendancelogs'][0]['actual_status']=='CI')
 										Cuti Istimewa
-									@elseif ($value['actual_status']=='CN')
+									@elseif ($value['attendancelogs'][0]['actual_status']=='CN')
 										Cuti Untuk Keperluan Pribadi
-									@elseif ($value['actual_status']=='DN')
+									@elseif ($value['attendancelogs'][0]['actual_status']=='DN')
 										Keperluan Dinas
-									@elseif ($value['actual_status']=='HC')
+									@elseif ($value['attendancelogs'][0]['actual_status']=='HC')
 										Hadir Cacat Tanpa Penjelasan
-									@elseif ($value['actual_status']=='HD')
+									@elseif ($value['attendancelogs'][0]['actual_status']=='HD')
 										Hadir Cacat Dengan Ijin Dinas
-									@elseif ($value['actual_status']=='HP')
+									@elseif ($value['attendancelogs'][0]['actual_status']=='HP')
 										Hadir Cacat Dengan Ijin Pulang Cepat
-									@elseif ($value['actual_status']=='HT')
+									@elseif ($value['attendancelogs'][0]['actual_status']=='HT')
 										Hadir Cacat Dengan Ijin Datang Terlambat
-									@elseif ($value['actual_status']=='SS')
+									@elseif ($value['attendancelogs'][0]['actual_status']=='SS')
 										Sakit Jangka Pendek
-									@elseif ($value['actual_status']=='SL')
+									@elseif ($value['attendancelogs'][0]['actual_status']=='SL')
 										Sakit Berkepanjangan
-									@elseif ($value['actual_status']=='UL')
+									@elseif ($value['attendancelogs'][0]['actual_status']=='UL')
 										Ketidakhadiran Dengan Ijin Namun Cuti Tidak Tersedia
 									@endif
 								">
-									{{$value['actual_status']}}
+									{{$value['attendancelogs'][0]['actual_status']}}
 								</a>
 							</td>
 							<td class="hidden-xs font-11 text-center">
 								<a href="javascript:;" class="black cursor-text" data-toggle-tooltip="tooltip" data-placement="bottom" title="
-									@if ($value['modified_status']=='AS')
+									@if ($value['attendancelogs'][0]['modified_status']=='AS')
 										Ketidakhadiran Tanpa Penjelasan
-									@elseif ($value['modified_status']=='CB')
+									@elseif ($value['attendancelogs'][0]['modified_status']=='CB')
 										Cuti Bersama
-									@elseif ($value['modified_status']=='CI')
+									@elseif ($value['attendancelogs'][0]['modified_status']=='CI')
 										Cuti Istimewa
-									@elseif ($value['modified_status']=='CN')
+									@elseif ($value['attendancelogs'][0]['modified_status']=='CN')
 										Cuti Untuk Keperluan Pribadi
-									@elseif ($value['modified_status']=='DN')
+									@elseif ($value['attendancelogs'][0]['modified_status']=='DN')
 										Keperluan Dinas
-									@elseif ($value['modified_status']=='HC')
+									@elseif ($value['attendancelogs'][0]['modified_status']=='HC')
 										Hadir Cacat Tanpa Penjelasan
-									@elseif ($value['modified_status']=='HD')
+									@elseif ($value['attendancelogs'][0]['modified_status']=='HD')
 										Hadir Cacat Dengan Ijin Dinas
-									@elseif ($value['modified_status']=='HP')
+									@elseif ($value['attendancelogs'][0]['modified_status']=='HP')
 										Hadir Cacat Dengan Ijin Pulang Cepat
-									@elseif ($value['modified_status']=='HT')
+									@elseif ($value['attendancelogs'][0]['modified_status']=='HT')
 										Hadir Cacat Dengan Ijin Datang Terlambat
-									@elseif ($value['modified_status']=='SS')
+									@elseif ($value['attendancelogs'][0]['modified_status']=='SS')
 										Sakit Jangka Pendek
-									@elseif ($value['modified_status']=='SL')
+									@elseif ($value['attendancelogs'][0]['modified_status']=='SL')
 										Sakit Berkepanjangan
-									@elseif ($value['modified_status']=='UL')
+									@elseif ($value['attendancelogs'][0]['modified_status']=='UL')
 										Ketidakhadiran Dengan Ijin Namun Cuti Tidak Tersedia
 									@endif
 								">
-									{{($value['modified_status']!='' ? $value['modified_status'] : '')}}
+									{{($value['attendancelogs'][0]['modified_status']!='' ? $value['attendancelogs'][0]['modified_status'] : '')}}
 								</a>
 							</td>
 							<td class="hidden-xs font-11">
-								{{($value['modified_status']!='' ? $value['modifiedby']['name'] : '')}}
+								{{($value['attendancelogs'][0]['modified_status']!='' ? $value['attendancelogs'][0]['modifiedby']['name'] : '')}}
 							</td>
 							<td class="hidden-xs font-11">
-								@if($value['modified_status']!='')
-									{{ date('d-m-Y', strtotime($value['modified_at'])) }}
+								@if($value['attendancelogs'][0]['modified_status']!='')
+									{{ date('d-m-Y', strtotime($value['attendancelogs'][0]['modified_at'])) }}
 								@endif
 							</td>
+							@else
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+							@endif
 							<td class="text-right">
 								@if((int)Session::get('user.menuid')<=3)
 									<a href="{{route('hr.report.attendances.edit', array_merge(['id' => $value['id'], 'start' => $start, 'end' => $end, 'person_id' => $person['id'], 'org_id' => $data['id'], 'ondate' => $value['on']])) }}" class="btn btn-sm btn-default"><i class="fa fa-pencil"></i></a>
