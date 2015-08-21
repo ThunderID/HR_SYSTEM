@@ -30,7 +30,7 @@
 	@include('widgets.common.filter', [
 		'widget_template'		=> 'plain_no_title',
 		'widget_options'		=> [
-									'form_url'	=> route('hr.idles.index', ['org_id' => $data['id'], 'page' => (Input::has('page') ? Input::get('page') : 1)])
+									'form_url'	=> route('hr.policies.index', ['org_id' => $data['id'], 'page' => (Input::has('page') ? Input::get('page') : 1)])
 									]
 	])
 @overwrite
@@ -48,12 +48,12 @@
 											'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
 											'per_page'			=> 12,
-											'route_create'		=> route('hr.idles.create', ['org_id' => $data['id']])
+											'route_create'		=> route('hr.policies.create', ['org_id' => $data['id']])
 											]
 									]
 	])
 	
-	{!! Form::open(array('route' => array('hr.idles.delete', 0),'method' => 'DELETE')) !!}
+	{!! Form::open(array('route' => array('hr.policies.delete', 0),'method' => 'DELETE')) !!}
 		@include('widgets.modal.delete', [
 			'widget_template'		=> 'plain_no_title'
 		])

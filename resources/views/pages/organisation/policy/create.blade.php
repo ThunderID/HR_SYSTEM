@@ -39,14 +39,14 @@
 		'widget_options'		=> [
 									'idlelist' 				=>
 										[	
-											'form_url' 			=> route('hr.idles.store', ['id' => $id, 'org_id' => $data['id']]),
+											'form_url' 			=> route('hr.policies.store', ['id' => $id, 'org_id' => $data['id']]),
 											'organisation_id'	=> $data['id'],
 											'search'			=> ['id' => $id],
 											'sort'				=> [],
 											'page'				=> 1,
 											'new'				=> (is_null($id) ? true : false),
 											'per_page'			=> 1,
-											'route_edit'		=> route('hr.idles.index', ['org_id' => $data['id']])
+											'route_edit'		=> route('hr.policies.index', ['org_id' => $data['id']])
 										]
 									]
 	])

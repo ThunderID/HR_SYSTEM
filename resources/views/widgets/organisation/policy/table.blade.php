@@ -2,15 +2,15 @@
 
 @if (!$widget_error_count)
 	<?php
-		$IdleComposer['widget_data']['idlelist']['idle-pagination']->setPath(route('hr.idles.index'));
+		$PolicyComposer['widget_data']['idlelist']['idle-pagination']->setPath(route('hr.idles.index'));
 	?>
 
 	@section('widget_title')
 		<h1> {!! $widget_title or 'Idle' !!} </h1>
-		<small>Total data {{$IdleComposer['widget_data']['idlelist']['idle-pagination']->total()}}</small>
-		@if(isset($IdleComposer['widget_data']['idlelist']['active_filter']) && !is_null($IdleComposer['widget_data']['idlelist']['active_filter']))
+		<small>Total data {{$PolicyComposer['widget_data']['idlelist']['idle-pagination']->total()}}</small>
+		@if(isset($PolicyComposer['widget_data']['idlelist']['active_filter']) && !is_null($PolicyComposer['widget_data']['idlelist']['active_filter']))
 			 <div class="clearfix">&nbsp;</div>
-			@foreach($IdleComposer['widget_data']['idlelist']['active_filter'] as $key => $value)
+			@foreach($PolicyComposer['widget_data']['idlelist']['active_filter'] as $key => $value)
 				<span class="active-filter">{{$value}}</span>
 			@endforeach
 		@endif
@@ -18,9 +18,9 @@
 
 	@section('widget_body')
 		@if((int)Session::get('user.menuid')<=3)
-			<a href="{{ $IdleComposer['widget_data']['idlelist']['route_create'] }}" class="btn btn-primary">Tambah</a>
+			<a href="{{ $PolicyComposer['widget_data']['idlelist']['route_create'] }}" class="btn btn-primary">Tambah</a>
 		@endif
-		@if(isset($IdleComposer['widget_data']['idlelist']['idle']))
+		@if(isset($PolicyComposer['widget_data']['idlelist']['idle']))
 			<div class="clearfix">&nbsp;</div>			
 			<table class="table table-hover table-affix">
 				<thead>
@@ -35,8 +35,8 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php $i = $IdleComposer['widget_data']['idlelist']['idle-display']['from'];?>
-					@forelse($IdleComposer['widget_data']['idlelist']['idle'] as $key => $value)
+					<?php $i = $PolicyComposer['widget_data']['idlelist']['idle-display']['from'];?>
+					@forelse($PolicyComposer['widget_data']['idlelist']['idle'] as $key => $value)
 						<tr>
 							<td>
 								{{$i}}
@@ -58,10 +58,10 @@
 							</td>
 							<td class="text-right">
 								@if((int)Session::get('user.menuid')<=2)
-									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.idles.delete', [$value['id'], 'org_id' => $data['id'] ]) }}"><i class="fa fa-trash"></i></a>
+									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.policies.delete', [$value['id'], 'org_id' => $data['id'] ]) }}"><i class="fa fa-trash"></i></a>
 								@endif
 								@if((int)Session::get('user.menuid')<=3)
-									<a href="{{route('hr.idles.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+									<a href="{{route('hr.policies.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 								@endif
 							</td>
 						</tr>
@@ -76,8 +76,8 @@
 
 			<div class="row">
 				<div class="col-sm-12 text-center">
-					<p>Menampilkan {!!$IdleComposer['widget_data']['idlelist']['idle-display']['from']!!} - {!!$IdleComposer['widget_data']['idlelist']['idle-display']['to']!!}</p>
-					{!!$IdleComposer['widget_data']['idlelist']['idle-pagination']->appends(Input::all())->render()!!}
+					<p>Menampilkan {!!$PolicyComposer['widget_data']['idlelist']['idle-display']['from']!!} - {!!$PolicyComposer['widget_data']['idlelist']['idle-display']['to']!!}</p>
+					{!!$PolicyComposer['widget_data']['idlelist']['idle-pagination']->appends(Input::all())->render()!!}
 				</div>
 			</div>
 			<div class="clearfix">&nbsp;</div>
