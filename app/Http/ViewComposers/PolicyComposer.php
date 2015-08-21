@@ -3,10 +3,10 @@
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Getting;
-use App\Models\SettingIdle;
+use App\Models\Policy;
 use Input, Validator, App, Paginator;
 
-class IdleComposer extends WidgetComposer 
+class PolicyComposer extends WidgetComposer 
 {
 	protected function setRules($options)
 	{
@@ -25,7 +25,7 @@ class IdleComposer extends WidgetComposer
 	{
 		$options['search']['organisationid'] 	= $options['organisation_id'];
 
-		$results 								=  $this->dispatch(new Getting(new SettingIdle, $options['search'], $options['sort'] , (int)$options['page'], (int)$options['per_page'], isset($options['new']) ? $options['new'] : false));
+		$results 								=  $this->dispatch(new Getting(new Policy, $options['search'], $options['sort'] , (int)$options['page'], (int)$options['per_page'], isset($options['new']) ? $options['new'] : false));
 
 		$contents 								= json_decode($results);
 
@@ -37,24 +37,24 @@ class IdleComposer extends WidgetComposer
 				{
 					foreach ($value as $key2 => $value2) 
 					{
-						$this->widget_errors->add('SettingIdle', $value2);
+						$this->widget_errors->add('Policy', $value2);
 					}
 				}
 				else
 				{
-					$this->widget_errors->add('SettingIdle', $value);
+					$this->widget_errors->add('Policy', $value);
 				}
 			}
-			$widget_data['idle'] 				= null;
-			$widget_data['idle-pagination'] 	= null;
+			$widget_data['policy'] 				= null;
+			$widget_data['policy-pagination'] 	= null;
 		}
 		else
 		{
 			$page 								= json_decode(json_encode($contents->pagination), true);
-			$widget_data['idle'] 				= json_decode(json_encode($contents->data), true);
-			$widget_data['idle-pagination'] 	= new Paginator($page['total_data'], $page['total_data'], $page['per_page'], $page['page']);
-			$widget_data['idle-pagination']->setPath(route('hr.idles.index'));
-			$widget_data['idle-display'] 		= $page;
+			$widget_data['policy'] 				= json_decode(json_encode($contents->data), true);
+			$widget_data['policy-pagination'] 	= new Paginator($page['total_data'], $page['total_data'], $page['per_page'], $page['page']);
+			$widget_data['policy-pagination']->setPath(route('hr.policies.index'));
+			$widget_data['policy-display'] 		= $page;
 		}
 
 		return $widget_data;

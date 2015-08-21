@@ -97,13 +97,13 @@ Route::group(['middleware' => 'csrfverify'], function()
 			// IDLES RESOURCE
 			// ------------------------------------------------------------------------------------
 
-			Route::resource('idles',				'IdleController',									['names' => ['index' => 'hr.idles.index', 'create' => 'hr.idles.create', 'store' => 'hr.idles.store', 'show' => 'hr.idles.show', 'edit' => 'hr.idles.edit', 'update' => 'hr.idles.update', 'destroy' => 'hr.idles.delete']]);
+			Route::resource('policies',				'PolicyController',									['names' => ['index' => 'hr.policies.index', 'create' => 'hr.policies.create', 'store' => 'hr.policies.store', 'show' => 'hr.policies.show', 'edit' => 'hr.policies.edit', 'update' => 'hr.policies.update', 'destroy' => 'hr.policies.delete']]);
 
 			// ------------------------------------------------------------------------------------
 			// AUTHENTICATION RESOURCE
 			// ------------------------------------------------------------------------------------
 
-			Route::resource('authentications',		'AuthenticationController',						['names' => ['index' => 'hr.authentications.index', 'create' => 'hr.authentications.create', 'store' => 'hr.authentications.store', 'show' => 'hr.authentications.show', 'edit' => 'hr.authentications.edit', 'update' => 'hr.authentications.update', 'destroy' => 'hr.authentications.delete']]);
+			Route::resource('authentications',		'AuthenticationController',							['names' => ['index' => 'hr.authentications.index', 'create' => 'hr.authentications.create', 'store' => 'hr.authentications.store', 'show' => 'hr.authentications.show', 'edit' => 'hr.authentications.edit', 'update' => 'hr.authentications.update', 'destroy' => 'hr.authentications.delete']]);
 
 
 			// ------------------------------------------------------------------------------------

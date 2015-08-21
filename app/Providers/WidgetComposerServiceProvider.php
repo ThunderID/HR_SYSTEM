@@ -70,9 +70,9 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		View::composer(['widgets.organisation.document.table', 'widgets.organisation.document.form', 'widgets.organisation.document.select', 'widgets.common.persondocument.form', 'widgets.common.persondocument.form_no_title', 'widgets.common.persondocument.form_multiple', 'widgets.organisation.document.stat.total_document'], 	'App\Http\ViewComposers\DocumentComposer');
 
 		// -----------------------------------------------------------------------------
-		// IDLE
+		// Policy
 		// -----------------------------------------------------------------------------
-		// View::composer(['widgets.organisation.idle.table', 'widgets.organisation.idle.form'], 	'App\Http\ViewComposers\IdleComposer');
+		View::composer(['widgets.organisation.policy.table', 'widgets.organisation.policy.form'], 	'App\Http\ViewComposers\PolicyComposer');
 
 		// -----------------------------------------------------------------------------
 		// WORKLEAVE

@@ -137,13 +137,13 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.document.templates.update'					=> 43,
 							'hr.document.templates.delete'					=> 44,
 							
-							'hr.idles.index'								=> 45,
-							'hr.idles.show'									=> 45,
-							'hr.idles.create'								=> 46,
-							'hr.idles.store'								=> 46,
-							'hr.idles.edit'									=> 47,
-							'hr.idles.update'								=> 47,
-							'hr.idles.delete'								=> 48,
+							'hr.policies.index'								=> 45,
+							'hr.policies.show'								=> 45,
+							'hr.policies.create'							=> 46,
+							'hr.policies.store'								=> 46,
+							'hr.policies.edit'								=> 47,
+							'hr.policies.update'							=> 47,
+							'hr.policies.delete'							=> 48,
 
 							//49-52 application
 							'hr.applications.index'							=> 49,
