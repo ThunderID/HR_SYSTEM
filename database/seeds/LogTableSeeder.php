@@ -21,7 +21,7 @@ class LogTableSeeder extends Seeder
 		DB::table('attendance_details')->truncate();
 		$faker 										= Factory::create();
 		$total_persons  							= Person::checkwork(true)->count();
-		$logs 										= ['login', 'logout','presence', 'idle', 'lock', 'working', 'presence', 'sleep', 'presence'];
+		$logs 										= ['sessionlogon', 'sessionlogout','presence', 'idle', 'sessionlock', 'sessionunlock', 'presence', 'sleep', 'presence'];
 		$pcs 										= ['redhat', 'ubuntu', 'debian', 'mint', 'centos', '7', 'xp', 'fp', 'fp', 'fp'];
 		try
 		{
@@ -45,6 +45,7 @@ class LogTableSeeder extends Seeder
 							$hour 					= $index2.' hour';
 							$minute 				= rand(2,60).' minutes';
 							$second 				= rand(2,60).' seconds';
+							$previous 				= ' + '.$hour.' + '.$minute.' + '.$second;
 						}
 						elseif($index2==8)
 						{
@@ -52,9 +53,11 @@ class LogTableSeeder extends Seeder
 							$hour 					= $index2.' hours';
 							$minute 				= rand(2,60).' minutes';
 							$second 				= rand(2,60).' seconds';
+							$previous 				= ' + '.$hour.' + '.$minute.' + '.$second;
 						}
 						else
 						{
+							$previous 				= ' + '.$hour.' + '.$minute.' + '.$second;
 							$state 					= rand(2,8);
 							$hour 					= $index2.' hours';
 							$minute 				= rand(2,60).' minutes';
@@ -66,7 +69,7 @@ class LogTableSeeder extends Seeder
 						$data->fill([
 							'name'					=> $logs[$state],
 							'on'					=> date("Y-m-d H:i:s", strtotime($period->format('Y-m-d').' + '.$hour.' + '.$minute.' + '.$second)),
-							'last_input_time'		=> date("Y-m-d H:i:s", strtotime($period->format('Y-m-d').' + '.$hour.' + '.$minute.' + '.$second)),
+							'last_input_time'		=> date("Y-m-d H:i:s", strtotime($period->format('Y-m-d').$previous)),
 							'pc'					=> $pcs[$rand],
 							'app_version'			=> '1.0',
 							'ip'					=> getenv("REMOTE_ADDR")

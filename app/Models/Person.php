@@ -161,7 +161,8 @@ class Person extends BaseModel {
 											'globalworkleave'	 			=> 'GlobalWorkleave',
 											'globalsanction'	 			=> 'GlobalSanction',
 											
-											'processlogsondate'	 			=> 'ProcessLogsOndate',
+											'processlogattendancesondate'	=> 'ProcessLogAttendancesOndate',
+											'processlogidlesondate'			=> 'ProcessLogIdlesOndate',
 											'logsondate'	 				=> 'LogsOndate',
 										];
 

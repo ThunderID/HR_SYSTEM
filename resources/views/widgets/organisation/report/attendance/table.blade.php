@@ -29,8 +29,6 @@
 							<th rowspan="2" class="text-center font-12">No<br/>&nbsp;</th>
 							<th rowspan="2" class="text-left font-12 mr-30 pr-30" style="width:20em;">Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br/>(Jabatan)</th>
 							<th rowspan="2" class="text-center font-12 pl-20 pr-20" style="width:20em">Tanggal</th>
-							<th rowspan="2" class="text-center font-12" style="width:20em">Jam Masuk <br> (Jadwal)</th>
-							<th rowspan="2" class="text-center font-12" style="width:20em">Jam Keluar <br> (Jadwal)</th>
 							<th rowspan="2" class="text-center font-12">HB<br/>&nbsp;</th>
 							<th colspan="4" class="text-center font-12" >HC</th>
 							<th colspan="8" class="text-center font-12" >AS</th>
@@ -70,8 +68,6 @@
 								<td class="text-center font-12">
 									{{ date('d-m-Y', strtotime($value['created_at'])) }}
 								</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
 								<td class="text-center font-12">
 									{{$value['HB']}}
 								</td>

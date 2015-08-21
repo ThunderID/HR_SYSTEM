@@ -23,9 +23,14 @@ trait HasProcessLogsTrait {
 		return $this->hasMany('App\Models\ProcessLog');
 	}
 
-	public function ScopeProcessLogsOndate($query, $variable)
+	public function ScopeProcessLogAttendancesOndate($query, $variable)
 	{
 		return $query->with(['processlogs' => function($q)use($variable){$q->ondate($variable['on'])->lastattendancelog(true)->orderby('on', 'asc');}]);
+	}
+
+	public function ScopeProcessLogIdlesOndate($query, $variable)
+	{
+		return $query->with(['processlogs' => function($q)use($variable){$q->ondate($variable['on'])->lastidlelog(true)->orderby('on', 'asc');}]);
 	}
 
 	public function ScopeFullSchedule($query, $variable)

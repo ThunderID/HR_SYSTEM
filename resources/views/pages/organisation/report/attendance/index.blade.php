@@ -51,7 +51,7 @@
 										'personlist'			=>
 										[
 											'organisation_id'	=> $data['id'],
-											'search'			=> ['processlogsondate' => ['on' => [$start, $end]]],
+											'search'			=> ['processlogattendancesondate' => ['on' => [$start, $end]]],
 											'sort'				=> ['persons.name' => 'asc'],
 											'page'				=> 1,
 											'per_page'			=> 100,
