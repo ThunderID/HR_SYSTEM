@@ -19,6 +19,6 @@ trait HasPoliciesTrait {
 
 	public function Policies()
 	{
-		return $this->HasMany('App\Models\Policy')
+		return $this->HasMany('App\Models\Policy');
 	}
 }

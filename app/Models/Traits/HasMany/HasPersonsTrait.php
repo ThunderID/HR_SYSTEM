@@ -18,7 +18,7 @@ trait HasPersonsTrait {
 
 	public function Persons()
 	{
-		return $this->hasMany('App\Models\Relative');
+		return $this->hasMany('App\Models\Person');
 	}
 
 }

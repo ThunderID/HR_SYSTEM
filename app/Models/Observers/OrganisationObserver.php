@@ -6,6 +6,8 @@ use \App\Models\Branch;
 use \App\Models\Chart;
 use \App\Models\Work;
 use \App\Models\Policy;
+use \App\Models\Document;
+use \App\Models\Template;
 
 /* ----------------------------------------------------------------------
  * Event:
@@ -58,10 +60,193 @@ class OrganisationObserver
 
 					if (!$policy->save())
 					{
-						$model['errors'] 	= $policy->getError();
+						$model['errors'] 				= $policy->getError();
 
 						return false;
 					}
+				}
+
+				$name 									= 
+															[
+																'KTP',
+																'Akun Bank',
+																'NPWP',
+																'BPJS Ketenagakerjaan',
+																'BPJS Kesehatan',
+
+																'Surat Peringatan I', 
+																'Surat Peringatan II', 
+																'Surat Peringatan III', 
+																'Penilaian Kinerja I', 
+																'Penilaian Kinerja II', 
+																'Penilaian Kinerja III', 
+															];
+
+				$tag 									= 
+															[
+																'Identitas',
+																'Akun',
+																'Pajak',
+																'Pajak',
+																'Pajak',
+
+																'SP', 
+																'SP', 
+																'SP', 
+																'Apraisal', 
+																'Apraisal', 
+																'Apraisal', 
+															];
+				$template 								= 
+															[
+																[
+																	'Nomor KTP',
+																	'Alamat',
+																	'Kota',
+																	'Agama',
+																	'Status Kawin',
+																	'Kewarganegaraan',
+																	'Berlaku Hingga',
+																], 
+																[
+																	'Nomor Rekening',
+																	'Nama Bank',
+																	'Nama Nasabah',
+																], 
+																[
+																	'NPWP',
+																], 
+																[
+																	'Nomor BPJS-TK',
+																], 
+																[
+																	'Nomor BPJS-K',
+																], 
+																[
+																	'Nomor Surat',
+																	'Tanggal',
+																	'Isi Surat Peringatan',
+																], 
+																[
+																	'Nomor Surat',
+																	'Tanggal',
+																	'Isi Surat Peringatan',
+																], 
+																[
+																	'Nomor Surat',
+																	'Tanggal',
+																	'Isi Surat Peringatan',
+																], 
+																[
+																	'Nomor Surat',
+																	'Tanggal',
+																	'Isi Penilaian Kinerja',
+																], 
+																[
+																	'Nomor Surat',
+																	'Tanggal',
+																	'Isi Penilaian Kinerja',
+																], 
+																[
+																	'Nomor Surat',
+																	'Tanggal',
+																	'Isi Penilaian Kinerja',
+																], 
+															];
+
+				$type 									= 	[
+																[
+																	'string',
+																	'text',
+																	'string',
+																	'string',
+																	'string',
+																	'string',
+																	'date',
+																], 
+																[
+																	'string',
+																	'string',
+																	'string',
+																], 
+																[
+																	'string',
+																], 
+																[
+																	'string',
+																], 
+																[
+																	'string',
+																], 
+																[
+																	'string',
+																	'date',
+																	'text',
+																], 
+																[
+																	'string',
+																	'date',
+																	'text',
+																], 
+																[
+																	'string',
+																	'date',
+																	'text',
+																], 
+																[
+																	'string',
+																	'date',
+																	'text',
+																], 
+																[
+																	'string',
+																	'date',
+																	'text',
+																], 
+																[
+																	'string',
+																	'date',
+																	'text',
+																], 
+															];
+
+				foreach(range(0, count($name)-1) as $index)
+				{
+					if($index<4)
+					{
+						$required 						= true;
+					}
+					else
+					{
+						$required 						= false;
+					}
+					$document = new Document;
+					$document->fill([
+						'name'							=> $name[$index],
+						'tag'							=> $tag[$index],
+						'is_required'					=> $required,
+					]);
+					$document->organisation()->associate($model);
+
+					if (!$document->save())
+					{
+						$model['errors'] 				= $document->getError();
+
+						return false;
+					}
+
+					foreach ($template[$index] as $key => $value) 
+					{
+						$templates[$key] 				= new Template;
+						$templates[$key]->fill([
+							'field'						=> $value,
+							'type'						=> $type[$index][$key],
+						]);
+
+
+					}
+					$document->templates()->saveMany($templates);
+					unset($templates);
 				}
 
 				return true;
@@ -127,15 +312,24 @@ class OrganisationObserver
 			return false;
 		}
 
-		if($model->documents()->count())
+		if($model->persons()->count())
 		{
-			$model['errors'] 	= ['Tidak dapat menghapus organisasi yang memiliki data dokumen. Silahkan hapus data dokumen terlebih dahulu.'];
+			$model['errors'] 	= ['Tidak dapat menghapus organisasi yang memiliki personalia. Silahkan hapus data personalia terlebih dahulu.'];
+
+			return false;
+		}
+
+		$personsdocs 			= Document::organisationid($model['attributes']['id'])->wherehas('persons', function($q){$q;})->count();
+
+		if($personsdocs)
+		{
+			$model['errors'] 	= ['Tidak dapat menghapus organisasi yang memiliki dokumen personalia. Silahkan hapus data dokumen personalia terlebih dahulu.'];
 
 			return false;
 		}
 
 		$workers 				= Organisation::id($model['attributes']['id'])->onlyadmin(false)->first();
-		
+
 		if(count($workers))
 		{
 			$model['errors'] 	= ['Tidak dapat menghapus organisasi yang memiliki pegawai.'];
@@ -184,6 +378,30 @@ class OrganisationObserver
 		{
 			$policy 	 					= new Policy;
 			$delete 						= $policy->id($value->id)->first();
+			if($delete && !$delete->delete())
+			{
+				$model['errors']			= $delete->getError();
+
+				return false;
+			}
+		}
+
+		foreach ($model->documents as $key => $value) 
+		{
+			foreach ($value->templates as $key2 => $value2) 
+			{
+				$template 	 				= new Template;
+				$delete 					= $template->id($value2->id)->first();
+				if($delete && !$delete->delete())
+				{
+					$model['errors']		= $delete->getError();
+				
+					return false;
+				}
+			}
+
+			$document 	 					= new Document;
+			$delete 						= $document->id($value->id)->first();
 			if($delete && !$delete->delete())
 			{
 				$model['errors']			= $delete->getError();
