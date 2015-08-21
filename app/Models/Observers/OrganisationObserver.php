@@ -46,7 +46,7 @@ class OrganisationObserver
 			if($chart->save())
 			{
 				$types 									= ['passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle', 'extendsworkleave', 'extendsmidworkleave', 'firstacleditor', 'secondacleditor'];
-				$values 								= ['+ 3 months', '1', '1', '2', '2', '2', '- 1 month', '- 5 days', '900', '3600','7200', '+ 3 months', '+ 15 months', '- 1 month', '- 5 days'];
+				$values 								= ['- 3 months', '1', '1', '2', '2', '2', '- 1 month', '- 5 days', '900', '3600','7200', '+ 3 months', '+ 15 months', '- 1 month', '- 5 days'];
 				foreach(range(0, count($types)-1) as $key => $index)
 				{
 					$policy 							= new Policy;

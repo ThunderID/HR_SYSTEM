@@ -9,6 +9,7 @@ use App\Models\Person;
 use App\Models\Work;
 use App\Models\WorkAuthentication;
 use App\Models\Organisation;
+use App\Models\Policy;
 
 class RouteServiceProvider extends ServiceProvider {
 
@@ -337,6 +338,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 					Session::put('user.username', $contents->data->username);
 					Session::put('user.gender', $contents->data->gender);
 					Session::put('user.avatar', $contents->data->avatar);
+					Session::put('user.lupassword', $contents->data->last_password_updated_at);
 
 					$results 									= $this->dispatch(new Getting(new Work, ['personid' => Session::get('loggedUser'), 'active' => true, 'withattributes' => ['workauthentications', 'workauthentications.organisation', 'chart']], ['end' => 'asc'],1, 100));
 
@@ -408,6 +410,21 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 						return Redirect::guest(route('hr.login.get'));
 					}
 
+
+					$results 									= $this->dispatch(new Getting(new Policy, ['type' => 'passwordreminder' ,'organisationid' => Session::get('user.organisationid'), 'ondate' => date('Y-m-d')], ['created_at' => 'desc'],1, 1));
+
+					$contents_3 								= json_decode($results);
+
+					if(!$contents_3->meta->success)
+					{
+						App::abort(404);
+					}
+
+					if(date('Y-m-d H:i:s', strtotime(Session::get('user.lupassword'))) < date('Y-m-d H:i:s', strtotime($contents_3->data->value)))
+					{
+						Session::put('alert_info', 'Sudah waktunya mengganti password anda');
+					}
+
 					Session::put('user.menuid', $contents->data->tmp_auth_group_id);
 				}
 				elseif(Route::currentRouteName()=='hr.logout.get')
@@ -417,8 +434,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 				}
 				elseif(Route::currentRouteName()=='hr.organisations.store')
 				{
-					// Session::flush();
-					// return Redirect::guest(route('hr.login.get'));
+					//
 				}
 				elseif(Route::currentRouteName()!='hr.organisations.create')
 				{
