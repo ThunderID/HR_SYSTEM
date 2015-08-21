@@ -31,9 +31,9 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.organisation.idle.form', [
+	@include('widgets.organisation.policy.form', [
 		'widget_template'		=> 'panel',
-		'widget_title'			=> 'Idle',
+		'widget_title'			=> 'Kebijakan',
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> [

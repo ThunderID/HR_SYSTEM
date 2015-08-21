@@ -36,8 +36,8 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.organisation.idle.table', [
-		'widget_title'			=> 'Pengaturan Idle '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
+	@include('widgets.organisation.policy.table', [
+		'widget_title'			=> 'Pengaturan Kebijakan '.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small>' : null),
 		'widget_template'		=> 'panel',
 		'widget_options'		=> [ 'idlelist' 				=>
 										[
