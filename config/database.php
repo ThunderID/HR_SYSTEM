@@ -54,10 +54,10 @@ return [
 
 		'mysql' => [
 			'driver'    => 'mysql',
-			'host'      => 'localhost',
-			'database'  => 'hr_system',
-			'username'  => 'root',
-			'password'  => 'vortege',
+			'host' 		=> env('DB_HOST', 'localhost'),
+			'database' 	=> env('DB_DATABASE', 'hr_system'),
+			'username' 	=> env('DB_USERNAME', 'root'),
+			'password' 	=> env('DB_PASSWORD', 'vortege'),
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
