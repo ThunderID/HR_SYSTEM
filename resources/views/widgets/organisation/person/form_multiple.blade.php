@@ -19,7 +19,7 @@
 
 			  <!-- Tab panes -->
 			<div class="tab-content">
-			    <div role="tabpanel" class="tab-pane active setup-content" id="step-1">
+			    <div role="tabpanel" class="active setup-content" id="step-1">
 			    	@include('widgets.organisation.person.form_no_title', [			    		
 			    		'widget_options'		=> 	[
 			    										'personlist'			=>
@@ -36,7 +36,7 @@
 			    									]
 			    	])
 			    </div>
-			    <div role="tabpanel" class="tab-pane setup-content" id="step-2">
+			    <div role="tabpanel" class="setup-content" id="step-2">
 			    	@include('widgets.common.contact.form_no_title', [			    		
 			    		'widget_options'	=> 	[
 			    									'contactlist'			=>
@@ -54,7 +54,7 @@
 			    	])
 			    </div>
 
-			    <div role="tabpanel" class="tab-pane setup-content" id="step-3">
+			    <div role="tabpanel" class="setup-content" id="step-3">
 			    	@include('widgets.common.persondocument.form_no_title', [			    		
 			    		'widget_options'	=> 	[
 			    									'documentlist'			=>
