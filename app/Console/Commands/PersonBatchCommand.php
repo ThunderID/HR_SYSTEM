@@ -175,15 +175,14 @@ class PersonBatchCommand extends Command {
 
 							if(isset($originaluname[$idxuname]))
 							{
-								$modifyuname 						= $modifyuname.$originaluname[$idxuname];
+								$modifyuname 						= $modifyuname.$originaluname[$idxuname][0];
 							}
 							else
 							{
 								$modifyuname 						= $modifyuname.$modifyuname;
 							}
 						}
-
-						while($contents->data->success);
+						while($contents->meta->success);
 
 						$attributes[$i]['username']			= $modifyuname.'.'.$row['kodeorganisasi'];
 
