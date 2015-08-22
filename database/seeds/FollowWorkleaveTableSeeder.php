@@ -16,7 +16,7 @@ class FollowWorkleaveTableSeeder extends Seeder
 		$organisations 								= Organisation::get();
 		try
 		{
-			foreach(range(0, count($organisations)-1)) as $org)
+			foreach(range(0, count($organisations)-1) as $org)
 			{
 				$org_id 							= $organisations[$org]->id;
 
