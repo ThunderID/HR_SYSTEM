@@ -192,6 +192,40 @@ class PolicyController extends BaseController
 			$attributes['start'] 				= date('Y-m-d', strtotime(Input::get('start')));
 		}
 
+
+		if (Input::has('firststatussettlement_year')||Input::has('firststatussettlement_month')||Input::has('firststatussettlement_day'))
+		{
+			$attributes['value']				= Input::get('firststatussettlement_year').Input::get('firststatussettlement_month').Input::get('firststatussettlement_day');
+		}
+
+		if (Input::has('secondstatussettlement_year')||Input::has('secondstatussettlement_month')||Input::has('secondstatussettlement_day'))
+		{
+			$attributes['value']				= Input::get('secondstatussettlement_year').Input::get('secondstatussettlement_month').Input::get('secondstatussettlement_day');
+		}
+
+		if (Input::has('extendsworkleave_year')||Input::has('extendsworkleave_month')||Input::has('extendsworkleave_day'))
+		{
+			$attributes['value']				= Input::get('extendsworkleave_year').Input::get('extendsworkleave_month').Input::get('extendsworkleave_day');
+		}
+
+		if (Input::has('extendsmidworkleave_year')||Input::has('extendsmidworkleave_month')||Input::has('extendsmidworkleave_day'))
+		{
+			$attributes['value']				= Input::get('extendsmidworkleave_year').Input::get('extendsmidworkleave_month').Input::get('extendsmidworkleave_day');
+		}
+
+		if (Input::has('firstacleditor_year')||Input::has('firstacleditor_month')||Input::has('firstacleditor_day'))
+		{
+			$attributes['value']				= Input::get('firstacleditor_year').Input::get('firstacleditor_month').Input::get('firstacleditor_day');
+		}
+
+		if (Input::has('secondacleditor_year')||Input::has('secondacleditor_month')||Input::has('secondacleditor_day'))
+		{
+			$attributes['value']				= Input::get('secondacleditor_year').Input::get('secondacleditor_month').Input::get('secondacleditor_day');
+		}
+
+
+
+
 		$attributes['margin_bottom_policy']		= (Input::get('margin_bottom_policy')*60);
 		$attributes['policy_1']					= (Input::get('policy_1')*60);
 		$attributes['policy_2']					= (Input::get('policy_2')*60);

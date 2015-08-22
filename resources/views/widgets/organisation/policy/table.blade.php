@@ -30,7 +30,7 @@
 						<th>Tipe</th>
 						<th>Value</th>
 						<th>Started at</th>
-						<th>&nbsp;</th>
+						<!-- <th>&nbsp;</th> -->
 					</tr>
 				</thead>
 				<tbody>
@@ -52,14 +52,14 @@
 							<td>
 								{{ date('d-m-Y', strtotime($value['started_at'])) }}
 							</td>
-							<td class="text-right">
+							<!-- <td class="text-right">
 								@if((int)Session::get('user.menuid')<=2)
 									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.policies.delete', [$value['id'], 'org_id' => $data['id'] ]) }}"><i class="fa fa-trash"></i></a>
 								@endif
 								@if((int)Session::get('user.menuid')<=3)
 									<a href="{{route('hr.policies.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 								@endif
-							</td>
+							</td> -->
 						</tr>
 						<?php $i++;?>
 					@empty 
