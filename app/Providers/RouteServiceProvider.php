@@ -397,10 +397,19 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 					Session::put('user.organisationnames', $organisationnames);
 					Session::put('user.chartnames', $chartnames);
 
+					if(Input::has('org_id'))
+					{
+						$orgids 									= [Input::get('org_id')];
+					}
+					else
+					{
+						$orgids 									= $organisationids;
+					}
+
 					//check access
 					$menu 											= app('hr_acl')[Route::currentRouteName()];
 
-					$results 										= $this->dispatch(new Getting(new WorkAuthentication, ['menuid' => $menu, 'workid' => $workid, 'organisationid' => $organisationids], ['tmp_auth_group_id' => 'asc'],1, 1));
+					$results 										= $this->dispatch(new Getting(new WorkAuthentication, ['menuid' => $menu, 'workid' => $workid, 'organisationid' => $orgids], ['tmp_auth_group_id' => 'asc'],1, 1));
 
 					$contents 										= json_decode($results);
 
