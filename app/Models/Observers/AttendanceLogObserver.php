@@ -79,19 +79,19 @@ class AttendanceLogObserver
 				$prev_data 								= ProcessLog::personid($model->processlog['person_id'])->notid($model['attributes']['process_log_id'])->lastattendancelog(null)->orderby('on', 'desc')->first();
 
 				//check prev data if modified and current data is modify
-				if($prev_data && isset($prev_data['attendancelogs'][0]) && ($prev_data['attendancelogs'][0]['modified_status'] != '' && $model['attributes']['modified_status']!='') && (strtoupper($prev_data['attendancelogs'][0]['modified_status']) == strtoupper($model['attributes']['modified_status'])))
+				if($prev_data && isset($prev_data['attendancelogs'][0]) && ($prev_data['attendancelogs'][0]['modified_status'] != '' && (isset($model['attributes']['modified_status']) && $model['attributes']['modified_status']!='')) && (strtoupper($prev_data['attendancelogs'][0]['modified_status']) == strtoupper($model['attributes']['modified_status'])))
 				{
 					$count 								= $prev_data['attendancelogs'][0]['count_status'] + 1;
 				}
-				elseif($prev_data && isset($prev_data['attendancelogs'][0]) && ($prev_data['attendancelogs'][0]['modified_status'] != '' && $model['attributes']['modified_status']=='') && (strtoupper($prev_data['attendancelogs'][0]['modified_status']) == strtoupper($model['attributes']['actual_status'])))
+				elseif($prev_data && isset($prev_data['attendancelogs'][0]) && ($prev_data['attendancelogs'][0]['modified_status'] != '' && (!isset($model['attributes']['modified_status']) || $model['attributes']['modified_status']=='')) && (strtoupper($prev_data['attendancelogs'][0]['modified_status']) == strtoupper($model['attributes']['actual_status'])))
 				{
 					$count 								= $prev_data['attendancelogs'][0]['count_status'] + 1;
 				}
-				elseif($prev_data && isset($prev_data['attendancelogs'][0]) && ($prev_data['attendancelogs'][0]['modified_status'] == '' && $model['attributes']['modified_status']=='') && (strtoupper($prev_data['attendancelogs'][0]['actual_status']) == strtoupper($model['attributes']['actual_status'])))
+				elseif($prev_data && isset($prev_data['attendancelogs'][0]) && ($prev_data['attendancelogs'][0]['modified_status'] == '' && (!isset($model['attributes']['modified_status']) || $model['attributes']['modified_status']=='')) && (strtoupper($prev_data['attendancelogs'][0]['actual_status']) == strtoupper($model['attributes']['actual_status'])))
 				{
 					$count 								= $prev_data['attendancelogs'][0]['count_status'] + 1;
 				}
-				elseif($prev_data && isset($prev_data['attendancelogs'][0]) && ($prev_data['attendancelogs'][0]['modified_status'] == '' && $model['attributes']['modified_status']!='') && (strtoupper($prev_data['attendancelogs'][0]['actual_status']) == strtoupper($model['attributes']['modified_status'])))
+				elseif($prev_data && isset($prev_data['attendancelogs'][0]) && ($prev_data['attendancelogs'][0]['modified_status'] == '' && (isset($model['attributes']['modified_status']) && $model['attributes']['modified_status']!='')) && (strtoupper($prev_data['attendancelogs'][0]['actual_status']) == strtoupper($model['attributes']['modified_status'])))
 				{
 					$count 								= $prev_data['attendancelogs'][0]['count_status'] + 1;
 				}
@@ -159,34 +159,37 @@ class AttendanceLogObserver
 					$pwP3 						= PersonWorkleave::parentid($pwP->id)->status(['CN', 'CB'])->quota(false)->sum('quota');
 				}
 
-				if(!$pwP || (isset($pwP3) && ($pwP2 + $pwP3) <= 0 ))
+				//check if previosly written
+				$prev_alog 							= AttendanceLog::processlogid($model->processlog)->orderby('updated_at', 'desc')->first();
+				if($prev_alog && strtoupper($prev_alog->modified_status)!='UL')
 				{
-					$alog 						= new AttendanceLog;
-					$alog->fill([
-						'margin_start'			=> $model['attributes']['margin_start'],
-						'margin_end'			=> $model['attributes']['margin_end'],
-						'count_status'			=> $model['attributes']['count_status'],
-						'actual_status'			=> $model['attributes']['actual_status'],
-						'modified_status'		=> 'UL',
-						'modified_at'			=> $model['attributes']['modified_at'],
-						'modified_by'			=> $model['attributes']['modified_by'],
-						'notes'					=> 'Auto generated dari attendance log, karena tidak ada cuti.',
-					]);
-
-					$processlog 				= ProcessLog::find($model['attributes']['process_log_id']);
-
-					$alog->ProcessLog()->associate($processlog);
-
-					if(!$alog->save())
+					if(!$pwP || (isset($pwP3) && ($pwP2 + $pwP3) <= 0 ))
 					{
-						$model['errors'] 		= $alog->getError();
+						$alog 						= new AttendanceLog;
+						$alog->fill([
+							'margin_start'			=> $model['attributes']['margin_start'],
+							'margin_end'			=> $model['attributes']['margin_end'],
+							'count_status'			=> $model['attributes']['count_status'],
+							'actual_status'			=> $model['attributes']['actual_status'],
+							'modified_status'		=> 'UL',
+							'modified_at'			=> $model['attributes']['modified_at'],
+							'notes'					=> 'Auto generated dari attendance log, karena tidak ada cuti.',
+						]);
 
-						return false;
+						$processlog 				= ProcessLog::find($model['attributes']['process_log_id']);
+
+						$alog->ProcessLog()->associate($processlog);
+
+						if(!$alog->save())
+						{
+							$model['errors'] 		= $alog->getError();
+
+							return false;
+						}
+
+						return true;
 					}
-
-					return true;
 				}
-
 			}
 		}
 		//check if current status was as or ul and cut workleave off (sync with policies bout cutting). to be considered : cut workleave when hc
@@ -207,42 +210,47 @@ class AttendanceLogObserver
 					return true;
 				}
 
-				$alog 							= new AttendanceLog;
-				$alog->fill([
-					'margin_start'				=> $model['attributes']['margin_start'],
-					'margin_end'				=> $model['attributes']['margin_end'],
-					'count_status'				=> $model['attributes']['count_status'],
-					'actual_status'				=> $model['attributes']['actual_status'],
-					'modified_status'			=> 'CN',
-					'modified_at'				=> $model['attributes']['modified_at'],
-					'modified_by'				=> $pwP->created_by,
-					'notes'						=> 'Auto generated dari attendance log, sebagai bentuk sanksi.',
-				]);
-
-				$processlog 					= ProcessLog::find($model['attributes']['process_log_id']);
-
-				$alog->ProcessLog()->associate($processlog);
-
-				if(!$alog->save())
+				//check if previosly written
+				$prev_alog 							= AttendanceLog::processlogid($model->processlog)->orderby('updated_at', 'desc')->first();
+				if($prev_alog && strtoupper($prev_alog->modified_status)!='CN')
 				{
-					$model['errors'] 			= $alog->getError();
+					$alog 							= new AttendanceLog;
+					$alog->fill([
+						'margin_start'				=> $model['attributes']['margin_start'],
+						'margin_end'				=> $model['attributes']['margin_end'],
+						'count_status'				=> $model['attributes']['count_status'],
+						'actual_status'				=> $model['attributes']['actual_status'],
+						'modified_status'			=> 'CN',
+						'modified_at'				=> $model['attributes']['modified_at'],
+						'modified_by'				=> $pwP->created_by,
+						'notes'						=> 'Auto generated dari attendance log, sebagai bentuk sanksi.',
+					]);
 
-					return false;
-				}
+					$processlog 					= ProcessLog::find($model['attributes']['process_log_id']);
 
-				$pw 							= PersonWorkleave::personid($model->processlog->person_id)->ondate([$on, null])->status('CN')->quota(true)->first();
-				
-				//save detailed attendance detail
-				$adetail 						= new AttendanceDetail;
-				$adetail->fill(['attendance_log_id', $alog->id]);
+					$alog->ProcessLog()->associate($processlog);
 
-				$adetail->PersonWorkleave()->associate($pw);
+					if(!$alog->save())
+					{
+						$model['errors'] 			= $alog->getError();
 
-				if(!$adetail->save())
-				{
-					$model['errors'] 			= $adetail->getError();
+						return false;
+					}
 
-					return false;
+					$pw 							= PersonWorkleave::personid($model->processlog->person_id)->ondate([$on, null])->status('CN')->quota(true)->first();
+					
+					//save detailed attendance detail
+					$adetail 						= new AttendanceDetail;
+					$adetail->fill(['attendance_log_id', $alog->id]);
+
+					$adetail->PersonWorkleave()->associate($pw);
+
+					if(!$adetail->save())
+					{
+						$model['errors'] 			= $adetail->getError();
+
+						return false;
+					}
 				}
 			}
 		}
