@@ -2,8 +2,8 @@
 	@include('widgets.common.nav_topbar', 
 		['breadcrumb' 			=> 	[
 										['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
-										['name' => 'Pengaturan Idle', 'route' => route('hr.idles.index', ['org_id' => $data['id']]) ],
-										['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.idles.create', ['org_id' => $data['id']]) : route('hr.idles.edit', ['org_id' => $data['id'], 'id' => $id]) )]
+										['name' => 'Pengaturan Idle', 'route' => route('hr.policies.index', ['org_id' => $data['id']]) ],
+										['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.policies.create', ['org_id' => $data['id']]) : route('hr.policies.edit', ['org_id' => $data['id'], 'id' => $id]) )]
 									]
 		])
 @stop
@@ -31,22 +31,22 @@
 @overwrite
 
 @section('content_body')	
-	@include('widgets.organisation.idle.form', [
+	@include('widgets.organisation.policy.form', [
 		'widget_template'		=> 'panel',
-		'widget_title'			=> 'Idle',
+		'widget_title'			=> 'Kebijakan',
 		'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 		'widget_body_class'		=> '',
 		'widget_options'		=> [
-									'idlelist' 				=>
+									'policylist' 				=>
 										[	
-											'form_url' 			=> route('hr.idles.store', ['id' => $id, 'org_id' => $data['id']]),
+											'form_url' 			=> route('hr.policies.store', ['id' => $id, 'org_id' => $data['id']]),
 											'organisation_id'	=> $data['id'],
 											'search'			=> ['id' => $id],
 											'sort'				=> [],
 											'page'				=> 1,
 											'new'				=> (is_null($id) ? true : false),
 											'per_page'			=> 1,
-											'route_edit'		=> route('hr.idles.index', ['org_id' => $data['id']])
+											'route_edit'		=> route('hr.policies.index', ['org_id' => $data['id']])
 										]
 									]
 	])

@@ -6,7 +6,7 @@
         </li>
 
         <li @if(isset($branch['id'])||(Input::has('branch_id'))||(isset($widget_options['sidebar']['pengaturan'])))class="active" @endif>
-            <a href="javascript" @if(Input::get('org_id')==$value) @if(isset($widget_options['sidebar']['pengaturan'])) class="active" @endif @endif ><i class="fa fa-cog fa-fw"></i> Pengaturan <span class="fa arrow"></span></a>
+            <a href="javascript:;" @if(Input::get('org_id')==$value) @if(isset($widget_options['sidebar']['pengaturan'])) class="active" @endif @endif ><i class="fa fa-cog fa-fw"></i> Pengaturan <span class="fa arrow"></span></a>
             <ul class="nav nav-third-level">
                 <li @if(Input::get('org_id')==$value) @if(isset($branch['id'])||(Input::has('branch_id'))) class="active" @endif @endif>
                     <a @if(Input::get('org_id')==$value) @if(isset($branch['id'])||(Input::has('branch_id'))) class="active" @endif @endif href="javascript:;"><i class="fa fa-building fa-fw" @if(isset($branch['id'])||(Input::get('branch_id'))) class="active" @endif ></i> Cabang <span class="fa arrow"></span></a>

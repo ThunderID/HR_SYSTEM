@@ -74,9 +74,10 @@
 				dataType: 'json',
 				success: function(e) {
 			        var max = parseInt(e.total_process[0]);
-					var now = parseInt(e.process_number[0]);					
+					var now = parseInt(e.process_number[0]);				
+					var name = jQuery.parseJSON(e.parameter_process);					
 
-					$('.message_batch').html('Progres batch jadwal "'+e.message+'"');
+					$('.message_batch').html('Progres batch jadwal "'+name.name+'"');
 					$('.alert_batch').removeClass('hide');
 					$('.progress-bar').attr('aria-valuemax', max).attr('aria-valuenow', (now+x));
 					$('.progress-bar').css('width', (((now+x)/max)*100)+'%');

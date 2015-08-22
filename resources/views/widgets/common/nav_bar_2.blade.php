@@ -6,7 +6,7 @@
         </li>
 
         <li @if(isset($branch['id'])||(Input::has('branch_id'))||(isset($widget_options['sidebar']['pengaturan'])))class="active" @endif>
-            <a href="javascript" @if(Input::get('org_id')==$value) @if(isset($widget_options['sidebar']['pengaturan'])) class="active" @endif @endif ><i class="fa fa-cog fa-fw"></i> Pengaturan <span class="fa arrow"></span></a>
+            <a href="javascript:;" @if(Input::get('org_id')==$value) @if(isset($widget_options['sidebar']['pengaturan'])) class="active" @endif @endif ><i class="fa fa-cog fa-fw"></i> Pengaturan <span class="fa arrow"></span></a>
             <ul class="nav nav-third-level">
                 <li @if(Input::get('org_id')==$value) @if(isset($branch['id'])||(Input::has('branch_id'))) class="active" @endif @endif>
                     <a @if(Input::get('org_id')==$value) @if(isset($branch['id'])||(Input::has('branch_id'))) class="active" @endif @endif href="javascript:;"><i class="fa fa-building fa-fw" @if(isset($branch['id'])||(Input::get('branch_id'))) class="active" @endif ></i> Cabang <span class="fa arrow"></span></a>
@@ -49,7 +49,7 @@
                     <a href="{{route('hr.documents.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_document'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-archive fa-fw"></i> Template Dokumen</a>
                 </li>
                 <li @if(isset($widget_options['sidebar']['active_idle'])&&Input::get('org_id')==$value) class="active-li" @endif>
-                    <a href="{{route('hr.idles.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_idle'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-clock-o fa-fw"></i> Pengaturan Idle</a>
+                    <a href="{{route('hr.policies.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_idle'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-clock-o fa-fw"></i> Pengaturan Kebijakan</a>
                 </li>
                 <li @if(isset($widget_options['sidebar']['active_authentication'])&&Input::get('org_id')==$value) class="active-li" @endif>
                     <a href="{{ route('hr.authentications.index', ['org_id' => $value]) }}" @if(isset($widget_options['sidebar']['active_authentication'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-lock fa-fw"></i> Otentikasi</a>
