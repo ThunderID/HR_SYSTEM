@@ -274,7 +274,7 @@ class DocumentTableSeeder extends Seeder
 		{
 			foreach(range(0, count($orgs)-1) as $org)
 			{
-				$organisation 							= Organisation::find($orgs[$org]->id)
+				$organisation 							= Organisation::find($orgs[$org]->id);
 				foreach(range(0, count($name)-1) as $index)
 				{
 					if($index<4)
