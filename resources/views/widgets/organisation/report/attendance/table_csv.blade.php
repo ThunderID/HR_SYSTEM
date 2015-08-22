@@ -15,16 +15,18 @@
 				</tr>
 				<tr>
 					<th style="width:10%">&nbsp;</th>
-					<th rowspan="2" class="text-center" style="width:4%; height:25%">No<br/>&nbsp;</th>
-					<th rowspan="2" class="text-left" style="width:30%; height:25%">Nama <br/>(Jabatan)</th>
-					<th rowspan="2" class="hidden-xs text-center" style="text-align:center; width:4%; height:25%">HB<br/>&nbsp;</th>
-					<th colspan="4" class="hidden-xs text-center" style="text-align:center; width:16%; height:25%">HC</th>
-					<th colspan="8" class="hidden-xs text-center" style="text-align:center; width:32%; height:25%">AS</th>
-					<th rowspan="2" class="hidden-xs text-center" style="width:6%; height:25%">Total<br/>&nbsp;</th>
-					<th rowspan="2" class="hidden-xs text-center" style="width:8%; height:25%">Time<br/>&nbsp;Loss<br/>&nbsp;Rate</th>
+					<th rowspan="2" style="width:4%; height:25%">No<br/>&nbsp;</th>
+					<th rowspan="2" style="width:30%; height:25%">Nama <br/>(Jabatan)</th>
+					<th rowspan="2" style="width:25%; height:25%">Tanggal</th>
+					<th rowspan="2" style="text-align:center; width:4%; height:25%">HB</th>
+					<th colspan="4" style="text-align:center; width:16%; height:25%">HC</th>
+					<th colspan="8" style="text-align:center; width:32%; height:25%">AS</th>
+					<th rowspan="2" style="width:6%; height:25%">Total</th>
+					<th rowspan="2" style="width:8%; height:25%">Time &nbsp; Loss &nbsp; Rate</th>
 				</tr>
 				<tr>
 					<th style="width:10%">&nbsp;</th>
+					<th></th>
 					<th></th>
 					<th></th>
 					<th></th>
@@ -54,6 +56,9 @@
 							@elseif(isset($value['works'][0]))
 								({{$value['works'][0]['name']}} {{$value['works'][0]['tag']}} {{$value['works'][0]['branch']['name']}})
 							@endif
+						</td>
+						<td style="text-align:center; width:30%; height:35%">
+							{{ date('d-m-Y', strtotime($value['created_at'])) }}
 						</td>
 						<td style="text-align:center; width:4%; height:35%">
 							{{$value['HB']}}

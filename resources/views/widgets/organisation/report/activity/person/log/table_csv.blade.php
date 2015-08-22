@@ -14,10 +14,11 @@
 				</tr>
 				<tr>
 					<th rowspan="2" class="text-center" style="width:10%; height:35%">&nbsp;</th>
-					<th rowspan="2" class="text-center" style="width:4%; height:35%">No<br/>&nbsp;</th>
-					<th rowspan="2" class="text-left" style="width:20%; height:35%">Tanggal<br/>&nbsp;</th>
-					<th rowspan="2" class="text-center" style="width:20%; height:35%">Aktivitas<br/>&nbsp;</th>
-					<th rowspan="2" class="text-center" style="width:20%; height:35%">PC<br/>&nbsp;</th>
+					<th rowspan="2" class="text-center" style="width:4%; height:35%">No</th>
+					<th rowspan="2" class="text-left" style="width:20%; height:35%">Waktu</th>
+					<th rowspan="2" class="text-left" style="width:20%; height:35%">Aktivitas Terakhir</th>
+					<th rowspan="2" class="text-center" style="width:20%; height:35%">Aktivitas</th>
+					<th rowspan="2" class="text-center" style="width:20%; height:35%">PC</th>
 				</tr>
 				<tr></tr>
 		</thead>
@@ -30,6 +31,11 @@
 					</td>
 					<td style="height:35%">
 						{{ date('d-m-Y H:i', strtotime($value['on'])) }}
+					</td>
+					<td style="height:35%">
+						@if(!is_null($value['last_input_time']))
+							{{ date('d-m-Y H:i:s', strtotime($value['last_input_time'])) }}
+						@endif
 					</td>
 					<td style="height:35%">
 						{{$value['name']}}

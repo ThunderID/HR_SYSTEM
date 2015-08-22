@@ -36,28 +36,24 @@
 							{{ date('d-m-Y', strtotime($value['on'])) }}
 						</td>
 						<td class="hidden-xs font-11 text-center" style="height:35%">
-							{{floor(($value['total_active']+$value['total_sleep']+$value['total_idle'])/3600)}} Jam&nbsp;
-							{{floor((($value['total_active']+$value['total_sleep']+$value['total_idle'])%3600)/60)}} Menit&nbsp; 
+							{{floor(($value['idlelogs'][0]['total_active'])/3600)}} Jam&nbsp;
+							{{floor((($value['idlelogs'][0]['total_active'])%3600)/60)}} Menit&nbsp; 
 						</td>
 						<td class="hidden-xs font-11 text-center" style="height:35%">
-							{{floor($value['total_idle_1']/3600)}} Jam&nbsp;
-							{{floor(($value['total_idle_1']%3600)/60)}} Menit&nbsp; 
-							({{$value['frequency_idle_1']}})
+							{{floor($value['idlelogs'][0]['total_idle_1']/3600)}} Jam&nbsp;
+							{{floor(($value['idlelogs'][0]['total_idle_1']%3600)/60)}} Menit&nbsp; 
+							({{$value['idlelogs'][0]['frequency_idle_1']}})
 						</td>
 						<td class="hidden-xs font-11 text-center" style="height:35%">
-							{{floor($value['total_idle_2']/3600)}} Jam&nbsp;
-							{{floor(($value['total_idle_2']%3600)/60)}} Menit&nbsp; 
-							({{$value['frequency_idle_2']}})
+							{{floor($value['idlelogs'][0]['total_idle_2']/3600)}} Jam&nbsp;
+							{{floor(($value['idlelogs'][0]['total_idle_2']%3600)/60)}} Menit&nbsp; 
+							({{$value['idlelogs'][0]['frequency_idle_2']}})
 						</td>
 						<td class="hidden-xs font-11 text-center" style="height:35%">
-							{{floor($value['total_idle_3']/3600)}} Jam&nbsp;
-							{{floor(($value['total_idle_3']%3600)/60)}} Menit&nbsp; 
-							({{$value['frequency_idle_3']}})
+							{{floor($value['idlelogs'][0]['total_idle_3']/3600)}} Jam&nbsp;
+							{{floor(($value['idlelogs'][0]['total_idle_3']%3600)/60)}} Menit&nbsp; 
+							({{$value['idlelogs'][0]['frequency_idle_3']}})
 						</td>
-						<!-- <td class="hidden-xs font-11 text-center" style="height:35%">
-							<?php $pr = ($value['total_active']!=0 ? $value['total_active'] : 1) / (($value['total_active']+$value['total_sleep']+$value['total_idle'])!=0 ? ($value['total_active']+$value['total_sleep']+$value['total_idle']) : 1);?>
-							{{round(abs($pr) * 100, 2)}} %
-						</td> -->
 					</tr>
 				@endforeach
 			</tbody>

@@ -27,7 +27,7 @@
 					<thead>
 						<tr>
 							<th class="text-center font-12">No<br/>&nbsp;</th>
-							<th class="text-left font-12 mr-30 pr-30" style="width:20em;">Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br/>(Jabatan)</th>
+							<th class="text-left font-12 mr-30 pr-30" style="width:20em;">Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </th>
 							<th class="text-center font-12 pl-20 pr-20" style="width:20em">Tanggal</th>
 							<th class="text-center font-12" style="width:20em">Jam Masuk <br> (Jadwal)</th>
 							<th class="text-center font-12" style="width:20em">Jam Keluar <br> (Jadwal)</th>
@@ -60,11 +60,10 @@
 										@endif
 									</td>
 								@else
-									<td>&nbsp;</td>
-									<td>&nbsp;</td>
-									<td>&nbsp;</td>
-									<td>&nbsp;</td>
-									<td>&nbsp;</td>
+									<td class="text-center">&#8211;</td>
+									<td class="text-center">&#8211;</td>
+									<td class="text-center">&#8211;</td>
+									<td class="text-center">&#8211;</td>
 								@endif
 							</tr>
 							@foreach($value['processlogs'] as $key2 => $value2)

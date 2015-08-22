@@ -257,6 +257,7 @@ class ActivityController extends BaseController
 				$excel->sheet('Sheetname', function ($sheet) use ($report, $start, $end, $data) 
 				{
 					$c 									= count($report);
+					$sheet->mergeCells('B2:G2');
 					$sheet->loadView('widgets.organisation.report.activity.table_csv')->with('data', $report)->with('start', $start)->with('end', $end)->with('org', $data);
 				});
 			})->export(Input::get('mode'));
@@ -322,7 +323,7 @@ class ActivityController extends BaseController
 
 		if(Input::has('print'))
 		{
-			$search 								= ['id' => $person['id'], 'processlogsondate' => ['on' => [$start, $end]]];
+			$search 								= ['id' => $person['id'], 'processlogidlesondate' => ['on' => [$start, $end]]];
 			$sort 									= ['persons.name' => 'asc'];
 			$page 									= 1;
 			$per_page 								= 1;
