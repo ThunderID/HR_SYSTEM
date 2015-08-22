@@ -45,7 +45,7 @@ class AttendanceLogObserver
 				$model->fill(['actual_status' => $actual_status]);
 			}
 			//save modfied status
-			if(isset($model->getDirty()['modified_status']))
+			if(isset($model->getDirty()['modified_status']) && $model['attributes']['modified_status']!='')
 			{
 				if(strtoupper($model->actual_status)=='HB')
 				{
