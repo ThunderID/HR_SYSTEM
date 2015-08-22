@@ -163,8 +163,6 @@ class PersonBatchCommand extends Command {
 
 						do
 						{
-							$idxuname++;
-
 							unset($search);
 							unset($sort);
 
@@ -173,13 +171,18 @@ class PersonBatchCommand extends Command {
 							$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 							$contents 								= json_decode($results);
 
-							if(isset($originaluname[$idxuname]))
+							if($contents->meta->success)
 							{
-								$modifyuname 						= $modifyuname.$originaluname[$idxuname][0];
-							}
-							else
-							{
-								$modifyuname 						= $modifyuname.$modifyuname;
+								if(isset($originaluname[count($originaluname)-1]))
+								{
+									$modifyuname 						= $modifyuname.$originaluname[count($originaluname)-1][$idxuname];
+								}
+								else
+								{
+									$modifyuname 						= $modifyuname.$modifyuname;
+								}
+
+								$idxuname++;
 							}
 						}
 						while($contents->meta->success);
