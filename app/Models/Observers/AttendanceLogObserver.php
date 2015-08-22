@@ -129,41 +129,42 @@ class AttendanceLogObserver
 			{
 				$pwP 							= PersonWorkleave::personid($model->processlog->person_id)->ondate([$on, null])->status('CN')->quota(true)->first();
 
-				$person 						= Person::find($model->processlog->person_id);
-
-				$pworkleave 					= new PersonWorkleave;
-				$pworkleave->fill([
-						'work_id'				=> $model->processlog->work_id,
-						'person_workleave_id'	=> $pwP->id,
-						'created_by'			=> $pwP->created_by,
-						'name'					=> 'Pengambilan '.$pwP->name,
-						'status'				=> $model['attributes']['modified_status'],
-						'notes'					=> (isset($model['attributes']['notes']) ? $model['attributes']['notes'] : ''),
-						'start'					=> $model->processlog->on,
-						'end'					=> $model->processlog->on,
-						'quota'					=> -1
-				]);
-
-				$pworkleave->Person()->associate($person);
-
-				if(!$pworkleave->save())
-				{
-					$model['errors'] 			= $pworkleave->getError();
-
-					return false;
-				}
-
-				$pwP2 							= PersonWorkleave::personid($model->processlog->person_id)->ondate([$on, null])->status('CN')->quota(true)->sum('quota');
 				if($pwP)
 				{
-					$pwP3 						= PersonWorkleave::parentid($pwP->id)->status(['CN', 'CB'])->quota(false)->sum('quota');
+					$person 						= Person::find($model->processlog->person_id);
+
+					$pworkleave 					= new PersonWorkleave;
+					$pworkleave->fill([
+							'work_id'				=> $model->processlog->work_id,
+							'person_workleave_id'	=> $pwP->id,
+							'created_by'			=> $pwP->created_by,
+							'name'					=> 'Pengambilan '.$pwP->name,
+							'status'				=> $model['attributes']['modified_status'],
+							'notes'					=> (isset($model['attributes']['notes']) ? $model['attributes']['notes'] : ''),
+							'start'					=> $model->processlog->on,
+							'end'					=> $model->processlog->on,
+							'quota'					=> -1
+					]);
+
+					$pworkleave->Person()->associate($person);
+
+					if(!$pworkleave->save())
+					{
+						$model['errors'] 			= $pworkleave->getError();
+
+						return false;
+					}
+
+					$pwP2 							= PersonWorkleave::personid($model->processlog->person_id)->ondate([$on, null])->status('CN')->quota(true)->sum('quota');
+					
+					$pwP3 							= PersonWorkleave::parentid($pwP->id)->status(['CN', 'CB'])->quota(false)->sum('quota');
 				}
 
 				//check if previosly written
 				$prev_alog 							= AttendanceLog::processlogid($model->processlog)->orderby('updated_at', 'desc')->first();
 				if($prev_alog && strtoupper($prev_alog->modified_status)!='UL')
 				{
-					if(!$pwP || (isset($pwP3) && ($pwP2 + $pwP3) <= 0 ))
+					if(!$pwP || (isset($pwP3) && isset($pwP2) && ($pwP2 + $pwP3) <= 0 ))
 					{
 						$alog 						= new AttendanceLog;
 						$alog->fill([
