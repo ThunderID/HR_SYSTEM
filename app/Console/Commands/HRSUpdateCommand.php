@@ -235,9 +235,8 @@ class HRSUpdateCommand extends Command {
 			$alog->fill([
 								'margin_start'				=> $value->margin_start,
 								'margin_end'				=> $value->margin_end,
-								//working on count status
-								'count_status'				=> 1,
 								'actual_status'				=> $value->actual_status,
+								'modified_status'			=> $value->modified_status,
 			]);
 
 			$ilog->fill([

@@ -345,7 +345,7 @@ class ProcessingLogObserver
 
 			$margin_end 			= $maxend - $schedule_end_second;
 
-			$idle 					= Log::ondate([$on, date('Y-m-d', strtotime($on.' + 1 day'))])->personid($model['attributes']['person_id'])->orderBy('on', 'asc')->get();
+			$idle 					= Log::ondate([$on, date('Y-m-d', strtotime($on.' + 1 day'))])->where('on', 'not like', '% 00:00:00')->personid($model['attributes']['person_id'])->orderBy('on', 'asc')->get();
 
 			$total_active 			= abs($maxend) - abs($minstart);
 
