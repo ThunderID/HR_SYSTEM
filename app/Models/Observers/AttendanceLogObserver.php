@@ -135,7 +135,7 @@ class AttendanceLogObserver
 				$pworkleave->fill([
 						'work_id'				=> $model->processlog->work_id,
 						'person_workleave_id'	=> $pwP->id,
-						'created_by'			=> $model['attributes']['modified_by'],
+						'created_by'			=> $pwP->created_by,
 						'name'					=> 'Pengambilan '.$pwP->name,
 						'status'				=> $model['attributes']['modified_status'],
 						'notes'					=> (isset($model['attributes']['notes']) ? $model['attributes']['notes'] : ''),
@@ -215,7 +215,7 @@ class AttendanceLogObserver
 					'actual_status'				=> $model['attributes']['actual_status'],
 					'modified_status'			=> 'CN',
 					'modified_at'				=> $model['attributes']['modified_at'],
-					'modified_by'				=> $model['attributes']['modified_by'],
+					'modified_by'				=> $pwP->created_by,
 					'notes'						=> 'Auto generated dari attendance log, sebagai bentuk sanksi.',
 				]);
 
