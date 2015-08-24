@@ -92,7 +92,7 @@ class LogAbsenceCommand extends Command {
 			return true;
 		}
 
-		$organisations 				= json_decode(json_encode($contents->data));
+		$organisations 				= json_decode(json_encode($contents->data), true);
 
 		foreach ($organisations as $key => $value) 
 		{
@@ -108,7 +108,7 @@ class LogAbsenceCommand extends Command {
 
 			if($contents->meta->success)
 			{
-				$settlementdate 		= json_decode(json_encode($contents->data));
+				$settlementdate 		= json_decode(json_encode($contents->data), true);
 
 				unset($search);
 				unset($sort);
@@ -121,7 +121,7 @@ class LogAbsenceCommand extends Command {
 
 				if($contents->meta->success)
 				{
-					$persons 						= json_decode(json_encode($contents->data));
+					$persons 						= json_decode(json_encode($contents->data), true);
 
 					foreach ($persons as $key2 => $value2) 
 					{
