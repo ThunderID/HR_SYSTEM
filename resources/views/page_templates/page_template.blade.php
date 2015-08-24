@@ -73,6 +73,7 @@
 	@include('plugins.ajax_batch')
 	@include('plugins.bootstrap_fileinput')
 	@include('plugins.wizard')
+	@include('plugins.dashboard_widget')
 
 	<script>
 		$(function() {
