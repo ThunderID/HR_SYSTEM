@@ -33,6 +33,7 @@ class PersonTableSeeder extends Seeder
 					'date_of_birth' 				=> $faker->date($format = 'Y-m-d', $max = 'now'), 
 					'gender' 						=> $gender[rand ( 0 , 1 )],
 					'password'						=> Hash::make('admin'),
+					'last_password_updated_at' 		=> date('Y-m-d H:i:s')
 				]);
 
 				$organisation 						= Organisation::find(rand(1,$total_orgs));
