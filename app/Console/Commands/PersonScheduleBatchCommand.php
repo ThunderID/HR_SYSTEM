@@ -142,7 +142,8 @@ class PersonScheduleBatchCommand extends Command {
 				{
 					DB::commit();
 
-					$pending->fill(['process_number' => ($pending->process_number+1), 'message' => 'Sedang Menyimpan Jadwal '.(isset($parameters['name']) ? $parameters['name'] : '')]);
+					$pnumber 						= $pending->process_number+1;
+					$pending->fill(['process_number' => $pnumber, 'message' => 'Sedang Menyimpan Jadwal '.(isset($parameters['name']) ? $parameters['name'] : '')]);
 
 					$morphed 						= new QueueMorph;
 
