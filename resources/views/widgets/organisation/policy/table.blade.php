@@ -28,7 +28,7 @@
 						<th>No</th>
 						<th>Created By</th>
 						<th>Tipe</th>
-						<th>Value</th>
+						<th class="text-center">Value</th>
 						<th>Started at</th>
 						<!-- <th>&nbsp;</th> -->
 					</tr>
@@ -46,7 +46,7 @@
 							<td>
 								{{ $value['type']}}
 							</td>
-							<td>
+							<td class="text-center">
 								{{ $value['value'] }}
 							</td>
 							<td>
