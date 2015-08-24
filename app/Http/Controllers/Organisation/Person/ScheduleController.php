@@ -197,38 +197,7 @@ class ScheduleController extends BaseController
 
 		Session::put('duedate', $begin->format('Y-m-d'));
 
-		if(!$errors->count() && isset($ended) && $ended->format('Y-m-d') <= $maxend->format('Y-m-d') && !in_array(strtoupper($attributes['status']), ['CB', 'CN', 'CI']))
-		{
-			$interval 								= DateInterval::createFromDateString('1 day');
-			$periods 								= new DatePeriod($begin, $interval, $ended);
-
-			foreach ( $periods as $period )
-			{
-				$attributes['on'] 					= $period->format('Y-m-d');
-				$content 							= $this->dispatch(new Saving(new PersonSchedule, $attributes, $id, new Person, $person_id));
-				$is_success 						= json_decode($content);
-
-				if(!$is_success->meta->success)
-				{
-					foreach ($is_success->meta->errors as $key => $value) 
-					{
-						if(is_array($value))
-						{
-							foreach ($value as $key2 => $value2) 
-							{
-								$errors->add('Person', $value2);
-							}
-						}
-						else
-						{
-							$errors->add('Person', $value);
-						}
-					}
-				}
-			}
-		}
-
-		elseif(!$errors->count())
+		if(!$errors->count())
 		{
 			$interval 					= DateInterval::createFromDateString('1 day');
 			$periods 					= new DatePeriod($begin, $interval, $ended);

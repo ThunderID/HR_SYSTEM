@@ -27,6 +27,17 @@ class ProcessingLogObserver
 			$on 					= date("Y-m-d", strtotime($model['attributes']['on']));
 			$time 					= date("H:i:s", strtotime($model['attributes']['on']));
 
+			if(isset($model['attributes']['app_version']) && (float)$model['attributes']['app_version']>=0.3)
+			{
+				$ltime 				= date("H:i:s", strtotime($model['attributes']['last_input_time']));
+				$lon 				= date("Y-m-d", strtotime($model['attributes']['last_input_time']));
+			}
+			else
+			{
+				$lon 				= $on;
+				$ltime 				= $time;
+			}
+
 			//find person
 			$person 				= Person::find($model['attributes']['person_id']);
 			
@@ -85,6 +96,7 @@ class ProcessingLogObserver
 			$name 					= 'Attendance';
 			$tooltip 				= [];
 
+			//1. CHECK SCHEDULE
 			//check if person schedule were provided
 			$pschedulee 			= Person::ID($model['attributes']['person_id'])->maxendschedule(['on' => [$on, $on]])->first();
 			$pschedules 			= Person::ID($model['attributes']['person_id'])->minstartschedule(['on' => [$on, $on]])->first();
@@ -237,6 +249,7 @@ class ProcessingLogObserver
 				}
 			}
 
+			//2. CHECK START AND END OF ACTIVITIES
 			if(isset($data->id))
 			{
 				$plog 				= $data;
@@ -307,6 +320,13 @@ class ProcessingLogObserver
 				}
 			}
 
+			if($lon < $on)
+			{
+				$start 				= '00:00:00';
+				$end 				= '00:00:00';
+				$tooltip[]			= 'sincedaysbefore';
+			}
+
 			if($fp_start=='00:00:00')
 			{
 				$minstart 			= $start;
@@ -345,9 +365,10 @@ class ProcessingLogObserver
 
 			$margin_end 			= $maxend - $schedule_end_second;
 
-			$idle 					= Log::ondate([$on, date('Y-m-d', strtotime($on.' + 1 day'))])->where('on', 'not like', '% 00:00:00')->personid($model['attributes']['person_id'])->orderBy('on', 'asc')->get();
-
 			$total_active 			= abs($maxend) - abs($minstart);
+
+			//3. COUNT IDLE
+			$idle 					= Log::ondate([$on, date('Y-m-d', strtotime($on.' + 1 day'))])->where('on', 'not like', '% 00:00:00')->personid($model['attributes']['person_id'])->orderBy('on', 'asc')->get();
 
 			foreach ($idle as $key => $value) 
 			{
@@ -369,8 +390,6 @@ class ProcessingLogObserver
 						{
 							$start_idle	= date('H:i:s', strtotime($value['last_input_time']));
 						}
-				
-						// $start_idle 	= $hours*3600+$minutes*60+$seconds;
 					}
 					elseif(strtolower($value['name'])=='sessionlock' || strtolower($value['name'])=='consoledisconnect' || strtolower($value['name'])=='sessionlogout')
 					{
@@ -382,8 +401,6 @@ class ProcessingLogObserver
 						{
 							$start_idle	= date('H:i:s', strtotime($value['last_input_time']));
 						}
-						
-						// $start_idle 	= $hours*3600+$minutes*60+$seconds;
 					}
 					elseif(isset($start_idle))
 					{
@@ -496,6 +513,7 @@ class ProcessingLogObserver
 				unset($start_idle);
 			}
 
+			//4. UPDATE ACTUAL AND MODIFIED STATUS
 			if($actual_status=='' && $schedule_start=='00:00:00' && $schedule_end=='00:00:00')
 			{
 				$actual_status 			= 'L';
@@ -531,6 +549,7 @@ class ProcessingLogObserver
 							]
 					);
 
+			//5. SAVE
 			if(isset($data->id))
 			{
 				$alog 										= AttendanceLog::processlogid($data->id)->orderBy('updated_at', 'desc')->first();
