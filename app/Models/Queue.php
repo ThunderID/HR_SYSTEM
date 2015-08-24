@@ -52,7 +52,7 @@ class Queue extends BaseModel {
 										];
 
 	protected 	$rules				= 	[
-											'created_by'				=> 'required|exists:persons,id',
+											'created_by'				=> 'exists:persons,id',
 											'process_name'				=> 'required',
 											'process_option'			=> 'max:255',
 											'parameter'					=> 'required',
