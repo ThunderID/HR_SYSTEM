@@ -87,6 +87,8 @@ class FirstLockCommand extends Command {
 	 **/
 	public function firstlock()
 	{
+		Log::info('Running First Lock command @'.date('Y-m-d H:i:s'));
+
 		$search						= [];
 		$sort						= [];
 		$results 					= $this->dispatch(new Getting(new Organisation, $search, $sort ,1, 100));
@@ -97,7 +99,7 @@ class FirstLockCommand extends Command {
 			return true;
 		}
 
-		$organisations 				= json_decode(json_encode($contents->data));
+		$organisations 				= json_decode(json_encode($contents->data), true);
 
 		foreach ($organisations as $key => $value) 
 		{
@@ -113,11 +115,11 @@ class FirstLockCommand extends Command {
 
 			if($contents->meta->success)
 			{
-				$settlementdate 		= json_decode(json_encode($contents->data));
+				$settlementdate 		= json_decode(json_encode($contents->data), true);
 
 				unset($search);
 				unset($sort);
-				$date 						= date('Y-m-d', strtotime($settlementdate->value));
+				$date 						= date('Y-m-d', strtotime('- 2 months'));
 				$search['unsettleattendancelog']= null;
 				$search['organisationid']	= $value['id'];
 				$search['ondate']			= [$date, date('Y-m-d')];
@@ -128,7 +130,7 @@ class FirstLockCommand extends Command {
 
 				if($contents->meta->success)
 				{
-					$plogs 					= json_decode(json_encode($contents->data));
+					$plogs 					= json_decode(json_encode($contents->data), true);
 
 					DB::beginTransaction();
 					foreach($plogs as $key2 => $value2) 
