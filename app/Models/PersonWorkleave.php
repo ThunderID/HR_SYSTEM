@@ -67,7 +67,7 @@ class PersonWorkleave extends BaseModel {
 											'work_id'					=> 'required|exists:works,id',
 											'person_workleave_id'		=> '',
 											'workleave_id'				=> '',
-											'created_by'				=> 'required|exists:persons,id',
+											'created_by'				=> '',
 											'name'						=> 'required|max:255',
 											'start'						=> 'required|date_format:"Y-m-d"',
 											'end'						=> 'required_if:status,CB|date_format:"Y-m-d"',
