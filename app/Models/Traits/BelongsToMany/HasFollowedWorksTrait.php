@@ -18,7 +18,7 @@ trait HasFollowedWorksTrait {
 	
 	public function FollowedWorks()
 	{
-		return $this->belongsToMany('App\Models\Work', 'follow_workleaves', 'template_id', 'work_id');
+		return $this->belongsToMany('App\Models\Work', 'follow_workleaves', 'workleave_id', 'work_id');
 	}
 
 	public function scopeActiveWorks($query, $variable)
