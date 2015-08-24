@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\LogAbsenceCommand',
 		'App\Console\Commands\FirstLockCommand',
 		'App\Console\Commands\SanctionCommand',
+		'App\Console\Commands\WorkleaveQueueCommand',
 		'App\Console\Commands\HRQueueCommand',
 		'App\Console\Commands\ScheduleBatchCommand',
 		'App\Console\Commands\PersonScheduleBatchCommand',
@@ -35,9 +36,11 @@ class Kernel extends ConsoleKernel {
 		$schedule->command('hr:absence LogAbsenceCommand')
 				 ->daily();
 		$schedule->command('hr:firstlock FirstLockCommand')
-				 ->monthly();
+				 ->cron('0 0 */21 * * *');
 		$schedule->command('hr:firstlock SanctionCommand')
 				 ->daily();
+		 $schedule->command('hr:workleavequeue WorkleaveQueueCommand')
+				 ->monthly();
 		$schedule->command('hr:queue HRQueueCommand')
 				 ->everyFiveMinutes();
 	}
