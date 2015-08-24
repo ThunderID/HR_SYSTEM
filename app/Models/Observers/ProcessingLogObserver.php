@@ -320,7 +320,7 @@ class ProcessingLogObserver
 				}
 			}
 
-			if($on < $lon)
+			if($lon < $on)
 			{
 				$start 				= '00:00:00';
 				$end 				= '00:00:00';
