@@ -8,7 +8,7 @@ use App\Models\PersonSchedule;
 use App\Models\Queue;
 use App\Models\QueueMorph;
 use \Illuminate\Support\MessageBag as MessageBag;
-use DateTime, DateInterval, DatePeriod;
+use DateTime, DateInterval, DatePeriod, DB;
 
 class PersonScheduleBatchCommand extends Command {
 
