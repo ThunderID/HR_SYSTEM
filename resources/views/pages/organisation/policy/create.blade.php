@@ -21,7 +21,7 @@
 											'page'				=> 1,
 											'per_page'			=> 100,
 											'pengaturan'		=> 'yes',
-											'active_idle'		=> 'yes'
+											'active_policy'		=> 'yes'
 										]
 									]
 	])
