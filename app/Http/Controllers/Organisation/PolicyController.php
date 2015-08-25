@@ -223,7 +223,20 @@ class PolicyController extends BaseController
 			$attributes['value']				= Input::get('secondacleditor_year').Input::get('secondacleditor_month').Input::get('secondacleditor_day');
 		}
 
+		if (Input::has('firstidle_hour')||Input::has('firstidle_minute'))
+		{
+			$attributes['value']				= Input::get('firstidle_hour').Input::get('firstidle_minute');
+		}
 
+		if (Input::has('secondidle_hour')||Input::has('secondidle_minute'))
+		{
+			$attributes['value']				= Input::get('secondidle_hour').Input::get('secondidle_minute');
+		}
+
+		if (Input::has('thirdidle_hour')||Input::has('thirdidle_minute'))
+		{
+			$attributes['value']				= Input::get('thirdidle_hour').Input::get('thirdidle_minute');
+		}
 
 
 		$attributes['margin_bottom_policy']		= (Input::get('margin_bottom_policy')*60);

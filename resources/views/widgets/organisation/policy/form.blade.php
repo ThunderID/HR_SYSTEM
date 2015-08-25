@@ -241,13 +241,35 @@
 				</div>
 				<div class="col-sm-9">
 					<div class="row">
-						<div class="col-sm-10">
+						<div class="col-sm-2 ">
+							<label class="mt-5">Lebih dari</label>
+						</div>
+						<div class="col-sm-3">
 							<div class="form-group">
-								{!! Form::input('number', 'value', $PolicyComposer['widget_data']['policylist']['policy']['value'], ['class' => 'form-control', 'placeholder' => 'Value', 'tabindex' => '1', 'min' => '0']) !!}
+								<select name="firstidle_hour" class="form-control">
+									<option value="">---------------------------</option>
+									@for ($i=1; $i<=24; $i++ )
+										@if ($i==1)
+											<option value="- {{$i}} hour">{{$i}} Jam</option>
+										@else	
+											<option value="- {{$i}} hours">{{$i}} Jam</option>
+										@endif
+									@endfor
+								</select>
 							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="mt-5">Menit</label>
+						<div class="col-sm-3">
+							<div class="form-group">
+								<select name="firstidle_minute" class="form-control">
+									@for ($i=1; $i<=60; $i++)
+										@if ($i==1)
+											<option value="- {{$i}} minute">{{$i}} Menit</option>
+										@else
+											<option value="- {{$i}} minutes">{{$i}} Menit</option>
+										@endif
+									@endfor
+								</select>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -262,13 +284,35 @@
 				</div>
 				<div class="col-sm-9">
 					<div class="row">
-						<div class="col-sm-10">
+						<div class="col-sm-2 ">
+							<label class="mt-5">Lebih dari</label>
+						</div>
+						<div class="col-sm-3">
 							<div class="form-group">
-								{!! Form::input('number', 'value', $PolicyComposer['widget_data']['policylist']['policy']['value'], ['class' => 'form-control', 'placeholder' => 'Value', 'tabindex' => '1', 'min' => '0']) !!}
+								<select name="secondidle_hour" class="form-control">
+									<option value="">---------------------------</option>
+									@for ($i=1; $i<=24; $i++ )
+										@if ($i==1)
+											<option value="- {{$i}} hour">{{$i}} Jam</option>
+										@else	
+											<option value="- {{$i}} hours">{{$i}} Jam</option>
+										@endif
+									@endfor
+								</select>
 							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="">Menit</label>
+						<div class="col-sm-3">
+							<div class="form-group">
+								<select name="secondidle_minute" class="form-control">
+									@for ($i=1; $i<=60; $i++)
+										@if ($i==1)
+											<option value="- {{$i}} minute">{{$i}} Menit</option>
+										@else
+											<option value="- {{$i}} minutes">{{$i}} Menit</option>
+										@endif
+									@endfor
+								</select>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -283,13 +327,35 @@
 				</div>
 				<div class="col-sm-9">
 					<div class="row">
-						<div class="col-sm-10">
-							<div class="form-group">				
-								{!! Form::input('number', 'value', $PolicyComposer['widget_data']['policylist']['policy']['value'], ['class' => 'form-control', 'placeholder' => 'Value', 'tabindex' => '1', 'min' => '0']) !!}
+						<div class="col-sm-2 ">
+							<label class="mt-5">Lebih dari</label>
+						</div>
+						<div class="col-sm-3">
+							<div class="form-group">
+								<select name="thirdidle_hour" class="form-control">
+									<option value="">---------------------------</option>
+									@for ($i=1; $i<=24; $i++ )
+										@if ($i==1)
+											<option value="- {{$i}} hour">{{$i}} Jam</option>
+										@else	
+											<option value="- {{$i}} hours">{{$i}} Jam</option>
+										@endif
+									@endfor
+								</select>
 							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="mt-5">Menit</label>
+						<div class="col-sm-3">
+							<div class="form-group">
+								<select name="thirdidle_minute" class="form-control">
+									@for ($i=1; $i<=60; $i++)
+										@if ($i==1)
+											<option value="- {{$i}} minute">{{$i}} Menit</option>
+										@else
+											<option value="- {{$i}} minutes">{{$i}} Menit</option>
+										@endif
+									@endfor
+								</select>
+							</div>
 						</div>
 					</div>
 				</div>
