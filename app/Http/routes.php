@@ -312,7 +312,7 @@ Route::group(['namespace' => 'Organisation\\Person\\', 'prefix' => 'person'], fu
 });
 
 
-Route::group(['namespace' => 'Workleave\\'], function()
+Route::group(['namespace' => 'Organisation\\Workleave\\'], function()
 {
 	// ------------------------------------------------------------------------------------
 	// CHECK BATCH PROGESS ON WORKLEAVE
