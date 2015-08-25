@@ -4,7 +4,7 @@
 		@if(isset($WorkleaveComposer['widget_data']['workleavelist']['workleave']))
 			@if(Session::get('user.menuid') <= 3)
 				<div class="alert alert-callout alert-danger no-margin">
-					<select name="workleave_id" class="form-control select2">
+					<select name="workleave_id" class="form-control select2 person_workleave_widget">
 						@if($wleave=='0')
 							<option value="0" selected>{{$wleave['quota']}}</option>
 						@else
@@ -14,7 +14,7 @@
 						@endif
 					</select>
 					{!!Form::hidden('work_id', $wleave['work_id'])!!}
-					<span class="opacity-50">{!! $widget_title  or 'Kuota Cuti "'.$data['name'].'" Tahun Ini' !!} </span>					
+					<span class="opacity-50 mt-10">{!! $widget_title  or 'Kuota Cuti "'.$data['name'].'" Tahun Ini' !!} </span>					
 				</div>
 			@else
 				<div class="alert alert-callout alert-danger no-margin">

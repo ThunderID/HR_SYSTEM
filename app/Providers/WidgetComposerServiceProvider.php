@@ -132,7 +132,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// PERSON WORKLEAVE
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.person.workleave.table', 'widgets.organisation.person.workleave.taken.form', 'widgets.organisation.person.workleave.given.form', 'widgets.organisation.person.workleave.select'], 	'App\Http\ViewComposers\PersonWorkleaveComposer');
+		View::composer(['widgets.organisation.person.workleave.table', 'widgets.organisation.person.workleave.taken.form', 'widgets.organisation.person.workleave.given.form', 'widgets.organisation.person.workleave.select', 'widgets.organisation.person.workleave.quota_workleave_year'], 	'App\Http\ViewComposers\PersonWorkleaveComposer');
 
 		// -----------------------------------------------------------------------------
 		// PERSON DOCUMENT
