@@ -24,7 +24,7 @@
  * ---------------------------------------------------------------------- */
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Str, Validator, DateTime, Exception;
+use Str, Validator, DateTime, Exception, DB;
 
 class Policy extends BaseModel {
 
@@ -47,7 +47,7 @@ class Policy extends BaseModel {
 											'created_by'				=> 'exists:persons,id',
 											'type'						=> 'required|max:255',
 											'value'						=> 'required',
-											'started_at'				=> 'required|date_format:"Y-m-d"',
+											'started_at'				=> 'required|date_format:"Y-m-d H:i:s"',
 										];
 
 	public $searchable 				= 	[
@@ -56,6 +56,7 @@ class Policy extends BaseModel {
 
 											'ondate' 					=> 'OnDate', 
 											'type' 						=> 'Type', 
+											'newest' 					=> 'Newest', 
 
 											'withattributes' 			=> 'WithAttributes'
 										];
@@ -66,11 +67,12 @@ class Policy extends BaseModel {
 
 											'ondate' 					=> 'Could be array or string (date)', 
 											'type' 						=> 'Must be string', 
+											'newest' 					=> 'Must be true', 
 
 											'withattributes' 			=> 'Must be array of relationship'
 										];
 
-	public $sortable 				= 	['created_at'];
+	public $sortable 				= 	['created_at', 'updated_at', 'started_at'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**
@@ -147,4 +149,10 @@ class Policy extends BaseModel {
 		}
 		return $query->where('started_at', '<=', date('Y-m-d H:i:s', strtotime($variable)));
 	}
+
+	public function scopeNewest($query, $variable)
+	{
+		return $query->orderBy('started_at', 'DESC')->orderByRaw(DB::raw("FIELD(type, 'passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle', 'extendsworkleave', 'extendsmidworkleave', 'firstacleditor', 'secondacleditor' )"));
+	}
+
 }

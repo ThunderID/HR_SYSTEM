@@ -33,7 +33,7 @@ class ACLAttendanceInterfere {
         		$org_id 			= $request->session()->get('organisationid');
         	}
 
-        	$limit 					= Policy::type($type)->ondate(date('Y-m-d'))->organisationid($org_id)->orderby('updated_at', 'desc')->first();
+        	$limit 					= Policy::type($type)->ondate(date('Y-m-d'))->organisationid($org_id)->orderby('created_at', 'asc')->first();
         	if($limit)
         	{
         		$limitdate 			= date('Y-m-d', strtotime($limit->value));

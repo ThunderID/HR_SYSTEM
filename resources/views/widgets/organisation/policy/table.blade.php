@@ -51,7 +51,7 @@
 				<tbody>
 					<?php $i = $PolicyComposer['widget_data']['policylist']['policy-display']['from'];?>
 					@forelse($PolicyComposer['widget_data']['policylist']['policy'] as $key => $value)
-						<tr>
+						<tr @if($i<=15) class="active" @endif>
 							<td>
 								{{$i}}
 							</td>

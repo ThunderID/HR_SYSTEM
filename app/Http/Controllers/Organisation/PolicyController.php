@@ -159,8 +159,35 @@ class PolicyController extends BaseController
 
 		$data 									= json_decode(json_encode($contents->data), true);
 
+		$p 										= null;
+
+		$types 									= ['passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle', 'extendsworkleave', 'extendsmidworkleave', 'firstacleditor', 'secondacleditor'];
+	
+		foreach(range(0, count($types)-1) as $index)
+		{
+			unset($search);
+			unset($sort);
+			
+			$search['organisationid'] 			= $org_id;
+			$search['type'] 					= $types[$index];
+			$search['ondate'] 					= date('Y-m-d');
+			$sort 								= ['started_at' => 'desc'];
+			$results 							= $this->dispatch(new Getting(new Policy, $search, $sort , 1, 1));
+			$contents 							= json_decode($results);
+
+			if(!$contents->meta->success)
+			{
+				App::abort(404);
+			}
+			else
+			{
+				$p[strtolower($types[$index])] 	= $contents->data->value;	
+			}
+
+		}
+
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.organisation.policy.create', compact('id', 'data'));
+		$this->layout->pages 					= view('pages.organisation.policy.create', compact('id', 'data', 'p'));
 		return $this->layout;
 	}
 	
@@ -185,92 +212,266 @@ class PolicyController extends BaseController
 			App::abort(404);
 		}
 
-		$attributes 							= Input::only('policy_1', 'policy_2', 'margin_bottom_policy');
-		$attributes['created_by']				= Session::get('loggedUser');
-		if(Input::has('start'))
+		$types 									= ['passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle', 'extendsworkleave', 'extendsmidworkleave', 'firstacleditor', 'secondacleditor'];
+	
+		foreach(range(0, count($types)-1) as $index)
 		{
-			$attributes['start'] 				= date('Y-m-d', strtotime(Input::get('start')));
+			unset($search);
+			unset($sort);
+			
+			$search['organisationid'] 			= $org_id;
+			$search['type'] 					= $types[$index];
+			$sort 								= ['started_at' => 'asc'];
+			$results 							= $this->dispatch(new Getting(new Policy, $search, $sort , 1, 1));
+			$contents 							= json_decode($results);
+
+			if(!$contents->meta->success)
+			{
+				App::abort(404);
+			}
+			else
+			{
+				$p[strtolower($types[$index])] 	= $contents->data->value;	
+			}
+		}
+		
+		if (Input::has('passwordreminder'))
+		{
+			$cp['passwordreminder']				= str_replace('0','',Input::get('passwordreminder'));
+			if(strtotime($cp['passwordreminder']) != strtotime($p['passwordreminder']))
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'passwordreminder';
+				$attr['value']			= $cp['passwordreminder'];
+				$attributes[]			= $attr;
+			}
 		}
 
+		if (Input::has('assplimit'))
+		{
+			$cp['assplimit']					= str_replace('0','',Input::get('assplimit'));
+			if((int)$cp['assplimit'] != (int)$p['assplimit'])
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'assplimit';
+				$attr['value']			= $cp['assplimit'];
+				$attributes[]			= $attr;
+			}
+		}
+
+		if (Input::has('ulsplimit'))
+		{
+			$cp['ulsplimit']					= str_replace('0','',Input::get('ulsplimit'));
+			if((int)$cp['ulsplimit'] != (int)$p['ulsplimit'])
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'ulsplimit';
+				$attr['value']			= $cp['ulsplimit'];
+				$attributes[]			= $attr;
+			}
+		}
+
+		if (Input::has('hpsplimit'))
+		{
+			$cp['hpsplimit']					= str_replace('0','',Input::get('hpsplimit'));
+			if((int)$cp['hpsplimit'] != (int)$p['hpsplimit'])
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'hpsplimit';
+				$attr['value']			= $cp['hpsplimit'];
+				$attributes[]			= $attr;
+			}
+		}
+
+		if (Input::has('htsplimit'))
+		{
+			$cp['htsplimit']					= str_replace('0','',Input::get('htsplimit'));
+			if((int)$cp['htsplimit'] != (int)$p['htsplimit'])
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'htsplimit';
+				$attr['value']			= $cp['htsplimit'];
+				$attributes[]			= $attr;
+			}
+		}
+
+		if (Input::has('hcsplimit'))
+		{
+			$cp['hcsplimit']					= str_replace('0','',Input::get('hcsplimit'));
+			if((int)$cp['hcsplimit'] != (int)$p['hcsplimit'])
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'hcsplimit';
+				$attr['value']			= $cp['hcsplimit'];
+				$attributes[]			= $attr;
+			}
+		}
 
 		if (Input::has('firststatussettlement_year')||Input::has('firststatussettlement_month')||Input::has('firststatussettlement_day'))
 		{
-			$attributes['value']				= Input::get('firststatussettlement_year').Input::get('firststatussettlement_month').Input::get('firststatussettlement_day');
+			$cp['firststatussettlement']		= str_replace('0','',Input::get('firststatussettlement_year').' '.Input::get('firststatussettlement_month').' '.Input::get('firststatussettlement_day'));
+			if(strtotime($cp['firststatussettlement']) != strtotime($p['firststatussettlement']))
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'firststatussettlement';
+				$attr['value']			= $cp['firststatussettlement'];
+				$attributes[]			= $attr;
+			}
 		}
 
 		if (Input::has('secondstatussettlement_year')||Input::has('secondstatussettlement_month')||Input::has('secondstatussettlement_day'))
 		{
-			$attributes['value']				= Input::get('secondstatussettlement_year').Input::get('secondstatussettlement_month').Input::get('secondstatussettlement_day');
+			$cp['secondstatussettlement']		= str_replace('0','',Input::get('secondstatussettlement_year').' '.Input::get('secondstatussettlement_month').' '.Input::get('secondstatussettlement_day'));
+			if(strtotime($cp['secondstatussettlement']) != strtotime($p['secondstatussettlement']))
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'secondstatussettlement';
+				$attr['value']			= $cp['secondstatussettlement'];
+				$attributes[]			= $attr;
+			}
 		}
 
 		if (Input::has('extendsworkleave_year')||Input::has('extendsworkleave_month')||Input::has('extendsworkleave_day'))
 		{
-			$attributes['value']				= Input::get('extendsworkleave_year').Input::get('extendsworkleave_month').Input::get('extendsworkleave_day');
+			$cp['extendsworkleave']		= str_replace('0','',Input::get('extendsworkleave_year').' '.Input::get('extendsworkleave_month').' '.Input::get('extendsworkleave_day'));
+			if(strtotime($cp['extendsworkleave']) != strtotime($p['extendsworkleave']))
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'extendsworkleave';
+				$attr['value']			= $cp['extendsworkleave'];
+				$attributes[]			= $attr;
+			}
 		}
 
 		if (Input::has('extendsmidworkleave_year')||Input::has('extendsmidworkleave_month')||Input::has('extendsmidworkleave_day'))
 		{
-			$attributes['value']				= Input::get('extendsmidworkleave_year').Input::get('extendsmidworkleave_month').Input::get('extendsmidworkleave_day');
+			$cp['extendsmidworkleave']		= str_replace('0','',Input::get('extendsmidworkleave_year').' '.Input::get('extendsmidworkleave_month').' '.Input::get('extendsmidworkleave_day'));
+			if(strtotime($cp['extendsmidworkleave']) != strtotime($p['extendsmidworkleave']))
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'extendsmidworkleave';
+				$attr['value']			= $cp['extendsmidworkleave'];
+				$attributes[]			= $attr;
+			}
 		}
 
 		if (Input::has('firstacleditor_year')||Input::has('firstacleditor_month')||Input::has('firstacleditor_day'))
 		{
-			$attributes['value']				= Input::get('firstacleditor_year').Input::get('firstacleditor_month').Input::get('firstacleditor_day');
+			$cp['firstacleditor']		= str_replace('0','',Input::get('firstacleditor_year').' '.Input::get('firstacleditor_month').' '.Input::get('firstacleditor_day'));
+			if(strtotime($cp['firstacleditor']) != strtotime($p['firstacleditor']))
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'firstacleditor';
+				$attr['value']			= $cp['firstacleditor'];
+				$attributes[]			= $attr;
+			}
 		}
 
 		if (Input::has('secondacleditor_year')||Input::has('secondacleditor_month')||Input::has('secondacleditor_day'))
 		{
-			$attributes['value']				= Input::get('secondacleditor_year').Input::get('secondacleditor_month').Input::get('secondacleditor_day');
+			$cp['secondacleditor']		= str_replace('0','',Input::get('secondacleditor_year').' '.Input::get('secondacleditor_month').' '.Input::get('secondacleditor_day'));
+			if(strtotime($cp['secondacleditor']) != strtotime($p['secondacleditor']))
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'secondacleditor';
+				$attr['value']			= $cp['secondacleditor'];
+				$attributes[]			= $attr;
+			}
 		}
 
 		if (Input::has('firstidle_hour')||Input::has('firstidle_minute'))
 		{
-			$attributes['value']				= Input::get('firstidle_hour').Input::get('firstidle_minute');
+			$fih						= (int)(Input::get('firstidle_hour')*3600);
+			$fim						= (int)(Input::get('firstidle_minute')*60);
+			$cp['firstidle'] 			= $fih+$fim;
+			if($cp['firstidle'] != $p['firstidle'])
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'firstidle';
+				$attr['value']			= $cp['firstidle'];
+				$attributes[]			= $attr;
+			}
 		}
 
 		if (Input::has('secondidle_hour')||Input::has('secondidle_minute'))
 		{
-			$attributes['value']				= Input::get('secondidle_hour').Input::get('secondidle_minute');
+			$fih						= (int)(Input::get('secondidle_hour')*3600);
+			$fim						= (int)(Input::get('secondidle_minute')*60);
+			$cp['secondidle'] 			= $fih+$fim;
+			if($cp['secondidle'] != $p['secondidle'])
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'secondidle';
+				$attr['value']			= $cp['secondidle'];
+				$attributes[]			= $attr;
+			}
 		}
 
 		if (Input::has('thirdidle_hour')||Input::has('thirdidle_minute'))
 		{
-			$attributes['value']				= Input::get('thirdidle_hour').Input::get('thirdidle_minute');
+			$fih						= (int)(Input::get('thirdidle_hour')*3600);
+			$fim						= (int)(Input::get('thirdidle_minute')*60);
+			$cp['thirdidle'] 			= $fih+$fim;
+			if($cp['thirdidle'] != $p['thirdidle'])
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'thirdidle';
+				$attr['value']			= $cp['thirdidle'];
+				$attributes[]			= $attr;
+			}
 		}
 
-
-		$attributes['margin_bottom_policy']		= (Input::get('margin_bottom_policy')*60);
-		$attributes['policy_1']					= (Input::get('policy_1')*60);
-		$attributes['policy_2']					= (Input::get('policy_2')*60);
 		$errors 								= new MessageBag();
 
 		DB::beginTransaction();
 
-		$content 								= $this->dispatch(new Saving(new Policy, $attributes, $id, new Organisation, $org_id));
-		$is_success 							= json_decode($content);
-
-		if(!$is_success->meta->success)
+		if(isset($attributes))
 		{
-			foreach ($is_success->meta->errors as $key => $value) 
+			foreach ($attributes as $key2 => $value2) 
 			{
-				if(is_array($value))
+				$content 						= $this->dispatch(new Saving(new Policy, $value2, null, new Organisation, $org_id));
+				$is_success 					= json_decode($content);
+
+				if(!$is_success->meta->success)
 				{
-					foreach ($value as $key2 => $value2) 
+					foreach ($is_success->meta->errors as $key => $value) 
 					{
-						$errors->add('Policy', $value2);
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Policy', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Policy', $value);
+						}
 					}
 				}
-				else
-				{
-					$errors->add('Policy', $value);
-				}
 			}
+			
 		}
 
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.policys.index', ['org_id' => $org_id])->with('alert_success', 'Policy "' . $is_success->data->start. '" sudah disimpan');
+			return Redirect::route('hr.policies.index', ['org_id' => $org_id])->with('alert_success', 'Perubahan kebijakan sudah disimpan');
 		}
 		
 		DB::rollback();
