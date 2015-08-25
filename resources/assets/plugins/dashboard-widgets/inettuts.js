@@ -10,7 +10,7 @@ var iNettuts = {
     settings : {
         columns : '.column',
         widgetSelector: '.widget',
-        handleSelector: '.widget-head',
+        handleSelector: '.widget-content',
         contentSelector: '.widget-content',
         widgetDefault : {
             movable: true,
@@ -30,7 +30,7 @@ var iNettuts = {
     },
 
     init : function () {
-        this.attachStylesheet('inettuts.js.css');
+        this.attachStylesheet('/plugins/dashboard-widgets/inettuts.js.css');
         this.addWidgetControls();
         this.makeSortable();
     },
@@ -49,7 +49,7 @@ var iNettuts = {
         $(settings.widgetSelector, $(settings.columns)).each(function () {
             var thisWidgetSettings = iNettuts.getWidgetSettings(this.id);
             if (thisWidgetSettings.removable) {
-                $('<a href="#" class="remove">CLOSE</a>').mousedown(function (e) {
+                $('<a href="#" class="remove hide"><i class="fa fa-times"></i></a>').mousedown(function (e) {
                     e.stopPropagation();    
                 }).click(function () {
                     if(confirm('This widget will be removed, ok?')) {
@@ -66,7 +66,7 @@ var iNettuts = {
             }
             
             if (thisWidgetSettings.editable) {
-                $('<a href="#" class="edit">EDIT</a>').mousedown(function (e) {
+                $('<a href="#" class="edit hide"><i class="fa fa-pencil"></i></a>').mousedown(function (e) {
                     e.stopPropagation();    
                 }).toggle(function () {
                     $(this).css({backgroundPosition: '-66px 0', width: '55px'})

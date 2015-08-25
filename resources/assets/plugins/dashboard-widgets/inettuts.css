@@ -1,10 +1,6 @@
 /* Reset */
 body,img,p,h1,h2,h3,h4,h5,h6,ul,ol {margin:0; padding:0; list-style:none; border:none;}
 /* End Reset */
-
-body {font-size:0.8em; font-family:Arial,Verdana,Sans-Serif; background: #888;}
-a {color:white;}
-
 /* Colors */
 .color-yellow {background:#f2bc00;}
 .color-red    {background:#dd0000;}
@@ -38,8 +34,8 @@ a {color:white;}
 
 /* Columns section */
 #columns .column {
-    float: left;
-    width: 33.3%;
+    /*float: left;*/
+    /*width: 33.3%;*/
 		/* Min-height: */
 		min-height: 400px;
 		height: auto !important; 
@@ -50,10 +46,10 @@ a {color:white;}
 	/*#columns #column1 { background: url(img/column-bg-left.png) no-repeat right top; }
 	#columns #column3 { background: url(img/column-bg-right.png) no-repeat left top; }*/
 	
-#columns #column1 .widget { margin: 30px 35px 0 25px; }
-#columns #column3 .widget { margin: 30px 25px 0 35px; }
+#columns #column1 .widget { margin: 15px 0px 0 15px; }
+#columns #column3 .widget { margin: 15px 0px 0 15px; }
 #columns .widget {
-    margin: 30px 20px 0 20px;
+    margin: 15px 0px 0 15px;
     padding: 2px;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -66,13 +62,13 @@ a {color:white;}
     line-height: 30px;
 }
 #columns .widget .widget-head h3 {
-    padding: 0 5px;
+    padding: 0 3px;
     float: left;
 }
 #columns .widget .widget-content {
-    background: #333 url(img/widget-content-bg.png) repeat-x;
+    /*background: #333 url(img/widget-content-bg.png) repeat-x;*/
     padding: 0 5px;
-    color: #DDD;
+    color: #000;
     -moz-border-radius-bottomleft: 2px;
     -moz-border-radius-bottomright: 2px;
     -webkit-border-bottom-left-radius: 2px;
