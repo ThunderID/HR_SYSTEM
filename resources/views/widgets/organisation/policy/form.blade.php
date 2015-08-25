@@ -142,7 +142,7 @@
 				<div class="col-sm-2">
 					<div class="form-group">
 						<select name="firststatussettlement_year" class="form-control">
-							<option value="">---------------------------</option>
+							<option value="0">---------------------------</option>
 							<option value="- 1 year">1 Tahun</option>
 							<option value="- 2 years">2 Tahun</option>
 						</select>
@@ -151,7 +151,7 @@
 				<div class="col-sm-2">
 					<div class="form-group">
 						<select name="firststatussettlement_month" class="form-control">
-							<option value="">---------------------------</option>
+							<option value="0">---------------------------</option>
 							@for ($i=1; $i<=11; $i++)
 								@if ($i==1)
 									<option value="- {{$i}} month">{{$i}} Bulan</option>
@@ -192,7 +192,7 @@
 				<div class="col-sm-2">
 					<div class="form-group">
 						<select name="secondstatussettlement_year" class="form-control">
-							<option value="">---------------------------</option>
+							<option value="0">---------------------------</option>
 							<option value="- 1 year">1 Tahun</option>
 							<option value="- 2 years">2 Tahun</option>
 						</select>
@@ -201,7 +201,7 @@
 				<div class="col-sm-2">
 					<div class="form-group">
 						<select name="secondstatussettlement_month" class="form-control">
-							<option value="">---------------------------</option>
+							<option value="0">---------------------------</option>
 							@for ($i=1; $i<=11; $i++)
 								@if ($i==1)
 									<option value="- {{$i}} month">{{$i}} Bulan</option>
@@ -242,12 +242,12 @@
 				<div class="col-sm-3">
 					<div class="form-group">
 						<select name="firstidle_hour" class="form-control">
-							<option value="">---------------------------</option>
+							<option value="0">---------------------------</option>
 							@for ($i=1; $i<=24; $i++ )
 								@if ($i==1)
-									<option value="- {{$i}} hour">{{$i}} Jam</option>
+									<option value="{{$i}} hour">{{$i}} Jam</option>
 								@else	
-									<option value="- {{$i}} hours">{{$i}} Jam</option>
+									<option value="{{$i}} hours">{{$i}} Jam</option>
 								@endif
 							@endfor
 						</select>
@@ -258,9 +258,9 @@
 						<select name="firstidle_minute" class="form-control">
 							@for ($i=1; $i<=60; $i++)
 								@if ($i==1)
-									<option value="- {{$i}} minute">{{$i}} Menit</option>
+									<option value="{{$i}} minute">{{$i}} Menit</option>
 								@else
-									<option value="- {{$i}} minutes">{{$i}} Menit</option>
+									<option value="{{$i}} minutes">{{$i}} Menit</option>
 								@endif
 							@endfor
 						</select>
@@ -278,12 +278,12 @@
 				<div class="col-sm-3">
 					<div class="form-group">
 						<select name="secondidle_hour" class="form-control">
-							<option value="">---------------------------</option>
+							<option value="0">---------------------------</option>
 							@for ($i=1; $i<=24; $i++ )
 								@if ($i==1)
-									<option value="- {{$i}} hour">{{$i}} Jam</option>
+									<option value="{{$i}} hour">{{$i}} Jam</option>
 								@else	
-									<option value="- {{$i}} hours">{{$i}} Jam</option>
+									<option value="{{$i}} hours">{{$i}} Jam</option>
 								@endif
 							@endfor
 						</select>
@@ -294,9 +294,9 @@
 						<select name="secondidle_minute" class="form-control">
 							@for ($i=1; $i<=60; $i++)
 								@if ($i==1)
-									<option value="- {{$i}} minute">{{$i}} Menit</option>
+									<option value="{{$i}} minute">{{$i}} Menit</option>
 								@else
-									<option value="- {{$i}} minutes">{{$i}} Menit</option>
+									<option value="{{$i}} minutes">{{$i}} Menit</option>
 								@endif
 							@endfor
 						</select>
@@ -314,12 +314,12 @@
 				<div class="col-sm-3">
 					<div class="form-group">
 						<select name="thirdidle_hour" class="form-control">
-							<option value="">---------------------------</option>
+							<option value="0">---------------------------</option>
 							@for ($i=1; $i<=24; $i++ )
 								@if ($i==1)
-									<option value="- {{$i}} hour">{{$i}} Jam</option>
+									<option value="{{$i}} hour">{{$i}} Jam</option>
 								@else	
-									<option value="- {{$i}} hours">{{$i}} Jam</option>
+									<option value="{{$i}} hours">{{$i}} Jam</option>
 								@endif
 							@endfor
 						</select>
@@ -330,9 +330,9 @@
 						<select name="thirdidle_minute" class="form-control">
 							@for ($i=1; $i<=60; $i++)
 								@if ($i==1)
-									<option value="- {{$i}} minute">{{$i}} Menit</option>
+									<option value="{{$i}} minute">{{$i}} Menit</option>
 								@else
-									<option value="- {{$i}} minutes">{{$i}} Menit</option>
+									<option value="{{$i}} minutes">{{$i}} Menit</option>
 								@endif
 							@endfor
 						</select>
@@ -350,7 +350,7 @@
 				<div class="col-sm-3">
 					<div class="form-group">
 						<select name="secondacleditor_year" class="form-control">
-							<option value="">---------------------------</option>
+							<option value="0">---------------------------</option>
 							<option value="+ 1 year">1 Tahun</option>
 							<option value="+ 2 years">2 Tahun</option>
 						</select>
@@ -359,7 +359,7 @@
 				<div class="col-sm-3">
 					<div class="form-group">
 						<select name="secondacleditor_month" class="form-control">
-							<option value="">---------------------------</option>
+							<option value="0">---------------------------</option>
 							@for ($i=1; $i<=11; $i++)
 								@if ($i==1)
 									<option value="+ {{$i}} month">{{$i}} Bulan</option>
@@ -395,7 +395,7 @@
 				<div class="col-sm-3">
 					<div class="form-group">
 						<select name="secondacleditor_year" class="form-control">
-							<option value="">---------------------------</option>
+							<option value="0">---------------------------</option>
 							<option value="+ 1 year">1 Tahun</option>
 							<option value="+ 2 years">2 Tahun</option>
 						</select>
@@ -404,7 +404,7 @@
 				<div class="col-sm-3">
 					<div class="form-group">
 						<select name="secondacleditor_month" class="form-control">
-							<option value="">---------------------------</option>
+							<option value="0">---------------------------</option>
 							@for ($i=1; $i<=11; $i++)
 								@if ($i==1)
 									<option value="+ {{$i}} month">{{$i}} Bulan</option>
@@ -440,7 +440,7 @@
 				<div class="col-sm-3">
 					<div class="form-group">
 						<select name="firstacleditor_year" class="form-control">
-							<option value="">---------------------------</option>
+							<option value="0">---------------------------</option>
 							<option value="- 1 year">1 Tahun</option>
 							<option value="- 2 years">2 Tahun</option>
 						</select>
@@ -449,7 +449,7 @@
 				<div class="col-sm-3">
 					<div class="form-group">
 						<select name="firstacleditor_month" class="form-control">
-							<option value="">---------------------------</option>
+							<option value="0">---------------------------</option>
 							@for ($i=1; $i<=11; $i++)
 								@if ($i==1)
 									<option value="- {{$i}} month">{{$i}} Bulan</option>
@@ -485,7 +485,7 @@
 				<div class="col-sm-3">
 					<div class="form-group">
 						<select name="secondacleditor_year" class="form-control">
-							<option value="">---------------------------</option>
+							<option value="0">---------------------------</option>
 							<option value="- 1 year">1 Tahun</option>
 							<option value="- 2 years">2 Tahun</option>
 						</select>
@@ -494,7 +494,7 @@
 				<div class="col-sm-3">
 					<div class="form-group">
 						<select name="secondacleditor_month" class="form-control">
-							<option value="">---------------------------</option>
+							<option value="0">---------------------------</option>
 							@for ($i=1; $i<=11; $i++)
 								@if ($i==1)
 									<option value="- {{$i}} month">{{$i}} Bulan</option>

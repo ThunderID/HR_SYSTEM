@@ -42,7 +42,7 @@
 		<div class="col-sm-4">
 			@include('widgets.organisation.person.workleave.followworkleave', [
 					'widget_template'		=> 'plain',
-					'widget_title'			=> '<h5>Kuota Cuti "'.$person['name'].'"</h5>',
+					'widget_title'			=> '<h5 class="mt-10">Kuota Cuti "'.$person['name'].'"</h5>',
 					'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 					'widget_body_class'		=> '',
 					'widget_options'		=> 	[
@@ -62,7 +62,7 @@
 		<div class="col-sm-4">
 			@include('widgets.organisation.person.workleave.left_quota', [
 					'widget_template'		=> 'plain',
-					'widget_title'			=> '<h5>Sisa Cuti "'.$person['name'].'"</h5>',
+					'widget_title'			=> '<h5 class="mt-30">Sisa Cuti "'.$person['name'].'"</h5>',
 					'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
 					'widget_body_class'		=> '',
 					'widget_options'		=> 	[
@@ -71,6 +71,24 @@
 														'organisation_id'	=> $data['id'],
 														'search'			=> ['id' => $person['id'], 'globalworkleave' => ['organisationid' => $data['id'], 'on' => date('Y-m-d')]],
 														'sort'				=> ['persons.name' => 'asc'],
+														'page'				=> 1,
+														'per_page'			=> 1,
+													]
+												]
+				])
+		</div>
+		<div class="col-sm-4">
+			@include('widgets.organisation.person.workleave.quota_workleave_year', [
+					'widget_template'		=> 'plain',
+					'widget_title'			=> '<h5 class="mt-30">Cuti yang Timbul "'.$person['name'].'"</h5>',
+					'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
+					'widget_body_class'		=> '',
+					'widget_options'		=> 	[
+													'workleavelist'			=>
+													[
+														'organisation_id'	=> $data['id'],
+														'search'			=> ['personid' => $person['id'], 'ondate' => [date('Y-m-d', strtotime('first day of this year')), date('Y-m-d', strtotime('last day of this year'))], 'quota' => true, 'sumquota' => true],
+														'sort'				=> [],
 														'page'				=> 1,
 														'per_page'			=> 1,
 													]
