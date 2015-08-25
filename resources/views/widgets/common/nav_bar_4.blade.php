@@ -1,5 +1,5 @@
 <li @if(Input::has('org_id') && Input::get('org_id')==$value) class="active" @endif>
-    <a @if(Input::get('org_id')==$value) class="active" @endif href="javascript:;" class="top-level"><i class="fa fa-bank fa-fw"></i> {{ Session::get('user.organisationnames')[$key] }} <span class="fa arrow"></span></a>
+    <a @if(Input::get('org_id')==$value) class="active" @endif href="javascript:;" class="top-level"><i class="fa fa-bank fa-fw"></i> {{ Session::get('user.organisationcodes')[$key] }} <span class="fa arrow"></span></a>
     <ul class="nav nav-second-level">
         <li @if(Input::get('org_id')==$value) 
             @if(isset($person['id'])||(Input::has('person_id'))) class="active"  @endif 

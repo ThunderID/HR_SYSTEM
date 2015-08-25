@@ -1,5 +1,5 @@
 <li @if(Input::has('org_id') && Input::get('org_id')==$value) class="active" @endif>
-    <a @if(Input::get('org_id')==$value) class="active" @endif href="javascript:;" class="top-level"><i class="fa fa-bank fa-fw"></i> {{ Session::get('user.organisationnames')[$key] }} <span class="fa arrow"></span></a>
+    <a @if(Input::get('org_id')==$value) class="active" @endif href="javascript:;" class="top-level"><i class="fa fa-bank fa-fw"></i> {{ Session::get('user.organisationcodes')[$key] }} <span class="fa arrow"></span></a>
     <ul class="nav nav-second-level">
         <li @if(isset($widget_options['sidebar']['active_dashboard'])&&Input::get('org_id')==$value) class="active-li" @endif>
             <a href="{{route('hr.organisations.show', [$value, 'org_id' => $value])}}"><i class="fa fa-tachometer fa-fw"></i> Dashboard</a>

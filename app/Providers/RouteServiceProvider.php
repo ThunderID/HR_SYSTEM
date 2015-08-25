@@ -365,6 +365,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 					$chartnames									= [];
 					$organisationids							= [];
 					$organisationnames							= [];
+					$organisationcodes							= [];
 					
 					foreach ($contents_2->data as $key => $value) 
 					{
@@ -391,11 +392,17 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							{
 								$organisationids[]								= $value_2->organisation->id;
 							}
+
+							if(!in_array($value_2->organisation->code, $organisationcodes))
+							{
+								$organisationcodes[]							= $value_2->organisation->code;
+							}
 						}
 					}
 
 					Session::put('user.organisationids', $organisationids);
 					Session::put('user.organisationnames', $organisationnames);
+					Session::put('user.organisationcodes', $organisationcodes);
 					Session::put('user.chartnames', $chartnames);
 
 					if(Input::has('org_id'))
