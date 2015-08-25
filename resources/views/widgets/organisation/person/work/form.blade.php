@@ -44,23 +44,8 @@
 				])
 			</div>
 			<div class="form-group">
-				<label class="control-label">Mengikuti Cuti</label>
-				@include('widgets.organisation.person.work.select_workleave', [
-						'widget_options'		=> 	[
-														'workleavelist'			=>
-														[
-															'organisation_id'	=> $data['id'],
-															'search'			=> [],
-															'sort'				=> ['name' => 'asc'],
-															'page'				=> 1,
-															'per_page'			=> 100
-														]
-													]
-					])
-			</div>
-			<div class="form-group">
 				<label class="control-label">Status</label>
-				{!!Form::select('status', ['contract' => 'Kontrak', 'internship' => 'Magang', 'probation' => 'Probation', 'permanent' => 'Tetap', 'others' => 'Lainnya'], date('d-m-Y', strtotime($WorkComposer['widget_data']['worklist']['work']['status'])), ['class' => 'form-control select2', 'tabindex' => 3]) !!}
+				{!!Form::select('status', ['contract' => 'Kontrak', 'internship' => 'Magang', 'probation' => 'Probation', 'permanent' => 'Tetap', 'others' => 'Lainnya'], $WorkComposer['widget_data']['worklist']['work']['status'], ['class' => 'form-control select2', 'tabindex' => 3]) !!}
 			</div>
 			<div class="row">
 				<div class="col-sm-6">
