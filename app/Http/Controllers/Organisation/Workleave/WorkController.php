@@ -1,5 +1,5 @@
 <?php namespace App\Http\Controllers\Organisation\Workleave;
-use Input, Session, App, Paginator, Redirect, DB, Config;
+use Input, Session, App, Paginator, Redirect, DB, Config, Response;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -86,8 +86,8 @@ class WorkController extends BaseController
 		}
 		elseif(isset($work_id))
 		{
-			unset($search)
-			unset($sort)
+			unset($search);
+			unset($sort);
 			$search['id'] 							= $work_id;
 			$search['personid'] 					= $person_id;
 			$search['active'] 						= true;
@@ -112,7 +112,7 @@ class WorkController extends BaseController
 
 		$attributes 							= ['work_id' => $work_id];
 
-		$content 								= $this->dispatch(new Saving(new FollowWorkleave, $attributes, $id, new Workleave, $workleave_id));
+		$content 								= $this->dispatch(new Saving(new FollowWorkleave, $attributes, $id, new Workleave, $workleaveid));
 		$is_success 							= json_decode($content);
 
 		if(!$is_success->meta->success)
@@ -136,10 +136,10 @@ class WorkController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Response::json(['message' => 'Kuota Cuti Sudah Berubah'], 200);
+			return Redirect::route('hr.person.workleaves.index', ['person_id' => $person_id, 'org_id' => $org_id])->with('alert_success', 'Kuota Cuti Karyawan Sudah Berubah ');
 		}
 		
 		DB::rollback();
-		return Response::json(['message' => $errors], 200);
+		return Redirect::back()->withErrors($errors)->withInput();
 	}
 }

@@ -58,5 +58,11 @@
 				}
 			});
 		});
+
+		/* SELECT on change in person workleave */
+		$('.select_person_workleave_widget').on('change', function()
+		{
+			$('form.form_widget_person_workleave').submit();
+		});
 	});	
 </script>
