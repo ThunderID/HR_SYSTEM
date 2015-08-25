@@ -7,12 +7,13 @@
 					<select name="workleave_id" class="form-control select2">
 						@if($wleave=='0')
 							<option value="0" selected>{{$wleave['quota']}}</option>
+						@else
+							@foreach($WorkleaveComposer['widget_data']['workleavelist']['workleave'] as $key => $value)
+								<option value="{{$value['id']}}" @if($wleave==$value['id']) selected @endif>{{$value['quota']}}</option>
+							@endforeach
 						@endif
-						@foreach($WorkleaveComposer['widget_data']['workleavelist']['workleave'] as $key => $value)
-							<option value="{{$value['id']}}" @if($wleave==$value['id']) selected @endif>{{$value['quota']}}</option>
-						@endforeach
 					</select>
-					{!!Input::hidden('work_id', $wleave['work_id'])!!}
+					{!!Form::hidden('work_id', $wleave['work_id'])!!}
 					<span class="opacity-50">{!! $widget_title  or 'Kuota Cuti "'.$data['name'].'" Tahun Ini' !!} </span>					
 				</div>
 			@else
