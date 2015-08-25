@@ -18,7 +18,7 @@
                         <li @if(isset($widget_options['sidebar']['active_all_branch'])&&Input::get('org_id')==$value) class="active-li" @endif>
                             <a href="{{route('hr.branches.index', ['org_id' => $value, 'branch_id' => 0])}}">Semua Cabang</a>
                         </li>
-                        @if (isset($branch['id']))
+                        @if (isset($branch['id'])&&($branch['organisation_id']==$value))
                             <li @if(isset($branch['id'])||(Input::has('branch_id'))) class="active" @endif>
                                 <a href="javascript:;" @if(isset($branch['id'])&&(Input::has('branch_id')&&Input::get('org_id')==$value)) class="active-flag-show" @endif>{{ $branch['name'] }} <span class="fa arrow"></span></a>
                                 <ul class="nav nav-fifty-level">
@@ -70,7 +70,7 @@
                         <li @if(isset($widget_options['sidebar']['active_all_person'])&&Input::get('org_id')==$value) class="active-li" @endif>
                             <a href="{{route('hr.persons.index', ['org_id' => $value, 'person_id' => 0])}}" @if(isset($widget_options['sidebar']['active_all_person'])&&Input::get('org_id')==$value) class="active" @endif>Semua Karyawan</a>
                         </li>
-                        @if(isset($person['id']))
+                        @if(isset($person['id'])&&($person['organisation_id']==$value))
                             <li @if(isset($person['id'])||(Input::get('person_id'))) class="active" @endif>
                                 <a href="javascript:;">{{ $person['name'] }} <span class="fa arrow"></span></a>
                                 <ul class="nav nav-fifty-level">
