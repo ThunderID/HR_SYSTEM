@@ -2,7 +2,7 @@
 	@include('widgets.common.nav_topbar', 
 		['breadcrumb' 			=> 	[
 										['name' => $data['name'], 'route' => route('hr.organisations.show', [$data['id'], 'org_id' => $data['id']]) ], 
-										['name' => 'Pengaturan Idle', 'route' => route('hr.policies.index', ['org_id' => $data['id']]) ],
+										['name' => 'Pengaturan Kebijakan', 'route' => route('hr.policies.index', ['org_id' => $data['id']]) ],
 										['name' => (is_null($id) ? 'Tambah' : 'Ubah'), 'route' => (is_null($id) ? route('hr.policies.create', ['org_id' => $data['id']]) : route('hr.policies.edit', ['org_id' => $data['id'], 'id' => $id]) )]
 									]
 		])

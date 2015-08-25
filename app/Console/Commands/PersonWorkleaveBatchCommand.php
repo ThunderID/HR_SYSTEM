@@ -315,7 +315,6 @@ class PersonWorkleaveBatchCommand extends Command {
 				else
 				{
 					DB::rollback();
-					
 					$pending->fill(['message' => json_encode($errors)]);
 				}
 

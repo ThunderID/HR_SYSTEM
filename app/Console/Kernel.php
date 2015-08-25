@@ -45,7 +45,7 @@ class Kernel extends ConsoleKernel {
 				 ->cron('0 0 */21 * * *');
 		$schedule->command('hr:sanctionqueue SanctionQueueCommand')
 				 ->daily();
-		 $schedule->command('hr:workleavequeue WorkleaveQueueCommand')
+		$schedule->command('hr:workleavequeue WorkleaveQueueCommand')
 				 ->monthly();
 		$schedule->command('hr:queue HRQueueCommand')
 				 ->everyFiveMinutes();

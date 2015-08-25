@@ -1,5 +1,22 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
+<?php 
+	$type 				= ['passwordreminder' => 'Pengingat Password', 'assplimit' => 'Batas AS mendapat SP', 'ulsplimit' => 'Batas UL mendapat SP', 'htsplimit' => 'Batas HT mendapat SP', 'hpsplimit' => 'Batas HP mendapat SP', 'hcsplimit' => 'Batas HC mendapat SP', 'firststatussettlement' => 'Kunci Pertama', 'secondstatussettlement' => 'Kunci Kedua', 'firstidle' => 'Batas Idle pertama', 'secondidle' => 'Batas Idle kedua', 'thirdidle' => 'Batas Idle ketiga', 'extendsworkleave' => 'Perpanjangan Cuti', 'extendsmidworkleave' => 'Perpanjangan Cuti (tengah tahun)', 'firstacleditor' => 'Kunci interferensi level 1', 'secondacleditor' => 'Kunci interferensi level 2'];
+	$patterns[] = '/years/';
+	$patterns[] = '/months/';
+	$patterns[] = '/days/';
+	$patterns[] = '/year/';
+	$patterns[] = '/month/';
+	$patterns[] = '/day/';
+	$patterns[] = '/-/';
 
+	$replaces[] = 'tahun';
+	$replaces[] = 'bulan';
+	$replaces[] = 'hari';
+	$replaces[] = 'tahun';
+	$replaces[] = 'bulan';
+	$replaces[] = 'hari';
+	$replaces[] = '';
+?>
 @if (!$widget_error_count)
 	<?php
 		$PolicyComposer['widget_data']['policylist']['policy-pagination']->setPath(route('hr.policies.index'));
@@ -17,8 +34,8 @@
 	@overwrite
 
 	@section('widget_body')
-		@if((int)Session::get('user.menuid')<=3)
-			<a href="{{ $PolicyComposer['widget_data']['policylist']['route_create'] }}" class="btn btn-primary">Tambah</a>
+		@if((int)Session::get('user.menuid')==1)
+			<a href="{{ $PolicyComposer['widget_data']['policylist']['route_create'] }}" class="btn btn-primary">Ubah</a>
 		@endif
 		@if(isset($PolicyComposer['widget_data']['policylist']['policy']))
 			<div class="clearfix">&nbsp;</div>			
@@ -26,11 +43,9 @@
 				<thead>
 					<tr>
 						<th>No</th>
-						<th>Created By</th>
-						<th>Tipe</th>
-						<th class="text-center">Value</th>
-						<th>Started at</th>
-						<!-- <th>&nbsp;</th> -->
+						<th colspan="2">Kebijakan</th>
+						<th>Sejak</th>
+						<th>Ditetapkan Oleh</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -41,25 +56,25 @@
 								{{$i}}
 							</td>
 							<td>
-								{{ $value['createdby']['prefix_title'] }} {{ $value['createdby']['name'] }} {{ $value['createdby']['suffix_title'] }}
+								{{ (isset($type[strtolower($value['type'])]) ? $type[strtolower($value['type'])] : $value['type']) }}
 							</td>
 							<td>
-								{{ $value['type']}}
-							</td>
-							<td class="text-center">
-								{{ $value['value'] }}
+								<?php $str = preg_replace($patterns, $replaces, $value['value']);?>
+								<?php $val = str_replace('+', '', $str);?>
+								@if(in_array(strtolower($value['type']),['firstidle','secondidle','thirdidle']))
+									{{ gmdate('H:i', $val) }}
+								@elseif(in_array(strtolower($value['type']),['assplimit','ulsplimit','htsplimit','hpsplimit','hcsplimit']))
+									{{ $val }} x Pelanggaran / SP
+								@else
+									{{ $val }} Sekali
+								@endif
 							</td>
 							<td>
 								{{ date('d-m-Y', strtotime($value['started_at'])) }}
 							</td>
-							<!-- <td class="text-right">
-								@if((int)Session::get('user.menuid')<=2)
-									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.policies.delete', [$value['id'], 'org_id' => $data['id'] ]) }}"><i class="fa fa-trash"></i></a>
-								@endif
-								@if((int)Session::get('user.menuid')<=3)
-									<a href="{{route('hr.policies.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-								@endif
-							</td> -->
+							<td>
+								{{ $value['createdby']['name'] }} 
+							</td>
 						</tr>
 						<?php $i++;?>
 					@empty 
