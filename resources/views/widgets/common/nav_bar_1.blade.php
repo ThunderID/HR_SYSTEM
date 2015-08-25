@@ -1,5 +1,5 @@
 <li @if(Input::has('org_id') && Input::get('org_id')==$value) class="active" @endif>
-	<a @if(Input::get('org_id')==$value) class="active" @endif href="javascript:;" class="top-level"><i class="fa fa-bank fa-fw"></i> {{ Session::get('user.organisationnames')[$key] }} <span class="fa arrow"></span></a>
+	<a @if(Input::get('org_id')==$value) class="active" @endif href="javascript:;" class="top-level"><i class="fa fa-bank fa-fw"></i> {{ Session::get('user.organisationcodes')[$key] }} <span class="fa arrow"></span></a>
 	<ul class="nav nav-second-level">
 		<li @if(isset($widget_options['sidebar']['active_form'])&&($widget_options['sidebar']['active_form']=='active_edit_org'&&Input::get('org_id')==$value)) class="active-li" @endif>
 			<a href="{{route('hr.organisations.edit', [$value, 'org_id' => $value] )}}" @if(isset($widget_options['sidebar']['active_form'])&&($widget_options['sidebar']['active_form']=='active_edit_org')) class=""@endif><i class="fa fa-pencil fa-fw"></i> Ubah</a>
@@ -63,7 +63,7 @@
 					<a href="{{route('hr.documents.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_document'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-archive fa-fw"></i> Template Dokumen</a>
 				</li>
 				<li @if(isset($widget_options['sidebar']['active_policy'])&&Input::get('org_id')==$value) class="active-li" @endif>
-					<a href="{{route('hr.policies.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_policy'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-clock-o fa-fw"></i> Pengaturan Kebijakan</a>
+					<a href="{{route('hr.policies.index', ['org_id' => $value])}}" @if(isset($widget_options['sidebar']['active_policy'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-clock-o fa-fw"></i> Kebijakan</a>
 				</li>
 				<li @if(isset($widget_options['sidebar']['active_authentication'])&&Input::get('org_id')==$value) class="active-li" @endif>
 					<a href="{{ route('hr.authentications.index', ['org_id' => $value]) }}" @if(isset($widget_options['sidebar']['active_authentication'])&&Input::get('org_id')==$value) class="active" @endif><i class="fa fa-lock fa-fw"></i> Otentikasi</a>
