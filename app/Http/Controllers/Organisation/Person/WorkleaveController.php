@@ -10,6 +10,7 @@ use App\Models\Person;
 use App\Models\Workleave;
 use App\Models\PersonWorkleave;
 use App\Models\Queue;
+use App\Models\Work;
 
 class WorkleaveController extends BaseController
 {
@@ -44,7 +45,9 @@ class WorkleaveController extends BaseController
 		$search['organisationid'] 				= $org_id;
 		$search['withattributes'] 				= ['organisation'];
 		$search['checkwork'] 					= true;
+		$search['currentwork'] 					= null;
 		$sort 									= ['name' => 'asc'];
+
 		if(Session::get('user.menuid')>=5)
 		{
 			$search['chartchild'] 				= Session::get('user.chartpath');
@@ -57,9 +60,31 @@ class WorkleaveController extends BaseController
 			App::abort(404);
 		}
 
+
 		$person 								= json_decode(json_encode($contents->data), true);
 		$data 									= $person['organisation'];
 
+		unset($search);
+		unset($sort);
+
+		$search['id'] 							= $person['works'][0]['id'];
+		$search['currentworkleave'] 			= true;
+		$sort 									= ['created_at' => 'desc'];
+
+		$results 								= $this->dispatch(new Getting(new Work, $search, $sort , 1, 1));
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			$wleave['id'] 						= 0;
+			$wleave['quota'] 					= 0;
+			$wleave['work_id'] 					= 0;
+		}
+		else
+		{
+			$wleave 							= json_decode(json_encode($contents->data->followworkleave->workleave), true);
+			$wleave['work_id'] 					= $contents->data->followworkleave->work_id;
+		}
 
 		$filter 									= [];
 		if(Input::has('q'))
@@ -142,6 +167,7 @@ class WorkleaveController extends BaseController
 		$this->layout->page->controller_name 		= $this->controller_name;
 		$this->layout->page->data 					= $data;
 		$this->layout->page->person 				= $person;
+		$this->layout->page->wleave 				= $wleave;
 
 		$filters 									= 	[
 															// ['prefix' => 'search', 'key' => 'status', 'value' => 'Cari Status ', 'values' => [['key' => 'contract', 'value' => 'Kontrak'], ['key' => 'trial', 'value' => 'Percobaan'], ['key' => 'internship', 'value' => 'Magang'], ['key' => 'permanent', 'value' => 'Tetap']]],

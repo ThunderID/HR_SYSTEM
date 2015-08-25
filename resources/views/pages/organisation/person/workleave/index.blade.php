@@ -37,23 +37,47 @@
 	])
 @overwrite
 
-@section('content_body')	
-	@include('widgets.organisation.person.workleave.left_quota', [
-			'widget_template'		=> 'panel',
-			'widget_title'			=> '<h4>Sisa Cuti "'.$person['name'].'"</h4>',
-			'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
-			'widget_body_class'		=> '',
-			'widget_options'		=> 	[
-											'personlist'			=>
-											[
-												'organisation_id'	=> $data['id'],
-												'search'			=> ['id' => $person['id'], 'globalworkleave' => ['organisationid' => $data['id'], 'on' => date('Y-m-d')]],
-												'sort'				=> ['persons.name' => 'asc'],
-												'page'				=> 1,
-												'per_page'			=> 1,
-											]
-										]
-		])
+@section('content_body')
+	<div class="row">
+		<div class="col-sm-4">
+			@include('widgets.organisation.person.workleave.followworkleave', [
+					'widget_template'		=> 'plain',
+					'widget_title'			=> '<h5>Kuota Cuti "'.$person['name'].'"</h5>',
+					'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
+					'widget_body_class'		=> '',
+					'widget_options'		=> 	[
+													'workleavelist'			=>
+													[
+														'organisation_id'	=> $data['id'],
+														'search'			=> ['status' => 'CN'],
+														'sort'				=> ['name' => 'asc'],
+														'page'				=> 1,
+														'per_page'			=> 100
+													],
+												],
+					'wleave'				=> $wleave
+
+				])
+		</div>
+		<div class="col-sm-4">
+			@include('widgets.organisation.person.workleave.left_quota', [
+					'widget_template'		=> 'plain',
+					'widget_title'			=> '<h5>Sisa Cuti "'.$person['name'].'"</h5>',
+					'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
+					'widget_body_class'		=> '',
+					'widget_options'		=> 	[
+													'personlist'			=>
+													[
+														'organisation_id'	=> $data['id'],
+														'search'			=> ['id' => $person['id'], 'globalworkleave' => ['organisationid' => $data['id'], 'on' => date('Y-m-d')]],
+														'sort'				=> ['persons.name' => 'asc'],
+														'page'				=> 1,
+														'per_page'			=> 1,
+													]
+												]
+				])
+		</div>
+	</div>
 
 	@include('widgets.organisation.person.workleave.table', [
 		'widget_template'		=> 'panel',

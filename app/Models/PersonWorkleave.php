@@ -82,6 +82,8 @@ class PersonWorkleave extends BaseModel {
 											'parentid' 					=> 'ParentID',
 											'name' 						=> 'Name',
 											'status' 					=> 'Status',
+											'quota' 					=> 'Quota',
+											'sumquota' 					=> 'SumQuota',
 											 
 											'ondate' 					=> 'OnDate', 
 											'withattributes' 			=> 'WithAttributes'
@@ -94,6 +96,8 @@ class PersonWorkleave extends BaseModel {
 											'parentid' 					=> 'Could be array or integer', 
 											'name' 						=> 'Must be string',
 											'status' 					=> 'Could be array or string',
+											'quota' 					=> 'Must be true or not true',
+											'sumquota' 					=> 'Must be true',
 
 											'ondate' 					=> 'Could be array or string (date)', 
 											'withattributes' 			=> 'Must be array of relationship',
@@ -207,5 +211,12 @@ class PersonWorkleave extends BaseModel {
 			return $query->where('quota', '>', 0);
 		}
 		return $query->where('quota', '<', 0);
+	}
+
+	public function scopeSumQuota($query, $variable)
+	{
+		return $query->selectraw('person_workleaves.*')
+					 ->selectraw('sum(quota) as total_quota')
+					 ;
 	}
 }
