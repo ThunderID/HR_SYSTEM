@@ -72,7 +72,20 @@ class PersonWorkleaveObserver
 					$couldbetaken 		= date('Y-m-d', strtotime($start. ' + 1 year'));
 				}
 
-				$model->quota			= ((date('m', strtotime($end)) - date('m', strtotime($start)) + 1 )/$model->workleave->quota)*12;
+				if($model->workleave->quota <= 12)
+				{
+					$quota 				= ((date('m', strtotime($end)) - date('m', strtotime($start)) + 1 )/$model->workleave->quota)*12;
+				}
+				elseif((int)date('m', strtotime($end))==12 && $model->workleave->quota > 12)
+				{
+					$quota 				= (((date('m', strtotime($end)) - date('m', strtotime($start)) + 1 )/12)*12) + ($model->workleave->quota-12);
+				}
+				else
+				{
+					$quota 				= ((date('m', strtotime($end)) - date('m', strtotime($start)) + 1 )/12)*12;
+				}
+
+				$model->quota			= $quota;
 				$model->start			= $couldbetaken;
 				$model->end				= date('Y-m-d', strtotime($model['attributes']['end'].' '.$extendpolicy->value));
 			}
