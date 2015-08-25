@@ -79,11 +79,13 @@ class WorkleaveController extends BaseController
 			$wleave['id'] 						= 0;
 			$wleave['quota'] 					= 0;
 			$wleave['work_id'] 					= 0;
+			$wleave['follow_workleave_id'] 		= 0;
 		}
 		else
 		{
 			$wleave 							= json_decode(json_encode($contents->data->followworkleave->workleave), true);
 			$wleave['work_id'] 					= $contents->data->followworkleave->work_id;
+			$wleave['follow_workleave_id'] 		= $contents->data->followworkleave->id;
 		}
 
 		$filter 									= [];

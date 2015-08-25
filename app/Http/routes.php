@@ -302,13 +302,13 @@ Route::group(['namespace' => 'Organisation\\Person\\', 'prefix' => 'person'], fu
 	// CHECK BATCH PROGESS ON PERSON WORKLEAVE
 	// ------------------------------------------------------------------------------------
 
-	Route::any('workleave/progress', 				['uses' => 'WorkleaveController@batchprogress', 			'as' => 'hr.batch.person.workleaves']);
+	Route::any('workleave/progress', 			['uses' => 'WorkleaveController@batchprogress', 			'as' => 'hr.batch.person.workleaves']);
 
 	// ------------------------------------------------------------------------------------
 	// CHECK BATCH PROGESS ON PERSON SCHEDULE
 	// ------------------------------------------------------------------------------------
 
-	Route::any('schedule/progress', 				['uses' => 'ScheduleController@batchprogress', 				'as' => 'hr.batch.person.schedules']);
+	Route::any('schedule/progress', 			['uses' => 'ScheduleController@batchprogress', 				'as' => 'hr.batch.person.schedules']);
 });
 
 
@@ -318,13 +318,19 @@ Route::group(['namespace' => 'Workleave\\'], function()
 	// CHECK BATCH PROGESS ON WORKLEAVE
 	// ------------------------------------------------------------------------------------
 
-	Route::any('workleave/progress', 				['uses' => 'WorkleaveController@batchprogress', 			'as' => 'hr.batch.workleaves']);
+	Route::any('workleave/progress', 			['uses' => 'WorkleaveController@batchprogress', 			'as' => 'hr.batch.workleaves']);
 
 	// ------------------------------------------------------------------------------------
 	// AJAX STORE BATCH
 	// ------------------------------------------------------------------------------------
 
-	Route::post('batch/workleave/',					['uses'	=> 'BatchController@store', 						'as' => 'hr.ajax.batch']);
+	Route::post('batch/workleave/',				['uses'	=> 'BatchController@store', 						'as' => 'hr.ajax.batch']);
+
+	// ------------------------------------------------------------------------------------
+	// AJAX STORE FOLLOW WORKLEAVE
+	// ------------------------------------------------------------------------------------
+
+	Route::post('follow/workleave/',			['uses'	=> 'WorkController@store', 							'as' => 'hr.workleaves.works.store']);
 });
 
 // ------------------------------------------------------------------------------------

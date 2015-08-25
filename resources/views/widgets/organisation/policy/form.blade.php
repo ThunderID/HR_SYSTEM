@@ -45,7 +45,7 @@
 				</div>
 				<div class="col-sm-6">
 					<div class="form-group">
-						{!! Form::input('number', 'value', $PolicyComposer['widget_data']['policylist']['policy']['value'], ['class' => 'form-control', 'placeholder' => 'Value', 'tabindex' => '1', 'min' => '0']) !!}					
+						{!! Form::input('number', 'value', $PolicyComposer['widget_data']['policylist']['policy']['value'], ['class' => 'form-control', 'placeholder' => 'Value', 'tabindex' => '1', 'min' => '0', 'max' => '366']) !!}					
 					</div>
 				</div>
 				<div class="col-sm-2">
@@ -65,7 +65,7 @@
 				</div>
 				<div class="col-sm-6">
 					<div class="form-group">				
-						{!! Form::input('number', 'value', $PolicyComposer['widget_data']['policylist']['policy']['value'], ['class' => 'form-control', 'placeholder' => 'Value', 'tabindex' => '1', 'min' => '0']) !!}					
+						{!! Form::input('number', 'value', $PolicyComposer['widget_data']['policylist']['policy']['value'], ['class' => 'form-control', 'placeholder' => 'Value', 'tabindex' => '1', 'min' => '0', 'max' => '366']) !!}					
 					</div>
 				</div>
 				<div class="col-sm-2">
@@ -84,7 +84,7 @@
 				</div>
 				<div class="col-sm-6">
 					<div class="form-group">				
-						{!! Form::input('number', 'value', $PolicyComposer['widget_data']['policylist']['policy']['value'], ['class' => 'form-control', 'placeholder' => 'Value', 'tabindex' => '1', 'min' => '0']) !!}					
+						{!! Form::input('number', 'value', $PolicyComposer['widget_data']['policylist']['policy']['value'], ['class' => 'form-control', 'placeholder' => 'Value', 'tabindex' => '1', 'min' => '0', 'max' => '366']) !!}					
 					</div>
 				</div>
 				<div class="col-sm-2">
@@ -103,7 +103,7 @@
 				</div>
 				<div class="col-sm-6">
 					<div class="form-group">				
-						{!! Form::input('number', 'value', $PolicyComposer['widget_data']['policylist']['policy']['value'], ['class' => 'form-control', 'placeholder' => 'Value', 'tabindex' => '1', 'min' => '0']) !!}					
+						{!! Form::input('number', 'value', $PolicyComposer['widget_data']['policylist']['policy']['value'], ['class' => 'form-control', 'placeholder' => 'Value', 'tabindex' => '1', 'min' => '0', 'max' => '366']) !!}					
 					</div>
 				</div>
 				<div class="col-sm-2">
@@ -122,7 +122,7 @@
 				</div>
 				<div class="col-sm-6">
 					<div class="form-group">				
-						{!! Form::input('number', 'value', $PolicyComposer['widget_data']['policylist']['policy']['value'], ['class' => 'form-control', 'placeholder' => 'Value', 'tabindex' => '1', 'min' => '0']) !!}					
+						{!! Form::input('number', 'value', $PolicyComposer['widget_data']['policylist']['policy']['value'], ['class' => 'form-control', 'placeholder' => 'Value', 'tabindex' => '1', 'min' => '0', 'max' => '366']) !!}					
 					</div>
 				</div>
 				<div class="col-sm-2">
@@ -239,38 +239,31 @@
 						{!! Form::input('hidden', 'type', 'firstidle') !!}				
 					</div>
 				</div>
-				<div class="col-sm-9">
-					<div class="row">
-						<div class="col-sm-2 ">
-							<label class="mt-5">Lebih dari</label>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="firstidle_hour" class="form-control">
-									<option value="">---------------------------</option>
-									@for ($i=1; $i<=24; $i++ )
-										@if ($i==1)
-											<option value="- {{$i}} hour">{{$i}} Jam</option>
-										@else	
-											<option value="- {{$i}} hours">{{$i}} Jam</option>
-										@endif
-									@endfor
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="firstidle_minute" class="form-control">
-									@for ($i=1; $i<=60; $i++)
-										@if ($i==1)
-											<option value="- {{$i}} minute">{{$i}} Menit</option>
-										@else
-											<option value="- {{$i}} minutes">{{$i}} Menit</option>
-										@endif
-									@endfor
-								</select>
-							</div>
-						</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="firstidle_hour" class="form-control">
+							<option value="">---------------------------</option>
+							@for ($i=1; $i<=24; $i++ )
+								@if ($i==1)
+									<option value="- {{$i}} hour">{{$i}} Jam</option>
+								@else	
+									<option value="- {{$i}} hours">{{$i}} Jam</option>
+								@endif
+							@endfor
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="firstidle_minute" class="form-control">
+							@for ($i=1; $i<=60; $i++)
+								@if ($i==1)
+									<option value="- {{$i}} minute">{{$i}} Menit</option>
+								@else
+									<option value="- {{$i}} minutes">{{$i}} Menit</option>
+								@endif
+							@endfor
+						</select>
 					</div>
 				</div>
 			</div>
@@ -282,38 +275,31 @@
 						{!! Form::input('hidden', 'type', 'secondidle') !!}				
 					</div>
 				</div>
-				<div class="col-sm-9">
-					<div class="row">
-						<div class="col-sm-2 ">
-							<label class="mt-5">Lebih dari</label>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="secondidle_hour" class="form-control">
-									<option value="">---------------------------</option>
-									@for ($i=1; $i<=24; $i++ )
-										@if ($i==1)
-											<option value="- {{$i}} hour">{{$i}} Jam</option>
-										@else	
-											<option value="- {{$i}} hours">{{$i}} Jam</option>
-										@endif
-									@endfor
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="secondidle_minute" class="form-control">
-									@for ($i=1; $i<=60; $i++)
-										@if ($i==1)
-											<option value="- {{$i}} minute">{{$i}} Menit</option>
-										@else
-											<option value="- {{$i}} minutes">{{$i}} Menit</option>
-										@endif
-									@endfor
-								</select>
-							</div>
-						</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="secondidle_hour" class="form-control">
+							<option value="">---------------------------</option>
+							@for ($i=1; $i<=24; $i++ )
+								@if ($i==1)
+									<option value="- {{$i}} hour">{{$i}} Jam</option>
+								@else	
+									<option value="- {{$i}} hours">{{$i}} Jam</option>
+								@endif
+							@endfor
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="secondidle_minute" class="form-control">
+							@for ($i=1; $i<=60; $i++)
+								@if ($i==1)
+									<option value="- {{$i}} minute">{{$i}} Menit</option>
+								@else
+									<option value="- {{$i}} minutes">{{$i}} Menit</option>
+								@endif
+							@endfor
+						</select>
 					</div>
 				</div>
 			</div>
@@ -325,38 +311,31 @@
 						{!! Form::input('hidden', 'type', 'thirdidle') !!}				
 					</div>
 				</div>
-				<div class="col-sm-9">
-					<div class="row">
-						<div class="col-sm-2 ">
-							<label class="mt-5">Lebih dari</label>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="thirdidle_hour" class="form-control">
-									<option value="">---------------------------</option>
-									@for ($i=1; $i<=24; $i++ )
-										@if ($i==1)
-											<option value="- {{$i}} hour">{{$i}} Jam</option>
-										@else	
-											<option value="- {{$i}} hours">{{$i}} Jam</option>
-										@endif
-									@endfor
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="thirdidle_minute" class="form-control">
-									@for ($i=1; $i<=60; $i++)
-										@if ($i==1)
-											<option value="- {{$i}} minute">{{$i}} Menit</option>
-										@else
-											<option value="- {{$i}} minutes">{{$i}} Menit</option>
-										@endif
-									@endfor
-								</select>
-							</div>
-						</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="thirdidle_hour" class="form-control">
+							<option value="">---------------------------</option>
+							@for ($i=1; $i<=24; $i++ )
+								@if ($i==1)
+									<option value="- {{$i}} hour">{{$i}} Jam</option>
+								@else	
+									<option value="- {{$i}} hours">{{$i}} Jam</option>
+								@endif
+							@endfor
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="thirdidle_minute" class="form-control">
+							@for ($i=1; $i<=60; $i++)
+								@if ($i==1)
+									<option value="- {{$i}} minute">{{$i}} Menit</option>
+								@else
+									<option value="- {{$i}} minutes">{{$i}} Menit</option>
+								@endif
+							@endfor
+						</select>
 					</div>
 				</div>
 			</div>
@@ -368,49 +347,40 @@
 						{!! Form::input('hidden', 'type', 'extendsworkleave') !!}				
 					</div>
 				</div>
-				<div class="col-sm-9">
-					<div class="row">
-						<div class="col-sm-2">
-							<div class="form-group ">
-								<label class="mt-5">Lebih dari</label>
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="secondacleditor_year" class="form-control">
-									<option value="">---------------------------</option>
-									<option value="+ 1 year">1 Tahun</option>
-									<option value="+ 2 years">2 Tahun</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="secondacleditor_month" class="form-control">
-									<option value="">---------------------------</option>
-									@for ($i=1; $i<=11; $i++)
-										@if ($i==1)
-											<option value="+ {{$i}} month">{{$i}} Bulan</option>
-										@else
-											<option value="+ {{$i}} months">{{$i}} Bulan</option>
-										@endif
-									@endfor
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="secondacleditor_day" class="form-control">
-									@for ($i=1; $i<=30; $i++)
-										@if ($i==1)
-											<option value="+ {{$i}} day">{{$i}} Hari</option>
-										@else
-											<option value="+ {{$i}} days">{{$i}} Hari</option>
-										@endif
-									@endfor
-								</select>
-							</div>
-						</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="secondacleditor_year" class="form-control">
+							<option value="">---------------------------</option>
+							<option value="+ 1 year">1 Tahun</option>
+							<option value="+ 2 years">2 Tahun</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="secondacleditor_month" class="form-control">
+							<option value="">---------------------------</option>
+							@for ($i=1; $i<=11; $i++)
+								@if ($i==1)
+									<option value="+ {{$i}} month">{{$i}} Bulan</option>
+								@else
+									<option value="+ {{$i}} months">{{$i}} Bulan</option>
+								@endif
+							@endfor
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="secondacleditor_day" class="form-control">
+							@for ($i=1; $i<=30; $i++)
+								@if ($i==1)
+									<option value="+ {{$i}} day">{{$i}} Hari</option>
+								@else
+									<option value="+ {{$i}} days">{{$i}} Hari</option>
+								@endif
+							@endfor
+						</select>
 					</div>
 				</div>
 			</div>
@@ -422,47 +392,40 @@
 						{!! Form::input('hidden', 'type', 'extendsmidworkleave') !!}				
 					</div>
 				</div>
-				<div class="col-sm-9">
-					<div class="row">
-						<div class="col-sm-2 ">
-							<label class="mt-5">Lebih dari</label>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="secondacleditor_year" class="form-control">
-									<option value="">---------------------------</option>
-									<option value="+ 1 year">1 Tahun</option>
-									<option value="+ 2 years">2 Tahun</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="secondacleditor_month" class="form-control">
-									<option value="">---------------------------</option>
-									@for ($i=1; $i<=11; $i++)
-										@if ($i==1)
-											<option value="+ {{$i}} month">{{$i}} Bulan</option>
-										@else
-											<option value="+ {{$i}} months">{{$i}} Bulan</option>
-										@endif
-									@endfor
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="secondacleditor_day" class="form-control">
-									@for ($i=1; $i<=30; $i++)
-										@if ($i==1)
-											<option value="+ {{$i}} day">{{$i}} Hari</option>
-										@else
-											<option value="+ {{$i}} days">{{$i}} Hari</option>
-										@endif
-									@endfor
-								</select>
-							</div>
-						</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="secondacleditor_year" class="form-control">
+							<option value="">---------------------------</option>
+							<option value="+ 1 year">1 Tahun</option>
+							<option value="+ 2 years">2 Tahun</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="secondacleditor_month" class="form-control">
+							<option value="">---------------------------</option>
+							@for ($i=1; $i<=11; $i++)
+								@if ($i==1)
+									<option value="+ {{$i}} month">{{$i}} Bulan</option>
+								@else
+									<option value="+ {{$i}} months">{{$i}} Bulan</option>
+								@endif
+							@endfor
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="secondacleditor_day" class="form-control">
+							@for ($i=1; $i<=30; $i++)
+								@if ($i==1)
+									<option value="+ {{$i}} day">{{$i}} Hari</option>
+								@else
+									<option value="+ {{$i}} days">{{$i}} Hari</option>
+								@endif
+							@endfor
+						</select>
 					</div>
 				</div>
 			</div>
@@ -474,47 +437,40 @@
 						{!! Form::input('hidden', 'type', 'firstacleditor') !!}				
 					</div>
 				</div>
-				<div class="col-sm-9">
-					<div class="row">
-						<div class="col-sm-2 ">
-							<label class="mt-5">Kurang dari</label>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="firstacleditor_year" class="form-control">
-									<option value="">---------------------------</option>
-									<option value="- 1 year">1 Tahun</option>
-									<option value="- 2 years">2 Tahun</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="firstacleditor_month" class="form-control">
-									<option value="">---------------------------</option>
-									@for ($i=1; $i<=11; $i++)
-										@if ($i==1)
-											<option value="- {{$i}} month">{{$i}} Bulan</option>
-										@else
-											<option value="- {{$i}} months">{{$i}} Bulan</option>
-										@endif
-									@endfor
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="firstacleditor_day" class="form-control">
-									@for ($i=1; $i<=30; $i++)
-										@if ($i==1)
-											<option value="- {{$i}} day">{{$i}} Hari</option>
-										@else
-											<option value="- {{$i}} days">{{$i}} Hari</option>
-										@endif
-									@endfor
-								</select>
-							</div>
-						</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="firstacleditor_year" class="form-control">
+							<option value="">---------------------------</option>
+							<option value="- 1 year">1 Tahun</option>
+							<option value="- 2 years">2 Tahun</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="firstacleditor_month" class="form-control">
+							<option value="">---------------------------</option>
+							@for ($i=1; $i<=11; $i++)
+								@if ($i==1)
+									<option value="- {{$i}} month">{{$i}} Bulan</option>
+								@else
+									<option value="- {{$i}} months">{{$i}} Bulan</option>
+								@endif
+							@endfor
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="firstacleditor_day" class="form-control">
+							@for ($i=1; $i<=30; $i++)
+								@if ($i==1)
+									<option value="- {{$i}} day">{{$i}} Hari</option>
+								@else
+									<option value="- {{$i}} days">{{$i}} Hari</option>
+								@endif
+							@endfor
+						</select>
 					</div>
 				</div>
 			</div>
@@ -526,47 +482,40 @@
 						{!! Form::input('hidden', 'type', 'secondacleditor') !!}				
 					</div>
 				</div>
-				<div class="col-sm-9">
-					<div class="row">
-						<div class="col-sm-2 ">
-							<label class="mt-5">Kurang dari</label>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="secondacleditor_year" class="form-control">
-									<option value="">---------------------------</option>
-									<option value="- 1 year">1 Tahun</option>
-									<option value="- 2 years">2 Tahun</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="secondacleditor_month" class="form-control">
-									<option value="">---------------------------</option>
-									@for ($i=1; $i<=11; $i++)
-										@if ($i==1)
-											<option value="- {{$i}} month">{{$i}} Bulan</option>
-										@else
-											<option value="- {{$i}} months">{{$i}} Bulan</option>
-										@endif
-									@endfor
-								</select>
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<div class="form-group">
-								<select name="secondacleditor_day" class="form-control">
-									@for ($i=1; $i<=30; $i++)
-										@if ($i==1)
-											<option value="- {{$i}} day">{{$i}} Hari</option>
-										@else
-											<option value="- {{$i}} days">{{$i}} Hari</option>
-										@endif
-									@endfor
-								</select>
-							</div>
-						</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="secondacleditor_year" class="form-control">
+							<option value="">---------------------------</option>
+							<option value="- 1 year">1 Tahun</option>
+							<option value="- 2 years">2 Tahun</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="secondacleditor_month" class="form-control">
+							<option value="">---------------------------</option>
+							@for ($i=1; $i<=11; $i++)
+								@if ($i==1)
+									<option value="- {{$i}} month">{{$i}} Bulan</option>
+								@else
+									<option value="- {{$i}} months">{{$i}} Bulan</option>
+								@endif
+							@endfor
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<select name="secondacleditor_day" class="form-control">
+							@for ($i=1; $i<=30; $i++)
+								@if ($i==1)
+									<option value="- {{$i}} day">{{$i}} Hari</option>
+								@else
+									<option value="- {{$i}} days">{{$i}} Hari</option>
+								@endif
+							@endfor
+						</select>
 					</div>
 				</div>
 			</div>
