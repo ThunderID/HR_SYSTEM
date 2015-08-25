@@ -39,9 +39,6 @@ class PersonWorkleaveObserver
 
 			if(isset($model['attributes']['person_workleave_id']) && $model['attributes']['person_workleave_id']!=0)
 			{
-				$left_quota 			= PersonWorkleave::id($model['attributes']['person_workleave_id'])->first();
-				$add_quota 				= PersonWorkleave::parentid($model['attributes']['person_workleave_id'])->sum('quota');
-
 				$validator 				= Validator::make($model['attributes'], ['person_workleave_id' => 'exists:person_workleaves,id']);
 
 				if (!$validator->passes())
@@ -56,38 +53,72 @@ class PersonWorkleaveObserver
 				$work 					= Work::find($model['attributes']['work_id']);
 
 				$start 					= max(date('Y-m-d', strtotime($model['attributes']['start'])), date('Y-m-d', strtotime($work->start)));
-		
+
+				$end 					= min(date('Y-m-d', strtotime($model['attributes']['end'])), (!is_null($work->end) ? date('Y-m-d', strtotime($work->end)) : date('Y-m-d')));
+
+				$prev_wleave 			= PersonWorkleave::workid($model['attributes']['work_id'])->personid($model['attributes']['person_id'])->where('start', 'like', date('Y', strtotime($start)).'%')->quota(true)->sum('quota');
+
+				if($prev_wleave)
+				{
+					$prev_quota			= $prev_wleave;
+				}
+				else
+				{
+					$prev_quota			= 0;
+				}
+
 				//if start = beginning of this year then end count one by one
 				if($start == date('Y-m-d', strtotime($model['attributes']['start'])))
 				{
-					$end 				= min(date('Y-m-d', strtotime($model['attributes']['end'])), date('Y-m-d'));
-					$extendpolicy 		= Policy::type('extendsworkleave')->OnDate(date('Y-m-d H:i:s'))->orderby('started_at', 'asc')->first();
-					$couldbetaken 		= date('Y-m-d', strtotime($model['attributes']['start']));
+					//hitung quota
+					$quota 				= (((date('m', strtotime($end)) - date('m', strtotime($start)) + 2)/12)*12) - $prev_quota;
+
+					//check policies
+					$extendpolicy 		= Policy::organisationid($model->workleave->organisation_id)->type('extendsworkleave')->OnDate(date('Y-m-d H:i:s', strtotime($end)))->orderby('started_at', 'asc')->first();
+
+					//check could be taken at
+					$couldbetaken 		= date('Y-m-d', strtotime($start));
+
+					if(is_null($extendpolicy))
+					{
+						$extendpolicy['value']	= '+ 3 months';
+					}
 				}
 				//if start != beginning of this year then end count as one (consider first year's policies)
 				else
 				{
-					$end 				= min(date('Y-m-d', strtotime($model['attributes']['end'])), (!is_null($work->end) ? date('Y-m-d', strtotime($work->end)) : date('Y-m-d', strtotime($model['attributes']['end']))));
-					$extendpolicy 		= Policy::type('extendsmidworkleave')->OnDate(date('Y-m-d H:i:s'))->orderby('started_at', 'asc')->first();
+					//hitung quota
+					if(date('d', strtotime($start)) != '1')
+					{
+						$quota 			= 0;
+					}
+					else
+					{
+						$quota 			= (((date('m', strtotime($end)) - date('m', strtotime($start)) + 2 )/12)*12) - $prev_quota;
+					}
+
+					//check policies
+					$extendpolicy 		= Policy::organisationid($model->workleave->organisation_id)->type('extendsmidworkleave')->OnDate(date('Y-m-d H:i:s', strtotime($end)))->orderby('started_at', 'asc')->first();
+					
+					if(is_null($extendpolicy))
+					{
+						$extendpolicy['value']	= '+ 1 year + 3 months';
+					}
+
+					//check could be taken at
 					$couldbetaken 		= date('Y-m-d', strtotime($start. ' + 1 year'));
 				}
 
-				if($model->workleave->quota <= 12)
+
+				if((int)date('m', strtotime($start))==12 && $model->workleave->quota > 12)
 				{
-					$quota 				= ((date('m', strtotime($end)) - date('m', strtotime($start)) + 1 )/$model->workleave->quota)*12;
-				}
-				elseif((int)date('m', strtotime($end))==12 && $model->workleave->quota > 12)
-				{
-					$quota 				= (((date('m', strtotime($end)) - date('m', strtotime($start)) + 1 )/12)*12) + ($model->workleave->quota-12);
-				}
-				else
-				{
-					$quota 				= ((date('m', strtotime($end)) - date('m', strtotime($start)) + 1 )/12)*12;
+					$quota 				= $quota + ($model->workleave->quota-12);
 				}
 
 				$model->quota			= $quota;
 				$model->start			= $couldbetaken;
-				$model->end				= date('Y-m-d', strtotime($model['attributes']['end'].' '.$extendpolicy->value));
+
+				$model->end				= date('Y-m-d', strtotime('last day of December '.date('Y', strtotime($model['attributes']['end'])).' '.$extendpolicy['value']));
 			}
 
 			return true;

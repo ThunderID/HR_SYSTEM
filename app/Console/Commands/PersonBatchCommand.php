@@ -1420,7 +1420,7 @@ class PersonBatchCommand extends Command {
 						$personworkleave[$i]['name'] 			= 'Pemberian (awal) '.$is_workleave_success->name;
 						$personworkleave[$i]['notes'] 			= 'Auto generated dari import csv.';
 						$personworkleave[$i]['start'] 			= date('Y-m-d', strtotime('first day of January this year'));
-						$personworkleave[$i]['end'] 			= date('Y-m-d', strtotime('last day of December this year'));
+						$personworkleave[$i]['end'] 			= date('Y-m-d', strtotime('last day of last month'));
 						$personworkleave[$i]['quota'] 			= $is_workleave_success->quota;
 						$personworkleave[$i]['status'] 			= 'CN';
 

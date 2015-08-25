@@ -337,7 +337,7 @@ class WorkleaveController extends BaseController
 			$attributes['quota']				= $contents_2->data->quota;
 
 			$attributes['start'] 				= $begin->format('Y-m-d');
-			$attributes['end'] 					= $ended->format('Y-m-d');
+			$attributes['end'] 					= date('Y-m-d', strtotime('last day of last month'));
 
 			DB::beginTransaction();
 

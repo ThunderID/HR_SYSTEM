@@ -107,7 +107,7 @@ class WorkleaveQueueCommand extends Command {
 
 				$parameter['name']			= 'Cuti Progresif Bulan '.date('F');
 				$parameter['onstart']		= date('Y-m-d', strtotime('First day of January this year'));
-				$parameter['onend']			= date('Y-m-d', strtotime('last day of December this year'));
+				$parameter['onend']			= date('Y-m-d', strtotime('last day of last month'));
 				$parameter['quota']			= $value2['quota'];
 				$parameter['workleave_id']	= $value2['id'];
 				$parameter['status']		= $value2['status'];

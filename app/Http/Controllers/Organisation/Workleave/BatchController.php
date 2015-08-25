@@ -135,7 +135,7 @@ class BatchController extends BaseController
 		$attributes['workleave_id'] 			= $workleave_id;
 		$attributes['created_by'] 				= Session::get('loggedUser');
 		$attributes['onstart'] 					= date('Y-m-d', strtotime(' first day of january '.date('Y', strtotime($input['start']))));
-		$attributes['onend'] 					= date('Y-m-d', strtotime(' last day of december '.date('Y', strtotime($attributes['onstart']))));
+		$attributes['onend'] 					= date('Y-m-d', strtotime('last day of last month'));
 		$attributes['name'] 					= $workleave['name'].' '.date('Y', strtotime($input['start']));
 		$attributes['quota'] 					= $workleave['quota'];
 		$attributes['status'] 					= 'CN';

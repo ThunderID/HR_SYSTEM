@@ -41,6 +41,7 @@ class PersonWorkleave extends BaseModel {
 	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasPersonTrait;
 	use \App\Models\Traits\BelongsTo\HasWorkleaveTrait;
+	use \App\Models\Traits\BelongsTo\HasWorkTrait;
 	use \App\Models\Traits\BelongsTo\HasPersonWorkleaveTrait;
 	use \App\Models\Traits\HasMany\HasPersonWorkleavesTrait;
 	use \App\Models\Traits\MorphMany\HasWorkleaveAttendanceDetailsTrait;
