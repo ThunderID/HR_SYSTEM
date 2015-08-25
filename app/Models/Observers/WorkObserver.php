@@ -27,16 +27,9 @@ class WorkObserver
 	{
 		if(isset($model['attributes']['chart_id']) && $model['attributes']['chart_id']!=0)
 		{
-			if(strtolower($model['status'])=='admin')
+			if(in_array(strtolower($model['status']), ['contract', 'permanent']))
 			{
-				$auth 								= new WorkAuthentication;
-				$auth->fill([
-							'tmp_auth_group_id'		=> 1,
-				]);
-			}
-			else
-			{
-				$defaultworkleave 					= Workleave::status('CN')->organisationid($model->chart->branch->organisation_id)->active(true)->first();
+				$defaultworkleave 					= Workleave::status('CN')->organisationid($model->chart->branch->organisation_id)->active(true)->quota(12)->first();
 				if($defaultworkleave)
 				{
 					$follow 						= new FollowWorkleave;
@@ -52,14 +45,24 @@ class WorkObserver
 
 						return false;
 					}
-
 				}
+			}
 
+			if(strtolower($model['status'])=='admin')
+			{
+				$auth 								= new WorkAuthentication;
+				$auth->fill([
+							'tmp_auth_group_id'		=> 1,
+				]);
+			}
+			else
+			{
 				$auth 								= new WorkAuthentication;
 				$auth->fill([
 							'tmp_auth_group_id'		=> 5,
 				]);
 			}
+
 
 			$auth->Work()->associate($model);
 
