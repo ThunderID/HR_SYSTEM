@@ -4,19 +4,16 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-use App\Console\Commands\Getting;
+use \Illuminate\Support\MessageBag as MessageBag;
 
-use App\Models\Organisation;
-use App\Models\Policy;
+use App\Models\QueueMorph;
+use App\Models\Queue;
 use App\Models\ProcessLog;
 use App\Models\AttendanceLog;
 
 use Log, DB;
 
 class FirstLockCommand extends Command {
-
-	use \Illuminate\Foundation\Bus\DispatchesCommands;
-	use \Illuminate\Foundation\Validation\ValidatesRequests;
 
 	/**
 	 * The console command name.
@@ -50,7 +47,9 @@ class FirstLockCommand extends Command {
 	public function fire()
 	{
 		//
-		$result 		= $this->firstlock();
+		$id 			= $this->argument()['queueid'];
+
+		$result 		= $this->firstlock($id);
 		
 		return true;
 	}
@@ -63,7 +62,7 @@ class FirstLockCommand extends Command {
 	protected function getArguments()
 	{
 		return [
-			['example', InputArgument::REQUIRED, 'An example argument.'],
+			['queueid', InputArgument::REQUIRED, 'An example argument.'],
 		];
 	}
 
@@ -74,9 +73,9 @@ class FirstLockCommand extends Command {
 	 */
 	protected function getOptions()
 	{
-		return [
-			['example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
-		];
+		return array(
+            array('queueid', null, InputOption::VALUE_OPTIONAL, 'Queue ID', null),
+        );
 	}
 
 	/**
@@ -85,70 +84,70 @@ class FirstLockCommand extends Command {
 	 * @return void
 	 * @author 
 	 **/
-	public function firstlock()
+	public function firstlock($id)
 	{
-		$search						= [];
-		$sort						= [];
-		$results 					= $this->dispatch(new Getting(new Organisation, $search, $sort ,1, 100));
-		$contents 					= json_decode($results);
+		$queue 						= new Queue;
+		$pending 					= $queue->find($id);
 
-		if(!$contents->meta->success)
+		$parameters 				= json_decode($pending->parameter, true);
+
+		$errors 					= new MessageBag;
+
+		$plogs 						= ProcessLog::workorganisationid($parameters['organisation_id'])->ondate($parameters['ondate'])->unsettleattendancelog(null)->get();
+
+		foreach($plogs as $key => $value) 
 		{
-			return true;
-		}
-
-		$organisations 				= json_decode(json_encode($contents->data));
-
-		foreach ($organisations as $key => $value) 
-		{
-			unset($search);
-			unset($sort);
-			$search['type']				= 'firststatussettlement';
-			$search['ondate']			= date('Y-m-d');
-			$search['organisationid']	= $value['id'];
-			$sort						= ['created_at', 'desc'];
-
-			$results 					= $this->dispatch(new Getting(new Policy, $search, $sort ,1, 1));
-			$contents 					= json_decode($results);
-
-			if($contents->meta->success)
+			DB::beginTransaction();
+			
+			foreach ($value['attendancelogs'] as $key => $value) 
 			{
-				$settlementdate 		= json_decode(json_encode($contents->data));
+				$alog  				= AttendanceLog::find($value['id']);
+				$alog->fill(['settlement_at' => date('Y-m-d H:i:s'), 'notes' => 'Auto Generated from scheduled job.']);
 
-				unset($search);
-				unset($sort);
-				$date 						= date('Y-m-d', strtotime($settlementdate->value));
-				$search['unsettleattendancelog']= null;
-				$search['organisationid']	= $value['id'];
-				$search['ondate']			= [$date, date('Y-m-d')];
-				$sort						= ['created_at', 'desc'];
-
-				$results 					= $this->dispatch(new Getting(new ProcessLog, $search, $sort ,1, 100));
-				$contents 					= json_decode($results);
-
-				if($contents->meta->success)
+				if(!$alog->save())
 				{
-					$plogs 					= json_decode(json_encode($contents->data));
-
-					DB::beginTransaction();
-					foreach($plogs as $key2 => $value2) 
-					{
-						foreach ($value2['attendancelogs'] as $key3 => $value3) 
-						{
-							$alog  				= AttendanceLog::find($value3['id']);
-							$alog->fill(['settlement_at' => date('Y-m-d H:i:s')]);
-
-							if(!$alog->save())
-							{
-								DB::rollback();
-								Log::error(json_encode($alog->getError()));
-							}
-						}
-					}
-					DB::commit();
+					$errors->add('Queue', $log->getError());
 				}
 			}
+
+			if(!$errors->count())
+			{
+				DB::commit();
+
+				$pnumber 						= $pending->process_number+1;
+				$pending->fill(['process_number' => $pnumber, 'message' => 'Sedang Menyimpan First Lock Settlement '.(isset($parameters['name']) ? $parameters['name'] : '')]);
+
+				$morphed 						= new QueueMorph;
+
+				$morphed->fill([
+					'queue_id'					=> $id,
+					'queue_morph_id'			=> $value->id,
+					'queue_morph_type'			=> get_class(new AttendanceLog),
+				]);
+
+				$morphed->save();
+			}
+			else
+			{
+				DB::rollback();
+				
+				$pending->fill(['message' => json_encode($errors)]);
+			}
+
+			$pending->save();
 		}
+
+		if($errors->count())
+		{
+			$pending->fill(['message' => json_encode($errors)]);
+		}
+		else
+		{
+			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Sukses Menyimpan First Lock Settlement '.(isset($parameters['name']) ? $parameters['name'] : '')]);
+		}
+
+		$pending->save();
+
 		return true;
 	}
 }

@@ -175,7 +175,7 @@ class BatchController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.workleaves.index', [$workleave_id, 'workleave_id' => $workleave_id, 'org_id' => $org_id])->with('alert_success', 'Cuti "' . $workleave['name']. '" sedang menyimpan');
+			return Redirect::route('hr.workleaves.index', [$workleave_id, 'workleave_id' => $workleave_id, 'org_id' => $org_id])->with('alert_info', 'Cuti "' . $workleave['name']. '" sedang menyimpan');
 		}
 
 		DB::rollback();

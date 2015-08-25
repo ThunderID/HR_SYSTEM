@@ -25,6 +25,18 @@ class PersonWorkleaveObserver
 
 		if ($validator->passes())
 		{
+			if((isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0) || (!isset($model['attributes']['workleave_id'])))
+			{
+				$validator 				= Validator::make($model['attributes'], ['created_by' => 'required|exists:persons,id']);
+			
+				if (!$validator->passes())
+				{
+					$model['errors'] 	= $validator->errors();
+
+					return false;
+				}
+			}
+
 			if(isset($model['attributes']['person_workleave_id']) && $model['attributes']['person_workleave_id']!=0)
 			{
 				$left_quota 			= PersonWorkleave::id($model['attributes']['person_workleave_id'])->first();

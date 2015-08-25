@@ -3,16 +3,18 @@
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
-use DateTime, DateInterval, DatePeriod;
+
+use DateTime, DateInterval, DatePeriod, DB;
+
+use \Illuminate\Support\MessageBag as MessageBag;
+
 use App\Models\Person;
 use App\Models\Log;
-use App\Models\ErrorLog;
+use App\Models\QueueMorph;
+use App\Models\Queue;
 
 class LogAbsenceCommand extends Command {
 
-	use \Illuminate\Foundation\Bus\DispatchesCommands;
-	use \Illuminate\Foundation\Validation\ValidatesRequests;
-	
 	/**
 	 * The console command name.
 	 *
@@ -45,7 +47,9 @@ class LogAbsenceCommand extends Command {
 	public function fire()
 	{
 		//
-		$result 		= $this->generatelog();
+		$id 			= $this->argument()['queueid'];
+
+		$result 		= $this->generatelog($id);
 		
 		return true;
 	}
@@ -58,7 +62,7 @@ class LogAbsenceCommand extends Command {
 	protected function getArguments()
 	{
 		return [
-			['example', InputArgument::REQUIRED, 'An example argument.'],
+			['queueid', InputArgument::REQUIRED, 'An example argument.'],
 		];
 	}
 
@@ -69,9 +73,9 @@ class LogAbsenceCommand extends Command {
 	 */
 	protected function getOptions()
 	{
-		return [
-			['example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
-		];
+		return array(
+            array('queueid', null, InputOption::VALUE_OPTIONAL, 'Queue ID', null),
+        );
 	}
 
 	/**
@@ -80,70 +84,80 @@ class LogAbsenceCommand extends Command {
 	 * @return void
 	 * @author 
 	 **/
-	public function generatelog()
+	public function generatelog($id)
 	{
-		$search						= [];
-		$sort						= [];
-		$results 					= $this->dispatch(new Getting(new Organisation, $search, $sort ,1, 100));
-		$contents 					= json_decode($results);
+		$queue 						= new Queue;
+		$pending 					= $queue->find($id);
 
-		if(!$contents->meta->success)
+		$parameters 				= json_decode($pending->parameter, true);
+
+		$errors 					= new MessageBag;
+
+		$ondate 					= new DateTime($parameters['ondate']);
+
+		//check work active on that day, please consider if that queue were written days
+
+		$persons 					= Person::organisationid($parameters['organisation_id'])->fullschedule($ondate->format('Y-m-d'))->orderby('created_at', 'desc')->get();
+				
+		foreach ($persons as $key => $value) 
 		{
-			return true;
-		}
+			DB::beginTransaction();
 
-		$organisations 				= json_decode(json_encode($contents->data));
+			$log 					= new Log;
+			$log->fill([
+				'name'				=> strtolower('Absence'),
+				'on'				=> $ondate->format('Y-m-d'.' 00:00:00'),
+				'last_input_time'	=> $ondate->format('Y-m-d'.' 00:00:00'),
+				'app_version'		=> '1.0',
+				'ip'				=> getenv("REMOTE_ADDR"),
+				'pc'				=> 'cron',
+			]);
 
-		foreach ($organisations as $key => $value) 
-		{
-			unset($search);
-			unset($sort);
-			$search['type']				= 'secondstatussettlement';
-			$search['ondate']			= date('Y-m-d');
-			$search['organisationid']	= $value['id'];
-			$sort						= ['created_at', 'desc'];
+			$log->Person()->associate($value);
 
-			$results 					= $this->dispatch(new Getting(new Policy, $search, $sort ,1, 1));
-			$contents 					= json_decode($results);
-
-			if($contents->meta->success)
+			if(!$log->save())
 			{
-				$settlementdate 		= json_decode(json_encode($contents->data));
-
-				unset($search);
-				unset($sort);
-
-				$search['organisationid']		= $value['id'];
-				$search['fullschedule']			= date('Y-m-d', strtotime($settlementdate['value']));
-				$sort 							= ['created_at' => 'desc'];
-				$results 						= $this->dispatch(new Getting(new Person, $search, $sort ,1, 100));
-				$contents 						= json_decode($results);
-
-				if($contents->meta->success)
-				{
-					$persons 						= json_decode(json_encode($contents->data));
-
-					foreach ($persons as $key2 => $value2) 
-					{
-						$log['name']				= strtolower('Absence');
-						$log['on']					= $value->format('Y-m-d'.' 00:00:00');
-						$log['last_input_time']		= $value->format('Y-m-d'.' 00:00:00');
-						$log['app_version']			= '1.0';
-						$log['ip']					= getenv("REMOTE_ADDR");
-						$log['pc']					= 'cron';
-
-						$saved_log 					= $this->dispatch(new Saving(new Log, $log, null, new Person, $value2->id));
-						$is_success_2 				= json_decode($saved_log);
-						if(!$is_success_2->meta->success)
-						{
-							$log['email']			= $value2->username;
-							$log['message']			= $is_success_2->meta->errors;
-							$saved_error_log 		= $this->dispatch(new Saving(new ErrorLog, $log, null, new Organisation, $value['id']));
-						}
-					}
-				}
+				$errors->add('Queue', $log->getError());
 			}
+
+			if(!$errors->count())
+			{
+				DB::commit();
+
+				$pnumber 						= $pending->process_number+1;
+				$pending->fill(['process_number' => $pnumber, 'message' => 'Sedang Menyimpan Absen '.(isset($parameters['name']) ? $parameters['name'] : '')]);
+
+				$morphed 						= new QueueMorph;
+
+				$morphed->fill([
+					'queue_id'					=> $id,
+					'queue_morph_id'			=> $log->id,
+					'queue_morph_type'			=> get_class(new Log),
+				]);
+
+				$morphed->save();
+			}
+			else
+			{
+				DB::rollback();
+				
+				$pending->fill(['message' => json_encode($errors)]);
+			}
+
+			$pending->save();
+			
 		}
+
+		if($errors->count())
+		{
+			$pending->fill(['message' => json_encode($errors)]);
+		}
+		else
+		{
+			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Sukses Menyimpan Absen '.(isset($parameters['name']) ? $parameters['name'] : '')]);
+		}
+
+		$pending->save();
 
 		return true;
 	}

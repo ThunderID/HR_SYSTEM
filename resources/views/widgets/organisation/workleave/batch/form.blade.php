@@ -17,21 +17,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-sm-6">
-				<div class="form-group">
-					<label class="control-label">Tanggal Mulai Cuti Bersama</label>
-					{!!Form::input('text', 'joint_start', '', ['class' => 'form-control date-mask jointstart', 'tabindex' => 2])!!}
-				</div>
-			</div>
-			<div class="col-sm-6">
-				<div class="form-group">
-					<label class="control-label">Tanggal Akhir Cuti Bersama</label>
-					{!!Form::input('text', 'joint_end', '', ['class' => 'form-control date-mask jointend', 'tabindex' => 3])!!}
-				</div>
-			</div>
-		</div>
-
 		<div class="form-group text-right">
 			<a href="{{ $widget_options['workleavelist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
 			<input type="submit" class="btn btn-primary" value="Simpan">

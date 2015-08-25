@@ -37,7 +37,7 @@ trait HasProcessLogsTrait {
 	{
 		return $query
 					->wheredoesnthave('processlogs', function($q)use($variable){$q->ondate([$variable, $variable]);})
-					->chartnotadmin(true)
+					->chartnotadmin($variable)
 					;
 	}
 }
