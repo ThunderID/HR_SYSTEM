@@ -27,8 +27,8 @@ Route::group(['middleware' => 'csrfverify'], function()
 	});
 
 	Route::group(['before' => 'hr_acl'], function()
-	{
-		// ------------------------------------------------------------------------------------
+	
+{		// ------------------------------------------------------------------------------------
 		// LOGOUT AND PASSWORD PAGE
 		// ------------------------------------------------------------------------------------
 
@@ -266,6 +266,12 @@ Route::group(['namespace' => 'Organisation\\'], function()
 	// ------------------------------------------------------------------------------------
 
 	Route::any('documents-list', 				['uses' => 'DocumentController@ajax', 					'as' => 'hr.documents.list']);
+
+	// ------------------------------------------------------------------------------------
+	// CHECK BATCH PROGESS ON WORKLEAVE
+	// ------------------------------------------------------------------------------------
+
+	Route::any('workleave/progress', 			['uses' => 'WorkleaveController@batchprogress', 			'as' => 'hr.batch.workleaves']);
 });
 
 Route::group(['namespace' => 'Organisation\\Calendar\\', 'prefix' => 'calendar', 'middleware' => 'interfere'], function() 
@@ -314,12 +320,6 @@ Route::group(['namespace' => 'Organisation\\Person\\', 'prefix' => 'person'], fu
 
 Route::group(['namespace' => 'Organisation\\Workleave\\'], function()
 {
-	// ------------------------------------------------------------------------------------
-	// CHECK BATCH PROGESS ON WORKLEAVE
-	// ------------------------------------------------------------------------------------
-
-	Route::any('workleave/progress', 			['uses' => 'WorkleaveController@batchprogress', 			'as' => 'hr.batch.workleaves']);
-
 	// ------------------------------------------------------------------------------------
 	// AJAX STORE BATCH
 	// ------------------------------------------------------------------------------------
