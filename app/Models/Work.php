@@ -74,6 +74,7 @@ class Work extends BaseModel {
 											'status' 					=> 'Status', 
 											'active' 					=> 'Active', 
 											'groupperson' 				=> 'GroupPerson', 
+											'currentworkleave' 			=> 'CurrentWorkleave', 
 											'withattributes' 			=> 'WithAttributes'
 										];
 
@@ -86,6 +87,7 @@ class Work extends BaseModel {
 											'status' 					=> 'Could be array or string', 
 											'active' 					=> 'Must be enddate of work', 
 											'groupperson' 				=> 'Must be true', 
+											'currentworkleave' 			=> 'Must be true', 
 											'withattributes' 			=> 'Must be array of relationship',
 										];
 

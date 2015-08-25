@@ -25,4 +25,9 @@ trait HasFollowWorkleaveTrait {
 	{
 		return $query->WhereHas('followworkleave', function($q)use($variable){$q->workleaveid($variable);});
 	}
+
+	public function scopeCurrentWorkleave($query, $variable)
+	{
+		return $query->WhereHas('followworkleave', function($q)use($variable){$q;})->with(['followworkleave', 'followworkleave.workleave']);
+	}
 }
