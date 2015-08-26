@@ -25,7 +25,7 @@ class PolicyTableSeeder extends Seeder
 						'created_by'					=> 1,
 						'type'							=> $types[$key2],
 						'value'							=> $values[$key2],
-						'started_at'					=> date('Y-m-d'),
+						'started_at'					=> date('Y-m-d H:i:s'),
 					]);
 
 					$data->organisation()->associate(Organisation::find($orgs[$index]->id));
