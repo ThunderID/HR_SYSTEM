@@ -428,7 +428,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 					}
 
 
-					$results 									= $this->dispatch(new Getting(new Policy, ['type' => 'passwordreminder' ,'organisationid' => Session::get('user.organisationid'), 'ondate' => date('Y-m-d')], ['created_at' => 'desc'],1, 1));
+					$results 									= $this->dispatch(new Getting(new Policy, ['type' => 'passwordreminder' ,'organisationid' => Session::get('user.organisationid'), 'ondate' => date('Y-m-d H:i:s')], ['created_at' => 'desc'],1, 1));
 
 					$contents_3 								= json_decode($results);
 
