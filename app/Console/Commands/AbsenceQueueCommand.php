@@ -88,7 +88,7 @@ class AbsenceQueueCommand extends Command {
 
 		foreach ($organisations as $key => $value) 
 		{
-			$policy 					= Policy::organisationid($value['id'])->type('secondstatussettlement')->ondate(date('Y-m-d'))->orderby('started_at', 'asc')->first();
+			$policy 					= Policy::organisationid($value['id'])->type('secondstatussettlement')->ondate(date('Y-m-d H:i:s'))->orderby('started_at', 'asc')->first();
 
 			if($policy)
 			{

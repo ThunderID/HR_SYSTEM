@@ -93,28 +93,28 @@ class SanctionQueueCommand extends Command {
 			$hp = $ht = $hc = 2;
 			$settlementdate	= '- 5 days';
 
-			$policy 					= Policy::organisationid($value['id'])->type('assplimit')->ondate(date('Y-m-d'))->orderby('started_at', 'asc')->first();
+			$policy 					= Policy::organisationid($value['id'])->type('assplimit')->ondate(date('Y-m-d H:i:s'))->orderby('started_at', 'asc')->first();
 	
 			if($policy)
 			{
 				$as 					= $policy->value;
 			}
 
-			$policy 					= Policy::organisationid($value['id'])->type('ulsplimit')->ondate(date('Y-m-d'))->orderby('started_at', 'asc')->first();
+			$policy 					= Policy::organisationid($value['id'])->type('ulsplimit')->ondate(date('Y-m-d H:i:s'))->orderby('started_at', 'asc')->first();
 	
 			if($policy)
 			{
 				$ul 					= $policy->value;
 			}
 
-			$policy 					= Policy::organisationid($value['id'])->type('hpsplimit')->ondate(date('Y-m-d'))->orderby('started_at', 'asc')->first();
+			$policy 					= Policy::organisationid($value['id'])->type('hpsplimit')->ondate(date('Y-m-d H:i:s'))->orderby('started_at', 'asc')->first();
 			
 			if($policy)
 			{
 				$hp 					= $policy->value;
 			}
 
-			$policy 					= Policy::organisationid($value['id'])->type('htsplimit')->ondate(date('Y-m-d'))->orderby('started_at', 'asc')->first();
+			$policy 					= Policy::organisationid($value['id'])->type('htsplimit')->ondate(date('Y-m-d H:i:s'))->orderby('started_at', 'asc')->first();
 			
 			if($policy)
 			{
@@ -122,7 +122,7 @@ class SanctionQueueCommand extends Command {
 			}
 
 		
-			$policy 					= Policy::organisationid($value['id'])->type('hcsplimit')->ondate(date('Y-m-d'))->orderby('started_at', 'asc')->first();
+			$policy 					= Policy::organisationid($value['id'])->type('hcsplimit')->ondate(date('Y-m-d H:i:s'))->orderby('started_at', 'asc')->first();
 			
 			if($policy)
 			{
@@ -130,7 +130,7 @@ class SanctionQueueCommand extends Command {
 			}
 
 		
-			$policy 					= Policy::organisationid($value['id'])->type('secondstatussettlement')->ondate(date('Y-m-d'))->orderby('started_at', 'asc')->first();
+			$policy 					= Policy::organisationid($value['id'])->type('secondstatussettlement')->ondate(date('Y-m-d H:i:s'))->orderby('started_at', 'asc')->first();
 			
 			if($policy)
 			{

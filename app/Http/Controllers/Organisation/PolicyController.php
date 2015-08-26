@@ -170,7 +170,7 @@ class PolicyController extends BaseController
 			
 			$search['organisationid'] 			= $org_id;
 			$search['type'] 					= $types[$index];
-			$search['ondate'] 					= date('Y-m-d');
+			$search['ondate'] 					= date('Y-m-d H:i:s');
 			$sort 								= ['started_at' => 'desc'];
 			$results 							= $this->dispatch(new Getting(new Policy, $search, $sort , 1, 1));
 			$contents 							= json_decode($results);
