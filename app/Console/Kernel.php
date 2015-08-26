@@ -39,14 +39,25 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected function schedule(Schedule $schedule)
 	{
+		//write queue
+
+		//auto generate log for previous day (or) previous day : as sanction
 		$schedule->command('hr:absencequeue AbsenceQueueCommand')
-				 ->daily();
+				 ->dailyAt('08:00');
+
+		//auto generate log for previous day 
 		$schedule->command('hr:attendancequeue AttendanceQueueCommand')
-				 ->cron('0 0 */21 * * *');
+				 ->cron('0 0 */26 * * *');
+
+		//auto generate sanction for previous day (currently 5 days)
 		$schedule->command('hr:sanctionqueue SanctionQueueCommand')
-				 ->daily();
+				 ->dailyAt('20:00');
+
+		//auto generate progressive workleave for previous month
 		$schedule->command('hr:workleavequeue WorkleaveQueueCommand')
 				 ->monthly();
+
+		//running queue (every five minutes)
 		$schedule->command('hr:queue HRQueueCommand')
 				 ->everyFiveMinutes();
 	}
