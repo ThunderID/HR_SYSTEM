@@ -89,14 +89,15 @@ class AttendanceQueueCommand extends Command {
 		foreach ($organisations as $key => $value) 
 		{
 			$policy 						= Policy::organisationid($value['id'])->type('firststatussettlement')->ondate(date('Y-m-d H:i:s'))->orderby('started_at', 'asc')->first();
+			$policy2 						= Policy::organisationid($value['id'])->type('secondstatussettlement')->ondate(date('Y-m-d H:i:s'))->orderby('started_at', 'asc')->first();
 				
-			if($policy)
+			if($policy && $policy2)
 			{
-				$ondate 					= [date('Y-m-d', strtotime($policy['value'])), date('Y-m-d')];
+				$ondate 					= [date('Y-m-d', strtotime($policy['value'].' '.$policy2['value'])), date('Y-m-d', strtotime($policy2['value']))];
 			}
 			else
 			{
-				$ondate 					= [date('Y-m-d', strtotime('- 1 month')), date('Y-m-d')];
+				$ondate 					= [date('Y-m-d', strtotime('- 1 month - 5 days')), date('Y-m-d'), strtotime('- 5 days')];
 			}
 
 			$plogs 							= ProcessLog::workorganisationid($value['id'])->ondate($ondate)->unsettleattendancelog(null)->get();
