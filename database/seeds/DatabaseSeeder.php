@@ -33,12 +33,12 @@ class DatabaseSeeder extends Seeder {
 		// $this->call('ContactTableSeeder');
 
 		// $this->call('CalendarTableSeeder');
-		$this->call('WorkleaveTableSeeder');
+		// $this->call('WorkleaveTableSeeder');
 		
 		// $this->call('WorkTableSeeder');
 		// $this->call('WorkAuthenticationTableSeeder');
 
-		$this->call('DocumentTableSeeder');
+		// $this->call('DocumentTableSeeder');
 		// $this->call('PersonDocumentTableSeeder');
 		// $this->call('DocumentDetailTableSeeder');
 
