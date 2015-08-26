@@ -129,7 +129,41 @@ class SanctionQueueCommand extends Command {
 				$hc 					= $policy->value;
 			}
 
-		
+			$policy 					= Policy::organisationid($value['id'])->type('asid')->ondate(date('Y-m-d H:i:s'))->orderby('started_at', 'asc')->first();
+
+			if($policy)
+			{
+				$assp 					= $policy->value;
+			}
+
+			$policy 					= Policy::organisationid($value['id'])->type('ulid')->ondate(date('Y-m-d H:i:s'))->orderby('started_at', 'asc')->first();
+	
+			if($policy)
+			{
+				$ulsp 					= $policy->value;
+			}
+
+			$policy 					= Policy::organisationid($value['id'])->type('hpid')->ondate(date('Y-m-d H:i:s'))->orderby('started_at', 'asc')->first();
+			
+			if($policy)
+			{
+				$hpsp 					= $policy->value;
+			}
+
+			$policy 					= Policy::organisationid($value['id'])->type('htid')->ondate(date('Y-m-d H:i:s'))->orderby('started_at', 'asc')->first();
+			
+			if($policy)
+			{
+				$htsp 					= $policy->value;
+			}
+
+			$policy 					= Policy::organisationid($value['id'])->type('hcid')->ondate(date('Y-m-d H:i:s'))->orderby('started_at', 'asc')->first();
+			
+			if($policy)
+			{
+				$hcsp 					= $policy->value;
+			}
+
 			$policy 					= Policy::organisationid($value['id'])->type('secondstatussettlement')->ondate(date('Y-m-d H:i:s'))->orderby('started_at', 'asc')->first();
 			
 			if($policy)
@@ -152,6 +186,11 @@ class SanctionQueueCommand extends Command {
 			$parameter['hp']				= $hp;
 			$parameter['ht']				= $ht;
 			$parameter['hc']				= $hc;
+			$parameter['assp']				= $assp;
+			$parameter['ulsp']				= $ulsp;
+			$parameter['hpsp']				= $hpsp;
+			$parameter['htsp']				= $htsp;
+			$parameter['hcsp']				= $hcsp;
 
 			$queue 							= new Queue;
 			$queue->fill([

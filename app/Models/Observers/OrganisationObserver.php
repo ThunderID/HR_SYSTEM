@@ -45,27 +45,6 @@ class OrganisationObserver
 
 			if($chart->save())
 			{
-				$types 									= ['passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle', 'extendsworkleave', 'extendsmidworkleave', 'firstacleditor', 'secondacleditor'];
-				$values 								= ['- 3 months', '1', '1', '2', '2', '2', '- 1 month', '- 5 days', '900', '3600','7200', '+ 3 months', '+ 1 year + 3 months', '- 1 month', '- 5 days'];
-				foreach(range(0, count($types)-1) as $key => $index)
-				{
-					$policy 							= new Policy;
-					$policy->fill([
-						'type'							=> $types[$key],
-						'value'							=> $values[$key],
-						'started_at'					=> date('Y-m-d'),
-					]);
-
-					$policy->organisation()->associate($model);
-
-					if (!$policy->save())
-					{
-						$model['errors'] 				= $policy->getError();
-
-						return false;
-					}
-				}
-
 				$name 									= 
 															[
 																'KTP',
@@ -209,7 +188,7 @@ class OrganisationObserver
 																	'text',
 																], 
 															];
-
+				$idxofdoc 								= [];
 				foreach(range(0, count($name)-1) as $index)
 				{
 					if($index<4)
@@ -235,6 +214,11 @@ class OrganisationObserver
 						return false;
 					}
 
+					if($index>5 && $index<9)
+					{
+						$idxofdoc[] 					= $document->id;
+					}
+
 					foreach ($template[$index] as $key => $value) 
 					{
 						$templates[$key] 				= new Template;
@@ -247,6 +231,29 @@ class OrganisationObserver
 					}
 					$document->templates()->saveMany($templates);
 					unset($templates);
+				}
+
+				$docid									= implode(',', $idxofdoc);
+
+				$types 									= ['passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle', 'extendsworkleave', 'extendsmidworkleave', 'firstacleditor', 'secondacleditor', 'asid', 'ulid', 'hcid', 'htid', 'hpid'];
+				$values 								= ['- 3 months', '1', '1', '2', '2', '2', '- 1 month', '- 5 days', '900', '3600','7200', '+ 3 months', '+ 1 year + 3 months', '- 1 month', '- 5 days', $docid, $docid, $docid, $docid, $docid];
+				foreach(range(0, count($types)-1) as $key => $index)
+				{
+					$policy 							= new Policy;
+					$policy->fill([
+						'type'							=> $types[$key],
+						'value'							=> $values[$key],
+						'started_at'					=> date('Y-m-d'),
+					]);
+
+					$policy->organisation()->associate($model);
+
+					if (!$policy->save())
+					{
+						$model['errors'] 				= $policy->getError();
+
+						return false;
+					}
 				}
 
 				return true;
