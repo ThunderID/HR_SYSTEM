@@ -152,7 +152,7 @@ class Policy extends BaseModel {
 
 	public function scopeNewest($query, $variable)
 	{
-		return $query->orderBy('started_at', 'DESC')->orderByRaw(DB::raw("FIELD(type, 'passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle', 'extendsworkleave', 'extendsmidworkleave', 'firstacleditor', 'secondacleditor', 'asid', 'ulid', 'hcid', 'htid', 'hpid' )"));
+		return $query->orderByRaw(DB::raw('started_at, type'));//->orderByRaw(DB::raw("FIELD(type, 'passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle', 'extendsworkleave', 'extendsmidworkleave', 'firstacleditor', 'secondacleditor', 'asid', 'ulid', 'hcid', 'htid', 'hpid' )"));
 	}
 
 }
