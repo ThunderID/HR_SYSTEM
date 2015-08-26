@@ -66,7 +66,7 @@
 								@elseif(in_array(strtolower($value['type']),['assplimit','ulsplimit','htsplimit','hpsplimit','hcsplimit']))
 									{{ $val }} x Pelanggaran / SP
 								@elseif(in_array(strtolower($value['type']),['asid','ulid','htid','hpid','hcid']))
-									
+									{{  $value['value'] }}
 								@else
 									{{ $val }} Sekali
 								@endif
