@@ -1,5 +1,5 @@
 <?php namespace App\Http\Controllers\Organisation\Person;
-use Input, Session, App, Paginator, Redirect, DB, Config, DatePeriod, DateTime, DateInterval;
+use Input, Session, App, Paginator, Redirect, DB, Config, DatePeriod, DateTime, DateInterval, Response;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -599,6 +599,7 @@ class WorkleaveController extends BaseController
 		$progress2 						= [];
 		$pnumbers 						= [];
 		$tprocesses 					= [];
+		$pprocess 						= [];
 		$search['createdbyid'] 			= Session::get('loggedUser');
 		$search['running'] 				= null;
 		$search['processname'] 			= 'hr:personworkleavebatch';
@@ -640,8 +641,9 @@ class WorkleaveController extends BaseController
 
 			$pnumbers[]					= $value->process_number;
 			$tprocesses[]				= $value->total_process;
+			$pprocess[] 				= $value->parameter;
 		}
 
-		return Response::json(['message' => $progress2, 'process_number' => $pnumbers, 'total_process' => $tprocesses], 200);
+		return Response::json(['message' => $progress2, 'process_number' => $pnumbers, 'total_process' => $tprocesses, 'parameter_process' => $pprocess], 200);
 	}
 }

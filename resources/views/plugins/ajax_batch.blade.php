@@ -98,7 +98,7 @@
 						var now = parseInt(e.process_number[0]);				
 						var name = jQuery.parseJSON(e.parameter_process[0]);					
 
-						$('.message_batch').html('Progres batch jadwal "'+name.name+'"');
+						$('.message_batch').html('Progres batch Jadwal "'+name.name+'"');
 						$('.alert_batch').removeClass('hide');						
 
 						if (now>=max)
@@ -140,6 +140,48 @@
 						var name = jQuery.parseJSON(e.parameter_process[0]);
 
 						$('.message_batch').html('Progres batch cuti "'+name.name+'"');
+						$('.alert_batch').removeClass('hide');						
+
+						if (now>=max)
+						{
+							$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
+							$('.progress-bar').css('width', '100%');
+							$('.progress').find('span').html(max+' / '+max+' proses');
+							setTimeout($('.progress').find('span').html('Proses Selesai'), 200);
+							clearInterval(intervalID);
+						}
+
+						else if (now<max) 
+						{
+							$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
+							$('.progress-bar').css('width', ((now/max)*100)+'%');
+							$('.progress').find('span').html(now+' / '+max+' proses');
+							if (((now/max)*100)>='45') 
+							{
+								$('.progress').find('span').css('color', '#fff');
+							}
+						}
+						
+						x=x+2;
+					}
+				}
+			});
+	@elseif ('hr.person.workleaves.index')
+		var x =0;
+		// var intervalID	= setInterval(
+		// 	$.ajax, 1000, 
+		$.ajax(
+			{
+				url: '{{ route("hr.batch.person.workleaves") }}',
+				dataType: 'json',
+				success: function(e) {
+					if ((e.parameter_process).length!=0)
+					{
+				        var max = parseInt(e.total_process[0]);
+						var now = parseInt(e.process_number[0]);				
+						var name = jQuery.parseJSON(e.parameter_process[0]);
+
+						$('.message_batch').html('Progres batch Jadwal "'+name.name+'"');
 						$('.alert_batch').removeClass('hide');						
 
 						if (now>=max)
