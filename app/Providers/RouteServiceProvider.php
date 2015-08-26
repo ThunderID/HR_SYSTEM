@@ -417,7 +417,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 					//check access
 					$menu 											= app('hr_acl')[Route::currentRouteName()];
 
-					$results 										= $this->dispatch(new Getting(new WorkAuthentication, ['menuid' => $menu, 'workid' => $workid, 'organisationid' => $organisationids], ['tmp_auth_group_id' => 'asc'],1, 1));
+					$results 										= $this->dispatch(new Getting(new WorkAuthentication, ['menuid' => $menu, 'workid' => $workid, 'organisationid' => $orgids], ['tmp_auth_group_id' => 'asc'],1, 1));
 
 					$contents 										= json_decode($results);
 
@@ -428,19 +428,19 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 					}
 
 
-					$results 									= $this->dispatch(new Getting(new Policy, ['type' => 'passwordreminder' ,'organisationid' => Session::get('user.organisationid'), 'ondate' => date('Y-m-d')], ['created_at' => 'desc'],1, 1));
+					// $results 									= $this->dispatch(new Getting(new Policy, ['type' => 'passwordreminder' ,'organisationid' => Session::get('user.organisationid'), 'ondate' => date('Y-m-d')], ['created_at' => 'desc'],1, 1));
 
-					$contents_3 								= json_decode($results);
+					// $contents_3 								= json_decode($results);
 
-					if(!$contents_3->meta->success)
-					{
-						App::abort(404);
-					}
+					// if(!$contents_3->meta->success)
+					// {
+					// 	App::abort(404);
+					// }
 
-					if(date('Y-m-d H:i:s', strtotime(Session::get('user.lupassword'))) < date('Y-m-d H:i:s', strtotime($contents_3->data->value)))
-					{
-						Session::put('alert_info', 'Sudah waktunya mengganti password anda');
-					}
+					// if(date('Y-m-d H:i:s', strtotime(Session::get('user.lupassword'))) < date('Y-m-d H:i:s', strtotime($contents_3->data->value)))
+					// {
+					// 	Session::put('alert_info', 'Sudah waktunya mengganti password anda');
+					// }
 
 					Session::put('user.menuid', $contents->data->tmp_auth_group_id);
 				}
