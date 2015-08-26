@@ -33,6 +33,14 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<div class="col-md-2">
+					<label class="control-label">Note</label>
+				</div>
+				<div class="col-md-10">
+					{!! Form::text('note', '', ['class' => 'form-control']) !!}
+				</div>
+			</div>
+			<div class="form-group">
 				<div class="col-md-12 text-right">
 					<a href="{{ $ProcessLogComposer['widget_data']['processlogslist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
 					<input type="submit" class="btn btn-primary" value="Simpan">
