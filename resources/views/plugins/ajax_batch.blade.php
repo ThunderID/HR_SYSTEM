@@ -107,24 +107,38 @@
 				success: function(e) {
 			        var max = parseInt(e.total_process[0]);
 					var now = parseInt(e.process_number[0]);				
-					var name = jQuery.parseJSON(e.parameter_process[0]);					
-
-					$('.message_batch').html('Progres batch cuti "'+name.name+'"');
-					$('.alert_batch').removeClass('hide');
-					$('.progress-bar').attr('aria-valuemax', max).attr('aria-valuenow', (now+x));
-					$('.progress-bar').css('width', (((now+x)/max)*100)+'%');
-					$('.progress-bar').html((now+x)+' / '+max+' proses');
-
-					if ((now+x)>=max)
+					var name = jQuery.parseJSON(e.parameter_process[0]);
+					console.log(now+'---'+max);
+					if ((e.parameter_process).length!=0)
 					{
-						$('.progress-bar').attr('aria-valuemax', max).attr('aria-valuenow', now+x);
-						$('.progress-bar').css('width', '100%');
-						$('.progress-bar').html(max+' / '+max+' proses');
-						setTimeout($('.progress-bar').html('Proses Selesai'), 200);
-						clearInterval(intervalID);
+						$('.message_batch').html('Progres batch cuti "'+name.name+'"');
+						$('.alert_batch').removeClass('hide');						
+
+						if (now>=max)
+						{
+							console.log('lbh besar');
+							$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
+							$('.progress-bar').css('width', '100%');
+							$('.progress').find('span').html(max+' / '+max+' proses');
+							setTimeout($('.progress').find('span').html('Proses Selesai'), 200);
+							clearInterval(intervalID);
+						}
+
+						else if (now<max) 
+						{
+							console.log('lbh kecil');
+
+							$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
+							$('.progress-bar').css('width', ((now/max)*100)+'%');
+							$('.progress').find('span').html(now+' / '+max+' proses');
+							if (((now/max)*100)>='45') 
+							{
+								$('.progress').find('span').css('color', '#fff');
+							}
+						}
+						
+						x=x+2;
 					}
-					
-					x=x+2;
 				}
 			});
 	@endif

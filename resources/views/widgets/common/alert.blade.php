@@ -71,10 +71,8 @@
 				<div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
 					<p class="message_batch">Batch cuti sedang diproses..</p>
 					<div class="progress mt-10">
-						<div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="500" style="width: 50%;">
-							100 / 500 Person
-						</div>
-				
+						<div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="500" style="width: 50%;"></div>
+						<span></span>
 					</div>
 				</div>
 			</div>

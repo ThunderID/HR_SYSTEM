@@ -4627,6 +4627,7 @@ a.thumbnail.active {
 	background-color: #f5f5f5;
 	border-radius: 4px;
 	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+	position: relative;
 }
 .progress-bar {
 	float: left;
@@ -4639,6 +4640,16 @@ a.thumbnail.active {
 	background-color: #428bca;
 	box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
 	transition: width 0.6s ease;
+	position: absolute;
+	z-index: 1;
+}
+.progress span {
+	position: absolute;
+	text-align: center;
+	top: 0;
+	width: 100%;
+	/*color: #000;*/
+	z-index: 2;
 }
 .progress-striped .progress-bar,
 .progress-bar-striped {
@@ -4673,6 +4684,12 @@ a.thumbnail.active {
 }
 .progress-striped .progress-bar-danger {
 	background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+}
+.progress-bar[aria-valuenow="0"] + span {
+	color: #000;
+}
+.progress-bar[aria-valuenow="45"] + span {
+	color: #fff;
 }
 .media {
 	margin-top: 15px;
