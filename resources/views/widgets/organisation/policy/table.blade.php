@@ -1,6 +1,6 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 <?php 
-	$type 				= ['passwordreminder' => 'Pengingat Password', 'assplimit' => 'Batas AS mendapat SP', 'ulsplimit' => 'Batas UL mendapat SP', 'htsplimit' => 'Batas HT mendapat SP', 'hpsplimit' => 'Batas HP mendapat SP', 'hcsplimit' => 'Batas HC mendapat SP', 'firststatussettlement' => 'Kunci Pertama', 'secondstatussettlement' => 'Kunci Kedua', 'firstidle' => 'Batas Idle pertama', 'secondidle' => 'Batas Idle kedua', 'thirdidle' => 'Batas Idle ketiga', 'extendsworkleave' => 'Perpanjangan Cuti', 'extendsmidworkleave' => 'Perpanjangan Cuti (tengah tahun)', 'firstacleditor' => 'Kunci interferensi level 1', 'secondacleditor' => 'Kunci interferensi level 2'];
+	$type 				= ['passwordreminder' => 'Pengingat Password', 'assplimit' => 'Batas AS mendapat SP', 'ulsplimit' => 'Batas UL mendapat SP', 'htsplimit' => 'Batas HT mendapat SP', 'hpsplimit' => 'Batas HP mendapat SP', 'hcsplimit' => 'Batas HC mendapat SP', 'firststatussettlement' => 'Kunci Pertama', 'secondstatussettlement' => 'Kunci Kedua', 'firstidle' => 'Batas Idle pertama', 'secondidle' => 'Batas Idle kedua', 'thirdidle' => 'Batas Idle ketiga', 'extendsworkleave' => 'Perpanjangan Cuti', 'extendsmidworkleave' => 'Perpanjangan Cuti (tengah tahun)', 'firstacleditor' => 'Kunci interferensi level 1', 'secondacleditor' => 'Kunci interferensi level 2', 'asid' => 'ID Dokumen SP - AS (1,2,3)', 'ulid' => 'ID Dokumen SP - UL (1,2,3)', 'hcid' => 'ID Dokumen SP - HC (1,2,3)', 'htid' => 'ID Dokumen SP - HT (1,2,3)', 'hpid' => 'ID Dokumen SP - HP (1,2,3)'];
 	$patterns[] = '/years/';
 	$patterns[] = '/months/';
 	$patterns[] = '/days/';
@@ -51,7 +51,7 @@
 				<tbody>
 					<?php $i = $PolicyComposer['widget_data']['policylist']['policy-display']['from'];?>
 					@forelse($PolicyComposer['widget_data']['policylist']['policy'] as $key => $value)
-						<tr @if($i<=15) class="active" @endif>
+						<tr @if($i<=20) class="active" @endif>
 							<td>
 								{{$i}}
 							</td>
@@ -65,6 +65,8 @@
 									{{ gmdate('H:i', $val) }}
 								@elseif(in_array(strtolower($value['type']),['assplimit','ulsplimit','htsplimit','hpsplimit','hcsplimit']))
 									{{ $val }} x Pelanggaran / SP
+								@elseif(in_array(strtolower($value['type']),['asid','ulid','htid','hpid','hcid']))
+									
 								@else
 									{{ $val }} Sekali
 								@endif

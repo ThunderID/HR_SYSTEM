@@ -544,48 +544,50 @@
 			<div class="row mb-10">
 				<div class="col-sm-3">
 					<div class="form-group">				
-						<label class="control-label">asid</label>				
+						<label class="control-label">ID Dokumen SP - AS (1,2,3)</label>				
 						{!! Form::input('hidden', 'type', 'asid') !!}				
 					</div>
 				</div>
+				<?php $asid = explode(',', $p['asid']);?>
 				<div class="col-sm-2">
 					<div class="form-group">
-						{!! Form::input('number', 'asid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+						{!! Form::input('number', 'asid_sp1', $asid[0], ['class' => 'form-control']) !!}
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
-						{!! Form::input('number', 'asid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+						{!! Form::input('number', 'asid_sp2', $asid[1], ['class' => 'form-control']) !!}
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
-						{!! Form::input('number', 'asid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+						{!! Form::input('number', 'asid_sp3', $asid[2], ['class' => 'form-control']) !!}
 					</div>
 				</div>
 			</div>
 
-			<!-- hcid  -->
+			<!-- ulid  -->
 			<div class="row mb-10">
 				<div class="col-sm-3">
 					<div class="form-group">				
-						<label class="control-label">ulid</label>				
+						<label class="control-label">ID Dokumen SP - UL (1,2,3)</label>				
 						{!! Form::input('hidden', 'type', 'ulid') !!}				
 					</div>
 				</div>
+				<?php $ulid = explode(',', $p['ulid']);?>
 				<div class="col-sm-2">
 					<div class="form-group">
-						{!! Form::input('number', 'ulid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+						{!! Form::input('number', 'ulid_sp1', $ulid[0], ['class' => 'form-control']) !!}
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
-						{!! Form::input('number', 'ulid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+						{!! Form::input('number', 'ulid_sp2', $ulid[1], ['class' => 'form-control']) !!}
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
-						{!! Form::input('number', 'ulid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+						{!! Form::input('number', 'ulid_sp3', $ulid[2], ['class' => 'form-control']) !!}
 					</div>
 				</div>
 			</div>
@@ -594,23 +596,24 @@
 			<div class="row mb-10">
 				<div class="col-sm-3">
 					<div class="form-group">				
-						<label class="control-label">hcid</label>				
+						<label class="control-label">ID Dokumen SP - HC (1,2,3)</label>				
 						{!! Form::input('hidden', 'type', 'hcid') !!}				
 					</div>
 				</div>
+				<?php $hcid = explode(',', $p['hcid']);?>
 				<div class="col-sm-2">
 					<div class="form-group">
-						{!! Form::input('number', 'hcid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+						{!! Form::input('number', 'hcid_sp1', $hcid[0], ['class' => 'form-control']) !!}
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
-						{!! Form::input('number', 'hcid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+						{!! Form::input('number', 'hcid_sp2', $hcid[1], ['class' => 'form-control']) !!}
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
-						{!! Form::input('number', 'hcid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+						{!! Form::input('number', 'hcid_sp3', $hcid[2], ['class' => 'form-control']) !!}
 					</div>
 				</div>
 			</div>
@@ -619,23 +622,24 @@
 			<div class="row mb-10">
 				<div class="col-sm-3">
 					<div class="form-group">				
-						<label class="control-label">htid</label>				
+						<label class="control-label">ID Dokumen SP - HT (1,2,3)</label>				
 						{!! Form::input('hidden', 'type', 'htid') !!}				
 					</div>
 				</div>
+				<?php $htid = explode(',', $p['htid']);?>
 				<div class="col-sm-2">
 					<div class="form-group">
-						{!! Form::input('number', 'htid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+						{!! Form::input('number', 'htid_sp1', $htid[0], ['class' => 'form-control']) !!}
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
-						{!! Form::input('number', 'htid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+						{!! Form::input('number', 'htid_sp2', $htid[1], ['class' => 'form-control']) !!}
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
-						{!! Form::input('number', 'htid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+						{!! Form::input('number', 'htid_sp3', $htid[2], ['class' => 'form-control']) !!}
 					</div>
 				</div>
 			</div>
@@ -644,28 +648,27 @@
 			<div class="row mb-10">
 				<div class="col-sm-3">
 					<div class="form-group">				
-						<label class="control-label">hpid</label>				
+						<label class="control-label">ID Dokumen SP - HP (1,2,3)</label>				
 						{!! Form::input('hidden', 'type', 'hpid') !!}				
 					</div>
 				</div>
+				<?php $hpid = explode(',', $p['hpid']);?>
 				<div class="col-sm-2">
 					<div class="form-group">
-						{!! Form::input('number', 'hpid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+						{!! Form::input('number', 'hpid_sp1', $hpid[0], ['class' => 'form-control']) !!}
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
-						{!! Form::input('number', 'hpid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+						{!! Form::input('number', 'hpid_sp2', $hpid[1], ['class' => 'form-control']) !!}
 					</div>
 				</div>
 				<div class="col-sm-2">
 					<div class="form-group">
-						{!! Form::input('number', 'hpid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+						{!! Form::input('number', 'hpid_sp3', $hpid[2], ['class' => 'form-control']) !!}
 					</div>
 				</div>
 			</div>
-
-
 
 			<div class="form-group text-right">				
 				<a href="{{ $PolicyComposer['widget_data']['policylist']['route_edit'] }}" class="btn btn-default mr-5" tabindex="5">Batal</a>

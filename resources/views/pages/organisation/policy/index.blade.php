@@ -43,7 +43,7 @@
 										[
 											'form_url' 			=> null,
 											'organisation_id'	=> $data['id'],
-											'search'			=> array_merge(['withattributes' => ['createdby'], 'type' => ['passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle', 'extendsworkleave', 'extendsmidworkleave', 'firstacleditor', 'secondacleditor'], 'newest' => true], (isset($filtered['search']) ? $filtered['search'] : [])),
+											'search'			=> array_merge(['withattributes' => ['createdby'], 'type' => ['passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle', 'extendsworkleave', 'extendsmidworkleave', 'firstacleditor', 'secondacleditor', 'asid', 'ulid', 'hcid', 'htid', 'hpid'], 'newest' => true], (isset($filtered['search']) ? $filtered['search'] : [])),
 											'sort'				=> [],
 											'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
