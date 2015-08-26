@@ -44,25 +44,43 @@
 				url: '{{ route("hr.batch.schedules") }}',
 				dataType: 'json',
 				success: function(e) {
-			        var max = parseInt(e.total_process[0]);
-					var now = parseInt(e.process_number[0]);					
 
-					$('.message_batch').html('Progres batch jadwal "'+e.message+'"');
-					$('.alert_batch').removeClass('hide');
-					$('.progress-bar').attr('aria-valuemax', max).attr('aria-valuenow', (now+x));
-					$('.progress-bar').css('width', (((now+x)/max)*100)+'%');
-					$('.progress-bar').html((now+x)+' / '+max+' proses');
-
-					if ((now+x)>=max)
+					if ((e.parameter_process).length!=0)
 					{
-						$('.progress-bar').attr('aria-valuemax', max).attr('aria-valuenow', now+x);
-						$('.progress-bar').css('width', '100%');
-						$('.progress-bar').html(max+' / '+max+' proses');
-						setTimeout($('.progress-bar').html('Proses Selesai'), 200);
-						clearInterval(intervalID);
+						var batch_template = '';
+						for (x=0; x<= (e.parameter_process).length; x++)
+						{
+					        var max = parseInt(e.total_process);
+							var now = parseInt(e.process_number);	
+							var name = jQuery.parseJSON(e.parameter_process);
+
+							$('.message_batch').html('Progres batch jadwal "'+name.name+'"');
+							$('.alert_batch').removeClass('hide');						
+
+							if (now>=max)
+							{
+								$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
+								$('.progress-bar').css('width', '100%');
+								$('.progress').find('span').html(max+' / '+max+' proses');
+								setTimeout($('.progress').find('span').html('Proses Selesai'), 200);
+								clearInterval(intervalID);
+							}
+
+							else if (now<max) 
+							{
+								$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
+								$('.progress-bar').css('width', ((now/max)*100)+'%');
+								$('.progress').find('span').html(now+' / '+max+' proses');
+								if (((now/max)*100)>='45') 
+								{
+									$('.progress').find('span').css('color', '#fff');
+								}
+							}
+							
+							x=x+2;
+						}
+
 					}
-					
-					x=x+2;
 				}
 			});
 	@elseif ((Route::is('hr.person.schedules.index')))
@@ -74,26 +92,36 @@
 				url: '{{ route("hr.batch.person.schedules") }}',
 				dataType: 'json',
 				success: function(e) {
-			        var max = parseInt(e.total_process[0]);
-					var now = parseInt(e.process_number[0]);				
-					var name = jQuery.parseJSON(e.parameter_process[0]);					
-
-					$('.message_batch').html('Progres batch jadwal "'+name.name+'"');
-					$('.alert_batch').removeClass('hide');
-					$('.progress-bar').attr('aria-valuemax', max).attr('aria-valuenow', (now+x));
-					$('.progress-bar').css('width', (((now+x)/max)*100)+'%');
-					$('.progress-bar').html((now+x)+' / '+max+' proses');
-
-					if ((now+x)>=max)
+					if ((e.parameter_process).length!=0)
 					{
-						$('.progress-bar').attr('aria-valuemax', max).attr('aria-valuenow', now+x);
-						$('.progress-bar').css('width', '100%');
-						$('.progress-bar').html(max+' / '+max+' proses');
-						setTimeout($('.progress-bar').html('Proses Selesai'), 200);
-						clearInterval(intervalID);
+				        var max = parseInt(e.total_process[0]);
+						var now = parseInt(e.process_number[0]);				
+						var name = jQuery.parseJSON(e.parameter_process[0]);					
+
+						$('.message_batch').html('Progres batch jadwal "'+name.name+'"');
+						$('.alert_batch').removeClass('hide');						
+
+						if (now>=max)
+						{
+							$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
+							$('.progress-bar').css('width', '100%');
+							$('.progress').find('span').html(max+' / '+max+' proses');
+							setTimeout($('.progress').find('span').html('Proses Selesai'), 200);
+							clearInterval(intervalID);
+						}
+
+						else if (now<max) 
+						{
+							$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
+							$('.progress-bar').css('width', ((now/max)*100)+'%');
+							$('.progress').find('span').html(now+' / '+max+' proses');
+							if (((now/max)*100)>='45') 
+							{
+								$('.progress').find('span').css('color', '#fff');
+							}
+						}
+
 					}
-					
-					x=x+2;
 				}
 			});
 	@elseif ((Route::is('hr.workleaves.index')))
@@ -105,26 +133,37 @@
 				url: '{{ route("hr.batch.workleaves") }}',
 				dataType: 'json',
 				success: function(e) {
-			        var max = parseInt(e.total_process[0]);
-					var now = parseInt(e.process_number[0]);				
-					var name = jQuery.parseJSON(e.parameter_process[0]);					
-
-					$('.message_batch').html('Progres batch cuti "'+name.name+'"');
-					$('.alert_batch').removeClass('hide');
-					$('.progress-bar').attr('aria-valuemax', max).attr('aria-valuenow', (now+x));
-					$('.progress-bar').css('width', (((now+x)/max)*100)+'%');
-					$('.progress-bar').html((now+x)+' / '+max+' proses');
-
-					if ((now+x)>=max)
+					if ((e.parameter_process).length!=0)
 					{
-						$('.progress-bar').attr('aria-valuemax', max).attr('aria-valuenow', now+x);
-						$('.progress-bar').css('width', '100%');
-						$('.progress-bar').html(max+' / '+max+' proses');
-						setTimeout($('.progress-bar').html('Proses Selesai'), 200);
-						clearInterval(intervalID);
+				        var max = parseInt(e.total_process[0]);
+						var now = parseInt(e.process_number[0]);				
+						var name = jQuery.parseJSON(e.parameter_process[0]);
+
+						$('.message_batch').html('Progres batch cuti "'+name.name+'"');
+						$('.alert_batch').removeClass('hide');						
+
+						if (now>=max)
+						{
+							$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
+							$('.progress-bar').css('width', '100%');
+							$('.progress').find('span').html(max+' / '+max+' proses');
+							setTimeout($('.progress').find('span').html('Proses Selesai'), 200);
+							clearInterval(intervalID);
+						}
+
+						else if (now<max) 
+						{
+							$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
+							$('.progress-bar').css('width', ((now/max)*100)+'%');
+							$('.progress').find('span').html(now+' / '+max+' proses');
+							if (((now/max)*100)>='45') 
+							{
+								$('.progress').find('span').css('color', '#fff');
+							}
+						}
+						
+						x=x+2;
 					}
-					
-					x=x+2;
 				}
 			});
 	@endif

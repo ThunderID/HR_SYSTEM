@@ -760,6 +760,7 @@ class ScheduleController extends BaseController
 		$progress2 						= [];
 		$pnumbers 						= [];
 		$tprocesses 					= [];
+		$pprocess 						= [];
 		$search['createdbyid'] 			= Session::get('loggedUser');
 		$search['running'] 				= null;
 		$search['processname'] 			= ['hr:personworkleavebatch', 'hr:personschedulebatch'];
@@ -802,8 +803,9 @@ class ScheduleController extends BaseController
 
 			$pnumbers[]					= $value->process_number;
 			$tprocesses[]				= $value->total_process;
+			$pprocess[]					= $value->parameter;	
 		}
 
-		return Response::json(['message' => $progress2, 'process_number' => $pnumbers, 'total_process' => $tprocesses], 200);
+		return Response::json(['message' => $progress2, 'process_number' => $pnumbers, 'total_process' => $tprocesses, 'parameter_process' => $pprocess], 200);
 	}
 }

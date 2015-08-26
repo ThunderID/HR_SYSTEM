@@ -540,6 +540,133 @@
 					</div>
 				</div>
 			</div>
+			<!-- asid  -->
+			<div class="row mb-10">
+				<div class="col-sm-3">
+					<div class="form-group">				
+						<label class="control-label">asid</label>				
+						{!! Form::input('hidden', 'type', 'asid') !!}				
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						{!! Form::input('number', 'asid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						{!! Form::input('number', 'asid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						{!! Form::input('number', 'asid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+					</div>
+				</div>
+			</div>
+
+			<!-- hcid  -->
+			<div class="row mb-10">
+				<div class="col-sm-3">
+					<div class="form-group">				
+						<label class="control-label">ulid</label>				
+						{!! Form::input('hidden', 'type', 'ulid') !!}				
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						{!! Form::input('number', 'ulid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						{!! Form::input('number', 'ulid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						{!! Form::input('number', 'ulid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+					</div>
+				</div>
+			</div>
+
+			<!-- hcid  -->
+			<div class="row mb-10">
+				<div class="col-sm-3">
+					<div class="form-group">				
+						<label class="control-label">hcid</label>				
+						{!! Form::input('hidden', 'type', 'hcid') !!}				
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						{!! Form::input('number', 'hcid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						{!! Form::input('number', 'hcid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						{!! Form::input('number', 'hcid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+					</div>
+				</div>
+			</div>
+
+			<!-- htid  -->
+			<div class="row mb-10">
+				<div class="col-sm-3">
+					<div class="form-group">				
+						<label class="control-label">htid</label>				
+						{!! Form::input('hidden', 'type', 'htid') !!}				
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						{!! Form::input('number', 'htid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						{!! Form::input('number', 'htid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						{!! Form::input('number', 'htid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+					</div>
+				</div>
+			</div>
+			
+			<!-- hpid  -->
+			<div class="row mb-10">
+				<div class="col-sm-3">
+					<div class="form-group">				
+						<label class="control-label">hpid</label>				
+						{!! Form::input('hidden', 'type', 'hpid') !!}				
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						{!! Form::input('number', 'hpid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						{!! Form::input('number', 'hpid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						{!! Form::input('number', 'hpid_id_doc_sp3', '', ['class' => 'form-control']) !!}
+					</div>
+				</div>
+			</div>
+
+
+
 			<div class="form-group text-right">				
 				<a href="{{ $PolicyComposer['widget_data']['policylist']['route_edit'] }}" class="btn btn-default mr-5" tabindex="5">Batal</a>
 				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="4">
