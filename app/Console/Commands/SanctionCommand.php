@@ -96,13 +96,43 @@ class SanctionCommand extends Command {
 
 		$errors 					= new MessageBag;
 
-		$sp1 						= Document::organisationid($parameters['organisation_id'])->name('Surat Peringatan I')->tag('SP')->withattributes(['templates'])->orderby('created_at', 'desc')->first();
-		
-		$sp2 						= Document::organisationid($parameters['organisation_id'])->name('Surat Peringatan II')->tag('SP')->withattributes(['templates'])->orderby('created_at', 'desc')->first();
-		
-		$sp3 						= Document::organisationid($parameters['organisation_id'])->name('Surat Peringatan III')->tag('SP')->withattributes(['templates'])->orderby('created_at', 'desc')->first();
+		$asids						= explode(',', $parameters['assp']);
+		$ulids						= explode(',', $parameters['ulsp']);
+		$hcids						= explode(',', $parameters['hcsp']);
+		$htids						= explode(',', $parameters['htsp']);
+		$hpids						= explode(',', $parameters['hpsp']);
 
-		if($sp1 && $sp2 && $sp3)
+		$assp1 						= Document::organisationid($parameters['organisation_id'])->id($asids[0])->withattributes(['templates'])->orderby('created_at', 'desc')->first();
+		
+		$assp2 						= Document::organisationid($parameters['organisation_id'])->id($asids[1])->withattributes(['templates'])->orderby('created_at', 'desc')->first();
+		
+		$assp3 						= Document::organisationid($parameters['organisation_id'])->id($asids[2])->withattributes(['templates'])->orderby('created_at', 'desc')->first();
+
+		$ulsp1 						= Document::organisationid($parameters['organisation_id'])->id($ulids[0])->withattributes(['templates'])->orderby('created_at', 'desc')->first();
+		
+		$ulsp2 						= Document::organisationid($parameters['organisation_id'])->id($ulids[0])->withattributes(['templates'])->orderby('created_at', 'desc')->first();
+		
+		$ulsp3 						= Document::organisationid($parameters['organisation_id'])->id($ulids[0])->withattributes(['templates'])->orderby('created_at', 'desc')->first();
+
+		$hcsp1 						= Document::organisationid($parameters['organisation_id'])->id($hcids[0])->withattributes(['templates'])->orderby('created_at', 'desc')->first();
+		
+		$hcsp2 						= Document::organisationid($parameters['organisation_id'])->id($hcids[0])->withattributes(['templates'])->orderby('created_at', 'desc')->first();
+		
+		$hcsp3 						= Document::organisationid($parameters['organisation_id'])->id($hcids[0])->withattributes(['templates'])->orderby('created_at', 'desc')->first();
+
+		$htsp1 						= Document::organisationid($parameters['organisation_id'])->id($htids[0])->withattributes(['templates'])->orderby('created_at', 'desc')->first();
+		
+		$htsp2 						= Document::organisationid($parameters['organisation_id'])->id($htids[0])->withattributes(['templates'])->orderby('created_at', 'desc')->first();
+		
+		$htsp3 						= Document::organisationid($parameters['organisation_id'])->id($htids[0])->withattributes(['templates'])->orderby('created_at', 'desc')->first();
+
+		$hpsp1 						= Document::organisationid($parameters['organisation_id'])->id($hpids[0])->withattributes(['templates'])->orderby('created_at', 'desc')->first();
+		
+		$hpsp2 						= Document::organisationid($parameters['organisation_id'])->id($hpids[0])->withattributes(['templates'])->orderby('created_at', 'desc')->first();
+		
+		$hpsp3 						= Document::organisationid($parameters['organisation_id'])->id($hpids[0])->withattributes(['templates'])->orderby('created_at', 'desc')->first();
+
+		if($assp1 && $assp2 && $assp3 && $ulsp1 && $ulsp2 && $ulsp3 && $hcsp1 && $hcsp2 && $hcsp3 && $htsp1 && $htsp2 && $htsp3 && $hpsp1 && $hpsp2 && $hpsp3)
 		{
 
 			$persons 				= Person::organisationid($parameters['organisation_id'])->globalsanction(['on' => $parameters['ondate']])->get();
@@ -116,26 +146,41 @@ class SanctionCommand extends Command {
 					{
 						$probs 					= 'HT';
 						$quota 					= $parameters['ht'];
+						$docid[0] 				= $htsp1;
+						$docid[1]				= $htsp2;
+						$docid[2]				= $htsp3;
 					}
 					elseif($value['HP'] >= $parameters['hp'])
 					{
 						$probs 					= 'HP';
 						$quota 					= $parameters['hp'];
+						$docid[0] 				= $hpsp1;
+						$docid[1]				= $hpsp2;
+						$docid[2]				= $hpsp3;
 					}
 					elseif($value['HC'] >= $parameters['hc'])
 					{
 						$probs 					= 'HC';
 						$quota 					= $parameters['hc'];
+						$docid[0] 				= $hcsp1;
+						$docid[1]				= $hcsp2;
+						$docid[2]				= $hcsp3;
 					}
 					elseif($value['UL'] >= $parameters['ul'])
 					{
 						$probs 					= 'UL';
 						$quota 					= $parameters['ul'];
+						$docid[0] 				= $ulsp1;
+						$docid[1]				= $ulsp2;
+						$docid[2]				= $ulsp3;
 					}
 					else
 					{
 						$probs 					= 'AS';
 						$quota 					= $parameters['as'];
+						$docid[0] 				= $assp1;
+						$docid[1]				= $assp2;
+						$docid[2]				= $assp3;
 					}
 
 					DB::beginTransaction();
@@ -146,16 +191,16 @@ class SanctionCommand extends Command {
 					switch($value['lastdoc'])
 					{
 						case '0' 	:
-								$pdoc->fill(['document_id' => $sp1->id]);
-								$temp 			= $sp1->templates;
+								$pdoc->fill(['document_id' => $docid[0]->id]);
+								$temp 			= $docid[0]->templates;
 							break;
 						case '1' 	:
-								$pdoc->fill(['document_id' => $sp2->id]);
-								$temp 			= $sp2->templates;
+								$pdoc->fill(['document_id' => $docid[1]->id]);
+								$temp 			= $docid[1]->templates;
 							break;
 						default 	:
-								$pdoc->fill(['document_id' => $sp3->id]);
-								$temp 			= $sp3->templates;
+								$pdoc->fill(['document_id' => $docid[2]->id]);
+								$temp 			= $docid[2]->templates;
 							break;
 					}
 

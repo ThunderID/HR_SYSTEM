@@ -161,7 +161,7 @@ class PolicyController extends BaseController
 
 		$p 										= null;
 
-		$types 									= ['passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle', 'extendsworkleave', 'extendsmidworkleave', 'firstacleditor', 'secondacleditor'];
+		$types 									= ['passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle', 'extendsworkleave', 'extendsmidworkleave', 'firstacleditor', 'secondacleditor', 'asid', 'ulid', 'hcid', 'htid', 'hpid'];
 	
 		foreach(range(0, count($types)-1) as $index)
 		{
@@ -212,7 +212,7 @@ class PolicyController extends BaseController
 			App::abort(404);
 		}
 
-		$types 									= ['passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle', 'extendsworkleave', 'extendsmidworkleave', 'firstacleditor', 'secondacleditor'];
+		$types 									= ['passwordreminder', 'assplimit', 'ulsplimit', 'hpsplimit', 'htsplimit', 'hcsplimit', 'firststatussettlement', 'secondstatussettlement', 'firstidle', 'secondidle','thirdidle', 'extendsworkleave', 'extendsmidworkleave', 'firstacleditor', 'secondacleditor', 'asid', 'ulid', 'hcid', 'htid', 'hpid'];
 	
 		foreach(range(0, count($types)-1) as $index)
 		{
@@ -432,6 +432,71 @@ class PolicyController extends BaseController
 				$attr['started_at']		= date('Y-m-d H:i:s');
 				$attr['type']			= 'thirdidle';
 				$attr['value']			= $cp['thirdidle'];
+				$attributes[]			= $attr;
+			}
+		}
+
+		if (Input::has('asid_sp1') || Input::has('asid_sp2') || Input::has('asid_sp3'))
+		{
+			$cp['asid'] 				= Input::get('asid_sp1').','.Input::get('asid_sp2').','.Input::get('asid_sp3');
+			if($cp['asid'] != $p['asid'])
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'asid';
+				$attr['value']			= $cp['asid'];
+				$attributes[]			= $attr;
+			}
+		}
+
+		if (Input::has('ulid_sp1') || Input::has('ulid_sp2') || Input::has('ulid_sp3'))
+		{
+			$cp['ulid'] 				= Input::get('ulid_sp1').','.Input::get('ulid_sp2').','.Input::get('ulid_sp3');
+			if($cp['ulid'] != $p['ulid'])
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'ulid';
+				$attr['value']			= $cp['ulid'];
+				$attributes[]			= $attr;
+			}
+		}
+
+		if (Input::has('hcid_sp1') || Input::has('hcid_sp2') || Input::has('hcid_sp3'))
+		{
+			$cp['hcid'] 				= Input::get('hcid_sp1').','.Input::get('hcid_sp2').','.Input::get('hcid_sp3');
+			if($cp['hcid'] != $p['hcid'])
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'hcid';
+				$attr['value']			= $cp['hcid'];
+				$attributes[]			= $attr;
+			}
+		}
+
+		if (Input::has('htid_sp1') || Input::has('htid_sp2') || Input::has('htid_sp3'))
+		{
+			$cp['htid'] 				= Input::get('htid_sp1').','.Input::get('htid_sp2').','.Input::get('htid_sp3');
+			if($cp['htid'] != $p['htid'])
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'htid';
+				$attr['value']			= $cp['htid'];
+				$attributes[]			= $attr;
+			}
+		}
+
+		if (Input::has('hpid_sp1') || Input::has('hpid_sp2') || Input::has('hpid_sp3'))
+		{
+			$cp['hpid'] 				= Input::get('hpid_sp1').','.Input::get('hpid_sp2').','.Input::get('hpid_sp3');
+			if($cp['hpid'] != $p['hpid'])
+			{
+				$attr['created_by']		= Session::get('loggedUser');
+				$attr['started_at']		= date('Y-m-d H:i:s');
+				$attr['type']			= 'hpid';
+				$attr['value']			= $cp['hpid'];
 				$attributes[]			= $attr;
 			}
 		}
