@@ -1,6 +1,6 @@
 <?php namespace App\Models\Observers;
 
-use DB, Validator;
+use DB, Validator, Event;
 use App\Models\Person;
 use App\Models\PersonSchedule;
 use App\Models\Work;
@@ -8,6 +8,7 @@ use App\Models\PersonWorkleave;
 use App\Models\Policy;
 use \Illuminate\Support\MessageBag as MessageBag;
 use DateTime, DateInterval, DatePeriod;
+use App\Events\CreateRecordOnTable;
 
 /* ----------------------------------------------------------------------
  * Event:
@@ -218,8 +219,48 @@ class PersonWorkleaveObserver
 		}
 	}
 
+	public function created($model)
+	{
+		if(isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0)
+		{
+			$attributes['person_id'] 			= $model->created_by;
+			$attributes['record_log_id'] 		= $model->id;
+			$attributes['record_log_type'] 		= get_class($model);
+			$attributes['name'] 				= 'Mengubah Cuti';
+			$attributes['notes'] 				= 'Mengubah Cuti'.' pada '.date('d-m-Y');
+			$attributes['action'] 				= 'delete';
+
+			Event::fire(new CreateRecordOnTable($attributes));
+		}
+	}
+
+	public function updated($model)
+	{
+		if(isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0)
+		{
+			$attributes['person_id'] 			= $model->created_by;
+			$attributes['record_log_id'] 		= $model->id;
+			$attributes['record_log_type'] 		= get_class($model);
+			$attributes['name'] 				= 'Mengubah Cuti';
+			$attributes['notes'] 				= 'Mengubah Cuti'.' pada '.date('d-m-Y');
+			$attributes['old_attribute'] 		= $model->getOriginal();
+			$attributes['new_attribute'] 		= $model->getAttributes();
+			$attributes['action'] 				= 'save';
+
+			Event::fire(new CreateRecordOnTable($attributes));
+		}
+	}
+
 	public function deleted($model)
 	{
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Menghapus Cuti';
+		$attributes['notes'] 				= 'Menghapus Cuti'.' pada '.date('d-m-Y');
+		$attributes['action'] 				= 'restore';
+
+		Event::fire(new CreateRecordOnTable($attributes));
+
 		$pschedules 				= PersonSchedule::personid($model['attributes']['person_id'])->ondate([$model['attributes']['start'], $model['attributes']['end']])->status(strtoupper($model['attributes']['status']))->get();
 		foreach ($pschedules as $key => $value) 
 		{

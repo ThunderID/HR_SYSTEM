@@ -62,6 +62,8 @@ class AppServiceProvider extends ServiceProvider {
 		\App\Models\Policy::observe(new \App\Models\Observers\PolicyObserver);
 		\App\Models\Queue::observe(new \App\Models\Observers\QueueObserver);
 		\App\Models\QueueMorph::observe(new \App\Models\Observers\QueueMorphObserver);
+
+		\App\Models\RecordLog::observe(new \App\Models\Observers\RecordLogObserver);
 		//
 	}
 
@@ -127,6 +129,8 @@ class AppServiceProvider extends ServiceProvider {
 		\App\Models\Policy::observe(new \App\Models\Observers\PolicyObserver);
 		\App\Models\Queue::observe(new \App\Models\Observers\QueueObserver);
 		\App\Models\QueueMorph::observe(new \App\Models\Observers\QueueMorphObserver);
+		
+		\App\Models\RecordLog::observe(new \App\Models\Observers\RecordLogObserver);
 
 		$this->app->bind(
 			'Illuminate\Contracts\Auth\Registrar',

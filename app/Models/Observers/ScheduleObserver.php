@@ -1,9 +1,10 @@
 <?php namespace App\Models\Observers;
 
-use DB, Validator;
+use DB, Validator, Event;
 use App\Models\Schedule;
 use App\Models\Log;
 use \Illuminate\Support\MessageBag as MessageBag;
+use App\Events\CreateRecordOnTable;
 
 /* ----------------------------------------------------------------------
  * Event:
@@ -94,6 +95,68 @@ class ScheduleObserver
 			$model['errors'] 				= ['Tidak dapat menghapus jadwal.'];
 
 			return false;
+		}
+
+		return true;
+	}
+
+	public function created($model)
+	{
+		if(isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0)
+		{
+			$attributes['person_id'] 			= $model->created_by;
+			$attributes['record_log_id'] 		= $model->id;
+			$attributes['record_log_type'] 		= get_class($model);
+			$attributes['name'] 				= 'Mengubah Jadwal '.$model->calendar->name;
+			$attributes['notes'] 				= 'Mengubah Jadwal '.$model->calendar->name.' pada '.date('d-m-Y');
+			$attributes['action'] 				= 'delete';
+
+			Event::fire(new CreateRecordOnTable($attributes));
+		}
+	}
+
+	public function updated($model)
+	{
+		if(isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0)
+		{
+			$attributes['person_id'] 			= $model->created_by;
+			$attributes['record_log_id'] 		= $model->id;
+			$attributes['record_log_type'] 		= get_class($model);
+			$attributes['name'] 				= 'Mengubah Jadwal '.$model->calendar->name;
+			$attributes['notes'] 				= 'Mengubah Jadwal '.$model->calendar->name.' pada '.date('d-m-Y');
+			$attributes['old_attribute'] 		= $model->getOriginal();
+			$attributes['new_attribute'] 		= $model->getAttributes();
+			$attributes['action'] 				= 'save';
+
+			Event::fire(new CreateRecordOnTable($attributes));
+		}
+	}
+
+	public function deleted($model)
+	{
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Menghapus Jadwal '.$model->calendar->name;
+		$attributes['notes'] 				= 'Menghapus Jadwal '.$model->calendar->name.' pada '.date('d-m-Y');
+		$attributes['action'] 				= 'restore';
+
+		Event::fire(new CreateRecordOnTable($attributes));
+
+		//deleting schedule recalculate process log 
+		$logs 								= Log::ondate([$on, $on1])->hasnoschedule(['on' => $on])->WorkCalendar(['id' => $model['attributes']['calendar_id'], 'start' => $on])->get();
+		
+		if($logs->count())
+		{
+			foreach ($logs as $key => $value) 
+			{
+				$slog 						= Log::find($value->id);
+				if(!$slog->save())
+				{
+					$model['errors']		= $slog->getError();
+				
+					return false;
+				}
+			}
 		}
 
 		return true;
