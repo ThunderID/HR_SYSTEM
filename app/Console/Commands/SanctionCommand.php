@@ -212,19 +212,19 @@ class SanctionCommand extends Command {
 						$errors->add('Person', json_encode($pdoc->getError()));
 					}
 
-					foreach ($temp as $key2 => $value) 
+					foreach ($temp as $key2 => $value2) 
 					{
 						$pdocdet 				= new DocumentDetail;
 						switch($key2)
 						{
 							case '0' 	:
-								$pdocdet->fill(['template_id' => $value->id, 'string' => date('Y/M/D/H/I/S').'-'.$value['code']]);
+								$pdocdet->fill(['template_id' => $value2->id, 'string' => date('Y/M/D/H/I/S').'-'.$value['code']]);
 								break;
 							case '1' 	:
-								$pdocdet->fill(['template_id' => $value->id, 'on' => date('Y-m-d')]);
+								$pdocdet->fill(['template_id' => $value2->id, 'on' => date('Y-m-d')]);
 								break;
 							default 	:
-								$pdocdet->fill(['template_id' => $value->id, 'text' => 'Surat Peringatan '.($value['lastdoc'] + 1).' Status '.$probs.'. Powered By HRIS.']);
+								$pdocdet->fill(['template_id' => $value2->id, 'text' => 'Surat Peringatan '.($value['lastdoc'] + 1).' Status '.$probs.'. Powered By HRIS.']);
 								break;
 						}
 					

@@ -126,7 +126,7 @@ class PersonBatchCommand extends Command {
 
 				if(!$errors->count())
 				{
-					$person 					= Person::nik($row['nik'])->first();
+					$person 					= Person::uniqid($row['nik'])->first();
 
 					if(!$person)
 					{
