@@ -93,7 +93,7 @@ class FirstLockCommand extends Command {
 
 		$errors 					= new MessageBag;
 
-		$plogs 						= ProcessLog::workorganisationid($parameters['organisation_id'])->ondate($parameters['ondate'])->unsettleattendancelog(null)->withattribute(['person'])->get();
+		$plogs 						= ProcessLog::workorganisationid($parameters['organisation_id'])->ondate($parameters['ondate'])->unsettleattendancelog(null)->withattributes(['person'])->get();
 
 		foreach($plogs as $key => $value) 
 		{
@@ -101,9 +101,9 @@ class FirstLockCommand extends Command {
 
 			DB::beginTransaction();
 			
-			foreach ($value['attendancelogs'] as $key => $value) 
+			foreach ($value['attendancelogs'] as $key2 => $value2) 
 			{
-				$alog  				= AttendanceLog::find($value['id']);
+				$alog  				= AttendanceLog::find($value2['id']);
 				$alog->fill(['settlement_at' => date('Y-m-d H:i:s'), 'notes' => 'Auto Generated from scheduled job.']);
 
 				if(!$alog->save())
