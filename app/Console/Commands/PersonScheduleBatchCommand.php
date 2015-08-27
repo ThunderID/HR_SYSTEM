@@ -143,7 +143,8 @@ class PersonScheduleBatchCommand extends Command {
 					DB::commit();
 
 					$pnumber 						= $pending->process_number+1;
-					$pending->fill(['process_number' => $pnumber, 'message' => 'Sedang Menyimpan Jadwal '.(isset($parameters['name']) ? $parameters['name'] : '')]);
+					$messages[] 					= 'Sukses Menyimpan Jadwal '.(isset($parameters['name']) ? $parameters['name'] : '');
+					$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 
 					$morphed 						= new QueueMorph;
 
@@ -159,7 +160,9 @@ class PersonScheduleBatchCommand extends Command {
 				{
 					DB::rollback();
 					
-					$pending->fill(['message' => json_encode($errors)]);
+					$pnumber 						= $pending->process_number+1;
+					$messages[] 					= ['Gagal Menyimpan Jadwal '.(isset($parameters['name']) ? $parameters['name'] : ''), 'errors' => $errors];
+					$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 				}
 
 				$pending->save();
@@ -169,11 +172,13 @@ class PersonScheduleBatchCommand extends Command {
 
 		if($errors->count())
 		{
-			$pending->fill(['message' => json_encode($errors)]);
+			$messages[] 						= ['Gagal Menyimpan Jadwal '.(isset($parameters['name']) ? $parameters['name'] : ''), 'errors' => $errors];
+			$pending->fill(['message' => json_encode($messages)]);
 		}
 		else
 		{
-			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Sukses Menyimpan Jadwal '.(isset($parameters['name']) ? $parameters['name'] : '')]);
+			$messages[] 						= 'Sukses Menyimpan Jadwal '.(isset($parameters['name']) ? $parameters['name'] : '');
+			$pending->fill(['process_number' => $pending->total_process, 'message' => json_encode($messages)]);
 		}
 
 		$pending->save();

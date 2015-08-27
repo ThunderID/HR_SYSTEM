@@ -117,6 +117,7 @@ class PersonWorkleaveBatchCommand extends Command {
 		$pending 					= $queue->find($id);
 
 		$parameters 				= json_decode($pending->parameter, true);
+		$messages 					= json_decode($pending->message, true);
 
 		$begin 						= new DateTime( $parameters['start'] );
 		$ended 						= new DateTime( $parameters['end'] );
@@ -131,11 +132,11 @@ class PersonWorkleaveBatchCommand extends Command {
 		
 		if(!$pwP)
 		{
-			$pwid 					= null;
+			$pwid 					= new PersonWorkleave;
 		}
 		else
 		{
-			$pwid 					= $pwP->id;
+			$pwid 					= $pwP;
 		}
 
 		$wd							= ['senin' => 'monday', 'selasa' => 'tuesday', 'rabu' => 'wednesday', 'kamis' => 'thursday', 'jumat' => 'friday', 'sabtu' => 'saturday', 'minggu' => 'sunday', 'monday' => 'monday', 'tuesday' => 'tuesday', 'wednesday' => 'wednesday', 'thursday' => 'thursday', 'friday' => 'friday', 'saturday' => 'saturday', 'sunday' => 'sunday'];
@@ -181,25 +182,14 @@ class PersonWorkleaveBatchCommand extends Command {
 
 		$parameters['quota']		= 0 - (int)$total_l;
 
-		$content 					= $this->dispatch(new Saving(new PersonWorkleave, $parameters, $pwid, new Person, $parameters['associate_person_id']));
-		$is_success 				= json_decode($content);
+		$person 					= Person::find($parameters['associate_person_id']);
 
-		if(!$is_success->meta->success)
+		$is_success 				= $pwP->fill($parameters);
+		$is_success->Person()->associate($person);
+
+		if(!$is_success->save())
 		{
-			foreach ($is_success->meta->errors as $key => $value) 
-			{
-				if(is_array($value))
-				{
-					foreach ($value as $key2 => $value2) 
-					{
-						$errors->add('Batch', $value2);
-					}
-				}
-				else
-				{
-					$errors->add('Batch', $value);
-				}
-			}
+			$errors->add('Batch', $is_success->getError());
 		}
 		else
 		{
@@ -207,7 +197,7 @@ class PersonWorkleaveBatchCommand extends Command {
 
 			$morphed->fill([
 				'queue_id'					=> $id,
-				'queue_morph_id'			=> $is_success->data->id,
+				'queue_morph_id'			=> $is_success->id,
 				'queue_morph_type'			=> get_class(new PersonWorkleave),
 			]);
 
@@ -216,11 +206,15 @@ class PersonWorkleaveBatchCommand extends Command {
 
 		if(!$errors->count())
 		{
-			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Sukses Menyimpan Cuti '.(isset($parameters['name']) ? $parameters['name'] : '')]);
+			$pnumber 						= $pending->total_process;
+			$messages['message'][$pnumber] 	= 'Sukses Menyimpan Cuti '.(isset($person['name']) ? $person['name'] : '');
+			$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 		}
 		else
 		{
-			$pending->fill(['message' => json_encode($errors)]);
+			$pnumber 						= $pending->total_process;
+			$messages['message'][$pnumber] 	= 'Gagal Menyimpan Cuti '.(isset($person['name']) ? $person['name'] : '');
+			$messages['errors'][$pnumber] 	= $errors;
 		}
 
 		$pending->save();
@@ -253,20 +247,21 @@ class PersonWorkleaveBatchCommand extends Command {
 
 		foreach ($works as $key => $value) 
 		{
-
 			if(($pending->process_number-1) < $key)
 			{
+				$messages 				= json_decode($pending->message, true);
+
 				DB::beginTransaction();
 				
 				$pwP 					= PersonWorkleave::personid($value['person_id'])->ondate([$begin->format('Y-m-d'), $ended->format('Y-m-d')])->status($parameters['status'])->quota(true)->first();
 
 				if(!$pwP)
 				{
-					$pwid 				= null;
+					$pwid 				= new PersonWorkleave;
 				}
 				else
 				{
-					$pwid 				= $pwP->id;
+					$pwid 				= $pwP;
 				}
 				 
 				$parameters['work_id']	= $value->id;
@@ -274,64 +269,46 @@ class PersonWorkleaveBatchCommand extends Command {
 				$parameters['start']	= $begin->format('Y-m-d');
 				$parameters['end']		= $ended->format('Y-m-d');
 				
-				$content 				= $this->dispatch(new Saving(new PersonWorkleave, $parameters, $pwid, new Person, $value->person_id));
-				$is_success 			= json_decode($content);
+				$person 					= Person::find($value->person_id);
 
-				if(!$is_success->meta->success)
+				$is_success 				= $pwP->fill($parameters);
+				$is_success->Person()->associate($person);
+
+				if(!$is_success->save())
 				{
-					foreach ($is_success->meta->errors as $key => $value) 
-					{
-						if(is_array($value))
-						{
-							foreach ($value as $key2 => $value2) 
-							{
-								$errors->add('Batch', $value2);
-							}
-						}
-						else
-						{
-							$errors->add('Batch', $value);
-						}
-					}
+					$errors->add('Batch', $is_success->getError());
 				}
-				
+
 				if(!$errors->count())
 				{
 					DB::commit();
-
-					$pnumber 						= $pending->process_number+1;
-					$pending->fill(['process_number' => $pnumber, 'message' => 'Sedang Menyimpan Cuti '.(isset($parameters['name']) ? $parameters['name'] : '')]);
 
 					$morphed 						= new QueueMorph;
 
 					$morphed->fill([
 						'queue_id'					=> $id,
-						'queue_morph_id'			=> $is_success->data->id,
+						'queue_morph_id'			=> $is_success->id,
 						'queue_morph_type'			=> get_class(new PersonWorkleave),
 					]);
 
 					$morphed->save();
+
+					$pnumber 						= $pending->process_number+1;
+					$messages['message'][$pnumber] 	= 'Sukses Menyimpan Cuti '.(isset($person['name']) ? $person['name'] : '');
+					$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 				}
 				else
 				{
 					DB::rollback();
-					$pending->fill(['message' => json_encode($errors)]);
+
+					$pnumber 						= $pending->process_number+1;
+					$messages['message'][$pnumber] 	= 'Gagal Menyimpan Cuti '.(isset($person['name']) ? $person['name'] : '');
+					$messages['errors'][$pnumber] 	= $errors;
 				}
 
 				$pending->save();
 			}
 		}
-
-		if($errors->count())
-		{
-			$pending->fill(['message' => json_encode($errors)]);
-		}
-		else
-		{
-			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Sukses Menyimpan Cuti '.(isset($parameters['name']) ? $parameters['name'] : '')]);
-		}
-
-		$pending->save();
 
 		return true;
 
@@ -399,17 +376,19 @@ class PersonWorkleaveBatchCommand extends Command {
 					$total_l++;
 				}
 
-				$date_l[]			= $period->format('Y-m-d');
+				$date_l[]				= $period->format('Y-m-d');
 			}
 		}
 
-		$parameters['quota']		= 0 - (int)$total_l;
+		$parameters['quota']			= 0 - (int)$total_l;
 
 		foreach ($works as $key => $value) 
 		{
 
 			if(($pending->process_number-1) < $key)
 			{
+				$messages 				= json_decode($pending->message, true);
+
 				DB::beginTransaction();
 				
 				$startwork 				= new DateTime( $value->start );
@@ -427,13 +406,13 @@ class PersonWorkleaveBatchCommand extends Command {
 
 				if(!$pw)
 				{
-					$pid 				= null;
+					$pid 				= new PersonWorkleave;
 				}
 				else
 				{
-					$pid 				= $pw->id;
+					$pid 				= $pw;
 				}
-				 
+
 				$attributes 						= $parameters;
 				$attributes['start'] 				= $parameters['on'];
 				$attributes['end'] 					= $parameters['on'];
@@ -444,66 +423,45 @@ class PersonWorkleaveBatchCommand extends Command {
 					$attributes['person_workleave_id'] 	= $pwG->id;
 				}
 
+				$person 							= Person::find($value->person_id);
+				$is_success 						= $pid->fill($attributes);
+				$is_success->Person()->associate($person);
 
-				$content 				= $this->dispatch(new Saving(new PersonWorkleave, $attributes, $pid, new Person, $value->person_id));
-				$is_success 			= json_decode($content);
-
-				if(!$is_success->meta->success)
+				if(!$is_success->save())
 				{
-					foreach ($is_success->meta->errors as $key2 => $value2) 
-					{
-						if(is_array($value2))
-						{
-							foreach ($value2 as $key3 => $value3) 
-							{
-								$errors->add('Batch', $value3);
-							}
-						}
-						else
-						{
-							$errors->add('Batch', $value2);
-						}
-					}
+					$errors->add('Batch', $is_success->getError());
 				}
-				
+
 				if(!$errors->count())
 				{
 					DB::commit();
-
-					$pnumber 						= $pending->process_number+1;
-					$pending->fill(['process_number' => $pnumber, 'message' => 'Sedang Menyimpan Cuti '.(isset($parameters['name']) ? $parameters['name'] : '')]);
 
 					$morphed 						= new QueueMorph;
 
 					$morphed->fill([
 						'queue_id'					=> $id,
-						'queue_morph_id'			=> $is_success->data->id,
+						'queue_morph_id'			=> $is_success->id,
 						'queue_morph_type'			=> get_class(new PersonWorkleave),
 					]);
 
 					$morphed->save();
+
+					$pnumber 						= $pending->process_number+1;
+					$messages['message'][$pnumber] 	= 'Sukses Menyimpan Cuti '.(isset($person['name']) ? $person['name'] : '');
+					$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 				}
 				else
 				{
 					DB::rollback();
-					
-					$pending->fill(['message' => json_encode($errors)]);
+
+					$pnumber 						= $pending->process_number+1;
+					$messages['message'][$pnumber] 	= 'Gagal Menyimpan Cuti '.(isset($person['name']) ? $person['name'] : '');
+					$messages['errors'][$pnumber] 	= $errors;
 				}
 
 				$pending->save();
 			}
 		}
-
-		if($errors->count())
-		{
-			$pending->fill(['message' => json_encode($errors)]);
-		}
-		else
-		{
-			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Sukses Menyimpan Cuti '.(isset($parameters['name']) ? $parameters['name'] : '')]);
-		}
-
-		$pending->save();
 
 		return true;
 	}

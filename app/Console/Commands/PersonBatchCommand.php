@@ -5,9 +5,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Support\MessageBag;
 
-use App\Console\Commands\Saving;
-use App\Console\Commands\Getting;
-
 use App\Models\Queue;
 use App\Models\QueueMorph;
 use App\Models\Organisation;
@@ -30,9 +27,6 @@ use App\Models\PersonSchedule;
 use DB, Hash, App;
 
 class PersonBatchCommand extends Command {
-
-	use \Illuminate\Foundation\Bus\DispatchesCommands;
-	use \Illuminate\Foundation\Validation\ValidatesRequests;
 
 	/**
 	 * The console command name.
@@ -114,43 +108,27 @@ class PersonBatchCommand extends Command {
 		{
 			if(($pending->process_number-1) < $i)
 			{
+				$messages 						= json_decode($pending->message, true);
+				
 				DB::beginTransaction();
 
 				$errors 						= new MessageBag();
 
-				if(!isset($prev_org_code) || $prev_org_code!=$row['kodeorganisasi'])
+				if(!isset($organisation) || $organisation['code']!=$row['kodeorganisasi'])
 				{
-					unset($search);
-					unset($sort);
+					$organisation 				= Organisation::code($row['kodeorganisasi'])->first();
 
-					$search['code']						= $row['kodeorganisasi'];
-					$sort 								= ['created_at' => 'asc'];
-					$results 							= $this->dispatch(new Getting(new Organisation, $search, $sort , 1, 1));
-					$contents 							= json_decode($results);		
-
-					if(!$contents->meta->success)
+					if(!$organisation)
 					{
-						$errors->add('Batch', json_encode($contents->meta->errors));
-					}
-					else
-					{
-						$organisation 					= json_decode(json_encode($contents->data), true);
-						$org_id_code 					= $organisation['id'];
-						$prev_org_code 					= $row['kodeorganisasi'];
+						$errors->add('Batch', 'Bisnis unit tidak terdaftar.');
 					}
 				}
 
-				unset($search);
-				unset($sort);
-
 				if(!$errors->count())
 				{
-					$search['uniqid']						= $row['nik'];
-					$sort 									= ['created_at' => 'asc'];
-					$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
-					$contents 								= json_decode($results);
+					$person 					= Person::nik($row['nik'])->first();
 
-					if(!$contents->meta->success)
+					if(!$person)
 					{
 						$attributes[$i]['uniqid']			= $row['nik'];
 						$attributes[$i]['prefix_title']		= (!is_null($row['prefixtitle']) ? $row['prefixtitle'] : '');
@@ -163,29 +141,23 @@ class PersonBatchCommand extends Command {
 
 						do
 						{
-							unset($search);
-							unset($sort);
+							$uname 							= Person::username($modifyuname.'.'.$row['kodeorganisasi'])->first();
 
-							$search['username']						= $modifyuname.'.'.$row['kodeorganisasi'];
-							$sort 									= ['created_at' => 'asc'];
-							$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
-							$contents 								= json_decode($results);
-
-							if($contents->meta->success)
+							if($uname)
 							{
 								if(isset($originaluname[count($originaluname)-1]))
 								{
-									$modifyuname 						= $modifyuname.$originaluname[count($originaluname)-1][$idxuname];
+									$modifyuname 			= $modifyuname.$originaluname[count($originaluname)-1][$idxuname];
 								}
 								else
 								{
-									$modifyuname 						= $modifyuname.$modifyuname;
+									$modifyuname 			= $modifyuname.$modifyuname;
 								}
 
 								$idxuname++;
 							}
 						}
-						while($contents->meta->success);
+						while($uname);
 
 						$attributes[$i]['username']			= $modifyuname.'.'.$row['kodeorganisasi'];
 
@@ -199,31 +171,16 @@ class PersonBatchCommand extends Command {
 						$attributes[$i]['gender']			= $row['gender']=='L' ? 'male' : 'female';
 						$attributes[$i]['org_id']			= $org_id_code;
 
-						$content 							= $this->dispatch(new Saving(new Person, $attributes[$i], null, new Organisation, $org_id_code));
+						$is_success 						= new Person;
+						$is_success->fill($attributes[$i]);
+						$is_success->Organisation()->associate($organisation);
 
-						$is_success 						= json_decode($content);
-						if(!$is_success->meta->success)
+						if(!$is_success->save())
 						{
-							foreach ($is_success->meta->errors as $key => $value) 
-							{
-								if(is_array($value))
-								{
-									foreach ($value as $key2 => $value2) 
-									{
-										$errors->add('Person', $value2);
-									}
-								}
-								else
-								{
-									$errors->add('Person', $value);
-								}
-							}
+							$errors->add('Batch', $is_success->getError());
 						}
 						else
 						{
-							
-							$is_success 					= $is_success->data;
-							
 							$morphed 						= new QueueMorph;
 
 							$morphed->fill([
@@ -237,7 +194,7 @@ class PersonBatchCommand extends Command {
 					}
 					else
 					{
-						$is_success 						= $contents->data;
+						$errors->add('Batch', 'NIK sudah terdaftar');
 					}
 				}
 
@@ -246,29 +203,17 @@ class PersonBatchCommand extends Command {
 				{
 					if(!is_null($row['email']))
 					{
-						$email[$i]['item']				= 'email';
-						$email[$i]['value']				= $row['email'];
-						$email[$i]['is_default']		= true;
+						$email[$i]['item']					= 'email';
+						$email[$i]['value']					= $row['email'];
+						$email[$i]['is_default']			= true;
 
-						$content 						= $this->dispatch(new Saving(new Contact, $email[$i], null, new Person, $is_success->id));
+						$is_mail_success 					= new Contact;
+						$is_mail_success->fill($email[$i]);
+						$is_mail_success->Person()->associate($is_success);
 
-						$is_mail_success 				= json_decode($content);
-						if(!$is_mail_success->meta->success)
+						if(!$is_mail_success->save())
 						{
-							foreach ($is_mail_success->meta->errors as $key => $value) 
-							{
-								if(is_array($value))
-								{
-									foreach ($value as $key2 => $value2) 
-									{
-										$errors->add('Person', $value2);
-									}
-								}
-								else
-								{
-									$errors->add('Person', $value);
-								}
-							}
+							$errors->add('Batch', $is_mail_success->getError());
 						}
 						else
 						{
@@ -276,7 +221,7 @@ class PersonBatchCommand extends Command {
 
 							$morphed->fill([
 								'queue_id'					=> $pending->id,
-								'queue_morph_id'			=> $is_mail_success->data->id,
+								'queue_morph_id'			=> $is_mail_success->id,
 								'queue_morph_type'			=> get_class(new Contact),
 							]);
 
@@ -286,29 +231,17 @@ class PersonBatchCommand extends Command {
 
 					if(!is_null($row['phone']))
 					{
-						$phone[$i]['item']				= 'phone';
-						$phone[$i]['value']				= $row['phone'];
-						$phone[$i]['is_default']		= true;
+						$phone[$i]['item']					= 'phone';
+						$phone[$i]['value']					= $row['phone'];
+						$phone[$i]['is_default']			= true;
 
-						$content 						= $this->dispatch(new Saving(new Contact, $phone[$i], null, new Person, $is_success->id));
+						$is_phone_success 					= new Contact;
+						$is_phone_success->fill($phone[$i]);
+						$is_phone_success->Person()->associate($is_success);
 
-						$is_phone_success 				= json_decode($content);
-						if(!$is_phone_success->meta->success)
+						if(!$is_phone_success->save())
 						{
-							foreach ($is_phone_success->meta->errors as $key => $value) 
-							{
-								if(is_array($value))
-								{
-									foreach ($value as $key2 => $value2) 
-									{
-										$errors->add('Person', $value2);
-									}
-								}
-								else
-								{
-									$errors->add('Person', $value);
-								}
-							}
+							$errors->add('Batch', $is_phone_success->getError());
 						}
 						else
 						{
@@ -316,7 +249,7 @@ class PersonBatchCommand extends Command {
 
 							$morphed->fill([
 								'queue_id'					=> $pending->id,
-								'queue_morph_id'			=> $is_phone_success->data->id,
+								'queue_morph_id'			=> $is_phone_success->id,
 								'queue_morph_type'			=> get_class(new Contact),
 							]);
 
@@ -327,29 +260,17 @@ class PersonBatchCommand extends Command {
 
 					if(!is_null($row['alamat']))
 					{
-						$address[$i]['item']			= 'address';
-						$address[$i]['value']			= $row['alamat'];
-						$address[$i]['is_default']		= true;
+						$address[$i]['item']				= 'address';
+						$address[$i]['value']				= $row['alamat'];
+						$address[$i]['is_default']			= true;
 
-						$content 						= $this->dispatch(new Saving(new Contact, $address[$i], null, new Person, $is_success->id));
+						$is_address_success 				= new Contact;
+						$is_address_success->fill($address[$i]);
+						$is_address_success->Person()->associate($is_success);
 
-						$is_address_success 				= json_decode($content);
-						if(!$is_address_success->meta->success)
+						if(!$is_address_success->save())
 						{
-							foreach ($is_address_success->meta->errors as $key => $value) 
-							{
-								if(is_array($value))
-								{
-									foreach ($value as $key2 => $value2) 
-									{
-										$errors->add('Person', $value2);
-									}
-								}
-								else
-								{
-									$errors->add('Person', $value);
-								}
-							}
+							$errors->add('Batch', $is_address_success->getError());
 						}
 						else
 						{
@@ -357,7 +278,7 @@ class PersonBatchCommand extends Command {
 
 							$morphed->fill([
 								'queue_id'					=> $pending->id,
-								'queue_morph_id'			=> $is_address_success->data->id,
+								'queue_morph_id'			=> $is_address_success->id,
 								'queue_morph_type'			=> get_class(new Contact),
 							]);
 
@@ -369,37 +290,26 @@ class PersonBatchCommand extends Command {
 				//save marital statuses
 				if(!$errors->count())
 				{
-					$marital[$i]['status']			= $row['statuskawin'];
-					$marital[$i]['on']				= date('Y-m-d H:i:s');
+					$marital[$i]['status']					= $row['statuskawin'];
+					$marital[$i]['on']						= date('Y-m-d H:i:s');
 
-					$content 						= $this->dispatch(new Saving(new MaritalStatus, $marital[$i], null, new Person, $is_success->id));
 
-					$is_marital_success 				= json_decode($content);
-					if(!$is_marital_success->meta->success)
+					$is_marital_success 					= new MaritalStatus;
+					$is_marital_success->fill($marital[$i]);
+					$is_marital_success->Person()->associate($is_success);
+
+					if(!$is_marital_success->save())
 					{
-						foreach ($is_marital_success->meta->errors as $key => $value) 
-						{
-							if(is_array($value))
-							{
-								foreach ($value as $key2 => $value2) 
-								{
-									$errors->add('Person', $value2);
-								}
-							}
-							else
-							{
-								$errors->add('Person', $value);
-							}
-						}
+						$errors->add('Batch', $is_marital_success->getError());
 					}
 					else
 					{
-						$morphed 						= new QueueMorph;
+						$morphed 							= new QueueMorph;
 
 						$morphed->fill([
-							'queue_id'					=> $pending->id,
-							'queue_morph_id'			=> $is_marital_success->data->id,
-							'queue_morph_type'			=> get_class(new MaritalStatus),
+							'queue_id'						=> $pending->id,
+							'queue_morph_id'				=> $is_marital_success->id,
+							'queue_morph_type'				=> get_class(new MaritalStatus),
 						]);
 
 						$morphed->save();
@@ -409,46 +319,23 @@ class PersonBatchCommand extends Command {
 				//save ktp
 				if(!$errors->count())
 				{
-					unset($search);
-					unset($sort);
+					$document 								= Document::organisationid($organisation['id'])->name('KTP')->tag('Identitas')->withattributes(['templates'])->first();
 
-					$search['organisationid']				= $org_id_code;
-					$search['name']							= 'KTP';
-					$search['tag']							= 'Identitas';
-					$search['withattributes']				= ['templates'];
-					$sort 									= ['created_at' => 'asc'];
-					$results 								= $this->dispatch(new Getting(new Document, $search, $sort , 1, 1));
-					$contents 								= json_decode($results);		
-
-					if(!$contents->meta->success)
+					if(!$document)
 					{
-						$errors->add('Batch', json_encode($contents->meta->errors));
+						$errors->add('Batch', 'Tidak ada dokumen ktp');
 					}
 					else
 					{
-						$document 								= json_decode(json_encode($contents->data), true);
+						$ktp[$i]['document_id']				= $document['id'];
 
-						$ktp[$i]['document_id']					= $document['id'];
+						$is_ktp_success 					= new PersonDocument;
+						$is_ktp_success->fill($ktp[$i]);
+						$is_ktp_success->Person()->associate($is_success);
 
-						$content 								= $this->dispatch(new Saving(new PersonDocument, $ktp[$i], null, new Person, $is_success->id));
-						$is_ktp_success 						= json_decode($content);
-						
-						if(!$is_ktp_success->meta->success)
+						if(!$is_ktp_success->save())
 						{
-							foreach ($is_ktp_success->meta->errors as $key => $value) 
-							{
-								if(is_array($value))
-								{
-									foreach ($value as $key2 => $value2) 
-									{
-										$errors->add('Person', $value2);
-									}
-								}
-								else
-								{
-									$errors->add('Person', $value);
-								}
-							}
+							$errors->add('Batch', $is_ktp_success->getError());
 						}
 						else
 						{
@@ -456,15 +343,13 @@ class PersonBatchCommand extends Command {
 
 							$morphed->fill([
 								'queue_id'					=> $pending->id,
-								'queue_morph_id'			=> $is_ktp_success->data->id,
+								'queue_morph_id'			=> $is_ktp_success->id,
 								'queue_morph_type'			=> get_class(new PersonDocument),
 							]);
 
 							$morphed->save();
 						}
 					}
-
-
 
 					if(!$errors->count())
 					{
@@ -504,34 +389,22 @@ class PersonBatchCommand extends Command {
 
 							if(isset($ktpdetail[$i][$key]) && !$errors->count())
 							{
-								$content 								= $this->dispatch(new Saving(new DocumentDetail, $ktpdetail[$i][$key], null, new PersonDocument, $is_ktp_success->data->id));
-								$is_ktpd_success 						= json_decode($content);
-								
-								if(!$is_ktpd_success->meta->success)
+								$is_ktpd_success 			= new DocumentDetail;
+								$is_ktpd_success->fill($ktpdetail[$i]);
+								$is_ktpd_success->PersonDocument()->associate($is_ktp_success);
+
+								if(!$is_ktpd_success->save())
 								{
-									foreach ($is_ktpd_success->meta->errors as $key => $value) 
-									{
-										if(is_array($value))
-										{
-											foreach ($value as $key2 => $value2) 
-											{
-												$errors->add('Person', $value2);
-											}
-										}
-										else
-										{
-											$errors->add('Person', $value);
-										}
-									}
+									$errors->add('Batch', $is_ktpd_success->getError());
 								}
 								else
 								{
-									$morphed 						= new QueueMorph;
+									$morphed 				= new QueueMorph;
 
 									$morphed->fill([
-										'queue_id'					=> $pending->id,
-										'queue_morph_id'			=> $is_ktpd_success->data->id,
-										'queue_morph_type'			=> get_class(new DocumentDetail),
+										'queue_id'			=> $pending->id,
+										'queue_morph_id'	=> $is_ktpd_success->id,
+										'queue_morph_type'	=> get_class(new DocumentDetail),
 									]);
 
 									$morphed->save();
@@ -544,46 +417,23 @@ class PersonBatchCommand extends Command {
 				//save bank account
 				if(!$errors->count())
 				{
-					unset($search);
-					unset($sort);
+					$document 								= Document::organisationid($organisation['id'])->name('Akun Bank')->tag('Akun')->withattributes(['templates'])->first();
 
-					$search['organisationid']				= $org_id_code;
-					$search['name']							= 'Akun Bank';
-					$search['tag']							= 'Akun';
-					$search['withattributes']				= ['templates'];
-					$sort 									= ['created_at' => 'asc'];
-					$results 								= $this->dispatch(new Getting(new Document, $search, $sort , 1, 1));
-					$contents 								= json_decode($results);		
-
-					if(!$contents->meta->success)
+					if(!$document)
 					{
-						$errors->add('Batch', json_encode($contents->meta->errors));
+						$errors->add('Batch', 'Tidak ada dokumen bank');
 					}
 					else
 					{
-						$document 								= json_decode(json_encode($contents->data), true);
+						$bank[$i]['document_id']			= $document['id'];
 
-						$bank[$i]['document_id']				= $document['id'];
+						$is_bank_success 					= new PersonDocument;
+						$is_bank_success->fill($bank[$i]);
+						$is_bank_success->Person()->associate($is_success);
 
-						$content 								= $this->dispatch(new Saving(new PersonDocument, $bank[$i], null, new Person, $is_success->id));
-						$is_bank_success 						= json_decode($content);
-						
-						if(!$is_bank_success->meta->success)
+						if(!$is_bank_success->save())
 						{
-							foreach ($is_bank_success->meta->errors as $key => $value) 
-							{
-								if(is_array($value))
-								{
-									foreach ($value as $key2 => $value2) 
-									{
-										$errors->add('Person', $value2);
-									}
-								}
-								else
-								{
-									$errors->add('Person', $value);
-								}
-							}
+							$errors->add('Batch', $is_bank_success->getError());
 						}
 						else
 						{
@@ -591,7 +441,7 @@ class PersonBatchCommand extends Command {
 
 							$morphed->fill([
 								'queue_id'					=> $pending->id,
-								'queue_morph_id'			=> $is_bank_success->data->id,
+								'queue_morph_id'			=> $is_bank_success->id,
 								'queue_morph_type'			=> get_class(new PersonDocument),
 							]);
 
@@ -621,25 +471,13 @@ class PersonBatchCommand extends Command {
 
 							if(isset($bankdetail[$i][$key]) && !$errors->count())
 							{
-								$content 								= $this->dispatch(new Saving(new DocumentDetail, $bankdetail[$i][$key], null, new PersonDocument, $is_bank_success->data->id));
-								$is_bankd_success 						= json_decode($content);
-								
-								if(!$is_bankd_success->meta->success)
+								$is_bankd_success 					= new DocumentDetail;
+								$is_bankd_success->fill($bankdetail[$i]);
+								$is_bankd_success->PersonDocument()->associate($is_bank_success);
+
+								if(!$is_bankd_success->save())
 								{
-									foreach ($is_bankd_success->meta->errors as $key => $value) 
-									{
-										if(is_array($value))
-										{
-											foreach ($value as $key2 => $value2) 
-											{
-												$errors->add('Person', $value2);
-											}
-										}
-										else
-										{
-											$errors->add('Person', $value);
-										}
-									}
+									$errors->add('Batch', $is_bankd_success->getError());
 								}
 								else
 								{
@@ -647,7 +485,7 @@ class PersonBatchCommand extends Command {
 
 									$morphed->fill([
 										'queue_id'					=> $pending->id,
-										'queue_morph_id'			=> $is_bankd_success->data->id,
+										'queue_morph_id'			=> $is_bankd_success->id,
 										'queue_morph_type'			=> get_class(new DocumentDetail),
 									]);
 
@@ -661,46 +499,23 @@ class PersonBatchCommand extends Command {
 				//save npwp
 				if(!$errors->count())
 				{
-					unset($search);
-					unset($sort);
+					$document 								= Document::organisationid($organisation['id'])->name('NPWP')->tag('Pajak')->withattributes(['templates'])->first();
 
-					$search['organisationid']				= $org_id_code;
-					$search['name']							= 'NPWP';
-					$search['tag']							= 'Pajak';
-					$search['withattributes']				= ['templates'];
-					$sort 									= ['created_at' => 'asc'];
-					$results 								= $this->dispatch(new Getting(new Document, $search, $sort , 1, 1));
-					$contents 								= json_decode($results);		
-
-					if(!$contents->meta->success)
+					if(!$document)
 					{
-						$errors->add('Batch', json_encode($contents->meta->errors));
+						$errors->add('Batch', 'Tidak ada dokumen bank');
 					}
 					else
 					{
-						$document 								= json_decode(json_encode($contents->data), true);
+						$npwp[$i]['document_id']			= $document['id'];
 
-						$npwp[$i]['document_id']				= $document['id'];
+						$is_npwp_success 					= new PersonDocument;
+						$is_npwp_success->fill($npwp[$i]);
+						$is_npwp_success->Person()->associate($is_success);
 
-						$content 								= $this->dispatch(new Saving(new PersonDocument, $npwp[$i], null, new Person, $is_success->id));
-						$is_npwp_success 						= json_decode($content);
-						
-						if(!$is_npwp_success->meta->success)
+						if(!$is_npwp_success->save())
 						{
-							foreach ($is_npwp_success->meta->errors as $key => $value) 
-							{
-								if(is_array($value))
-								{
-									foreach ($value as $key2 => $value2) 
-									{
-										$errors->add('Person', $value2);
-									}
-								}
-								else
-								{
-									$errors->add('Person', $value);
-								}
-							}
+							$errors->add('Batch', $is_npwp_success->getError());
 						}
 						else
 						{
@@ -708,7 +523,7 @@ class PersonBatchCommand extends Command {
 
 							$morphed->fill([
 								'queue_id'					=> $pending->id,
-								'queue_morph_id'			=> $is_npwp_success->data->id,
+								'queue_morph_id'			=> $is_npwp_success->id,
 								'queue_morph_type'			=> get_class(new PersonDocument),
 							]);
 
@@ -730,25 +545,13 @@ class PersonBatchCommand extends Command {
 
 							if(isset($npwpdetail[$i][$key]) && !$errors->count())
 							{
-								$content 								= $this->dispatch(new Saving(new DocumentDetail, $npwpdetail[$i][$key], null, new PersonDocument, $is_npwp_success->data->id));
-								$is_npwpd_success 						= json_decode($content);
-								
-								if(!$is_npwpd_success->meta->success)
+								$is_npwpd_success 					= new DocumentDetail;
+								$is_npwpd_success->fill($npwpdetail[$i]);
+								$is_npwpd_success->PersonDocument()->associate($is_npwp_success);
+
+								if(!$is_npwpd_success->save())
 								{
-									foreach ($is_npwpd_success->meta->errors as $key => $value) 
-									{
-										if(is_array($value))
-										{
-											foreach ($value as $key2 => $value2) 
-											{
-												$errors->add('Person', $value2);
-											}
-										}
-										else
-										{
-											$errors->add('Person', $value);
-										}
-									}
+									$errors->add('Batch', $is_npwpd_success->getError());
 								}
 								else
 								{
@@ -756,7 +559,7 @@ class PersonBatchCommand extends Command {
 
 									$morphed->fill([
 										'queue_id'					=> $pending->id,
-										'queue_morph_id'			=> $is_npwpd_success->data->id,
+										'queue_morph_id'			=> $is_npwpd_success->id,
 										'queue_morph_type'			=> get_class(new DocumentDetail),
 									]);
 
@@ -770,46 +573,23 @@ class PersonBatchCommand extends Command {
 				//save bpjstk
 				if(!$errors->count())
 				{
-					unset($search);
-					unset($sort);
+					$document 								= Document::organisationid($organisation['id'])->name('BPJS Ketenagakerjaan')->tag('Pajak')->withattributes(['templates'])->first();
 
-					$search['organisationid']				= $org_id_code;
-					$search['name']							= 'BPJS Ketenagakerjaan';
-					$search['tag']							= 'Pajak';
-					$search['withattributes']				= ['templates'];
-					$sort 									= ['created_at' => 'asc'];
-					$results 								= $this->dispatch(new Getting(new Document, $search, $sort , 1, 1));
-					$contents 								= json_decode($results);		
-
-					if(!$contents->meta->success)
+					if(!$document)
 					{
-						$errors->add('Batch', json_encode($contents->meta->errors));
+						$errors->add('Batch', 'Tidak ada dokumen bank');
 					}
 					else
 					{
-						$document 								= json_decode(json_encode($contents->data), true);
+						$bpjstk[$i]['document_id']			= $document['id'];
 
-						$bpjstk[$i]['document_id']				= $document['id'];
+						$is_bpjstk_success 					= new PersonDocument;
+						$is_bpjstk_success->fill($bpjstk[$i]);
+						$is_bpjstk_success->Person()->associate($is_success);
 
-						$content 								= $this->dispatch(new Saving(new PersonDocument, $bpjstk[$i], null, new Person, $is_success->id));
-						$is_bpjstk_success 						= json_decode($content);
-						
-						if(!$is_bpjstk_success->meta->success)
+						if(!$is_bpjstk_success->save())
 						{
-							foreach ($is_bpjstk_success->meta->errors as $key => $value) 
-							{
-								if(is_array($value))
-								{
-									foreach ($value as $key2 => $value2) 
-									{
-										$errors->add('Person', $value2);
-									}
-								}
-								else
-								{
-									$errors->add('Person', $value);
-								}
-							}
+							$errors->add('Batch', $is_bpjstk_success->getError());
 						}
 						else
 						{
@@ -817,7 +597,7 @@ class PersonBatchCommand extends Command {
 
 							$morphed->fill([
 								'queue_id'					=> $pending->id,
-								'queue_morph_id'			=> $is_bpjstk_success->data->id,
+								'queue_morph_id'			=> $is_bpjstk_success->id,
 								'queue_morph_type'			=> get_class(new PersonDocument),
 							]);
 
@@ -839,25 +619,13 @@ class PersonBatchCommand extends Command {
 
 							if(isset($bpjstkdetail[$i][$key]) && !$errors->count())
 							{
-								$content 								= $this->dispatch(new Saving(new DocumentDetail, $bpjstkdetail[$i][$key], null, new PersonDocument, $is_bpjstk_success->data->id));
-								$is_bpjstkd_success 						= json_decode($content);
-								
-								if(!$is_bpjstkd_success->meta->success)
+								$is_bpjstkd_success 					= new DocumentDetail;
+								$is_bpjstkd_success->fill($bpjstkdetail[$i]);
+								$is_bpjstkd_success->PersonDocument()->associate($is_bpjstk_success);
+
+								if(!$is_bpjstkd_success->save())
 								{
-									foreach ($is_bpjstkd_success->meta->errors as $key => $value) 
-									{
-										if(is_array($value))
-										{
-											foreach ($value as $key2 => $value2) 
-											{
-												$errors->add('Person', $value2);
-											}
-										}
-										else
-										{
-											$errors->add('Person', $value);
-										}
-									}
+									$errors->add('Batch', $is_bpjstkd_success->getError());
 								}
 								else
 								{
@@ -865,7 +633,7 @@ class PersonBatchCommand extends Command {
 
 									$morphed->fill([
 										'queue_id'					=> $pending->id,
-										'queue_morph_id'			=> $is_bpjstkd_success->data->id,
+										'queue_morph_id'			=> $is_bpjstkd_success->id,
 										'queue_morph_type'			=> get_class(new DocumentDetail),
 									]);
 
@@ -879,46 +647,23 @@ class PersonBatchCommand extends Command {
 				//save bpjs kesehatan
 				if(!$errors->count())
 				{
-					unset($search);
-					unset($sort);
+					$document 								= Document::organisationid($organisation['id'])->name('BPJS Kesehatan')->tag('Pajak')->withattributes(['templates'])->first();
 
-					$search['organisationid']				= $org_id_code;
-					$search['name']							= 'BPJS Kesehatan';
-					$search['tag']							= 'Pajak';
-					$search['withattributes']				= ['templates'];
-					$sort 									= ['created_at' => 'asc'];
-					$results 								= $this->dispatch(new Getting(new Document, $search, $sort , 1, 1));
-					$contents 								= json_decode($results);		
-
-					if(!$contents->meta->success)
+					if(!$document)
 					{
-						$errors->add('Batch', json_encode($contents->meta->errors));
+						$errors->add('Batch', 'Tidak ada dokumen bank');
 					}
 					else
 					{
-						$document 								= json_decode(json_encode($contents->data), true);
+						$bpjsk[$i]['document_id']			= $document['id'];
 
-						$bpjsk[$i]['document_id']				= $document['id'];
+						$is_bpjsk_success 					= new PersonDocument;
+						$is_bpjsk_success->fill($bpjsk[$i]);
+						$is_bpjsk_success->Person()->associate($is_success);
 
-						$content 								= $this->dispatch(new Saving(new PersonDocument, $bpjsk[$i], null, new Person, $is_success->id));
-						$is_bpjsk_success 						= json_decode($content);
-						
-						if(!$is_bpjsk_success->meta->success)
+						if(!$is_bpjsk_success->save())
 						{
-							foreach ($is_bpjsk_success->meta->errors as $key => $value) 
-							{
-								if(is_array($value))
-								{
-									foreach ($value as $key2 => $value2) 
-									{
-										$errors->add('Person', $value2);
-									}
-								}
-								else
-								{
-									$errors->add('Person', $value);
-								}
-							}
+							$errors->add('Batch', $is_bpjsk_success->getError());
 						}
 						else
 						{
@@ -926,7 +671,7 @@ class PersonBatchCommand extends Command {
 
 							$morphed->fill([
 								'queue_id'					=> $pending->id,
-								'queue_morph_id'			=> $is_bpjsk_success->data->id,
+								'queue_morph_id'			=> $is_bpjsk_success->id,
 								'queue_morph_type'			=> get_class(new PersonDocument),
 							]);
 
@@ -948,25 +693,13 @@ class PersonBatchCommand extends Command {
 
 							if(isset($bpjskdetail[$i][$key]) && !$errors->count())
 							{
-								$content 								= $this->dispatch(new Saving(new DocumentDetail, $bpjskdetail[$i][$key], null, new PersonDocument, $is_bpjsk_success->data->id));
-								$is_bpjskd_success 						= json_decode($content);
-								
-								if(!$is_bpjskd_success->meta->success)
+								$is_bpjskd_success 					= new DocumentDetail;
+								$is_bpjskd_success->fill($bpjskdetail[$i]);
+								$is_bpjskd_success->PersonDocument()->associate($is_bpjsk_success);
+
+								if(!$is_bpjskd_success->save())
 								{
-									foreach ($is_bpjskd_success->meta->errors as $key => $value) 
-									{
-										if(is_array($value))
-										{
-											foreach ($value as $key2 => $value2) 
-											{
-												$errors->add('Person', $value2);
-											}
-										}
-										else
-										{
-											$errors->add('Person', $value);
-										}
-									}
+									$errors->add('Batch', $is_bpjskd_success->getError());
 								}
 								else
 								{
@@ -974,7 +707,7 @@ class PersonBatchCommand extends Command {
 
 									$morphed->fill([
 										'queue_id'					=> $pending->id,
-										'queue_morph_id'			=> $is_bpjskd_success->data->id,
+										'queue_morph_id'			=> $is_bpjskd_success->id,
 										'queue_morph_type'			=> get_class(new DocumentDetail),
 									]);
 
@@ -988,17 +721,9 @@ class PersonBatchCommand extends Command {
 				//save kalender
 				if(!$errors->count())
 				{
-					unset($search);
-					unset($sort);
+					$is_calendar_success 					= Calendar::organisationid($organisation['id'])->starthour(date('H:i:s', strtotime($row['jammasukkerja'])))->endhour(date('H:i:s', strtotime($row['jampulangkerja'])))->first();
 
-					$search['organisationid']				= $org_id_code;
-					$search['starthour']					= date('H:i:s', strtotime($row['jammasukkerja']));
-					$search['endhour']						= date('H:i:s', strtotime($row['jampulangkerja']));
-					$sort 									= ['created_at' => 'asc'];
-					$results 								= $this->dispatch(new Getting(new Calendar, $search, $sort , 1, 1));
-					$contents 								= json_decode($results);		
-
-					if(!$contents->meta->success)
+					if(!$is_calendar_success)
 					{
 						$calendar[$i]['import_from_id'] 	= 1;
 						$calendar[$i]['name'] 				= 'Costum Kalender Untuk '.$row['namacabang'];
@@ -1006,30 +731,17 @@ class PersonBatchCommand extends Command {
 						$calendar[$i]['start'] 				= date('H:i:s', strtotime($row['jammasukkerja']));
 						$calendar[$i]['end'] 				= date('H:i:s', strtotime($row['jampulangkerja']));
 
-						$content 							= $this->dispatch(new Saving(new Calendar, $calendar[$i], null, new Organisation, $org_id_code));
-
+						$is_calendar_success 				= new Calendar;
+						$is_calendar_success->fill($calendar[$id]);
+						$is_calendar_success->Organisation()->associate($organisation);
 						$is_calendar_success 				= json_decode($content);
-						if(!$is_calendar_success->meta->success)
+						
+						if(!$is_calendar_success->save())
 						{
-							foreach ($is_calendar_success->meta->errors as $key => $value) 
-							{
-								if(is_array($value))
-								{
-									foreach ($value as $key2 => $value2) 
-									{
-										$errors->add('Person', $value2);
-									}
-								}
-								else
-								{
-									$errors->add('Person', $value);
-								}
-							}
+							$errors->add('Batch', $is_calendar_success->getError());
 						}
 						else
 						{
-							$is_calendar_success 			= $is_calendar_success->data;
-
 							$morphed 							= new QueueMorph;
 
 							$morphed->fill([
@@ -1041,52 +753,28 @@ class PersonBatchCommand extends Command {
 							$morphed->save();
 						}
 					}
-					else
-					{
-						$is_calendar_success 				= $contents->data;
-					}
 				}
 
 				//save branch
 				if(!$errors->count())
 				{
-					unset($search);
-					unset($sort);
+					$is_branch_success 					= Branch::organisationid($organisation['id'])->name($row['namacabang'])->first();
 
-					$search['organisationid']				= $org_id_code;
-					$search['name']							= $row['namacabang'];
-					$sort 									= ['created_at' => 'asc'];
-					$results 								= $this->dispatch(new Getting(new Branch, $search, $sort , 1, 1));
-					$contents 								= json_decode($results);		
-
-					if(!$contents->meta->success)
+					if(!$is_branch_success)
 					{
-						$branch[$i]['name'] 				= $row['namacabang'];
+						$branch[$i]['name'] 			= $row['namacabang'];
 
-						$content 							= $this->dispatch(new Saving(new Branch, $branch[$i], null, new Organisation, $org_id_code));
-
-						$is_branch_success 					= json_decode($content);
-						if(!$is_branch_success->meta->success)
+						$is_branch_success 				= new Branch;
+						$is_branch_success->fill($branch[$id]);
+						$is_branch_success->Organisation()->associate($organisation);
+						$is_branch_success 				= json_decode($content);
+						
+						if(!$is_branch_success->save())
 						{
-							foreach ($is_branch_success->meta->errors as $key => $value) 
-							{
-								if(is_array($value))
-								{
-									foreach ($value as $key2 => $value2) 
-									{
-										$errors->add('Person', $value2);
-									}
-								}
-								else
-								{
-									$errors->add('Person', $value);
-								}
-							}
+							$errors->add('Batch', $is_branch_success->getError());
 						}
 						else
 						{
-							$is_branch_success 				= $is_branch_success->data;
-
 							$morphed 							= new QueueMorph;
 
 							$morphed->fill([
@@ -1098,59 +786,33 @@ class PersonBatchCommand extends Command {
 							$morphed->save();
 						}
 					}
-					else
-					{
-						$is_branch_success 					= $contents->data;
-					}
 				}
 
 				//save Chart
 				if(!$errors->count())
 				{
-					unset($search);
-					unset($sort);
+					$is_chart_success 					= Chart::organisationid($organisation['id'])->branchid($is_branch_success->id)->tag($row['namadepartemen'])->name($row['jabatan'])->first();
 
-					$search['organisationid']				= $org_id_code;
-					$search['branchid']						= $is_branch_success->id;
-					$search['tag']							= $row['namadepartemen'];
-					$search['name']							= $row['jabatan'];
-					$sort 									= ['created_at' => 'asc'];
-					$results 								= $this->dispatch(new Getting(new Chart, $search, $sort , 1, 1));
-					$contents 								= json_decode($results);		
-
-					if(!$contents->meta->success)
+					if(!$is_chart_success)
 					{
-						$chart[$i]['name'] 					= $row['jabatan'];
-						$chart[$i]['tag'] 					= $row['namadepartemen'];
-						$chart[$i]['min_employee'] 			= 10;
-						$chart[$i]['ideal_employee'] 		= 10;
-						$chart[$i]['max_employee'] 			= 10;
+						$chart[$i]['name'] 				= $row['jabatan'];
+						$chart[$i]['tag'] 				= $row['namadepartemen'];
+						$chart[$i]['min_employee'] 		= 10;
+						$chart[$i]['ideal_employee'] 	= 10;
+						$chart[$i]['max_employee'] 		= 10;
 
-						$content 							= $this->dispatch(new Saving(new Chart, $chart[$i], null, new Branch, $is_branch_success->id));
-
-						$is_chart_success 					= json_decode($content);
-						if(!$is_chart_success->meta->success)
+						$is_chart_success 				= new Chart;
+						$is_chart_success->fill($chart[$id]);
+						$is_chart_success->Branch()->associate($organisation);
+						$is_chart_success 				= json_decode($is_branch_success);
+						
+						if(!$is_chart_success->save())
 						{
-							foreach ($is_chart_success->meta->errors as $key => $value) 
-							{
-								if(is_array($value))
-								{
-									foreach ($value as $key2 => $value2) 
-									{
-										$errors->add('Person', $value2);
-									}
-								}
-								else
-								{
-									$errors->add('Person', $value);
-								}
-							}
+							$errors->add('Batch', $is_chart_success->getError());
 						}
 						else
 						{
-							$is_chart_success 				= $is_chart_success->data;
-
-							$morphed 						= new QueueMorph;
+							$morphed 							= new QueueMorph;
 
 							$morphed->fill([
 								'queue_id'					=> $pending->id,
@@ -1161,47 +823,24 @@ class PersonBatchCommand extends Command {
 							$morphed->save();
 						}
 					}
-					else
-					{
-						$is_chart_success 					= $contents->data;
-					}
 				}
 
 				//save Follow
 				if(!$errors->count())
 				{
-					unset($search);
-					unset($sort);
+					$is_follow_success 						= Follow::chartid($is_chart_success->id)->calendarid($is_calendar_success->id)->first();
 
-					$search['chartid']						= $is_chart_success->id;
-					$search['calendarid']					= $is_calendar_success->id;
-					$sort 									= ['created_at' => 'asc'];
-					$results 								= $this->dispatch(new Getting(new Follow, $search, $sort , 1, 1));
-					$contents 								= json_decode($results);		
-
-					if(!$contents->meta->success)
+					if(!$is_follow_success->meta->success)
 					{
 						$follow[$i]['chart_id'] 			= $is_chart_success->id;
 
-						$content 							= $this->dispatch(new Saving(new Follow, $follow[$i], null, new Calendar, $is_calendar_success->id));
+						$is_follow_success 					= new Follow;
+						$is_follow_success->fill($follow[$i]);
+						$is_follow_success->Calendar()->associate($is_calendar_success);
 
-						$is_follow_success 					= json_decode($content);
-						if(!$is_follow_success->meta->success)
+						if(!$is_follow_success->save())
 						{
-							foreach ($is_follow_success->meta->errors as $key => $value) 
-							{
-								if(is_array($value))
-								{
-									foreach ($value as $key2 => $value2) 
-									{
-										$errors->add('Person', $value2);
-									}
-								}
-								else
-								{
-									$errors->add('Person', $value);
-								}
-							}
+							$errors->add('Batch', 'Tidak dapat menyimpan jadwal kerja');
 						}
 						else
 						{
@@ -1215,54 +854,31 @@ class PersonBatchCommand extends Command {
 
 							$morphed->save();
 						}
-
 					}
 				}
 
 				//Check Cuti 
 				if(!$errors->count())
 				{
-					unset($search);
-					unset($sort);
+					$is_workleave_success 					= Workleave::organisationid($organisation['id'])->quota($row['kuotacutitahunan'])->status('CN')->active(true)->first();
 
-					$search['quota']						= $row['kuotacutitahunan'];
-					$search['status']						= 'CN';
-					$search['active']						= true;
-					$sort 									= ['created_at' => 'asc'];
-					$results 								= $this->dispatch(new Getting(new Workleave, $search, $sort , 1, 1));
-					$contents 								= json_decode($results);		
-
-					if(!$contents->meta->success)
+					if(!$is_workleave_success)
 					{
 						$workleave[$i]['name'] 				= 'Custom Cuti '.$row['namacabang'];
 						$workleave[$i]['quota'] 			= $row['kuotacutitahunan'];
 						$workleave[$i]['status'] 			= 'CN';
 						$workleave[$i]['is_active'] 		= true;
 
-						$content 							= $this->dispatch(new Saving(new Workleave, $workleave[$i], null, new Organisation, $org_id_code));
+						$is_workleave_success 				= new Workleave;
+						$is_workleave_success->fill($workleave[$i]);
+						$is_workleave_success->Organisation()->associate($organisation);
 
-						$is_workleave_success 				= json_decode($content);
-						if(!$is_workleave_success->meta->success)
+						if(!$is_workleave_success->save())
 						{
-							foreach ($is_workleave_success->meta->errors as $key => $value) 
-							{
-								if(is_array($value))
-								{
-									foreach ($value as $key2 => $value2) 
-									{
-										$errors->add('Person', $value2);
-									}
-								}
-								else
-								{
-									$errors->add('Person', $value);
-								}
-							}
+							$errors->add('Batch', 'Tidak dapat menyimpan quota cuti');
 						}
 						else
 						{
-							$is_workleave_success 			= $is_workleave_success->data;
-
 							$morphed 						= new QueueMorph;
 
 							$morphed->fill([
@@ -1274,21 +890,11 @@ class PersonBatchCommand extends Command {
 							$morphed->save();
 						}
 					}
-					else
-					{
-						$is_workleave_success 				= $contents->data;
-					}
 				}
 
 				//save Work
 				if(!$errors->count())
 				{
-					unset($search);
-					unset($sort);
-
-					$search['chartid']						= $is_chart_success->id;
-					$search['calendarid']					= $is_calendar_success->id;
-					$search['personid']						= $is_success->id;
 					switch (strtolower($row['statuskerja'])) 
 					{
 						case 'kontrak': case 'contract' :
@@ -1308,11 +914,9 @@ class PersonBatchCommand extends Command {
 							break;
 					}
 
-					$sort 									= ['created_at' => 'asc'];
-					$results 								= $this->dispatch(new Getting(new Work, $search, $sort , 1, 1));
-					$contents 								= json_decode($results);		
+					$is_work_success 						= Work::chartid($is_chart_success->id)->calendarid($is_calendar_success->id)->personid($is_success->id)->status($search['status'])->first();
 
-					if(!$contents->meta->success)
+					if(!$is_work_success)
 					{
 						$work[$i]['chart_id'] 				= $is_chart_success->id;
 						$work[$i]['calendar_id'] 			= $is_calendar_success->id;
@@ -1329,30 +933,16 @@ class PersonBatchCommand extends Command {
 							$work[$i]['reason_end_job'] 	= 'Akhir '.$row['statuskerja'];
 						}
 
-						$content 							= $this->dispatch(new Saving(new Work, $work[$i], null, new Person, $is_success->id));
+						$is_work_success 					= new Work;
+						$is_work_success->fill($work);
+						$is_work_success->Person()->associate($is_success);
 
-						$is_work_success 					= json_decode($content);
-						if(!$is_work_success->meta->success)
+						if(!$is_work_success->save())
 						{
-							foreach ($is_work_success->meta->errors as $key => $value) 
-							{
-								if(is_array($value))
-								{
-									foreach ($value as $key2 => $value2) 
-									{
-										$errors->add('Person', $value2);
-									}
-								}
-								else
-								{
-									$errors->add('Person', $value);
-								}
-							}
+							$errors->add('Batch', $is_work_success->getError());
 						}
 						else
 						{
-							$is_work_success 				= $is_work_success->data;
-
 							$morphed 						= new QueueMorph;
 
 							$morphed->fill([
@@ -1364,48 +954,38 @@ class PersonBatchCommand extends Command {
 							$morphed->save();
 						}
 					}
-					else
-					{
-						$is_work_success 					= $contents->data;
-					}
 				}
 
 				//save FolloWorkleve
 				if(!$errors->count())
 				{
-					$fwleave[$i]['work_id'] 		= $is_work_success->id;
+					$is_fwleave_success 						= FollowWorkleave::workid($is_work_success->id)->workleaveid($is_workleave_success->id)->first();
 
-					$content 						= $this->dispatch(new Saving(new FollowWorkleave, $fwleave[$i], null, new Workleave, $is_workleave_success->id));
-
-					$is_fwleave_success 			= json_decode($content);
 					if(!$is_fwleave_success->meta->success)
 					{
-						foreach ($is_fwleave_success->meta->errors as $key => $value) 
+						$fwleave[$i]['work_id'] 				= $is_work_success->id;
+
+						$is_fwleave_success 					= new FollowWorkleave;
+						$is_fwleave_success->fill($fwleave[$i]);
+						$is_fwleave_success->Workleave()->associate($is_workleave_success);
+
+						if(!$is_fwleave_success->save())
 						{
-							if(is_array($value))
-							{
-								foreach ($value as $key2 => $value2) 
-								{
-									$errors->add('Person', $value2);
-								}
-							}
-							else
-							{
-								$errors->add('Person', $value);
-							}
+							$errors->add('Batch', 'Tidak dapat menyimpan kuota cuti tahunan.');
 						}
-					}
-					else
-					{
-						$morphed 						= new QueueMorph;
+						else
+						{
+							$morphed 						= new QueueMorph;
 
-						$morphed->fill([
-							'queue_id'					=> $pending->id,
-							'queue_morph_id'			=> $is_fwleave_success->data->id,
-							'queue_morph_type'			=> get_class(new FollowWorkleave),
-						]);
+							$morphed->fill([
+								'queue_id'					=> $pending->id,
+								'queue_morph_id'			=> $is_fwleave_success->data->id,
+								'queue_morph_type'			=> get_class(new FollowWorkleave),
+							]);
 
-						$morphed->save();
+							$morphed->save();
+						}
+
 					}
 				}
 
@@ -1424,25 +1004,13 @@ class PersonBatchCommand extends Command {
 						$personworkleave[$i]['quota'] 			= $is_workleave_success->quota;
 						$personworkleave[$i]['status'] 			= 'CN';
 
-						$content 								= $this->dispatch(new Saving(new PersonWorkleave, $personworkleave[$i], null, new Person, $is_success->id));
+						$is_personworkleave_success 			= new PersonWorkleave;
+						$is_personworkleave_success->fill($personworkleave[$i]);
+						$is_personworkleave_success->Person()->associate($is_success);
 
-						$is_personworkleave_success 			= json_decode($content);
-						if(!$is_personworkleave_success->meta->success)
+						if(!$is_personworkleave_success->save())
 						{
-							foreach ($is_personworkleave_success->meta->errors as $key => $value) 
-							{
-								if(is_array($value))
-								{
-									foreach ($value as $key2 => $value2) 
-									{
-										$errors->add('Person', $value2);
-									}
-								}
-								else
-								{
-									$errors->add('Person', $value);
-								}
-							}
+							$errors->add('Batch', $is_personworkleave_success->getError());
 						}
 						else
 						{
@@ -1492,25 +1060,13 @@ class PersonBatchCommand extends Command {
 
 					if($leave>0)
 					{
-						$content 							= $this->dispatch(new Saving(new PersonWorkleave, $pwleave[$i], null, new Person, $is_success->id));
+						$is_pwleave_success 				= new PersonWorkleave;
+						$is_pwleave_success->fill($pwleave[$i]);
+						$is_pwleave_success->Person()->associate($is_success);
 
-						$is_pwleave_success 				= json_decode($content);
-						if(!$is_pwleave_success->meta->success)
+						if(!$is_pwleave_success->save())
 						{
-							foreach ($is_pwleave_success->meta->errors as $key => $value) 
-							{
-								if(is_array($value))
-								{
-									foreach ($value as $key2 => $value2) 
-									{
-										$errors->add('Person', $value2);
-									}
-								}
-								else
-								{
-									$errors->add('Person', $value);
-								}
-							}
+							$errors->add('Batch', $is_pwleave_success->getError());
 						}
 						else
 						{
@@ -1532,29 +1088,23 @@ class PersonBatchCommand extends Command {
 					DB::commit();
 
 					$pnumber 								= $pending->process_number+1;
-					$pending->fill(['process_number' => $pnumber, 'message' => 'Sedang Menyimpan Data '.(isset($is_success->name) ? $is_success->name : '')]);
+					$messages['message'][$pnumber]		 	= 'Sukses Menyimpan Data Karyawan '.(isset($parameters['namalengkap']) ? $parameters['namalengkap'] : '');
+					$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 				}
 				else
 				{
 					DB::rollback();
 					
-					$pending->fill(['message' => json_encode($errors)]);
+					$pnumber 								= $pending->process_number+1;
+					$messages['message'][$pnumber] 			= 'Gagal Menyimpan Data Karyawan '.(isset($parameters['namalengkap']) ? $parameters['namalengkap'] : '');
+					$messages['errors'][$pnumber] 			= $errors;
+
+					$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 				}
 
 				$pending->save();
 			}
 		}
-
-		if($errors->count())
-		{
-			$pending->fill(['message' => json_encode($errors)]);
-		}
-		else
-		{
-			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Sukses Menyimpan Data Karyawan']);
-		}
-
-		$pending->save();
 
 		return true;
 	}

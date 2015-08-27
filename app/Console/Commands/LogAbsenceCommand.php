@@ -101,6 +101,8 @@ class LogAbsenceCommand extends Command {
 				
 		foreach ($persons as $key => $value) 
 		{
+			$messages 				= json_decode($pending->message, true);
+
 			DB::beginTransaction();
 
 			$log 					= new Log;
@@ -124,9 +126,6 @@ class LogAbsenceCommand extends Command {
 			{
 				DB::commit();
 
-				$pnumber 						= $pending->process_number+1;
-				$pending->fill(['process_number' => $pnumber, 'message' => 'Sedang Menyimpan Absen '.(isset($parameters['name']) ? $parameters['name'] : '')]);
-
 				$morphed 						= new QueueMorph;
 
 				$morphed->fill([
@@ -136,28 +135,25 @@ class LogAbsenceCommand extends Command {
 				]);
 
 				$morphed->save();
+				
+				$pnumber 						= $pending->process_number+1;
+				$messages['message'][$pnumber] 	= 'Sukses Menyimpan Absen '.(isset($parameters['name']) ? $parameters['name'] : '');
+				$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 			}
 			else
 			{
 				DB::rollback();
 				
-				$pending->fill(['message' => json_encode($errors)]);
+				$pnumber 						= $pending->process_number+1;
+				$messages['message'][$pnumber] 	= 'Gagal Menyimpan Absen '.(isset($parameters['name']) ? $parameters['name'] : '');
+				$messages['errors'][$pnumber] 	= $errors;
+
+				$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 			}
 
 			$pending->save();
 			
 		}
-
-		if($errors->count())
-		{
-			$pending->fill(['message' => json_encode($errors)]);
-		}
-		else
-		{
-			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Sukses Menyimpan Absen '.(isset($parameters['name']) ? $parameters['name'] : '')]);
-		}
-
-		$pending->save();
 
 		return true;
 	}

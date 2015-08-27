@@ -93,10 +93,12 @@ class FirstLockCommand extends Command {
 
 		$errors 					= new MessageBag;
 
-		$plogs 						= ProcessLog::workorganisationid($parameters['organisation_id'])->ondate($parameters['ondate'])->unsettleattendancelog(null)->get();
+		$plogs 						= ProcessLog::workorganisationid($parameters['organisation_id'])->ondate($parameters['ondate'])->unsettleattendancelog(null)->withattribute(['person'])->get();
 
 		foreach($plogs as $key => $value) 
 		{
+			$messages 				= json_decode($pending->message, true);
+
 			DB::beginTransaction();
 			
 			foreach ($value['attendancelogs'] as $key => $value) 
@@ -114,9 +116,6 @@ class FirstLockCommand extends Command {
 			{
 				DB::commit();
 
-				$pnumber 						= $pending->process_number+1;
-				$pending->fill(['process_number' => $pnumber, 'message' => 'Sedang Menyimpan First Lock Settlement '.(isset($parameters['name']) ? $parameters['name'] : '')]);
-
 				$morphed 						= new QueueMorph;
 
 				$morphed->fill([
@@ -126,27 +125,23 @@ class FirstLockCommand extends Command {
 				]);
 
 				$morphed->save();
+
+				$pnumber 						= $pending->process_number+1;
+				$messages['message'][$pnumber] 	= 'Sukses Menyimpan Settlement '.(isset($value['on']) ? $value['person']['name'].' Pada '.$value['on'] : '');
+				$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 			}
 			else
 			{
 				DB::rollback();
 				
-				$pending->fill(['message' => json_encode($errors)]);
+				$pnumber 						= $pending->process_number+1;
+				$messages['message'][$pnumber] 	= 'Gagal Menyimpan Settlement '.(isset($value['on']) ? $value['person']['name'].' Pada '.$value['on'] : '');
+				$messages['errors'][$pnumber] 	= $errors;
+				$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 			}
 
 			$pending->save();
 		}
-
-		if($errors->count())
-		{
-			$pending->fill(['message' => json_encode($errors)]);
-		}
-		else
-		{
-			$pending->fill(['process_number' => $pending->total_process, 'message' => 'Sukses Menyimpan First Lock Settlement '.(isset($parameters['name']) ? $parameters['name'] : '')]);
-		}
-
-		$pending->save();
 
 		return true;
 	}
