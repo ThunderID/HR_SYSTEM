@@ -61,7 +61,7 @@
 							{
 								$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
 								$('.progress-bar').css('width', '100%');
-								$('.progress').find('span').html(max+' / '+max+' proses');
+								$('.progress').find('span').html(max+' / '+max+' Proses');
 								setTimeout($('.progress').find('span').html('Proses Selesai'), 200);
 								clearInterval(intervalID);
 							}
@@ -70,7 +70,7 @@
 							{
 								$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
 								$('.progress-bar').css('width', ((now/max)*100)+'%');
-								$('.progress').find('span').html(now+' / '+max+' proses');
+								$('.progress').find('span').html(now+' / '+max+' Proses');
 								if (((now/max)*100)>='45') 
 								{
 									$('.progress').find('span').css('color', '#fff');
@@ -105,7 +105,7 @@
 						{
 							$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
 							$('.progress-bar').css('width', '100%');
-							$('.progress').find('span').html(max+' / '+max+' proses');
+							$('.progress').find('span').html(max+' / '+max+' Proses');
 							setTimeout($('.progress').find('span').html('Proses Selesai'), 200);
 							clearInterval(intervalID);
 						}
@@ -114,7 +114,7 @@
 						{
 							$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
 							$('.progress-bar').css('width', ((now/max)*100)+'%');
-							$('.progress').find('span').html(now+' / '+max+' proses');
+							$('.progress').find('span').html(now+' / '+max+' Proses');
 							if (((now/max)*100)>='45') 
 							{
 								$('.progress').find('span').css('color', '#fff');
@@ -146,7 +146,7 @@
 						{
 							$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
 							$('.progress-bar').css('width', '100%');
-							$('.progress').find('span').html(max+' / '+max+' proses');
+							$('.progress').find('span').html(max+' / '+max+' Proses');
 							setTimeout($('.progress').find('span').html('Proses Selesai'), 200);
 							clearInterval(intervalID);
 						}
@@ -155,7 +155,7 @@
 						{
 							$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
 							$('.progress-bar').css('width', ((now/max)*100)+'%');
-							$('.progress').find('span').html(now+' / '+max+' proses');
+							$('.progress').find('span').html(now+' / '+max+' Proses');
 							if (((now/max)*100)>='45') 
 							{
 								$('.progress').find('span').css('color', '#fff');
@@ -166,7 +166,7 @@
 					}
 				}
 			});
-	@elseif ('hr.person.workleaves.index')
+	@elseif (Route::is('hr.person.workleaves.index'))
 		var x =0;
 		// var intervalID	= setInterval(
 		// 	$.ajax, 1000, 
@@ -188,7 +188,7 @@
 						{
 							$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
 							$('.progress-bar').css('width', '100%');
-							$('.progress').find('span').html(max+' / '+max+' proses');
+							$('.progress').find('span').html(max+' / '+max+' Proses');
 							setTimeout($('.progress').find('span').html('Proses Selesai'), 200);
 							clearInterval(intervalID);
 						}
@@ -197,7 +197,7 @@
 						{
 							$('.progress-bar').attr('aria-valuemax', (max/max)*100).attr('aria-valuenow', (now/max)*100);
 							$('.progress-bar').css('width', ((now/max)*100)+'%');
-							$('.progress').find('span').html(now+' / '+max+' proses');
+							$('.progress').find('span').html(now+' / '+max+' Proses');
 							if (((now/max)*100)>='45') 
 							{
 								$('.progress').find('span').css('color', '#fff');
