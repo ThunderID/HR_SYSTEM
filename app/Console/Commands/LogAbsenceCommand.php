@@ -137,7 +137,7 @@ class LogAbsenceCommand extends Command {
 				$morphed->save();
 				
 				$pnumber 						= $pending->process_number+1;
-				$messages['message'][$pnumber] 	= 'Sukses Menyimpan Absen '.(isset($parameters['name']) ? $parameters['name'] : '');
+				$messages['message'][$pnumber] 	= 'Sukses Menyimpan Absen '.(isset($value['name']) ? $value['name'] : '');
 				$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 			}
 			else
@@ -145,7 +145,7 @@ class LogAbsenceCommand extends Command {
 				DB::rollback();
 				
 				$pnumber 						= $pending->process_number+1;
-				$messages['message'][$pnumber] 	= 'Gagal Menyimpan Absen '.(isset($parameters['name']) ? $parameters['name'] : '');
+				$messages['message'][$pnumber] 	= 'Gagal Menyimpan Absen '.(isset($value['name']) ? $value['name'] : '');
 				$messages['errors'][$pnumber] 	= $errors;
 
 				$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
