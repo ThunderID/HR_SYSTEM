@@ -14,7 +14,8 @@
 							@endforeach
 						@endif
 					</select>
-					{!!Form::hidden('work_id', $wleave['work_id'])!!}
+					{!! Form::hidden('work_id', $wleave['work_id']) !!}
+					{!! Form::hidden('follow_workleave_id', $wleave['follow_workleave_id']) !!}
 					<span class="opacity-50 mt-10">{!! $widget_title  or 'Kuota Cuti "'.$data['name'].'" Tahun Ini' !!} </span>					
 				</div>
 				{!! Form::close() !!}
