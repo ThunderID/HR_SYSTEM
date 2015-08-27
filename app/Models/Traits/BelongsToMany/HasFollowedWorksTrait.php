@@ -23,6 +23,6 @@ trait HasFollowedWorksTrait {
 
 	public function scopeActiveWorks($query, $variable)
 	{
-		return $query->wherehas('followedworks', function($q){$q->active(true);})->with(['followedworks' => function($q){$q->active(true);}]);
+		return $query->wherehas('followedworks', function($q){$q->active(true)->status(['contract', 'permanent']);})->with(['followedworks' => function($q){$q->active(true)->status(['contract', 'permanent']);}]);
 	}
 }

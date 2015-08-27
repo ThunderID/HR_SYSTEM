@@ -18,10 +18,6 @@ use App\Models\Work;
 use DateTime, DateInterval, DatePeriod, DB;
 
 class PersonWorkleaveBatchCommand extends Command {
-
-	use \Illuminate\Foundation\Bus\DispatchesCommands;
-	use \Illuminate\Foundation\Validation\ValidatesRequests;
-
 	/**
 	 * The console command name.
 	 *
@@ -243,6 +239,7 @@ class PersonWorkleaveBatchCommand extends Command {
 
 		//check work active on that day, please consider if that queue were written days
 		$works 						= Work::active(true)->status(['contract', 'permanent'])->workleaveid($parameters['workleave_id'])->get();
+
 		$workleave 					= Workleave::id($parameters['workleave_id'])->first();
 
 		foreach ($works as $key => $value) 
