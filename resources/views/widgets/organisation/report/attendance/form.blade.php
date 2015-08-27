@@ -37,7 +37,7 @@
 					<label class="control-label">Note</label>
 				</div>
 				<div class="col-md-10">
-					{!! Form::text('note', '', ['class' => 'form-control']) !!}
+					{!! Form::textarea('notes', $ProcessLogComposer['widget_data']['processlogslist']['processlog']['attendancelogs'][0]['notes'], ['class' => 'form-control', 'rows' => '4']) !!}
 				</div>
 			</div>
 			<div class="form-group">

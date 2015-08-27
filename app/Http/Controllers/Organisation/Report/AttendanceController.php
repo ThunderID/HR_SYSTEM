@@ -544,6 +544,7 @@ class AttendanceController extends BaseController
 		$attributes['margin_start'] 			= $plog['attendancelogs'][0]['margin_start'];
 		$attributes['margin_end'] 				= $plog['attendancelogs'][0]['margin_end'];
 		// $attributes['notes'] 					= $plog['attendancelogs'][0]['actual_status'];
+		$attributes['notes']					= Input::get('notes');
 		$attributes['modified_status'] 			= Input::get('modified_status');
 		$attributes['modified_by']				= Session::get('loggedUser');
 		$attributes['modified_at']				= date('Y-m-d H:i:s');
