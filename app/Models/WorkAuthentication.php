@@ -56,7 +56,8 @@ class WorkAuthentication extends BaseModel {
 											'menuid' 							=> 'AccessMenuID', 
 
 											'level' 							=> 'Level', 
-											'withattributes'					=> 'WithAttributes'
+											'withattributes'					=> 'WithAttributes',
+											'withtrashed' 						=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
@@ -68,6 +69,7 @@ class WorkAuthentication extends BaseModel {
 											
 											'level' 							=> 'Must be integer', 
 											'withattributes' 					=> 'Must be array of relationship',
+											'withtrashed' 						=> 'Must be true',
 										];
 
 	public $sortable 				= 	['organisation_id', 'work_id', 'tmp_auth_group_id'];

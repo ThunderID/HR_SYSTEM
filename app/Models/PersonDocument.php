@@ -68,7 +68,8 @@ class PersonDocument extends BaseModel {
 
 											'branchid' 					=> 'BranchID', 
 											'currentwork' 				=> 'CurrentWork',
-											'withattributes' 			=> 'WithAttributes'
+											'withattributes' 			=> 'WithAttributes',
+											'withtrashed' 				=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
@@ -80,6 +81,7 @@ class PersonDocument extends BaseModel {
 											'branchid' 					=> 'Could be array or integer', 
 											'currentwork' 				=> 'Could be null or integer of ID',
 											'withattributes' 			=> 'Must be array of relationship',
+											'withtrashed' 				=> 'Must be true',
 										];
 
 	public $sortable 				= 	['created_at', 'person_id'];

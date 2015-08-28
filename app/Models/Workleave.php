@@ -61,7 +61,8 @@ class Workleave extends BaseModel {
 											'name' 						=> 'Name', 
 											'active' 					=> 'Active', 
 											'status' 					=> 'Status', 
-											'withattributes' 			=> 'WithAttributes'
+											'withattributes' 			=> 'WithAttributes',
+											'withtrashed' 				=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
@@ -71,6 +72,7 @@ class Workleave extends BaseModel {
 											'active' 					=> 'Must be true or false', 
 											'status' 					=> 'Must be string', 
 											'withattributes' 			=> 'Must be array of relationship',
+											'withtrashed' 				=> 'Must be true',
 										];
 
 	public $sortable 				= 	['created_at', 'name'];

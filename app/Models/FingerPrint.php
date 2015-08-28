@@ -69,13 +69,15 @@ class FingerPrint extends BaseModel {
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'branchid' 					=> 'BranchID', 
-											'withattributes' 			=> 'WithAttributes'
+											'withattributes' 			=> 'WithAttributes',
+											'withtrashed' 				=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
 											'id' 						=> 'Could be array or integer', 
 											'branchid' 					=> 'Could be array or integer', 
-											'withattributes' 			=> 'Must be array of relationship'
+											'withattributes' 			=> 'Must be array of relationship',
+											'withtrashed' 				=> 'Must be true',
 										];
 
 	public $sortable 				= ['created_at', 'branch_id'];

@@ -46,13 +46,26 @@ class DocumentDetail extends BaseModel {
 										];
 
 	protected 	$rules				= 	[
-											'template_id'			=> 'required|exists:tmp_templates,id',
-											'on'					=> 'required_without_all:text,string,numeric',
-											'numeric'				=> 'required_without_all:text,string,on',
-											'string'				=> 'required_without_all:text,on,numeric',
-											'text'					=> 'required_without_all:numeric,on,string',
+											'template_id'				=> 'required|exists:tmp_templates,id',
+											'on'						=> 'required_without_all:text,string,numeric',
+											'numeric'					=> 'required_without_all:text,string,on',
+											'string'					=> 'required_without_all:text,on,numeric',
+											'text'						=> 'required_without_all:numeric,on,string',
 										];
 
+	public $searchable 				= 	[
+											'id' 						=> 'ID', 
+											'withattributes' 			=> 'WithAttributes',
+											'withtrashed' 				=> 'WithTrashed',
+										];
+
+	public $searchableScope 		= 	[
+											'id' 						=> 'Could be array or integer', 
+											'withattributes' 			=> 'Must be array of relationship',
+											'withtrashed' 				=> 'Must be true',
+										];
+
+	public $sortable 				= 	['created_at'];
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**
 	 * boot

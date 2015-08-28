@@ -9,6 +9,7 @@
  * 	record_log_id 					: Required, Integer, FK from Other Table
  * 	record_log_type 			 	: Required, morph model
  * 	name 			 				: Required, max : 255
+ * 	action 			 				: enum, save, delete, restore
  * 	level 			 				: integer
  * 	notes 							:
  * 	old_attributes 					:
@@ -59,7 +60,7 @@ class RecordLog extends BaseModel {
 											'person_id' 						=> 'numeric',
 											'name' 								=> 'required',
 											'level' 							=> 'numeric',
-											'action' 							=> 'required|in:save,delete,restore',
+											'action' 							=> 'in:save,delete,restore',
 										];
 
 	public $searchable 				= 	[

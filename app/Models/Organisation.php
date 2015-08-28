@@ -60,12 +60,14 @@ class Organisation extends BaseModel {
 											'code' 						=> 'Code', 
 											'name' 						=> 'Name', 
 											'withattributes' 			=> 'WithAttributes',
+											'withtrashed' 				=> 'WithTrashed',
 										];
 	
 	public $searchableScope 		= 	[
 											'id' 						=> 'Could be array or integer', 
 											'code' 						=> 'Must be string', 
 											'withattributes' 			=> 'Must be array of relationship',
+											'withtrashed' 				=> 'Must be true',
 										];
 
 	public $sortable 				= 	['id', 'name', 'created_at'];

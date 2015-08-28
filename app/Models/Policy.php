@@ -58,7 +58,8 @@ class Policy extends BaseModel {
 											'type' 						=> 'Type', 
 											'newest' 					=> 'Newest', 
 
-											'withattributes' 			=> 'WithAttributes'
+											'withattributes' 			=> 'WithAttributes',
+											'withtrashed' 				=> 'WithTrashed',
 										];
 										
 	public $searchableScope 		= 	[
@@ -69,7 +70,8 @@ class Policy extends BaseModel {
 											'type' 						=> 'Must be string', 
 											'newest' 					=> 'Must be true', 
 
-											'withattributes' 			=> 'Must be array of relationship'
+											'withattributes' 			=> 'Must be array of relationship',
+											'withtrashed' 				=> 'Must be true',
 										];
 
 	public $sortable 				= 	['created_at', 'updated_at', 'started_at'];

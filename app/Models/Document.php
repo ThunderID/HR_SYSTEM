@@ -72,7 +72,8 @@ class Document extends BaseModel {
 											'checkcreate' 				=> 'CheckCreate',
 											'isrequired' 				=> 'Required', 
 											
-											'withattributes' 			=> 'WithAttributes'
+											'withattributes' 			=> 'WithAttributes',
+											'withtrashed' 				=> 'WithTrashed',
 										];
 										
 	public $searchableScope 		= 	[
@@ -86,7 +87,8 @@ class Document extends BaseModel {
 											'checkcreate' 				=> 'Could be array or string (time)',
 											'isrequired' 				=> 'Must be true or false', 
 											
-											'withattributes' 			=> 'Must be array of relationship'
+											'withattributes' 			=> 'Must be array of relationship',
+											'withtrashed' 				=> 'Must be true',
 										];
 
 	public $sortable 				= 	['id', 'name', 'is_required', 'created_at', 'tag'];

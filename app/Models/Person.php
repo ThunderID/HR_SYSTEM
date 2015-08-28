@@ -164,6 +164,7 @@ class Person extends BaseModel {
 											'processlogattendancesondate'	=> 'ProcessLogAttendancesOndate',
 											'processlogidlesondate'			=> 'ProcessLogIdlesOndate',
 											'logsondate'	 				=> 'LogsOndate',
+											'withtrashed' 					=> 'WithTrashed',
 										];
 
 
@@ -222,6 +223,7 @@ class Person extends BaseModel {
 
 											'processlogsondate'	 			=> 'Could be array or string (date)',
 											'logsondate'	 				=> 'Could be array or string (date)',
+											'withtrashed' 					=> 'Must be true',
 										];
 
 	public $sortable 				= 	['name', 'prefix_title', 'suffix_title', 'date_of_birth', 'created_at', 'persons.created_at', 'persons.id', 'persons.name'];

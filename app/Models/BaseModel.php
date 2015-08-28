@@ -49,6 +49,11 @@ abstract class BaseModel extends Eloquent {
 	
 	/* ---------------------------------------------------------------------------- SCOPES ----------------------------------------------------------------------------*/
 
+	public function scopeWithTrashed($query, $variable)
+	{
+		return $query->withtrashed();
+	}
+
 	public function scopeNotID($query, $variable)
 	{
 		return $query->where('id', '<>',$variable);
