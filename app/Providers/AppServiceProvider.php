@@ -17,17 +17,25 @@ class AppServiceProvider extends ServiceProvider {
 		\App\Models\AuthGroup::observe(new \App\Models\Observers\AuthGroupObserver);
 		\App\Models\GroupMenu::observe(new \App\Models\Observers\GroupMenuObserver);
 
-		\App\Models\Api::observe(new \App\Models\Observers\ApiObserver);
-
-		\App\Models\Contact::observe(new \App\Models\Observers\ContactObserver);
-
 		\App\Models\Document::observe(new \App\Models\Observers\DocumentObserver);
 		\App\Models\DocumentDetail::observe(new \App\Models\Observers\DocumentDetailObserver);
 		\App\Models\Template::observe(new \App\Models\Observers\TemplateObserver);
 		\App\Models\PersonDocument::observe(new \App\Models\Observers\PersonDocumentObserver);
 
+		\App\Models\Organisation::observe(new \App\Models\Observers\OrganisationObserver);
+		\App\Models\Branch::observe(new \App\Models\Observers\BranchObserver);
+		\App\Models\Chart::observe(new \App\Models\Observers\ChartObserver);
+		
+		\App\Models\Api::observe(new \App\Models\Observers\ApiObserver);
+
 		\App\Models\Finger::observe(new \App\Models\Observers\FingerObserver);
 		\App\Models\FingerPrint::observe(new \App\Models\Observers\FingerPrintObserver);
+
+		\App\Models\Contact::observe(new \App\Models\Observers\ContactObserver);
+
+		\App\Models\Person::observe(new \App\Models\Observers\PersonObserver);
+		\App\Models\Relative::observe(new \App\Models\Observers\RelativeObserver);
+		\App\Models\MaritalStatus::observe(new \App\Models\Observers\MaritalStatusObserver);
 
 		\App\Models\Log::observe(new \App\Models\Observers\LogObserver);
 		\App\Models\Log::observe(new \App\Models\Observers\ProcessingLogObserver);
@@ -38,20 +46,10 @@ class AppServiceProvider extends ServiceProvider {
 		\App\Models\AttendanceLog::observe(new \App\Models\Observers\AttendanceLogObserver);
 		\App\Models\AttendanceDetail::observe(new \App\Models\Observers\AttendanceDetailObserver);
 
-		\App\Models\Organisation::observe(new \App\Models\Observers\OrganisationObserver);
-		\App\Models\Branch::observe(new \App\Models\Observers\BranchObserver);
-		\App\Models\Chart::observe(new \App\Models\Observers\ChartObserver);
-
-		\App\Models\Person::observe(new \App\Models\Observers\PersonObserver);
-		\App\Models\Relative::observe(new \App\Models\Observers\RelativeObserver);
-		\App\Models\MaritalStatus::observe(new \App\Models\Observers\MaritalStatusObserver);
-
 		\App\Models\Calendar::observe(new \App\Models\Observers\CalendarObserver);
 		\App\Models\Schedule::observe(new \App\Models\Observers\ScheduleObserver);
 		\App\Models\PersonSchedule::observe(new \App\Models\Observers\PersonScheduleObserver);
 		\App\Models\Follow::observe(new \App\Models\Observers\FollowObserver);
-
-		\App\Models\PersonWidget::observe(new \App\Models\Observers\PersonWidgetObserver);
 
 		\App\Models\Workleave::observe(new \App\Models\Observers\WorkleaveObserver);
 		\App\Models\PersonWorkleave::observe(new \App\Models\Observers\PersonWorkleaveObserver);
@@ -64,7 +62,8 @@ class AppServiceProvider extends ServiceProvider {
 		\App\Models\QueueMorph::observe(new \App\Models\Observers\QueueMorphObserver);
 
 		\App\Models\RecordLog::observe(new \App\Models\Observers\RecordLogObserver);
-		//
+
+		\App\Models\PersonWidget::observe(new \App\Models\Observers\PersonWidgetObserver);
 	}
 
 	/**
