@@ -1,7 +1,8 @@
 <?php namespace App\Models\Observers;
 
-use \Validator;
+use \Validator, Event;
 use \Illuminate\Support\MessageBag as MessageBag;
+use App\Events\CreateRecordOnTable;
 
 /* ----------------------------------------------------------------------
  * Event:
@@ -43,11 +44,39 @@ class PolicyObserver
 		}
 	}
 
-	public function deleting($model)
+
+	public function created($model)
 	{
-		//
-		// $model['errors'] 		= ['Tidak dapat menghapus pengaturan kebijakan. Silahkan Buat kebijakan yang baru.'];
-		
-		// return false;
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Menambah Aturan';
+		$attributes['notes'] 				= 'Menambah Aturan'.' pada '.date('d-m-Y');
+		$attributes['action'] 				= 'delete';
+
+		Event::fire(new CreateRecordOnTable($attributes));
+	}
+
+	public function updated($model)
+	{
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Mengubah Aturan ';
+		$attributes['notes'] 				= 'Mengubah Aturan '.' pada '.date('d-m-Y');
+		$attributes['old_attribute'] 		= json_encode($model->getOriginal());
+		$attributes['new_attribute'] 		= json_encode($model->getAttributes());
+		$attributes['action'] 				= 'save';
+
+		Event::fire(new CreateRecordOnTable($attributes));
+	}
+
+	public function deleted($model)
+	{
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Menghapus Aturan';
+		$attributes['notes'] 				= 'Menghapus Aturan'.' pada '.date('d-m-Y');
+		$attributes['action'] 				= 'restore';
+
+		Event::fire(new CreateRecordOnTable($attributes));
 	}
 }
