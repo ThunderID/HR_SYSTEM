@@ -56,7 +56,35 @@
 									</td>
 									<td class="font-11 text-center">
 										@if(isset($value['processlogs'][0]['attendancelogs'][0]))
-											{{($value['processlogs'][0]['attendancelogs'][0]['modified_status']!='' ? $value['processlogs'][0]['attendancelogs'][0]['modified_status'] : $value['processlogs'][0]['attendancelogs'][0]['actual_status'])}}
+											<a href="javascript:;" class="black cursor-text tipped-tooltip" title="
+												@if (($value['processlogs'][0]['attendancelogs'][0]['modified_status']=='AS')||($value['processlogs'][0]['attendancelogs'][0]['actual_status']=='AS'))
+													Ketidakhadiran Tanpa Penjelasan
+												@elseif (($value['processlogs'][0]['attendancelogs'][0]['modified_status']=='CB')||($value['processlogs'][0]['attendancelogs'][0]['actual_status']=='CB'))
+													Cuti Bersama
+												@elseif (($value['processlogs'][0]['attendancelogs'][0]['modified_status']=='CI')||($value['processlogs'][0]['attendancelogs'][0]['actual_status']=='CI'))
+													Cuti Istimewa
+												@elseif (($value['processlogs'][0]['attendancelogs'][0]['modified_status']=='CN')||($value['processlogs'][0]['attendancelogs'][0]['actual_status']=='CN'))
+													Cuti Untuk Keperluan Pribadi
+												@elseif (($value['processlogs'][0]['attendancelogs'][0]['modified_status']=='DN')||($value['processlogs'][0]['attendancelogs'][0]['actual_status']=='DN'))
+													Keperluan Dinas
+												@elseif (($value['processlogs'][0]['attendancelogs'][0]['modified_status']=='HC')||($value['processlogs'][0]['attendancelogs'][0]['actual_status']=='HC'))
+													Hadir Cacat Tanpa Penjelasan
+												@elseif (($value['processlogs'][0]['attendancelogs'][0]['modified_status']=='HD')||($value['processlogs'][0]['attendancelogs'][0]['actual_status']=='HD'))
+													Hadir Cacat Dengan Ijin Dinas
+												@elseif (($value['processlogs'][0]['attendancelogs'][0]['modified_status']=='HP')||($value['processlogs'][0]['attendancelogs'][0]['actual_status']=='HP'))
+													Hadir Cacat Dengan Ijin Pulang Cepat
+												@elseif (($value['processlogs'][0]['attendancelogs'][0]['modified_status']=='HT')||($value['processlogs'][0]['attendancelogs'][0]['actual_status']=='HT'))
+													Hadir Cacat Dengan Ijin Datang Terlambat
+												@elseif (($value['processlogs'][0]['attendancelogs'][0]['modified_status']=='SS')||($value['processlogs'][0]['attendancelogs'][0]['actual_status']=='SS'))
+													Sakit Jangka Pendek
+												@elseif (($value['processlogs'][0]['attendancelogs'][0]['modified_status']=='SL')||($value['processlogs'][0]['attendancelogs'][0]['actual_status']=='SL'))
+													Sakit Berkepanjangan
+												@elseif (($value['processlogs'][0]['attendancelogs'][0]['modified_status']=='UL')||($value['processlogs'][0]['attendancelogs'][0]['actual_status']=='UL'))
+													Ketidakhadiran Dengan Ijin Namun Cuti Tidak Tersedia
+												@endif
+											">
+												{{($value['processlogs'][0]['attendancelogs'][0]['modified_status']!='' ? $value['processlogs'][0]['attendancelogs'][0]['modified_status'] : $value['processlogs'][0]['attendancelogs'][0]['actual_status'])}}
+											</a>
 										@endif
 									</td>
 								@else
@@ -82,7 +110,35 @@
 									</td>
 									<td class="font-11 text-center">
 										@if(isset($value2['attendancelogs'][0]))
-											{{($value2['attendancelogs'][0]['modified_status']!='' ? $value2['attendancelogs'][0]['modified_status'] : $value2['attendancelogs'][0]['actual_status'])}}
+											<a href="javascript:;" class="black cursor-text tipped-tooltip" title="
+												@if (($value2['attendancelogs'][0]['modified_status']=='AS')||($value2['attendancelogs'][0]['actual_status']=='AS'))
+													Ketidakhadiran Tanpa Penjelasan
+												@elseif (($value2['attendancelogs'][0]['modified_status']=='CB')||($value2['attendancelogs'][0]['actual_status']=='CB'))
+													Cuti Bersama
+												@elseif (($value2['attendancelogs'][0]['modified_status']=='CI')||($value2['attendancelogs'][0]['actual_status']=='CI'))
+													Cuti Istimewa
+												@elseif (($value2['attendancelogs'][0]['modified_status']=='CN')||($value2['attendancelogs'][0]['actual_status']=='CN'))
+													Cuti Untuk Keperluan Pribadi
+												@elseif (($value2['attendancelogs'][0]['modified_status']=='DN')||($value2['attendancelogs'][0]['actual_status']=='DN'))
+													Keperluan Dinas
+												@elseif (($value2['attendancelogs'][0]['modified_status']=='HC')||($value2['attendancelogs'][0]['actual_status']=='HC'))
+													Hadir Cacat Tanpa Penjelasan
+												@elseif (($value2['attendancelogs'][0]['modified_status']=='HD')||($value2['attendancelogs'][0]['actual_status']=='HD'))
+													Hadir Cacat Dengan Ijin Dinas
+												@elseif (($value2['attendancelogs'][0]['modified_status']=='HP')||($value2['attendancelogs'][0]['actual_status']=='HP'))
+													Hadir Cacat Dengan Ijin Pulang Cepat
+												@elseif (($value2['attendancelogs'][0]['modified_status']=='HT')||($value2['attendancelogs'][0]['actual_status']=='HT'))
+													Hadir Cacat Dengan Ijin Datang Terlambat
+												@elseif (($value2['attendancelogs'][0]['modified_status']=='SS')||($value2['attendancelogs'][0]['actual_status']=='SS'))
+													Sakit Jangka Pendek
+												@elseif (($value2['attendancelogs'][0]['modified_status']=='SL')||($value2['attendancelogs'][0]['actual_status']=='SL'))
+													Sakit Berkepanjangan
+												@elseif (($value2['attendancelogs'][0]['modified_status']=='UL')||($value2['attendancelogs'][0]['actual_status']=='UL'))
+													Ketidakhadiran Dengan Ijin Namun Cuti Tidak Tersedia
+												@endif
+											">
+												{{($value2['attendancelogs'][0]['modified_status']!='' ? $value2['attendancelogs'][0]['modified_status'] : $value2['attendancelogs'][0]['actual_status'])}}
+											</a>
 										@endif
 									</td>
 								</tr>
