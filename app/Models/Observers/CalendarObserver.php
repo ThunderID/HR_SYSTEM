@@ -97,8 +97,8 @@ class CalendarObserver
 		$attributes['record_log_type'] 		= get_class($model);
 		$attributes['name'] 				= 'Mengubah Kalender '.$model->name;
 		$attributes['notes'] 				= 'Mengubah Kalender '.$model->name.' pada '.date('d-m-Y');
-		$attributes['old_attribute'] 		= $model->getOriginal();
-		$attributes['new_attribute'] 		= $model->getAttributes();
+		$attributes['old_attribute'] 		= json_encode($model->getOriginal());
+		$attributes['new_attribute'] 		= json_encode($model->getAttributes());
 		$attributes['action'] 				= 'save';
 		
 		Event::fire(new CreateRecordOnTable($attributes));

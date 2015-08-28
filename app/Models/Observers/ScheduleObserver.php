@@ -124,8 +124,8 @@ class ScheduleObserver
 			$attributes['record_log_type'] 		= get_class($model);
 			$attributes['name'] 				= 'Mengubah Jadwal '.$model->calendar->name;
 			$attributes['notes'] 				= 'Mengubah Jadwal '.$model->calendar->name.' pada '.date('d-m-Y');
-			$attributes['old_attribute'] 		= $model->getOriginal();
-			$attributes['new_attribute'] 		= $model->getAttributes();
+			$attributes['old_attribute'] 		= json_encode($model->getOriginal());
+			$attributes['new_attribute'] 		= json_encode($model->getAttributes());
 			$attributes['action'] 				= 'save';
 
 			Event::fire(new CreateRecordOnTable($attributes));

@@ -278,11 +278,11 @@ class AttendanceLogObserver
 		}
 	}
 
-
 	public function created($model)
 	{
 		if(isset($model['attributes']['modified_by']) && $model['attributes']['modified_by']!=0)
 		{
+			$attributes['person_id'] 			= $model->modified_by;
 			$attributes['record_log_id'] 		= $model->id;
 			$attributes['record_log_type'] 		= get_class($model);
 			$attributes['name'] 				= 'Mengubah Kehadiran';
@@ -297,12 +297,13 @@ class AttendanceLogObserver
 	{
 		if(isset($model['attributes']['modified_by']) && $model['attributes']['modified_by']!=0)
 		{
+			$attributes['person_id'] 			= $model->modified_by;
 			$attributes['record_log_id'] 		= $model->id;
 			$attributes['record_log_type'] 		= get_class($model);
 			$attributes['name'] 				= 'Mengubah Kehadiran';
 			$attributes['notes'] 				= 'Mengubah Kehadiran'.' pada '.date('d-m-Y');
-			$attributes['old_attribute'] 		= $model->getOriginal();
-			$attributes['new_attribute'] 		= $model->getAttributes();
+			$attributes['old_attribute'] 		= json_encode($model->getOriginal());
+			$attributes['new_attribute'] 		= json_encode($model->getAttributes());
 			$attributes['action'] 				= 'save';
 
 			Event::fire(new CreateRecordOnTable($attributes));

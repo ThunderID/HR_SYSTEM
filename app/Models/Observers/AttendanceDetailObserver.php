@@ -43,8 +43,8 @@ class AttendanceDetailObserver
 		$attributes['record_log_type'] 		= get_class($model);
 		$attributes['name'] 				= 'Mengubah Sanksi';
 		$attributes['notes'] 				= 'Mengubah Sanksi'.' pada '.date('d-m-Y');
-		$attributes['old_attribute'] 		= $model->getOriginal();
-		$attributes['new_attribute'] 		= $model->getAttributes();
+		$attributes['old_attribute'] 		= json_encode($model->getOriginal());
+		$attributes['new_attribute'] 		= json_encode($model->getAttributes());
 		$attributes['action'] 				= 'save';
 
 		Event::fire(new CreateRecordOnTable($attributes));

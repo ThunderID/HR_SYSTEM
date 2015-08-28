@@ -1,9 +1,10 @@
 <?php namespace App\Models\Observers;
 
-use DB, Validator;
+use DB, Validator, Event;
 use App\Models\Person;
 use App\Models\Work;
 use \Illuminate\Support\MessageBag as MessageBag;
+use App\Events\CreateRecordOnTable;
 
 /* ----------------------------------------------------------------------
  * Event:
@@ -51,5 +52,40 @@ class WorkleaveObserver
 
 			return false;
 		}
+	}
+
+	public function created($model)
+	{
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Menambah Template Cuti';
+		$attributes['notes'] 				= 'Menambah Template Cuti'.' pada '.date('d-m-Y');
+		$attributes['action'] 				= 'delete';
+
+		Event::fire(new CreateRecordOnTable($attributes));
+	}
+
+	public function updated($model)
+	{
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Mengubah Template Cuti ';
+		$attributes['notes'] 				= 'Mengubah Template Cuti '.' pada '.date('d-m-Y');
+		$attributes['old_attribute'] 		= json_encode($model->getOriginal());
+		$attributes['new_attribute'] 		= json_encode($model->getAttributes());
+		$attributes['action'] 				= 'save';
+
+		Event::fire(new CreateRecordOnTable($attributes));
+	}
+
+	public function deleted($model)
+	{
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Menghapus Template Cuti';
+		$attributes['notes'] 				= 'Menghapus Template Cuti'.' pada '.date('d-m-Y');
+		$attributes['action'] 				= 'restore';
+
+		Event::fire(new CreateRecordOnTable($attributes));
 	}
 }
