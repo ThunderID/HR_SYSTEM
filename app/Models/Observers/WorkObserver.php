@@ -1,6 +1,6 @@
 <?php namespace App\Models\Observers;
 
-use DB, Validator;
+use DB, Validator, Event;
 use App\Models\Work;
 use App\Models\Chart;
 use App\Models\Follow;
@@ -10,7 +10,9 @@ use App\Models\Organisation;
 use App\Models\FollowWorkleave;
 use App\Models\Workleave;
 use App\Models\WorkAuthentication;
+
 use Illuminate\Support\MessageBag;
+use App\Events\CreateRecordOnTable;
 
 /* ----------------------------------------------------------------------
  * Event:
@@ -25,6 +27,14 @@ class WorkObserver
 {
 	public function created($model)
 	{
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Menambah Karir ';
+		$attributes['notes'] 				= 'Menambah Karir '.' pada '.date('d-m-Y');
+		$attributes['action'] 				= 'delete';
+
+		Event::fire(new CreateRecordOnTable($attributes));
+
 		if(isset($model['attributes']['chart_id']) && $model['attributes']['chart_id']!=0)
 		{
 			if(in_array(strtolower($model['status']), ['contract', 'permanent']))
@@ -190,5 +200,29 @@ class WorkObserver
 
 			return false;
 		}
+	}
+
+	public function updated($model)
+	{
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Mengubah Karir ';
+		$attributes['notes'] 				= 'Mengubah Karir '.' pada '.date('d-m-Y');
+		$attributes['old_attribute'] 		= json_encode($model->getOriginal());
+		$attributes['new_attribute'] 		= json_encode($model->getAttributes());
+		$attributes['action'] 				= 'save';
+
+		Event::fire(new CreateRecordOnTable($attributes));
+	}
+
+	public function deleted($model)
+	{
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Menghapus Karir';
+		$attributes['notes'] 				= 'Menghapus Karir'.' pada '.date('d-m-Y');
+		$attributes['action'] 				= 'restore';
+
+		Event::fire(new CreateRecordOnTable($attributes));
 	}
 }
