@@ -55,7 +55,7 @@
 
 			if(typeof(event.data_target) != "undefined" && event.data_target !== null) {
 				element.attr('data-target', event.data_target);
-				element.attr('data-toggle', 'modal');
+				element.attr('data-toggle', 'tooltip');
 				element.attr('href', 'javascript:;');
 			} else if (event.mode_info) {
 				element.attr('href', 'javascript:;');
@@ -78,8 +78,10 @@
 					else if (event.status=="absence_workleave") {
 						event.status = 'Absen, Mengurangi Cuti';	
 					}
+					element.attr('title', '&nbsp;'+event.status+'&nbsp;');
 				}
 				else {
+					element.attr('title', '&nbsp;'+event.title+'&nbsp;');
 					element.attr('style', 'cursor:text');
 				}
 
@@ -90,16 +92,17 @@
 				element.attr('data-delete-action', event.del_action);
 				// element.find('.fc-title').parent().addClass('border-schedule');
 
-				element.attr('data-tooltip', 'true');
-				element.attr('title', event.status);
 				element.attr('data-show', 'tip');
+			 	Tipped.create(element, {size: 'x-small', position: 'bottomleft', skin: 'dark'});
 			}
 
 			element.find('#date-title').html(element.find('span.fc-event-title').text());			
 			element.find('.fc-title').append('<br>');
+
 			if(typeof(event.top_title) != "undefined" && event.top_title !== null) {
 				element.find('.fc-title').prepend(event.top_title+'<br>');
-			} 
+			}
+
 			element.find('.fc-title').addClass(event.label+' font-12');
 			element.attr('data-status', event.status);
 			element.attr('data-date', date_start);
@@ -116,6 +119,7 @@
 	        window.setTimeout(function(){
 	            $("h4.title-calendar").empty().append(view.title);
 	        },0);
+
 	    },
 	});
 </script>
