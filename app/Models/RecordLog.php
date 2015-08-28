@@ -4,6 +4,7 @@
 /* ----------------------------------------------------------------------
  * Document Model:
  * 	ID 								: Auto Increment, Integer, PK
+ * 	parent_id 						: Required, Integer, FK from RecordLog
  * 	person_id 						: Required, Integer, FK from Person
  * 	record_log_id 					: Required, Integer, FK from Other Table
  * 	record_log_type 			 	: Required, morph model
@@ -34,12 +35,15 @@ class RecordLog extends BaseModel {
 
 	use SoftDeletes;
 	use \App\Models\Traits\BelongsTo\HasPersonTrait;
+	use \App\Models\Traits\BelongsTo\HasRecordLogTrait;
+	use \App\Models\Traits\HasMany\HasRecordLogsTrait;
 
 	public 		$timestamps 		= true;
 
 	protected 	$table 				= 	'record_logs';
 
 	protected 	$fillable			= 	[
+											'parent_id' 						,
 											'person_id' 						,
 											'record_log_id' 					,
 											'record_log_type' 					,

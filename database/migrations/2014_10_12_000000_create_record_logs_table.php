@@ -15,6 +15,7 @@ class CreateRecordLogsTable extends Migration {
 		Schema::create('record_logs', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->integer('parent_id')->unsigned()->index();
 			$table->integer('person_id')->unsigned()->index();
 			$table->integer('record_log_id')->unsigned()->index();
 			$table->string('record_log_type', 255);
