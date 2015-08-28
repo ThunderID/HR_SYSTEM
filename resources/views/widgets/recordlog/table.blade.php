@@ -27,9 +27,11 @@
 										{{ isset($value['person']['name']) ? $value['person']['name'] : 'System' }} {{ $value['notes'] }}
 									</td>
 									<td class="text-center">
-										<a href="{{ route('hr.recordlogs.show', $value['id']) }}" class="btn btn-sm @if($value['action']=='delete') btn-danger @elseif($value['action']=='save') btn-primary @else btn-default @endif">
-											{{ ucwords($value['action']) }}
-										</a>
+										{!! Form::open(['url' => route('hr.recordlogs.store', ['id' => $value['id']]), 'method' => 'post']) !!}
+											<button type="submit" class="btn btn-sm @if($value['action']=='delete') btn-danger @elseif($value['action']=='save') btn-primary @else btn-default @endif">
+												{{ ucwords($value['action']) }}
+											</button>											
+										{!! Form::close() !!}
 									</td>
 								</tr>							
 								<?php $i++; ?>
