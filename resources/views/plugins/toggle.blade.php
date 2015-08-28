@@ -5,7 +5,7 @@
 	});
 
 	$(function () {
-		$('[data-tooltip="true"]').tooltip();
-		$('a[data-tooltip="true"]').tooltip();
+		// $('[data-toggle="tooltip"]').tooltip();
+		// $("a[data-tooltip='tooltip']").tooltip();
 	});
 </script>
