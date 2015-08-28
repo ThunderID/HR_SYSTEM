@@ -62,18 +62,18 @@
 	@include('plugins.modal')
 	@include('plugins.checkbox')
 	@include('plugins.inputmask')
+	@include('plugins.tipped')
 	@include('plugins.calendar')
+	@include('plugins.dashboard_widget')
 	
 	@include('plugins.summernote')
 	@include('plugins.microtemplate')
-	<!-- @include('plugins.imageupload') -->
 	@include('plugins.single_submit')
 	@include('plugins.no_enter_form')	
 	@include('plugins.stickytableheader')
 	@include('plugins.ajax_batch')
 	@include('plugins.bootstrap_fileinput')
 	@include('plugins.wizard')
-	@include('plugins.dashboard_widget')
 
 	<script>
 		$(function() {

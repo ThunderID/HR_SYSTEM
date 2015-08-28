@@ -20,7 +20,7 @@
 
 	@section('widget_body')
 		@if(isset($PersonComposer['widget_data']['personlist']['person']['processlogs']))
-			<table class="table table-hover report table-affix">
+			<table class="table-bordered table-affix overflow-y">
 				<thead>
 					<tr>
 						<th class="text-center" style="width:5%">No<br/>&nbsp;</th>
@@ -84,8 +84,8 @@
 									?>
 									
 								</td> -->
-								<td class="hidden-xs font-11 text-center">
-									<a href="javascript:;" class="black cursor-text" data-toggle-tooltip="tooltip" data-placement="bottom" title="
+								<td class="font-11 text-center">
+									<a href="javascript:;" class="black cursor-text tipped-tooltip" title="
 										@if ($value['attendancelogs'][0]['actual_status']=='AS')
 											Ketidakhadiran Tanpa Penjelasan
 										@elseif ($value['attendancelogs'][0]['actual_status']=='CB')
@@ -115,8 +115,8 @@
 										{{$value['attendancelogs'][0]['actual_status']}}
 									</a>
 								</td>
-								<td class="hidden-xs font-11 text-center">
-									<a href="javascript:;" class="black cursor-text" data-toggle-tooltip="tooltip" data-placement="bottom" title="
+								<td class="font-11 text-center">
+									<a href="javascript:;" class="black cursor-text tipped-tooltip" title="
 										@if ($value['attendancelogs'][0]['modified_status']=='AS')
 											Ketidakhadiran Tanpa Penjelasan
 										@elseif ($value['attendancelogs'][0]['modified_status']=='CB')
@@ -146,10 +146,10 @@
 										{{($value['attendancelogs'][0]['modified_status']!='' ? $value['attendancelogs'][0]['modified_status'] : '')}}
 									</a>
 								</td>
-								<td class="hidden-xs font-11">
+								<td class="font-11">
 									{{($value['attendancelogs'][0]['modified_status']!='' ? $value['attendancelogs'][0]['modifiedby']['name'] : '')}}
 								</td>
-								<td class="hidden-xs font-11">
+								<td class="font-11">
 									@if($value['attendancelogs'][0]['modified_status']!='')
 										{{ date('d-m-Y', strtotime($value['attendancelogs'][0]['modified_at'])) }}
 									@endif
