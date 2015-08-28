@@ -13,9 +13,9 @@ class AppServiceProvider extends ServiceProvider {
 	{
 		\App\Models\Application::observe(new \App\Models\Observers\ApplicationObserver);
 		\App\Models\Menu::observe(new \App\Models\Observers\MenuObserver);
-		\App\Models\WorkAuthentication::observe(new \App\Models\Observers\WorkAuthenticationObserver);
 		\App\Models\AuthGroup::observe(new \App\Models\Observers\AuthGroupObserver);
 		\App\Models\GroupMenu::observe(new \App\Models\Observers\GroupMenuObserver);
+		\App\Models\WorkAuthentication::observe(new \App\Models\Observers\WorkAuthenticationObserver);
 
 		\App\Models\Document::observe(new \App\Models\Observers\DocumentObserver);
 		\App\Models\DocumentDetail::observe(new \App\Models\Observers\DocumentDetailObserver);
