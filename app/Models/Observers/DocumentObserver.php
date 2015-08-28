@@ -1,6 +1,7 @@
 <?php namespace App\Models\Observers;
 
 use \Validator;
+use \App\Models\Template;
 
 /* ----------------------------------------------------------------------
  * Event:
@@ -29,11 +30,26 @@ class DocumentObserver
 	public function deleting($model)
 	{
 		//
-		if($model->persons->count() || $model->templates->count())
+		if($model->persons->count())
 		{
 			$model['errors'] 	= ['Tidak dapat menghapus dokumen yang berkaitan dengan karyawan atau yang memiliki template'];
 
 			return false;
+		}
+		else
+		{
+			foreach ($model->templates as $key => $value) 
+			{
+				$template 	 			= new Template;
+				$delete 				= $template->find($value['id']);
+
+				if($delete && !$delete->delete())
+				{
+					$model['errors']	= $delete->getError();
+					
+					return false;
+				}
+			}
 		}
 
 		return true;

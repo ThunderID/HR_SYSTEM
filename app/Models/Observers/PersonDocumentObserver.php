@@ -1,6 +1,7 @@
 <?php namespace App\Models\Observers;
 
 use \Validator;
+use \App\Models\Detail;
 
 /* ----------------------------------------------------------------------
  * Event:
@@ -33,6 +34,21 @@ class PersonDocumentObserver
 			$model['errors'] 	= ['Tidak dapat menghapus dokumen yang wajib ada'];
 
 			return false;
+		}
+		else
+		{
+			foreach ($model->details as $key => $value) 
+			{
+				$detail 	 			= new Detail;
+				$delete 				= $detail->find($value['id']);
+
+				if($delete && !$delete->delete())
+				{
+					$model['errors']	= $delete->getError();
+					
+					return false;
+				}
+			}
 		}
 
 		return true;
