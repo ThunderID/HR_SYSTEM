@@ -6451,7 +6451,7 @@ label,
 
 /* Cursor */
 .cursor-text {
-	cursor: text;
+	cursor: default;
 }
 
 /* Wrapper */
