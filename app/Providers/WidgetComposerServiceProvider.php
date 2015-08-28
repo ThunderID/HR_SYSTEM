@@ -153,6 +153,11 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// PROCESS LOG
 		// -----------------------------------------------------------------------------
 		View::composer(['widgets.organisation.report.attendance.form'], 	'App\Http\ViewComposers\ProcessLogComposer');
+
+		// -----------------------------------------------------------------------------
+		// RECORD LOG
+		// -----------------------------------------------------------------------------
+		View::composer(['widgets.recordlog.table'], 	'App\Http\ViewComposers\RecordLogComposer');
 	}
 
 	private function web_widget()

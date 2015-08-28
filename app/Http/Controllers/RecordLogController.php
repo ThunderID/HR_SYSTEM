@@ -91,17 +91,15 @@ class RecordLogController extends BaseController
 			}
 		}
 
-		$data 									= json_decode(json_encode($contents->data), true);
-		$this->layout->page 					= view('pages.organisation.recordlog.index');
+		$this->layout->page 					= view('pages.recordlog.index');
 		$this->layout->page->controller_name 	= $this->controller_name;
-		$this->layout->page->data 				= $data;
 		$this->layout->page->filter 			= 	[
 														['prefix' => 'sort', 'key' => 'start', 'value' => 'Urutkan Tanggal Aktif', 'values' => [['key' => 'asc', 'value' => 'A-Z'], ['key' => 'desc', 'value' => 'Z-A']]]
 													];
 														
 		$this->layout->page->filtered 			= $filter;
 
-		$this->layout->page->route_back 		= route('hr.organisations.show', $org_id);
+		// $this->layout->page->route_back 		= route('hr.organisations.show', $org_id);
 
 		return $this->layout;
 	}

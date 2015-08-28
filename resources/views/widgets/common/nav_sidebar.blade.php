@@ -37,6 +37,13 @@
 				
 			@endforeach
 		@endif
+		@if ((strtolower(Session::get('user.menuid'))==1)||(strtolower(Session::get('user.menuid'))==2))
+			<li>
+			    <a href="{{ route('hr.recordlogs.index') }}">
+			        <i class="fa fa-bell fa-fw"></i> Notifikasi
+			    </a>
+			</li>
+		@endif
 		@if(strtolower(Session::get('user.menuid'))==1)
 			<li @if(isset($widget_options['sidebar']['sistem'])&&($widget_options['sidebar']['sistem']=='yes')) class="active" @endif>
 				<a href="javascript:;" @if(isset($widget_options['sidebar']['sistem'])&&($widget_options['sidebar']['sistem']=='yes')) class="active" @endif><i class="fa fa-cogs fa-fw"></i> Pengaturan Sistem <span class="fa arrow"></span></a>

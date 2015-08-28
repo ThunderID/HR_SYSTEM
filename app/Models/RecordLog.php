@@ -67,6 +67,7 @@ class RecordLog extends BaseModel {
 											'personid' 							=> 'PersonID', 
 											'organisationid' 					=> 'PersonOrganisationID', 
 											'level' 							=> 'Level', 
+											'withattributes' 					=> 'WithAttributes'
 										];
 
 	public $searchableScope 		= 	[
@@ -74,6 +75,7 @@ class RecordLog extends BaseModel {
 											'personid' 							=> 'Could be array or integer', 
 											'organisationid' 					=> 'Could be array or integer', 
 											'level' 							=> 'Must be numeric', 
+											'withattributes' 					=> 'Must be array of relationship',
 										];
 
 	public $sortable 				= 	['person_id', 'created_at'];
