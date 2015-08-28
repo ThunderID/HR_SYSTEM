@@ -46,7 +46,7 @@
 										[
 											'branch_id'			=> $branch['id'],
 											'search'			=> array_merge(['branchid' => $branch['id']], (isset($filtered['search']) ? $filtered['search'] : [])),
-											'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['client' => 'asc']),
+											'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['workstation_name' => 'asc']),
 											'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
 											'per_page'			=> 12,
