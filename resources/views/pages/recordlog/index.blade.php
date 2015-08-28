@@ -34,7 +34,7 @@
 		'widget_options'		=> [ 'recordlog' 				=>
 										[
 											'form_url' 			=> null,
-											'search'			=> ['level'	=> Session::get('user.menuid'), 'organisationid' => Session::get('user.orgids'), 'withattributes' => ['person']],
+											'search'			=> ['level'	=> Session::get('user.menuid'), 'organisationid' => Session::get('user.organisationids'), 'withattributes' => ['person']],
 											'sort'				=> [],
 											'active_filter'		=> [],
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
