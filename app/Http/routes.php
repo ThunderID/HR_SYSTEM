@@ -27,8 +27,8 @@ Route::group(['middleware' => 'csrfverify'], function()
 	});
 
 	Route::group(['before' => 'hr_acl'], function()
-	
-{		// ------------------------------------------------------------------------------------
+	{	
+		// ------------------------------------------------------------------------------------
 		// LOGOUT AND PASSWORD PAGE
 		// ------------------------------------------------------------------------------------
 
@@ -40,6 +40,13 @@ Route::group(['middleware' => 'csrfverify'], function()
 			
 			Route::get('/logout',				['uses' => 'LoginController@getLogout',				'as' => 'hr.logout.get']);
 		});
+
+		// ------------------------------------------------------------------------------------
+		// RECORD LOG RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('recordlogs',			'RecordLogController',									['names' => ['index' => 'hr.recordlogs.index', 'create' => 'hr.recordlogs.create', 'store' => 'hr.recordlogs.store', 'show' => 'hr.recordlogs.show', 'edit' => 'hr.recordlogs.edit', 'update' => 'hr.recordlogs.update', 'destroy' => 'hr.recordlogs.delete']]);
+
 
 		// ------------------------------------------------------------------------------------
 		// SYSTEM SETTINGS
@@ -94,7 +101,7 @@ Route::group(['middleware' => 'csrfverify'], function()
 			Route::resource('workleaves',			'WorkleaveController',								['names' => ['index' => 'hr.workleaves.index', 'create' => 'hr.workleaves.create', 'store' => 'hr.workleaves.store', 'show' => 'hr.workleaves.show', 'edit' => 'hr.workleaves.edit', 'update' => 'hr.workleaves.update', 'destroy' => 'hr.workleaves.delete']]);
 			
 			// ------------------------------------------------------------------------------------
-			// IDLES RESOURCE
+			// POLICIES RESOURCE
 			// ------------------------------------------------------------------------------------
 
 			Route::resource('policies',				'PolicyController',									['names' => ['index' => 'hr.policies.index', 'create' => 'hr.policies.create', 'store' => 'hr.policies.store', 'show' => 'hr.policies.show', 'edit' => 'hr.policies.edit', 'update' => 'hr.policies.update', 'destroy' => 'hr.policies.delete']]);
@@ -104,7 +111,6 @@ Route::group(['middleware' => 'csrfverify'], function()
 			// ------------------------------------------------------------------------------------
 
 			Route::resource('authentications',		'AuthenticationController',							['names' => ['index' => 'hr.authentications.index', 'create' => 'hr.authentications.create', 'store' => 'hr.authentications.store', 'show' => 'hr.authentications.show', 'edit' => 'hr.authentications.edit', 'update' => 'hr.authentications.update', 'destroy' => 'hr.authentications.delete']]);
-
 
 			// ------------------------------------------------------------------------------------
 			// PERSONS RESOURCE

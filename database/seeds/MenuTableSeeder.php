@@ -142,6 +142,11 @@ class MenuTableSeeder extends Seeder
 															'Hapus Laporan Kehadiran',
 
 															'Ganti Password',
+
+															'Lihat Record Log',
+															'Tambah Record Log',
+															'Ubah Record Log',
+															'Hapus Record Log',
 														];
 
 				$tags 								= 
@@ -272,6 +277,11 @@ class MenuTableSeeder extends Seeder
 															'Pengaturan Laporan',
 
 															'Pengaturan Aplikasi',
+
+															'Web Log',
+															'Web Log',
+															'Web Log',
+															'Web Log',
 														];
 
 		$trackermenu 								= 

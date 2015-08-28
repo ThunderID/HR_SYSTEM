@@ -5,8 +5,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Database\Schema\Blueprint;
 use Schema;
-use App\Models\Organisation;
-use App\Models\Policy;
+use App\Models\Application;
+use App\Models\Menu;
+use App\Models\GroupMenu;
 use DB;
 
 class HRSUpdateCommand extends Command {
@@ -100,6 +101,66 @@ class HRSUpdateCommand extends Command {
 		});
 
 		$this->info("Add record logs table");
+
+		$app 							= Application::find(1);
+
+		$menus 							= 
+											[
+												'Lihat Record Log',
+												'Tambah Record Log',
+												'Ubah Record Log',
+												'Hapus Record Log',
+											];
+		
+		$tags 							= 
+											[
+												'Web Log',
+												'Web Log',
+												'Web Log',
+												'Web Log',
+											];
+
+		foreach(range(0, count($menus)-1) as $index)
+		{
+			$data 								= new Menu;
+			$data->fill([
+				'name'							=> $menus[$index],
+				'tag'							=> $tags[$index],
+			]);
+
+			$data->application()->associate($app);
+
+			if (!$data->save())
+			{
+				print_r($data->getError());
+				exit;
+			}
+		}
+
+		$this->info("Seeded More menu");
+
+		foreach(range(0, 1) as $index)
+		{
+
+			foreach(range(102, 105) as $index2)
+			{
+				$menu 								= Menu::find($index2);
+				$data 								= new GroupMenu;
+				$data->fill([
+					'tmp_auth_group_id'				=> $index+1,
+				]);
+
+				$data->menu()->associate($menu);
+
+				if (!$data->save())
+				{
+					print_r($data->getError());
+					exit;
+				}
+			}
+		}
+
+		$this->info("Seeded More auth group");
 
 		return true;
 	}

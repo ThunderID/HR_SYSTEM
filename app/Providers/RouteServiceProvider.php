@@ -275,6 +275,14 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 
 							'hr.infomessage.index'							=> 49,
 
+							'hr.recordlogs.index'							=> 102,
+							'hr.recordlogs.show'							=> 102,
+							'hr.recordlogs.create'							=> 103,
+							'hr.recordlogs.store'							=> 103,
+							'hr.recordlogs.edit'							=> 104,
+							'hr.recordlogs.update'							=> 104,
+							'hr.recordlogs.delete'							=> 105,
+
 				];
 			return $routes_acl;
 		});

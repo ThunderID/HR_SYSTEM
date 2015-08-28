@@ -20,16 +20,16 @@ class AuthGroupTableSeeder extends Seeder
 		foreach(range(1, 102) as $index)
 		{
 			$level1[] 								= $index;
-			if($index==1 || ($index>=5 && $index<=16) || ($index>=25 && $index<=48) || ($index>=61 && $index<=101))
+			if($index==1 || ($index>=5 && $index<=16) || ($index>=25 && $index<=48) || ($index>=61 && $index<=105))
 			{
 				$level2[] 							= $index;
-				if($index%4!=0)
+				if($index%4!=0 && $index<=101)
 				{
 					$level3[]						= $index;
-					if($index%4!=3)
+					if($index%4!=3 && $index<=101)
 					{
 						$level4[]					= $index;
-						if($index%4!=2)
+						if($index%4!=2 && $index<=101)
 						{
 							$level5[]				= $index;
 						}

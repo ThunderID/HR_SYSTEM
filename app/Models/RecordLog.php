@@ -65,11 +65,15 @@ class RecordLog extends BaseModel {
 	public $searchable 				= 	[
 											'id' 								=> 'ID', 
 											'personid' 							=> 'PersonID', 
+											'organisationid' 					=> 'PersonOrganisationID', 
+											'level' 							=> 'Level', 
 										];
 
 	public $searchableScope 		= 	[
 											'id' 								=> 'Could be array or integer', 
 											'personid' 							=> 'Could be array or integer', 
+											'organisationid' 					=> 'Could be array or integer', 
+											'level' 							=> 'Must be numeric', 
 										];
 
 	public $sortable 				= 	['person_id', 'created_at'];
@@ -130,5 +134,15 @@ class RecordLog extends BaseModel {
 			return $query->whereIn('record_logs.id', $variable);
 		}
 		return $query->where('record_logs.id', $variable);
+	}
+
+	public function scopeLevel($query, $variable)
+	{
+		if($variable == 1)
+		{
+			return $query->where('level', '>=', '0');
+		}
+
+		return $query->where('level', '>', $variable);
 	}
 }

@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers\Organisation;
+<?php namespace App\Http\Controllers;
 use Input, Session, App, Paginator, Redirect, DB, Config;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
@@ -8,38 +8,14 @@ use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
 use App\Models\Organisation;
 use App\Models\Person;
-use App\Models\Policy;
+use App\Models\RecordLog;
 
-class PolicyController extends BaseController
+class RecordLogController extends BaseController
 {
-	protected $controller_name = 'policy';
+	protected $controller_name = 'recordlog';
 
 	public function index($page = 1)
 	{
-		if(Input::has('org_id'))
-		{
-			$org_id 							= Input::get('org_id');
-		}
-		else
-		{
-			$org_id 							= Session::get('user.organisationid');
-		}
-
-		if(!in_array($org_id, Session::get('user.organisationids')))
-		{
-			App::abort(404);
-		}
-
-		$search['id'] 							= $org_id;
-		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Organisation, $search, $sort , $page, 1));
-		$contents 								= json_decode($results);
-
-		if(!$contents->meta->success)
-		{
-			App::abort(404);
-		}
-
 		$filter 									= [];
 
 		if(Input::has('q'))
@@ -116,7 +92,7 @@ class PolicyController extends BaseController
 		}
 
 		$data 									= json_decode(json_encode($contents->data), true);
-		$this->layout->page 					= view('pages.organisation.policy.index');
+		$this->layout->page 					= view('pages.organisation.recordlog.index');
 		$this->layout->page->controller_name 	= $this->controller_name;
 		$this->layout->page->data 				= $data;
 		$this->layout->page->filter 			= 	[
@@ -124,7 +100,6 @@ class PolicyController extends BaseController
 													];
 														
 		$this->layout->page->filtered 			= $filter;
-		$this->layout->page->default_filter  	= ['org_id' => $data['id']];
 
 		$this->layout->page->route_back 		= route('hr.organisations.show', $org_id);
 
@@ -172,7 +147,7 @@ class PolicyController extends BaseController
 			$search['type'] 					= $types[$index];
 			$search['ondate'] 					= date('Y-m-d H:i:s');
 			$sort 								= ['started_at' => 'desc'];
-			$results 							= $this->dispatch(new Getting(new Policy, $search, $sort , 1, 1));
+			$results 							= $this->dispatch(new Getting(new RecordLog, $search, $sort , 1, 1));
 			$contents 							= json_decode($results);
 
 			if(!$contents->meta->success)
@@ -187,7 +162,7 @@ class PolicyController extends BaseController
 		}
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 					= view('pages.organisation.policy.create', compact('id', 'data', 'p'));
+		$this->layout->pages 					= view('pages.organisation.recordlog.create', compact('id', 'data', 'p'));
 		return $this->layout;
 	}
 	
@@ -222,7 +197,7 @@ class PolicyController extends BaseController
 			$search['organisationid'] 			= $org_id;
 			$search['type'] 					= $types[$index];
 			$sort 								= ['started_at' => 'asc'];
-			$results 							= $this->dispatch(new Getting(new Policy, $search, $sort , 1, 1));
+			$results 							= $this->dispatch(new Getting(new RecordLog, $search, $sort , 1, 1));
 			$contents 							= json_decode($results);
 
 			if(!$contents->meta->success)
@@ -509,7 +484,7 @@ class PolicyController extends BaseController
 		{
 			foreach ($attributes as $key2 => $value2) 
 			{
-				$content 						= $this->dispatch(new Saving(new Policy, $value2, null, new Organisation, $org_id));
+				$content 						= $this->dispatch(new Saving(new RecordLog, $value2, null, new Organisation, $org_id));
 				$is_success 					= json_decode($content);
 
 				if(!$is_success->meta->success)
@@ -520,12 +495,12 @@ class PolicyController extends BaseController
 						{
 							foreach ($value as $key2 => $value2) 
 							{
-								$errors->add('Policy', $value2);
+								$errors->add('RecordLog', $value2);
 							}
 						}
 						else
 						{
-							$errors->add('Policy', $value);
+							$errors->add('RecordLog', $value);
 						}
 					}
 				}
@@ -561,7 +536,7 @@ class PolicyController extends BaseController
 		}
 		
 		$search 						= ['id' => $id, 'organisationid' => $org_id, 'withattributes' => ['organisation']];
-		$results 						= $this->dispatch(new Getting(new Policy, $search, [] , 1, 1));
+		$results 						= $this->dispatch(new Getting(new RecordLog, $search, [] , 1, 1));
 		$contents 						= json_decode($results);
 		
 		if(!$contents->meta->success)
@@ -569,14 +544,14 @@ class PolicyController extends BaseController
 			App::abort(404);
 		}
 
-		$policy 						= json_decode(json_encode($contents->data), true);
-		$data 							= $policy['organisation'];
+		$recordlog 						= json_decode(json_encode($contents->data), true);
+		$data 							= $recordlog['organisation'];
 
 		// ---------------------- GENERATE CONTENT ----------------------
-		$this->layout->pages 				= view('pages.organisation.policy.show');
+		$this->layout->pages 				= view('pages.organisation.recordlog.show');
 		$this->layout->pages->data 			= $data;
-		$this->layout->pages->policy 		= $policy;
-		$this->layout->pages->route_back 	= route('hr.organisation.policies.index', ['org_id' => $org_id]);
+		$this->layout->pages->recordlog 		= $recordlog;
+		$this->layout->pages->route_back 	= route('hr.organisation.recordlogs.index', ['org_id' => $org_id]);
 
 		return $this->layout;
 	}
@@ -611,7 +586,7 @@ class PolicyController extends BaseController
 			}
 
 			$search 						= ['id' => $id, 'organisationid' => $org_id, 'withattributes' => ['organisation']];
-			$results 						= $this->dispatch(new Getting(new Policy, $search, [] , 1, 1));
+			$results 						= $this->dispatch(new Getting(new RecordLog, $search, [] , 1, 1));
 			$contents 						= json_decode($results);
 			
 			if(!$contents->meta->success)
@@ -619,7 +594,7 @@ class PolicyController extends BaseController
 				App::abort(404);
 			}
 
-			$results 						= $this->dispatch(new Deleting(new Policy, $id));
+			$results 						= $this->dispatch(new Deleting(new RecordLog, $id));
 			$contents 						= json_decode($results);
 
 			if (!$contents->meta->success)
@@ -628,7 +603,7 @@ class PolicyController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.policies.index', ['org_id' => $org_id])->with('alert_success', 'Pengaturan Policy "' . $contents->data->name. '" sudah dihapus');
+				return Redirect::route('hr.recordlogs.index', ['org_id' => $org_id])->with('alert_success', 'Pengaturan RecordLog "' . $contents->data->name. '" sudah dihapus');
 			}
 		}
 		else
