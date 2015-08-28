@@ -1,12 +1,13 @@
 <?php namespace App\Models\Observers;
 
-use DB, Validator;
+use DB, Validator, Event;
 use App\Models\Person;
 use App\Models\PersonWorkleave;
 use App\Models\AttendanceLog;
 use App\Models\AttendanceDetail;
 use App\Models\ProcessLog;
 use Illuminate\Support\MessageBag;
+use App\Events\CreateRecordOnTable;
 
 /* ----------------------------------------------------------------------
  * Event:
@@ -275,6 +276,48 @@ class AttendanceLogObserver
 				return true;
 			}
 		}
+	}
 
+	public function created($model)
+	{
+		if(isset($model['attributes']['modified_by']) && $model['attributes']['modified_by']!=0)
+		{
+			$attributes['person_id'] 			= $model->modified_by;
+			$attributes['record_log_id'] 		= $model->id;
+			$attributes['record_log_type'] 		= get_class($model);
+			$attributes['name'] 				= 'Mengubah Kehadiran';
+			$attributes['notes'] 				= 'Mengubah Kehadiran'.' pada '.date('d-m-Y');
+			$attributes['action'] 				= 'delete';
+
+			Event::fire(new CreateRecordOnTable($attributes));
+		}
+	}
+
+	public function updated($model)
+	{
+		if(isset($model['attributes']['modified_by']) && $model['attributes']['modified_by']!=0)
+		{
+			$attributes['person_id'] 			= $model->modified_by;
+			$attributes['record_log_id'] 		= $model->id;
+			$attributes['record_log_type'] 		= get_class($model);
+			$attributes['name'] 				= 'Mengubah Kehadiran';
+			$attributes['notes'] 				= 'Mengubah Kehadiran'.' pada '.date('d-m-Y');
+			$attributes['old_attribute'] 		= json_encode($model->getOriginal());
+			$attributes['new_attribute'] 		= json_encode($model->getAttributes());
+			$attributes['action'] 				= 'save';
+
+			Event::fire(new CreateRecordOnTable($attributes));
+		}
+	}
+
+	public function deleted($model)
+	{
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Menghapus Kehadiran';
+		$attributes['notes'] 				= 'Menghapus Kehadiran'.' pada '.date('d-m-Y');
+		$attributes['action'] 				= 'restore';
+
+		Event::fire(new CreateRecordOnTable($attributes));
 	}
 }

@@ -1,8 +1,9 @@
 <?php namespace App\Models\Observers;
 
-use DB, Validator;
+use DB, Validator, Event;
 use App\Models\Person;
 use App\Models\Log;
+use App\Events\CreateRecordOnTable;
 use \Illuminate\Support\MessageBag as MessageBag;
 
 /* ----------------------------------------------------------------------
@@ -27,6 +28,38 @@ class PersonScheduleObserver
 			$model['errors'] 				= $validator->errors();
 
 			return false;
+		}
+	}
+
+	public function created($model)
+	{
+		if(isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0)
+		{
+			$attributes['person_id'] 			= $model->created_by;
+			$attributes['record_log_id'] 		= $model->id;
+			$attributes['record_log_type'] 		= get_class($model);
+			$attributes['name'] 				= 'Mengubah Jadwal '.$model->person->name;
+			$attributes['notes'] 				= 'Mengubah Jadwal '.$model->person->name.' pada '.date('d-m-Y');
+			$attributes['action'] 				= 'delete';
+
+			Event::fire(new CreateRecordOnTable($attributes));
+		}
+	}
+
+	public function updated($model)
+	{
+		if(isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0)
+		{
+			$attributes['person_id'] 			= $model->created_by;
+			$attributes['record_log_id'] 		= $model->id;
+			$attributes['record_log_type'] 		= get_class($model);
+			$attributes['name'] 				= 'Mengubah Jadwal '.$model->person->name;
+			$attributes['notes'] 				= 'Mengubah Jadwal '.$model->person->name.' pada '.date('d-m-Y');
+			$attributes['old_attribute'] 		= json_encode($model->getOriginal());
+			$attributes['new_attribute'] 		= json_encode($model->getAttributes());
+			$attributes['action'] 				= 'save';
+
+			Event::fire(new CreateRecordOnTable($attributes));
 		}
 	}
 
@@ -85,6 +118,14 @@ class PersonScheduleObserver
 
 	public function deleted($model)
 	{
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Menghapus Jadwal '.$model->person->name;
+		$attributes['notes'] 				= 'Menghapus Jadwal '.$model->person->name.' pada '.date('d-m-Y');
+		$attributes['action'] 				= 'restore';
+
+		Event::fire(new CreateRecordOnTable($attributes));
+
 		//deleting person schedule recalculate process log 
 		$logs 								= Log::personid($model['attributes']['person_id'])->ondate([$model['attributes']['on'], date('Y-m-d', strtotime($model['attributes']['on'].' + 1 day'))])->get();
 		

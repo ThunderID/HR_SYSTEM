@@ -212,10 +212,10 @@ class ScheduleController extends BaseController
 			$queattr['created_by'] 		= Session::get('loggedUser');
 			$queattr['process_name'] 	= 'hr:personschedulebatch';
 
-			$queattr['total_process'] 	= ceil(iterator_count($periods)/10);
-			$queattr['task_per_process']= 10;
+			$queattr['total_process'] 	= 1;
+			$queattr['task_per_process']= 1;
 			$queattr['process_number'] 	= 0;
-			$queattr['total_task'] 		= iterator_count($periods);
+			$queattr['total_task'] 		= 1;
 			
 			if(in_array(strtoupper($attributes['status']), ['CB', 'CN', 'CI']))
 			{

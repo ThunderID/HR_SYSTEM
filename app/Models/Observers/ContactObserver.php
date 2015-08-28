@@ -1,8 +1,9 @@
 <?php namespace App\Models\Observers;
 
-use DB, Validator;
+use DB, Validator, Event;
 use App\Models\Contact;
 use Illuminate\Support\MessageBag;
+use App\Events\CreateRecordOnTable;
 
 /* ----------------------------------------------------------------------
  * Event:
@@ -104,5 +105,40 @@ class ContactObserver
 
 			return false;
 		}
+	}
+
+	public function created($model)
+	{
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Menambah Informasi Kontak';
+		$attributes['notes'] 				= 'Menambah Informasi Kontak'.' pada '.date('d-m-Y');
+		$attributes['action'] 				= 'delete';
+
+		Event::fire(new CreateRecordOnTable($attributes));
+	}
+
+	public function updated($model)
+	{
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Mengubah Informasi Kontak ';
+		$attributes['notes'] 				= 'Mengubah Informasi Kontak '.' pada '.date('d-m-Y');
+		$attributes['old_attribute'] 		= json_encode($model->getOriginal());
+		$attributes['new_attribute'] 		= json_encode($model->getAttributes());
+		$attributes['action'] 				= 'save';
+
+		Event::fire(new CreateRecordOnTable($attributes));
+	}
+
+	public function deleted($model)
+	{
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Menghapus Informasi Kontak';
+		$attributes['notes'] 				= 'Menghapus Informasi Kontak'.' pada '.date('d-m-Y');
+		$attributes['action'] 				= 'restore';
+
+		Event::fire(new CreateRecordOnTable($attributes));
 	}
 }

@@ -134,7 +134,7 @@ class ProcessingLogObserver
 						$actual_status 			= 'AS';
 					}
 					$modified_by 	= $model['attributes']['created_by'];
-					$modified_at 	= $model['attributes']['created_at']->format('Y-m-d H:i:s');
+					$modified_at 	= $model->created_at->format('Y-m-d H:i:s');
 				}
 				else
 				{

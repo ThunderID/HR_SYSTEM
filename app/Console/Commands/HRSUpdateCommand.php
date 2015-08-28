@@ -42,8 +42,7 @@ class HRSUpdateCommand extends Command {
 	 */
 	public function fire()
 	{
-		//Also moved process log to older process log
-		$result 		= $this->update26082015();
+		$result 		= $this->update27082015();
 		
 		return true;
 	}
@@ -78,42 +77,29 @@ class HRSUpdateCommand extends Command {
 	 * @return void
 	 * @author 
 	 **/
-	public function update26082015()
+	public function update27082015()
 	{
-		$orgs 										= Organisation::get();
-		$types 										= ['asid', 'ulid', 'hcid', 'htid', 'hpid'];
-		try
+		Schema::create('record_logs', function(Blueprint $table)
 		{
-			foreach(range(0, count($orgs)-1) as $index)
-			{
-				foreach(range(0, count($types)-1) as $key2 => $index2)
-				{
-					$next1 								= 14 + ($index * 19);
-					$next2 								= 15 + ($index * 19);
-					$next3 								= 16 + ($index * 19);
+			$table->increments('id');
+			$table->integer('parent_id')->unsigned()->index();
+			$table->integer('person_id')->unsigned()->index();
+			$table->integer('record_log_id')->unsigned()->index();
+			$table->string('record_log_type', 255);
+			$table->string('name', 255);
+			$table->integer('level');
+			$table->enum('action', ['save', 'delete', 'restore']);
+			$table->text('notes');
+			$table->text('old_attributes');
+			$table->text('new_attributes');
+			$table->timestamps();
+			$table->softDeletes();
+			
+			$table->index(['deleted_at', 'person_id']);
+			$table->index(['deleted_at', 'record_log_type']);
+		});
 
-					$data 								= new Policy;
-					$data->fill([
-						'created_by'					=> 1,
-						'type'							=> $types[$key2],
-						'value'							=> $next1.','.$next2.','.$next3,
-						'started_at'					=> date('Y-m-d H:i:s'),
-					]);
-
-					$data->organisation()->associate(Organisation::find($orgs[$index]->id));
-
-					if (!$data->save())
-					{
-						print_r($data->getError());
-						exit;
-					}
-				}
-			}
-		}
-		catch (Exception $e) 
-		{
-    		echo 'Caught exception: ',  $e->getMessage(), "\n";
-		}	
+		$this->info("Add record logs table");
 
 		return true;
 	}

@@ -1,9 +1,10 @@
 <?php namespace App\Models\Observers;
 
-use Illuminate\Support\Facades\Validator;
+use Validator, Event;
 use \App\Models\Chart;
 use \App\Models\Menu;
 use \App\Models\Authentication;
+use App\Events\CreateRecordOnTable;
 
 /* ----------------------------------------------------------------------
  * Event:
@@ -17,6 +18,14 @@ class ChartObserver
 {
 	public function created($model)
 	{
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Menambah Struktur Organisasi pada cabang '.$model->branch->name;
+		$attributes['notes'] 				= 'Menambah Struktur Organisasi pada cabang '.$model->branch->name.' pada '.date('d-m-Y');
+		$attributes['action'] 				= 'delete';
+
+		Event::fire(new CreateRecordOnTable($attributes));
+
 		if(!isset($model['attributes']['path']) || ($model['attributes']['path']==$model['attributes']['id']))
 		{
 			$newparent 						= Chart::where('id',  $model['attributes']['id'])->update(['path' => $model['attributes']['id']]);
@@ -48,6 +57,16 @@ class ChartObserver
 	public function updated($model)
 	{
 		//
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Mengubah Struktur Organisasi pada cabang '.$model->branch->name;
+		$attributes['notes'] 				= 'Mengubah Struktur Organisasi pada cabang '.$model->branch->name.' pada '.date('d-m-Y');
+		$attributes['old_attribute'] 		= json_encode($model->getOriginal());
+		$attributes['new_attribute'] 		= json_encode($model->getAttributes());
+		$attributes['action'] 				= 'save';
+
+		Event::fire(new CreateRecordOnTable($attributes));
+
 		if(isset($model->getDirty()['path']))
 		{
 			$updates 						= Chart::where('path', 'like', $model->getOriginal('path').'%')->get();
@@ -97,5 +116,16 @@ class ChartObserver
 			}
 		}
 		return true;
+	}
+
+	public function deleted($model)
+	{
+		$attributes['record_log_id'] 		= $model->id;
+		$attributes['record_log_type'] 		= get_class($model);
+		$attributes['name'] 				= 'Menghapus Struktur Organisasi pada cabang '.$model->branch->name;
+		$attributes['notes'] 				= 'Menghapus Struktur Organisasi pada cabang '.$model->branch->name.' pada '.date('d-m-Y');
+		$attributes['action'] 				= 'restore';
+
+		Event::fire(new CreateRecordOnTable($attributes));
 	}
 }
