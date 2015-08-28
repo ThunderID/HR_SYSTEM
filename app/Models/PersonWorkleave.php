@@ -87,7 +87,8 @@ class PersonWorkleave extends BaseModel {
 											'sumquota' 					=> 'SumQuota',
 											 
 											'ondate' 					=> 'OnDate', 
-											'withattributes' 			=> 'WithAttributes'
+											'withattributes' 			=> 'WithAttributes',
+											'withtrashed' 				=> 'WithTrashed',
 										];
 										
 	public $searchableScope 		= 	[
@@ -102,6 +103,7 @@ class PersonWorkleave extends BaseModel {
 
 											'ondate' 					=> 'Could be array or string (date)', 
 											'withattributes' 			=> 'Must be array of relationship',
+											'withtrashed' 				=> 'Must be true',
 										];
 
 	public $sortable 				= 	['created_at', 'name', 'start', 'end'];

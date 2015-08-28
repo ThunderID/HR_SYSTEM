@@ -57,7 +57,8 @@ class AttendanceDetail extends BaseModel {
 											'personworkleaveid' 		=> 'PersonWorkleaveID', 
 											'persondocumentid' 			=> 'PersonDocumentID', 
 
-											'withattributes' 			=> 'WithAttributes'
+											'withattributes' 			=> 'WithAttributes',
+											'withtrashed' 				=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
@@ -65,7 +66,8 @@ class AttendanceDetail extends BaseModel {
 											'personworkleaveid' 		=> 'Could be array or integer', 
 											'persondocumentid' 			=> 'Could be array or integer', 
 
-											'withattributes' 			=> 'Must be array of relationship'
+											'withattributes' 			=> 'Must be array of relationship',
+											'withtrashed' 				=> 'Must be true',
 										];
 
 	public $sortable 				= 	['created_at', 'person_workleave_id', 'person_document_id'];

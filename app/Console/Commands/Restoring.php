@@ -6,7 +6,7 @@ use App\APIDTO\APIResponse as APIResponse;
 use Hash, Auth, Exception;
 use Illuminate\Support\MessageBag;
 
-class Deleting extends Command implements SelfHandling {
+class Restoring extends Command implements SelfHandling {
 
 	/**
 	 * Create a new command instance.
@@ -37,7 +37,7 @@ class Deleting extends Command implements SelfHandling {
 			return $response->toJson();
 		}
 
-		return $this->delete();
+		return $this->restore();
 	}
 
 	/**
@@ -45,7 +45,7 @@ class Deleting extends Command implements SelfHandling {
 	 *
 	 * @return void
 	 */
-	public function delete()
+	public function restore()
 	{
 		//
 		if(!is_array($this->id))
@@ -53,7 +53,7 @@ class Deleting extends Command implements SelfHandling {
 			if ($this->id)
 			{
 				// check if object with id available
-				$this->model 			= $this->model->find($this->id);
+				$this->model 			= $this->model->withTrashed()->find($this->id);
 
 				if(!$this->model)
 				{
@@ -61,39 +61,21 @@ class Deleting extends Command implements SelfHandling {
 					return $response->toJson();
 				}
 			}
-			$deleted_model 				= $this->model->toArray();
-			if($this->model->delete())
+			$restored_model 			= $this->model->toArray();
+			if($this->model->restore())
 			{
-				$response 				= new APIResponse((array)$deleted_model, null, 1);
+				$response 				= new APIResponse((array)$restored_model, null, 1);
 			}
 			else
 			{
-				$response 				= new APIResponse((array)$deleted_model, (array)$this->model->getError(), 1);
+				$response 				= new APIResponse((array)$restored_model, (array)$this->model->getError(), 1);
 			}
 
 			return $response->toJson();
 		}
 		else
 		{
-			$deleted_model 				= $this->model->whereIn('id',$this->id)->get()->toArray();
-			$data 						= $this->model->destroy($this->id);
-			if(!$data)
-			{
-				$response 				= new APIResponse((array)$this->id, ['Data not Found'], 1);
-				return $response->toJson();
-			}
-			
-			$deleted_model 				= $this->model->toArray();
-			if($this->model->delete())
-			{
-				$response 				= new APIResponse((array)$deleted_model, null, 1);
-			}
-			else
-			{
-				$response 				= new APIResponse((array)$deleted_model, (array)$this->model->getError(), 1);
-			}
-
-			return $response->toJson();
+			$this->errors->add(14, "ID Must be string");
 		}
 	}
 

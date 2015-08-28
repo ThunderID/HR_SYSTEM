@@ -63,15 +63,17 @@ class Menu extends BaseModel {
 											'name' 							=> 'Name', 
 											'level' 						=> 'Level', 
 											'withattributes' 				=> 'WithAttributes',
+											'withtrashed' 					=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
-											'id' 						=> 'Could be array or integer', 
-											'applicationid' 			=> 'Could be array or integer', 
-											'hasapplication' 			=> 'Null', 
-											'name' 						=> 'Must be string', 
-											'level' 					=> 'Must be integer', 
-											'withattributes' 			=> 'Must be array of relationship'
+											'id' 							=> 'Could be array or integer', 
+											'applicationid' 				=> 'Could be array or integer', 
+											'hasapplication' 				=> 'Null', 
+											'name' 							=> 'Must be string', 
+											'level' 						=> 'Must be integer', 
+											'withattributes' 				=> 'Must be array of relationship',
+											'withtrashed' 					=> 'Must be true',
 										];
 
 	public $sortable 				= 	['name', 'tag', 'created_at', 'tmp_applications.id', 'application_id'];

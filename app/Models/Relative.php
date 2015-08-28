@@ -52,7 +52,8 @@ class Relative extends BaseModel {
 											'relativeorganisationid' 	=> 'RelativeOrganisationID',
 											'defaultcontact' 			=> 'DefaultContact',
 
-											'withattributes' 			=> 'WithAttributes'
+											'withattributes' 			=> 'WithAttributes',
+											'withtrashed' 				=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
@@ -63,6 +64,7 @@ class Relative extends BaseModel {
 											'relativeorganisationid' 	=> 'Could be array or integer',
 											'defaultcontact' 			=> 'Must be true or false',
 											'withattributes' 			=> 'Must be array of relationship',
+											'withtrashed' 				=> 'Must be true',
 										];
 
 	public $sortable 				= 	['created_at', 'relationship'];

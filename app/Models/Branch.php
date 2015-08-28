@@ -66,7 +66,9 @@ class Branch extends BaseModel {
 											'contactid' 					=> 'ContactID',
 											'apiid' 						=> 'ApiID',
 											'chartchild' 					=> 'ChartChild',
-											'defaultcontact' 				=> 'DefaultContact'
+											'defaultcontact' 				=> 'DefaultContact',
+
+											'withtrashed' 					=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
@@ -79,7 +81,8 @@ class Branch extends BaseModel {
 											
 											'apiid' 						=> 'ID of Api',
 											'contactid' 					=> 'ID of contact',
-											'defaultcontact' 				=> 'Must be true or false'
+											'defaultcontact' 				=> 'Must be true or false',
+											'withtrashed' 					=> 'Must be true',
 										];
 
 	public $sortable 				= 	['id', 'name', 'created_at', 'branches.created_at'];

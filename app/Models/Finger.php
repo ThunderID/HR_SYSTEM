@@ -62,7 +62,8 @@ class Finger extends BaseModel {
 											'updatedat' 				=> 'UpdatedAt',
 											 
 											'currentwork' 				=> 'CurrentWork', 
-											'withattributes' 			=> 'WithAttributes'
+											'withattributes' 			=> 'WithAttributes',
+											'withtrashed' 				=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
@@ -70,7 +71,8 @@ class Finger extends BaseModel {
 											'personid' 					=> 'Could be array or integer', 
 											'updatedat' 				=> 'Could be array or string (time)', 
 											'currentwork' 				=> 'Must be true', 
-											'withattributes' 			=> 'Must be array of relationship'
+											'withattributes' 			=> 'Must be array of relationship',
+											'withtrashed' 				=> 'Must be true',
 										];
 
 	public $sortable 				= ['created_at', 'person_id'];

@@ -63,6 +63,7 @@ class Api extends BaseModel {
 											'secret' 							=> 'Secret', 
 											'workstationaddress' 				=> 'WorkstationAddress', 
 											'withattributes' 					=> 'WithAttributes',
+											'withtrashed' 						=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
@@ -73,6 +74,7 @@ class Api extends BaseModel {
 											'secret' 							=> 'Must be string', 
 											'macadress' 						=> 'Must be string', 
 											'withattributes' 					=> 'Must be array of relationship',
+											'withtrashed' 						=> 'Must be true',
 										];
 
 	public $sortable 				= 	['branch_id', 'created_at', 'client', 'workstation_name'];

@@ -75,7 +75,8 @@ class Work extends BaseModel {
 											'active' 					=> 'Active', 
 											'groupperson' 				=> 'GroupPerson', 
 											'currentworkleave' 			=> 'CurrentWorkleave', 
-											'withattributes' 			=> 'WithAttributes'
+											'withattributes' 			=> 'WithAttributes',
+											'withtrashed' 				=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
@@ -89,6 +90,7 @@ class Work extends BaseModel {
 											'groupperson' 				=> 'Must be true', 
 											'currentworkleave' 			=> 'Must be true', 
 											'withattributes' 			=> 'Must be array of relationship',
+											'withtrashed' 				=> 'Must be true',
 										];
 
 	public $sortable 				= 	['created_at', 'start', 'end'];

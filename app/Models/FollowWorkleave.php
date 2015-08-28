@@ -50,14 +50,16 @@ class FollowWorkleave extends BaseModel {
 											'id' 						=> 'ID', 
 											'workid' 					=> 'WorkID', 
 											'workleaveid' 				=> 'WorkleaveID', 
-											'withattributes' 			=> 'WithAttributes'
+											'withattributes' 			=> 'WithAttributes',
+											'withtrashed' 				=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
 											'id' 						=> 'Could be array or integer', 
 											'workid' 					=> 'Could be array or integer', 
 											'workleaveid' 				=> 'Could be array or integer', 
-											'withattributes' 			=> 'Must be array of relationship'
+											'withattributes' 			=> 'Must be array of relationship',
+											'withtrashed' 				=> 'Must be true',
 										];
 
 	public $sortable 				= 	['created_at', 'work_id'];

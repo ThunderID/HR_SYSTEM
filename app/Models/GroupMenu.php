@@ -48,15 +48,17 @@ class GroupMenu extends BaseModel {
 											'authgroupid' 						=> 'AuthGroupID', 
 											'menuid' 							=> 'MenuID', 
 
-											'withattributes'					=> 'WithAttributes'
+											'withattributes'					=> 'WithAttributes',
+											'withtrashed' 						=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
 											'id' 								=> 'Could be array or integer', 
 											'authgroupid' 						=> 'Could be array or integer', 
-											'menuid' 								=> 'Could be array or integer', 
+											'menuid' 							=> 'Could be array or integer', 
 
 											'withattributes' 					=> 'Must be array of relationship',
+											'withtrashed' 						=> 'Must be true',
 										];
 
 	public $sortable 				= 	['tmp_auth_group_id'];

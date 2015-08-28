@@ -50,6 +50,7 @@ class Application extends BaseModel {
 											
 											'name' 								=> 'Name', 
 											'withattributes' 					=> 'WithAttributes',
+											'withtrashed' 						=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
@@ -59,6 +60,7 @@ class Application extends BaseModel {
 											
 											'name' 								=> 'Must be string', 
 											'withattributes' 					=> 'Must be array of relationship',
+											'withtrashed' 						=> 'Must be true',
 										];
 
 	public $sortable 				= 	['name', 'created_at', 'tmp_applications.id'];

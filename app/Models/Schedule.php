@@ -64,7 +64,8 @@ class Schedule extends BaseModel {
 											'ondate' 						=> 'OnDate', 
 											'notid' 						=> 'NotID', 
 
-											'withattributes' 				=> 'WithAttributes'
+											'withattributes' 				=> 'WithAttributes',
+											'withtrashed' 					=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
@@ -75,6 +76,7 @@ class Schedule extends BaseModel {
 
 											'notid' 						=> 'Must be integer', 
 											'withattributes' 				=> 'Must be array of relationship',
+											'withtrashed' 					=> 'Must be true',
 										];
 
 	public $sortable 				= 	['created_at', 'name', 'on'];

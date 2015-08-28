@@ -58,14 +58,16 @@ class Template extends BaseModel {
 											'id' 								=> 'ID', 
 											'documentid'	 					=> 'DocumentID', 
 											'field' 							=> 'Field', 
-											'withattributes' 					=> 'WithAttributes'
+											'withattributes' 					=> 'WithAttributes',
+											'withtrashed' 						=> 'WithTrashed',
 										];
 	
 	public $searchableScope 		= 	[
-											'id' 							=> 'Could be array or integer', 
-											'documentid' 					=> 'Could be array or integer', 
-											'field' 						=> 'Must be string', 
-											'withattributes' 				=> 'Must be array of relationship',
+											'id' 								=> 'Could be array or integer', 
+											'documentid' 						=> 'Could be array or integer', 
+											'field' 							=> 'Must be string', 
+											'withattributes' 					=> 'Must be array of relationship',
+											'withtrashed' 						=> 'Must be true',
 										];
 																			
 	public $sortable 				=	['id', 'field', 'created_at'];

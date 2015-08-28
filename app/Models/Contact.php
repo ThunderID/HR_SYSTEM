@@ -64,7 +64,8 @@ class Contact extends BaseModel {
 											'default' 					=> 'Default', 
 
 											'messageservices' 			=> 'MessageServices', 
-											'withattributes' 			=> 'WithAttributes'
+											'withattributes' 			=> 'WithAttributes',
+											'withtrashed' 				=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
@@ -78,7 +79,8 @@ class Contact extends BaseModel {
 											'default' 					=> 'Must be true or false', 
 
 											'messageservices' 			=> 'No Need', 
-											'withattributes' 			=> 'Must be array of relationship'
+											'withattributes' 			=> 'Must be array of relationship',
+											'withtrashed' 				=> 'Must be true',
 										];
 
 	public $sortable 				= 	['created_at', 'is_default', 'item', 'value'];

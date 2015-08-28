@@ -53,7 +53,8 @@ class AuthGroup extends BaseModel {
 											'name' 								=> 'Name', 
 											'level' 							=> 'Level', 
 
-											'withattributes'					=> 'WithAttributes'
+											'withattributes'					=> 'WithAttributes',
+											'withtrashed' 						=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
@@ -62,6 +63,7 @@ class AuthGroup extends BaseModel {
 											'level' 							=> 'Must be integer', 
 
 											'withattributes' 					=> 'Must be array of relationship',
+											'withtrashed' 						=> 'Must be true',
 										];
 
 	public $sortable 				= 	['name', 'id'];

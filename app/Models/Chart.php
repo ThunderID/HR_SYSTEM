@@ -102,7 +102,8 @@ class Chart extends BaseModel {
 											'grouptag'	 			=> 'GroupTag',
 
 											'orbranchname' 			=> 'OrBranchName', 
-											'withattributes' 		=> 'WithAttributes'
+											'withattributes' 		=> 'WithAttributes',
+											'withtrashed' 			=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
@@ -121,6 +122,7 @@ class Chart extends BaseModel {
 
 											'orbranchname' 			=> 'Could be array or string', 
 											'withattributes' 		=> 'Must be array of relationship',
+											'withtrashed' 			=> 'Must be true',
 										];
 
 	public $sortable 				= 	['id', 'name', 'created_at', 'path', 'charts.name'];

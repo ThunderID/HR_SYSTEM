@@ -84,7 +84,8 @@ class Calendar extends BaseModel {
 											'branchid' 					=> 'BranchID', 
 											'charttag' 					=> 'ChartTag', 
 											
-											'withattributes' 			=> 'WithAttributes'
+											'withattributes' 			=> 'WithAttributes',
+											'withtrashed' 				=> 'WithTrashed',
 										];
 
 	public $searchableScope 		= 	[
@@ -103,6 +104,7 @@ class Calendar extends BaseModel {
 											'charttag' 					=> 'Must be string', 
 											
 											'withattributes' 			=> 'Must be array of relationship',
+											'withtrashed' 				=> 'Must be true',
 										];
 
 	public $sortable 				= 	['created_at', 'name'];
