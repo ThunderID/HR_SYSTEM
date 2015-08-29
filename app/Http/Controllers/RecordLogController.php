@@ -100,8 +100,6 @@ class RecordLogController extends BaseController
 														
 		$this->layout->page->filtered 			= $filter;
 
-		// $this->layout->page->route_back 		= route('hr.organisations.show', $org_id);
-
 		return $this->layout;
 	}
 	
@@ -246,11 +244,11 @@ class RecordLogController extends BaseController
 				}
 			}
 		}
-			
+
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.recordlogs.index', ['org_id' => $org_id])->with('alert_success', 'Notifikasi sudah ditindaklanjuti');
+			return Redirect::route('hr.recordlogs.index')->with('alert_success', 'Notifikasi sudah ditindaklanjuti');
 		}
 		
 		DB::rollback();

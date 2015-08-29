@@ -501,6 +501,8 @@ class ScheduleController extends BaseController
 
 	public function destroy($id)
 	{
+		$errors 							= new MessageBag();
+
 		$attributes 						= ['username' => Session::get('user.username'), 'password' => Input::get('password')];
 
 		$results 							= $this->dispatch(new Checking(new Person, $attributes));
@@ -552,12 +554,40 @@ class ScheduleController extends BaseController
 			
 			Session::put('duedate', date('Y-m-d', strtotime($contents->data->on)));
 
-			$results 						= $this->dispatch(new Deleting(new Schedule, $id));
-			$contents 						= json_decode($results);
+			$queattr['created_by'] 			= Session::get('loggedUser');
+			$queattr['process_name'] 		= 'hr:schedulebatch';
+			$queattr['process_option'] 		= 'delete';
+			$queattr['parameter'] 			= json_encode(['id' => $id]);
+			$queattr['task_per_process']	= 1;
+			$queattr['process_number'] 		= 0;
+			$queattr['message'] 			= 'Initial Queue';
+			$queattr['total_process'] 		= 1;
+			$queattr['total_task'] 			= 1;
 
-			if (!$contents->meta->success)
+			$content 						= $this->dispatch(new Saving(new Queue, $queattr, null));
+			$is_success_2 					= json_decode($content);
+
+			if(!$is_success_2->meta->success)
 			{
-				return Redirect::back()->withErrors($contents->meta->errors);
+				foreach ($is_success_2->meta->errors as $key2 => $value2) 
+				{
+					if(is_array($value2))
+					{
+						foreach ($value2 as $key3 => $value3) 
+						{
+							$errors->add('Batch', $value3);
+						}
+					}
+					else
+					{
+						$errors->add('Batch', $value2);
+					}
+				}
+			}
+
+			if (!$errors->count())
+			{
+				return Redirect::back()->withErrors($errors);
 			}
 			else
 			{
@@ -589,38 +619,40 @@ class ScheduleController extends BaseController
 			return Response::json(['message' => $contents->meta->errors], 200);
 		}
 
-		foreach ($contents->data as $key => $value) 
-		{
-			$progress[$value->id]		= $value->process_number;
-		}
-
-
-		sleep(60);
-		
-		$results 						= $this->dispatch(new Getting(new Queue, $search, ['created_at' => 'asc'], 1, 100));		
-		$contents 	 					= json_decode($results);
-
-		if (!$contents->meta->success)
-		{
-			return Response::json(['message' => $contents->meta->errors], 200);
-		}
-
-		foreach ($contents->data as $key => $value) 
-		{
-			if(isset($progress[$value->id]) && $progress[$value->id]==$value->process_number)
+		if(count($contents->data))
+		{	
+			foreach ($contents->data as $key => $value) 
 			{
-				$progress2[]			= 'Operasi berhenti pada '.$value->process_number.' / '.$value->total_process;
-			}
-			else
-			{
-				$progress2[]			= $value->message.' '.$value->process_number.' / '.$value->total_process;
+				$progress[$value->id]		= $value->process_number;
 			}
 
-			$pnumbers[]					= $value->process_number;
-			$tprocesses[]				= $value->total_process;
-			$pprocess[]					= $value->parameter;	
-		}
+			sleep(60);
+			
+			$results 						= $this->dispatch(new Getting(new Queue, $search, ['created_at' => 'asc'], 1, 100));		
+			$contents 	 					= json_decode($results);
 
-		return Response::json(['message' => $progress2, 'process_number' => $pnumbers, 'total_process' => $tprocesses, 'parameter_process' => $pprocess], 200);
+			if (!$contents->meta->success)
+			{
+				return Response::json(['message' => $contents->meta->errors], 200);
+			}
+
+			foreach ($contents->data as $key => $value) 
+			{
+				if(isset($progress[$value->id]) && $progress[$value->id]==$value->process_number)
+				{
+					$progress2[]			= 'Operasi berhenti pada '.$value->process_number.' / '.$value->total_process;
+				}
+				else
+				{
+					$progress2[]			= $value->message.' '.$value->process_number.' / '.$value->total_process;
+				}
+
+				$pnumbers[]					= $value->process_number;
+				$tprocesses[]				= $value->total_process;
+				$pprocess[]					= $value->parameter;	
+			}
+
+			return Response::json(['message' => $progress2, 'process_number' => $pnumbers, 'total_process' => $tprocesses, 'parameter_process' => $pprocess], 200);
+		}
 	}
 }
