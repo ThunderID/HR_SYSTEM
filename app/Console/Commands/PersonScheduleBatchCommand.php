@@ -49,8 +49,25 @@ class PersonScheduleBatchCommand extends Command {
 		//
 		$id 			= $this->argument()['queueid'];
 
-		$result 		= $this->batchpersonchedule($id);
-
+		if($this->option('queuefunc'))
+		{
+			$queuefunc 	= $this->option('queuefunc');
+			switch ($queuefunc) 
+			{
+				case 'delete':
+					$result = $this->batchdeletepersonschedule($id);
+					break;
+			
+				default:
+					$result = $this->batchpersonchedule($id);
+					break;
+			}
+		}
+		else
+		{
+			$result 		= $this->batchpersonchedule($id);
+		}
+		
 		return $result;
 	}
 
@@ -186,4 +203,55 @@ class PersonScheduleBatchCommand extends Command {
 		return true;
 	}
 
+	/**
+	 * update 1st version
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function batchdeletepersonschedule($id)
+	{
+		$queue 						= new Queue;
+		$pending 					= $queue->find($id);
+
+		$parameters 				= json_decode($pending->parameter, true);
+		$messages 					= json_decode($pending->message, true);
+
+		$errors 					= new MessageBag;
+
+		//check work active on that day, please consider if that queue were written days
+		$data 						= PersonSchedule::find($parameters['id']);
+
+		$psched 					= $data;
+		
+		DB::beginTransaction();
+
+		if(!$data->delete())
+		{
+			$errors->add('Batch', $data->getError());
+		}
+
+		if(!$errors->count())
+		{
+			DB::commit();
+		
+			$pnumber 						= $pending->process_number+1;
+			$messages['message'][$pnumber] 	= 'Sukses Menghapus Jadwal '.(isset($psched['name']) ? $psched['name'] : '');
+			$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
+		}
+		else
+		{
+			DB::rollback();
+		
+			$pnumber 						= $pending->process_number+1;
+			$messages['message'][$pnumber] 	= 'Gagal Menghapus Jadwal '.(isset($psched['name']) ? $psched['name'] : '');
+			$messages['errors'][$pnumber] 	= $errors;
+
+			$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
+		}
+
+		$pending->save();
+
+		return true;
+	}
 }

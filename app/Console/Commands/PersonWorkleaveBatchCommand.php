@@ -63,6 +63,10 @@ class PersonWorkleaveBatchCommand extends Command {
 				case 'personstaken':
 					$result = $this->batchpersonstakenworkleave($id);
 					break;
+
+				case 'delete':
+					$result = $this->batchdeletepersonworkleave($id);
+					break;
 				
 				default:
 					$result = $this->batchpersonworkleave($id);
@@ -459,6 +463,58 @@ class PersonWorkleaveBatchCommand extends Command {
 				$pending->save();
 			}
 		}
+
+		return true;
+	}
+
+	/**
+	 * update 1st version
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function batchdeletepersonworkleave($id)
+	{
+		$queue 						= new Queue;
+		$pending 					= $queue->find($id);
+
+		$parameters 				= json_decode($pending->parameter, true);
+		$messages 					= json_decode($pending->message, true);
+
+		$errors 					= new MessageBag;
+
+		//check work active on that day, please consider if that queue were written days
+		$data 						= PersonWorkleave::find($parameters['id']);
+
+		$wleave 					= $data;
+		
+		DB::beginTransaction();
+
+		if(!$data->delete())
+		{
+			$errors->add('Batch', $data->getError());
+		}
+
+		if(!$errors->count())
+		{
+			DB::commit();
+		
+			$pnumber 						= $pending->process_number+1;
+			$messages['message'][$pnumber] 	= 'Sukses Menghapus Cuti '.(isset($wleave['name']) ? $wleave['name'] : '');
+			$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
+		}
+		else
+		{
+			DB::rollback();
+		
+			$pnumber 						= $pending->process_number+1;
+			$messages['message'][$pnumber] 	= 'Gagal Menghapus Cuti '.(isset($wleave['name']) ? $wleave['name'] : '');
+			$messages['errors'][$pnumber] 	= $errors;
+
+			$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
+		}
+
+		$pending->save();
 
 		return true;
 	}

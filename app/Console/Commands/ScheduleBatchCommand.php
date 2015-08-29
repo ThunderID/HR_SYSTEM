@@ -65,7 +65,6 @@ class ScheduleBatchCommand extends Command {
 			$result 		= $this->batchSchedulefromwork($id);
 		}
 
-
 		return $result;
 	}
 
@@ -176,21 +175,28 @@ class ScheduleBatchCommand extends Command {
 		$errors 					= new MessageBag;
 
 		//check work active on that day, please consider if that queue were written days
-		$data 						= Schedule::find($parameters['id']);
+		$data 						= Schedule::find($parameters['id'])->with(['calendar']);
+		$calendar 					= $data['calendar'];
+
+		DB::beginTransaction();
 		
 		if(!$data->delete())
 		{
-			$errors->add('Batch', $is_success->getError());
+			$errors->add('Batch', $data->getError());
 		}
 
 		if(!$errors->count())
 		{
+			DB::commit();
+
 			$pnumber 						= $pending->process_number+1;
 			$messages['message'][$pnumber] 	= 'Sukses Menghapus Jadwal '.(isset($calendar['name']) ? $calendar['name'] : '');
 			$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 		}
 		else
 		{
+			DB::rollback();
+			
 			$pnumber 						= $pending->process_number+1;
 			$messages['message'][$pnumber] 	= 'Gagal Menghapus Jadwal '.(isset($calendar['name']) ? $calendar['name'] : '');
 			$messages['errors'][$pnumber] 	= $errors;

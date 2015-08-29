@@ -554,6 +554,8 @@ class ScheduleController extends BaseController
 			
 			Session::put('duedate', date('Y-m-d', strtotime($contents->data->on)));
 
+			DB::beginTransaction();
+
 			$queattr['created_by'] 			= Session::get('loggedUser');
 			$queattr['process_name'] 		= 'hr:schedulebatch';
 			$queattr['process_option'] 		= 'delete';
@@ -587,10 +589,12 @@ class ScheduleController extends BaseController
 
 			if (!$errors->count())
 			{
+				DB::commit();
 				return Redirect::back()->withErrors($errors);
 			}
 			else
 			{
+				DB::rollback();
 				return Redirect::route('hr.calendars.show', ['id' => $cal_id, 'org_id' => $org_id, 'cal_id' => $cal_id])->with('alert_success', 'Jadwal "' . $contents->data->name. '" sudah dihapus');
 			}
 		}
