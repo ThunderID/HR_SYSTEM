@@ -776,7 +776,7 @@ class ScheduleController extends BaseController
 			else
 			{
 				DB::commit();
-				return Redirect::route('hr.person.schedules.index', ['org_id' => $org_id, 'person_id' => $person_id])->with('alert_success', ' Data Kerabat sudah dihapus');
+				return Redirect::route('hr.person.schedules.index', ['org_id' => $org_id, 'person_id' => $person_id])->with('alert_info', ' Data Jadwal sedang dihapus');
 			}
 		}
 		else

@@ -595,7 +595,7 @@ class ScheduleController extends BaseController
 			else
 			{
 				DB::commit();
-				return Redirect::route('hr.calendars.show', ['id' => $cal_id, 'org_id' => $org_id, 'cal_id' => $cal_id])->with('alert_success', 'Jadwal "' . $contents->data->name. '" sudah dihapus');
+				return Redirect::route('hr.calendars.show', ['id' => $cal_id, 'org_id' => $org_id, 'cal_id' => $cal_id])->with('alert_info', 'Jadwal "' . $contents->data->name. '" sedang dihapus');
 			}
 		}
 		else

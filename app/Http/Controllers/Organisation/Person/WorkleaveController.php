@@ -616,7 +616,7 @@ class WorkleaveController extends BaseController
 			else
 			{
 				DB::commit();
-				return Redirect::route('hr.person.workleaves.index', [$person_id, 'org_id' => $org_id, 'person_id' => $person_id])->with('alert_success', 'Pengaturan Cuti sudah dihapus');
+				return Redirect::route('hr.person.workleaves.index', [$person_id, 'org_id' => $org_id, 'person_id' => $person_id])->with('alert_info', 'Pengaturan Cuti sedang dihapus');
 			}
 		}
 		else

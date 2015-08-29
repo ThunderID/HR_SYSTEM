@@ -9,6 +9,8 @@ use App\Models\Calendar;
 use App\Models\Schedule;
 use App\Models\QueueMorph;
 
+use DB;
+
 use \Illuminate\Support\MessageBag as MessageBag;
 
 class ScheduleBatchCommand extends Command {
@@ -175,7 +177,7 @@ class ScheduleBatchCommand extends Command {
 		$errors 					= new MessageBag;
 
 		//check work active on that day, please consider if that queue were written days
-		$data 						= Schedule::find($parameters['id'])->with(['calendar']);
+		$data 						= Schedule::id($parameters['id'])->withattributes(['calendar'])->first();
 		$calendar 					= $data['calendar'];
 
 		DB::beginTransaction();

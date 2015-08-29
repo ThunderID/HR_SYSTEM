@@ -88,18 +88,6 @@ class ScheduleObserver
 		}
 	}
 
-	public function deleting($model)
-	{
-		if(date('Y-m-d', strtotime($model['attributes']['on'])) < date('Y-m-d'))
-		{
-			$model['errors'] 				= ['Tidak dapat menghapus jadwal.'];
-
-			return false;
-		}
-
-		return true;
-	}
-
 	public function created($model)
 	{
 		if(isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0)
@@ -143,6 +131,9 @@ class ScheduleObserver
 		Event::fire(new CreateRecordOnTable($attributes));
 
 		//deleting schedule recalculate process log 
+		$on 								= date('Y-m-d', strtotime($model['attributes']['on']));
+		$on1 								= date('Y-m-d', strtotime($model['attributes']['on'].' + 1 day'));
+
 		$logs 								= Log::ondate([$on, $on1])->hasnoschedule(['on' => $on])->WorkCalendar(['id' => $model['attributes']['calendar_id'], 'start' => $on])->get();
 		
 		if($logs->count())
