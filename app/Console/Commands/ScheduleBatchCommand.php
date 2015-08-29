@@ -46,7 +46,25 @@ class ScheduleBatchCommand extends Command {
 		//
 		$id 			= $this->argument()['queueid'];
 
-		$result 		= $this->batchSchedulefromwork($id);
+		if($this->option('queuefunc'))
+		{
+			$queuefunc 	= $this->option('queuefunc');
+			switch ($queuefunc) 
+			{
+				case 'delete':
+					$result = $this->batchDeleteSchedulefromwork($id);
+					break;
+			
+				default:
+					$result = $this->batchSchedulefromwork($id);
+					break;
+			}
+		}
+		else
+		{
+			$result 		= $this->batchSchedulefromwork($id);
+		}
+
 
 		return $result;
 	}
@@ -102,8 +120,6 @@ class ScheduleBatchCommand extends Command {
 			$is_success				= null;
 		}
 		
-		$content 					= $this->dispatch(new Saving(new Schedule, $parameters, $parameters['id'], new Calendar, $parameters['associate_calendar_id']));
-
 		$calendar 					= Calendar::find($parameters['associate_calendar_id']);
 
 		$is_success->fill($parameters);
@@ -143,4 +159,47 @@ class ScheduleBatchCommand extends Command {
 
 	}
 
+	/**
+	 * update 1st version
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function batchDeleteSchedulefromwork($id)
+	{
+		$queue 						= new Queue;
+		$pending 					= $queue->find($id);
+
+		$parameters 				= json_decode($pending->parameter, true);
+		$messages 					= json_decode($pending->message, true);
+
+		$errors 					= new MessageBag;
+
+		//check work active on that day, please consider if that queue were written days
+		$data 						= Schedule::find($parameters['id']);
+		
+		if(!$data->delete())
+		{
+			$errors->add('Batch', $is_success->getError());
+		}
+
+		if(!$errors->count())
+		{
+			$pnumber 						= $pending->process_number+1;
+			$messages['message'][$pnumber] 	= 'Sukses Menghapus Jadwal '.(isset($calendar['name']) ? $calendar['name'] : '');
+			$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
+		}
+		else
+		{
+			$pnumber 						= $pending->process_number+1;
+			$messages['message'][$pnumber] 	= 'Gagal Menghapus Jadwal '.(isset($calendar['name']) ? $calendar['name'] : '');
+			$messages['errors'][$pnumber] 	= $errors;
+
+			$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
+		}
+
+		$pending->save();
+
+		return true;
+	}
 }
