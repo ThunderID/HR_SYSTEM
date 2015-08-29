@@ -55,7 +55,7 @@
 
 			if(typeof(event.data_target) != "undefined" && event.data_target !== null) {
 				element.attr('data-target', event.data_target);
-				element.attr('data-toggle', 'tooltip');
+				element.attr('data-toggle', 'modal');
 				element.attr('href', 'javascript:;');
 			} else if (event.mode_info) {
 				element.attr('href', 'javascript:;');
