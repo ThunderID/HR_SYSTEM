@@ -79,6 +79,7 @@ class PersonWorkleave extends BaseModel {
 	public $searchable 				= 	[
 											'id' 						=> 'ID', 
 											'personid' 					=> 'PersonID', 
+											'organisationid' 			=> 'PersonOrganisationID', 
 											'workleaveid' 				=> 'WorkleaveID',
 											'parentid' 					=> 'ParentID',
 											'name' 						=> 'Name',
@@ -94,6 +95,7 @@ class PersonWorkleave extends BaseModel {
 	public $searchableScope 		= 	[
 											'id' 						=> 'Could be array or integer', 
 											'personid' 					=> 'Could be array or integer', 
+											'organisationid' 			=> 'Could be array or integer', 
 											'workleaveid' 				=> 'Could be array or integer', 
 											'parentid' 					=> 'Could be array or integer', 
 											'name' 						=> 'Must be string',

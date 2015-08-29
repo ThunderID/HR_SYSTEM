@@ -120,7 +120,7 @@ class PersonWorkleaveBatchCommand extends Command {
 		$messages 					= json_decode($pending->message, true);
 
 		$begin 						= new DateTime( $parameters['start'] );
-		$ended 						= new DateTime( $parameters['end'] );
+		$ended 						= new DateTime( $parameters['end'].' + 1 day' );
 
 		$interval 					= DateInterval::createFromDateString('1 day');
 		$periods 					= new DatePeriod($begin, $interval, $ended);
@@ -184,7 +184,7 @@ class PersonWorkleaveBatchCommand extends Command {
 
 		$person 					= Person::find($parameters['associate_person_id']);
 
-		$is_success 				= $pwP->fill($parameters);
+		$is_success 				= $pwid->fill($parameters);
 		$is_success->Person()->associate($person);
 
 		if(!$is_success->save())

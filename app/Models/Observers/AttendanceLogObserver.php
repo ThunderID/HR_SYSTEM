@@ -266,7 +266,7 @@ class AttendanceLogObserver
 			{
 				$pwM 								= PersonWorkleave::personid($model->processlog->person_id)->ondate([$on, $on])->status(strtoupper($prev_data->modified_status))->quota(false)->first();
 
-				if(!$pwM->delete())
+				if($pwM && !$pwM->delete())
 				{
 					$model['errors']				= $data->getError();
 					

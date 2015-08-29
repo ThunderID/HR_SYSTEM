@@ -428,6 +428,8 @@ class WorkleaveController extends BaseController
 
 			$attributes['name']					= 'Pengambilan '.$workleave['name'];
 			$attributes['status']				= $workleave['status'];
+			$attributes['start'] 				= $begin->format('Y-m-d');
+			$attributes['end'] 					= $ended->format('Y-m-d');
 
 			$batch 								= true;
 
@@ -472,7 +474,7 @@ class WorkleaveController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.person.workleaves.index', ['person_id' => $person_id, 'org_id' => $org_id])->with('alert_success', 'Cuti "' . $contents->data->name. '" sudah disimpan');
+			return Redirect::route('hr.person.workleaves.index', ['person_id' => $person_id, 'org_id' => $org_id])->with('alert_info', 'Cuti "' . $contents->data->name. '" sedang disimpan');
 		}
 
 		DB::rollback();
@@ -533,6 +535,8 @@ class WorkleaveController extends BaseController
 
 	public function destroy($id)
 	{
+		$errors 							= new MessageBag();
+
 		$attributes 						= ['username' => Session::get('user.username'), 'password' => Input::get('password')];
 
 		$results 							= $this->dispatch(new Checking(new Person, $attributes));
@@ -564,16 +568,16 @@ class WorkleaveController extends BaseController
 				App::abort(404);
 			}
 
-			$search 						= ['id' => $person_id, 'organisationid' => $org_id, 'personworkleaveid' => $id];
-			$results 						= $this->dispatch(new Getting(new Person, $search, [] , 1, 1));
+			$search 						= ['personid' => $person_id, 'organisationid' => $org_id, 'id' => $id];
+			$results 						= $this->dispatch(new Getting(new PersonWorkleave, $search, [] , 1, 1));
 			$contents 						= json_decode($results);
 
 			if(!$contents->meta->success)
 			{
 				App::abort(404);
 			}
-			
-			Session::put('duedate', date('Y-m-d', strtotime($contents->data->on)));
+
+			Session::put('duedate', date('Y-m-d', strtotime($contents->data->start)));
 
 			DB::beginTransaction();
 
