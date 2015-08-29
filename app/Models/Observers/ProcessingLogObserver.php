@@ -230,6 +230,7 @@ class ProcessingLogObserver
 
 						if(isset($wd[strtolower($day)]) && in_array(strtolower($wd[strtolower($day)]), $lworkdays))
 						{
+							$modified_status= '';
 							$schedule_start = $calendar->workscalendars[0]->calendar->start;
 							$schedule_end 	= $calendar->workscalendars[0]->calendar->end;	
 						}
@@ -576,7 +577,7 @@ class ProcessingLogObserver
 				$count_status 								= $prev_data->attendancelogs[0]->count_status + 1;
 			}
 
-			if(isset($modified_status))
+			if(isset($modified_status) && isset($modified_by))
 			{
 				$alog->fill([
 								'margin_start'				=> $margin_start,
@@ -586,6 +587,16 @@ class ProcessingLogObserver
 								'modified_status'			=> $modified_status,
 								'modified_by'				=> $modified_by,
 								'modified_at'				=> $modified_at,
+				]);
+			}
+			elseif(isset($modified_status))
+			{
+				$alog->fill([
+								'margin_start'				=> $margin_start,
+								'margin_end'				=> $margin_end,
+								'count_status'				=> $count_status,
+								'actual_status'				=> $actual_status,
+								'modified_status'			=> $modified_status,
 				]);
 			}
 			else

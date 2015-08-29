@@ -91,7 +91,7 @@ class PersonScheduleBatchCommand extends Command {
 	protected function getOptions()
 	{
 		return array(
-            array('queueid', null, InputOption::VALUE_OPTIONAL, 'Queue ID', null),
+            array('queuefunc', null, InputOption::VALUE_OPTIONAL, 'Queue Function', null),
         );
 	}
 

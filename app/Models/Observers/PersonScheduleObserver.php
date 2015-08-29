@@ -128,7 +128,7 @@ class PersonScheduleObserver
 
 		//deleting person schedule recalculate process log 
 		$logs 								= Log::personid($model['attributes']['person_id'])->ondate([$model['attributes']['on'], date('Y-m-d', strtotime($model['attributes']['on'].' + 1 day'))])->get();
-		
+
 		if($logs->count())
 		{
 			foreach ($logs as $key => $value) 

@@ -684,6 +684,8 @@ class ScheduleController extends BaseController
 
 	public function destroy($id)
 	{
+		$errors 							= new MessageBag();
+		
 		$attributes 						= ['username' => Session::get('user.username'), 'password' => Input::get('password')];
 
 		$results 							= $this->dispatch(new Checking(new Person, $attributes));

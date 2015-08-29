@@ -37,9 +37,8 @@
 										<option value="SS">Sakit (dalam waktu pendek)</option>
 										<option value="SL">Sakit (dalam waktu panjang)</option>
 										<option value="DN">Dinas Luar</option>
-									@else
-										<option value="CB">Cuti Bersama</option>
 									@endif
+									<option value="CB">Cuti Bersama</option>
 								</select>						
 							</div>
 							{{-- In microtemplate.blade.php --}}
