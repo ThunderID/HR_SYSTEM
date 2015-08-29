@@ -735,15 +735,47 @@ class ScheduleController extends BaseController
 
 			Session::put('duedate', date('Y-m-d', strtotime($contents->data->on)));
 
-			$results 						= $this->dispatch(new Deleting(new PersonSchedule, $id));
-			$contents 						= json_decode($results);
+			DB::beginTransaction();
 
-			if (!$contents->meta->success)
+			$queattr['created_by'] 			= Session::get('loggedUser');
+			$queattr['process_name'] 		= 'hr:personschedulebatch';
+			$queattr['process_option'] 		= 'delete';
+			$queattr['parameter'] 			= json_encode(['id' => $id]);
+			$queattr['task_per_process']	= 1;
+			$queattr['process_number'] 		= 0;
+			$queattr['message'] 			= 'Initial Queue';
+			$queattr['total_process'] 		= 1;
+			$queattr['total_task'] 			= 1;
+
+			$content 						= $this->dispatch(new Saving(new Queue, $queattr, null));
+			$is_success_2 					= json_decode($content);
+
+			if(!$is_success_2->meta->success)
 			{
-				return Redirect::back()->withErrors($contents->meta->errors);
+				foreach ($is_success_2->meta->errors as $key2 => $value2) 
+				{
+					if(is_array($value2))
+					{
+						foreach ($value2 as $key3 => $value3) 
+						{
+							$errors->add('Batch', $value3);
+						}
+					}
+					else
+					{
+						$errors->add('Batch', $value2);
+					}
+				}
+			}
+
+			if ($errors->count())
+			{
+				DB::rollback();
+				return Redirect::back()->withErrors($errors);
 			}
 			else
 			{
+				DB::commit();
 				return Redirect::route('hr.person.schedules.index', ['org_id' => $org_id, 'person_id' => $person_id])->with('alert_success', ' Data Kerabat sudah dihapus');
 			}
 		}

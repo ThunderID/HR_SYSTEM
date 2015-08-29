@@ -587,14 +587,14 @@ class ScheduleController extends BaseController
 				}
 			}
 
-			if (!$errors->count())
+			if ($errors->count())
 			{
-				DB::commit();
+				DB::rollback();
 				return Redirect::back()->withErrors($errors);
 			}
 			else
 			{
-				DB::rollback();
+				DB::commit();
 				return Redirect::route('hr.calendars.show', ['id' => $cal_id, 'org_id' => $org_id, 'cal_id' => $cal_id])->with('alert_success', 'Jadwal "' . $contents->data->name. '" sudah dihapus');
 			}
 		}
