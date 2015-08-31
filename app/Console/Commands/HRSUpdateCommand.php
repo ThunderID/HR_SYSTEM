@@ -162,6 +162,10 @@ class HRSUpdateCommand extends Command {
 
 		$this->info("Seeded More auth group");
 
+		shell_exec('php artisan db:seed');
+
+		$this->info("Seeded Document");
+
 		return true;
 	}
 }
