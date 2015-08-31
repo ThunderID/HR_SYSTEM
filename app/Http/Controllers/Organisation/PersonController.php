@@ -9,6 +9,7 @@ use App\Console\Commands\Deleting;
 use App\Console\Commands\Checking;
 use App\Models\Organisation;
 use App\Models\Person;
+use App\Models\Contact;
 use App\Models\Branch;
 use App\Models\Queue;
 
