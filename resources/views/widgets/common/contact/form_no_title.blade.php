@@ -2,22 +2,9 @@
 <?php $tabindex = 1; ?>
 @for ($x=0; $x<=2; $x++)
 	<div class="form-group">				
-		<label class="control-label">Item</label>				
-		{!!Form::input('text', 'item[]', $ContactComposer['widget_data']['contactlist']['value'][$x], ['class' => 'form-control select2-tag-contact', 'style' => 'width:100%', 'tabindex' => $tabindex])!!}				
+		<label class="control-label text-capitalize">{{ $ContactComposer['widget_data']['contactlist']['value'][$x] }}</label>
+		{!!Form::input('text', $ContactComposer['widget_data']['contactlist']['value'][$x], '', ['class' => 'form-control', 'tabindex' => $tabindex])!!}				
 		<?php $tabindex++; ?>
-	</div>
-	<div class="form-group">				
-		<label class="control-label">Kontak</label>				
-		{!!Form::input('text', 'value[]', $ContactComposer['widget_data']['contactlist']['contact']['value'], ['class' => 'form-control val-contact', 'tabindex' => $tabindex])!!}
-		<?php $tabindex++; ?>
-	</div>
-	<div class="form-group mb-25">
-		<div class="checkbox">
-			<label>
-				{!!Form::checkbox('is_default[]', '1', $ContactComposer['widget_data']['contactlist']['contact']['is_default'], ['class' => '', 'tabindex' => $tabindex])!!} Aktif
-				<?php $tabindex++; ?>
-			</label>
-		</div>				
 	</div>
 @endfor
 @if (isset($ContactComposer['widget_data']['contactlist']['multiple']))
