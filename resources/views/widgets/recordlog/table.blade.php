@@ -27,7 +27,7 @@
 										{{ isset($value['person']['name']) ? $value['person']['name'] : 'System' }} {{ $value['notes'] }}
 									</td>
 									<td class="text-center">
-										@if ($value['action'])
+										@if ($value['action'] && in_array($value['action'], ['save']))
 											{!! Form::open(['url' => route('hr.recordlogs.store', ['id' => $value['id']]), 'method' => 'post']) !!}
 												<button type="submit" class="btn btn-sm @if($value['action']=='delete') btn-danger @elseif($value['action']=='save') btn-primary @else btn-default @endif">
 													{{ ucwords($value['action']) }}
