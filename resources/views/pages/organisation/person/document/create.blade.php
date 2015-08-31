@@ -34,55 +34,23 @@
 
 @section('content_body')	
 	@if(Input::has('doc_id'))	
-		@if (count(Input::get('doc_id'))>1)
-			<h1> {{ 'Tambah Dokumen '}} "{{$person['name']}}" </h1>
-			<hr style="margin-bottom:0">
-			<div class="panel panel-default">
-				<div class="panel-body">
-					@foreach(Input::get('doc_id') as $key => $value)
-						@include('widgets.common.persondocument.form_multiple', [
-							'widget_template'	=> 'plain',
-							'widget_options'	=> 	[
-														'documentlist'			=>
-														[
-															'form_url'			=> route('hr.person.documents.store', ['id' => $id, 'doc_id' => $value, 'person_id' => $person['id'], 'org_id' => $data['id']]),
-															'search'			=> ['id' => $value, 'withattributes' => ['templates']],
-															'organisation_id'	=> $data['id'],
-															'persondocument'	=> $persondocument,
-															'sort'				=> [],
-															'new'				=> (is_null($id) ? true : false),
-															'page'				=> 1,
-															'per_page'			=> 1,
-															'route_back'	 	=> route('hr.person.documents.index', ['org_id' => $data['id'], 'person_id' => $person['id']])
-														]
-													]
-						])	
-					@endforeach
-					<div class="form-group text-right">				
-						<a href="{{ route('hr.person.documents.index', ['org_id' => $data['id'], 'person_id' => $person['id']]) }}" class="btn btn-default mr-5">Batal</a>
-						<input type="submit" class="btn btn-primary" value="Simpan">				
-					</div>
-				</div>
-			</div>
-		@else
-			@include('widgets.common.persondocument.form', [
-				'widget_template'	=> 'panel',
-				'widget_options'	=> 	[
-											'documentlist'			=>
-											[
-												'form_url'			=> route('hr.person.documents.store', ['id' => $id, 'doc_id' => Input::get('doc_id'), 'person_id' => $person['id'], 'org_id' => $data['id']]),
-												'search'			=> ['id' => Input::get('doc_id'), 'withattributes' => ['templates']],
-												'organisation_id'	=> $data['id'],
-												'persondocument'	=> $persondocument,
-												'sort'				=> [],
-												'new'				=> (is_null($id) ? true : false),
-												'page'				=> 1,
-												'per_page'			=> 1,
-												'route_back'	 	=> route('hr.person.documents.index', ['org_id' => $data['id'], 'person_id' => $person['id']])
-											]
+		@include('widgets.common.persondocument.form', [
+			'widget_template'	=> 'panel',
+			'widget_options'	=> 	[
+										'documentlist'			=>
+										[
+											'form_url'			=> route('hr.person.documents.store', ['id' => $id, 'doc_id' => Input::get('doc_id'), 'person_id' => $person['id'], 'org_id' => $data['id']]),
+											'search'			=> ['id' => Input::get('doc_id'), 'withattributes' => ['templates']],
+											'organisation_id'	=> $data['id'],
+											'persondocument'	=> $persondocument,
+											'sort'				=> [],
+											'new'				=> (is_null($id) ? true : false),
+											'page'				=> 1,
+											'per_page'			=> 1,
+											'route_back'	 	=> route('hr.person.documents.index', ['org_id' => $data['id'], 'person_id' => $person['id']])
 										]
-			])
-		@endif
+									]
+		])	
 	@else
 		@include('widgets.organisation.document.select', [
 			'widget_template'	=> 'panel',
