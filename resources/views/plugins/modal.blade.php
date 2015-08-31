@@ -53,7 +53,9 @@
 		var action 		= $(e.relatedTarget).attr('data-action');
 		var org_id		= $(e.relatedTarget).attr('data-org_id');
 		var doc_id		= $(e.relatedTarget).attr('data-doc_id');
+		var doc_name	= $(e.relatedTarget).attr('data-doc_name');
 
+		$('.span-title').html(doc_name);
 		$(this).parent().attr('action', action+'?doc_id='+doc_id+'&org_id='+org_id);
 	});
 </script>

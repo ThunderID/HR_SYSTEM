@@ -67,7 +67,9 @@
 
 		$('.select_doc_person').on('change', function() {
 			var value = $(this).val();
-			$('.import_doc').attr('data-doc_id', value);
+			var name  = $(this).find(':selected').attr('data-name');
+
+			$('.import_doc').attr('data-doc_id', value).attr('data-doc_name', name);
 		});
 	});	
 </script>
