@@ -345,12 +345,12 @@ class DocumentController extends BaseController
 			foreach ($template_ids as $key => $value) 
 			{
 				$attributes_2 					= ['template_id' => $value];
-				$checkdate						= strtotime($contents[$key]);
+				$checkdate						= explode('-', $cnts[$key][$key4]);
 				$checknumeric					= int($contents[$key]);
 				$checkstring					= strlen($contents[$key]);
-				if($checkdate)
+				if(count($checkdate) == 3)
 				{
-					$attributes_2['on']			= $contents[$key];
+					$attributes_2['on']			= date('Y-m-d H:i:s', strtotime($checkdate[2].'-'.$checkdate[1].'-'.$checkdate[0]));
 				}
 				elseif($checknumeric)
 				{

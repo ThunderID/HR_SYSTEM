@@ -15,28 +15,29 @@
 							switch (strtolower($value2['type'])) 
 							{
 								case 'text':
-									$form 		= '<textarea name="content[]" value="" class="form-control" tabindex="'.$tabindex.'">'.$content.'</textarea>';
+									$form 		= '<textarea name="content['.$key.']['.$key2.']" value="" class="form-control" tabindex="'.$tabindex.'">'.$content.'</textarea>';
 									$tabindex++;
 									break;
 								case 'date':
-									$form 		= '<input type="date" class="form-control date-mask" id="text" name="content[]" value="'.$content.'" tabindex="'.$tabindex.'">';
+									$form 		= '<input type="date" class="form-control date-mask" id="text" name="content['.$key.']['.$key2.']" value="'.$content.'" tabindex="'.$tabindex.'">';
 									$tabindex++;
 									break;
 								case 'numeric':
-									$form 		= '<input type="numeric" class="form-control" id="text" name="content[]" value="'.$content.'" tabindex="'.$tabindex.'">';
+									$form 		= '<input type="numeric" class="form-control" id="text" name="content['.$key.']['.$key2.']" value="'.$content.'" tabindex="'.$tabindex.'">';
 									$tabindex++;
 									break;
 								default:
-									$form 		= '<input type="text" class="form-control" id="text" name="content[]" value="'.$content.'" tabindex="'.$tabindex.'">';
+									$form 		= '<input type="text" class="form-control" id="text" name="content['.$key.']['.$key2.']" value="'.$content.'" tabindex="'.$tabindex.'">';
 									$tabindex++;
 									break;
 							}
 						;?>					
 						{!!$form!!}					
-						<input type="hidden" class="form-control" id="text" name="template_id[]" value="{{$value2['id']}}">
-						<input type="hidden" class="form-control" id="text" name="detail_id[]" value="{{$detailid}}">
+						<input type="hidden" class="form-control" id="text" name="template_id[{{$key}}][{{$key2}}]" value="{{$value2['id']}}">
+						<input type="hidden" class="form-control" id="text" name="detail_id[{{$key}}][{{$key2}}]" value="{{$detailid}}">
 					</div>
 				@endforeach
+				<input type="hidden" class="form-control" id="text" name="document_id[{{$key}}]" value="{{$value['id']}}">
 			</div>
 		</div>
 	@endforeach

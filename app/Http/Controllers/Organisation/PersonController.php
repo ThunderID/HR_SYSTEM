@@ -9,6 +9,9 @@ use App\Console\Commands\Deleting;
 use App\Console\Commands\Checking;
 use App\Models\Organisation;
 use App\Models\Person;
+use App\Models\PersonDocument;
+use App\Models\DocumentDetail;
+use App\Models\MaritalStatus;
 use App\Models\Contact;
 use App\Models\Branch;
 use App\Models\Queue;
@@ -390,8 +393,9 @@ class PersonController extends BaseController
 			{
 				$email['item']						= 'email';
 				$email['value']						= Input::get('email');
+				$email['is_active']					= true;
 
-				$content 							= $this->dispatch(new Saving(new Contact, $email, new Person, $is_success->data->id));
+				$content 							= $this->dispatch(new Saving(new Contact, $email, null, new Person, $is_success->data->id));
 
 				$is_email_success 					= json_decode($content);
 				if(!$is_email_success->meta->success)
@@ -417,8 +421,9 @@ class PersonController extends BaseController
 			{
 				$mobile['item']						= 'mobile';
 				$mobile['value']					= Input::get('mobile');
+				$mobile['is_active']				= true;
 
-				$content 							= $this->dispatch(new Saving(new Contact, $mobile, new Person, $is_success->data->id));
+				$content 							= $this->dispatch(new Saving(new Contact, $mobile, null, new Person, $is_success->data->id));
 
 				$is_mobile_success 					= json_decode($content);
 				if(!$is_mobile_success->meta->success)
@@ -444,8 +449,9 @@ class PersonController extends BaseController
 			{
 				$address['item']					= 'address';
 				$address['value']					= Input::get('address');
+				$address['is_active']				= true;
 
-				$content 							= $this->dispatch(new Saving(new Contact, $address, new Person, $is_success->data->id));
+				$content 							= $this->dispatch(new Saving(new Contact, $address, null, new Person, $is_success->data->id));
 
 				$is_address_success 				= json_decode($content);
 				if(!$is_address_success->meta->success)
@@ -462,6 +468,111 @@ class PersonController extends BaseController
 						else
 						{
 							$errors->add('Person', $value);
+						}
+					}
+				}
+			}
+
+			if(!$errors->count() && Input::has('marital'))
+			{
+				$marital['status']					= Input::get('marital');
+				$marital['on']						= date('Y-m-d H:i:s');
+
+				$content 							= $this->dispatch(new Saving(new MaritalStatus, $marital, null, new Person, $is_success->data->id));
+
+				$is_marital_success 				= json_decode($content);
+				if(!$is_marital_success->meta->success)
+				{
+					foreach ($is_marital_success->meta->errors as $key => $value) 
+					{
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Person', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Person', $value);
+						}
+					}
+				}
+			}
+
+			if(!$errors->count() && Input::has('document_id'))
+			{
+				$docs 								= Input::get('document_id');
+				$tmps 								= Input::get('template_id');
+				$cnts 								= Input::get('content');
+
+				foreach ($docs as $key => $value) 
+				{
+					$doc['document_id']				= $value;
+
+					$content 						= $this->dispatch(new Saving(new PersonDocument, $doc, null, new Person, $is_success->data->id));
+
+					$is_document_success 			= json_decode($content);
+					if(!$is_document_success->meta->success)
+					{
+						foreach ($is_document_success->meta->errors as $key2 => $value2) 
+						{
+							if(is_array($value2))
+							{
+								foreach ($value2 as $key3 => $value3) 
+								{
+									$errors->add('Person', $value3);
+								}
+							}
+							else
+							{
+								$errors->add('Person', $value2);
+							}
+						}
+					}
+					else
+					{
+						foreach ($tmps[$key] as $key4 => $value4) 
+						{
+							$dtl['template_id']				= $value4;
+							$val 							= explode('-', $cnts[$key][$key4]);
+							if(count($val)==3)
+							{
+								$dtl['on']					= date('Y-m-d H:i:s', strtotime($val[2].'-'.$val[1].'-'.$val[0]));
+							}
+							elseif((int)$cnts[$key][$key4])
+							{
+								$dtl['numeric']				= $cnts[$key][$key4];
+							}
+							elseif(strlen($cnts[$key][$key4]) <= 255)
+							{
+								$dtl['string']				= $cnts[$key][$key4];
+							}
+							else
+							{
+								$dtl['text']				= $cnts[$key][$key4];
+							}
+
+							$content 						= $this->dispatch(new Saving(new DocumentDetail, $dtl, null, new PersonDocument, $is_document_success->data->id));
+
+							$is_detail_success 				= json_decode($content);
+							if(!$is_detail_success->meta->success)
+							{
+								foreach ($is_detail_success->meta->errors as $key5 => $value5) 
+								{
+									if(is_array($value5))
+									{
+										foreach ($value5 as $key6 => $value6) 
+										{
+											$errors->add('Person', $value6);
+										}
+									}
+									else
+									{
+										$errors->add('Person', $value5);
+									}
+								}
+							}
 						}
 					}
 				}
