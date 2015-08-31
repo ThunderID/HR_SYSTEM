@@ -61,8 +61,8 @@ class Kernel extends ConsoleKernel {
 		//running queue (every five minutes)
 		$schedule->command('hr:queue HRQueueCommand')
 				 ->everyFiveMinutes();
-				 
-		//running queue (every five minutes)
+
+		//running queue (every month)
 		$schedule->command('hr:clearcache HRClearCacheCommand')
 				 ->monthly();
 	}
