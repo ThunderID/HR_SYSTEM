@@ -54,7 +54,7 @@ class DocumentController extends BaseController
 
 		if(!$contents->meta->success)
 		{
-			App::abort(404);
+			return Redirect::back()->with('alert_warning', 'Data personalia tidak tersedia atau tidak terdaftar sebagai karyawan.');
 		}
 
 		$person 									= json_decode(json_encode($contents->data), true);
