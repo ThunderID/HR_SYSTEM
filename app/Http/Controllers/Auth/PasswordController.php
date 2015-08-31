@@ -55,7 +55,12 @@ class PasswordController extends BaseController {
 
 				if(!$errors->count())
 				{
-					return Redirect::route('hr.organisations.index')->with('alert_success', 'Password baru sudah disimpan');
+					if(Session::has('alert_info'))
+					{
+						Session::forget('alert_info');
+					}
+					
+					return Redirect::route('hr.organisations.index')->with('alert_success', 'Password baru sudah disimpan.');
 				}
 				return Redirect::back()->withErrors($errors);	
 			}

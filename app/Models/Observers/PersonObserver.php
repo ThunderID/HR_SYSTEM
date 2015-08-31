@@ -13,7 +13,7 @@ class PersonObserver
 {
 	public function saving($model)
 	{
-		if($model['attributes']['last_password_updated_at']=='0000-00-00 00:00:00')
+		if(isset($model['attributes']['last_password_updated_at']) && $model['attributes']['last_password_updated_at']=='0000-00-00 00:00:00')
 		{
 			$model->last_password_updated_at 	= $model->created_at->format('Y-m-d H:i:s');	
 		}

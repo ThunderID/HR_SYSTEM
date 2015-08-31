@@ -355,36 +355,21 @@ class PersonBatchCommand extends Command {
 					{
 						foreach ($document['templates'] as $key => $value) 
 						{
-							switch($key)
+							$doc 							= strtolower(str_replace(' ', '', $value['field']));
+							foreach ($row as $key2 => $value2) 
 							{
-								case '0': 
-									$ktpdetail[$i][$key]['template_id']	= $value['id'];
-									$ktpdetail[$i][$key]['string']		= $row['nomorktp'];
-									break;
-								case '1':
-									$ktpdetail[$i][$key]['template_id']	= $value['id'];
-									$ktpdetail[$i][$key]['text']		= $row['alamat'];
-									break;
-								case '2':
-									$ktpdetail[$i][$key]['template_id']	= $value['id'];
-									$ktpdetail[$i][$key]['string']		= $row['kota'];
-									break;
-								case '3':
-									$ktpdetail[$i][$key]['template_id']	= $value['id'];
-									$ktpdetail[$i][$key]['string']		= $row['agama'];
-									break;
-								case '4':
-									$ktpdetail[$i][$key]['template_id']	= $value['id'];
-									$ktpdetail[$i][$key]['string']		= $row['statuskawin'];
-									break;
-								case '5':
-									$ktpdetail[$i][$key]['template_id']	= $value['id'];
-									$ktpdetail[$i][$key]['string']		= $row['kewarganegaraan'];
-									break;
-								case '6':
-									$ktpdetail[$i][$key]['template_id']	= $value['id'];
-									$ktpdetail[$i][$key]['on']			= $row['berlakuhingga'];
-									break;
+								if($doc==$key2)
+								{
+									$ktpdetail[$i][$key]['template_id']			= $value['id'];
+									if($value['type']=='date')
+									{
+										$ktpdetail[$i][$key]['on']				= $value2;
+									}
+									else
+									{
+										$ktpdetail[$i][$key][$value['type']]	= $value2;
+									}
+								}
 							}
 
 							if(isset($ktpdetail[$i][$key]) && !$errors->count())
@@ -453,20 +438,21 @@ class PersonBatchCommand extends Command {
 					{
 						foreach ($document['templates'] as $key => $value) 
 						{
-							switch($key)
+							$doc 							= strtolower(str_replace(' ', '', $value['field']));
+							foreach ($row as $key2 => $value2) 
 							{
-								case '0': 
-									$bankdetail[$i][$key]['template_id']	= $value['id'];
-									$bankdetail[$i][$key]['string']			= $row['nomorrekening'];
-									break;
-								case '1':
-									$bankdetail[$i][$key]['template_id']	= $value['id'];
-									$bankdetail[$i][$key]['string']			= $row['namabank'];
-									break;
-								case '2':
-									$bankdetail[$i][$key]['template_id']	= $value['id'];
-									$bankdetail[$i][$key]['string']			= $row['namanasabah'];
-									break;
+								if($doc==$key2)
+								{
+									$bankdetail[$i][$key]['template_id']		= $value['id'];
+									if($value['type']=='date')
+									{
+										$bankdetail[$i][$key]['on']				= $value2;
+									}
+									else
+									{
+										$bankdetail[$i][$key][$value['type']]	= $value2;
+									}
+								}
 							}
 
 							if(isset($bankdetail[$i][$key]) && !$errors->count())
@@ -535,12 +521,21 @@ class PersonBatchCommand extends Command {
 					{
 						foreach ($document['templates'] as $key => $value) 
 						{
-							switch($key)
+							$doc 							= strtolower(str_replace(' ', '', $value['field']));
+							foreach ($row as $key2 => $value2) 
 							{
-								case '0': 
-									$npwpdetail[$i][$key]['template_id']	= $value['id'];
-									$npwpdetail[$i][$key]['string']			= $row['npwp'];
-									break;
+								if($doc==$key2)
+								{
+									$npwpdetail[$i][$key]['template_id']		= $value['id'];
+									if($value['type']=='date')
+									{
+										$npwpdetail[$i][$key]['on']				= $value2;
+									}
+									else
+									{
+										$npwpdetail[$i][$key][$value['type']]	= $value2;
+									}
+								}
 							}
 
 							if(isset($npwpdetail[$i][$key]) && !$errors->count())
@@ -609,14 +604,23 @@ class PersonBatchCommand extends Command {
 					{
 						foreach ($document['templates'] as $key => $value) 
 						{
-							switch($key)
+							$doc 							= strtolower(str_replace(' ', '', $value['field']));
+							foreach ($row as $key2 => $value2) 
 							{
-								case '0': 
-									$bpjstkdetail[$i][$key]['template_id']	= $value['id'];
-									$bpjstkdetail[$i][$key]['string']		= $row['bpjsketenagakerjaan'];
-									break;
+								if($doc==$key2)
+								{
+									$bpjstkdetail[$i][$key]['template_id']		= $value['id'];
+									if($value['type']=='date')
+									{
+										$bpjstkdetail[$i][$key]['on']			= $value2;
+									}
+									else
+									{
+										$bpjstkdetail[$i][$key][$value['type']]	= $value2;
+									}
+								}
 							}
-
+							
 							if(isset($bpjstkdetail[$i][$key]) && !$errors->count())
 							{
 								$is_bpjstkd_success 					= new DocumentDetail;
@@ -683,12 +687,21 @@ class PersonBatchCommand extends Command {
 					{
 						foreach ($document['templates'] as $key => $value) 
 						{
-							switch($key)
+							$doc 							= strtolower(str_replace(' ', '', $value['field']));
+							foreach ($row as $key2 => $value2) 
 							{
-								case '0': 
-									$bpjskdetail[$i][$key]['template_id']	= $value['id'];
-									$bpjskdetail[$i][$key]['string']		= $row['bpjskesehatan'];
-									break;
+								if($doc==$key2)
+								{
+									$bpjskdetail[$i][$key]['template_id']		= $value['id'];
+									if($value['type']=='date')
+									{
+										$bpjskdetail[$i][$key]['on']			= $value2;
+									}
+									else
+									{
+										$bpjskdetail[$i][$key][$value['type']]	= $value2;
+									}
+								}
 							}
 
 							if(isset($bpjskdetail[$i][$key]) && !$errors->count())
