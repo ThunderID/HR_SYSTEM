@@ -63,17 +63,11 @@ class DocumentTableSeeder extends Seeder
 		$template 									= [
 														[
 															'Nomor KTP',
-															'Alamat',
-															'Kota',
-															'Agama',
-															'Status Kawin',
-															'Kewarganegaraan',
 															'Berlaku Hingga',
 														], 
 														[
 															'Nomor Rekening',
 															'Nama Bank',
-															'Nama Nasabah',
 														], 
 														[
 															'NPWP',
@@ -168,15 +162,9 @@ class DocumentTableSeeder extends Seeder
 				$type 								= [
 														[
 															'string',
-															'text',
-															'string',
-															'string',
-															'string',
-															'string',
 															'date',
 														], 
 														[
-															'string',
 															'string',
 															'string',
 														], 

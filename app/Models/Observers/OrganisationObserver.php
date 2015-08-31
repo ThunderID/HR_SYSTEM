@@ -65,9 +65,6 @@ class OrganisationObserver
 																'Surat Peringatan I', 
 																'Surat Peringatan II', 
 																'Surat Peringatan III', 
-																'Penilaian Kinerja I', 
-																'Penilaian Kinerja II', 
-																'Penilaian Kinerja III', 
 															];
 
 				$tag 									= 
@@ -81,25 +78,16 @@ class OrganisationObserver
 																'SP', 
 																'SP', 
 																'SP', 
-																'Apraisal', 
-																'Apraisal', 
-																'Apraisal', 
 															];
 				$template 								= 
 															[
 																[
 																	'Nomor KTP',
-																	'Alamat',
-																	'Kota',
-																	'Agama',
-																	'Status Kawin',
-																	'Kewarganegaraan',
 																	'Berlaku Hingga',
 																], 
 																[
 																	'Nomor Rekening',
 																	'Nama Bank',
-																	'Nama Nasabah',
 																], 
 																[
 																	'NPWP',
@@ -125,37 +113,16 @@ class OrganisationObserver
 																	'Tanggal',
 																	'Isi Surat Peringatan',
 																], 
-																[
-																	'Nomor Surat',
-																	'Tanggal',
-																	'Isi Penilaian Kinerja',
-																], 
-																[
-																	'Nomor Surat',
-																	'Tanggal',
-																	'Isi Penilaian Kinerja',
-																], 
-																[
-																	'Nomor Surat',
-																	'Tanggal',
-																	'Isi Penilaian Kinerja',
-																], 
 															];
 
 				$type 									= 	[
 																[
 																	'string',
-																	'text',
-																	'string',
-																	'string',
-																	'string',
-																	'string',
 																	'date',
 																], 
 																[
 																	'string',
 																	'string',
-																	'string',
 																], 
 																[
 																	'string',
@@ -165,21 +132,6 @@ class OrganisationObserver
 																], 
 																[
 																	'string',
-																], 
-																[
-																	'string',
-																	'date',
-																	'text',
-																], 
-																[
-																	'string',
-																	'date',
-																	'text',
-																], 
-																[
-																	'string',
-																	'date',
-																	'text',
 																], 
 																[
 																	'string',
@@ -252,7 +204,7 @@ class OrganisationObserver
 					$policy->fill([
 						'type'							=> $types[$key],
 						'value'							=> $values[$key],
-						'started_at'					=> date('Y-m-d'),
+						'started_at'					=> date('Y-m-d H:i:s'),
 					]);
 
 					$policy->organisation()->associate($model);

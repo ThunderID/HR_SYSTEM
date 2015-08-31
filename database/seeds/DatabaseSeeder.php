@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder {
 		// $this->call('WorkTableSeeder');
 		// $this->call('WorkAuthenticationTableSeeder');
 
-		// $this->call('DocumentTableSeeder');
+		$this->call('DocumentTableSeeder');
 		// $this->call('PersonDocumentTableSeeder');
 		// $this->call('DocumentDetailTableSeeder');
 
@@ -49,10 +49,10 @@ class DatabaseSeeder extends Seeder {
 		// $this->call('PersonWorkleaveTableSeeder');
 		// $this->call('PersonScheduleTableSeeder');
 
-		$this->call('PolicyTableSeeder');
+		// $this->call('PolicyTableSeeder');
 		// $this->call('LogTableSeeder');
 
-		$this->call('FollowWorkleaveTableSeeder');
+		// $this->call('FollowWorkleaveTableSeeder');
 	}
 
 }

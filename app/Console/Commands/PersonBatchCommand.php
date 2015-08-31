@@ -858,7 +858,7 @@ class PersonBatchCommand extends Command {
 				}
 
 				//Check Cuti 
-				if(!$errors->count())
+				if(!$errors->count() && isset($row['kuotacutitahunan']))
 				{
 					$is_workleave_success 					= Workleave::organisationid($organisation['id'])->quota($row['kuotacutitahunan'])->status('CN')->active(true)->first();
 
@@ -990,7 +990,7 @@ class PersonBatchCommand extends Command {
 				}
 
 				//save Pemberian Cuti
-				if(!$errors->count())
+				if(!$errors->count() && isset($row['kuotacutitahunan']))
 				{
 					if(in_array($is_work_success->status, ['contract', 'permanent']))
 					{
@@ -1028,7 +1028,7 @@ class PersonBatchCommand extends Command {
 				}
 
 				//save Sisa Cuti
-				if(!$errors->count())
+				if(!$errors->count() && isset($row['sisacuti']))
 				{
 					$pwleave[$i]['work_id'] 				= $is_work_success->id;
 					if(isset($is_personworkleave_success->id))

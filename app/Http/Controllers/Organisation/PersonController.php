@@ -9,6 +9,7 @@ use App\Console\Commands\Deleting;
 use App\Console\Commands\Checking;
 use App\Models\Organisation;
 use App\Models\Person;
+use App\Models\Contact;
 use App\Models\Branch;
 use App\Models\Queue;
 
@@ -277,14 +278,14 @@ class PersonController extends BaseController
 	{		
 		if(Input::has('org_id'))
 		{
-			$org_id 							= Input::get('org_id');
+			$org_id 								= Input::get('org_id');
 		}
 		else
 		{
-			$org_id 							= Session::get('user.organisationid');
+			$org_id 								= Session::get('user.organisationid');
 		}
 
-		$errors 								= new MessageBag();
+		$errors 									= new MessageBag();
 
 		if(Input::has('import'))
 		{
@@ -381,6 +382,87 @@ class PersonController extends BaseController
 					else
 					{
 						$errors->add('Person', $value);
+					}
+				}
+			}
+
+			if(!$errors->count() && Input::has('email'))
+			{
+				$email['item']						= 'email';
+				$email['value']						= Input::get('email');
+
+				$content 							= $this->dispatch(new Saving(new Contact, $email, new Person, $is_success->data->id));
+
+				$is_email_success 					= json_decode($content);
+				if(!$is_email_success->meta->success)
+				{
+					foreach ($is_email_success->meta->errors as $key => $value) 
+					{
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Person', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Person', $value);
+						}
+					}
+				}
+			}
+
+			if(!$errors->count() && Input::has('mobile'))
+			{
+				$mobile['item']						= 'mobile';
+				$mobile['value']					= Input::get('mobile');
+
+				$content 							= $this->dispatch(new Saving(new Contact, $mobile, new Person, $is_success->data->id));
+
+				$is_mobile_success 					= json_decode($content);
+				if(!$is_mobile_success->meta->success)
+				{
+					foreach ($is_mobile_success->meta->errors as $key => $value) 
+					{
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Person', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Person', $value);
+						}
+					}
+				}
+			}
+
+			if(!$errors->count() && Input::has('address'))
+			{
+				$address['item']					= 'address';
+				$address['value']					= Input::get('address');
+
+				$content 							= $this->dispatch(new Saving(new Contact, $address, new Person, $is_success->data->id));
+
+				$is_address_success 				= json_decode($content);
+				if(!$is_address_success->meta->success)
+				{
+					foreach ($is_address_success->meta->errors as $key => $value) 
+					{
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Person', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Person', $value);
+						}
 					}
 				}
 			}
