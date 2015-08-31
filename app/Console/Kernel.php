@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\PersonWorkleaveBatchCommand',
 		'App\Console\Commands\PersonBatchCommand',
 
+		'App\Console\Commands\HRClearCacheCommand',
 		'App\Console\Commands\HRSUpdateCommand',
 	];
 
@@ -60,6 +61,10 @@ class Kernel extends ConsoleKernel {
 		//running queue (every five minutes)
 		$schedule->command('hr:queue HRQueueCommand')
 				 ->everyFiveMinutes();
+				 
+		//running queue (every five minutes)
+		$schedule->command('hr:clearcache HRClearCacheCommand')
+				 ->monthly();
 	}
 
 }
