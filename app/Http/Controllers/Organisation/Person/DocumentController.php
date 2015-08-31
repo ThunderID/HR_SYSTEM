@@ -1,5 +1,5 @@
 <?php namespace App\Http\Controllers\Organisation\Person;
-use Input, Session, App, Paginator, Redirect, DB, Config, PDF;
+use Input, Session, App, Paginator, Redirect, DB, Config, PDF, Excel;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -10,6 +10,7 @@ use App\Models\Person;
 use App\Models\PersonDocument;
 use App\Models\DocumentDetail;
 use App\Models\Document;
+use App\Models\Queue;
 
 class DocumentController extends BaseController
 {
@@ -285,112 +286,156 @@ class DocumentController extends BaseController
 			App::abort(404);
 		}
 
-		$search['id'] 							= $person_id;
-		$search['organisationid'] 				= $org_id;
-		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
-		$contents 								= json_decode($results);
-
-		if(!$contents->meta->success)
+		if(Input::has('import'))
 		{
-			App::abort(404);
-		}
-
-		unset($search);
-		unset($sort);
-
-		$search['id'] 							= $doc_id;
-		$search['organisationid'] 				= $org_id;
-		$sort 									= ['name' => 'asc'];
-		$results 								= $this->dispatch(new Getting(new Document, $search, $sort , 1, 1));
-		$contents 								= json_decode($results);
-
-		if(!$contents->meta->success)
-		{
-			App::abort(404);
-		}
-
-		$attributes 							= ['document_id' => $doc_id];
-
-		$errors 								= new MessageBag();
-
-		DB::beginTransaction();
-
-		$content 								= $this->dispatch(new Saving(new PersonDocument, $attributes, $id, new Person, $person_id));
-		$is_success 							= json_decode($content);
-		
-		if(!$is_success->meta->success)
-		{
-			foreach ($is_success->meta->errors as $key => $value) 
+			if (Input::hasFile('file_csv')) 
 			{
-				if(is_array($value))
-				{
-					foreach ($value as $key2 => $value2) 
-					{
-						$errors->add('Person', $value2);
-					}
-				}
-				else
-				{
-					$errors->add('Person', $value);
-				}
-			}
-		}
+				$file_csv 		= Input::file('file_csv');
+				$attributes = [];				
+				$sheet = Excel::load($file_csv)->toArray();				
+				
+				$queattr['created_by'] 					= Session::get('loggedUser');
+				$queattr['process_name'] 				= 'hr:persondocumentbatch';
+				$queattr['parameter'] 					= json_encode(['csv' => $sheet, 'doc_id' => $doc_id]);
+				$queattr['total_process'] 				= count($sheet);
+				$queattr['task_per_process']			= 1;
+				$queattr['process_number'] 				= 0;
+				$queattr['total_task'] 					= count($sheet);
+				$queattr['message'] 					= 'Initial Queue';
 
-		if(Input::has('template_id'))
-		{
-			$template_ids 						= Input::get('template_id');
-			$detail_ids 						= Input::get('detail_id');
-			$contents 							= Input::get('content');
-			foreach ($template_ids as $key => $value) 
-			{
-				$attributes_2 					= ['template_id' => $value];
-				$checkdate						= explode('-', $cnts[$key][$key4]);
-				$checknumeric					= int($contents[$key]);
-				$checkstring					= strlen($contents[$key]);
-				if(count($checkdate) == 3)
-				{
-					$attributes_2['on']			= date('Y-m-d H:i:s', strtotime($checkdate[2].'-'.$checkdate[1].'-'.$checkdate[0]));
-				}
-				elseif($checknumeric)
-				{
-					$attributes_2['numeric']	= $contents[$key];
-				}
-				elseif($checkstring <= 255)
-				{
-					$attributes_2['string']		= $contents[$key];
-				}
-				else
-				{
-					$attributes_2['text']		= $contents[$key];
-				}
-
-				if(isset($detail_ids[$key]) && $detail_ids[$key]!='' && !is_null($detail_ids[$key]))
-				{
-					$attributes_2['id']			= $detail_ids[$key];
-				}
-				else
-				{
-					$attributes_2['id']			= null;
-				}
-
-				$saved_detail 					= $this->dispatch(new Saving(new DocumentDetail, $attributes_2, $attributes_2['id'], new PersonDocument, $is_success->data->id));
-				$is_success_2 					= json_decode($saved_detail);
+				$content 								= $this->dispatch(new Saving(new Queue, $queattr, null));
+				$is_success_2 							= json_decode($content);
 
 				if(!$is_success_2->meta->success)
 				{
-					foreach ($is_success_2->meta->errors as $key => $value) 
+					foreach ($is_success_2->meta->errors as $key2 => $value2) 
 					{
-						if(is_array($value))
+						if(is_array($value2))
 						{
-							foreach ($value as $key2 => $value2) 
+							foreach ($value2 as $key3 => $value3) 
 							{
-								$errors->add('Person', $value2);
+								$errors->add('Batch', $value3);
 							}
 						}
 						else
 						{
-							$errors->add('Person', $value);
+							$errors->add('Batch', $value2);
+						}
+					}
+				}
+
+				return Redirect::back()->with('alert_info', 'Data sedang disimpan');
+			}
+		}
+		else
+		{
+			$search['id'] 							= $person_id;
+			$search['organisationid'] 				= $org_id;
+			$sort 									= ['name' => 'asc'];
+			$results 								= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
+			$contents 								= json_decode($results);
+
+			if(!$contents->meta->success)
+			{
+				App::abort(404);
+			}
+
+			unset($search);
+			unset($sort);
+
+			$search['id'] 							= $doc_id;
+			$search['organisationid'] 				= $org_id;
+			$sort 									= ['name' => 'asc'];
+			$results 								= $this->dispatch(new Getting(new Document, $search, $sort , 1, 1));
+			$contents 								= json_decode($results);
+
+			if(!$contents->meta->success)
+			{
+				App::abort(404);
+			}
+
+			$attributes 							= ['document_id' => $doc_id];
+
+			$errors 								= new MessageBag();
+
+			DB::beginTransaction();
+
+			$content 								= $this->dispatch(new Saving(new PersonDocument, $attributes, $id, new Person, $person_id));
+			$is_success 							= json_decode($content);
+			
+			if(!$is_success->meta->success)
+			{
+				foreach ($is_success->meta->errors as $key => $value) 
+				{
+					if(is_array($value))
+					{
+						foreach ($value as $key2 => $value2) 
+						{
+							$errors->add('Person', $value2);
+						}
+					}
+					else
+					{
+						$errors->add('Person', $value);
+					}
+				}
+			}
+
+			if(Input::has('template_id'))
+			{
+				$template_ids 						= Input::get('template_id');
+				$detail_ids 						= Input::get('detail_id');
+				$contents 							= Input::get('content');
+				foreach ($template_ids as $key => $value) 
+				{
+					$attributes_2 					= ['template_id' => $value];
+					$checkdate						= explode('-', $cnts[$key][$key4]);
+					$checknumeric					= int($contents[$key]);
+					$checkstring					= strlen($contents[$key]);
+					if(count($checkdate) == 3)
+					{
+						$attributes_2['on']			= date('Y-m-d H:i:s', strtotime($checkdate[2].'-'.$checkdate[1].'-'.$checkdate[0]));
+					}
+					elseif($checknumeric)
+					{
+						$attributes_2['numeric']	= $contents[$key];
+					}
+					elseif($checkstring <= 255)
+					{
+						$attributes_2['string']		= $contents[$key];
+					}
+					else
+					{
+						$attributes_2['text']		= $contents[$key];
+					}
+
+					if(isset($detail_ids[$key]) && $detail_ids[$key]!='' && !is_null($detail_ids[$key]))
+					{
+						$attributes_2['id']			= $detail_ids[$key];
+					}
+					else
+					{
+						$attributes_2['id']			= null;
+					}
+
+					$saved_detail 					= $this->dispatch(new Saving(new DocumentDetail, $attributes_2, $attributes_2['id'], new PersonDocument, $is_success->data->id));
+					$is_success_2 					= json_decode($saved_detail);
+
+					if(!$is_success_2->meta->success)
+					{
+						foreach ($is_success_2->meta->errors as $key => $value) 
+						{
+							if(is_array($value))
+							{
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Person', $value);
+							}
 						}
 					}
 				}

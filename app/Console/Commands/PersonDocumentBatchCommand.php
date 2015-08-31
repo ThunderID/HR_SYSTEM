@@ -109,6 +109,8 @@ class PersonDocumentBatchCommand extends Command {
 					{
 						$errors->add('Batch', 'Karyawan tidak terdaftar');
 					}
+
+					$organisation 				= $person['organisation'];
 				}
 
 				//save doc

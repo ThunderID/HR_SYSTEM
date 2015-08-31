@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers\Organisation;
 
-use Input, Session, App, Paginator, Redirect, DB, Config,Response;
+use Input, Session, App, Paginator, Redirect, DB, Config,Response, Excel;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -11,6 +11,7 @@ use App\Models\Organisation;
 use App\Models\Document;
 use App\Models\Template;
 use App\Models\Person;
+use App\Models\Queue;
 
 class DocumentController extends BaseController 
 {
@@ -198,8 +199,6 @@ class DocumentController extends BaseController
 			$id 								= Input::get('id');
 		}
 		
-		$attributes 							= Input::only('name', 'tag', 'template');
-
 		if(Input::has('org_id'))
 		{
 			$org_id 							= Input::get('org_id');
@@ -215,15 +214,87 @@ class DocumentController extends BaseController
 		}
 
 		$errors 								= new MessageBag();
-
-		if(!is_null($id))
+		
+		if(Input::has('import'))
 		{
-			$content 							= $this->dispatch(new Getting(new Document, ['id' => $id, 'withattributes' => ['templates']], [], 1, 1));
-
-			$results 							= json_decode($content);
-			if(!$results->meta->success)
+			if (Input::hasFile('file_csv') && Input::has('doc_id')) 
 			{
-				foreach ($results->meta->errors as $key => $value) 
+				$file_csv 		= Input::file('file_csv');
+				$attributes = [];				
+				$sheet = Excel::load($file_csv)->toArray();				
+				
+				$queattr['created_by'] 					= Session::get('loggedUser');
+				$queattr['process_name'] 				= 'hr:persondocumentbatch';
+				$queattr['parameter'] 					= json_encode(['csv' => $sheet, 'doc_id' => Input::get('doc_id')]);
+				$queattr['total_process'] 				= count($sheet);
+				$queattr['task_per_process']			= 1;
+				$queattr['process_number'] 				= 0;
+				$queattr['total_task'] 					= count($sheet);
+				$queattr['message'] 					= 'Initial Queue';
+
+				$content 								= $this->dispatch(new Saving(new Queue, $queattr, null));
+				$is_success_2 							= json_decode($content);
+
+				if(!$is_success_2->meta->success)
+				{
+					foreach ($is_success_2->meta->errors as $key2 => $value2) 
+					{
+						if(is_array($value2))
+						{
+							foreach ($value2 as $key3 => $value3) 
+							{
+								$errors->add('Batch', $value3);
+							}
+						}
+						else
+						{
+							$errors->add('Batch', $value2);
+						}
+					}
+				}
+
+				return Redirect::route('hr.persons.index', ['org_id' => $org_id])->with('alert_info', 'Data sedang disimpan');
+			}
+		}
+		else
+		{
+			$attributes 							= Input::only('name', 'tag', 'template');
+			
+			if(!is_null($id))
+			{
+				$content 							= $this->dispatch(new Getting(new Document, ['id' => $id, 'withattributes' => ['templates']], [], 1, 1));
+
+				$results 							= json_decode($content);
+				if(!$results->meta->success)
+				{
+					foreach ($results->meta->errors as $key => $value) 
+					{
+						if(is_array($value))
+						{
+							foreach ($value as $key2 => $value2) 
+							{
+								$errors->add('Document', $value2);
+							}
+						}
+						else
+						{
+							$errors->add('Document', $value);
+						}
+					}
+				}
+
+				$document 							= json_decode(json_encode($results->data), true);
+				$templates 							= $document['templates'];
+			}
+
+			DB::beginTransaction();
+			
+			$content 								= $this->dispatch(new Saving(new Document, $attributes, $id, new Organisation, $org_id));
+
+			$is_success 							= json_decode($content);
+			if(!$is_success->meta->success)
+			{
+				foreach ($is_success->meta->errors as $key => $value) 
 				{
 					if(is_array($value))
 					{
@@ -239,147 +310,121 @@ class DocumentController extends BaseController
 				}
 			}
 
-			$document 							= json_decode(json_encode($results->data), true);
-			$templates 							= $document['templates'];
-		}
+			$ids 									= [];
 
-		DB::beginTransaction();
-		
-		$content 								= $this->dispatch(new Saving(new Document, $attributes, $id, new Organisation, $org_id));
-
-		$is_success 							= json_decode($content);
-		if(!$is_success->meta->success)
-		{
-			foreach ($is_success->meta->errors as $key => $value) 
+			if(Input::has('field'))
 			{
-				if(is_array($value))
+				$fields 							= Input::get('field');
+				$types 								= Input::get('type');
+				$ids 								= Input::get('temp_id');
+				
+				foreach ($fields as $key => $value) 
 				{
-					foreach ($value as $key2 => $value2) 
+					if($value!='' && !is_null($value) && $types[$key]!='' && !is_null($types[$key]))
 					{
-						$errors->add('Document', $value2);
-					}
-				}
-				else
-				{
-					$errors->add('Document', $value);
-				}
-			}
-		}
+						$template['field']				= $value;
+						$template['type']				= $types[$key];
 
-		$ids 									= [];
-
-		if(Input::has('field'))
-		{
-			$fields 							= Input::get('field');
-			$types 								= Input::get('type');
-			$ids 								= Input::get('temp_id');
-			
-			foreach ($fields as $key => $value) 
-			{
-				if($value!='' && !is_null($value) && $types[$key]!='' && !is_null($types[$key]))
-				{
-					$template['field']				= $value;
-					$template['type']				= $types[$key];
-
-					if(isset($ids[$key]) && $ids[$key]!='' && !is_null($ids[$key]) && (int)$ids[$key])
-					{
-						$template['id']				= $ids[$key];
-					}
-					else
-					{
-						$template['id']				= null;
-					}
-
-					$saved_template 				= $this->dispatch(new Saving(new Template, $template, $template['id'], new Document, $is_success->data->id));
-					$is_success_2 					= json_decode($saved_template);
-					if(!$is_success_2->meta->success)
-					{
-						foreach ($is_success_2->meta->errors as $key => $value) 
+						if(isset($ids[$key]) && $ids[$key]!='' && !is_null($ids[$key]) && (int)$ids[$key])
 						{
-							if(is_array($value))
+							$template['id']				= $ids[$key];
+						}
+						else
+						{
+							$template['id']				= null;
+						}
+
+						$saved_template 				= $this->dispatch(new Saving(new Template, $template, $template['id'], new Document, $is_success->data->id));
+						$is_success_2 					= json_decode($saved_template);
+						if(!$is_success_2->meta->success)
+						{
+							foreach ($is_success_2->meta->errors as $key => $value) 
 							{
-								foreach ($value as $key2 => $value2) 
+								if(is_array($value))
 								{
-									$errors->add('Document', $value2);
+									foreach ($value as $key2 => $value2) 
+									{
+										$errors->add('Document', $value2);
+									}
 								}
-							}
-							else
-							{
-								$errors->add('Document', $value);
+								else
+								{
+									$errors->add('Document', $value);
+								}
 							}
 						}
 					}
 				}
 			}
-		}
 
-		if(isset($templates))
-		{
-			foreach ($templates as $key => $value) 
+			if(isset($templates))
 			{
-				if(!in_array($value['id'], $ids))
+				foreach ($templates as $key => $value) 
 				{
-					$search 						= ['organisationid' => $org_id, 'id' => $id];
-					$results 						= $this->dispatch(new Getting(new Document, $search, [] , 1, 1));
-					$contents 						= json_decode($results);
-					
-					if(!$contents->meta->success)
+					if(!in_array($value['id'], $ids))
 					{
-						foreach ($contents->meta->errors as $key => $value) 
+						$search 						= ['organisationid' => $org_id, 'id' => $id];
+						$results 						= $this->dispatch(new Getting(new Document, $search, [] , 1, 1));
+						$contents 						= json_decode($results);
+						
+						if(!$contents->meta->success)
 						{
-							if(is_array($value))
+							foreach ($contents->meta->errors as $key => $value) 
 							{
-								foreach ($value as $key2 => $value2) 
+								if(is_array($value))
 								{
-									$errors->add('Document', $value2);
+									foreach ($value as $key2 => $value2) 
+									{
+										$errors->add('Document', $value2);
+									}
 								}
-							}
-							else
-							{
-								$errors->add('Document', $value);
+								else
+								{
+									$errors->add('Document', $value);
+								}
 							}
 						}
-					}
 
-					$search 						= ['id' => $value['id'], 'documentid' => $id];
-					$results 						= $this->dispatch(new Getting(new Template, $search, [] , 1, 1));
-					$contents 						= json_decode($results);
-					
-					if(!$contents->meta->success)
-					{
-						foreach ($contents->meta->errors as $key => $value) 
+						$search 						= ['id' => $value['id'], 'documentid' => $id];
+						$results 						= $this->dispatch(new Getting(new Template, $search, [] , 1, 1));
+						$contents 						= json_decode($results);
+						
+						if(!$contents->meta->success)
 						{
-							if(is_array($value))
+							foreach ($contents->meta->errors as $key => $value) 
 							{
-								foreach ($value as $key2 => $value2) 
+								if(is_array($value))
 								{
-									$errors->add('Document', $value2);
+									foreach ($value as $key2 => $value2) 
+									{
+										$errors->add('Document', $value2);
+									}
 								}
-							}
-							else
-							{
-								$errors->add('Document', $value);
+								else
+								{
+									$errors->add('Document', $value);
+								}
 							}
 						}
-					}
 
-					$results 						= $this->dispatch(new Deleting(new Template, $value['id']));
-					$contents 						= json_decode($results);
+						$results 						= $this->dispatch(new Deleting(new Template, $value['id']));
+						$contents 						= json_decode($results);
 
-					if (!$contents->meta->success)
-					{
-						foreach ($contents->meta->errors as $key => $value) 
+						if (!$contents->meta->success)
 						{
-							if(is_array($value))
+							foreach ($contents->meta->errors as $key => $value) 
 							{
-								foreach ($value as $key2 => $value2) 
+								if(is_array($value))
 								{
-									$errors->add('Document', $value2);
+									foreach ($value as $key2 => $value2) 
+									{
+										$errors->add('Document', $value2);
+									}
 								}
-							}
-							else
-							{
-								$errors->add('Document', $value);
+								else
+								{
+									$errors->add('Document', $value);
+								}
 							}
 						}
 					}
