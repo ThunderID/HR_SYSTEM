@@ -10,9 +10,12 @@
 		{!! Form::open(['url' => $DocumentComposer['widget_data']['documentlist']['form_url'], 'class' => 'form', 'method' => 'get']) !!}	
 			<div class="form-group">				
 				<label class="control-label">Jenis Dokumen</label>				
-				<select name="doc_id" id="doc" class="form-control" tabindex="1">
+				<select name="doc_id" id="doc" class="form-control select_doc_person" tabindex="1">
 					@if(isset($DocumentComposer['widget_data']['documentlist']['document']))
 						@foreach($DocumentComposer['widget_data']['documentlist']['document'] as $key => $value)
+							@if ($key==0)
+								<?php $keyid= $value['id']; ?>
+							@endif
 							<option value="{{ $value['id'] }}">{{ $value['name'] }}</option>
 						@endforeach
 					@endif
@@ -25,7 +28,8 @@
 				<a href="javascript:;" class="btn btn-default btn_add_doclist">Tambah Jenis Dokumen</a>				
 			</div> --}}
 			<div class="form-group text-right">
-				<input type="submit" class="btn btn-primary" value="Pilih" tabindex="2">				
+				<input type="submit" class="btn btn-primary" value="Input Form" tabindex="2">
+				<a href="javascript:;" class="btn btn-primary import_doc" data-toggle="modal" data-target="#import_csv_person" data-action="{{ route('hr.person.documents.store') }}" tabindex="3" data-org_id="{{ $data['id'] }}" data-doc_id="{{ $keyid }}">Import CSV</a>
 			</div>
 		{!! Form::close() !!}
 	@overwrite	

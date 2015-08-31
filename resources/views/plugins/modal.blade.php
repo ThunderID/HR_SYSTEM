@@ -47,4 +47,13 @@
 			$(this).parent().attr('action', add);
 		}		
 	});
+
+	/* Modal Import CSV person document */
+	$('.import_csv_person').on('show.bs.modal', function(e) {
+		var action 		= $(e.relatedTarget).attr('data-action');
+		var org_id		= $(e.relatedTarget).attr('data-org_id');
+		var doc_id		= $(e.relatedTarget).attr('data-doc_id');
+
+		$(this).parent().attr('action', action+'?doc_id='+doc_id+'&org_id='+org_id);
+	});
 </script>

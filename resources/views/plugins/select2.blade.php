@@ -64,5 +64,10 @@
 		{
 			$('form.form_widget_person_workleave').submit();
 		});
+
+		$('.select_doc_person').on('change', function() {
+			var value = $(this).val();
+			$('.import_doc').attr('data-doc_id', value);
+		});
 	});	
 </script>

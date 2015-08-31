@@ -67,6 +67,12 @@
 									]
 		])
 	@endif
+	
+	{!! Form::open(['url' => 'javascript:;','method' => 'POST']) !!}
+		@include('widgets.modal.import_csv_person_doc', [
+			'widget_template'		=> 'plain_no_title'
+		])
+	{!! Form::close() !!}
 
 @overwrite
 
