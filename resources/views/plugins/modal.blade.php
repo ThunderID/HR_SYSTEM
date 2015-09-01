@@ -70,11 +70,21 @@
 		$(this).parent().attr('action', action+'?doc_id='+doc_id+'&org_id='+org_id);
 	});
 
+	/* Modal import csv create person */
 	$('.import_csv_person_create').on('show.bs.modal', function(e) {
 		var action 		= $(e.relatedTarget).attr('data-action');
 		var org_id		= $(e.relatedTarget).attr('data-org_id');
 
 		$('.span-title').html('person');
+		$(this).parent().attr('action', action+'?org_id='+org_id);
+	});
+
+	/* modal import csv person work */
+	$('.import_csv_work_person').on('show.bs.modal', function(e) {
+		var action 		= $(e.relatedTarget).attr('data-action');
+		var org_id 		= $(e.relatedTarget).attr('data-org_id');
+
+		$('.span-title').html('pekerjaan');
 		$(this).parent().attr('action', action+'?org_id='+org_id);
 	});
 </script>

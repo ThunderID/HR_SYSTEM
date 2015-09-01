@@ -54,6 +54,13 @@
 										]
 									]
 	])
+	
+	{!! Form::open(['url' => 'javascript:;','method' => 'POST', 'files' => true]) !!}
+		@include('widgets.modal.import_csv', [
+			'widget_template'		=> 'plain_no_title',
+			'class_id'				=> 'import_csv_person_create'
+		])
+	{!! Form::close() !!}
 
 	{!! Form::open(array('route' => array('hr.persons.delete', 0),'method' => 'DELETE')) !!}
 		@include('widgets.modal.delete', [
