@@ -68,7 +68,7 @@
 		])
 	@endif
 	
-	{!! Form::open(['url' => 'javascript:;','method' => 'POST']) !!}
+	{!! Form::open(['url' => 'javascript:;','method' => 'POST', 'files' => true]) !!}
 		@include('widgets.modal.import_csv', [
 			'widget_template'		=> 'plain_no_title',
 			'class_id'				=> 'import_csv_doc_person'
