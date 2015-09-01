@@ -103,7 +103,6 @@ class PersonBatchCommand extends Command {
 
 		$parameters 							= json_decode($pending->parameter, true);
 
-
 		foreach($parameters as $i => $row)
 		{
 			if(($pending->process_number-1) < $i)
@@ -169,7 +168,6 @@ class PersonBatchCommand extends Command {
 						$attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime($row['tanggallahir']));
 
 						$attributes[$i]['gender']			= $row['gender']=='L' ? 'male' : 'female';
-						$attributes[$i]['org_id']			= $org_id_code;
 						if(isset($row['password']))
 						{
 							$attributes[$i]['password']		= Hash::make($row['password']);
@@ -338,9 +336,8 @@ class PersonBatchCommand extends Command {
 						$calendar[$i]['end'] 				= date('H:i:s', strtotime($row['jampulangkerja']));
 
 						$is_calendar_success 				= new Calendar;
-						$is_calendar_success->fill($calendar[$id]);
+						$is_calendar_success->fill($calendar[$i]);
 						$is_calendar_success->Organisation()->associate($organisation);
-						$is_calendar_success 				= json_decode($content);
 						
 						if(!$is_calendar_success->save())
 						{
@@ -371,9 +368,8 @@ class PersonBatchCommand extends Command {
 						$branch[$i]['name'] 			= $row['namacabang'];
 
 						$is_branch_success 				= new Branch;
-						$is_branch_success->fill($branch[$id]);
+						$is_branch_success->fill($branch[$i]);
 						$is_branch_success->Organisation()->associate($organisation);
-						$is_branch_success 				= json_decode($content);
 						
 						if(!$is_branch_success->save())
 						{
@@ -408,9 +404,8 @@ class PersonBatchCommand extends Command {
 						$chart[$i]['max_employee'] 		= 10;
 
 						$is_chart_success 				= new Chart;
-						$is_chart_success->fill($chart[$id]);
-						$is_chart_success->Branch()->associate($organisation);
-						$is_chart_success 				= json_decode($is_branch_success);
+						$is_chart_success->fill($chart[$i]);
+						$is_chart_success->Branch()->associate($is_branch_success);
 						
 						if(!$is_chart_success->save())
 						{
@@ -436,7 +431,7 @@ class PersonBatchCommand extends Command {
 				{
 					$is_follow_success 						= Follow::chartid($is_chart_success->id)->calendarid($is_calendar_success->id)->first();
 
-					if(!$is_follow_success->meta->success)
+					if(!$is_follow_success)
 					{
 						$follow[$i]['chart_id'] 			= $is_chart_success->id;
 
@@ -454,7 +449,7 @@ class PersonBatchCommand extends Command {
 
 							$morphed->fill([
 								'queue_id'					=> $pending->id,
-								'queue_morph_id'			=> $is_follow_success->data->id,
+								'queue_morph_id'			=> $is_follow_success->id,
 								'queue_morph_type'			=> get_class(new Follow),
 							]);
 
@@ -543,7 +538,7 @@ class PersonBatchCommand extends Command {
 						}
 
 						$is_work_success 					= new Work;
-						$is_work_success->fill($work);
+						$is_work_success->fill($work[$i]);
 						$is_work_success->Person()->associate($is_success);
 
 						if(!$is_work_success->save())
@@ -566,7 +561,7 @@ class PersonBatchCommand extends Command {
 				}
 
 				//save FolloWorkleve
-				if(!$errors->count())
+				if(!$errors->count() && isset($row['kuotacutitahunan']))
 				{
 					$is_fwleave_success 						= FollowWorkleave::workid($is_work_success->id)->workleaveid($is_workleave_success->id)->first();
 

@@ -85,10 +85,14 @@ class HRSUpdateCommand extends Command {
 			$table->string('grade', 255);
 		});
 
+		$this->info("Add grade on works table");
+
 		Schema::table('charts', function(Blueprint $table)
 		{
 			$table->dropColumn('grade');
 		});
+
+		$this->info("Drop grade from charts table");
 
 		Schema::create('record_logs', function(Blueprint $table)
 		{

@@ -48,7 +48,7 @@ trait HasWorksOnTrait {
 		}
 		if($bool==false)
 		{
-			return $query->whereDoesntHave('works', function($q)use($variable){$q;})->orwhereHas('works', function($q)use($variable){$q->where('end', '<', date('Y-m-d'));});
+			return $query->whereDoesntHave('works', function($q)use($variable){$q->where(DB::raw('`end` >= '.date('Y-m-d')));});
 		}
 		if($bool==true)
 		{
