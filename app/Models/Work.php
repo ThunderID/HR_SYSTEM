@@ -7,6 +7,7 @@
  * 	person_id 						: Foreign Key From Person, Integer, Required
  * 	calendar_id 					: Foreign Key From Calendar, Integer, Required
  * 	status 		 					: Enum contract or probation or internship or permanent or others or previous
+ * 	grade 	 						: Varchar, 255
  * 	start 							: Date, Y-m-d, Required
  * 	end 							: Date, Y-m-d
  * 	position 						: required if chart_id not present
@@ -47,6 +48,7 @@ class Work extends BaseModel {
 	protected 	$fillable			= 	[
 											'calendar_id' 				,
 											'chart_id' 					,
+											'grade' 					,
 											'status' 					,
 											'start' 					,
 											'end' 						,
@@ -57,6 +59,7 @@ class Work extends BaseModel {
 
 	protected 	$rules				= 	[
 											'chart_id'					=> 'required_without:position',
+											'grade' 					=> 'max:255',
 											'status' 					=> 'required|in:contract,probation,internship,permanent,others,admin,previous',
 											'start' 					=> 'required|date_format:"Y-m-d"',
 											'end' 						=> 'required_if:status,contract,probation,internship,previous|date_format:"Y-m-d"',

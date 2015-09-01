@@ -240,7 +240,7 @@ class WorkController extends BaseController
 
 		if(Input::has('chart_id'))
 		{
-			$attributes 						= Input::only('chart_id', 'calendar_id', 'start', 'reason_end_job', 'status');
+			$attributes 						= Input::only('chart_id', 'calendar_id', 'start', 'reason_end_job', 'status', 'grade');
 
 			if((int)$attributes['calendar_id']==0)
 			{

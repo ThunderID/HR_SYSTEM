@@ -519,6 +519,7 @@ class PersonBatchCommand extends Command {
 						$work[$i]['chart_id'] 				= $is_chart_success->id;
 						$work[$i]['calendar_id'] 			= $is_calendar_success->id;
 						$work[$i]['status'] 				= $search['status'];
+						$work[$i]['grade'] 					= $row['grade'];
 						
 						list($d, $m, $y) 					= explode("/", $row['mulaikerja']);
 						$work[$i]['start']					= date('Y-m-d', strtotime("$y-$m-$d"));
