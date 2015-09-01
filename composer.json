@@ -11,7 +11,8 @@
 		"thunderid/menu": "dev-master",
 		"intervention/image": "dev-master",
 		"maatwebsite/excel": "~2.0.0",
-		"barryvdh/laravel-dompdf": "0.5.*"
+		"barryvdh/laravel-dompdf": "0.5.*",
+		"nesbot/carbon": "^1.20"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",
