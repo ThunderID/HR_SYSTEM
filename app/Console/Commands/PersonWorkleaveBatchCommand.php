@@ -272,7 +272,7 @@ class PersonWorkleaveBatchCommand extends Command {
 				
 				$person 					= Person::find($value->person_id);
 
-				$is_success 				= $pwP->fill($parameters);
+				$is_success 				= $pwid->fill($parameters);
 				$is_success->Person()->associate($person);
 
 				if(!$is_success->save())
