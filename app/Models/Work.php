@@ -164,6 +164,11 @@ class Work extends BaseModel {
 		return $query->whereHas('calendar', function($q){$q;});
 	}
 
+	public function scopeStartBefore($query, $variable)
+	{
+		return $query->where('start', '<=', date('Y-m-d', strtotime($variable)));
+	}
+
 	public function scopeGroupPerson($query, $variable)
 	{
 		return $query->groupBy('person_id');
