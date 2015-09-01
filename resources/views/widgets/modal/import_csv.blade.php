@@ -1,7 +1,7 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
 @section('widget_body')
-	<div class="modal fade import_csv_person" id="import_csv_person" tabindex="-1" role="dialog" aria-labelledby="Import CSV" aria-hidden="true">
+	<div class="modal fade {{ isset($class_id) ? $class_id : '' }}" id="{{ isset($class_id) ? $class_id : '' }}" tabindex="-1" role="dialog" aria-labelledby="Import CSV" aria-hidden="true">
 		<div class="modal-dialog form">
 			<div class="modal-content">
 				<div class="modal-header">
