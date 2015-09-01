@@ -161,7 +161,6 @@ class PersonBatchCommand extends Command {
 
 						$attributes[$i]['username']			= $modifyuname.'.'.$row['kodeorganisasi'];
 
-						$attributes[$i]['password']			= Hash::make($row['nik']);
 						$attributes[$i]['place_of_birth']	= $row['tempatlahir'];
 						$attributes[$i]['last_password_updated_at'] = date('Y-m-d H:i:s', strtotime('- 3 month'));
 
@@ -170,6 +169,14 @@ class PersonBatchCommand extends Command {
 
 						$attributes[$i]['gender']			= $row['gender']=='L' ? 'male' : 'female';
 						$attributes[$i]['org_id']			= $org_id_code;
+						if(isset($row['password']))
+						{
+							$attributes[$i]['password']		= Hash::make($row['password']);
+						}
+						else
+						{
+							$attributes[$i]['password']		= Hash::make($row['nik']);
+						}
 
 						$is_success 						= new Person;
 						$is_success->fill($attributes[$i]);
