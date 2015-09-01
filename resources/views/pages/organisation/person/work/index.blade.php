@@ -49,7 +49,7 @@
 											[
 												'organisation_id'	=> $data['id'],
 												'search'			=> array_merge(['active' => false,'personid' => $person['id'], 'withattributes' => ['chart', 'chart.branch', 'chart.branch.organisation']], (isset($filtered['search']) ? $filtered['search'] : [])),
-												'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['end' => 'asc']),
+												'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['start' => 'desc']),
 												'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 												'page'				=> (Input::has('page') ? Input::get('page') : 1),
 												'per_page'			=> 12,
@@ -68,7 +68,7 @@
 											[
 												'organisation_id'	=> $data['id'],
 												'search'			=> array_merge(['personid' => $person['id'], 'withattributes' => ['chart', 'chart.branch', 'chart.branch.organisation']], (isset($filtered['search']) ? $filtered['search'] : [])),
-												'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['end' => 'asc']),
+												'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['start' => 'desc']),
 												'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
 												'page'				=> (Input::has('page') ? Input::get('page') : 1),
 												'per_page'			=> 12,

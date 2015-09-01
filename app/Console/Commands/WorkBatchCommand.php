@@ -3,6 +3,16 @@
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Illuminate\Support\MessageBag;
+
+use App\Models\Queue;
+use App\Models\QueueMorph;
+use App\Models\Person;
+use App\Models\Chart;
+use App\Models\Calendar;
+use App\Models\Work;
+
+use DB;
 
 class WorkBatchCommand extends Command {
 
@@ -103,7 +113,7 @@ class WorkBatchCommand extends Command {
 
 					$organisation 				= $person['organisation'];
 
-					$is_chart_success 			= Chart::organisationid($organisation['id'])->branchname($row['cabang'])->tag($row['namadepartemen'])->name($row['jabatan'])->first();
+					$is_chart_success 			= Chart::organisationid($organisation['id'])->branchname($row['namacabang'])->tag($row['namadepartemen'])->name($row['jabatan'])->first();
 
 					$is_calendar_success 		= Calendar::organisationid($organisation['id'])->first();
 					
@@ -147,22 +157,27 @@ class WorkBatchCommand extends Command {
 						$work[$i]['chart_id'] 				= $is_chart_success->id;
 						$work[$i]['calendar_id'] 			= $is_calendar_success->id;
 						$work[$i]['status'] 				= $search['status'];
-						$work[$i]['grade'] 					= $row['grade'];
+						if(isset($row['grade']))
+						{
+							$work[$i]['grade'] 				= $row['grade'];
+						}
 						
-						list($d, $m, $y) 					= explode("/", $row['mulaikerja']);
-						$work[$i]['start']					= date('Y-m-d', strtotime("$y-$m-$d"));
+						// list($d, $m, $y) 					= explode("/", $row['mulaikerja']);
+						// $work[$i]['start']					= date('Y-m-d', strtotime("$y-$m-$d"));
+						$work[$i]['start']					= date('Y-m-d', strtotime($row['mulaikerja']));
 						
 						if($row['berhentikerja']!='')
 						{
-							list($d, $m, $y) 				= explode("/", $row['berhentikerja']);
-							$work[$i]['end']				= date('Y-m-d', strtotime("$y-$m-$d"));
+							// list($d, $m, $y) 				= explode("/", $row['berhentikerja']);
+							// $work[$i]['end']				= date('Y-m-d', strtotime("$y-$m-$d"));
+							$work[$i]['end']				= date('Y-m-d', strtotime($row['berhentikerja']));
 
 							$work[$i]['reason_end_job'] 	= 'Akhir '.$row['statuskerja'];
 						}
 
 						$is_work_success 					= new Work;
-						$is_work_success->fill($work);
-						$is_work_success->Person()->associate($is_success);
+						$is_work_success->fill($work[$i]);
+						$is_work_success->Person()->associate($person);
 
 						if(!$is_work_success->save())
 						{
@@ -188,7 +203,7 @@ class WorkBatchCommand extends Command {
 					DB::commit();
 
 					$pnumber 								= $pending->process_number+1;
-					$messages['message'][$pnumber]		 	= 'Sukses Menyimpan Pekerjaan Karyawan '.(isset($person['name']) ? $parameters['name'] : '');
+					$messages['message'][$pnumber]		 	= 'Sukses Menyimpan Pekerjaan Karyawan '.(isset($person['name']) ? $person['name'] : '');
 					$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 				}
 				else
@@ -196,7 +211,7 @@ class WorkBatchCommand extends Command {
 					DB::rollback();
 					
 					$pnumber 								= $pending->process_number+1;
-					$messages['message'][$pnumber] 			= 'Gagal Menyimpan Pekerjaan Karyawan '.(isset($person['name']) ? $parameters['name'] : '');
+					$messages['message'][$pnumber] 			= 'Gagal Menyimpan Pekerjaan Karyawan '.(isset($person['name']) ? $person['name'] : '');
 					$messages['errors'][$pnumber] 			= $errors;
 
 					$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);

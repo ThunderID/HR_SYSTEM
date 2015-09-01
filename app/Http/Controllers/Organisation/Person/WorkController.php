@@ -1,14 +1,19 @@
 <?php namespace App\Http\Controllers\Organisation\Person;
-use Input, Session, App, Paginator, Redirect, DB, Config, Response;
+
+use Input, Session, App, Paginator, Redirect, DB, Config, Response, Excel;
+
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
+
 use App\Console\Commands\Saving;
 use App\Console\Commands\Getting;
 use App\Console\Commands\Checking;
 use App\Console\Commands\Deleting;
+
 use App\Models\Work;
 use App\Models\Person;
 use App\Models\Follow;
+use App\Models\Queue;
 
 class WorkController extends BaseController
 {
@@ -217,7 +222,7 @@ class WorkController extends BaseController
 		{
 			$person_id 							= Input::get('person_id');
 		}
-		else
+		elseif(!Input::has('import'))
 		{
 			App::abort(404);
 		}
@@ -225,6 +230,48 @@ class WorkController extends BaseController
 		if(!in_array($org_id, Session::get('user.organisationids')))
 		{
 			App::abort(404);
+		}
+
+		if(Input::has('import'))
+		{
+			if (Input::hasFile('file_csv')) 
+			{
+				$file_csv 		= Input::file('file_csv');
+				$attributes = [];				
+				$sheet = Excel::load($file_csv)->toArray();				
+				
+				$queattr['created_by'] 					= Session::get('loggedUser');
+				$queattr['process_name'] 				= 'hr:workbatch';
+				$queattr['parameter'] 					= json_encode(['csv' => $sheet]);
+				$queattr['total_process'] 				= count($sheet);
+				$queattr['task_per_process']			= 1;
+				$queattr['process_number'] 				= 0;
+				$queattr['total_task'] 					= count($sheet);
+				$queattr['message'] 					= 'Initial Queue';
+
+				$content 								= $this->dispatch(new Saving(new Queue, $queattr, null));
+				$is_success_2 							= json_decode($content);
+
+				if(!$is_success_2->meta->success)
+				{
+					foreach ($is_success_2->meta->errors as $key2 => $value2) 
+					{
+						if(is_array($value2))
+						{
+							foreach ($value2 as $key3 => $value3) 
+							{
+								$errors->add('Batch', $value3);
+							}
+						}
+						else
+						{
+							$errors->add('Batch', $value2);
+						}
+					}
+				}
+
+				return Redirect::back()->with('alert_info', 'Data sedang disimpan');
+			}
 		}
 
 		$search['id'] 							= $person_id;
