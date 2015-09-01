@@ -164,8 +164,9 @@ class PersonBatchCommand extends Command {
 						$attributes[$i]['place_of_birth']	= $row['tempatlahir'];
 						$attributes[$i]['last_password_updated_at'] = date('Y-m-d H:i:s', strtotime('- 3 month'));
 
-						list($d, $m, $y) 					= explode("/", $row['tanggallahir']);
-						$attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime("$y-$m-$d"));
+						// list($d, $m, $y) 					= explode("/", $row['tanggallahir']);
+						// $attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime("$y-$m-$d"));
+						$attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime($row['tanggallahir']));
 
 						$attributes[$i]['gender']			= $row['gender']=='L' ? 'male' : 'female';
 						$attributes[$i]['org_id']			= $org_id_code;
@@ -528,13 +529,15 @@ class PersonBatchCommand extends Command {
 						$work[$i]['status'] 				= $search['status'];
 						$work[$i]['grade'] 					= $row['grade'];
 						
-						list($d, $m, $y) 					= explode("/", $row['mulaikerja']);
-						$work[$i]['start']					= date('Y-m-d', strtotime("$y-$m-$d"));
+						// list($d, $m, $y) 					= explode("/", $row['mulaikerja']);
+						// $work[$i]['start']					= date('Y-m-d', strtotime("$y-$m-$d"));
+						$work[$i]['start']					= date('Y-m-d', strtotime($row['mulaikerja']));
 						
 						if($row['berhentikerja']!='')
 						{
-							list($d, $m, $y) 				= explode("/", $row['berhentikerja']);
-							$work[$i]['end']				= date('Y-m-d', strtotime("$y-$m-$d"));
+							// list($d, $m, $y) 				= explode("/", $row['berhentikerja']);
+							// $work[$i]['end']				= date('Y-m-d', strtotime("$y-$m-$d"));
+							$work[$i]['end']				= date('Y-m-d', strtotime($row['berhentikerja']));
 
 							$work[$i]['reason_end_job'] 	= 'Akhir '.$row['statuskerja'];
 						}
