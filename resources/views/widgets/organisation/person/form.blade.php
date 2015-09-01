@@ -3,9 +3,10 @@
 @if (!$widget_error_count)
 	@section('widget_title')
 	<h1> {{ is_null($id) ? 'Tambah Data Karyawan' : 'Ubah Data Karyawan "'. $PersonComposer['widget_data']['personlist']['person']['name'].'"'}} </h1> 
-		
-	<div class="text-right">
-	<a href="{{ route('hr.persons.create', ['org_id' => $data['id'], 'import' => 'yes']) }}" class="btn btn-primary text-right">Import CSV</a>	</div>
+	@if (!$id)
+		<div class="text-right">
+		<a href="{{ route('hr.persons.create', ['org_id' => $data['id'], 'import' => 'yes']) }}" class="btn btn-primary text-right">Import CSV</a>	</div>
+	@endif
 	@overwrite
 
 	@section('widget_body')

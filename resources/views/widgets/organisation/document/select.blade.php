@@ -14,9 +14,9 @@
 					@if(isset($DocumentComposer['widget_data']['documentlist']['document']))
 						@foreach($DocumentComposer['widget_data']['documentlist']['document'] as $key => $value)
 							@if ($key==0)
-								<?php $keyid= $value['id']; ?>
+								<?php $keyid= $value['id']; $keyname= $value['name']; ?>
 							@endif
-							<option value="{{ $value['id'] }}">{{ $value['name'] }}</option>
+							<option value="{{ $value['id'] }}" data-name="{{ $value['name'] }}">{{ $value['name'] }}</option>
 						@endforeach
 					@endif
 				</select>				
@@ -29,7 +29,7 @@
 			</div> --}}
 			<div class="form-group text-right">
 				<input type="submit" class="btn btn-primary" value="Input Form" tabindex="2">
-				<a href="javascript:;" class="btn btn-primary import_doc" data-toggle="modal" data-target="#import_csv_person" data-action="{{ route('hr.person.documents.store') }}" tabindex="3" data-org_id="{{ $data['id'] }}" data-doc_id="{{ $keyid }}">Import CSV</a>
+				<a href="javascript:;" class="btn btn-primary import_doc" data-toggle="modal" data-target="#import_csv_doc_person" data-action="{{ route('hr.person.documents.store') }}" tabindex="3" data-org_id="{{ $data['id'] }}" data-doc_id="{{ $keyid }}" data-doc_name="{{ $keyname }}">Import CSV</a>
 			</div>
 		{!! Form::close() !!}
 	@overwrite	

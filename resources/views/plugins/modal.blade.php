@@ -49,11 +49,32 @@
 	});
 
 	/* Modal Import CSV person document */
-	$('.import_csv_person').on('show.bs.modal', function(e) {
+	$('.import_csv_doc_person').on('show.bs.modal', function(e) {
 		var action 		= $(e.relatedTarget).attr('data-action');
 		var org_id		= $(e.relatedTarget).attr('data-org_id');
 		var doc_id		= $(e.relatedTarget).attr('data-doc_id');
+		var doc_name	= $(e.relatedTarget).attr('data-doc_name');
 
+		$('.span-title').html(doc_name);
 		$(this).parent().attr('action', action+'?doc_id='+doc_id+'&org_id='+org_id);
+	});
+
+	/* Modal Import CSV org document */
+	$('.import_csv_doc_org').on('show.bs.modal', function(e) {
+		var action 		= $(e.relatedTarget).attr('data-action');
+		var org_id		= $(e.relatedTarget).attr('data-org_id');
+		var doc_id		= $(e.relatedTarget).attr('data-doc_id');
+		var doc_name	= $(e.relatedTarget).attr('data-doc_name');
+
+		$('.span-title').html(doc_name);
+		$(this).parent().attr('action', action+'?doc_id='+doc_id+'&org_id='+org_id);
+	});
+
+	$('.import_csv_person_create').on('show.bs.modal', function(e) {
+		var action 		= $(e.relatedTarget).attr('data-action');
+		var org_id		= $(e.relatedTarget).attr('data-org_id');
+
+		$('.span-title').html('person');
+		$(this).parent().attr('action', action+'?org_id='+org_id);
 	});
 </script>
