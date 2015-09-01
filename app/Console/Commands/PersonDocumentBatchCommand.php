@@ -193,6 +193,10 @@ class PersonDocumentBatchCommand extends Command {
 									$morphed->save();
 								}
 							}
+							elseif(!isset($docdetail[$i][$key]))
+							{
+								$errors->add('Batch', 'Tidak ada isi dokumen');
+							}
 						}
 					}
 				}

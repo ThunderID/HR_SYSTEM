@@ -93,10 +93,10 @@ class OrganisationObserver
 																	'NPWP',
 																], 
 																[
-																	'Nomor BPJS-TK',
+																	'BPJS Ketenagakerjaan',
 																], 
 																[
-																	'Nomor BPJS-K',
+																	'BPJS Kesehatan',
 																], 
 																[
 																	'Nomor Surat',
