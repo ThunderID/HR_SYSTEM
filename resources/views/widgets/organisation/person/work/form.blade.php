@@ -49,7 +49,7 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label">Grade</label>
-				{!!Form::input('text', 'grade', $PersonComposer['widget_data']['personlist']['person']['grade'], ['class' => 'form-control'])!!}							
+				{!!Form::input('text', 'grade', $WorkComposer['widget_data']['worklist']['work']['grade'], ['class' => 'form-control'])!!}							
 			</div>
 			<div class="row">
 				<div class="col-sm-6">

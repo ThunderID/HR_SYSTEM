@@ -211,13 +211,14 @@ class PersonController extends BaseController
 			}
 			else
 			{
-				$filter['search']['chartnotadmin'] 		= true;
+				$filter['search']['chartnotadmin'] 		= date('Y-m-d');
 			}
 		
 			$filter['search']['checkwork'] 			= true;
 		}
 		else
 		{
+			$filter['search']['checkwork'] 			= false;
 			$filter['active']['checkwork'] 			= 'Cari Data Non Karyawan';
 		}
 
@@ -239,6 +240,7 @@ class PersonController extends BaseController
 
 		$this->layout->page->filter 				= $filters;
 		$this->layout->page->filtered 				= $filter;
+
 		$this->layout->page->default_filter  		= ['org_id' => $data['id']];
 
 		return $this->layout;
@@ -289,7 +291,6 @@ class PersonController extends BaseController
 		}
 
 		$errors 									= new MessageBag();
-
 		if(Input::has('import'))
 		{
 			if (Input::hasFile('file_csv')) 

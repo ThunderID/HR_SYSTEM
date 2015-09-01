@@ -48,11 +48,11 @@ trait HasWorksOnTrait {
 		}
 		if($bool==false)
 		{
-			return $query->whereDoesntHave('works', function($q)use($variable){$q->where(DB::raw('`end` >= '.date('Y-m-d')));});
+			return $query->whereDoesntHave('works', function($q)use($variable){$q->where(function($query){$query->where('end', '>=' ,date('Y-m-d'))->orWhereraw('end is null');});});
 		}
 		if($bool==true)
 		{
-			return $query->whereHas('works', function($q)use($variable){$q->where(DB::raw('`end` >= '.date('Y-m-d')));});
+			return $query->whereHas('works', function($q)use($variable){$q->where(function($query){$query->where('end', '>=' ,date('Y-m-d'))->orWhereraw('end is null');});});
 		}
 		
 		return $query->whereHas('works', function($q)use($variable){$q;});
@@ -67,20 +67,20 @@ trait HasWorksOnTrait {
 		}
 		if(!is_null($variable))
 		{
-			return $query->with(['works' => function($q)use($variable){$q->where(DB::raw('`end` >= '.date('Y-m-d')))->orderBy('start', 'asc')->id($variable);}]);
+			return $query->with(['works' => function($q)use($variable){$q->where(function($query){$query->where('end', '>=' ,date('Y-m-d'))->orWhereraw('end is null');})->orderBy('start', 'asc')->id($variable);}]);
 		}
-		return $query->with(['works' => function($q){$q->where(DB::raw('`end` >= '.date('Y-m-d')))->orderBy('start', 'asc');}]);
+
+		return $query->with(['works' => function($q)use($variable){$q->where(function($query){$query->where('end', '>=' ,date('Y-m-d'))->orWhereraw('end is null');});}]);
 	}
 
 	public function scopePreviousWork($query, $variable)
 	{
-		return $query->with(['works' => function($q){$q->whereNotNull('end')->orwhere('end', '<', date('Y-m-d'))->orderBy('start', 'asc');}]);
-
+		return $query->with(['works' => function($q)use($variable){$q->where(function($query){$query->Whereraw('end is not null')->where('end', '<' ,date('Y-m-d'));});}]);
 	}
 
 	public function scopeChartTag($query, $variable)
 	{
-		return $query->WhereHas('works', function($q)use($variable){$q->tag($variable)->where(DB::raw('`end` >= '.date('Y-m-d')));});
+		return $query->whereHas('works', function($q)use($variable){$q->tag($variable)->where(function($query){$query->where('end', '>=' ,date('Y-m-d'))->orWhereraw('end is null');});});
 	}
 
 	public function scopeChartChild($query, $variable)
@@ -90,7 +90,7 @@ trait HasWorksOnTrait {
 
 	public function scopeChartNotAdmin($query, $variable)
 	{
-		return $query->WhereHas('workscalendars', function($q)use($variable){$q->status(['permanent', 'contract', 'probation', 'internship', 'permanent','others'])->where(DB::raw('`end` >= '.$variable));});
+		return $query->whereHas('workscalendars', function($q)use($variable){$q->status(['permanent', 'contract', 'probation', 'internship', 'permanent','others'])->where(function($query){$query->where('end', '>=' ,date('Y-m-d'))->orWhereraw('end is null');});});
 	}
 
 	public function ScopeWorkCalendar($query, $variable)
