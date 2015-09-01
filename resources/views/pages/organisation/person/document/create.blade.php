@@ -69,8 +69,9 @@
 	@endif
 	
 	{!! Form::open(['url' => 'javascript:;','method' => 'POST']) !!}
-		@include('widgets.modal.import_csv_person_doc', [
-			'widget_template'		=> 'plain_no_title'
+		@include('widgets.modal.import_csv', [
+			'widget_template'		=> 'plain_no_title',
+			'class_id'				=> 'import_csv_doc_person'
 		])
 	{!! Form::close() !!}
 

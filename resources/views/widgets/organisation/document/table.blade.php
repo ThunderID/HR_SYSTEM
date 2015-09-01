@@ -41,13 +41,27 @@
 								{{$value['tag']}}
 							</td>
 							<td class="text-right">
-								@if((int)Session::get('user.menuid') <= 2)
-									<a href="javascript:;" class="btn btn-default" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.documents.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash"></i></a>
-								@endif
-								@if((int)Session::get('user.menuid') <= 3)
-									<a href="{{route('hr.documents.edit', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-								@endif
-								<a href="{{route('hr.documents.show', [$value['id'], 'org_id' => $data['id']])}}" class="btn btn-default"><i class="fa fa-eye"></i></a>
+								<div class="btn-group">
+									<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pengaturan <span class="caret"></span></button>
+									<ul class="dropdown-menu dropdown-menu-right">
+										@if((int)Session::get('user.menuid') <= 2)
+											<li>
+												<a href="javascript:;" data-toggle="modal" data-target="#delete" data-delete-action="{{ route('hr.documents.delete', [$value['id'], 'org_id' => $data['id']]) }}"><i class="fa fa-trash fa-fw"></i> Hapus</a>
+											</li>
+										@endif
+										@if((int)Session::get('user.menuid') <= 3)
+											<li>
+												<a href="{{route('hr.documents.edit', [$value['id'], 'org_id' => $data['id']])}}"><i class="fa fa-pencil fa-fw"></i> Ubah</a>
+											</li>
+										@endif
+										<li>
+											<a href="{{route('hr.documents.show', [$value['id'], 'org_id' => $data['id']])}}"><i class="fa fa-eye fa-fw"></i> Details</a>
+										</li>
+										<li>
+											<a href="javasript:;" data-toggle="modal" data-target="#import_csv_doc_org" data-action="{{ route('hr.documents.store') }}" data-doc_name="{{ $value['name'] }}" data-doc_id="{{ $value['id'] }}" data-org_id="{{ $data['id'] }}"><i class="fa fa-cloud-download fa-fw"></i> Import CSV</a>
+										</li>
+									</ul>
+								</div>
 							</td>
 						</tr>
 						<?php $i++;?>

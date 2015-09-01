@@ -25,6 +25,7 @@
 
 	@section('widget_body')
 		<a href="{{ $PersonDocumentComposer['widget_data']['documentlist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
+		<a href="javasript:;" class="btn btn-primary" data-toggle="modal" data-target="#import_csv_doc_org" data-action="{{ route('hr.documents.store') }}" data-doc_name="{{ $document['name'] }}" data-doc_id="{{ $document['id'] }}" data-org_id="{{ $data['id'] }}">Import CSV</a>
 		@if(isset($PersonDocumentComposer['widget_data']['documentlist']['document']))
 			<div class="clearfix">&nbsp;</div>
 			<table class="table table-hover table-affix">

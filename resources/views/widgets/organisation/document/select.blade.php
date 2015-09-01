@@ -29,7 +29,7 @@
 			</div> --}}
 			<div class="form-group text-right">
 				<input type="submit" class="btn btn-primary" value="Input Form" tabindex="2">
-				<a href="javascript:;" class="btn btn-primary import_doc" data-toggle="modal" data-target="#import_csv_person" data-action="{{ route('hr.person.documents.store') }}" tabindex="3" data-org_id="{{ $data['id'] }}" data-doc_id="{{ $keyid }}" data-doc_name="{{ $keyname }}">Import CSV</a>
+				<a href="javascript:;" class="btn btn-primary import_doc" data-toggle="modal" data-target="#import_csv_doc_person" data-action="{{ route('hr.person.documents.store') }}" tabindex="3" data-org_id="{{ $data['id'] }}" data-doc_id="{{ $keyid }}" data-doc_name="{{ $keyname }}">Import CSV</a>
 			</div>
 		{!! Form::close() !!}
 	@overwrite	
