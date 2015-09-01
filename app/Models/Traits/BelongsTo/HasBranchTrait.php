@@ -54,6 +54,6 @@ trait HasBranchTrait {
 
 	public function scopeBranchName($query, $variable)
 	{
-		return $query->wherehas('branch', function($q)use($variable){$q->name($variable)});
+		return $query->wherehas('branch', function($q)use($variable){$q->name($variable);});
 	}
 }
