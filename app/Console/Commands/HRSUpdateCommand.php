@@ -80,6 +80,16 @@ class HRSUpdateCommand extends Command {
 	 **/
 	public function update27082015()
 	{
+		Schema::table('works', function(Blueprint $table)
+		{
+			$table->string('grade', 255);
+		});
+
+		Schema::table('charts', function(Blueprint $table)
+		{
+			$table->dropColumn('grade');
+		});
+
 		Schema::create('record_logs', function(Blueprint $table)
 		{
 			$table->increments('id');

@@ -9,6 +9,7 @@ use App\Models\Policy;
 use \Illuminate\Support\MessageBag as MessageBag;
 use DateTime, DateInterval, DatePeriod;
 use App\Events\CreateRecordOnTable;
+use Carbon\Carbon;
 
 /* ----------------------------------------------------------------------
  * Event:
@@ -26,7 +27,7 @@ class PersonWorkleaveObserver
 
 		if ($validator->passes())
 		{
-			if((isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0) || (!isset($model['attributes']['workleave_id'])))
+			if((isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0) && (!isset($model['attributes']['workleave_id'])))
 			{
 				$validator 				= Validator::make($model['attributes'], ['created_by' => 'required|exists:persons,id']);
 			
@@ -49,11 +50,33 @@ class PersonWorkleaveObserver
 					return false;
 				}
 			}
-			elseif(isset($model['attributes']['workleave_id']) && $model['attributes']['workleave_id']!=0 && !isset($model->getDirty()['end']))
+			elseif(isset($model['attributes']['workleave_id']) && $model['attributes']['workleave_id']!=0 && !isset($model->getDirty()['end']) && !isset($model->getDirty()['start']))
 			{
 				$work 					= Work::find($model['attributes']['work_id']);
 
-				$start 					= max(date('Y-m-d', strtotime($model['attributes']['start'])), date('Y-m-d', strtotime($work->start)));
+				$prev_work 				= Work::active(false)->personid($model['attributes']['person_id'])->startbefore($work->start)->orderby('start', 'desc')->get();
+
+				foreach ($prev_work as $key => $value) 
+				{
+					if($key > 0)
+					{
+						$prev_end 		= new Carbon($prev_work[$key-1]->end);
+						$date_diff 		= $prev_end->diffInDays(new Carbon($value->start));
+
+						//if end of prev work not same day of next start (idle), then start of work must be next start
+						if($date_diff > 1)
+						{
+							$work_start = $value->start;
+						}
+						//else if end of prev work is same day of next start (idle), then start of work must be first work start
+					}
+					else
+					{
+						$work_start 	= $value->start;
+					}
+				}
+
+				$start 					= max(date('Y-m-d', strtotime($model['attributes']['start'])), date('Y-m-d', strtotime($work_start)));
 
 				$end 					= min(date('Y-m-d', strtotime($model['attributes']['end'])), (!is_null($work->end) ? date('Y-m-d', strtotime($work->end)) : date('Y-m-d')));
 

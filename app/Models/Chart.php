@@ -8,7 +8,6 @@
  * 	path 							: Varchar, 255, Required
  * 	tag 							: Varchar, 255, Required
  * 	name 							: Varchar, 255, Required
- * 	grade 	 						: Varchar, 255
  * 	min_employee  					: Integer, Required
  * 	ideal_employee  				: Integer, Required
  * 	max_employee  					: Integer, Required
@@ -68,7 +67,6 @@ class Chart extends BaseModel {
 	protected 	$fillable			= 	[
 											'path'					,
 											'name' 					,
-											'grade' 				,
 											'tag' 					,
 											'min_employee' 			,
 											'ideal_employee' 		,
@@ -79,7 +77,6 @@ class Chart extends BaseModel {
 	protected 	$rules				= 	[
 											'path'		 			=> 'max:255',
 											'name' 					=> 'required|max:255',
-											'grade' 				=> 'max:255',
 											'tag' 					=> 'required|max:255',
 											'min_employee' 			=> 'required|numeric|min:1',
 											'ideal_employee' 		=> 'required|numeric',

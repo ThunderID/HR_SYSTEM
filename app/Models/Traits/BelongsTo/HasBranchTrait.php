@@ -51,4 +51,9 @@ trait HasBranchTrait {
 		}
 		return $query->orwhere('branches.name', 'like', '%'.$variable.'%');
 	}
+
+	public function scopeBranchName($query, $variable)
+	{
+		return $query->wherehas('branch', function($q)use($variable){$q->name($variable);});
+	}
 }
