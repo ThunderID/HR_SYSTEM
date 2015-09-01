@@ -267,7 +267,7 @@ class DocumentController extends BaseController
 		{
 			$person_id 							= Input::get('person_id');
 		}
-		else
+		elseif(!Input::has('import'))
 		{
 			App::abort(404);
 		}

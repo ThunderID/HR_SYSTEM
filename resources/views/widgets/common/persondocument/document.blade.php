@@ -16,7 +16,15 @@
 						{!!ucwords($value['template']['field'])!!}
 					</div>
 					<div class="col-sm-9">
-						{!!($value['text'] ? ucwords($value['text']) : ucwords($value['numeric']))!!}
+						@if(!is_null($value['on']) && $value['on']!='0000-00-00 00:00:00')
+							{{date('d-m-Y', strtotime($value['on']))}}
+						@elseif($value['numeric']!=0)
+							{{$value['numeric']}}
+						@elseif(!is_null($value['string']) && $value['string']!='')
+							{{$value['string']}}
+						@else
+							{{ucwords($value['text'])}}
+						@endif
 					</div>
 				</div>
 				<div class="clearfix">&nbsp;</div>

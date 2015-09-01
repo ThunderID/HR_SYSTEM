@@ -8,6 +8,7 @@ use Illuminate\Support\MessageBag;
 use App\Models\Queue;
 use App\Models\QueueMorph;
 use App\Models\Person;
+use App\Models\Document;
 use App\Models\PersonDocument;
 use App\Models\DocumentDetail;
 
@@ -128,7 +129,7 @@ class PersonDocumentBatchCommand extends Command {
 
 						$is_doc_success 					= new PersonDocument;
 						$is_doc_success->fill($doc[$i]);
-						$is_doc_success->Person()->associate($is_success);
+						$is_doc_success->Person()->associate($person);
 
 						if(!$is_doc_success->save())
 						{
@@ -160,7 +161,7 @@ class PersonDocumentBatchCommand extends Command {
 									$docdetail[$i][$key]['template_id']			= $value['id'];
 									if($value['type']=='date')
 									{
-										$docdetail[$i][$key]['on']				= $value2;
+										$docdetail[$i][$key]['on']				= date('Y-m-d H:i:s' , strtotime($value2));
 									}
 									else
 									{
@@ -172,7 +173,7 @@ class PersonDocumentBatchCommand extends Command {
 							if(isset($docdetail[$i][$key]) && !$errors->count())
 							{
 								$is_docd_success 			= new DocumentDetail;
-								$is_docd_success->fill($docdetail[$i]);
+								$is_docd_success->fill($docdetail[$i][$key]);
 								$is_docd_success->PersonDocument()->associate($is_doc_success);
 
 								if(!$is_docd_success->save())
@@ -201,7 +202,7 @@ class PersonDocumentBatchCommand extends Command {
 					DB::commit();
 
 					$pnumber 								= $pending->process_number+1;
-					$messages['message'][$pnumber]		 	= 'Sukses Menyimpan Dokumen Karyawan '.(isset($person['name']) ? $parameters['name'] : '');
+					$messages['message'][$pnumber]		 	= 'Sukses Menyimpan Dokumen Karyawan '.(isset($person['name']) ? $person['name'] : '');
 					$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 				}
 				else
@@ -209,7 +210,7 @@ class PersonDocumentBatchCommand extends Command {
 					DB::rollback();
 					
 					$pnumber 								= $pending->process_number+1;
-					$messages['message'][$pnumber] 			= 'Gagal Menyimpan Dokumen Karyawan '.(isset($person['name']) ? $parameters['name'] : '');
+					$messages['message'][$pnumber] 			= 'Gagal Menyimpan Dokumen Karyawan '.(isset($person['name']) ? $person['name'] : '');
 					$messages['errors'][$pnumber] 			= $errors;
 
 					$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
