@@ -6,7 +6,7 @@
 			
 		<div class="text-right">
 			<!-- <a href="{{ route('hr.persons.create', ['org_id' => $data['id'], 'import' => 'yes']) }}" class="btn btn-primary text-right">Import CSV</a>	 -->
-			<a href="javasript:;" class="btn btn-primary" data-toggle="modal" data-target="#import_csv_person_create" data-action="{{ route('hr.persons.store') }}" data-org_id="{{ $data['id'] }}">Import CSV</a>
+			
 		</div>
 	@overwrite
 
