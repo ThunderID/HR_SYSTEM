@@ -19,6 +19,8 @@ class ProcessingLogObserver
 {
 	public function saved($model)
 	{
+		set_time_limit(0);
+		
 		if(isset($model['attributes']['person_id']))
 		{
 			//preparing usable variable
