@@ -18,24 +18,27 @@ class ChartObserver
 {
 	public function created($model)
 	{
-		$attributes['record_log_id'] 		= $model->id;
-		$attributes['record_log_type'] 		= get_class($model);
-		$attributes['name'] 				= 'Menambah Struktur Organisasi pada cabang '.$model->branch->name;
-		$attributes['notes'] 				= 'Menambah Struktur Organisasi pada cabang '.$model->branch->name.' pada '.date('d-m-Y');
-		$attributes['action'] 				= 'delete';
-
-		Event::fire(new CreateRecordOnTable($attributes));
-
-		if(!isset($model['attributes']['path']) || ($model['attributes']['path']==$model['attributes']['id']))
+		if(isset($model['attributes']['branch_id']))
 		{
-			$newparent 						= Chart::where('id',  $model['attributes']['id'])->update(['path' => $model['attributes']['id']]);
+			$attributes['record_log_id'] 		= $model->id;
+			$attributes['record_log_type'] 		= get_class($model);
+			$attributes['name'] 				= 'Menambah Struktur Organisasi pada cabang '.$model->branch->name;
+			$attributes['notes'] 				= 'Menambah Struktur Organisasi pada cabang '.$model->branch->name.' pada '.date('d-m-Y');
+			$attributes['action'] 				= 'delete';
+
+			Event::fire(new CreateRecordOnTable($attributes));
+
+			if(!isset($model['attributes']['path']) || ($model['attributes']['path']==$model['attributes']['id']))
+			{
+				$newparent 						= Chart::where('id',  $model['attributes']['id'])->update(['path' => $model['attributes']['id']]);
+			}
+			else
+			{
+				$newparent 						= Chart::where('path',  $model['attributes']['path'])->first();
+				$new 							= Chart::where('id', $model['attributes']['id'])->update(['path' => $model['attributes']['path'].','.$model['attributes']['id'], 'chart_id' => $newparent['id']]);
+			}
+			return true;
 		}
-		else
-		{
-			$newparent 						= Chart::where('path',  $model['attributes']['path'])->first();
-			$new 							= Chart::where('id', $model['attributes']['id'])->update(['path' => $model['attributes']['path'].','.$model['attributes']['id'], 'chart_id' => $newparent['id']]);
-		}
-		return true;
 	}
 
 	public function saving($model)
@@ -57,28 +60,30 @@ class ChartObserver
 	public function updated($model)
 	{
 		//
-		$attributes['record_log_id'] 		= $model->id;
-		$attributes['record_log_type'] 		= get_class($model);
-		$attributes['name'] 				= 'Mengubah Struktur Organisasi pada cabang '.$model->branch->name;
-		$attributes['notes'] 				= 'Mengubah Struktur Organisasi pada cabang '.$model->branch->name.' pada '.date('d-m-Y');
-		$attributes['old_attribute'] 		= json_encode($model->getOriginal());
-		$attributes['new_attribute'] 		= json_encode($model->getAttributes());
-		$attributes['action'] 				= 'save';
-
-		Event::fire(new CreateRecordOnTable($attributes));
-
-		if(isset($model->getDirty()['path']))
+		if(isset($model['attributes']['branch_id']))
 		{
-			$updates 						= Chart::where('path', 'like', $model->getOriginal('path').'%')->get();
-			$newparent 						= Chart::where('path',  $model['attributes']['path'])->first();
-			foreach ($updates as $key => $value) 
+			$attributes['record_log_id'] 		= $model->id;
+			$attributes['record_log_type'] 		= get_class($model);
+			$attributes['name'] 				= 'Mengubah Struktur Organisasi pada cabang '.$model->branch->name;
+			$attributes['notes'] 				= 'Mengubah Struktur Organisasi pada cabang '.$model->branch->name.' pada '.date('d-m-Y');
+			$attributes['old_attribute'] 		= json_encode($model->getOriginal());
+			$attributes['new_attribute'] 		= json_encode($model->getAttributes());
+			$attributes['action'] 				= 'save';
+
+			Event::fire(new CreateRecordOnTable($attributes));
+
+			if(isset($model->getDirty()['path']))
 			{
-				$new 						= Chart::where('id', $value['id'])->update(['path' => (str_replace($model->getOriginal('path'), $newparent['path'].','.$model['attributes']['id'], $value['path']))]);
+				$updates 						= Chart::where('path', 'like', $model->getOriginal('path').'%')->get();
+				$newparent 						= Chart::where('path',  $model['attributes']['path'])->first();
+				foreach ($updates as $key => $value) 
+				{
+					$new 						= Chart::where('id', $value['id'])->update(['path' => (str_replace($model->getOriginal('path'), $newparent['path'].','.$model['attributes']['id'], $value['path']))]);
+				}
+				$updatechartid 					= Chart::where('id',  $model['attributes']['id'])->update(['chart_id' => $newparent['id'], 'path' => $newparent['path'].','.$model['attributes']['id']]);
 			}
-			$updatechartid 					= Chart::where('id',  $model['attributes']['id'])->update(['chart_id' => $newparent['id'], 'path' => $newparent['path'].','.$model['attributes']['id']]);
-		}
-		return true;
-		
+			return true;
+		}	
 	}
 
 	public function deleting($model)
@@ -120,12 +125,15 @@ class ChartObserver
 
 	public function deleted($model)
 	{
-		$attributes['record_log_id'] 		= $model->id;
-		$attributes['record_log_type'] 		= get_class($model);
-		$attributes['name'] 				= 'Menghapus Struktur Organisasi pada cabang '.$model->branch->name;
-		$attributes['notes'] 				= 'Menghapus Struktur Organisasi pada cabang '.$model->branch->name.' pada '.date('d-m-Y');
-		$attributes['action'] 				= 'restore';
+		if(isset($model['attributes']['branch_id']))
+		{
+			$attributes['record_log_id'] 		= $model->id;
+			$attributes['record_log_type'] 		= get_class($model);
+			$attributes['name'] 				= 'Menghapus Struktur Organisasi pada cabang '.$model->branch->name;
+			$attributes['notes'] 				= 'Menghapus Struktur Organisasi pada cabang '.$model->branch->name.' pada '.date('d-m-Y');
+			$attributes['action'] 				= 'restore';
 
-		Event::fire(new CreateRecordOnTable($attributes));
+			Event::fire(new CreateRecordOnTable($attributes));
+		}
 	}
 }
