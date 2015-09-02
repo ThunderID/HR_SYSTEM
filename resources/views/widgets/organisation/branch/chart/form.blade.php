@@ -31,10 +31,6 @@
 					</div>
 				</div>
 			</div>
-			<!-- <div class="form-group">				
-				<label class="text-left">Grade</label>				
-				{!!Form::input('text', 'grade', $ChartComposer['widget_data']['chartlist']['chart']['grade'], ['class' => 'form-control', 'tabindex' => '4'])!!}
-			</div> -->
 			<div class="row">
 				<div class="col-sm-4">
 					<div class="form-group">
