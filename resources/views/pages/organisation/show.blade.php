@@ -29,6 +29,11 @@
 
 @section('content_body')
 	<div class="row mb-25">
+		<div class="col-sm-12">
+			<a href="javascript:;" class="btn btn-primary" data-toggle="modal" data-target="#add_widget">Tambah Widget</a>
+		</div>
+	</div>
+	<div class="row mb-25">
 		<div class="col-sm-6 col-md-6">
 			@include('widgets.organisation.person.stat.total_employee', [
 				'widget_template'		=> 'plain',
@@ -114,6 +119,13 @@
 			])
 		</div>
 	</div>
+
+	{!! Form::open(['url' => 'javascript:;','method' => 'POST']) !!}
+		@include('widgets.modal.modal_add_widget', [
+			'widget_template'		=> 'plain_no_title',
+			'class_id'				=> 'add_widget'
+		])
+	{!! Form::close() !!}
 @stop
 
 @section('content_filter')
