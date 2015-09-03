@@ -158,7 +158,7 @@ class Work extends BaseModel {
 		$bool 						= filter_var($variable, FILTER_VALIDATE_BOOLEAN);
 		if($bool==true)
 		{
-			return $query->where(DB::raw('`end` >= '.date('Y-m-d')));
+			return $query->where(function($query){$query->where('end', '>=' ,date('Y-m-d'))->orWhereraw('end is null');});
 		}
 
 		return $query->whereHas('calendar', function($q){$q;});

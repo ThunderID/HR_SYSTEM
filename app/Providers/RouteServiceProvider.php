@@ -339,7 +339,8 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 
 					if(!$contents->meta->success)
 					{
-						App::abort(404);
+						Session::flush();
+						return Redirect::guest(route('hr.login.get'));
 					}
 
 					Session::put('user.id', $contents->data->id);
@@ -355,7 +356,8 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 
 					if(!$contents_2->meta->success || !count($contents_2->data))
 					{
-						App::abort(404);
+						Session::flush();
+						return Redirect::guest(route('hr.login.get'));
 					}
 
 					if(!Session::has('user.organisationid'))
@@ -442,7 +444,8 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 
 					if(!$contents_3->meta->success)
 					{
-						App::abort(404);
+						Session::flush();
+						return Redirect::guest(route('hr.login.get'));
 					}
 
 					if(date('Y-m-d H:i:s', strtotime(Session::get('user.lupassword'))) < date('Y-m-d H:i:s', strtotime($contents_3->data->value)))
@@ -469,7 +472,8 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 
 					if(!$contents->meta->success)
 					{
-						App::abort(404);
+						Session::flush();
+						return Redirect::guest(route('hr.login.get'));
 					}
 
 					Session::put('user.id', $contents->data->id);
