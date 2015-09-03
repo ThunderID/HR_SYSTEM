@@ -160,6 +160,11 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		View::composer(['widgets.recordlog.table'], 	'App\Http\ViewComposers\RecordLogComposer');
 
 		// -----------------------------------------------------------------------------
+		// QUEUE BATCH
+		// -----------------------------------------------------------------------------
+		View::composer(['widgets.queue.table'], 	'App\Http\ViewComposers\QueueComposer');
+
+		// -----------------------------------------------------------------------------
 		// PERSON WIDGET
 		// -----------------------------------------------------------------------------
 		View::composer(['widgets.organisation.dashboard'], 	'App\Http\ViewComposers\PersonWidgetComposer');

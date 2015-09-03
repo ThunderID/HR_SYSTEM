@@ -1,5 +1,5 @@
 {!! HTML::style('plugins/select2/select2.css') !!}
-{!! HTML::script('plugins/select2/select2.js') !!}
+{!! HTML::script('plugins/select2/select2.min.js') !!}
 
 <script type="text/javascript">
 	$(document).ready(function(){

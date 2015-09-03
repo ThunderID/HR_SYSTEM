@@ -15,7 +15,7 @@
 			</button>
 			<span class="breadcrumb">
 				<a class="first" href="{{route('hr.organisations.index')}}">
-					{!! HTML::image('logo_reliance.png', 'Logo Reliance', ['class' => 'logo-breadcrumb'], ['secure' => 'yes']) !!}
+					{!! HTML::image('logo_reliance.png', 'Logo Reliance', ['class' => 'logo-breadcrumb'], []) !!}
 				</a>
 				<div class="hidden-sm hidden-md hidden-lg"><br></div>
 				@forelse($breadcrumb as $key => $value)
@@ -39,8 +39,9 @@
 					 	{!! HTML::image('/tmp_avatar.png', '', array( 'width' => 32, 'height' => 32, 'class' => 'img-rounded' )) !!} 
 					@endif &nbsp; {{Session::get('user.name')}} &nbsp;&nbsp; <i class="fa fa-caret-down"></i>
 				</a>
-				<ul class="dropdown-menu dropdown-user">					
-					<li><a href="{{route('hr.password.get')}}"><i class="fa fa-gear fa-fw"></i> Ubah Password</a></li>					
+				<ul class="dropdown-menu dropdown-user">	
+					<li><a href="{{ route('hr.queue.index') }}"><i class="fa fa-bell fa-fw"></i> Notifikasi <span class="pull-right small badge">8</span></a></li>
+					<li><a href="{{route('hr.password.get')}}"><i class="fa fa-gear fa-fw"></i> Ubah Password</a></li>
 					<li><a href="{{route('hr.logout.get')}}"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
 				</ul>	            
 			</li>	        

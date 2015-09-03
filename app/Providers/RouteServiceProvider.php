@@ -283,6 +283,8 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.recordlogs.update'							=> 104,
 							'hr.recordlogs.delete'							=> 105,
 
+							'hr.queue.index'								=> 101,
+
 				];
 			return $routes_acl;
 		});
