@@ -1,5 +1,5 @@
 {!! HTML::style('plugins/select2/select2.css') !!}
-{!! HTML::script('plugins/select2/select2.min.js') !!}
+{!! HTML::script('plugins/select2/select2.js') !!}
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -70,6 +70,13 @@
 			var name  = $(this).find(':selected').attr('data-name');
 
 			$('.import_doc').attr('data-doc_id', value).attr('data-doc_name', name);
+		});
+
+		/* Select2 widget */
+		$("#select2-dashboard-widget").on('change', function(e)
+		{
+			var type 	= $(this).find(':selected').attr('data-type');
+			$('.type_widget').val(type);
 		});
 	});	
 </script>

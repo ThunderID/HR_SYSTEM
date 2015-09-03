@@ -4,7 +4,7 @@
 	@section('widget_body')
 		@if(isset($PersonComposer['widget_data']['lossratelist']['person']))
 			<div class="alert alert-callout alert-danger no-margin">
-				<strong class="pull-right text-danger text-lg"><i class="fa fa-users fa-2x"></i></strong>
+				<strong class="pull-right text-danger text-lg"><i class="fa fa-history fa-2x"></i></strong>
 				<?php 
 					$lossrate = 0;
 					$totalemployee = 0;

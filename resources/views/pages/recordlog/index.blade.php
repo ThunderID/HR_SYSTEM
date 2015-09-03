@@ -29,7 +29,7 @@
 
 @section('content_body')
 	@include('widgets.recordlog.table', [
-		'widget_title'			=> 'Notifikasi',
+		'widget_title'			=> 'Record Logs',
 		'widget_template'		=> 'panel',
 		'widget_options'		=> [ 'recordlog' 				=>
 										[

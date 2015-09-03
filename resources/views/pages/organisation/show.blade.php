@@ -33,6 +33,29 @@
 			<a href="javascript:;" class="btn btn-primary" data-toggle="modal" data-target="#add_widget">Tambah Widget</a>
 		</div>
 	</div>
+	{!! Form::open(['url' => 'javascript:;','method' => 'POST']) !!}
+		@include('widgets.modal.modal_add_widget', [
+			'widget_template'		=> 'plain_no_title',
+			'class_id'				=> 'add_widget'
+		])
+	{!! Form::close() !!}
+	{{-- <div class="row mb-25">
+		@include('widgets.organisation.dashboard', [
+			'widget_template'		=> 'plain',
+			'widget_title'			=> null,
+			'widget_options'		=> [
+											'widgetlist'	=> 
+											[
+												'title'				=> null,
+												'organisation_id'	=> $data['id'],
+												'search'			=> ['type' => 'stat'],
+												'sort'				=> [],
+												'page'				=> 1,
+												'per_page'			=> 100,
+											]
+									]
+		])
+	</div> --}}
 	<div class="row mb-25">
 		<div class="col-sm-6 col-md-6">
 			@include('widgets.organisation.person.stat.total_employee', [
@@ -120,12 +143,6 @@
 		</div>
 	</div>
 
-	{!! Form::open(['url' => 'javascript:;','method' => 'POST']) !!}
-		@include('widgets.modal.modal_add_widget', [
-			'widget_template'		=> 'plain_no_title',
-			'class_id'				=> 'add_widget'
-		])
-	{!! Form::close() !!}
 @stop
 
 @section('content_filter')
