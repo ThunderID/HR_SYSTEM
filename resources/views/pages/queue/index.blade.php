@@ -35,10 +35,10 @@
 										[
 											'form_url' 			=> null,
 											'search'			=> ['withattributes' => 'person'],	
-											'sort'				=> ['created_at' => 'desc'],
+											'sort'				=> ['created_at' => 'asc'],
 											'active_filter'		=> [],
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
-											'per_page'			=> 12
+											'per_page'			=> 4
 											]
 									]
 	])
