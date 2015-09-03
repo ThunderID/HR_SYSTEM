@@ -196,6 +196,10 @@ class WorkBatchCommand extends Command {
 							$morphed->save();
 						}
 					}
+					else
+					{
+						$errors->add('Batch', 'Duplikasi data pekerjaan');
+					}
 				}
 			
 				if(!$errors->count())
