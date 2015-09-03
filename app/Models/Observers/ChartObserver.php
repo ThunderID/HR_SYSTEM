@@ -119,6 +119,13 @@ class ChartObserver
 					return false;
 				}
 			}
+
+			if(!$value->delete())
+			{
+				$model['errors']	= $delete->getError();
+						
+				return false;
+			}
 		}
 		return true;
 	}
