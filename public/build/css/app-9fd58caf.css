@@ -3049,7 +3049,7 @@ tbody.collapse.in {
 	z-index: 1000;
 	display: none;
 	float: left;
-	min-width: 200px;
+	min-width: 180px;
 	padding: 5px 0;
 	margin: 2px 0 0;
 	list-style: none;
@@ -6599,7 +6599,7 @@ label,
 .navbar-top-links .dropdown-user {
 	right: 0;
 	left: auto;
-	min-width: 200px;
+	min-width: 180px;
 }
 /* Sidebar */
 .sidebar .sidebar-nav.navbar-collapse {

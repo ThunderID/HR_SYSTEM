@@ -16,7 +16,10 @@
 		@if((int)Session::get('user.menuid')<5)
 			<a href="{{ $PersonComposer['widget_data']['personlist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
 		@endif
-		<a href="javasript:;" class="btn btn-primary" data-toggle="modal" data-target="#import_csv_person_create" data-action="{{ route('hr.persons.store') }}" data-org_id="{{ $data['id'] }}">Import CSV</a>
+
+		@if (Route::is('hr.persons.index')&((int)Session::get('user.menuid') <= 3))
+			<a href="javasript:;" class="btn btn-primary" data-toggle="modal" data-target="#import_csv_person_create" data-action="{{ route('hr.persons.store') }}" data-org_id="{{ $data['id'] }}">Import CSV</a>
+		@endif
 
 		@if(isset($PersonComposer['widget_data']['personlist']['person']))
 			<div class="clearfix">&nbsp;</div>
@@ -41,9 +44,9 @@
 							</td>
 							<td class="">
 								@if ((File::exists($value['avatar']))||($value['avatar']))
-									{!! HTML::image($value['avatar'], '', ['width' => 64, 'height' => 64, 'class' => 'img-rounded'], [] ) !!} 
+									{!! HTML::image($value['avatar'], '', ['width' => 64, 'height' => 64, 'class' => 'img-rounded'], ['secure' => 'yes'] ) !!} 
 								@else
-									{!! HTML::image('/tmp_avatar.png', '', ['width' => 64, 'height' => 64, 'class' => 'img-rounded'], [] ) !!} 
+									{!! HTML::image('/tmp_avatar.png', '', ['width' => 64, 'height' => 64, 'class' => 'img-rounded'], ['secure' => 'yes'] ) !!} 
 								@endif
 							</td>
 							<td class="">

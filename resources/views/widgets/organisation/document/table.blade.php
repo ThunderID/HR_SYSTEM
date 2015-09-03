@@ -57,9 +57,11 @@
 										<li>
 											<a href="{{route('hr.documents.show', [$value['id'], 'org_id' => $data['id']])}}"><i class="fa fa-eye fa-fw"></i> Details</a>
 										</li>
-										<li>
-											<a href="javasript:;" data-toggle="modal" data-target="#import_csv_doc_org" data-action="{{ route('hr.documents.store') }}" data-doc_name="{{ $value['name'] }}" data-doc_id="{{ $value['id'] }}" data-org_id="{{ $data['id'] }}"><i class="fa fa-cloud-download fa-fw"></i> Import CSV</a>
-										</li>
+										@if ((int)Session::get('user.menuid') <= 3)
+											<li>
+												<a href="javasript:;" data-toggle="modal" data-target="#import_csv_doc_org" data-action="{{ route('hr.documents.store') }}" data-doc_name="{{ $value['name'] }}" data-doc_id="{{ $value['id'] }}" data-org_id="{{ $data['id'] }}"><i class="fa fa-cloud-download fa-fw"></i> Import CSV</a>
+											</li>
+										@endif
 									</ul>
 								</div>
 							</td>
