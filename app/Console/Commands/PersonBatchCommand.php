@@ -136,17 +136,27 @@ class PersonBatchCommand extends Command {
 						
 						$originaluname						= explode(' ', strtolower($attributes[$i]['name']));
 						$modifyuname						= $originaluname[0];
-						$idxuname 							= 0;
+						$countogname 						= count($originaluname)-1;
 
+						foreach ($originaluname as $keyx => $valuex) 
+						{
+							if(is_array($valuex) || $valuex!='')
+							{
+								$countogname 				= $keyx;
+							}
+						}
+
+						$idxuname 							= 0;
+						
 						do
 						{
 							$uname 							= Person::username($modifyuname.'.'.$row['kodeorganisasi'])->first();
 
 							if($uname)
 							{
-								if(isset($originaluname[count($originaluname)-1]))
+								if(isset($originaluname[$countogname]))
 								{
-									$modifyuname 			= $modifyuname.$originaluname[count($originaluname)-1][$idxuname];
+									$modifyuname 			= $modifyuname.$originaluname[$countogname][$idxuname];
 								}
 								else
 								{

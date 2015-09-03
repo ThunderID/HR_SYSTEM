@@ -150,7 +150,7 @@ class WorkBatchCommand extends Command {
 							break;
 					}
 
-					$is_work_success 						= Work::chartid($is_chart_success->id)->calendarid($is_calendar_success->id)->personid($person->id)->status($search['status'])->first();
+					$is_work_success 						= Work::chartid($is_chart_success->id)->calendarid($is_calendar_success->id)->personid($person->id)->status($search['status'])->startdate(date('Y-m-d', strtotime($row['mulaikerja'])))->first();
 
 					if(!$is_work_success)
 					{
@@ -195,6 +195,10 @@ class WorkBatchCommand extends Command {
 
 							$morphed->save();
 						}
+					}
+					else
+					{
+						$errors->add('Batch', 'Duplikasi data pekerjaan');
 					}
 				}
 			
