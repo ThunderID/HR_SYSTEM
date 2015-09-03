@@ -508,7 +508,7 @@ class PersonBatchCommand extends Command {
 							$search['status'] 				= 'probation';
 							break;
 						case 'magang': case 'internship' : case 'training' :
-							$search['status'] 				= 'training';
+							$search['status'] 				= 'internship';
 							break;
 						default:
 							$search['status'] 				= 'others';

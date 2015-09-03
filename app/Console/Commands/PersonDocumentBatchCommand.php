@@ -163,9 +163,17 @@ class PersonDocumentBatchCommand extends Command {
 									{
 										$docdetail[$i][$key]['on']				= date('Y-m-d H:i:s' , strtotime($value2));
 									}
-									else
+									elseif(!is_null($value2))
 									{
 										$docdetail[$i][$key][$value['type']]	= $value2;
+									}
+									elseif($value['type']=='numeric')
+									{
+										$docdetail[$i][$key][$value['type']]	= 0;
+									}
+									else
+									{
+										$docdetail[$i][$key][$value['type']]	= 'tidak tersedia';
 									}
 								}
 							}
@@ -193,7 +201,7 @@ class PersonDocumentBatchCommand extends Command {
 									$morphed->save();
 								}
 							}
-							elseif(!isset($docdetail[$i][$key]))
+							elseif(!isset($docdetail[$i]))
 							{
 								$errors->add('Batch', 'Tidak ada isi dokumen');
 							}
