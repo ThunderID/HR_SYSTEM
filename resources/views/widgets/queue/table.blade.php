@@ -23,7 +23,44 @@
 							@forelse($QueueComposer['widget_data']['queue']['queue'] as $key => $value)
 								<tr>
 									<td>{{ $i }}</td>
-									<td>{{ $value['message'] }}</td>
+									<td>
+										<?php 
+											$msg 			= json_decode($value['message']);
+											$messagepure	= json_decode(json_encode($msg), true);
+											$message 		= $messagepure['message'];
+											$errors 		= isset($messagepure['errors']) ? $messagepure['errors'] : null;
+										?>	
+										@foreach ($message as $key2 => $value2)
+											@if (isset($errors[$key2]))
+												{{ $value2 }} <br> Error : <br>
+												@foreach ($errors[$key2]['Batch'] as $key3 => $value3)
+													@if(is_array($value3))
+														@foreach ($value3 as $x => $y)
+															@if(is_array($y))
+																@foreach($y as $xx => $yy)
+																	<span class="ml-10 label label-danger text-left">
+																		{{ $x }} :  {{ $yy }}
+																	</span>
+																@endforeach
+															@else
+																<span class="ml-10 label label-danger text-left">
+																	{{ $x }} : {{ $y }}
+																</span>
+															@endif
+															<br>
+														@endforeach
+													@else
+														<span class="ml-10 label label-danger text-left">
+															{{ $value3 }} <br>
+														</span>
+													@endif
+													<br>
+												@endforeach
+											@else
+												{{ $value2 }} <br><br>
+											@endif
+										@endforeach
+									</td>
 								</tr>		
 								<?php $i++; ?>
 							@empty 
