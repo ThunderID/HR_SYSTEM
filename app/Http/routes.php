@@ -47,6 +47,12 @@ Route::group(['middleware' => 'csrfverify'], function()
 
 		Route::resource('recordlogs',			'RecordLogController',									['names' => ['index' => 'hr.recordlogs.index', 'create' => 'hr.recordlogs.create', 'store' => 'hr.recordlogs.store', 'show' => 'hr.recordlogs.show', 'edit' => 'hr.recordlogs.edit', 'update' => 'hr.recordlogs.update', 'destroy' => 'hr.recordlogs.delete']]);
 
+		// ------------------------------------------------------------------------------------
+		// NOTIFICATION QUEUE BATCH RESOURCE
+		// ------------------------------------------------------------------------------------
+
+		Route::resource('queue',			'QueueController',									['names' => ['index' => 'hr.queue.index', 'create' => 'hr.queue.create', 'store' => 'hr.queue.store', 'show' => 'hr.queue.show', 'edit' => 'hr.queue.edit', 'update' => 'hr.queue.update', 'destroy' => 'hr.queue.delete']]);
+
 
 		// ------------------------------------------------------------------------------------
 		// SYSTEM SETTINGS
