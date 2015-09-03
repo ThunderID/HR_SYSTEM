@@ -53,7 +53,7 @@ class QueueComposer extends WidgetComposer
 			$page 								= json_decode(json_encode($contents->pagination), true);
 			$widget_data['queue'] 				= json_decode(json_encode($contents->data), true);
 			$widget_data['queue-pagination'] 	= new Paginator($page['total_data'], $page['total_data'], $page['per_page'], $page['page']);
-			$widget_data['queue-pagination']->setPath(route('hr.policies.index'));
+			$widget_data['queue-pagination']->setPath(route('hr.queue.index'));
 			$widget_data['queue-display'] 		= $page;
 		}
 
