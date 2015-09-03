@@ -3,7 +3,7 @@
 use Validator, Event;
 use \App\Models\Chart;
 use \App\Models\Menu;
-use \App\Models\Authentication;
+use \App\Models\WorkAuthentication;
 use App\Events\CreateRecordOnTable;
 
 /* ----------------------------------------------------------------------
@@ -100,16 +100,16 @@ class ChartObserver
 
 		foreach ($deletes as $key => $value) 
 		{
-			if($value['attributes']['current_employee']>0&& $model['attributes']['tag']!='admin')
+			if($value->works()->count()&& $model['attributes']['tag']!='admin')
 			{
-				$model['errors'] 				= ['Tidak dapat menghapus posisi/departemen dengan pekerja yang masih aktif bekerja'];
+				$model['errors'] 			= ['Tidak dapat menghapus posisi/departemen dengan pekerja yang masih aktif bekerja'];
 
 				return false;
 			}
 			
 			foreach($value['menus'] as $key2 => $value2)
 			{
-				$auth 	 	= new Authentication;
+				$auth 	 		= new WorkAuthentication;
 				$delete 		= $auth->find($value2['pivot']['id']);
 
 				if($delete && !$delete->delete())
