@@ -295,9 +295,16 @@ class PersonController extends BaseController
 		{
 			if (Input::hasFile('file_csv')) 
 			{
+				$validator = Validator::make(['file' => Input::file('file_csv')], ['file' => 'required|mimes:csv,txt|max:20000']);
+				if (!$validator->passes())
+				{
+					return Redirect::back()->withErrors($validator->errors())->withInput();
+					// return Response::json(['message' => $validator->errors()->first()], 500);
+				}
+
 				$file_csv 		= Input::file('file_csv');
-				$attributes = [];				
-				$sheet = Excel::load($file_csv)->toArray();				
+				$attributes 	= [];				
+				$sheet 			= Excel::load($file_csv)->toArray();				
 				
 				$queattr['created_by'] 					= Session::get('loggedUser');
 				$queattr['process_name'] 				= 'hr:personbatch';
