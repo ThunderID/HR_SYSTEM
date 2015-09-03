@@ -333,7 +333,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 				if($count_orgs->pagination->total_data>0)
 				{
 					//check user logged in 
-					$results 									= $this->dispatch(new Getting(new Person, ['id' => Session::get('loggedUser'), 'withattributes' => ['organisation']], ['created_at' => 'asc'],1, 1));
+					$results 									= $this->dispatch(new Getting(new Person, ['id' => Session::get('loggedUser'), 'withattributes' => ['organisation'], 'checkwork' => true], ['created_at' => 'asc'],1, 1));
 
 					$contents 									= json_decode($results);
 
