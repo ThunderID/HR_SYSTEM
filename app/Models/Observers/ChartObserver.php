@@ -119,14 +119,10 @@ class ChartObserver
 					return false;
 				}
 			}
-
-			if(!$value->delete())
-			{
-				$model['errors']	= $delete->getError();
-						
-				return false;
-			}
 		}
+
+		$deletes 							= Chart::where('path', 'like', $model['attributes']['path'].'%')->with(['menus'])->delete();
+
 		return true;
 	}
 
