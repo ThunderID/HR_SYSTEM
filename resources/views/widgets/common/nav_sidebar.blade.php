@@ -40,7 +40,7 @@
 		@if ((strtolower(Session::get('user.menuid'))==1)||(strtolower(Session::get('user.menuid'))==2))
 			<li>
 			    <a href="{{ route('hr.recordlogs.index') }}">
-			        <i class="fa fa-bell fa-fw"></i> Notifikasi
+			        <i class="fa fa-life-ring fa-fw"></i> Audit
 			    </a>
 			</li>
 		@endif
