@@ -67,6 +67,7 @@ class Queue extends BaseModel {
 											'personid' 					=> 'PersonID', 
 											'createdbyid' 				=> 'CreatedByID', 
 											'running' 					=> 'Running', 
+											'complete' 					=> 'Complete', 
 											'processname' 				=> 'ProcessName', 
 											'processoption' 			=> 'ProcessOption', 
 
@@ -77,6 +78,7 @@ class Queue extends BaseModel {
 											'id' 						=> 'Could be array or integer', 
 											'personid' 					=> 'Could be array or integer', 
 											'running' 					=> 'Null', 
+											'complete' 					=> 'Null', 
 											'createdbyid' 				=> 'Must be id of person', 
 											'processname' 				=> 'Must be string', 
 											'processoption' 			=> 'Must be string', 
@@ -150,6 +152,11 @@ class Queue extends BaseModel {
 	public function scopeRunning($query, $variable)
 	{
 		return $query->whereRaw('`process_number` < `total_process`');
+	}
+
+	public function scopeComplete($query, $variable)
+	{
+		return $query->whereRaw('`process_number` = `total_process`');
 	}
 
 	public function scopeCreatedByID($query, $variable)
