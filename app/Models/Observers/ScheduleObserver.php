@@ -1,6 +1,7 @@
 <?php namespace App\Models\Observers;
 
 use DB, Validator, Event;
+use App\Models\PersonSchedule;
 use App\Models\Schedule;
 use App\Models\Log;
 use \Illuminate\Support\MessageBag as MessageBag;
