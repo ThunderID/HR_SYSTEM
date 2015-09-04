@@ -50,7 +50,7 @@ class WorkController extends BaseController
 
 		if(Input::has('workleave_id') && Input::Get('workleave_id')!=0)
 		{
-			$workleaveid 					= Input::get('workleave_id');
+			$workleaveid 						= Input::get('workleave_id');
 		}
 		else
 		{
@@ -79,10 +79,9 @@ class WorkController extends BaseController
 
 		$person 								= json_decode(json_encode($contents->data), true);
 		$data 									= $person['organisation'];
-
-		if(!isset($work_id) && isset($person['works'][0]))
+		if((!isset($work_id) && isset($person['works'][0])) || $work_id==0)
 		{
-			$work_id 							= $person['works']['pivot']['work_id'];
+			$work_id 							= $person['works'][0]['pivot']['id'];
 		}
 		elseif(isset($work_id))
 		{
@@ -103,6 +102,7 @@ class WorkController extends BaseController
 		}
 		else
 		{
+			dd(1);
 			return Response::json([], 404);
 		}
 

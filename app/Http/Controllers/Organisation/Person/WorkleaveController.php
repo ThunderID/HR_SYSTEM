@@ -67,7 +67,7 @@ class WorkleaveController extends BaseController
 		unset($search);
 		unset($sort);
 
-		$search['id'] 							= $person['works'][0]['id'];
+		$search['id'] 							= $person['works'][0]['pivot']['id'];
 		$search['currentworkleave'] 			= true;
 		$sort 									= ['created_at' => 'desc'];
 
@@ -79,7 +79,7 @@ class WorkleaveController extends BaseController
 			$wleave['id'] 						= 0;
 			$wleave['quota'] 					= 0;
 			$wleave['work_id'] 					= 0;
-			$wleave['follow_workleave_id'] 		= 0;
+			$wleave['follow_workleave_id'] 		= null;
 		}
 		else
 		{
