@@ -352,6 +352,26 @@ class ScheduleController extends BaseController
 
 				$calendars 							= json_decode(json_encode($contents->data), true);
 			}
+			else
+			{
+				unset($search);
+				unset($sort);
+
+				$search['organisationid'] 			= $org_id;
+				$search['notid'] 					= $cal_id;
+				$search['activeworks'] 				= true;
+				$search['parentid'] 				= $calendar['import_from_id'];
+				$sort 								= ['name' => 'asc'];
+				$results 							= $this->dispatch(new Getting(new Calendar, $search, $sort , 1, 100));
+				$contents 							= json_decode($results);
+
+				if(!$contents->meta->success)
+				{
+					App::abort(404);
+				}
+
+				$calendars 							= json_decode(json_encode($contents->data), true);
+			}
 
 			$calendars[]							= $calendar;
 		}
@@ -534,7 +554,7 @@ class ScheduleController extends BaseController
 				App::abort(404);
 			}
 
-			$search 						= ['organisationid' => $org_id, 'id' => $cal_id];
+			$search 						= ['organisationid' => $org_id, 'id' => $cal_id, 'withattributes' => ['childs']];
 			$results 						= $this->dispatch(new Getting(new Calendar, $search, [] , 1, 1));
 			$contents 						= json_decode($results);
 			
@@ -542,6 +562,11 @@ class ScheduleController extends BaseController
 			{
 				App::abort(404);
 			}
+
+			$calendar 						= json_decode(json_encode($contents->data), true);
+
+			unset($search);
+			unset($sort);
 
 			$search 						= ['id' => $id, 'calendarid' => $cal_id];
 			$results 						= $this->dispatch(new Getting(new Schedule, $search, [] , 1, 1));
@@ -551,15 +576,78 @@ class ScheduleController extends BaseController
 			{
 				App::abort(404);
 			}
+
+			$schedule 						= json_decode(json_encode($contents->data), true);
 			
 			Session::put('duedate', date('Y-m-d', strtotime($contents->data->on)));
 
+			if(Input::has('affect'))
+			{
+				if($calendar['import_from_id']!=0)
+				{
+					unset($search);
+					unset($sort);
+
+					$search['organisationid'] 			= $org_id;
+					$search['activeworks'] 				= true;
+					$search['schedulesondate'] 			= [$schedule['on'], $schedule['on']];
+					$search['parentid'] 				= $cal_id;
+					$sort 								= ['name' => 'asc'];
+					$results 							= $this->dispatch(new Getting(new Calendar, $search, $sort , 1, 100));
+					$contents 							= json_decode($results);
+
+					if(!$contents->meta->success)
+					{
+						dD($contents);
+						App::abort(404);
+					}
+
+					$calendars 							= json_decode(json_encode($contents->data), true);
+				}
+				else
+				{
+					unset($search);
+					unset($sort);
+
+					$search['organisationid'] 			= $org_id;
+					$search['notid'] 					= $cal_id;
+					$search['activeworks'] 				= true;
+					$search['schedulesondate'] 			= [$schedule['on'], $schedule['on']];
+					$search['parentid'] 				= $calendar['import_from_id'];
+					$sort 								= ['name' => 'asc'];
+					$results 							= $this->dispatch(new Getting(new Calendar, $search, $sort , 1, 100));
+					$contents 							= json_decode($results);
+
+					if(!$contents->meta->success)
+					{
+						App::abort(404);
+					}
+
+					$calendars 					= json_decode(json_encode($contents->data), true);
+				}
+			}
+
 			DB::beginTransaction();
+
+			if(Input::has('affect') && isset($calendars))
+			{
+				foreach ($calendars as $key => $value) 
+				{
+					foreach ($value['schedules'] as $key2 => $value2) 
+					{
+						$ids[] 				= $value['id'];
+					}
+				}
+			}
+			else
+			{
+				$ids 						= $id;
+			}
 
 			$queattr['created_by'] 			= Session::get('loggedUser');
 			$queattr['process_name'] 		= 'hr:schedulebatch';
 			$queattr['process_option'] 		= 'delete';
-			$queattr['parameter'] 			= json_encode(['id' => $id]);
+			$queattr['parameter'] 			= json_encode(['id' => $ids]);
 			$queattr['task_per_process']	= 1;
 			$queattr['process_number'] 		= 0;
 			$queattr['message'] 			= 'Initial Queue';
@@ -595,7 +683,7 @@ class ScheduleController extends BaseController
 			else
 			{
 				DB::commit();
-				return Redirect::route('hr.calendars.show', ['id' => $cal_id, 'org_id' => $org_id, 'cal_id' => $cal_id])->with('alert_info', 'Jadwal "' . $contents->data->name. '" sedang dihapus');
+				return Redirect::route('hr.calendars.show', ['id' => $cal_id, 'org_id' => $org_id, 'cal_id' => $cal_id])->with('alert_info', 'Jadwal "' . $schedule['name']. '" sedang dihapus');
 			}
 		}
 		else

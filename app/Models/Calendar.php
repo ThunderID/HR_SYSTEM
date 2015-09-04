@@ -83,6 +83,8 @@ class Calendar extends BaseModel {
 
 											'branchid' 					=> 'BranchID', 
 											'charttag' 					=> 'ChartTag', 
+
+											'schedulesondate' 			=> 'SchedulesOnDate', 
 											
 											'withattributes' 			=> 'WithAttributes',
 											'withtrashed' 				=> 'WithTrashed',
@@ -102,6 +104,8 @@ class Calendar extends BaseModel {
 
 											'branchid' 					=> 'Could be array or integer', 
 											'charttag' 					=> 'Must be string', 
+
+											'schedulesondate' 			=> 'Could be string or array of date', 
 											
 											'withattributes' 			=> 'Must be array of relationship',
 											'withtrashed' 				=> 'Must be true',

@@ -181,8 +181,13 @@ class ScheduleBatchCommand extends Command {
 		$calendar 					= $data['calendar'];
 
 		DB::beginTransaction();
-		
-		if(!$data->delete())
+
+		if(!$data)
+		{
+			$errors->add('Batch', 'Data tidak tersedia');
+		}
+
+		if(!$errors->count() && !$data->delete())
 		{
 			$errors->add('Batch', $data->getError());
 		}
