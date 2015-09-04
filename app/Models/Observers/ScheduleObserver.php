@@ -130,11 +130,18 @@ class ScheduleObserver
 
 		Event::fire(new CreateRecordOnTable($attributes));
 
-		//deleting schedule recalculate process log 
 		$on 								= date('Y-m-d', strtotime($model['attributes']['on']));
 		$on1 								= date('Y-m-d', strtotime($model['attributes']['on'].' + 1 day'));
-
-		$logs 								= Log::ondate([$on, $on1])->hasnoschedule(['on' => $on])->WorkCalendar(['id' => $model['attributes']['calendar_id'], 'start' => $on])->get();
+		
+		//deleting schedule recalculate process log 
+		if($model['attributes']['status']=='CB')
+		{
+			$logs 							= Log::ondate([$on, $on1])->WorkCalendar(['id' => $model['attributes']['calendar_id'], 'start' => $on])->get();
+		}
+		else
+		{
+			$logs 							= Log::ondate([$on, $on1])->hasnoschedule(['on' => $on])->WorkCalendar(['id' => $model['attributes']['calendar_id'], 'start' => $on])->get();
+		}
 		
 		if($logs->count())
 		{

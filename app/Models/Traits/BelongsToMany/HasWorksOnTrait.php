@@ -103,12 +103,13 @@ trait HasWorksOnTrait {
 		$date 						= date('Y-m-d', strtotime($variable));
 		if($bool==true)
 		{
-			return $query->whereHas('workscalendars', function($q)use($variable){$q->where(DB::raw('`end` >= '.date('Y-m-d')));});
+			return $query->whereHas('workscalendars', function($q)use($variable){$q->where(function($query){$query->where('end', '>=' ,date('Y-m-d'))->orWhereraw('end is null');});});
 		}
 		elseif($date)
 		{
-			return $query->whereHas('workscalendars', function($q)use($date){$q->where(DB::raw('`end` >= '.$date));});
+			return $query->whereHas('workscalendars', function($q)use($date){$q->where(function($query)use($date){$query->where('end', '>=' , $date)->orWhereraw('end is null');});});
 		}
+
 		return $query->whereHas('workscalendars' ,function($q)use($variable){$q;});
 	}
 
@@ -121,14 +122,14 @@ trait HasWorksOnTrait {
 		$bool 						= filter_var($variable, FILTER_VALIDATE_BOOLEAN);
 		if($bool==true)
 		{
-			return $query->with(['workscalendars' => function($q)use($variable){$q->where(DB::raw('`end` >= '.date('Y-m-d')));}, 'workscalendars.calendar']);
+			return $query->with(['workscalendars' => function($q)use($variable){$q->where(function($query){$query->where('end', '>=' ,date('Y-m-d'))->orWhereraw('end is null');});}, 'workscalendars.calendar']);
 		}
 		return $query->with(['workscalendars' => function($q)use($variable){$q;}, 'workscalendars.calendar']);
 	}
 
 	public function ScopeWithWorkCalendarSchedules($query, $variable)
 	{
-		return $query->with(['workscalendars' => function($q)use($variable){$q->where(DB::raw('`end` >= '.date('Y-m-d')));}, 'workscalendars.calendar', 'workscalendars.calendar.schedules' => function($q)use($variable){$q->ondate($variable['on']);}]);
+		return $query->with(['workscalendars' => function($q)use($variable){$q->where(function($query){$query->where('end', '>=' ,date('Y-m-d'))->orWhereraw('end is null');});}, 'workscalendars.calendar', 'workscalendars.calendar.schedules' => function($q)use($variable){$q->ondate($variable['on']);}]);
 	}
 
 	public function ScopeWorkCalendarSchedule($query, $variable)

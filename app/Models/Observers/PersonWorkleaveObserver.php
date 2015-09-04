@@ -284,13 +284,13 @@ class PersonWorkleaveObserver
 
 		Event::fire(new CreateRecordOnTable($attributes));
 
-		$pschedules 				= PersonSchedule::personid($model['attributes']['person_id'])->ondate([$model['attributes']['start'], $model['attributes']['end']])->status(strtoupper($model['attributes']['status']))->get();
+		$pschedules 						= PersonSchedule::personid($model['attributes']['person_id'])->ondate([$model['attributes']['start'], $model['attributes']['end']])->status(strtoupper($model['attributes']['status']))->get();
 		foreach ($pschedules as $key => $value) 
 		{
-			$dschedule 				= PersonSchedule::find($value->id);
+			$dschedule 						= PersonSchedule::find($value->id);
 			if(!$dschedule->delete())
 			{
-				$model['errors']	= $dschedule->getError();
+				$model['errors']			= $dschedule->getError();
 			
 				return false;
 			}
