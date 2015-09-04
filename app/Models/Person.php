@@ -564,6 +564,7 @@ class Person extends BaseModel {
 					->selectraw('sum((SELECT total_idle_1 FROM idle_logs WHERE idle_logs.process_log_id = process_logs.id and idle_logs.deleted_at is null order by updated_at desc limit 1)) as total_idle_1')
 					->selectraw('sum((SELECT total_idle_2 FROM idle_logs WHERE idle_logs.process_log_id = process_logs.id and idle_logs.deleted_at is null order by updated_at desc limit 1)) as total_idle_2')
 					->selectraw('sum((SELECT total_idle_3 FROM idle_logs WHERE idle_logs.process_log_id = process_logs.id and idle_logs.deleted_at is null order by updated_at desc limit 1)) as total_idle_3')
+					->selectraw('sum((SELECT total_idle FROM idle_logs WHERE idle_logs.process_log_id = process_logs.id and idle_logs.deleted_at is null order by updated_at desc limit 1)) as total_idle')
 					->selectraw('sum((SELECT frequency_idle_1 FROM idle_logs WHERE idle_logs.process_log_id = process_logs.id and idle_logs.deleted_at is null order by updated_at desc limit 1)) as frequency_idle_1')
 					->selectraw('sum((SELECT frequency_idle_2 FROM idle_logs WHERE idle_logs.process_log_id = process_logs.id and idle_logs.deleted_at is null order by updated_at desc limit 1)) as frequency_idle_2')
 					->selectraw('sum((SELECT frequency_idle_3 FROM idle_logs WHERE idle_logs.process_log_id = process_logs.id and idle_logs.deleted_at is null order by updated_at desc limit 1)) as frequency_idle_3')
