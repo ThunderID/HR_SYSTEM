@@ -13,4 +13,15 @@ $('.thumb').change(function(e){
 			$('.check').submit();
 		}
 	});
+
+	$('.affect_schedule_org').change(function() {
+		var value 	= $(this).val();
+
+		if ($(this).is(':checked')) {
+			$('.schedule_delete').attr('data-affect', value);
+		}
+		else {
+			$('.schedule_delete').attr('data-affect', 0);	
+		}
+	});
 </script>

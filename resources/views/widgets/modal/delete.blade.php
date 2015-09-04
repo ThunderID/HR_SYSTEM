@@ -27,7 +27,8 @@
 							<div class="col-sm-9">
 								<input type="password" name="password" id="password" class="form-control input-delete" placeholder="Password" autofocus>
 							</div>
-						</div>					
+						</div>
+						<div class="modal_delete_affect_org"></div>
 					</div>
 				</div>
 				<div class="modal-footer bg-grey">

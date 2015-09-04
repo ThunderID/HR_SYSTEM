@@ -77,7 +77,7 @@
 								<div class="form-group">
 									<div class="checkbox">
 										<label>
-											{!!Form::checkbox('affect', '1', '', ['class' => '', 'tabindex' => '6'])!!} Perubahan Pada Kalender ini akan mempengaruhi : 
+											{!!Form::checkbox('affect', '1', '', ['class' => 'affect_schedule_org', 'tabindex' => '6'])!!} Perubahan Pada Kalender ini akan mempengaruhi : 
 										</label>
 									</div>
 								</div>
@@ -99,7 +99,7 @@
 					</div>
 				</div>
 				<div class="modal-footer bg-grey">
-					<a href="javascript:;" class="btn btn-danger pull-left schedule_delete" data-toggle="modal" data-target="#delete" data-delete-action="">Hapus</a>
+					<a href="javascript:;" class="btn btn-danger pull-left schedule_delete" data-toggle="modal" data-target="#delete" data-delete-action="" data-affect="">Hapus</a>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Simpan</button>
 				</div>
