@@ -136,12 +136,19 @@ class ScheduleObserver
 		//deleting schedule recalculate process log 
 		if($model['attributes']['status']=='CB')
 		{
-			$logs 							= Log::ondate([$on, $on1])->WorkCalendar(['id' => $model['attributes']['calendar_id'], 'start' => $on])->get();
+			$schedules 						= PersonSchedule::name($model['attributes']['name'])->PersonOrganisationID($model->calendar->organisation_id)->status('CB')->Calendar(['end' => $on, 'id' => $model['attributes']['calendar_id']])->get();
+			foreach ($schedules as $key => $value) 
+			{
+				if(!$value->delete())
+				{
+					$model['errors']		= $value->getError();
+				
+					return false;
+				}
+			}
 		}
-		else
-		{
-			$logs 							= Log::ondate([$on, $on1])->hasnoschedule(['on' => $on])->WorkCalendar(['id' => $model['attributes']['calendar_id'], 'start' => $on])->get();
-		}
+		
+		$logs 									= Log::ondate([$on, $on1])->hasnoschedule(['on' => $on])->WorkCalendar(['id' => $model['attributes']['calendar_id'], 'start' => $on])->get();
 		
 		if($logs->count())
 		{

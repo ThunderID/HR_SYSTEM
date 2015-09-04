@@ -68,7 +68,6 @@ class Person extends BaseModel {
 	use \App\Models\Traits\HasMany\HasScheduleTrait;
 	use \App\Models\Traits\HasMany\HasPersonWorkleavesTrait;
 	use \App\Models\Traits\BelongsToMany\HasWorksOnTrait;
-	use \App\Models\Traits\BelongsToMany\HasCalendarsTrait;
 	use \App\Models\Traits\HasMany\HasWidgetsTrait;
 	use \App\Models\Traits\HasMany\HasProcessLogsTrait;
 	use \App\Models\Traits\HasMany\HasLogsTrait;

@@ -52,7 +52,7 @@ trait HasPersonTrait {
 
 	public function ScopeCalendar($query, $variable)
 	{
-		return $query->whereHas('person.calendars' ,function($q)use($variable){$q->start($variable['start'])->id($variable['id']);});
+		return $query->whereHas('person' ,function($q)use($variable){$q->WorkCalendar(['end' => $variable['end'], 'id' => $variable['id']]);});
 	}
 
 	public function ScopeWorkCalendar($query, $variable)

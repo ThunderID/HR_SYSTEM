@@ -95,10 +95,16 @@ trait HasWorksOnTrait {
 
 	public function ScopeWorkCalendar($query, $variable)
 	{
+		if(isset($variable['id']) && isset($variable['end']))
+		{
+			return $query->whereHas('workscalendars' ,function($q)use($variable){$q->where(function($query)use($variable){$query->where('end', '>=' ,$variable['end'])->orWhereraw('end is null');})->calendarid($variable['id']);});
+		}
+
 		if(isset($variable['id']))
 		{
 			return $query->whereHas('workscalendars' ,function($q)use($variable){$q->calendarid($variable['id']);});
 		}
+
 		$bool 						= filter_var($variable, FILTER_VALIDATE_BOOLEAN);
 		$date 						= date('Y-m-d', strtotime($variable));
 		if($bool==true)
