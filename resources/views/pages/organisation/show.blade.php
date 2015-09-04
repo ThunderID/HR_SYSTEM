@@ -39,7 +39,7 @@
 			'class_id'				=> 'add_widget'
 		])
 	{!! Form::close() !!}
-	{{-- <div class="row mb-25">
+	<div class="row">
 		@include('widgets.organisation.dashboard', [
 			'widget_template'		=> 'plain',
 			'widget_title'			=> null,
@@ -55,8 +55,8 @@
 											]
 									]
 		])
-	</div> --}}
-	<div class="row mb-25">
+	</div>
+	{{-- <div class="row mb-25">
 		<div class="col-sm-6 col-md-6">
 			@include('widgets.organisation.person.stat.total_employee', [
 				'widget_template'		=> 'plain',
@@ -122,8 +122,8 @@
 											]
 			])
 		</div>
-	</div>
-	<div class="row">
+	</div> --}}
+	<div class="row mt-20">
 		<div class="col-sm-12">
 			@include('widgets.organisation.person.table', [
 				'widget_template'		=> 'panel',

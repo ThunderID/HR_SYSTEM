@@ -8,22 +8,9 @@
 					</div>
 					<div class="row">
 				@endif
+				<?php $x = json_decode($value['query'], 500);?>
 				<div class="col-sm-6">
-						@include('widgets.organisation.person.stat.total_employee', [
-										'widget_template'		=> '',
-										'widget_title'			=> '',
-										'widget_options'		=> 	[
-																		'personlist'		=>
-																		[
-																			'title'				=> 'Total Karyawan "'.$data['name'].'"',
-																			'organisation_id'	=> $data['id'],
-																			'search'			=> ['chartnotadmin' => true],
-																			'sort'				=> [],
-																			'page'				=> 1,
-																			'per_page'			=> 100,
-																		]
-																	]
-									])
+					@include($value['widget'], $x)
 				</div>
 			@endif
 		@endforeach
