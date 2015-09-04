@@ -184,19 +184,17 @@ class ScheduleBatchCommand extends Command {
 		$errors 					= new MessageBag;
 
 		//check work active on that day, please consider if that queue were written days
-		$data 						= Schedule::id($parameters['id'])->withattributes(['calendar'])->first();
+		$data 						= Schedule::id($parameters['id'])->withattributes(['calendar'])->get();
 		$calendar 					= $data['calendar'];
 
 		DB::beginTransaction();
 
-		if(!$data)
+		foreach ($data as $key => $value) 
 		{
-			$errors->add('Batch', 'Data tidak tersedia');
-		}
-
-		if(!$errors->count() && !$data->delete())
-		{
-			$errors->add('Batch', $data->getError());
+			if(!$data->delete())
+			{
+				$errors->add('Batch', $data->getError());
+			}
 		}
 
 		if(!$errors->count())

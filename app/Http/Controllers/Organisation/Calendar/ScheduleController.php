@@ -589,7 +589,7 @@ class ScheduleController extends BaseController
 				{
 					foreach ($value['schedules'] as $key2 => $value2) 
 					{
-						$ids[] 				= $value['id'];
+						$ids[] 				= $value2['id'];
 					}
 				}
 
