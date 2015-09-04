@@ -634,7 +634,7 @@ class Person extends BaseModel {
 			switch ($variable['sort'][0]) 
 			{
 				case 'total_idle':
-					$query = $query->orderByRaw(DB::raw('sum((SELECT total_idle FROM idle_logs WHERE idle_logs.process_log_id = process_logs.id and idle_logs.deleted_at is null order by updated_at desc limit 1)) '. $variable['sort'][1]))
+					$query = $query->orderByRaw(DB::raw('sum((SELECT total_idle FROM idle_logs WHERE idle_logs.process_log_id = process_logs.id and idle_logs.deleted_at is null order by updated_at desc limit 1)) '. $variable['sort'][1]));
 					break;
 				default:
 						$query = $query->orderBy($variable['sort'][0], $variable['sort'][1]);
