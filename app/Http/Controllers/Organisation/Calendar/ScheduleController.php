@@ -333,12 +333,11 @@ class ScheduleController extends BaseController
 
 		if(Input::has('affect'))
 		{
-			if($calendar['import_from_id']!=0)
+			if($calendar['import_from_id']==0)
 			{
 				unset($search);
 				unset($sort);
 
-				$search['organisationid'] 			= $org_id;
 				$search['activeworks'] 				= true;
 				$search['parentid'] 				= $cal_id;
 				$sort 								= ['name' => 'asc'];
@@ -357,7 +356,6 @@ class ScheduleController extends BaseController
 				unset($search);
 				unset($sort);
 
-				$search['organisationid'] 			= $org_id;
 				$search['notid'] 					= $cal_id;
 				$search['activeworks'] 				= true;
 				$search['parentid'] 				= $calendar['import_from_id'];
@@ -388,16 +386,7 @@ class ScheduleController extends BaseController
 				if(Input::has('affect'))
 				{
 					$queattr['created_by'] 			= Session::get('loggedUser');
-					if(in_array(strtoupper($attributes['status']), ['CN', 'CB', 'CI']))
-					{
-						$queattr['process_name'] 	= 'hr:personworkleavebatch';
-						$queattr['process_option'] 	= 'personstaken';
-					}
-					else
-					{
-						$queattr['process_name'] 	= 'hr:schedulebatch';
-					}
-					
+					$queattr['process_name'] 		= 'hr:schedulebatch';
 					$queattr['task_per_process']	= 1;
 					$queattr['process_number'] 		= 0;
 					$queattr['message'] 			= 'Initial Queue';
@@ -434,15 +423,7 @@ class ScheduleController extends BaseController
 				}
 				else
 				{
-					if(in_array(strtoupper($attributes['status']), ['CN', 'CB', 'CI']))
-					{
-						$queattr['process_name'] 	= 'hr:personworkleavebatch';
-						$queattr['process_option'] 	= 'personstaken';
-					}
-					else
-					{
-						$queattr['process_name'] 	= 'hr:schedulebatch';
-					}
+					$queattr['process_name'] 	= 'hr:schedulebatch';
 					
 					$attributes['associate_calendar_id'] 	= $calendar['id'];
 
@@ -471,31 +452,6 @@ class ScheduleController extends BaseController
 							else
 							{
 								$errors->add('Batch', $value2);
-							}
-						}
-					}
-					else
-					{
-						$queattr['process_name'] 	= 'hr:schedulebatch';
-						unset($queattr['process_option']);
-						$content 					= $this->dispatch(new Saving(new Queue, $queattr, null));
-						$is_success_2 				= json_decode($content);
-
-						if(!$is_success_2->meta->success)
-						{
-							foreach ($is_success_2->meta->errors as $key2 => $value2) 
-							{
-								if(is_array($value2))
-								{
-									foreach ($value2 as $key3 => $value3) 
-									{
-										$errors->add('Batch', $value3);
-									}
-								}
-								else
-								{
-									$errors->add('Batch', $value2);
-								}
 							}
 						}
 					}
@@ -583,12 +539,11 @@ class ScheduleController extends BaseController
 
 			if(Input::has('affect'))
 			{
-				if($calendar['import_from_id']!=0)
+				if($calendar['import_from_id']==0)
 				{
 					unset($search);
 					unset($sort);
 
-					$search['organisationid'] 			= $org_id;
 					$search['activeworks'] 				= true;
 					$search['schedulesondate'] 			= [$schedule['on'], $schedule['on']];
 					$search['parentid'] 				= $cal_id;
@@ -609,7 +564,6 @@ class ScheduleController extends BaseController
 					unset($search);
 					unset($sort);
 
-					$search['organisationid'] 			= $org_id;
 					$search['notid'] 					= $cal_id;
 					$search['activeworks'] 				= true;
 					$search['schedulesondate'] 			= [$schedule['on'], $schedule['on']];
@@ -638,6 +592,8 @@ class ScheduleController extends BaseController
 						$ids[] 				= $value['id'];
 					}
 				}
+
+				$ids[] 						= $id;
 			}
 			else
 			{
