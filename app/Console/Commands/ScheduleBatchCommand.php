@@ -114,11 +114,11 @@ class ScheduleBatchCommand extends Command {
 		$data 						= Schedule::ondate([$parameters['on'], date('Y-m-d', strtotime($parameters['on'].' + 1 day'))])->calendarid($parameters['associate_calendar_id'])->first();
 		if($data)
 		{
-			$is_success				= $data->id;
+			$is_success				= $data;
 		}
 		else
 		{
-			$is_success				= null;
+			$is_success				= new Schedule;
 		}
 		
 		$calendar 					= Calendar::find($parameters['associate_calendar_id']);
@@ -136,7 +136,7 @@ class ScheduleBatchCommand extends Command {
 			$morphed 						= new QueueMorph;
 			$morphed->fill([
 				'queue_id'					=> $id,
-				'queue_morph_id'			=> $is_success->data->id,
+				'queue_morph_id'			=> $is_success->id,
 				'queue_morph_type'			=> get_class(new Schedule),
 			]);
 			$morphed->save();
