@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers\Organisation;
 
-use Input, Session, App, Paginator, Redirect, DB, Config,Response, Excel;
+use Input, Session, App, Paginator, Redirect, DB, Config,Response, Excel, Validator;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -219,6 +219,15 @@ class DocumentController extends BaseController
 		{
 			if (Input::hasFile('file_csv') && Input::has('doc_id')) 
 			{
+				$validator = Validator::make(['file' => Input::file('file_csv'), 
+												'extension' => strtolower(Input::file('file_csv')->getClientOriginalExtension())], 
+											['file' => 'required|max:20', 'extension' => 'required|in:csv']);
+				
+				if (!$validator->passes())
+				{
+					return Redirect::back()->withErrors($validator->errors())->withInput();
+				}
+
 				$file_csv 		= Input::file('file_csv');
 				$attributes = [];				
 				$sheet = Excel::load($file_csv)->toArray();				
