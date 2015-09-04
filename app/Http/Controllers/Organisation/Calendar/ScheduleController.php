@@ -398,7 +398,6 @@ class ScheduleController extends BaseController
 						$queattr['process_name'] 	= 'hr:schedulebatch';
 					}
 					
-					$queattr['parameter'] 			= json_encode($attributes);
 					$queattr['task_per_process']	= 1;
 					$queattr['process_number'] 		= 0;
 					$queattr['message'] 			= 'Initial Queue';
@@ -406,6 +405,7 @@ class ScheduleController extends BaseController
 					foreach ($calendars as $key => $value) 
 					{
 						$attributes['associate_calendar_id'] 	= $value['id'];
+						$queattr['parameter'] 		= json_encode($attributes);
 
 						$queattr['total_process'] 	= count($value['works']);
 						$queattr['total_task'] 		= count($value['works']);
