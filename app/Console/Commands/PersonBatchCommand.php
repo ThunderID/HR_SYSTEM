@@ -606,38 +606,35 @@ class PersonBatchCommand extends Command {
 				//save Pemberian Cuti
 				if(!$errors->count() && isset($row['kuotacutitahunan']))
 				{
-					if(in_array($is_work_success->status, ['contract', 'permanent']))
+					$personworkleave[$i]['work_id'] 		= $is_work_success->id;
+					$personworkleave[$i]['workleave_id'] 	= $is_workleave_success->id;
+					$personworkleave[$i]['created_by'] 		= $pending->created_by;
+					$personworkleave[$i]['name'] 			= 'Pemberian (awal) '.$is_workleave_success->name;
+					$personworkleave[$i]['notes'] 			= 'Auto generated dari import csv.';
+					$personworkleave[$i]['start'] 			= date('Y-m-d', strtotime('first day of January this year'));
+					$personworkleave[$i]['end'] 			= date('Y-m-d', strtotime('last day of last month'));
+					$personworkleave[$i]['quota'] 			= $is_workleave_success->quota;
+					$personworkleave[$i]['status'] 			= 'CN';
+
+					$is_personworkleave_success 			= new PersonWorkleave;
+					$is_personworkleave_success->fill($personworkleave[$i]);
+					$is_personworkleave_success->Person()->associate($is_success);
+
+					if(!$is_personworkleave_success->save())
 					{
-						$personworkleave[$i]['work_id'] 		= $is_work_success->id;
-						$personworkleave[$i]['workleave_id'] 	= $is_workleave_success->id;
-						$personworkleave[$i]['created_by'] 		= $pending->created_by;
-						$personworkleave[$i]['name'] 			= 'Pemberian (awal) '.$is_workleave_success->name;
-						$personworkleave[$i]['notes'] 			= 'Auto generated dari import csv.';
-						$personworkleave[$i]['start'] 			= date('Y-m-d', strtotime('first day of January this year'));
-						$personworkleave[$i]['end'] 			= date('Y-m-d', strtotime('last day of last month'));
-						$personworkleave[$i]['quota'] 			= $is_workleave_success->quota;
-						$personworkleave[$i]['status'] 			= 'CN';
+						$errors->add('Batch', $is_personworkleave_success->getError());
+					}
+					else
+					{
+						$morphed 						= new QueueMorph;
 
-						$is_personworkleave_success 			= new PersonWorkleave;
-						$is_personworkleave_success->fill($personworkleave[$i]);
-						$is_personworkleave_success->Person()->associate($is_success);
+						$morphed->fill([
+							'queue_id'					=> $pending->id,
+							'queue_morph_id'			=> $is_personworkleave_success->data->id,
+							'queue_morph_type'			=> get_class(new PersonWorkleave),
+						]);
 
-						if(!$is_personworkleave_success->save())
-						{
-							$errors->add('Batch', $is_personworkleave_success->getError());
-						}
-						else
-						{
-							$morphed 						= new QueueMorph;
-
-							$morphed->fill([
-								'queue_id'					=> $pending->id,
-								'queue_morph_id'			=> $is_personworkleave_success->data->id,
-								'queue_morph_type'			=> get_class(new PersonWorkleave),
-							]);
-
-							$morphed->save();
-						}
+						$morphed->save();
 					}
 				}
 

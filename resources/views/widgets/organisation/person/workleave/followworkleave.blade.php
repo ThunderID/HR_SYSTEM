@@ -6,16 +6,12 @@
 				{!! Form::open(['url' => route('hr.workleaves.works.store', ['person_id' => $person['id'], 'org_id' => $data['id']]), 'class' => 'no_enter form_widget_person_workleave']) !!}
 				<div class="alert alert-callout alert-danger no-margin">
 					<select name="workleave_id" class="form-control select2 select_person_workleave_widget">
-						@if($wleave['id']!='0' || in_array($person['works'][0]['pivot']['status'], ['contract', 'permanent']))
-							@if($wleave['id']==0)
-								<option value="0" selected>{{$wleave['quota']}}</option>
-							@endif
-							@foreach($WorkleaveComposer['widget_data']['workleavelist']['workleave'] as $key => $value)
-								<option value="{{$value['id']}}" @if($wleave['id']==$value['id']) selected @endif>{{$value['quota']}}</option>
-							@endforeach
-						@else
+						@if($wleave['id']==0)
 							<option value="0" selected>{{$wleave['quota']}}</option>
 						@endif
+						@foreach($WorkleaveComposer['widget_data']['workleavelist']['workleave'] as $key => $value)
+							<option value="{{$value['id']}}" @if($wleave['id']==$value['id']) selected @endif>{{$value['quota']}}</option>
+						@endforeach
 					</select>
 					{!!Form::hidden('work_id', $wleave['work_id']) !!}
 					{!! Form::hidden('follow_workleave_id', $wleave['follow_workleave_id']) !!}

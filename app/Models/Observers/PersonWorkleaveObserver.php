@@ -54,7 +54,7 @@ class PersonWorkleaveObserver
 			{
 				$work 					= Work::find($model['attributes']['work_id']);
 
-				$prev_work 				= Work::active(false)->status(['contract', 'permanent'])->personid($model['attributes']['person_id'])->startbefore($work->start)->orderby('start', 'desc')->get();
+				$prev_work 				= Work::active(false)->personid($model['attributes']['person_id'])->startbefore($work->start)->orderby('start', 'desc')->get();
 
 				foreach ($prev_work as $key => $value) 
 				{
