@@ -194,8 +194,8 @@ class AttendanceLogObserver
 				}
 			}
 		}
-		//check if current status was as or ul and cut workleave off (sync with policies bout cutting). to be considered : cut workleave when hc
-		elseif(strtoupper($model->actual_status)=='AS' && (in_array(strtoupper($model->modified_status), ['AS','UL'])))
+		//check if current status was (remove as or) ul and cut workleave off (sync with policies bout cutting). to be considered : cut workleave when hc
+		elseif(strtoupper($model->actual_status)=='AS' && (in_array(strtoupper($model->modified_status), ['UL'])))
 		{
 			//check if pw on that day were provided
 			$pwM 								= PersonWorkleave::personid($model->processlog->person_id)->ondate([$on, null])->status(strtoupper($model->modified_status))->quota(false)->first();
