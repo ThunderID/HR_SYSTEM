@@ -10,9 +10,6 @@ use Log, DB;
 
 class WorkleaveQueueCommand extends Command {
 
-	use \Illuminate\Foundation\Bus\DispatchesCommands;
-	use \Illuminate\Foundation\Validation\ValidatesRequests;
-	
 	/**
 	 * The console command name.
 	 *
@@ -85,17 +82,7 @@ class WorkleaveQueueCommand extends Command {
 	{
 		Log::info('Running Progressive Workleave command @'.date('Y-m-d H:i:s'));
 
-		$search						= [];
-		$sort						= [];
-		$results 					= $this->dispatch(new Getting(new Organisation, $search, $sort ,1, 100));
-		$contents 					= json_decode($results);
-
-		if(!$contents->meta->success)
-		{
-			return true;
-		}
-
-		$organisations 				= json_decode(json_encode($contents->data), true);
+		$organisations 				= Organisation::all();
 
 		foreach ($organisations as $key => $value) 
 		{
