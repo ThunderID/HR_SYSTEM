@@ -32,6 +32,7 @@ class Kernel extends ConsoleKernel {
 
 		'App\Console\Commands\HRClearCacheCommand',
 		'App\Console\Commands\HRSUpdateCommand',
+		'App\Console\Commands\ResetPasswordCommand',
 	];
 
 	/**
