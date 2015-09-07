@@ -56,7 +56,7 @@ Route::group(['middleware' => 'csrfverify'], function()
 		// NOTIFICATION QUEUE BATCH RESOURCE
 		// ------------------------------------------------------------------------------------
 
-		Route::resource('queue',			'QueueController',									['names' => ['index' => 'hr.queue.index', 'create' => 'hr.queue.create', 'store' => 'hr.queue.store', 'show' => 'hr.queue.show', 'edit' => 'hr.queue.edit', 'update' => 'hr.queue.update', 'destroy' => 'hr.queue.delete']]);
+		Route::resource('queue',				'QueueController',									['names' => ['index' => 'hr.queue.index', 'create' => 'hr.queue.create', 'store' => 'hr.queue.store', 'show' => 'hr.queue.show', 'edit' => 'hr.queue.edit', 'update' => 'hr.queue.update', 'destroy' => 'hr.queue.delete']]);
 
 
 		// ------------------------------------------------------------------------------------
@@ -353,6 +353,23 @@ Route::group(['namespace' => 'Organisation\\Workleave\\'], function()
 // API ROUTE
 // ------------------------------------------------------------------------------------
 
+// ------------------------------------------------------------------------------------
+// GLOBAL API
+// ------------------------------------------------------------------------------------
+
+Route::group(['namespace' => 'Tracker\\'], function() 
+{
+	// ------------------------------------------------------------------------------------
+	// TIME SYNC ABSENT SYSTEM VERSION = 1.0
+	// ------------------------------------------------------------------------------------
+
+	Route::post('api/time/test/',				['uses' => 'TimeController@test',					'as' => 'hr.time.test']);
+});
+
+// ------------------------------------------------------------------------------------
+// TRACKER API
+// ------------------------------------------------------------------------------------
+
 Route::group(['namespace' => 'Organisation\\Person\\'], function() 
 {
 	// ------------------------------------------------------------------------------------
@@ -369,42 +386,69 @@ Route::group(['namespace' => 'Tracker\\'], function()
 	// ------------------------------------------------------------------------------------
 
 	Route::post('api/tracker/setting/',			['uses' => 'LoginController@postlogin',				'as' => 'hr.tracker.post']);
-});
 
-Route::group(['namespace' => 'Tracker\\'], function() 
-{
 	// ------------------------------------------------------------------------------------
 	// APPS TEST ROUTE TRACKER VERSION < 1.0 (COMPATIBILITY FOR VERSION 1.0)
 	// ------------------------------------------------------------------------------------
 
 	Route::post('api/tracker/test/',			['uses' => 'LoginController@testlogin',				'as' => 'hr.tracker.test']);
-});
 
-Route::group(['namespace' => 'Tracker\\'], function() 
-{
 	// ------------------------------------------------------------------------------------
 	// AUTO UPDATE ABSENT SYSTEM VERSION = 1.0
 	// ------------------------------------------------------------------------------------
 
 	Route::post('api/tracker/update/',			['uses' => 'LoginController@updateversion',			'as' => 'hr.tracker.update']);
-});
 
-Route::group(['namespace' => 'Tracker\\'], function() 
-{
-	// ------------------------------------------------------------------------------------
-	// TIME SYNC ABSENT SYSTEM VERSION = 1.0
-	// ------------------------------------------------------------------------------------
-
-	Route::post('api/time/test/',				['uses' => 'TimeController@test',					'as' => 'hr.time.test']);
-});
-
-Route::group(['namespace' => 'Tracker\\'], function() 
-{
 	// ------------------------------------------------------------------------------------
 	// SAVE LOG ON TRACKER VERSION = 1.0
 	// ------------------------------------------------------------------------------------
 
 	Route::post('api/tracker/verse3/',			['uses' => 'TimeController@testv3',					'as' => 'hr.t3.post']);
+});
+
+// ------------------------------------------------------------------------------------
+// FP API
+// ------------------------------------------------------------------------------------
+Route::group(['namespace' => 'FP\\'], function() 
+{
+	// ------------------------------------------------------------------------------------
+	// ADMIN LOGIN FP VERSION > 1.0
+	// ------------------------------------------------------------------------------------
+
+	Route::post('api/fp/setting/',			['uses' => 'LoginController@postlogin',				'as' => 'hr.fp.post']);
+
+	// ------------------------------------------------------------------------------------
+	// DISPLAY FINGER OF THE DAY ON THAT BRANCH
+	// ------------------------------------------------------------------------------------
+
+	Route::post('api/fp/oftheday/',			['uses' => 'LoginController@fingeroftheday',		'as' => 'hr.fp.fotd']);
+
+
+	// ------------------------------------------------------------------------------------
+	// SYNC MASTER DATA AND LOCAL DATABASES
+	// ------------------------------------------------------------------------------------
+
+	Route::post('api/fp/sync/',				['uses' => 'LoginController@dbsync',				'as' => 'hr.fp.dbsync']);
+
+	// ------------------------------------------------------------------------------------
+	// SAVE LOG ON FP VERSION = 1.0
+	// ------------------------------------------------------------------------------------
+
+	Route::post('api/fp/verse3/',			['uses' => 'LogController@store',					'as' => 'hr.fp3.post']);
+
+
+	// ------------------------------------------------------------------------------------
+	// SAVE PERSONS' FINGER
+	// ------------------------------------------------------------------------------------
+
+	Route::post('api/fp/enroll/',			['uses' => 'FingerController@store',				'as' => 'hr.finger.store']);
+
+
+	// ------------------------------------------------------------------------------------
+	// SAVE PERSONS' FINGER
+	// ------------------------------------------------------------------------------------
+
+	Route::post('api/fp/delete/',			['uses' => 'FingerController@destroy',				'as' => 'hr.finger.destroy']);
 });
 
 Blade::extend(function ($value, $compiler)
