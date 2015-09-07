@@ -2,15 +2,20 @@
 
 @if (!$widget_error_count)
 	@section('widget_body')
-		@if ($PersonWidgetComposer['widget_data']['widgetlist']['widget']!=null)
+		@if (count($PersonWidgetComposer['widget_data']['widgetlist']['widget'])!=0)
 			@foreach ($PersonWidgetComposer['widget_data']['widgetlist']['widget'] as $key => $value)
-				@if (count($PersonWidgetComposer['widget_data']['widgetlist']['widget'])==4)
+				@if ($value['type']=='stat')
 					@if (($key%2)==0)
 						</div>
 						<div class="row">
 					@endif
 					<?php $x = json_decode($value['query'], 500);?>
 					<div class="col-sm-6">
+						@include($value['widget'], $x)
+					</div>
+				@else
+					<?php $x = json_decode($value['query'], 500);?>
+					<div class="col-sm-12">
 						@include($value['widget'], $x)
 					</div>
 				@endif

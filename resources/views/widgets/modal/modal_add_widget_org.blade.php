@@ -29,33 +29,50 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-12">
+							<label for="">Tipe Dashboard Widget</label>
+							<select name="dashboard" class="form-control select_type_widget">
+								<option value="organisation">Organisasi</option>
+								<option value="person">Karyawan</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
 							<div class="form-group">
 								<label for="">Data</label>
-								<select name="data_widget" id="select2-dashboard-widget" class="form-control select2-dashboard-widget">
-									<option value="ondate" data-composer="ProcessLogComposer" data-type="table" data-widget-option="personlist">
+								{{-- Organisation Widget --}}
+								<select name="data_widget_org" id="select2-dashboard-widget" class="form-control select_widget_org">
+									<option value="processlogondate" data-composer="ProcessLogComposer" data-type="table" data-widget-option="personlist" data-widget-option-title="Table SP Print" data-template="" data-query="sp">
 										SP Print list
 									</option>
-									<option value="processlogondate" data-composer="IdleLogComposer" data-type="table" data-widget="list" data-widget-option="personlist">
+									<option value="processlogondate" data-composer="IdleLogComposer" data-type="table" data-widget-option-title="Table Idle Terbanyak" data-template="" data-query="idle">
 										Idle Terbanyak
 									</option>
-									<option value="totalprocesslogondate" data-composer="IdleLogComposer" data-type="stat" >
+									<option value="totalprocesslogondate" data-composer="IdleLogComposer" data-type="stat" data-widget-option-title="Total Idle Terbanyak" data-template="widgets.common.personwidget.stat.stat_idle" data-query="idle">
 										Total Idle
 									</option>
-									<option value="processlogondate" data-composer="AttendanceLogComposer" data-type="stat">
+									<option value="processlogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="as" data-widget-option-title="Total Karyawan Status AS Terbanyak" data-template="" data-query="state">
 										Total Karyawan Status AS Terbanyak
 									</option>
-									<option value="processlogondate" data-composer="AttendanceLogComposer" data-type="stat">
+									<option value="processlogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="hb" data-widget-option-title="Total Karyawan Status HB Terbanyak" data-template="" data-query="state">
 										Total Karyawan Status HB Terbanyak
 									</option>
-									<option value="processlogondate" data-composer="AttendanceLogComposer" data-type="stat">
+									<option value="processlogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="hc" data-widget-option-title="Total Karayawan Status HC Terbanyak" data-template="" data-query="state">
 										Total Karyawan Status HC Terbanyak
 									</option>
-									<option data-composer="PersonWorkleaveComposer" data-type="table">
+									<option value="ondate" data-composer="PersonWorkleaveComposer" data-type="table" data-widget-option-title="Table Karyawan Sedang Cuti" data-template="" data-query="workleave">
 										Karyawan Yang Sedang Cuti
 									</option>
-									<option data-composer="PersonWorkleaveComposer" data-type="stat">
+									<option value="totalondate" data-composer="PersonWorkleaveComposer" data-type="stat" data-widget-option-title="Total Karyawan Sedang Cuti" data-template="" data-query="workleave">
 										Total Karyawan Yang Sedang Cuti
 									</option>
+								</select>
+
+								{{-- Person Widget --}}
+								<select name="data_widget_person" id="" class="form-control select_widget_person hide">
+									<option value="">SP</option>
+									<option value="">Total Idle</option>
+									<option value="">Total Aktif</option>
 								</select>
 							</div>
 						</div>
@@ -104,18 +121,34 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="form-group">
+								<div class="checkbox">
+									<label>
+										{!!Form::checkbox('is_active', '1', '', ['class' => '', 'tabindex' => '3'])!!} Aktif
+									</label>
+								</div>				
+							</div>
+						</div>
+					</div>
+					{{-- <div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
 								<label for="">Urutkan</label>
-								<select name="sort" id="">
-									<option value="asc">ASC</option>
+								<select name="sort" class="form-control">
+									<option value="">Pilih</option>
+									<option value="asc">Dari </option>
 									<option value="desc">DESC</option>
 								</select>
 							</div>
 						</div>
-					</div>			
+					</div>			 --}}
 				</div>
 				{!! Form::hidden('org_id', '', ['class' => 'hid_org_id']) !!}
-				{!! Form::hidden('dashboard', 'orgasisation') !!}
 				{!! Form::hidden('type', '', ['class' => 'type_widget']) !!}
+				{!! Form::hidden('status', '', ['class' => 'processlog_status']) !!}
+				{!! Form::hidden('widget_option_title', '', ['class' => 'widget_option_title']) !!}
+				{!! Form::hidden('widget_template', '', ['class' => 'widget_template']) !!}
+				{!! Form::hidden('widget_data', '', ['class' => 'widget_data']) !!}
+				{!! Form::hidden('widget_query', '', ['class' => 'widget_query']) !!}
 				<div class="modal-footer bg-grey">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Tambah</button>

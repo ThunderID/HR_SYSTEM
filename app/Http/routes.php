@@ -42,6 +42,11 @@ Route::group(['middleware' => 'csrfverify'], function()
 		});
 
 		// ------------------------------------------------------------------------------------
+		// DASHBOARD RESOURCE
+		// ------------------------------------------------------------------------------------
+		Route::resource('person-widgets',		'PersonWidgetController',								['names' => ['index' => 'hr.personwidgets.index', 'create' => 'hr.personwidgets.create', 'store' => 'hr.personwidgets.store', 'show' => 'hr.personwidgets.show', 'edit' => 'hr.personwidgets.edit', 'update' => 'hr.personwidgets.update', 'destroy' => 'hr.personwidgets.delete']]);
+
+		// ------------------------------------------------------------------------------------
 		// RECORD LOG RESOURCE
 		// ------------------------------------------------------------------------------------
 
@@ -81,7 +86,6 @@ Route::group(['middleware' => 'csrfverify'], function()
 
 		Route::group(['namespace' => 'Organisation\\'], function() 
 		{
-
 			// ------------------------------------------------------------------------------------
 			// BRANCHES RESOURCE
 			// ------------------------------------------------------------------------------------

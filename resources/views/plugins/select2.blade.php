@@ -72,11 +72,42 @@
 			$('.import_doc').attr('data-doc_id', value).attr('data-doc_name', name);
 		});
 
-		/* Select2 widget */
-		$("#select2-dashboard-widget").on('change', function(e)
+		/* Select2 widget org */
+		$(".select_widget_org").on('change', function(e)
 		{
-			var type 	= $(this).find(':selected').attr('data-type');
+			var value 					= $(this).val();
+			var type 					= $(this).find(':selected').attr('data-type');
+			var widget_option_title 	= $(this).find(':selected').attr('data-widget-option-title');
+			var widget_template 		= $(this).find(':selected').attr('data-template');
+			var widget_query 			= $(this).find(':selected').attr('data-query');
+
+			if (value=='processlogondate') {
+				var status = $(this).find(':selected').attr('data-status');
+				$('.processlog_status').val(status);
+			}
+			else {
+				$('.processlog_status').val('');	
+			}
+
 			$('.type_widget').val(type);
+			$('.widget_option_title').val(widget_option_title);
+			$('.widget_template').val(widget_template);
+			$('.widget_data').val(value);
+			$('.widget_query').val(widget_query);
+		});
+
+		/* select type widget */
+		$('.select_type_widget').on('change', function() {
+			var value 			= $(this).val();
+
+			if (value=='organisation') {
+				$('select.select_widget_person').addClass('hide');
+				$('select.select_widget_org').removeClass('hide').val('');
+			}
+			else {
+				$('select.select_widget_org').addClass('hide');	
+				$('select.select_widget_person').removeClass('hide').val('');
+			}
 		});
 	});	
 </script>

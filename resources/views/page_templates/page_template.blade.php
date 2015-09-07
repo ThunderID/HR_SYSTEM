@@ -50,6 +50,14 @@
 					'modal'                 => 'deleteorg'
 				])
 			{!! Form::close() !!}
+			
+			{{-- Model Add Widget --}}
+			{!! Form::open(['url' => route('hr.personwidgets.store'),'method' => 'POST']) !!}
+				@include('widgets.modal.modal_add_widget_org', [
+					'widget_template'		=> 'plain_no_title',
+					'class_id'				=> 'add_widget'
+				])
+			{!! Form::close() !!}
 
 		</div>
 	</div>

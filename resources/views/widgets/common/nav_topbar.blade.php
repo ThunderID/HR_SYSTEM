@@ -41,6 +41,9 @@
 				</a>
 				<ul class="dropdown-menu dropdown-user">	
 					<li><a href="{{ route('hr.queue.index') }}"><i class="fa fa-bell fa-fw"></i> Notifikasi</a></li>
+					<li><a href="javascript:;" data-toggle="modal" data-target="#add_widget" data-org="{{ $data['id'] }}">
+						<i class="fa fa-dashboard fa-fw"></i> Tambah Widget</a>
+					</li>
 					<li><a href="{{route('hr.password.get')}}"><i class="fa fa-gear fa-fw"></i> Ubah Password</a></li>
 					<li><a href="{{route('hr.logout.get')}}"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
 				</ul>	            
