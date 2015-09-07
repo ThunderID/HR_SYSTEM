@@ -1,5 +1,5 @@
 <script>
-	/* Modal */
+	/* Modal Delete */
 	$('.delete').on('show.bs.modal', function(e) {
 		var action 	= $(e.relatedTarget).attr('data-delete-action');		
 		var affect 	= parseInt($(e.relatedTarget).attr('data-affect'));
@@ -97,5 +97,15 @@ console.log(affect);
 
 		$('.span-title').html('pekerjaan');
 		$(this).parent().attr('action', action+'?org_id='+org_id);
+	});
+
+	/* modal add widget org */
+	$('.add_widget').on('show.bs.modal', function(e) {
+		var org_id 		= $(e.relatedTarget).attr('data-org');
+		var select_id 	= $(this).find('.select2-dashboard-widget');
+
+		$(this).find('.hid_org_id').val(org_id);
+
+		// $(select_id).select2().on('change', function(){alert('halo');});
 	});
 </script>
