@@ -26,13 +26,13 @@ class LoginController extends BaseController {
 			return Response::json('101', 200);
 		}		
 
-		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['version']) || !isset($attributes['application']['api']['app_id']) || !isset($attributes['application']['api']['email']) || !isset($attributes['application']['api']['password']))
+		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['version']) || !isset($attributes['application']['api']['station_id']) || !isset($attributes['application']['api']['email']) || !isset($attributes['application']['api']['password']))
 		{
 			return Response::json('102', 200);
 		}
 
 		//cek API key & secret
-		$results 								= $this->dispatch(new Getting(new API, ['client' => $attributes['application']['api']['client'], 'secret' => $attributes['application']['api']['secret'], 'workstationaddress' => $attributes['application']['api']['app_id'], 'withattributes' => ['branch']], [], 1, 1));
+		$results 								= $this->dispatch(new Getting(new API, ['client' => $attributes['application']['api']['client'], 'secret' => $attributes['application']['api']['secret'], 'workstationaddress' => $attributes['application']['api']['station_id'], 'withattributes' => ['branch']], [], 1, 1));
 		
 		$content 								= json_decode($results);
 		if(!$content->meta->success)
@@ -144,13 +144,13 @@ class LoginController extends BaseController {
 			return Response::json('101', 200);
 		}		
 
-		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['version']) || !isset($attributes['application']['api']['app_id']))
+		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['version']) || !isset($attributes['application']['api']['station_id']))
 		{
 			return Response::json('102', 200);
 		}
 
 		//cek API key & secret
-		$results 								= $this->dispatch(new Getting(new API, ['client' => $attributes['application']['api']['client'], 'secret' => $attributes['application']['api']['secret'], 'workstationaddress' => $attributes['application']['api']['app_id'], 'withattributes' => ['branch']], [], 1, 1));
+		$results 								= $this->dispatch(new Getting(new API, ['client' => $attributes['application']['api']['client'], 'secret' => $attributes['application']['api']['secret'], 'workstationaddress' => $attributes['application']['api']['station_id'], 'withattributes' => ['branch']], [], 1, 1));
 		
 		$content 								= json_decode($results);
 		if(!$content->meta->success)
@@ -184,7 +184,7 @@ class LoginController extends BaseController {
 		}
 		
 		
-		$results_3 							= $this->dispatch(new Getting(new FingerPrint, ['branchid' => $content_2->data->branch_id], [], 1, 1));
+		$results_3 							= $this->dispatch(new Getting(new FingerPrint, ['branchid' => $content->data->branch_id], [], 1, 1));
 		
 		$content_3 							= json_decode($results_3);
 		
@@ -235,14 +235,14 @@ class LoginController extends BaseController {
 						break;
 				}
 
-				if($activefinger)
+				if(isset($activefinger))
 				{
-					$fodt[] 				= $activefinger;
+					$fotd[] 				= $activefinger;
 				}
 			}
 		}
 
-		return Response::json($fodt, 200);
+		return Response::json($fotd, 200);
 	}
 
 
@@ -256,7 +256,7 @@ class LoginController extends BaseController {
 			return Response::json('101', 200);
 		}		
 
-		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['version']) || !isset($attributes['application']['api']['app_id']))
+		if(!isset($attributes['application']['api']['client']) || !isset($attributes['application']['api']['secret']) || !isset($attributes['application']['api']['version']) || !isset($attributes['application']['api']['station_id']))
 		{
 			return Response::json('102', 200);
 		}
@@ -267,7 +267,7 @@ class LoginController extends BaseController {
 		}
 
 		//cek API key & secret
-		$results 								= $this->dispatch(new Getting(new API, ['client' => $attributes['application']['api']['client'], 'secret' => $attributes['application']['api']['secret'], 'workstationaddress' => $attributes['application']['api']['app_id'], 'withattributes' => ['branch']], [], 1, 1));
+		$results 								= $this->dispatch(new Getting(new API, ['client' => $attributes['application']['api']['client'], 'secret' => $attributes['application']['api']['secret'], 'workstationaddress' => $attributes['application']['api']['station_id'], 'withattributes' => ['branch']], [], 1, 1));
 		
 		$content 								= json_decode($results);
 		if(!$content->meta->success)
@@ -315,22 +315,23 @@ class LoginController extends BaseController {
 		foreach ($content_3->data as $key => $value) 
 		{
 			unset($finger);
+			if($value->person)
+			{
+				$finger[]						= $value->person->username;
+				$finger[]						= $value->left_thumb;
+				$finger[]						= $value->left_index_finger;
+				$finger[]						= $value->left_middle_finger;
+				$finger[]						= $value->left_ring_finger;
+				$finger[]						= $value->left_little_finger;
+				$finger[]						= $value->right_thumb;
+				$finger[]						= $value->right_index_finger;
+				$finger[]						= $value->right_middle_finger;
+				$finger[]						= $value->right_ring_finger;
+				$finger[]						= $value->right_little_finger;
 
-			$finger[]						= $value->person->username;
-			$finger[]						= $value->left_thumb;
-			$finger[]						= $value->left_index_finger;
-			$finger[]						= $value->left_middle_finger;
-			$finger[]						= $value->left_ring_finger;
-			$finger[]						= $value->left_little_finger;
-			$finger[]						= $value->right_thumb;
-			$finger[]						= $value->right_index_finger;
-			$finger[]						= $value->right_middle_finger;
-			$finger[]						= $value->right_ring_finger;
-			$finger[]						= $value->right_little_finger;
-
-			$fingers[] 						= $finger;
+				$fingers[] 						= $finger;
+			}
 		}
-
 		return Response::json($fingers, 200);
 	}
 }

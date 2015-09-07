@@ -11,6 +11,7 @@ use App\Models\Organisation;
 use App\Models\Log;
 use App\Models\Person;
 use App\Models\ErrorLog;
+use App\Models\Finger;
 use App\Models\Branch;
 use App\Models\Api;
 
@@ -95,7 +96,8 @@ class FingerController extends BaseController
 				$data 						= [];
 				foreach ($attributes['data'] as $key => $value) 
 				{
-					unset($activefinger)
+					unset($activefinger);
+
 					switch(strtolower($key))
 					{
 						case 'jari1' :
@@ -136,7 +138,7 @@ class FingerController extends BaseController
 					}
 				}
 
-				$saved_data 					= $this->dispatch(new Saving(new FingerPrint, $data, $person->data->finger->id, new Person, $person->data->id));
+				$saved_data 					= $this->dispatch(new Saving(new Finger, $data, $person->data->finger->id, new Person, $person->data->id));
 				$is_success_2 					= json_decode($saved_data);
 				if(!$is_success_2->meta->success)
 				{
@@ -227,7 +229,7 @@ class FingerController extends BaseController
 				$data 						= [];
 				foreach ($attributes['data'] as $key => $value) 
 				{
-					unset($activefinger)
+					unset($activefinger);
 					switch(strtolower($key))
 					{
 						case 'jari1' :
@@ -268,7 +270,7 @@ class FingerController extends BaseController
 					}
 				}
 
-				$saved_data 					= $this->dispatch(new Saving(new FingerPrint, $data, $person->data->finger->id, new Person, $person->data->id));
+				$saved_data 					= $this->dispatch(new Saving(new Finger, $data, $person->data->finger->id, new Person, $person->data->id));
 				$is_success_2 					= json_decode($saved_data);
 				if(!$is_success_2->meta->success)
 				{

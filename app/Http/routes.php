@@ -51,7 +51,7 @@ Route::group(['middleware' => 'csrfverify'], function()
 		// NOTIFICATION QUEUE BATCH RESOURCE
 		// ------------------------------------------------------------------------------------
 
-		Route::resource('queue',			'QueueController',									['names' => ['index' => 'hr.queue.index', 'create' => 'hr.queue.create', 'store' => 'hr.queue.store', 'show' => 'hr.queue.show', 'edit' => 'hr.queue.edit', 'update' => 'hr.queue.update', 'destroy' => 'hr.queue.delete']]);
+		Route::resource('queue',				'QueueController',									['names' => ['index' => 'hr.queue.index', 'create' => 'hr.queue.create', 'store' => 'hr.queue.store', 'show' => 'hr.queue.show', 'edit' => 'hr.queue.edit', 'update' => 'hr.queue.update', 'destroy' => 'hr.queue.delete']]);
 
 
 		// ------------------------------------------------------------------------------------
@@ -421,7 +421,7 @@ Route::group(['namespace' => 'FP\\'], function()
 
 
 	// ------------------------------------------------------------------------------------
-	// UPDATE MASTER DATA WITH LOCAL DATABASES
+	// SYNC MASTER DATA AND LOCAL DATABASES
 	// ------------------------------------------------------------------------------------
 
 	Route::post('api/fp/sync/',				['uses' => 'LoginController@dbsync',				'as' => 'hr.fp.dbsync']);
@@ -446,7 +446,6 @@ Route::group(['namespace' => 'FP\\'], function()
 
 	Route::post('api/fp/delete/',			['uses' => 'FingerController@destroy',				'as' => 'hr.finger.destroy']);
 });
-
 
 Blade::extend(function ($value, $compiler)
 {
