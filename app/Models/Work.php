@@ -62,7 +62,7 @@ class Work extends BaseModel {
 											'grade' 					=> 'max:255',
 											'status' 					=> 'required|in:contract,probation,internship,permanent,others,admin,previous',
 											'start' 					=> 'required|date_format:"Y-m-d"',
-											'end' 						=> 'required_if:status,internship,previous|date_format:"Y-m-d"',
+											'end' 						=> 'required_if:status,probation,contract,internship,previous|date_format:"Y-m-d"',
 											'position' 					=> 'required_without:chart_id',
 											'organisation' 				=> 'required_without:chart_id',
 											'reason_end_job' 			=> 'required_with:end',

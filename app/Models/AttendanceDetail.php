@@ -56,6 +56,9 @@ class AttendanceDetail extends BaseModel {
 											'id' 						=> 'ID', 
 											'personworkleaveid' 		=> 'PersonWorkleaveID', 
 											'persondocumentid' 			=> 'PersonDocumentID', 
+											'notpersondocumentid' 		=> 'NotPersonDocumentID', 
+											'organisationid' 			=> 'OrganisationID', 
+											'processlogondate' 			=> 'ProcessLogOnDate', 
 
 											'withattributes' 			=> 'WithAttributes',
 											'withtrashed' 				=> 'WithTrashed',
@@ -65,9 +68,12 @@ class AttendanceDetail extends BaseModel {
 											'id' 						=> 'Could be array or integer', 
 											'personworkleaveid' 		=> 'Could be array or integer', 
 											'persondocumentid' 			=> 'Could be array or integer', 
+											'notpersondocumentid' 		=> 'Could be array or integer', 
+											'organisationid' 			=> 'Could be array or integer', 
 
 											'withattributes' 			=> 'Must be array of relationship',
 											'withtrashed' 				=> 'Must be true',
+											'processlogondate' 			=> 'Could be array or string (date)', 
 										];
 
 	public $sortable 				= 	['created_at', 'person_workleave_id', 'person_document_id'];
@@ -126,5 +132,10 @@ class AttendanceDetail extends BaseModel {
 	public function scopePersonDocumentID($query, $variable)
 	{
 		return $query->where('person_document_id', $variable);
+	}
+
+	public function scopeNotPersonDocumentID($query, $variable)
+	{
+		return $query->where('person_document_id', '<>', $variable);
 	}
 }

@@ -242,7 +242,7 @@ class PersonWorkleaveBatchCommand extends Command {
 		$errors 					= new MessageBag;
 
 		//check work active on that day, please consider if that queue were written days
-		$works 						= Work::active(true)->status(['contract', 'permanent'])->workleaveid($parameters['workleave_id'])->get();
+		$works 						= Work::active(true)->workleaveid($parameters['workleave_id'])->get();
 
 		$workleave 					= Workleave::id($parameters['workleave_id'])->first();
 
@@ -337,7 +337,7 @@ class PersonWorkleaveBatchCommand extends Command {
 		$errors 					= new MessageBag;
 
 		//check work active on that day, please consider if that queue were written days
-		$works 						= Work::active(true)->status(['contract', 'permanent'])->calendarid($parameters['associate_calendar_id'])->get();
+		$works 						= Work::active(true)->calendarid($parameters['associate_calendar_id'])->get();
 		$calendar 					= Calendar::id($parameters['associate_calendar_id'])->schedulesondate([$begin->format('Y-m-d'), $ended->format('Y-m-d')])->first();
 
 		$wd							= ['senin' => 'monday', 'selasa' => 'tuesday', 'rabu' => 'wednesday', 'kamis' => 'thursday', 'jumat' => 'friday', 'sabtu' => 'saturday', 'minggu' => 'sunday', 'monday' => 'monday', 'tuesday' => 'tuesday', 'wednesday' => 'wednesday', 'thursday' => 'thursday', 'friday' => 'friday', 'saturday' => 'saturday', 'sunday' => 'sunday'];
@@ -426,7 +426,11 @@ class PersonWorkleaveBatchCommand extends Command {
 
 				$person 							= Person::find($value->person_id);
 				$is_success 						= $pid->fill($attributes);
-				$is_success->Person()->associate($person);
+
+				if($person)
+				{
+					$is_success->Person()->associate($person);
+				}
 
 				if(!$is_success->save())
 				{

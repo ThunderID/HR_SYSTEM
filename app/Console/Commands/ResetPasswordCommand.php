@@ -3,28 +3,25 @@
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
-use Illuminate\Database\Schema\Blueprint;
-use Schema;
-use App\Models\Application;
-use App\Models\Menu;
-use App\Models\GroupMenu;
-use DB;
 
-class HRSUpdateCommand extends Command {
+use App\Models\Person;
+use Log, DB;
+
+class ResetPasswordCommand extends Command {
 
 	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	protected $name = 'hr:update';
+	protected $name = 'hr:resetpassword';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Update HR System.';
+	protected $description = 'Reset Password pre launch.';
 
 	/**
 	 * Create a new command instance.
@@ -43,8 +40,9 @@ class HRSUpdateCommand extends Command {
 	 */
 	public function fire()
 	{
-		$result 		= $this->update27082015();
-		
+		//
+		$result 		= $this->resetpassword();
+
 		return true;
 	}
 
@@ -73,13 +71,39 @@ class HRSUpdateCommand extends Command {
 	}
 
 	/**
-	 * update 1st version
+	 * absence log
 	 *
 	 * @return void
 	 * @author 
 	 **/
-	public function update27082015()
+	public function resetpassword()
 	{
+		Log::info('Running Reset Password command @'.date('Y-m-d H:i:s'));
+
+		$persons 					= Person::where('last_password_updated_at', '<', '2015-06-04 00:00:00')->get();
+
+		foreach ($persons as $key => $value) 
+		{
+			DB::beginTransaction();
+
+			$value->fill([
+					'password' 						=> '',
+					'last_password_updated_at' 		=> date('Y-m-d H:i:s'),
+				]);
+
+			if(!$value->save())
+			{
+				DB::rollback();
+
+				Log::error('Reset Password '.$value->name.' '.json_encode($value->getError()));
+			}
+			else
+			{
+				DB::Commit();
+			}
+		}
+
 		return true;
 	}
+
 }

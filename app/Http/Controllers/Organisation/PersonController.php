@@ -350,7 +350,7 @@ class PersonController extends BaseController
 				$id 								= Input::get('id');
 			}
 
-			$attributes 							= Input::only('uniqid', 'name', 'prefix_title', 'suffix_title', 'gender', 'place_of_birth');
+			$attributes 							= Input::only('uniqid', 'name', 'prefix_title', 'suffix_title', 'gender', 'place_of_birth', 'username');
 			
 			if (Input::has('date_of_birth'))
 			{

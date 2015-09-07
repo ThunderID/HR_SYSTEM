@@ -73,17 +73,23 @@ class AttendanceLog extends BaseModel {
 	public $searchable 				= 	[
 											'id' 								=> 'ID', 
 											'processlogid' 						=> 'ProcessLogID', 
+											'organisationid' 					=> 'OrganisationID', 
+											'status' 							=> 'Status', 
 											
 											'withattributes' 					=> 'WithAttributes',
 											'withtrashed' 						=> 'WithTrashed',
+											'processlogondate' 					=> 'ProcessLogOnDate', 
 										];
 
 	public $searchableScope 		= 	[
 											'id' 								=> 'Could be array or integer', 
 											'processlogid' 						=> 'Could be array or integer', 
+											'organisationid' 					=> 'Could be array or integer', 
+											'status' 							=> 'Must be string',
 											
 											'withattributes' 					=> 'Must be array of relationship',
 											'withtrashed' 						=> 'Must be true',
+											'processlogondate' 					=> 'Could be array or string (date)', 
 										];
 
 	public $sortable 				= 	['process_log_id', 'created_at'];
@@ -144,6 +150,11 @@ class AttendanceLog extends BaseModel {
 			return $query->whereIn('attendance_logs.id', $variable);
 		}
 		return $query->where('attendance_logs.id', $variable);
+	}
+
+	public function scopeStatus($query, $variable)
+	{
+		return $query->where('modified_status', $variable)->orwhere(function($query)use($variable){$query->where('modified_status', '=' , '')->where('actual_status', '=' , $variable);});
 	}
 
 	public function scopeActualStatus($query, $variable)

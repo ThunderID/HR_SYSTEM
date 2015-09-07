@@ -120,8 +120,8 @@ class ScheduleBatchCommand extends Command {
 		{
 			$is_success				= new Schedule;
 		}
-		
-		$calendar 					= Calendar::find($parameters['associate_calendar_id']);
+
+		$calendar 							= Calendar::find($parameters['associate_calendar_id']);
 
 		$is_success->fill($parameters);
 		$is_success->Calendar()->associate($calendar);
@@ -129,6 +129,13 @@ class ScheduleBatchCommand extends Command {
 		if(!$is_success->save())
 		{
 			$errors->add('Batch', $is_success->getError());
+		}
+		else
+		{
+			if(in_array(strtoupper($is_success->status), ['CN', 'CB', 'CI']))
+			{
+				$check 						= $this->call('hr:personworkleavebatch', ['queueid' => $pending->id, '--queuefunc' => 'personstaken']);
+			}
 		}
 
 		if(!$errors->count())
@@ -141,13 +148,13 @@ class ScheduleBatchCommand extends Command {
 			]);
 			$morphed->save();
 
-			$pnumber 						= $pending->process_number+1;
+			$pnumber 						= $pending->total_process;
 			$messages['message'][$pnumber] 	= 'Sukses Menyimpan Jadwal '.(isset($calendar['name']) ? $calendar['name'] : '');
 			$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 		}
 		else
 		{
-			$pnumber 						= $pending->process_number+1;
+			$pnumber 						= $pending->total_process;
 			$messages['message'][$pnumber] 	= 'Gagal Menyimpan Jadwal '.(isset($calendar['name']) ? $calendar['name'] : '');
 			$messages['errors'][$pnumber] 	= $errors;
 
@@ -177,19 +184,17 @@ class ScheduleBatchCommand extends Command {
 		$errors 					= new MessageBag;
 
 		//check work active on that day, please consider if that queue were written days
-		$data 						= Schedule::id($parameters['id'])->withattributes(['calendar'])->first();
+		$data 						= Schedule::id($parameters['id'])->withattributes(['calendar'])->get();
 		$calendar 					= $data['calendar'];
 
 		DB::beginTransaction();
 
-		if(!$data)
+		foreach ($data as $key => $value) 
 		{
-			$errors->add('Batch', 'Data tidak tersedia');
-		}
-
-		if(!$errors->count() && !$data->delete())
-		{
-			$errors->add('Batch', $data->getError());
+			if(!$data->delete())
+			{
+				$errors->add('Batch', $data->getError());
+			}
 		}
 
 		if(!$errors->count())

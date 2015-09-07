@@ -37,24 +37,22 @@ class WorkObserver
 
 		if(isset($model['attributes']['chart_id']) && $model['attributes']['chart_id']!=0)
 		{
-			if(in_array(strtolower($model['status']), ['contract', 'permanent']))
+			
+			$defaultworkleave 					= Workleave::status('CN')->organisationid($model->chart->branch->organisation_id)->active(true)->quota(12)->first();
+			if($defaultworkleave)
 			{
-				$defaultworkleave 					= Workleave::status('CN')->organisationid($model->chart->branch->organisation_id)->active(true)->quota(12)->first();
-				if($defaultworkleave)
+				$follow 						= new FollowWorkleave;
+				$follow->fill([
+							'work_id'			=> $model->id,
+				]);
+
+				$follow->workleave()->associate($defaultworkleave);
+
+				if(!$follow->save())
 				{
-					$follow 						= new FollowWorkleave;
-					$follow->fill([
-								'work_id'			=> $model->id,
-					]);
+					$model['errors'] 			= $follow->getError();
 
-					$follow->workleave()->associate($defaultworkleave);
-
-					if(!$follow->save())
-					{
-						$model['errors'] 			= $follow->getError();
-
-						return false;
-					}
+					return false;
 				}
 			}
 
