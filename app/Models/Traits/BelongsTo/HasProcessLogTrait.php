@@ -34,4 +34,14 @@ trait HasProcessLogTrait {
 
 		return $query->where('process_log_id', $variable);
 	}
+
+	public function scopeProcessLogOndate($query, $variable)
+	{
+		return $query->wherehas('processlog', function($q)use($variable){$q->ondate($variable);})->groupby('process_log_id');
+	}
+	
+	public function scopeOrganisationID($query, $variable)
+	{
+		return $query->WhereHas('person.works.branch', function($q)use($variable){$q->organisationid($variable);});
+	}
 }

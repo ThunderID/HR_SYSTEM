@@ -20,4 +20,14 @@ trait HasAttendanceLogTrait {
 	{
 		return $this->belongsTo('App\Models\AttendanceLog');
 	}
+
+	public function scopeProcessLogOndate($query, $variable)
+	{
+		return $query->wherehas( 'attendancelog.processlog', function($q)use($variable){$q->ondate($variable);})->groupby('attendance_log_id');
+	}
+
+	public function scopeOrganisationID($query, $variable)
+	{
+		return $query->WhereHas('attendancelog', function($q)use($variable){$q->organisationid($variable);});
+	}
 }

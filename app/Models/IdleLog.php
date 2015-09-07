@@ -65,6 +65,9 @@ class IdleLog extends BaseModel {
 	public $searchable 				= 	[
 											'id' 								=> 'ID', 
 											'processlogid' 						=> 'ProcessLogID', 
+											'processlogondate' 					=> 'ProcessLogOnDate', 
+											'totalprocesslogondate' 			=> 'TotalProcessLogOnDate', 
+											'organisationid' 					=> 'OrganisationID', 
 											
 											'withattributes' 					=> 'WithAttributes',
 										];
@@ -72,8 +75,11 @@ class IdleLog extends BaseModel {
 	public $searchableScope 		= 	[
 											'id' 								=> 'Could be array or integer', 
 											'processlogid' 						=> 'Could be array or integer', 
+											'organisationid' 					=> 'Could be array or integer', 
 											
 											'withattributes' 					=> 'Must be array of relationship',
+											'processlogondate' 					=> 'Could be array or string (date)', 
+											'totalprocesslogondate' 			=> 'Could be array or string (date)', 
 										];
 
 	public $sortable 				= 	['process_log_id', 'created_at'];
@@ -134,5 +140,11 @@ class IdleLog extends BaseModel {
 			return $query->whereIn('idle_logs.id', $variable);
 		}
 		return $query->where('idle_logs.id', $variable);
+	}
+
+	public function scopeTotalProcessLogOndate($query, $variable)
+	{
+		return $query->selectraw('sum(total_idle) as total_idle')
+					->wherehas('processlog', function($q)use($variable){$q->ondate($variable);})->groupBy('process_log_id');
 	}
 }

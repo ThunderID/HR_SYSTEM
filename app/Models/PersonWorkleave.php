@@ -90,6 +90,7 @@ class PersonWorkleave extends BaseModel {
 											'ondate' 					=> 'OnDate', 
 											'withattributes' 			=> 'WithAttributes',
 											'withtrashed' 				=> 'WithTrashed',
+											'totalondate' 				=> 'TotalOnDate', 
 										];
 										
 	public $searchableScope 		= 	[
@@ -106,6 +107,7 @@ class PersonWorkleave extends BaseModel {
 											'ondate' 					=> 'Could be array or string (date)', 
 											'withattributes' 			=> 'Must be array of relationship',
 											'withtrashed' 				=> 'Must be true',
+											'totalondate' 				=> 'Could be array or string (date)', 
 										];
 
 	public $sortable 				= 	['created_at', 'name', 'start', 'end'];
@@ -223,5 +225,11 @@ class PersonWorkleave extends BaseModel {
 		return $query->selectraw('person_workleaves.*')
 					 ->selectraw('sum(quota) as total_quota')
 					 ;
+	}
+
+	public function scopeTotalOndate($query, $variable)
+	{
+		return $query->selectraw('count(id) as total_person')
+					->ondate($variable);
 	}
 }
