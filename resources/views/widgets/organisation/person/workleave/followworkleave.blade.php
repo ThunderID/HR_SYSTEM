@@ -21,8 +21,11 @@
 			@else
 				<div class="alert alert-callout alert-danger no-margin">
 					<strong class="pull-right text-info text-lg"><i class="fa fa-bed fa-2x"></i></strong>
-					<strong class="text-xl">{{$WorkleaveComposer['widget_data']['workleavelist']['quota']}}
-					</strong><br>
+					@foreach($WorkleaveComposer['widget_data']['workleavelist']['workleave'] as $key => $value)
+						@if($wleave['id']==$value['id']) 
+							<strong class="text-xl">{{$value['quota']}}</strong><br>
+						@endif
+					@endforeach
 					<span class="opacity-50">{!! $widget_title  or 'Kuota Cuti "'.$data['name'].'" Tahun Ini' !!} </span>					
 				</div>
 			@endif
