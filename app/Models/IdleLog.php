@@ -68,7 +68,7 @@ class IdleLog extends BaseModel {
 											'processlogondate' 					=> 'ProcessLogOnDate', 
 											'totalprocesslogondate' 			=> 'TotalProcessLogOnDate', 
 											'organisationid' 					=> 'OrganisationID', 
-											'personid' 							=> 'PersonID', 
+											'personid' 							=> 'ProcessLogPersonID', 
 											
 											'withattributes' 					=> 'WithAttributes',
 										];
