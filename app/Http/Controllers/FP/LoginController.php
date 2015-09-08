@@ -325,6 +325,7 @@ class LoginController extends BaseController {
 			if($value->person)
 			{
 				$finger['email']				= $value->person->username;
+				$finger['person_id']			= $value->person->id;
 				$finger['left_thumb']			= $value->left_thumb;
 				$finger['left_index_finger']	= $value->left_index_finger;
 				$finger['left_middle_finger']	= $value->left_middle_finger;
@@ -335,6 +336,7 @@ class LoginController extends BaseController {
 				$finger['right_middle_finger']	= $value->right_middle_finger;
 				$finger['right_ring_finger']	= $value->right_ring_finger;
 				$finger['right_little_finger']	= $value->right_little_finger;
+				$finger['updated_date']			= date('d/m/Y H:i:s', strtotime($value->updated_at));
 
 				$fingers['data'][] 				= $finger;
 				$fingername[]					= $value->person->username;
@@ -343,7 +345,6 @@ class LoginController extends BaseController {
 				
 		if(count($content_3->data))
 		{
-			$fingers['updated_date']			= $updatedat->format('d/m/Y H:i:s');
 		}
 
 		Log::info('Running Sync @'.date('Y-m-d H:i:s'). ' Total '.$attributes['application']['api']['limit'].' Updated At '. $updatedat->format('Y-m-d H:i:s').json_encode($fingername));
