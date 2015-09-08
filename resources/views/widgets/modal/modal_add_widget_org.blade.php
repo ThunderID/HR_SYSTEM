@@ -31,7 +31,7 @@
 						<div class="col-sm-12">
 							<label for="">Tipe Dashboard Widget</label>
 							<select name="dashboard" class="form-control select_type_widget">
-								<option value="organisation">Organisasi</option>
+								@if (Session::get('user.menuid')<=3) <option value="organisation">Organisasi</option> @endif
 								<option value="person">Karyawan</option>
 							</select>
 						</div>
@@ -51,13 +51,13 @@
 									<option value="totalprocesslogondate" data-composer="IdleLogComposer" data-type="stat" data-widget-option-title="Total Idle Terbanyak" data-template="widgets.common.personwidget.stat.stat_idle" data-query="idle">
 										Total Idle
 									</option>
-									<option value="processlogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="as" data-widget-option-title="Total Karyawan Status AS Terbanyak" data-template="widgets.common.personwidget.stat.stat_status" data-query="state">
+									<option value="totalprocesslogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="as" data-widget-option-title="Total Karyawan Status AS Terbanyak" data-template="widgets.common.personwidget.stat.stat_status" data-query="state">
 										Total Karyawan Status AS Terbanyak
 									</option>
-									<option value="processlogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="hb" data-widget-option-title="Total Karyawan Status HB Terbanyak" data-template="widgets.common.personwidget.stat.stat_status" data-query="state">
+									<option value="totalprocesslogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="hb" data-widget-option-title="Total Karyawan Status HB Terbanyak" data-template="widgets.common.personwidget.stat.stat_status" data-query="state">
 										Total Karyawan Status HB Terbanyak
 									</option>
-									<option value="processlogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="hc" data-widget-option-title="Total Karayawan Status HC Terbanyak" data-template="widgets.common.personwidget.stat.stat_status" data-query="state">
+									<option value="totalprocesslogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="hc" data-widget-option-title="Total Karayawan Status HC Terbanyak" data-template="widgets.common.personwidget.stat.stat_status" data-query="state">
 										Total Karyawan Status HC Terbanyak
 									</option>
 									<option value="ondate" data-composer="PersonWorkleaveComposer" data-type="table" data-widget-option-title="Table Karyawan Sedang Cuti" data-template="widgets.common.personwidget.table.table_workleave" data-query="workleave">

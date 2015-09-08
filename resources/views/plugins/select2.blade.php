@@ -81,7 +81,7 @@
 			var widget_template 		= $(this).find(':selected').attr('data-template');
 			var widget_query 			= $(this).find(':selected').attr('data-query');
 
-			if (value=='processlogondate') {
+			if (value=='totalprocesslogondate') {
 				var status = $(this).find(':selected').attr('data-status');
 				$('.processlog_status').val(status);
 			}
