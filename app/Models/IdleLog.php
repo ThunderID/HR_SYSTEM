@@ -68,6 +68,7 @@ class IdleLog extends BaseModel {
 											'processlogondate' 					=> 'ProcessLogOnDate', 
 											'totalprocesslogondate' 			=> 'TotalProcessLogOnDate', 
 											'organisationid' 					=> 'OrganisationID', 
+											'personid' 							=> 'PersonID', 
 											
 											'withattributes' 					=> 'WithAttributes',
 										];
@@ -76,6 +77,7 @@ class IdleLog extends BaseModel {
 											'id' 								=> 'Could be array or integer', 
 											'processlogid' 						=> 'Could be array or integer', 
 											'organisationid' 					=> 'Could be array or integer', 
+											'personid' 							=> 'Could be array or integer', 
 											
 											'withattributes' 					=> 'Must be array of relationship',
 											'processlogondate' 					=> 'Could be array or string (date)', 
@@ -145,6 +147,7 @@ class IdleLog extends BaseModel {
 	public function scopeTotalProcessLogOndate($query, $variable)
 	{
 		return $query->selectraw('sum(total_idle) as total_idle')
+					->selectraw('sum(total_active) as total_active')
 					->wherehas('processlog', function($q)use($variable){$q->ondate($variable);})->groupBy('process_log_id');
 	}
 }

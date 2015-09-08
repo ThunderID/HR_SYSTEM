@@ -42,6 +42,11 @@ trait HasProcessLogTrait {
 	
 	public function scopeOrganisationID($query, $variable)
 	{
-		return $query->WhereHas('person.works.branch', function($q)use($variable){$q->organisationid($variable);});
+		return $query->WhereHas('processlog.person.works.branch', function($q)use($variable){$q->organisationid($variable);});
+	}
+
+	public function scopeProcessLogPersonID($query, $variable)
+	{
+		return $query->WhereHas('processlog', function($q)use($variable){$q->personid($variable);});
 	}
 }
