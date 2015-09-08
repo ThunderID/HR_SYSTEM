@@ -403,7 +403,7 @@ class PersonController extends BaseController
 			{
 				$email['item']						= 'email';
 				$email['value']						= Input::get('email');
-				$email['is_active']					= true;
+				$email['is_default']				= true;
 
 				$content 							= $this->dispatch(new Saving(new Contact, $email, null, new Person, $is_success->data->id));
 
@@ -431,7 +431,7 @@ class PersonController extends BaseController
 			{
 				$mobile['item']						= 'mobile';
 				$mobile['value']					= Input::get('mobile');
-				$mobile['is_active']				= true;
+				$mobile['is_default']				= true;
 
 				$content 							= $this->dispatch(new Saving(new Contact, $mobile, null, new Person, $is_success->data->id));
 
@@ -459,7 +459,7 @@ class PersonController extends BaseController
 			{
 				$address['item']					= 'address';
 				$address['value']					= Input::get('address');
-				$address['is_active']				= true;
+				$address['is_default']				= true;
 
 				$content 							= $this->dispatch(new Saving(new Contact, $address, null, new Person, $is_success->data->id));
 
