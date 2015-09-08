@@ -35,7 +35,13 @@ class FingerController extends BaseController
 			return Response::json('102', 200);
 		}	
 
-		if(!$attributes['application']['api']['username'])
+		//cek apa ada data data
+		if(!$attributes['data'])
+		{
+			return Response::json('103', 200);
+		}
+
+		if(!$attributes['data']['0'])
 		{
 			return Response::json('106', 200);
 		}
@@ -65,18 +71,12 @@ class FingerController extends BaseController
 
 		$organisationid 						= $content->data->branch->organisation_id;
 
-		//cek apa ada data data
-		if(!$attributes['data'])
-		{
-			return Response::json('103', 200);
-		}
-
 		//cek apa data bisa disimpan
 		DB::beginTransaction();
 		if(isset($attributes['data']))
 		{
 			$attributes['data']				= (array)$attributes['data'];
-			$data 							= $this->dispatch(new Getting(new Person, ['username' => $attributes['application']['api']['username'], 'withattributes' => ['finger']], [] , 1, 1), false);
+			$data 							= $this->dispatch(new Getting(new Person, ['username' => $attributes['data']['0'], 'checkwork' => true, 'withattributes' => ['finger']], [] , 1, 1), false);
 			$person 						= json_decode($data);
 
 			if(!$person->meta->success)
@@ -100,39 +100,39 @@ class FingerController extends BaseController
 
 					switch(strtolower($key))
 					{
-						case 'jari1' :
+						case '1' :
 							$activefinger 		= 'left_thumb';
 							break;
-						case 'jari2' :
+						case '2' :
 							$activefinger 		= 'left_index_finger';
 							break;
-						case 'jari3' :
+						case '3' :
 							$activefinger 		= 'left_middle_finger';
 							break;
-						case 'jari4' :
+						case '4' :
 							$activefinger 		= 'left_ring_finger';
 							break;
-						case 'jari5' :
+						case '5' :
 							$activefinger 		= 'left_little_finger';
 							break;
-						case 'jari6' :
+						case '6' :
 							$activefinger 		= 'right_thumb';
 							break;
-						case 'jari7' :
+						case '7' :
 							$activefinger 		= 'right_index_finger';
 							break;
-						case 'jari8' :
+						case '8' :
 							$activefinger 		= 'right_middle_finger';
 							break;
-						case 'jari9' :
+						case '9' :
 							$activefinger 		= 'right_ring_finger';
 							break;
-						case 'jari10' :
+						case '10' :
 							$activefinger 		= 'right_little_finger';
 							break;
 					}
 
-					if(isset($activefinger))
+					if(isset($activefinger) && strtoupper($value)!='NULL')
 					{
 						$data[$activefinger]  	= $value;
 					}
@@ -155,7 +155,7 @@ class FingerController extends BaseController
 
 	public function destroy()
 	{		
-		$attributes 							= Input::only('application', 'data');
+				$attributes 							= Input::only('application', 'data');
 
 		//cek apa ada aplication
 		if(!$attributes['application'])
@@ -168,7 +168,13 @@ class FingerController extends BaseController
 			return Response::json('102', 200);
 		}	
 
-		if(!$attributes['application']['api']['username'])
+		//cek apa ada data data
+		if(!$attributes['data'])
+		{
+			return Response::json('103', 200);
+		}
+
+		if(!$attributes['data']['0'])
 		{
 			return Response::json('106', 200);
 		}
@@ -198,18 +204,12 @@ class FingerController extends BaseController
 
 		$organisationid 						= $content->data->branch->organisation_id;
 
-		//cek apa ada data data
-		if(!$attributes['data'])
-		{
-			return Response::json('103', 200);
-		}
-
 		//cek apa data bisa disimpan
 		DB::beginTransaction();
 		if(isset($attributes['data']))
 		{
 			$attributes['data']				= (array)$attributes['data'];
-			$data 							= $this->dispatch(new Getting(new Person, ['username' => $attributes['application']['api']['username'], 'withattributes' => ['finger']], [] , 1, 1), false);
+			$data 							= $this->dispatch(new Getting(new Person, ['username' => $attributes['data']['0'], 'checkwork' => true, 'withattributes' => ['finger']], [] , 1, 1), false);
 			$person 						= json_decode($data);
 
 			if(!$person->meta->success)
@@ -230,41 +230,42 @@ class FingerController extends BaseController
 				foreach ($attributes['data'] as $key => $value) 
 				{
 					unset($activefinger);
+
 					switch(strtolower($key))
 					{
-						case 'jari1' :
+						case '1' :
 							$activefinger 		= 'left_thumb';
 							break;
-						case 'jari2' :
+						case '2' :
 							$activefinger 		= 'left_index_finger';
 							break;
-						case 'jari3' :
+						case '3' :
 							$activefinger 		= 'left_middle_finger';
 							break;
-						case 'jari4' :
+						case '4' :
 							$activefinger 		= 'left_ring_finger';
 							break;
-						case 'jari5' :
+						case '5' :
 							$activefinger 		= 'left_little_finger';
 							break;
-						case 'jari6' :
+						case '6' :
 							$activefinger 		= 'right_thumb';
 							break;
-						case 'jari7' :
+						case '7' :
 							$activefinger 		= 'right_index_finger';
 							break;
-						case 'jari8' :
+						case '8' :
 							$activefinger 		= 'right_middle_finger';
 							break;
-						case 'jari9' :
+						case '9' :
 							$activefinger 		= 'right_ring_finger';
 							break;
-						case 'jari10' :
+						case '10' :
 							$activefinger 		= 'right_little_finger';
 							break;
 					}
 
-					if(isset($activefinger))
+					if(isset($activefinger) && strtoupper($value)!='NULL')
 					{
 						$data[$activefinger]  	= '';
 					}
@@ -280,7 +281,7 @@ class FingerController extends BaseController
 				}
 			}
 		}
-		
+
 		DB::commit();
 		return Response::json('Sukses', 200);
 	}

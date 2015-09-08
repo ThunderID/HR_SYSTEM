@@ -201,43 +201,14 @@ class LoginController extends BaseController {
 			{
 				unset($activefinger);
 
-				switch(strtolower($key))
+				if(in_array(strtolower($key),['left_thumb' , 'left_index_finger' ,'left_middle_finger' , 'left_ring_finger' , 'left_little_finger' ,'right_thumb' , 'right_index_finger' , 'right_middle_finger' ,'right_ring_finger' ,'right_little_finger']))
 				{
-					case 'left_thumb' :
-						$activefinger 		= 'jari1';
-						break;
-					case 'left_index_finger' :
-						$activefinger 		= 'jari2';
-						break;
-					case 'left_middle_finger' :
-						$activefinger 		= 'jari3';
-						break;
-					case 'left_ring_finger' :
-						$activefinger 		= 'jari4';
-						break;
-					case 'left_little_finger' :
-						$activefinger 		= 'jari5';
-						break;
-					case 'right_thumb' :
-						$activefinger 		= 'jari6';
-						break;
-					case 'right_index_finger' :
-						$activefinger 		= 'jari7';
-						break;
-					case 'right_middle_finger' :
-						$activefinger 		= 'jari8';
-						break;
-					case 'right_ring_finger' :
-						$activefinger 		= 'jari9';
-						break;
-					case 'right_little_finger' :
-						$activefinger 		= 'jari10';
-						break;
+					$activefinger 		= true;
 				}
 
 				if(isset($activefinger))
 				{
-					$fotd[] 				= $activefinger;
+					$fotd[] 				= strtolower($key);
 				}
 			}
 		}
@@ -303,7 +274,7 @@ class LoginController extends BaseController {
 		$GMT 									= new DateTimeZone("GMT");
 		$updatedat 								= new DateTime( $attributes['application']['api']['update'], $GMT );
 
-		$results_3 								= $this->dispatch(new Getting(new Finger, ['updatedat' => $updatedat->format('Y-m-d H:i:s'), 'currentwork' => true, 'withattributes' => ['person']], [], $attributes['application']['api']['page'], $attributes['application']['api']['limit']));
+		$results_3 								= $this->dispatch(new Getting(new Finger, ['updatedat' => $updatedat->format('Y-m-d H:i:s'), 'currentwork' => true, 'withattributes' => ['person']], ['updated_at' => 'asc'], $attributes['application']['api']['page'], $attributes['application']['api']['limit']));
 		
 		$content_3 								= json_decode($results_3);
 		
@@ -349,6 +320,9 @@ class LoginController extends BaseController {
 		}
 		else
 		{
+			$fingers['total_page']				= 0;
+			$fingers['data'] 					= [];
+			
 			Log::info('Running Sync @'.date('Y-m-d H:i:s'). ' Total '.$attributes['application']['api']['limit'].' Updated At '. $updatedat->format('Y-m-d H:i:s'));
 		}
 
