@@ -42,10 +42,10 @@
 								<label for="">Data</label>
 								{{-- Organisation Widget --}}
 								<select name="data_widget_org" id="select2-dashboard-widget" class="form-control select_widget_org">
-									<option value="processlogondate" data-composer="ProcessLogComposer" data-type="table" data-widget-option="personlist" data-widget-option-title="Table SP Print" data-template="" data-query="sp">
+									<option value="processlogondate" data-composer="ProcessLogComposer" data-type="table" data-widget-option="personlist" data-widget-option-title="Table SP Print" data-template="widgets.common.personwidget.table.table_sp" data-query="sp">
 										SP Print list
 									</option>
-									<option value="processlogondate" data-composer="IdleLogComposer" data-type="table" data-widget-option-title="Table Idle Terbanyak" data-template="" data-query="idle">
+									<option value="processlogondate" data-composer="IdleLogComposer" data-type="table" data-widget-option-title="Table Idle Terbanyak" data-template="widgets.common.personwidget.table.table_idle" data-query="idle">
 										Idle Terbanyak
 									</option>
 									<option value="totalprocesslogondate" data-composer="IdleLogComposer" data-type="stat" data-widget-option-title="Total Idle Terbanyak" data-template="widgets.common.personwidget.stat.stat_idle" data-query="idle">
@@ -60,7 +60,7 @@
 									<option value="processlogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="hc" data-widget-option-title="Total Karayawan Status HC Terbanyak" data-template="widgets.common.personwidget.stat.stat_status" data-query="state">
 										Total Karyawan Status HC Terbanyak
 									</option>
-									<option value="ondate" data-composer="PersonWorkleaveComposer" data-type="table" data-widget-option-title="Table Karyawan Sedang Cuti" data-template="" data-query="workleave">
+									<option value="ondate" data-composer="PersonWorkleaveComposer" data-type="table" data-widget-option-title="Table Karyawan Sedang Cuti" data-template="widgets.common.personwidget.table.table_workleave" data-query="workleave">
 										Karyawan Yang Sedang Cuti
 									</option>
 									<option value="totalondate" data-composer="PersonWorkleaveComposer" data-type="stat" data-widget-option-title="Total Karyawan Sedang Cuti" data-template="widgets.common.personwidget.stat.stat_workleave" data-query="workleave">
@@ -143,12 +143,12 @@
 					</div>			 --}}
 				</div>
 				{!! Form::hidden('org_id', '', ['class' => 'hid_org_id']) !!}
-				{!! Form::hidden('type', '', ['class' => 'type_widget']) !!}
+				{!! Form::hidden('type', 'table', ['class' => 'type_widget']) !!}
 				{!! Form::hidden('status', '', ['class' => 'processlog_status']) !!}
-				{!! Form::hidden('widget_option_title', '', ['class' => 'widget_option_title']) !!}
-				{!! Form::hidden('widget_template', '', ['class' => 'widget_template']) !!}
-				{!! Form::hidden('widget_data', '', ['class' => 'widget_data']) !!}
-				{!! Form::hidden('widget_query', '', ['class' => 'widget_query']) !!}
+				{!! Form::hidden('widget_option_title', 'Table SP Print', ['class' => 'widget_option_title']) !!}
+				{!! Form::hidden('widget_template', 'widgets.common.personwidget.table.table_sp', ['class' => 'widget_template']) !!}
+				{!! Form::hidden('widget_data', 'processlogondate', ['class' => 'widget_data']) !!}
+				{!! Form::hidden('widget_query', 'sp', ['class' => 'widget_query']) !!}
 				<div class="modal-footer bg-grey">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
 					<button type="submit" class="btn btn-primary">Tambah</button>

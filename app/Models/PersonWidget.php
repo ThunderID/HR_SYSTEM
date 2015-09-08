@@ -64,6 +64,7 @@ class PersonWidget extends BaseModel {
 											'personid' 					=> 'PersonID', 
 											'widget' 					=> 'Widget', 
 											'type' 						=> 'Type', 
+											'dashboard'					=> 'Dashboard',
 											'withattributes' 			=> 'WithAttributes',
 										];
 
@@ -72,6 +73,7 @@ class PersonWidget extends BaseModel {
 											'personid' 					=> 'Could be array or integer', 
 											'widget' 					=> 'Must be string', 
 											'type' 						=> 'Must be string', 
+											'dashboard'					=> 'Must be string',
 											'withattributes' 			=> 'Must be array of relationship',
 										];
 
@@ -143,5 +145,10 @@ class PersonWidget extends BaseModel {
 	public function scopeType($query, $variable)
 	{
 		return $query->where('type', $variable);
+	}
+
+	public function scopeDashboard($query, $variable)
+	{
+		return $query->where('dashboard', $variable);
 	}
 }

@@ -51,86 +51,58 @@
 				@endforeach
 			</div>
 		@else
-			<div class="col-sm-6 col-md-6">
-				@include('widgets.organisation.person.stat.total_employee', [
+			<div class="col-sm-6">
+				@include('widgets.organisation.person.workleave.left_quota', [
 					'widget_template'		=> 'plain',
-					'widget_title'			=> 'Total Karyawan '.$data['name'],
+					'widget_title'			=> 'Sisa Cuti "'.$person['name'].'"',
+					'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
+					'widget_body_class'		=> '',
 					'widget_options'		=> 	[
-													'personlist'		=>
+													'personlist'			=>
 													[
-														'title'				=> 'Total Karyawan "'.$data['name'].'"',
 														'organisation_id'	=> $data['id'],
-														'search'			=> ['chartnotadmin' => true],
-														'sort'				=> [],
+														'search'			=> ['id' => $person['id'], 'globalworkleave' => array_merge(['organisationid' => $data['id'], 'on' => date('Y-m-d')], (isset($filtered['search']) ? $filtered['search'] : []))],
+														'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']),
 														'page'				=> 1,
-														'per_page'			=> 100,
+														'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
+														'per_page'			=> 1,
 													]
 												]
 				])
 			</div>
-			<div class="col-sm-6 col-md-6">
-				@include('widgets.organisation.branch.stat.total_branch', [
-					'widget_template'		=> 'plain',
-					'widget_title'			=> 'Total Cabang '.$data['name'],
-					'widget_options'		=> 	[
-													'branchlist'		=>
-													[
-														'organisation_id'	=> $data['id'],
-														'search'			=> [],
-														'sort'				=> [],
-														'page'				=> 1,
-														'per_page'			=> 100,
-													]
-												]
-				])
-			</div>
-			<div class="col-sm-6 col-md-6">
-				@include('widgets.organisation.document.stat.total_document', [
-					'widget_template'		=> 'plain',
-					'widget_title'			=> 'Total Dokumen '.$data['name'],
-					'widget_options'		=> 	[
-													'documentlist'		=>
-													[
-														'organisation_id'	=> $data['id'],
-														'search'			=> [],
-														'sort'				=> [],
-														'page'				=> 1,
-														'per_page'			=> 100,
-													]
-												]
-				])
-			</div>
-			<div class="col-sm-6 col-md-6">
+			<div class="col-sm-6">
 				@include('widgets.organisation.person.stat.average_loss_rate', [
 					'widget_template'		=> 'plain',
-					'widget_title'			=> 'Average Loss Rate '.$data['name'],
+					'widget_title'			=> 'Average Loss Rate "'.$person['name'].'" Bulan Ini',
 					'widget_options'		=> 	[
 													'lossratelist'		=>
 													[
 														'organisation_id'	=> $data['id'],
-														'search'			=> ['globalattendance' => ['organisationid' => $data['id'], 'on' => [$start, $end]]],
+														'search'			=> ['id' => $person['id'], 'globalattendance' => ['organisationid' => $data['id'], 'on' => [date('Y-m-d', strtotime('first day of this month')), date('Y-m-d', strtotime('first day of next month'))]]],
 														'sort'				=> [],
 														'page'				=> 1,
-														'per_page'			=> 40,
+														'per_page'			=> 100,
 													]
 												]
 				])
 			</div>
 		</div>
-		<div class="row mt-20">
+		<div class="row">
 			<div class="col-sm-12">
-				@include('widgets.organisation.person.table', [
+				@include('widgets.organisation.person.work.table', [
 					'widget_template'		=> 'panel',
-					'widget_title'			=> '<h4>Absen Karyawan "'.$data['name'].'" ('.date('d-m-Y', strtotime('- 1 day')).')</h4>',
+					'widget_title'			=> '<h4>Pekerjaan Saat Ini "'.$person['name'].'"'.((Input::has('page') && (int)Input::get('page') > 1) ? '<small class="font-16"> Halaman '.Input::get('page').'</small></h4>' : null),
+					'widget_title_class'	=> 'text-uppercase ml-10 mt-20',
+					'widget_body_class'		=> '',
 					'widget_options'		=> 	[
-													'personlist'		=>
+													'worklist'			=>
 													[
 														'organisation_id'	=> $data['id'],
-														'search'			=> ['fullschedule' => date('Y-m-d', strtotime('- 1 day')), 'withattributes' => ['works.branch']],
-														'sort'				=> [],
-														'page'				=> 1,
-														'per_page'			=> 12,
-														'route_create'		=> route('hr.persons.create', ['org_id' => $data['id']])
+														'search'			=> ['personid' => $person['id'], 'withattributes' => ['chart', 'chart.branch', 'chart.branch.organisation']],
+														'sort'				=> ['end' => 'asc'],
+														'page'				=> (Input::has('page') ? Input::get('page') : 1),
+														'per_page'			=> 100,
+														'route_create'		=> route('hr.person.works.create', ['org_id' => $data['id'], 'person_id' => $person['id']]),
 													]
 												]
 				])
