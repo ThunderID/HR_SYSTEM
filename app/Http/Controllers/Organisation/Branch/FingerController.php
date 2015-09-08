@@ -116,7 +116,20 @@ class FingerController extends BaseController
 		
 		if(!$is_success->meta->success)
 		{
-			$errors->add('Branch', $is_success->meta->errors);
+			foreach ($is_success->meta->errors as $key => $value) 
+			{
+				if(is_array($value))
+				{
+					foreach ($value as $key2 => $value2) 
+					{
+						$errors->add('Finger', $value2);
+					}
+				}
+				else
+				{
+					$errors->add('Finger', $value);
+				}
+			}
 		}
 
 		if(!$errors->count())

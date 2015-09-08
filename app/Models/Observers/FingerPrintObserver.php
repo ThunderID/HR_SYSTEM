@@ -16,9 +16,9 @@ class FingerPrintObserver
 
 		if ($validator->passes())
 		{
-			if(isset($model['attributes']['branch_id']) && isset($model['attributes']['id']))
+			if(isset($model['attributes']['branch_id']))
 			{
-				$validator 		= Validator::make(['branch_id' => $model['attributes']['branch_id']], ['branch_id' => 'unique:finger_prints,branch_id,'.$model['attributes']['id']]);
+				$validator 		= Validator::make(['branch_id' => $model['attributes']['branch_id']], ['branch_id' => 'unique:finger_prints,branch_id,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : '')]);
 
 				if(!$validator->passes())
 				{
