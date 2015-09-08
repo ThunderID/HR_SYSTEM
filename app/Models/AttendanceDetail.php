@@ -58,6 +58,7 @@ class AttendanceDetail extends BaseModel {
 											'persondocumentid' 			=> 'PersonDocumentID', 
 											'notpersondocumentid' 		=> 'NotPersonDocumentID', 
 											'organisationid' 			=> 'OrganisationID', 
+											'personid' 					=> 'PersonID', 
 											'processlogondate' 			=> 'ProcessLogOnDate', 
 
 											'withattributes' 			=> 'WithAttributes',
@@ -70,6 +71,7 @@ class AttendanceDetail extends BaseModel {
 											'persondocumentid' 			=> 'Could be array or integer', 
 											'notpersondocumentid' 		=> 'Could be array or integer', 
 											'organisationid' 			=> 'Could be array or integer', 
+											'personid' 					=> 'Could be array or integer', 
 
 											'withattributes' 			=> 'Must be array of relationship',
 											'withtrashed' 				=> 'Must be true',

@@ -30,4 +30,9 @@ trait HasAttendanceLogTrait {
 	{
 		return $query->WhereHas('attendancelog', function($q)use($variable){$q->organisationid($variable);});
 	}
+
+	public function scopePersonID($query, $variable)
+	{
+		return $query->WhereHas('attendancelog', function($q)use($variable){$q->processlogpersonid($variable);});
+	}
 }
