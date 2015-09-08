@@ -7,6 +7,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Schema;
 use App\Models\Person;
 use App\Models\Work;
+use App\Models\Organisation;
 use DB, Hash;
 
 class HRSUpdateCommand extends Command {
@@ -81,7 +82,7 @@ class HRSUpdateCommand extends Command {
 	{
 
 		$user 			= new Person;
-		$user->fill(['uniqid' => 'ADMIN11',
+		$user->fill(['uniqid' => 'ADMINMMS',
 					'username' => 'kianwu',
 					'name' => 'Kian Wu',
 					'place_of_birth' => 'MMS',
@@ -90,6 +91,8 @@ class HRSUpdateCommand extends Command {
 					'password' => Hash::make('MGJYDhFH'),
 					'last_password_updated_at' => date('Y-m-d H:i:s')]);
 		
+		$user->Organisation()->associate(Organisation::find(1));
+
 		if(!$user->Save())
 		{
 			dd($user->getError());
@@ -103,6 +106,7 @@ class HRSUpdateCommand extends Command {
 					'status' => 'admin',
 					'start' => '2015-08-09']);
 
+		$work->person()->associate($user);
 		if(!$work->Save())
 		{
 			dd($work->getError());
