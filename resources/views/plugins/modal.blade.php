@@ -3,7 +3,7 @@
 	$('.delete').on('show.bs.modal', function(e) {
 		var action 	= $(e.relatedTarget).attr('data-delete-action');		
 		var affect 	= parseInt($(e.relatedTarget).attr('data-affect'));
-console.log(affect);
+
 		if (typeof(affect) != "undefined" && affect !== null && (!isNaN(affect))) {
 			if (affect==0) {
 				$('.modal_delete_affect_org').html('');

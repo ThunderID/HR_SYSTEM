@@ -1,3 +1,7 @@
-{!! HTML::style('plugins/dashboard-widgets/inettuts.css') !!}
-{!! HTML::script('plugins/dashboard-widgets/jquery-ui.js') !!}
-{!! HTML::script('plugins/dashboard-widgets/inettuts.js') !!}
+<script type="text/javascript">
+	$('.box-widgets').hover( function() {
+		$(this).find('.action-widget').removeClass('hide');
+	}, function() {
+		$(this).find('.action-widget').addClass('hide');
+	});
+</script>
