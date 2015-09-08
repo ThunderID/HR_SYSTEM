@@ -11,7 +11,7 @@ use App\Models\WorkAuthentication;
 use App\Models\Branch;
 use App\Models\FingerPrint;
 use App\Models\Finger;
-use Auth, Input, Session, Redirect, Response, DateTimeZone, DateTime, DB;
+use Auth, Input, Session, Redirect, Response, DateTimeZone, DateTime, DB, Log;
 
 class LoginController extends BaseController {
 
@@ -303,7 +303,7 @@ class LoginController extends BaseController {
 		$GMT 									= new DateTimeZone("GMT");
 		$updatedat 								= new DateTime( $attributes['application']['api']['update'], $GMT );
 
-		$results_3 								= $this->dispatch(new Getting(new Finger, ['updatedat' => $updatedat->format('Y-m-d H:i:s'), 'withattributes' => ['person']], [], $attributes['application']['api']['page'], $attributes['application']['api']['limit']));
+		$results_3 								= $this->dispatch(new Getting(new Finger, ['updatedat' => $updatedat->format('Y-m-d H:i:s'), 'currentwork' => true, 'withattributes' => ['person']], [], $attributes['application']['api']['page'], $attributes['application']['api']['limit']));
 		
 		$content_3 								= json_decode($results_3);
 		
@@ -337,6 +337,7 @@ class LoginController extends BaseController {
 				$finger['right_little_finger']	= $value->right_little_finger;
 
 				$fingers['data'][] 				= $finger;
+				$fingername[]					= $value->person->username;
 			}
 		}
 				
@@ -344,6 +345,8 @@ class LoginController extends BaseController {
 		{
 			$fingers['updated_date']			= $updatedat->format('d/m/Y H:i:s');
 		}
+
+		Log::info('Running Sync @'.date('Y-m-d H:i:s'). ' Total '.$attributes['application']['api']['limit'].' Updated At '. $updatedat->format('Y-m-d H:i:s').json_encode($fingername));
 
 		return Response::json($fingers, 200);
 	}
