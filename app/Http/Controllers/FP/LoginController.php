@@ -11,7 +11,7 @@ use App\Models\WorkAuthentication;
 use App\Models\Branch;
 use App\Models\FingerPrint;
 use App\Models\Finger;
-use Auth, Input, Session, Redirect, Response, Config;
+use Auth, Input, Session, Redirect, Response, DateTimeZone, DateTime, DB;
 
 class LoginController extends BaseController {
 
@@ -261,7 +261,7 @@ class LoginController extends BaseController {
 			return Response::json('102', 200);
 		}
 
-		if(!isset($attributes['application']['api']['latestupdate']))
+		if(!isset($attributes['application']['api']['update']) || !isset($attributes['application']['api']['limit']) || !isset($attributes['application']['api']['page']))
 		{
 			return Response::json('104', 200);
 		}
@@ -300,38 +300,51 @@ class LoginController extends BaseController {
 			}
 		}
 		
+		$GMT 									= new DateTimeZone("GMT");
+		$updatedat 								= new DateTime( $attributes['application']['api']['update'], $GMT );
+
+		$results_3 								= $this->dispatch(new Getting(new Finger, ['updatedat' => $updatedat->format('Y-m-d H:i:s'), 'withattributes' => ['person']], [], $attributes['application']['api']['page'], $attributes['application']['api']['limit']));
 		
-		$results_3 							= $this->dispatch(new Getting(new Finger, ['updatedat' => $attributes['application']['api']['latestupdate'], 'withattributes' => ['person']], [], 1, 100));
-		
-		$content_3 							= json_decode($results_3);
+		$content_3 								= json_decode($results_3);
 		
 		if(!$content_3->meta->success)
 		{
 			return Response::json('405', 200);
 		}
 
-		$fingers 							= [];
+		$fingers 								= [];
 		
+		if(count($content_3->data))
+		{
+			$fingers['total_page']				= $content_3->pagination->total_page;
+		}
+
 		foreach ($content_3->data as $key => $value) 
 		{
 			unset($finger);
 			if($value->person)
 			{
-				$finger[]						= $value->person->username;
-				$finger[]						= $value->left_thumb;
-				$finger[]						= $value->left_index_finger;
-				$finger[]						= $value->left_middle_finger;
-				$finger[]						= $value->left_ring_finger;
-				$finger[]						= $value->left_little_finger;
-				$finger[]						= $value->right_thumb;
-				$finger[]						= $value->right_index_finger;
-				$finger[]						= $value->right_middle_finger;
-				$finger[]						= $value->right_ring_finger;
-				$finger[]						= $value->right_little_finger;
+				$finger['email']				= $value->person->username;
+				$finger['left_thumb']			= $value->left_thumb;
+				$finger['left_index_finger']	= $value->left_index_finger;
+				$finger['left_middle_finger']	= $value->left_middle_finger;
+				$finger['left_ring_finger']		= $value->left_ring_finger;
+				$finger['left_little_finger']	= $value->left_little_finger;
+				$finger['right_thumb']			= $value->right_thumb;
+				$finger['right_index_finger']	= $value->right_index_finger;
+				$finger['right_middle_finger']	= $value->right_middle_finger;
+				$finger['right_ring_finger']	= $value->right_ring_finger;
+				$finger['right_little_finger']	= $value->right_little_finger;
 
-				$fingers[] 						= $finger;
+				$fingers['data'][] 				= $finger;
 			}
 		}
+				
+		if(count($content_3->data))
+		{
+			$fingers['updated_date']			= $updatedat->format('d/m/Y H:i:s');
+		}
+
 		return Response::json($fingers, 200);
 	}
 }
