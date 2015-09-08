@@ -41,9 +41,11 @@
 				</a>
 				<ul class="dropdown-menu dropdown-user">	
 					<li><a href="{{ route('hr.persons.show', [Session::get('loggedUser'), 'org_id' => Session::get('user.organisationid')]) }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a></li>
-					<li><a href="{{ route('hr.queue.index') }}"><i class="fa fa-bell fa-fw"></i> Notifikasi</a></li>
+					@if (Session::get('user.menuid')<=3)
+						<li><a href="{{ route('hr.queue.index') }}"><i class="fa fa-bell fa-fw"></i> Notifikasi</a></li>
+					@endif
 					<li><a href="javascript:;" data-toggle="modal" data-target="#add_widget" data-org="{{ isset($data['id']) ? $data['id'] : Session::get('user.organisation_id') }}">
-						<i class="fa fa-dashboard fa-fw"></i> Tambah Widget</a>
+						<i class="fa fa-plus fa-fw"></i> Tambah Widget</a>
 					</li>
 					<li><a href="{{route('hr.password.get')}}"><i class="fa fa-gear fa-fw"></i> Ubah Password</a></li>
 					<li><a href="{{route('hr.logout.get')}}"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
