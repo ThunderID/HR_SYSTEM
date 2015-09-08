@@ -132,7 +132,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// PERSON WORKLEAVE
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.person.workleave.table', 'widgets.organisation.person.workleave.taken.form', 'widgets.organisation.person.workleave.given.form', 'widgets.organisation.person.workleave.select', 'widgets.organisation.person.workleave.quota_workleave_year', 'widgets.common.personwidget.stat.stat_workleave'], 	'App\Http\ViewComposers\PersonWorkleaveComposer');
+		View::composer(['widgets.organisation.person.workleave.table', 'widgets.organisation.person.workleave.taken.form', 'widgets.organisation.person.workleave.given.form', 'widgets.organisation.person.workleave.select', 'widgets.organisation.person.workleave.quota_workleave_year', 'widgets.common.personwidget.stat.stat_workleave', 'widgets.common.personwidget.table.table_workleave'],	'App\Http\ViewComposers\PersonWorkleaveComposer');
 
 		// -----------------------------------------------------------------------------
 		// PERSON DOCUMENT
@@ -172,12 +172,17 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// IDLE LOG
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.common.personwidget.stat.stat_idle'], 	'App\Http\ViewComposers\IdleLogComposer');
+		View::composer(['widgets.common.personwidget.stat.stat_idle', 'widgets.common.personwidget.table.table_idle'], 	'App\Http\ViewComposers\IdleLogComposer');
 
 		// -----------------------------------------------------------------------------
 		// ATTEDANCE LOG
 		// -----------------------------------------------------------------------------
 		View::composer(['widgets.common.personwidget.stat.stat_status'], 	'App\Http\ViewComposers\AttendanceLogComposer');
+
+		// -----------------------------------------------------------------------------
+		// ATTEDANCE DETAIL LOG
+		// -----------------------------------------------------------------------------
+		View::composer(['widgets.common.personwidget.table.table_sp'], 	'App\Http\ViewComposers\AttendanceDetailComposer');
 	}
 
 	private function web_widget()

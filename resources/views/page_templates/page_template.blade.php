@@ -43,7 +43,7 @@
 
 			@yield('content_footer', '[content_footer]')
 
-			Model Organisation delete
+			<!-- Model Organisation delete -->
 			{!! Form::open(array('route' => array('hr.organisations.delete', 0),'method' => 'DELETE')) !!}
 				@include('widgets.modal.delete', [
 					'widget_template'       => 'plain_no_title',
