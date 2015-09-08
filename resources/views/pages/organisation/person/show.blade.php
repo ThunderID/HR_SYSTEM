@@ -27,7 +27,7 @@
 @overwrite
 
 @section('content_body')
-	<div class="row">
+	<!-- <div class="row">
 		<div class="col-sm-12">
 			<div class='alert alert-info mt-10 '>
 				<div class="row">
@@ -40,7 +40,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<div class="row">
 		@include('widgets.organisation.person.dashboard', [
 			'widget_template'		=> 'plain_no_title',
