@@ -82,7 +82,7 @@
 										@endif
 										@if ((int)Session::get('user.menuid')<=2)
 											<li>
-												<a href="{{ route('hr.branch.fingers.index', [$value['id'], 'org_id' => $data['id']]) }}" title="pengaturan fingerprint"><i class="fa fa-hand-pointer-o"></i> Pengaturan Fingerprint</a>
+												<a href="{{ route('hr.branch.fingers.index', [$value['id'], 'org_id' => $data['id']]) }}" title="pengaturan fingerprint"><i class="fa fa-hand-pointer-o"></i> Pengaturan Sidik Jari</a>
 											</li>
 										@endif
 										<li>
