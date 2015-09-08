@@ -19,11 +19,11 @@ Route::group(['middleware' => 'csrfverify'], function()
 
 	Route::group(['namespace' => 'Auth\\'], function() 
 	{
-		Route::get('/',		 					['uses' => 'LoginController@getLogin',				'as' => 'hr.login']);
+		Route::get('/',		 					['uses' => 'LoginController@getLogin',					'as' => 'hr.login']);
 		
-		Route::get('/login', 					['uses' => 'LoginController@getLogin',				'as' => 'hr.login.get']);
+		Route::get('/login', 					['uses' => 'LoginController@getLogin',					'as' => 'hr.login.get']);
 		
-		Route::post('/login',					['uses' => 'LoginController@postLogin',				'as' => 'hr.login.post']);
+		Route::post('/login',					['uses' => 'LoginController@postLogin',					'as' => 'hr.login.post']);
 	});
 
 	Route::group(['before' => 'hr_acl'], function()
@@ -34,17 +34,18 @@ Route::group(['middleware' => 'csrfverify'], function()
 
 		Route::group(['namespace' => 'Auth\\'], function() 
 		{
-			Route::get('/password',				['uses' => 'PasswordController@getPassword',		'as' => 'hr.password.get']);
+			Route::get('/password',				['uses' => 'PasswordController@getPassword',			'as' => 'hr.password.get']);
 			
-			Route::post('/password',			['uses' => 'PasswordController@postPassword',		'as' => 'hr.password.post']);
+			Route::post('/password',			['uses' => 'PasswordController@postPassword',			'as' => 'hr.password.post']);
 			
-			Route::get('/logout',				['uses' => 'LoginController@getLogout',				'as' => 'hr.logout.get']);
+			Route::get('/logout',				['uses' => 'LoginController@getLogout',					'as' => 'hr.logout.get']);
 		});
 
 		// ------------------------------------------------------------------------------------
-		// DASHBOARD RESOURCE
+		// PERSON WIDGET RESOURCE
 		// ------------------------------------------------------------------------------------
-		Route::resource('person-widgets',		'PersonWidgetController',								['names' => ['index' => 'hr.personwidgets.index', 'create' => 'hr.personwidgets.create', 'store' => 'hr.personwidgets.store', 'show' => 'hr.personwidgets.show', 'edit' => 'hr.personwidgets.edit', 'update' => 'hr.personwidgets.update', 'destroy' => 'hr.personwidgets.delete']]);
+		
+		Route::resource('person/widgets',		'PersonWidgetController',								['names' => ['index' => 'hr.person.widgets.index', 'create' => 'hr.person.widgets.create', 'store' => 'hr.person.widgets.store', 'show' => 'hr.person.widgets.show', 'edit' => 'hr.person.widgets.edit', 'update' => 'hr.person.widgets.update', 'destroy' => 'hr.person.widgets.delete']]);
 
 		// ------------------------------------------------------------------------------------
 		// RECORD LOG RESOURCE
@@ -56,7 +57,7 @@ Route::group(['middleware' => 'csrfverify'], function()
 		// NOTIFICATION QUEUE BATCH RESOURCE
 		// ------------------------------------------------------------------------------------
 
-		Route::resource('queue',				'QueueController',									['names' => ['index' => 'hr.queue.index', 'create' => 'hr.queue.create', 'store' => 'hr.queue.store', 'show' => 'hr.queue.show', 'edit' => 'hr.queue.edit', 'update' => 'hr.queue.update', 'destroy' => 'hr.queue.delete']]);
+		Route::resource('queue',				'QueueController',										['names' => ['index' => 'hr.queue.index', 'create' => 'hr.queue.create', 'store' => 'hr.queue.store', 'show' => 'hr.queue.show', 'edit' => 'hr.queue.edit', 'update' => 'hr.queue.update', 'destroy' => 'hr.queue.delete']]);
 
 
 		// ------------------------------------------------------------------------------------
@@ -76,7 +77,8 @@ Route::group(['middleware' => 'csrfverify'], function()
 		
 		Route::resource('authgroups',			'AuthGroupController',									['names' => ['index' => 'hr.authgroups.index', 'create' => 'hr.authgroups.create', 'store' => 'hr.authgroups.store', 'show' => 'hr.authgroups.show', 'edit' => 'hr.authgroups.edit', 'update' => 'hr.authgroups.update', 'destroy' => 'hr.authgroups.delete']]);
 
-		Route::get('info-error-message-device',	['uses' => 'InfoMessageDeviceController@index', 		'as' => 'hr.infomessage.index']);
+		
+		Route::get('error/messages',			['uses' => 'InfoMessageDeviceController@index', 		'as' => 'hr.infomessage.index']);
 
 		// ------------------------------------------------------------------------------------
 		// LANDING PAGE (CHOOSE ORGANISATION OR CREATE ORGANISATION), SHOW ORGANISATION (STARTED WITH DASHBOARD)
@@ -166,7 +168,7 @@ Route::group(['middleware' => 'csrfverify'], function()
 					// CALENDARS FOR CHART RESOURCE
 					// ------------------------------------------------------------------------------------
 
-					Route::resource('calendars',		'CalendarController',							['names' => ['index' => 'hr.chart.calendars.index', 'create' => 'hr.chart.calendars.create', 'store' => 'hr.chart.calendars.store', 'show' => 'hr.chart.calendars.show', 'edit' => 'hr.chart.calendars.edit', 'update' => 'hr.chart.calendars.update', 'destroy' => 'hr.chart.calendars.delete']]);
+					Route::resource('calendars',	'CalendarController',								['names' => ['index' => 'hr.chart.calendars.index', 'create' => 'hr.chart.calendars.create', 'store' => 'hr.chart.calendars.store', 'show' => 'hr.chart.calendars.show', 'edit' => 'hr.chart.calendars.edit', 'update' => 'hr.chart.calendars.update', 'destroy' => 'hr.chart.calendars.delete']]);
 				});
 
 			});
@@ -177,7 +179,7 @@ Route::group(['middleware' => 'csrfverify'], function()
 			// BATCH FOR WORKLEAVE RESOURCE
 			// ------------------------------------------------------------------------------------
 
-			Route::resource('batch',			'BatchController',										['names' => ['index' => 'hr.workleaves.batch.index', 'create' => 'hr.workleaves.batch.create', 'store' => 'hr.workleaves.batch.store', 'show' => 'hr.workleaves.batch.show', 'edit' => 'hr.workleaves.batch.edit', 'update' => 'hr.workleaves.batch.update', 'destroy' => 'hr.workleaves.batch.delete']]);
+			Route::resource('batch',				'BatchController',									['names' => ['index' => 'hr.workleaves.batch.index', 'create' => 'hr.workleaves.batch.create', 'store' => 'hr.workleaves.batch.store', 'show' => 'hr.workleaves.batch.show', 'edit' => 'hr.workleaves.batch.edit', 'update' => 'hr.workleaves.batch.update', 'destroy' => 'hr.workleaves.batch.delete']]);
 		});
 
 		Route::group(['namespace' => 'Calendar\\', 'prefix' => 'calendar'], function() 
@@ -186,7 +188,7 @@ Route::group(['middleware' => 'csrfverify'], function()
 			// CHARTS FOR CALENDAR RESOURCE
 			// ------------------------------------------------------------------------------------
 
-			Route::resource('charts',			'ChartController',										['names' => ['index' => 'hr.calendar.charts.index', 'create' => 'hr.calendar.charts.create', 'store' => 'hr.calendar.charts.store', 'show' => 'hr.calendar.charts.show', 'edit' => 'hr.calendar.charts.edit', 'update' => 'hr.calendar.charts.update', 'destroy' => 'hr.calendar.charts.delete']]);
+			Route::resource('charts',				'ChartController',									['names' => ['index' => 'hr.calendar.charts.index', 'create' => 'hr.calendar.charts.create', 'store' => 'hr.calendar.charts.store', 'show' => 'hr.calendar.charts.show', 'edit' => 'hr.calendar.charts.edit', 'update' => 'hr.calendar.charts.update', 'destroy' => 'hr.calendar.charts.delete']]);
 		});
 
 		Route::group(['namespace' => 'Document\\', 'prefix' => 'document'], function() 
@@ -195,7 +197,7 @@ Route::group(['middleware' => 'csrfverify'], function()
 			// CHARTS FOR WORKLEAVE RESOURCE
 			// ------------------------------------------------------------------------------------
 
-			Route::resource('templates',		'TemplateController',									['names' => ['index' => 'hr.document.templates.index', 'create' => 'hr.document.templates.create', 'store' => 'hr.document.templates.store', 'show' => 'hr.document.templates.show', 'edit' => 'hr.document.templates.edit', 'update' => 'hr.document.templates.update', 'destroy' => 'hr.document.templates.delete']]);
+			Route::resource('templates',			'TemplateController',								['names' => ['index' => 'hr.document.templates.index', 'create' => 'hr.document.templates.create', 'store' => 'hr.document.templates.store', 'show' => 'hr.document.templates.show', 'edit' => 'hr.document.templates.edit', 'update' => 'hr.document.templates.update', 'destroy' => 'hr.document.templates.delete']]);
 		});
 
 		Route::group(['namespace' => 'Person\\', 'prefix' => 'person'], function() 
@@ -205,19 +207,19 @@ Route::group(['middleware' => 'csrfverify'], function()
 			// CONTACTS FOR PERSON RESOURCE
 			// ------------------------------------------------------------------------------------
 
-			Route::resource('contacts',			'ContactController',								['names' => ['index' => 'hr.person.contacts.index', 'create' => 'hr.person.contacts.create', 'store' => 'hr.person.contacts.store', 'show' => 'hr.person.contacts.show', 'edit' => 'hr.person.contacts.edit', 'update' => 'hr.person.contacts.update', 'destroy' => 'hr.person.contacts.delete']]);
+			Route::resource('contacts',				'ContactController',								['names' => ['index' => 'hr.person.contacts.index', 'create' => 'hr.person.contacts.create', 'store' => 'hr.person.contacts.store', 'show' => 'hr.person.contacts.show', 'edit' => 'hr.person.contacts.edit', 'update' => 'hr.person.contacts.update', 'destroy' => 'hr.person.contacts.delete']]);
 
 			// ------------------------------------------------------------------------------------
 			// RELATIVES FOR PERSON RESOURCE
 			// ------------------------------------------------------------------------------------
 
-			Route::resource('relatives',		'RelativeController',								['names' => ['index' => 'hr.person.relatives.index', 'create' => 'hr.person.relatives.create', 'store' => 'hr.person.relatives.store', 'show' => 'hr.person.relatives.show', 'edit' => 'hr.person.relatives.edit', 'update' => 'hr.person.relatives.update', 'destroy' => 'hr.person.relatives.delete']]);
+			Route::resource('relatives',			'RelativeController',								['names' => ['index' => 'hr.person.relatives.index', 'create' => 'hr.person.relatives.create', 'store' => 'hr.person.relatives.store', 'show' => 'hr.person.relatives.show', 'edit' => 'hr.person.relatives.edit', 'update' => 'hr.person.relatives.update', 'destroy' => 'hr.person.relatives.delete']]);
 
 			// ------------------------------------------------------------------------------------
 			// WORKS FOR PERSON RESOURCE
 			// ------------------------------------------------------------------------------------
 
-			Route::resource('works',			'WorkController',									['names' => ['index' => 'hr.person.works.index', 'create' => 'hr.person.works.create', 'store' => 'hr.person.works.store', 'show' => 'hr.person.works.show', 'edit' => 'hr.person.works.edit', 'update' => 'hr.person.works.update', 'destroy' => 'hr.person.works.delete']]);
+			Route::resource('works',				'WorkController',									['names' => ['index' => 'hr.person.works.index', 'create' => 'hr.person.works.create', 'store' => 'hr.person.works.store', 'show' => 'hr.person.works.show', 'edit' => 'hr.person.works.edit', 'update' => 'hr.person.works.update', 'destroy' => 'hr.person.works.delete']]);
 
 		Route::group(['middleware' => 'interfere'], function()
 		{
@@ -225,13 +227,13 @@ Route::group(['middleware' => 'csrfverify'], function()
 			// ------------------------------------------------------------------------------------
 			// SCHEDULES FOR PERSON RESOURCE
 			// ------------------------------------------------------------------------------------
-			Route::resource('schedules',		'ScheduleController',								['names' => ['index' => 'hr.person.schedules.index', 'create' => 'hr.person.schedules.create', 'store' => 'hr.person.schedules.store', 'show' => 'hr.person.schedules.show', 'edit' => 'hr.person.schedules.edit', 'update' => 'hr.person.schedules.update', 'destroy' => 'hr.person.schedules.delete']]);
+			Route::resource('schedules',			'ScheduleController',								['names' => ['index' => 'hr.person.schedules.index', 'create' => 'hr.person.schedules.create', 'store' => 'hr.person.schedules.store', 'show' => 'hr.person.schedules.show', 'edit' => 'hr.person.schedules.edit', 'update' => 'hr.person.schedules.update', 'destroy' => 'hr.person.schedules.delete']]);
 	
 			// ------------------------------------------------------------------------------------
 			// WORKLEAVES FOR PERSON RESOURCE
 			// ------------------------------------------------------------------------------------
 
-			Route::resource('workleaves',		'WorkleaveController',								['names' => ['index' => 'hr.person.workleaves.index', 'create' => 'hr.person.workleaves.create', 'store' => 'hr.person.workleaves.store', 'show' => 'hr.person.workleaves.show', 'edit' => 'hr.person.workleaves.edit', 'update' => 'hr.person.workleaves.update', 'destroy' => 'hr.person.workleaves.delete']]);
+			Route::resource('workleaves',			'WorkleaveController',								['names' => ['index' => 'hr.person.workleaves.index', 'create' => 'hr.person.workleaves.create', 'store' => 'hr.person.workleaves.store', 'show' => 'hr.person.workleaves.show', 'edit' => 'hr.person.workleaves.edit', 'update' => 'hr.person.workleaves.update', 'destroy' => 'hr.person.workleaves.delete']]);
 		});
 
 
@@ -239,7 +241,7 @@ Route::group(['middleware' => 'csrfverify'], function()
 			// DOCUMENTS FOR PERSON RESOURCE
 			// ------------------------------------------------------------------------------------
 
-			Route::resource('documents',		'DocumentController',								['names' => ['index' => 'hr.person.documents.index', 'create' => 'hr.person.documents.create', 'store' => 'hr.person.documents.store', 'show' => 'hr.person.documents.show', 'edit' => 'hr.person.documents.edit', 'update' => 'hr.person.documents.update', 'destroy' => 'hr.person.documents.delete']]);
+			Route::resource('documents',			'DocumentController',								['names' => ['index' => 'hr.person.documents.index', 'create' => 'hr.person.documents.create', 'store' => 'hr.person.documents.store', 'show' => 'hr.person.documents.show', 'edit' => 'hr.person.documents.edit', 'update' => 'hr.person.documents.update', 'destroy' => 'hr.person.documents.delete']]);
 		});
 
 
@@ -249,7 +251,7 @@ Route::group(['middleware' => 'csrfverify'], function()
 			// REPORT FOR ACTIVITIES (PROCESS LOG) RESOURCE
 			// ------------------------------------------------------------------------------------
 
-			Route::resource('activities',		'ActivityController',								['names' => ['index' => 'hr.report.activities.index', 'create' => 'hr.report.activities.create', 'store' => 'hr.report.activities.store', 'show' => 'hr.report.activities.show', 'edit' => 'hr.report.activities.edit', 'update' => 'hr.report.activities.update', 'destroy' => 'hr.report.activities.delete']]);
+			Route::resource('activities',			'ActivityController',								['names' => ['index' => 'hr.report.activities.index', 'create' => 'hr.report.activities.create', 'store' => 'hr.report.activities.store', 'show' => 'hr.report.activities.show', 'edit' => 'hr.report.activities.edit', 'update' => 'hr.report.activities.update', 'destroy' => 'hr.report.activities.delete']]);
 
 			Route::group(['namespace' => 'Activity\\', 'prefix' => 'activity'], function() 
 			{
@@ -257,7 +259,7 @@ Route::group(['middleware' => 'csrfverify'], function()
 				// REPORT FOR LOG ACTIVITIES (PROCESS LOG PER PERSON) RESOURCE
 				// ------------------------------------------------------------------------------------
 
-				Route::resource('logs',			'LogController',									['names' => ['index' => 'hr.activity.logs.index', 'create' => 'hr.activity.logs.create', 'store' => 'hr.activity.logs.store', 'show' => 'hr.activity.logs.show', 'edit' => 'hr.activity.logs.edit', 'update' => 'hr.activity.logs.update', 'destroy' => 'hr.activity.logs.delete']]);
+				Route::resource('logs',				'LogController',									['names' => ['index' => 'hr.activity.logs.index', 'create' => 'hr.activity.logs.create', 'store' => 'hr.activity.logs.store', 'show' => 'hr.activity.logs.show', 'edit' => 'hr.activity.logs.edit', 'update' => 'hr.activity.logs.update', 'destroy' => 'hr.activity.logs.delete']]);
 			});
 
 
@@ -281,13 +283,13 @@ Route::group(['namespace' => 'Organisation\\'], function()
 	// AJAX DOCUMENT FOR PERSON
 	// ------------------------------------------------------------------------------------
 
-	Route::any('documents-list', 				['uses' => 'DocumentController@ajax', 					'as' => 'hr.documents.list']);
+	Route::any('documents-list', 					['uses' => 'DocumentController@ajax', 				'as' => 'hr.documents.list']);
 
 	// ------------------------------------------------------------------------------------
 	// CHECK BATCH PROGESS ON WORKLEAVE
 	// ------------------------------------------------------------------------------------
 
-	Route::any('workleave/progress', 			['uses' => 'WorkleaveController@batchprogress', 			'as' => 'hr.batch.workleaves']);
+	Route::any('workleave/progress', 				['uses' => 'WorkleaveController@batchprogress', 	'as' => 'hr.batch.workleaves']);
 });
 
 Route::group(['namespace' => 'Organisation\\Calendar\\', 'prefix' => 'calendar', 'middleware' => 'interfere'], function() 
@@ -296,13 +298,13 @@ Route::group(['namespace' => 'Organisation\\Calendar\\', 'prefix' => 'calendar',
 	// SCHEDULES FOR CALENDAR RESOURCE
 	// ------------------------------------------------------------------------------------
 
-	Route::resource('schedules',				'ScheduleController',										['names' => ['index' => 'hr.calendar.schedules.index', 'create' => 'hr.calendar.schedules.create', 'store' => 'hr.calendar.schedules.store', 'show' => 'hr.calendar.schedules.show', 'edit' => 'hr.calendar.schedules.edit', 'update' => 'hr.calendar.schedules.update', 'destroy' => 'hr.calendar.schedules.delete']]);
+	Route::resource('schedules',					'ScheduleController',								['names' => ['index' => 'hr.calendar.schedules.index', 'create' => 'hr.calendar.schedules.create', 'store' => 'hr.calendar.schedules.store', 'show' => 'hr.calendar.schedules.show', 'edit' => 'hr.calendar.schedules.edit', 'update' => 'hr.calendar.schedules.update', 'destroy' => 'hr.calendar.schedules.delete']]);
 
 	// ------------------------------------------------------------------------------------
 	// CHECK BATCH PROGESS ON SCHEDULE
 	// ------------------------------------------------------------------------------------
 
-	Route::any('progress', 						['uses' => 'ScheduleController@batchprogress', 				'as' => 'hr.batch.schedules']);
+	Route::any('progress', 							['uses' => 'ScheduleController@batchprogress', 		'as' => 'hr.batch.schedules']);
 });
 
 Route::group(['namespace' => 'Organisation\\Person\\', 'prefix' => 'person'], function() 
@@ -311,26 +313,26 @@ Route::group(['namespace' => 'Organisation\\Person\\', 'prefix' => 'person'], fu
 	// AJAX SCHEDULES FOR PERSON
 	// ------------------------------------------------------------------------------------
 
-	Route::any('schedules-list',				['uses' => 'ScheduleController@ajax',						'as' => 'hr.person.schedule.ajax']);
+	Route::any('schedules-list',					['uses' => 'ScheduleController@ajax',				'as' => 'hr.person.schedule.ajax']);
 
 	// ------------------------------------------------------------------------------------
 	// AJAX FOLLOWS FOR PERSON
 	// ------------------------------------------------------------------------------------
 
-	Route::any('follows-list',					['uses' => 'WorkController@ajax',							'as' => 'hr.person.work.ajax']);
+	Route::any('follows-list',						['uses' => 'WorkController@ajax',					'as' => 'hr.person.work.ajax']);
 
 
 	// ------------------------------------------------------------------------------------
 	// CHECK BATCH PROGESS ON PERSON WORKLEAVE
 	// ------------------------------------------------------------------------------------
 
-	Route::any('workleave/progress', 			['uses' => 'WorkleaveController@batchprogress', 			'as' => 'hr.batch.person.workleaves']);
+	Route::any('workleave/progress', 				['uses' => 'WorkleaveController@batchprogress', 	'as' => 'hr.batch.person.workleaves']);
 
 	// ------------------------------------------------------------------------------------
 	// CHECK BATCH PROGESS ON PERSON SCHEDULE
 	// ------------------------------------------------------------------------------------
 
-	Route::any('schedule/progress', 			['uses' => 'ScheduleController@batchprogress', 				'as' => 'hr.batch.person.schedules']);
+	Route::any('schedule/progress', 				['uses' => 'ScheduleController@batchprogress', 		'as' => 'hr.batch.person.schedules']);
 });
 
 
@@ -340,13 +342,13 @@ Route::group(['namespace' => 'Organisation\\Workleave\\'], function()
 	// AJAX STORE BATCH
 	// ------------------------------------------------------------------------------------
 
-	Route::post('batch/workleave/',				['uses'	=> 'BatchController@store', 						'as' => 'hr.ajax.batch']);
+	Route::post('batch/workleave/',					['uses'	=> 'BatchController@store', 				'as' => 'hr.ajax.batch']);
 
 	// ------------------------------------------------------------------------------------
 	// AJAX STORE FOLLOW WORKLEAVE
 	// ------------------------------------------------------------------------------------
 
-	Route::post('follow/workleave/',			['uses'	=> 'WorkController@store', 							'as' => 'hr.workleaves.works.store']);
+	Route::post('follow/workleave/',				['uses'	=> 'WorkController@store', 					'as' => 'hr.workleaves.works.store']);
 });
 
 // ------------------------------------------------------------------------------------
@@ -363,7 +365,7 @@ Route::group(['namespace' => 'Tracker\\'], function()
 	// TIME SYNC ABSENT SYSTEM VERSION = 1.0
 	// ------------------------------------------------------------------------------------
 
-	Route::post('api/time/test/',				['uses' => 'TimeController@test',					'as' => 'hr.time.test']);
+	Route::post('api/time/test/',					['uses' => 'TimeController@test',					'as' => 'hr.time.test']);
 });
 
 // ------------------------------------------------------------------------------------
@@ -376,7 +378,7 @@ Route::group(['namespace' => 'Organisation\\Person\\'], function()
 	// SAVE LOG ON TRACKER VERSION < 1.0
 	// ------------------------------------------------------------------------------------
 
-	Route::post('api/activity/logs/',			['uses' => 'LogController@store',					'as' => 'hr.log.store']);
+	Route::post('api/activity/logs/',				['uses' => 'LogController@store',					'as' => 'hr.log.store']);
 });
 
 Route::group(['namespace' => 'Tracker\\'], function() 
@@ -385,25 +387,25 @@ Route::group(['namespace' => 'Tracker\\'], function()
 	// ADMIN LOGIN TRACKER VERSION < 1.0
 	// ------------------------------------------------------------------------------------
 
-	Route::post('api/tracker/setting/',			['uses' => 'LoginController@postlogin',				'as' => 'hr.tracker.post']);
+	Route::post('api/tracker/setting/',				['uses' => 'LoginController@postlogin',				'as' => 'hr.tracker.post']);
 
 	// ------------------------------------------------------------------------------------
 	// APPS TEST ROUTE TRACKER VERSION < 1.0 (COMPATIBILITY FOR VERSION 1.0)
 	// ------------------------------------------------------------------------------------
 
-	Route::post('api/tracker/test/',			['uses' => 'LoginController@testlogin',				'as' => 'hr.tracker.test']);
+	Route::post('api/tracker/test/',				['uses' => 'LoginController@testlogin',				'as' => 'hr.tracker.test']);
 
 	// ------------------------------------------------------------------------------------
 	// AUTO UPDATE ABSENT SYSTEM VERSION = 1.0
 	// ------------------------------------------------------------------------------------
 
-	Route::post('api/tracker/update/',			['uses' => 'LoginController@updateversion',			'as' => 'hr.tracker.update']);
+	Route::post('api/tracker/update/',				['uses' => 'LoginController@updateversion',			'as' => 'hr.tracker.update']);
 
 	// ------------------------------------------------------------------------------------
 	// SAVE LOG ON TRACKER VERSION = 1.0
 	// ------------------------------------------------------------------------------------
 
-	Route::post('api/tracker/verse3/',			['uses' => 'TimeController@testv3',					'as' => 'hr.t3.post']);
+	Route::post('api/tracker/verse3/',				['uses' => 'TimeController@testv3',					'as' => 'hr.t3.post']);
 });
 
 // ------------------------------------------------------------------------------------
@@ -415,40 +417,40 @@ Route::group(['namespace' => 'FP\\'], function()
 	// ADMIN LOGIN FP VERSION > 1.0
 	// ------------------------------------------------------------------------------------
 
-	Route::post('api/fp/setting/',			['uses' => 'LoginController@postlogin',				'as' => 'hr.fp.post']);
+	Route::post('api/fp/setting/',					['uses' => 'LoginController@postlogin',				'as' => 'hr.fp.post']);
 
 	// ------------------------------------------------------------------------------------
 	// DISPLAY FINGER OF THE DAY ON THAT BRANCH
 	// ------------------------------------------------------------------------------------
 
-	Route::post('api/fp/oftheday/',			['uses' => 'LoginController@fingeroftheday',		'as' => 'hr.fp.fotd']);
+	Route::post('api/fp/oftheday/',					['uses' => 'LoginController@fingeroftheday',		'as' => 'hr.fp.fotd']);
 
 
 	// ------------------------------------------------------------------------------------
 	// SYNC MASTER DATA AND LOCAL DATABASES
 	// ------------------------------------------------------------------------------------
 
-	Route::post('api/fp/sync/',				['uses' => 'LoginController@dbsync',				'as' => 'hr.fp.dbsync']);
+	Route::post('api/fp/sync/',						['uses' => 'LoginController@dbsync',				'as' => 'hr.fp.dbsync']);
 
 	// ------------------------------------------------------------------------------------
 	// SAVE LOG ON FP VERSION = 1.0
 	// ------------------------------------------------------------------------------------
 
-	Route::post('api/fp/verse3/',			['uses' => 'LogController@store',					'as' => 'hr.fp3.post']);
+	Route::post('api/fp/verse3/',					['uses' => 'LogController@store',					'as' => 'hr.fp3.post']);
 
 
 	// ------------------------------------------------------------------------------------
 	// SAVE PERSONS' FINGER
 	// ------------------------------------------------------------------------------------
 
-	Route::post('api/fp/enroll/',			['uses' => 'FingerController@store',				'as' => 'hr.finger.store']);
+	Route::post('api/fp/enroll/',					['uses' => 'FingerController@store',				'as' => 'hr.finger.store']);
 
 
 	// ------------------------------------------------------------------------------------
 	// SAVE PERSONS' FINGER
 	// ------------------------------------------------------------------------------------
 
-	Route::post('api/fp/delete/',			['uses' => 'FingerController@destroy',				'as' => 'hr.finger.destroy']);
+	Route::post('api/fp/delete/',					['uses' => 'FingerController@destroy',				'as' => 'hr.finger.destroy']);
 });
 
 Blade::extend(function ($value, $compiler)

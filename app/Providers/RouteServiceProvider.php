@@ -285,13 +285,13 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 
 							'hr.queue.index'								=> 101,
 
-							'hr.personwidgets.index' 						=> 101,
-							'hr.personwidgets.show'							=> 101,
-							'hr.personwidgets.create'						=> 101,
-							'hr.personwidgets.store'						=> 101,
-							'hr.personwidgets.edit'							=> 101,
-							'hr.personwidgets.update'						=> 101,
-							'hr.personwidgets.delete'						=> 101,
+							'hr.person.widgets.index' 						=> 101,
+							'hr.person.widgets.show'						=> 101,
+							'hr.person.widgets.create'						=> 101,
+							'hr.person.widgets.store'						=> 101,
+							'hr.person.widgets.edit'						=> 101,
+							'hr.person.widgets.update'						=> 101,
+							'hr.person.widgets.delete'						=> 101,
 				];
 			return $routes_acl;
 		});
