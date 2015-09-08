@@ -40,6 +40,7 @@
 					@endif &nbsp; {{Session::get('user.name')}} &nbsp;&nbsp; <i class="fa fa-caret-down"></i>
 				</a>
 				<ul class="dropdown-menu dropdown-user">	
+					<li><a href="{{ route('hr.persons.show', [Session::get('loggedUser'), 'org_id' => Session::get('user.organisationid')]) }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a></li>
 					<li><a href="{{ route('hr.queue.index') }}"><i class="fa fa-bell fa-fw"></i> Notifikasi</a></li>
 					<li><a href="javascript:;" data-toggle="modal" data-target="#add_widget" data-org="{{ isset($data['id']) ? $data['id'] : Session::get('user.organisation_id') }}">
 						<i class="fa fa-dashboard fa-fw"></i> Tambah Widget</a>
