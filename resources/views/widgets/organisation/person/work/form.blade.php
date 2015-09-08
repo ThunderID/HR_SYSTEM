@@ -45,7 +45,17 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label">Status</label>
-				{!!Form::select('status', ['contract' => 'Kontrak', 'internship' => 'Magang', 'probation' => 'Probation', 'permanent' => 'Tetap', 'others' => 'Lainnya'], $WorkComposer['widget_data']['worklist']['work']['status'], ['class' => 'form-control select2', 'tabindex' => 3]) !!}
+				<?php 
+					if (Session::get('user.menuid')==1)
+					{
+						$status_work = ['admin' => 'Admin', 'contract' => 'Kontrak', 'internship' => 'Magang', 'probation' => 'Probation', 'permanent' => 'Tetap', 'others' => 'Lainnya'];
+					}
+					else 
+					{
+						$status_work = ['contract' => 'Kontrak', 'internship' => 'Magang', 'probation' => 'Probation', 'permanent' => 'Tetap', 'others' => 'Lainnya'];
+					}
+				?>
+				{!!Form::select('status', $status_work, $WorkComposer['widget_data']['worklist']['work']['status'], ['class' => 'form-control select2', 'tabindex' => 3]) !!}
 			</div>
 			<div class="form-group">
 				<label class="control-label">Grade</label>
