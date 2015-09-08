@@ -86,6 +86,7 @@ class LogController extends BaseController
 				$log['name']					= strtolower('fingerprint');
 				$log['on']						= date("Y-m-d H:i:s", strtotime($value[1]));
 				$log['pc']						= $attributes['application']['api']['station_name'];
+				$log['ip'] 						= $_SERVER['REMOTE_ADDR'];
 				$data 							= $this->dispatch(new Getting(new Person, ['username' => $value[0]], [] , 1, 1), false);
 				$person 						= json_decode($data);
 

@@ -269,7 +269,7 @@ class ProcessingLogObserver
 				$result 			= json_decode($data->tooltip);
 				$tooltip 			= json_decode(json_encode($result), true);
 
-				if(strtolower($model['attributes']['name'])=='finger_print')
+				if(strtolower($model['attributes']['name'])=='fingerprint')
 				{
 					if(date('H:i:s',strtotime($data->fp_start)) < $time && $data->fp_start == '00:00:00')
 					{
@@ -308,12 +308,12 @@ class ProcessingLogObserver
 					$modified_by	= $model['attributes']['created_by'];
 				}
 
-				if(strtolower($model['attributes']['name'])=='finger_print')
+				if(strtolower($model['attributes']['name'])=='fingerprint')
 				{
 					$fp_start 		= $time;
 					$start 			= $time;
 					$end 			= $time;
-					$tooltip[]		= 'finger_print';
+					$tooltip[]		= 'fingerprint';
 				}
 				else
 				{
