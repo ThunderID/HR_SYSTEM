@@ -80,6 +80,11 @@
 												<a href="{{route('hr.branch.apis.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="pengaturan api key"><i class="fa fa-key fa-fw"></i> Pengaturan Api Key</a>
 											</li>
 										@endif
+										@if ((int)Session::get('user.menuid')<=2)
+											<li>
+												<a href="{{ route('hr.branch.fingers.index', [$value['id'], 'org_id' => $data['id']]) }}" title="pengaturan fingerprint"><i class="fa fa-hand-pointer-o"></i> Pengaturan Fingerprint</a>
+											</li>
+										@endif
 										<li>
 											<a href="{{route('hr.branch.contacts.index', [$value['id'], 'org_id' => $data['id'], 'branch_id' => $value['id']])}}" title="kontak"><i class="fa fa-phone fa-fw"></i> Kontak</a>
 										</li>
