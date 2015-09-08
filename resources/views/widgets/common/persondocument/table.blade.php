@@ -24,7 +24,9 @@
 	@overwrite
 
 	@section('widget_body')
-		<a href="{{ $PersonDocumentComposer['widget_data']['documentlist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
+		@if (Session::get('user.menuid')<=3)
+			<a href="{{ $PersonDocumentComposer['widget_data']['documentlist']['route_create'] }}" class="btn btn-primary">Tambah Data</a>
+		@endif
 		
 		@if (Route::is('hr.documents.show')&((int)Session::get('user.menuid') <= 3))
 			<a href="javasript:;" class="btn btn-primary" data-toggle="modal" data-target="#import_csv_doc_org" data-action="{{ route('hr.documents.store') }}" data-doc_name="{{ isset($document['name']) ? $document['name'] : '' }}" data-doc_id="{{ isset($document['id']) ? $document['id'] : '' }}" data-org_id="{{ $data['id'] }}">Import CSV</a>
