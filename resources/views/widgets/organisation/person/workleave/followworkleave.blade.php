@@ -21,7 +21,7 @@
 			@else
 				<div class="alert alert-callout alert-danger no-margin">
 					<strong class="pull-right text-info text-lg"><i class="fa fa-bed fa-2x"></i></strong>
-					<strong class="text-xl">{{$WorkleaveComposer['widget_data']['wleave']['quota']}}
+					<strong class="text-xl">{{$WorkleaveComposer['widget_data']['workleavelist']['quota']}}
 					</strong><br>
 					<span class="opacity-50">{!! $widget_title  or 'Kuota Cuti "'.$data['name'].'" Tahun Ini' !!} </span>					
 				</div>
