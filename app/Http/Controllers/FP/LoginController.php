@@ -345,9 +345,12 @@ class LoginController extends BaseController {
 				
 		if(count($content_3->data))
 		{
+			Log::info('Running Sync @'.date('Y-m-d H:i:s'). ' Total '.$attributes['application']['api']['limit'].' Updated At '. $updatedat->format('Y-m-d H:i:s').json_encode($fingername));
 		}
-
-		Log::info('Running Sync @'.date('Y-m-d H:i:s'). ' Total '.$attributes['application']['api']['limit'].' Updated At '. $updatedat->format('Y-m-d H:i:s').json_encode($fingername));
+		else
+		{
+			Log::info('Running Sync @'.date('Y-m-d H:i:s'). ' Total '.$attributes['application']['api']['limit'].' Updated At '. $updatedat->format('Y-m-d H:i:s'));
+		}
 
 		return Response::json($fingers, 200);
 	}
