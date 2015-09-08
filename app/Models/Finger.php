@@ -75,7 +75,7 @@ class Finger extends BaseModel {
 											'withtrashed' 				=> 'Must be true',
 										];
 
-	public $sortable 				= ['created_at', 'person_id'];
+	public $sortable 				= ['created_at', 'person_id', 'updated_at'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**

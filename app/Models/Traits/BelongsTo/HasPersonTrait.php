@@ -62,7 +62,7 @@ trait HasPersonTrait {
 
 	public function ScopeCurrentWork($query, $variable)
 	{
-		return $query->WhereHas('person', function($q)use($variable){$q->CurrentWork($variable);});
+		return $query->WhereHas('person', function($q)use($variable){$q->CurrentWork($variable)->where('username', '<>', '');});
 	}
 
 	public function scopePersonOrganisationID($query, $variable)
