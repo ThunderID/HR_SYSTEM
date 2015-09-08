@@ -72,7 +72,7 @@ class ContactObserver
 
 	public function saved($model)
 	{
-		if ($model['attributes']['is_default']==1)
+		if (isset($model['attributes']['is_default']) && $model['attributes']['is_default']==1)
 		{
 			if (isset($model['attributes']['branch_id']) && $model['attributes']['branch_id']!=0)
 			{
