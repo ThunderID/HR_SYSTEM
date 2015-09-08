@@ -42,7 +42,7 @@
 											[
 												'title'				=> null,
 												'organisation_id'	=> $data['id'],
-												'search'			=> [],
+												'search'			=> ['dashboard' => 'organisation'],
 												'sort'				=> [],
 												'page'				=> 1,
 												'per_page'			=> 100,

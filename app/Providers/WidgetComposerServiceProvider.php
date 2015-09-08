@@ -167,7 +167,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// PERSON WIDGET
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.dashboard'], 	'App\Http\ViewComposers\PersonWidgetComposer');
+		View::composer(['widgets.organisation.dashboard', 'widgets.organisation.person.dashboard'], 	'App\Http\ViewComposers\PersonWidgetComposer');
 
 		// -----------------------------------------------------------------------------
 		// IDLE LOG
