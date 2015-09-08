@@ -46,7 +46,7 @@ class IdleLogComposer extends WidgetComposer
 				}
 			}
 
-			$widget_data['idlelog'] 				= null;
+			$widget_data['idlelog'] 			= null;
 			$widget_data['idlelog-pagination'] 	= null;
 		}
 		else

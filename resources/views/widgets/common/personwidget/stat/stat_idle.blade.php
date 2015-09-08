@@ -1,3 +1,4 @@
+<?php dd($IdleLogComposer); ?>
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
 @if (!$widget_error_count)
