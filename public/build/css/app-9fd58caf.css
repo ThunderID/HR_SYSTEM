@@ -6925,3 +6925,14 @@ div.line {
 ul.nav li.wizard a {
 	padding: 1em 5em;
 }
+
+.action-widget {
+	right: 0;
+	margin-right: 30px;
+	position: absolute;
+	margin-top: -10px;
+	z-index: 999;
+}
+.action-widget a {
+	color: #262626;
+}

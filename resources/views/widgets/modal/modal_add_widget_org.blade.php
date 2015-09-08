@@ -51,19 +51,19 @@
 									<option value="totalprocesslogondate" data-composer="IdleLogComposer" data-type="stat" data-widget-option-title="Total Idle Terbanyak" data-template="widgets.common.personwidget.stat.stat_idle" data-query="idle">
 										Total Idle
 									</option>
-									<option value="processlogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="as" data-widget-option-title="Total Karyawan Status AS Terbanyak" data-template="" data-query="state">
+									<option value="processlogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="as" data-widget-option-title="Total Karyawan Status AS Terbanyak" data-template="widgets.common.personwidget.stat.stat_status" data-query="state">
 										Total Karyawan Status AS Terbanyak
 									</option>
-									<option value="processlogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="hb" data-widget-option-title="Total Karyawan Status HB Terbanyak" data-template="" data-query="state">
+									<option value="processlogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="hb" data-widget-option-title="Total Karyawan Status HB Terbanyak" data-template="widgets.common.personwidget.stat.stat_status" data-query="state">
 										Total Karyawan Status HB Terbanyak
 									</option>
-									<option value="processlogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="hc" data-widget-option-title="Total Karayawan Status HC Terbanyak" data-template="" data-query="state">
+									<option value="processlogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="hc" data-widget-option-title="Total Karayawan Status HC Terbanyak" data-template="widgets.common.personwidget.stat.stat_status" data-query="state">
 										Total Karyawan Status HC Terbanyak
 									</option>
 									<option value="ondate" data-composer="PersonWorkleaveComposer" data-type="table" data-widget-option-title="Table Karyawan Sedang Cuti" data-template="" data-query="workleave">
 										Karyawan Yang Sedang Cuti
 									</option>
-									<option value="totalondate" data-composer="PersonWorkleaveComposer" data-type="stat" data-widget-option-title="Total Karyawan Sedang Cuti" data-template="" data-query="workleave">
+									<option value="totalondate" data-composer="PersonWorkleaveComposer" data-type="stat" data-widget-option-title="Total Karyawan Sedang Cuti" data-template="widgets.common.personwidget.stat.stat_workleave" data-query="workleave">
 										Total Karyawan Yang Sedang Cuti
 									</option>
 								</select>

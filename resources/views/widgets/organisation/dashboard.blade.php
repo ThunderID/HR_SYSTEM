@@ -3,20 +3,35 @@
 @if (!$widget_error_count)
 	@section('widget_body')
 		@if (count($PersonWidgetComposer['widget_data']['widgetlist']['widget'])!=0)
-			@foreach ($PersonWidgetComposer['widget_data']['widgetlist']['widget'] as $key => $value)
+			<?php $tot_ws = 0; ?>
+			@foreach ($PersonWidgetComposer['widget_data']['widgetlist']['widget'] as $value)
 				@if ($value['type']=='stat')
-					@if (($key%2)==0)
+					@if (($tot_ws%2)==0)
 						</div>
 						<div class="row">
 					@endif
 					<?php $x = json_decode($value['query'], 500);?>
-					<div class="col-sm-6">
+					<div class="col-sm-6 box-widgets">
+						<div class="action-widget hide">
+							<a href="javascript:;" data-target="#add_widget" data-toggle="modal">
+								<i class="fa fa-pencil"></i>
+							</a>
+							<a href="javascript:;" data-toggle="modal" data-target="#del_widget" data-delete-action="" title="hapus">
+								<i class="fa fa-times-circle"></i>
+							</a>
+						</div>
 						@include($value['widget'], $x)
 					</div>
-				@else
+					<?php $tot_ws++; ?>
+				@endif
+			@endforeach
+			@foreach ($PersonWidgetComposer['widget_data']['widgetlist']['widget'] as $key => $value)
+				@if ($value['type']!='stat')
 					<?php $x = json_decode($value['query'], 500);?>
-					<div class="col-sm-12">
-						@include($value['widget'], $x)
+					<div class="row ml-15 mr-15">
+						<div class="col-sm-12">
+							@include($value['widget'], $x)
+						</div>
 					</div>
 				@endif
 			@endforeach
