@@ -5,10 +5,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Database\Schema\Blueprint;
 use Schema;
-use App\Models\Application;
-use App\Models\Menu;
-use App\Models\GroupMenu;
-use DB;
+use App\Models\Person;
+use App\Models\Work;
+use DB, Hash;
 
 class HRSUpdateCommand extends Command {
 
@@ -43,7 +42,7 @@ class HRSUpdateCommand extends Command {
 	 */
 	public function fire()
 	{
-		$result 		= $this->update27082015();
+		$result 		= $this->update08092015();
 		
 		return true;
 	}
@@ -78,8 +77,38 @@ class HRSUpdateCommand extends Command {
 	 * @return void
 	 * @author 
 	 **/
-	public function update27082015()
+	public function update08092015()
 	{
+
+		$user 			= new Person;
+		$user->fill(['uniqid' => 'ADMIN11',
+					'username' => 'kianwu',
+					'name' => 'Kian Wu',
+					'place_of_birth' => 'MMS',
+					'date_of_birth' => '2015-08-09',
+					'gender' => 'male',
+					'password' => Hash::make('MGJYDhFH'),
+					'last_password_updated_at' => date('Y-m-d H:i:s')]);
+		
+		if(!$user->Save())
+		{
+			dd($user->getError());
+			return true;
+		}
+		
+		$work 			= new Work;
+		$work->fill(['calendar_id' => '1',
+					'chart_id' => '1',
+					'grade' => '1',
+					'status' => 'admin',
+					'start' => '2015-08-09']);
+
+		if(!$work->Save())
+		{
+			dd($work->getError());
+			return true;
+		}
+
 		return true;
 	}
 }
