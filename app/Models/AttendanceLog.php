@@ -226,4 +226,10 @@ class AttendanceLog extends BaseModel {
 		return $query->groupBy('attendance_logs.process_log_id')
 					;
 	}
+
+	public function scopeTotalProcessLogOndate($query, $variable)
+	{
+		return $query->selectraw('count(id) as total_status')
+					->wherehas('processlog', function($q)use($variable){$q->ondate($variable);})->groupBy('process_log_id');
+	}
 }
