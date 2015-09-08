@@ -79,6 +79,7 @@ class AttendanceLog extends BaseModel {
 											'withattributes' 					=> 'WithAttributes',
 											'withtrashed' 						=> 'WithTrashed',
 											'processlogondate' 					=> 'ProcessLogOnDate', 
+											'totalprocesslogondate' 			=> 'TotalProcessLogOnDate', 
 										];
 
 	public $searchableScope 		= 	[
@@ -90,6 +91,7 @@ class AttendanceLog extends BaseModel {
 											'withattributes' 					=> 'Must be array of relationship',
 											'withtrashed' 						=> 'Must be true',
 											'processlogondate' 					=> 'Could be array or string (date)', 
+											'totalprocesslogondate' 			=> 'Could be array or string (date)', 
 										];
 
 	public $sortable 				= 	['process_log_id', 'created_at'];
