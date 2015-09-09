@@ -118,7 +118,12 @@
 						<div class="col-sm-12">
 							<div class="form-group">
 								<label class="control-label">Status Kawin</label>
-								@include('widgets.organisation.person.select_married')
+								@if($id && isset($PersonComposer['widget_data']['personlist']['person']['maritalstatuses'][0]))
+									@include('widgets.organisation.person.select_married', ['currentstatus' => $PersonComposer['widget_data']['personlist']['person']['maritalstatuses'][0]['status']])
+									{!!Form::hidden('maritalold', $PersonComposer['widget_data']['personlist']['person']['maritalstatuses'][0]['status']) !!}
+								@else
+									@include('widgets.organisation.person.select_married', ['currentstatus' => null])
+								@endif
 							</div>
 						</div>
 					</div>
