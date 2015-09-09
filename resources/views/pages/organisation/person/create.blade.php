@@ -47,7 +47,7 @@
 												[
 													'form_url'			=> route('hr.persons.store', ['id' => $id, 'org_id' => $data['id']]),
 													'organisation_id'	=> $data['id'],
-													'search'			=> ['id' => $id],
+													'search'			=> ['id' => $id, 'maritalstatus' => true],
 													'sort'				=> [],
 													'new'				=> (is_null($id) ? true : false),
 													'page'				=> 1,

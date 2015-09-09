@@ -485,26 +485,29 @@ class PersonController extends BaseController
 
 			if(!$errors->count() && Input::has('marital'))
 			{
-				$marital['status']					= Input::get('marital');
-				$marital['on']						= date('Y-m-d H:i:s');
-
-				$content 							= $this->dispatch(new Saving(new MaritalStatus, $marital, null, new Person, $is_success->data->id));
-
-				$is_marital_success 				= json_decode($content);
-				if(!$is_marital_success->meta->success)
+				if(!Input::has('maritalold') || (Input::get('marital')!=Input::has('maritalold')))
 				{
-					foreach ($is_marital_success->meta->errors as $key => $value) 
+					$marital['status']					= Input::get('marital');
+					$marital['on']						= date('Y-m-d H:i:s');
+
+					$content 							= $this->dispatch(new Saving(new MaritalStatus, $marital, null, new Person, $is_success->data->id));
+
+					$is_marital_success 				= json_decode($content);
+					if(!$is_marital_success->meta->success)
 					{
-						if(is_array($value))
+						foreach ($is_marital_success->meta->errors as $key => $value) 
 						{
-							foreach ($value as $key2 => $value2) 
+							if(is_array($value))
 							{
-								$errors->add('Person', $value2);
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
 							}
-						}
-						else
-						{
-							$errors->add('Person', $value);
+							else
+							{
+								$errors->add('Person', $value);
+							}
 						}
 					}
 				}

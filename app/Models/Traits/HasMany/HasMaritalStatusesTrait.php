@@ -22,4 +22,9 @@ trait HasMaritalStatusesTrait {
 	{
 		return $this->hasMany('App\Models\MaritalStatus');
 	}
+
+	public function scopeMaritalStatus($query, $variable)
+	{
+		return $query->with(['maritalstatuses' => function($q){$q->orderby('on', 'desc');}]);
+	}
 }

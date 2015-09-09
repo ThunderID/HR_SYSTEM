@@ -150,6 +150,7 @@ class Person extends BaseModel {
 											'currentwork' 					=> 'CurrentWork',
 											'previouswork' 					=> 'PreviousWork',
 
+											'maritalstatus' 				=> 'MaritalStatus',
 											'workcalendar' 					=> 'WorkCalendar',
 											'withworkcalendarschedules' 	=> 'WithWorkCalendarSchedules',
 
@@ -187,6 +188,8 @@ class Person extends BaseModel {
 											'globalsanction'	 			=> 'Must be array of string and or case',
 											
 											'withattributes' 				=> 'Must be array of relationship',
+											
+											'maritalstatus' 				=> 'Must be true',
 											
 											'contactid' 					=> 'ID of contact',
 											'defaultcontact' 				=> 'Must be true',

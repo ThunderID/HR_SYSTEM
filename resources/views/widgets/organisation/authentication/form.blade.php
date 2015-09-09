@@ -7,6 +7,16 @@
 
 	@section('widget_body')
 		<div class="clearfix">&nbsp;</div>
+			<?php 
+				if(Session::get('user.menuid') > 1)
+				{
+					$status 		= ['permanent', 'contract', 'probation', 'internship', 'permanent', 'others'];
+				}
+				else
+				{
+					$status 		= ['permanent', 'contract', 'probation', 'internship', 'permanent', 'others', 'admin'];
+				}
+			?>
 			{!! Form::open(['url' => $WorkAuthenticationComposer['widget_data']['workauthlist']['form_url'], 'class' => 'form no_enter']) !!}	
 				<div class="form-group">
 					<label class="control-label">Karyawan</label>
@@ -14,7 +24,7 @@
 					'widget_options'		=> 	[
 													'worklist'			=>
 													[
-														'search'			=> ['status' => ['permanent', 'contract', 'probation', 'internship', 'permanent', 'others'], 'active' => true, 'organisationid' => Session::get('user.organisationids'),'withattributes' => ['person', 'person.organisation'], 'groupperson' => true],
+														'search'			=> ['status' => $status, 'active' => true, 'organisationid' => Session::get('user.organisationids'),'withattributes' => ['person', 'person.organisation'], 'groupperson' => true],
 														'sort'				=> ['end' => 'asc'],
 														'page'				=> 1,
 														'per_page'			=> 100,
