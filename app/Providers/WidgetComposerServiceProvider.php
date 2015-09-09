@@ -172,7 +172,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// IDLE LOG
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.common.personwidget.stat.stat_idle', 'widgets.common.personwidget.table.table_idle'], 	'App\Http\ViewComposers\IdleLogComposer');
+		View::composer(['widgets.common.personwidget.stat.stat_idle', 'widgets.common.personwidget.stat.stat_active', 'widgets.common.personwidget.table.table_idle'], 	'App\Http\ViewComposers\IdleLogComposer');
 
 		// -----------------------------------------------------------------------------
 		// ATTEDANCE LOG

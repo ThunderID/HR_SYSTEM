@@ -71,112 +71,150 @@ class PersonWidgetController extends BaseController
 		$attributes['row']						= 1;
 		$attributes['col']						= 1;
 
-		if (Input::get('type') == 'stat')
+		if ($attributes['dashboard'] == 'organisation')
 		{
-
-			$result									= $this->dispatch(new Getting(new PersonWidget, ['type' => 'stat'], [] ,1, 100));
-			$content 								= json_decode($result);
-
-			if (!$content->meta->success)
+			if ($attributes['type'] == 'stat')
 			{
-				App::abort(404);
+
+				$result									= $this->dispatch(new Getting(new PersonWidget, ['type' => 'stat'], [] ,1, 100));
+				$content 								= json_decode($result);
+
+				if (!$content->meta->success)
+				{
+					App::abort(404);
+				}
+
+				$data 									= json_decode(json_encode($content->data), true);
+				
+				if (count($data)<=3) 
+				{
+
+					if (Input::get('widget_query') == 'state') 
+					{
+						$query 	= ['widget_template' 	=> 'plain', 
+									'widget_title' 		=> Input::get('title'),
+									'widget_options'	=> [	'widgetlist'	=> 
+																[
+																	'title' 				=> Input::get('widget_option_title'),
+																	'organisation_id'		=> $org_id,
+																	'search'				=> [Input::get('widget_data') => Input::get('periode'), 'status' => Input::get('status')],
+																	'sort'					=> [],
+																	'page'					=> 1,
+																	'per_page'				=> 1
+																]
+															] 
+								];
+					}
+					else if (Input::get('widget_query') == 'workleave') 
+					{
+						$query 	= ['widget_template' 	=> 'plain', 
+									'widget_title' 		=> Input::get('title'),
+									'widget_options'	=> [	'widgetlist'	=> 
+																[
+																	'title' 				=> Input::get('widget_option_title'),
+																	'organisation_id'		=> $org_id,
+																	'search'				=> [Input::get('widget_data') => Input::get('periode'), 'quota' => false],
+																	'sort'					=> [],
+																	'page'					=> 1,
+																	'per_page'				=> 1
+																]
+															] 
+								];
+					}
+					else
+					{
+						$query 	= ['widget_template' 	=> 'plain', 
+									'widget_title' 		=> Input::get('title'),
+									'widget_options'	=> [	'widgetlist'	=> 
+																[
+																	'title' 				=> Input::get('widget_option_title'),
+																	'organisation_id'		=> Input::get('org_id'),
+																	'search'				=> [Input::get('widget_data') => Input::get('periode')],
+																	'sort'					=> [],
+																	'page'					=> 1,
+																	'per_page'				=> 1
+																]
+															] 
+								];
+					}
+				}
+				else
+				{
+					return Redirect::back()->withErrors(['Maaf untuk widget type stat, tidak bisa lebih dari 4 widget']);
+				}
 			}
 
-			$data 									= json_decode(json_encode($content->data), true);
-			
-			if (count($data)<=3) 
+			else 
 			{
-
-				if (Input::get('widget_query') == 'state') 
+				if (Input::get('widget_query') == 'sp') 
 				{
-					$query 	= ['widget_template' 	=> 'plain', 
+					$query	= [	'widget_template' 	=> 'panel', 
 								'widget_title' 		=> Input::get('title'),
-								'widget_options'	=> [	'widgetlist'	=> 
+								'widget_options'	=> 	[	'widgetlist'	=> 
 															[
 																'title' 				=> Input::get('widget_option_title'),
 																'organisation_id'		=> $org_id,
-																'search'				=> [Input::get('widget_data') => Input::get('periode'), 'status' => Input::get('status')],
-																'sort'					=> [],
+																'search'				=> [Input::get('widget_data') => Input::get('periode'), 'notpersondocumentID' => 0],
+																'sort'					=> ['created_at' => 'asc'],
 																'page'					=> 1,
-																'per_page'				=> 1
+																'per_page'				=> 15
 															]
 														] 
 							];
 				}
 				else if (Input::get('widget_query') == 'workleave') 
 				{
-					$query 	= ['widget_template' 	=> 'plain', 
+					$query 	= ['widget_template' 	=> 'panel', 
 								'widget_title' 		=> Input::get('title'),
 								'widget_options'	=> [	'widgetlist'	=> 
 															[
 																'title' 				=> Input::get('widget_option_title'),
 																'organisation_id'		=> $org_id,
-																'search'				=> [Input::get('widget_data') => Input::get('periode'), 'quota' => false],
+																'search'				=> [Input::get('widget_data') => Input::get('periode'), 'quota' => false, 'withattributes' => ['person']],
 																'sort'					=> [],
 																'page'					=> 1,
-																'per_page'				=> 1
+																'per_page'				=> 15
 															]
 														] 
 							];
 				}
 				else
 				{
-					$query 	= ['widget_template' 	=> 'plain', 
+					$query 	= ['widget_template' 	=> 'panel', 
 								'widget_title' 		=> Input::get('title'),
 								'widget_options'	=> [	'widgetlist'	=> 
 															[
 																'title' 				=> Input::get('widget_option_title'),
 																'organisation_id'		=> Input::get('org_id'),
-																'search'				=> [Input::get('widget_data') => Input::get('periode')],
+																'search'				=> [Input::get('widget_data') => Input::get('periode'), 'withattributes' => ['processlog.person']],
 																'sort'					=> [],
 																'page'					=> 1,
-																'per_page'				=> 1
+																'per_page'				=> 15
 															]
 														] 
 							];
 				}
 			}
-			else
-			{
-				return Redirect::back()->withErrors(['Maaf untuk widget type stat, tidak bisa lebih dari 4 widget']);
-			}
 		}
-
-		else 
+		else
 		{
-			if (Input::get('widget_query') == 'sp') 
+			if ($attributes['type'] == 'stat')
 			{
-				$query	= [	'widget_template' 	=> 'panel', 
-							'widget_title' 		=> Input::get('title'),
-							'widget_options'	=> 	[	'widgetlist'	=> 
-														[
-															'title' 				=> Input::get('widget_option_title'),
-															'organisation_id'		=> $org_id,
-															'search'				=> [Input::get('widget_data') => Input::get('periode'), 'notpersondocumentID' => 0],
-															'sort'					=> ['created_at' => 'asc'],
-															'page'					=> 1,
-															'per_page'				=> 15
-														]
-													] 
-						];
-			}
-			else if (Input::get('widget_query') == 'workleave') 
-			{
-				$query 	= ['widget_template' 	=> 'panel', 
+				$query 	= ['widget_template' 	=> 'plain', 
 							'widget_title' 		=> Input::get('title'),
 							'widget_options'	=> [	'widgetlist'	=> 
 														[
 															'title' 				=> Input::get('widget_option_title'),
-															'organisation_id'		=> $org_id,
-															'search'				=> [Input::get('widget_data') => Input::get('periode'), 'quota' => false, 'withattributes' => ['person']],
+															'organisation_id'		=> Input::get('org_id'),
+															'search'				=> [Input::get('widget_data') => Input::get('periode'), 'personid' => Session::get('loggedUser')],
 															'sort'					=> [],
 															'page'					=> 1,
-															'per_page'				=> 15
+															'per_page'				=> 1
 														]
 													] 
 						];
 			}
-			else
+			else 
 			{
 				$query 	= ['widget_template' 	=> 'panel', 
 							'widget_title' 		=> Input::get('title'),
@@ -184,7 +222,7 @@ class PersonWidgetController extends BaseController
 														[
 															'title' 				=> Input::get('widget_option_title'),
 															'organisation_id'		=> Input::get('org_id'),
-															'search'				=> [Input::get('widget_data') => Input::get('periode'), 'withattributes' => ['processlog.person']],
+															'search'				=> [Input::get('widget_data') => Input::get('periode'), 'personid' => Session::get('loggedUser')],
 															'sort'					=> [],
 															'page'					=> 1,
 															'per_page'				=> 15
@@ -228,7 +266,14 @@ class PersonWidgetController extends BaseController
 		{
 			DB::commit();
 
-			return Redirect::route('hr.organisations.show', [$org_id, 'org_id' => $org_id])->with('local_msg', $errors)->with('alert_success', 'Widget sudah disimpan');
+			if ($attributes['dashboard'] == 'organisation')
+			{
+				return Redirect::route('hr.organisations.show', [$org_id, 'org_id' => $org_id])->with('local_msg', $errors)->with('alert_success', 'Widget sudah disimpan');			
+			}
+			else
+			{
+				return Redirect::route('hr.persons.show', [Session::get('loggedUser'), 'org_id' => $org_id])->with('local_msg', $errors)->with('alert_success', 'Widget sudah disimpan');				
+			}
 		}
 
 		DB::rollback();
@@ -279,8 +324,8 @@ class PersonWidgetController extends BaseController
 			{
 				$contents					= json_decode(json_encode($contents->data), true);
 				$data 						= json_decode($contents['query']);
-dd(contents);exit;
-				return Redirect::route('hr.organisation.show')->with('alert_success', 'Widget "' . $data->widget_title. '" sudah dihapus');
+
+				return Redirect::route('hr.organisation.show')->with('alert_success', 'Widget sudah dihapus');
 			}
 		}
 		else

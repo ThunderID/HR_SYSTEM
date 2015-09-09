@@ -45,7 +45,7 @@
 								{{-- Organisation Widget --}}
 								@if (Session::get('user.menuid')<=3)
 									<select name="data_widget_org" id="select2-dashboard-widget" class="form-control select_widget_org">
-										<option value="processlogondate" data-composer="ProcessLogComposer" data-type="table" data-widget-option="personlist" data-widget-option-title="Table SP Print" data-template="widgets.common.personwidget.table.table_sp" data-query="sp">
+										<option value="processlogondate" data-composer="ProcessLogComposer" data-type="table" data-widget-option-title="Table SP Print" data-template="widgets.common.personwidget.table.table_sp" data-query="sp">
 											SP Print list
 										</option>
 										<option value="processlogondate" data-composer="IdleLogComposer" data-type="table" data-widget-option-title="Table Idle Terbanyak" data-template="widgets.common.personwidget.table.table_idle" data-query="idle">
@@ -74,9 +74,15 @@
 
 								{{-- Person Widget --}}
 								<select name="data_widget_person" id="" class="form-control select_widget_person @if (Session::get('user.menuid')<=3) hide @endif">
-									<option value="">SP</option>
-									<option value="">Total Idle</option>
-									<option value="">Total Aktif</option>
+									<option value="processlogondate" data-type="table" data-widget-option-title="Daftar SP" data-template="widgets.common.personwidget.table.table_sp" data-query="sp">
+										SP
+									</option>
+									<option value="totalprocesslogondate" data-type="stat" data-widget-option-title="Total Idle" data-template="widgets.common.personwidget.stat.stat_idle" data-query="idle">
+										Total Idle
+									</option>
+									<option value="totalprocesslogondate" data-type="stat" data-widget-option-title="Total Aktif" data-template="widgets.common.personwidget.stat.stat_active" data-query="active">
+										Total Aktif
+									</option>
 								</select>
 							</div>
 						</div>

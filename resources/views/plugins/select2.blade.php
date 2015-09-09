@@ -96,6 +96,23 @@
 			$('.widget_query').val(widget_query);
 		});
 
+		/* Select2  widget person */
+		$('.select_widget_person').on('change', function(e)
+		{
+			var value 					= $(this).val();
+			var type 					= $(this).find(':selected').attr('data-type');
+			var widget_option_title 	= $(this).find(':selected').attr('data-widget-option-title');
+			var widget_template 		= $(this).find(':selected').attr('data-template');
+			var widget_query 			= $(this).find(':selected').attr('data-query');
+
+			$('.processlog_status').val('');
+			$('.type_widget').val(type);
+			$('.widget_option_title').val(widget_option_title);
+			$('.widget_template').val(widget_template);
+			$('.widget_data').val(value);
+			$('.widget_query').val(widget_query);
+		});
+
 		/* select type widget */
 		$('.select_type_widget').on('change', function() {
 			var value 			= $(this).val();
