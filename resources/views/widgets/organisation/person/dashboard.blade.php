@@ -30,12 +30,8 @@
 				<?php $tot_ws = 0; ?>
 				@foreach ($PersonWidgetComposer['widget_data']['widgetlist']['widget'] as $key => $value)
 					@if ($value['type']!='stat')
-						@if (($tot_ws%2)==0)
-							</div>
-							<div class="row">
-						@endif
 						<?php $x = json_decode($value['query'], 500);?>
-						<div class="col-sm-6 box-widgets">
+						<div class="col-sm-12 box-widgets">
 							<div class="action-widget hide">
 								<a href="javascript:;" data-target="#add_widget" data-toggle="modal">
 									<i class="fa fa-pencil"></i>

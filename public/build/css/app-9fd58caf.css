@@ -6734,6 +6734,12 @@ label,
 	bottom: -1px;
 	background: red;
 }
+.alert-callout.alert-primary:before {
+	background: #337ab7;
+}
+.alert-callout.alert-primary strong i {
+	color: #337ab7;
+}
 .alert-callout.alert-success:before {
 	background: #4caf50;
 }
