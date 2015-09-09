@@ -69,7 +69,7 @@ class ActivityController extends BaseController
 		if(Session::get('user.menuid')>=5)
 		{
 			$search['id'] 							= Session::get('user.branchid');
-			$search['chartchild'] 					= Session::get('user.chartpath');
+			$search['chartchild'] 					= [Session::get('user.chartpath'), Session::get('user.workid')];
 		}
 		else
 		{
@@ -208,7 +208,7 @@ class ActivityController extends BaseController
 		
 		if(Session::get('user.menuid')>=5)
 		{
-			$filter['search']['chartchild'] 		= Session::get('user.chartpath');
+			$filter['search']['chartchild'] 		= [Session::get('user.chartpath'), Session::get('user.workid')];
 			$filter['active']['chartchild'] 		= 'Lihat Sebagai "'.Session::get('user.chartname').'"';
 		}
 		
@@ -306,7 +306,7 @@ class ActivityController extends BaseController
 		$sort 										= ['name' => 'asc'];
 		if(Session::get('user.menuid')>=5)
 		{
-			$search['chartchild'] 					= Session::get('user.chartpath');
+			$search['chartchild'] 					= [Session::get('user.chartpath'), Session::get('user.workid')];
 		}
 		$results 									= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
 		$contents 									= json_decode($results);		

@@ -14,7 +14,7 @@
 													'chartlist'			=>
 													[
 														'organisation_id'	=> $data['id'],
-														'search'			=> ['notadmin' => true, 'withattributes' => ['branch'], 'child' => (Session::get('user.menuid')==4 ? Session::get('user.chartpath') : '' )],
+														'search'			=> ['notadmin' => true, 'withattributes' => ['branch'], 'child' => (Session::get('user.menuid')==4 ? [Session::get('user.chartpath'), Session::get('user.workid')] : '' )],
 														'sort'				=> ['name' => 'asc'],
 														'page'				=> 1,
 														'per_page'			=> 100,

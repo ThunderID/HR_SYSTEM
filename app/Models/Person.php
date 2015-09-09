@@ -477,7 +477,14 @@ class Person extends BaseModel {
 
 		if(isset($variable['chartchild']))
 		{
-			$query =  $query->wherehas('works', function($q)use($variable){$q->child($variable['chartchild']);});
+			if(is_array($variable['chartchild']))
+			{
+				$query =  $query->wherehas('works', function($q)use($variable){$q->where(function($q)use($variable){$q->child($variable['chartchild'][0])->orwhere('works.id', $variable['chartchild'][1]);});});
+			}
+			else
+			{
+				$query =  $query->wherehas('works', function($q)use($variable){$q->child($variable['chartchild']);});
+			}
 		}
 
 		if(isset($variable['charttag']))
@@ -594,7 +601,11 @@ class Person extends BaseModel {
 			$query =  $query->where('branches.id', $variable['branchid']);
 		}
 
-		if(isset($variable['chartchild']))
+		if(is_array($variable['chartchild']))
+		{
+			$query =  $query->wherehas('works', function($q)use($variable){$q->where(function($q)use($variable){$q->child($variable['chartchild'][0])->orwhere('works.id', $variable['chartchild'][1]);});});
+		}
+		else
 		{
 			$query =  $query->wherehas('works', function($q)use($variable){$q->child($variable['chartchild']);});
 		}

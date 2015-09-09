@@ -85,7 +85,12 @@ trait HasWorksOnTrait {
 
 	public function scopeChartChild($query, $variable)
 	{
-		return $query->WhereHas('works', function($q)use($variable){$q->child($variable);});
+		if(is_array($variable))
+		{
+			return  $query->wherehas('works', function($q)use($variable){$q->where(function($q)use($variable){$q->child($variable[0])->orwhere('works.id', $variable[1]);});});
+		}
+		
+		return  $query->wherehas('works', function($q)use($variable){$q->child($variable);});
 	}
 
 	public function scopeChartNotAdmin($query, $variable)

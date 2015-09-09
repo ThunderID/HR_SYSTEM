@@ -49,7 +49,7 @@ class WorkController extends BaseController
 		$search['withattributes'] 					= ['organisation'];
 		if(Session::get('user.menuid')>=5)
 		{
-			$search['chartchild'] 				= Session::get('user.chartpath');
+			$search['chartchild'] 				= [Session::get('user.chartpath'), Session::get('user.workid')];
 		}
 		$sort 										= ['name' => 'asc'];
 		$results 									= $this->dispatch(new Getting(new Person, $search, $sort , 1, 1));
