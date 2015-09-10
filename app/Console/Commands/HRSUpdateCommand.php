@@ -83,8 +83,10 @@ class HRSUpdateCommand extends Command {
 		Schema::table('person_widgets', function(Blueprint $table)
 		{	
 			$table->integer('organisation_id')->unsigned()->index();
-		}
+		});
 
 		$this->info("Add org id on person widget table");
+
+		return true;
 	}
 }
