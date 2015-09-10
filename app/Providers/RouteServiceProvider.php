@@ -425,7 +425,7 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 					Session::put('user.organisationcodes', $organisationcodes);
 					Session::put('user.chartnames', $chartnames);
 
-					if(Input::has('org_id'))
+					if(Input::has('org_id') && Input::get('org_id')!=0)
 					{
 						$orgids 									= [Input::get('org_id')];
 					}
