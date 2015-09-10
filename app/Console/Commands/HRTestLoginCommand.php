@@ -58,8 +58,8 @@ class HRTestLoginCommand extends Command {
 
 			if(!$content->meta->success)
 			{
-				$value['message']		= 'Not Exists';
-				var_dump($value);
+				$msg					= 'Not Exists : '.$value['username'].' ['.$value['no'].']';
+				var_dump($msg);
 			}
 			else
 			{
@@ -69,8 +69,8 @@ class HRTestLoginCommand extends Command {
 
 				if(!$contents->meta->success)
 				{
-					$value['message']	= 'Expire';
-					var_dump($value);
+					$msg					= 'Expire : '.$value['username'].' ['.$value['no'].']';
+					var_dump($msg);
 				}
 			}
 		}
