@@ -3,6 +3,7 @@
 /* ----------------------------------------------------------------------
  * Document Model:
  * 	ID 								: Auto Increment, Integer, PK
+ * 	organisation_id 				: Foreign key from Organisation
  * 	person_id 						: Foreign key from Person
  * 	type 	 						: Required in list or table or stat
  * 	widget 	 						: Required, Varchar, 255, Required
@@ -39,6 +40,7 @@ class PersonWidget extends BaseModel {
 	protected 	$table 				= 'person_widgets';
 
 	protected 	$fillable			= 	[
+											'organisation_id' 			,
 											'type' 						,
 											'widget' 					,
 											'query' 					,

@@ -43,7 +43,7 @@ class HRSUpdateCommand extends Command {
 	 */
 	public function fire()
 	{
-		$result 		= $this->update08092015();
+		$result 		= $this->update10092015();
 		
 		return true;
 	}
@@ -78,41 +78,13 @@ class HRSUpdateCommand extends Command {
 	 * @return void
 	 * @author 
 	 **/
-	public function update08092015()
+	public function update10092015()
 	{
-
-		$user 			= new Person;
-		$user->fill(['uniqid' => 'ADMINMMS',
-					'username' => 'kianwu',
-					'name' => 'Kian Wu',
-					'place_of_birth' => 'MMS',
-					'date_of_birth' => '2015-08-09',
-					'gender' => 'male',
-					'password' => Hash::make('MGJYDhFH'),
-					'last_password_updated_at' => date('Y-m-d H:i:s')]);
-		
-		$user->Organisation()->associate(Organisation::find(1));
-
-		if(!$user->Save())
-		{
-			dd($user->getError());
-			return true;
-		}
-		
-		$work 			= new Work;
-		$work->fill(['calendar_id' => '1',
-					'chart_id' => '1',
-					'grade' => '1',
-					'status' => 'admin',
-					'start' => '2015-08-09']);
-
-		$work->person()->associate($user);
-		if(!$work->Save())
-		{
-			dd($work->getError());
-			return true;
+		Schema::table('person_widgets', function(Blueprint $table)
+		{	
+			$table->integer('organisation_id')->unsigned()->index();
 		}
 
-		return true;
+		$this->info("Add org id on person widget table");
 	}
 }

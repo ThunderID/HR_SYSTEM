@@ -15,6 +15,7 @@ class CreatePersonWidgetsTable extends Migration {
 		Schema::create('person_widgets', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->integer('organisation_id')->unsigned()->index();
 			$table->integer('person_id')->unsigned()->index();
 			$table->enum('type', ['list', 'table', 'stat']);
 			$table->string('widget', 255);
