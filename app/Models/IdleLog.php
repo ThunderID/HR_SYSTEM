@@ -146,8 +146,45 @@ class IdleLog extends BaseModel {
 
 	public function scopeTotalProcessLogOndate($query, $variable)
 	{
-		return $query->selectraw('sum(total_idle) as total_idle')
-					->selectraw('sum(total_active) as total_active')
-					->wherehas('processlog', function($q)use($variable){$q->ondate($variable);})->groupBy('process_log_id');
+		if(isset($variable) && is_array($variable))
+		{
+			if(!is_null($variable[1]))
+			{
+				$start 	= date('Y-m-d', strtotime($variable[0]));
+				$end 	= date('Y-m-d', strtotime($variable[1]));
+			}
+			elseif(!is_null($variable[0]))
+			{
+				$start 	= date('Y-m-d', strtotime($variable[0]));
+				$end 	= date('Y-m-d', strtotime($variable[1]));
+			}
+			else
+			{
+				$start 	=   date('Y-m-d');
+				$end 	=   date('Y-m-d');
+			}
+		}
+		elseif(isset($variable))
+		{
+			$start 	= date('Y-m-d', strtotime($variable));
+			$end 	= date('Y-m-d', strtotime($variable));
+		}
+		else
+		{
+			$start 	=   date('Y-m-d');
+			$end 	=   date('Y-m-d');
+		}
+
+		return $query
+					->leftjoin('process_logs', function ($join) use($start, $end) {
+							$join->on('process_logs.id', '=', 'idle_logs.process_log_id')
+								->where('process_logs.on', '>=', $start)
+								->where('process_logs.on', '<=', $end)
+								->wherenull('process_logs.deleted_at')
+							;
+						})
+					->selectraw('IFNULL(sum(total_idle), 0) as total_idle')
+					->selectraw('IFNULL(sum(total_active), 0) as total_active')
+					;
 	}
 }
