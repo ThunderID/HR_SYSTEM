@@ -483,3 +483,10 @@ Blade::extend(function ($value, $compiler)
 
 	return preg_replace($pattern, '$1'.$replace, $value);
 });
+Blade::extend(function ($value, $compiler)
+{
+	$pattern = $compiler->createMatcher('gmdate');
+	$replace = '<?php echo gmdate("H:i:s", $2); ?>';
+
+	return preg_replace($pattern, '$1'.$replace, $value);
+});
