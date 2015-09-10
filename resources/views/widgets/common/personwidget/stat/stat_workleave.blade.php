@@ -8,6 +8,12 @@
 				<strong class="text-xl">{{ $PersonWorkleaveComposer['widget_data']['widgetlist']['workleave-pagination']->total() }}</strong><br>
 				<span class="opacity-50">{{ $PersonWorkleaveComposer['widget_data']['widgetlist']['title'] }}</span>					
 			</div>
+		@else
+			<div class="alert alert-callout alert-danger no-margin">
+				<strong class="pull-right text-danger text-lg"><i class="fa fa-user fa-2x"></i></strong>
+				<strong class="text-xl">0</strong><br>
+				<span class="opacity-50">{{ $PersonWorkleaveComposer['widget_data']['widgetlist']['title'] }}</span>					
+			</div>
 		@endif
 	@overwrite	
 @else

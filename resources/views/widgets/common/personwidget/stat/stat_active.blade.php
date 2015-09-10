@@ -8,6 +8,12 @@
 				<strong class="text-xl">{{ $IdleLogComposer['widget_data']['widgetlist']['idlelog']['total_active'] }}</strong><br>
 				<span class="opacity-50">{{ $IdleLogComposer['widget_data']['widgetlist']['title'] }}</span>					
 			</div>
+		@else
+			<div class="alert alert-callout alert-primary no-margin">
+				<strong class="pull-right text-primary text-lg"><i class="fa fa-history fa-2x"></i></strong>
+				<strong class="text-xl">0</strong><br>
+				<span class="opacity-50">{{ $IdleLogComposer['widget_data']['widgetlist']['title'] }}</span>					
+			</div>
 		@endif
 	@overwrite	
 @else

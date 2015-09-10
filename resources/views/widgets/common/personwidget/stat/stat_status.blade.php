@@ -8,6 +8,12 @@
 				<strong class="text-xl">{{ $AttendanceLogComposer['widget_data']['widgetlist']['attendancelog-pagination']->total() }}</strong><br>
 				<span class="opacity-50">{{ $AttendanceLogComposer['widget_data']['widgetlist']['title'] }}</span>					
 			</div>
+		@else
+			<div class="alert alert-callout alert-success no-margin">
+				<strong class="pull-right text-success text-lg"><i class="fa fa-certificate fa-2x"></i></strong>
+				<strong class="text-xl">0</strong><br>
+				<span class="opacity-50">{{ $AttendanceLogComposer['widget_data']['widgetlist']['title'] }}</span>					
+			</div>
 		@endif
 	@overwrite	
 @else
