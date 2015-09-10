@@ -2,7 +2,7 @@
 
 @if (!$widget_error_count)
 	@section('widget_body')
-		@if(isset($IdleLogComposer['widget_data']['widgetlist']['idlelog']))
+		@if(!is_null($IdleLogComposer['widget_data']['widgetlist']['idlelog']))
 			<div class="alert alert-callout alert-warning no-margin">
 				<strong class="pull-right text-warning text-lg"><i class="fa fa-clock-o fa-2x"></i></strong>
 				<strong class="text-xl">{{ $IdleLogComposer['widget_data']['widgetlist']['idlelog']['total_idle'] }}</strong><br>

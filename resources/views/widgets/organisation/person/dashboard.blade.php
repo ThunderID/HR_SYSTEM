@@ -1,8 +1,7 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
-
 @if (!$widget_error_count)
 	@section('widget_body')
-		@if (count($PersonWidgetComposer['widget_data']['widgetlist']['widget'])!=0)
+		@if (count($PersonWidgetComposer['widget_data']['widgetlist']['widget'])!=0 && $person['id'] == Session::get('loggedUser'))
 			<?php $tot_ws = 0; ?>
 			@foreach ($PersonWidgetComposer['widget_data']['widgetlist']['widget'] as $value)
 				@if ($value['type']=='stat')

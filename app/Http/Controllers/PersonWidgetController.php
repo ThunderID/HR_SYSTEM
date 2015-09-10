@@ -240,7 +240,7 @@ class PersonWidgetController extends BaseController
 		
 		DB::beginTransaction();
 
-		$content 								= $this->dispatch(new Saving(new PersonWidget, $attributes, $id));
+		$content 								= $this->dispatch(new Saving(new PersonWidget, $attributes, $id, new Person, Session::get('loggedUser')));
 
 		$is_success 							= json_decode($content);
 
