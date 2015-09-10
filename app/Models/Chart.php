@@ -214,6 +214,11 @@ class Chart extends BaseModel {
 
 	public function scopeChild($query, $variable)
 	{
+		if(is_array($variable))
+		{
+			return $query->where(function($q)use($variable){$q->where('path', 'like', $variable[0].'%')->orwhere('charts.id', $variable[1]);});
+		}
+
 		return $query->where('path', 'like', $variable.'%');
 	}
 
