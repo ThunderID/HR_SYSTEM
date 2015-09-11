@@ -78,28 +78,28 @@ class PersonWidgetController extends BaseController
 			/*====DASHBOARD ORGANISATION TYPE STATIC====*/
 			if ($attributes['type'] == 'stat')
 			{
-
+				/*====CHECK HAVE DASHBOARD IN ORGANISATION OR PERSON====*/
 				if ($attributes['dashboard'] == 'organisation')
 				{
-					$result									= $this->dispatch(new Getting(new PersonWidget, ['type' => 'stat', 'dashboard' => 'organisation', ''], [] ,1, 100));
+					$result									= $this->dispatch(new Getting(new PersonWidget, ['type' => 'stat', 'dashboard' => 'organisation'], [] ,1, 100));
 				}
 				else
 				{
 					$result									= $this->dispatch(new Getting(new PersonWidget, ['type' => 'stat', 'dashboard' => 'person'], [] ,1, 100));
+
 				}
 
-				$content 								= json_decode($result);
+				$content 									= json_decode($result);
 
 				if (!$content->meta->success)
 				{
 					App::abort(404);
 				}
 
-				$data 									= json_decode(json_encode($content->data), true);
+				$data 										= json_decode(json_encode($content->data), true);
 
 				if (count($data)<=4) 
 				{
-
 					/*====QUERY PERSON STATUS STATIC====*/
 					if (Input::get('widget_query') == 'state') 
 					{
@@ -180,7 +180,7 @@ class PersonWidgetController extends BaseController
 																	[
 																		'title' 			=> Input::get('widget_option_title'),
 																		'organisation_id'	=> $org_id,
-																		'search'			=> [Input::get('widget_data') => ['organisationid' => $org_id], 'on' => [Input::get('periode')]],
+																		'search'			=> [Input::get('widget_data') => ['organisationid' => $org_id, 'on' => [Input::get('periode'), Input::get('periode')]]],
 																		'sort'				=> [],
 																		'page'				=> 1,
 																		'per_page'			=> 100,
@@ -283,40 +283,95 @@ class PersonWidgetController extends BaseController
 				}
 			}
 		}
-		/* Widget dashboard person */
+		/*====WIDGET DASHBOARD PERSON====*/
 		else
 		{
+			/*====QUERY PERSON STATUS====*/
 			if ($attributes['type'] == 'stat')
 			{
-				$query 	= ['widget_template' 	=> 'plain', 
-							'widget_title' 		=> Input::get('title'),
-							'widget_options'	=> [	'widgetlist'	=> 
-														[
-															'title' 				=> Input::get('widget_option_title'),
-															'organisation_id'		=> Input::get('org_id'),
-															'search'				=> [Input::get('widget_data') => Input::get('periode'), 'personid' => Session::get('loggedUser')],
-															'sort'					=> [],
-															'page'					=> 1,
-															'per_page'				=> 1
+				if (Input::get('widget_query') == 'leftquota')
+				{
+					$query 	= ['widget_template'	=> 'plain',
+								'widget_title'		=> Input::get('title'),
+								'widget_options'	=> [	'widgetlist'	=> 
+															[
+																'title'					=> Input::get('widget_option_title'),
+																'organisation_id'		=> $org_id,
+																'search'				=> ['id' => Session::get('loggedUser'), Input::get('widget_data') => ['organisationid' => $org_id, 'on' => Input::get('periode')]],
+																'sort'					=> ['persons.name' => 'asc'],
+																'page'					=> 1,
+																'per_page'				=> 1
+															]
 														]
-													] 
-						];
+							];
+				}
+				else if (Input::get('widget_query') == 'lossrate')
+				{
+					$query 	= ['widget_template' 	=> 'plain', 
+								'widget_title' 		=> Input::get('title'),
+								'widget_options'	=> [	'widgetlist'	=> 
+															[
+																'title' 				=> Input::get('widget_option_title'),
+																'organisation_id'		=> $org_id,
+																'search'				=> ['id' => Session::get('loggedUser'), Input::get('widget_data') => ['organisationid' => $org_id, 'on' => [Input::get('periode'), Input::get('periode')]]],
+																'sort'					=> [],
+																'page'					=> 1,
+																'per_page'				=> 100
+															]
+														] 
+							];
+				}
+				else
+				{
+					$query 	= ['widget_template' 	=> 'plain', 
+								'widget_title' 		=> Input::get('title'),
+								'widget_options'	=> [	'widgetlist'	=> 
+															[
+																'title' 				=> Input::get('widget_option_title'),
+																'organisation_id'		=> Input::get('org_id'),
+																'search'				=> [Input::get('widget_data') => Input::get('periode'), 'personid' => Session::get('loggedUser')],
+																'sort'					=> [],
+																'page'					=> 1,
+																'per_page'				=> 1
+															]
+														] 
+							];
+				}
 			}
 			else 
 			{
-				$query 	= ['widget_template' 	=> 'panel', 
-							'widget_title' 		=> Input::get('title'),
-							'widget_options'	=> [	'widgetlist'	=> 
-														[
-															'title' 				=> Input::get('widget_option_title'),
-															'organisation_id'		=> Input::get('org_id'),
-															'search'				=> [Input::get('widget_data') => Input::get('periode'), 'personid' => Session::get('loggedUser')],
-															'sort'					=> [],
-															'page'					=> 1,
-															'per_page'				=> 15
-														]
-													] 
-						];
+				if (Input::get('widget_query') == 'work')
+				{
+					$query 	= ['widget_template' 	=> 'panel', 
+								'widget_title' 		=> Input::get('title'),
+								'widget_options'	=> [	'widgetlist'	=> 
+															[
+																'title' 				=> Input::get('widget_option_title'),
+																'organisation_id'		=> $org_id,
+																'search'				=> ['personid' => Session::get('loggedUser'), 'withattributes' => ['chart', 'chart.branch', 'chart.branch.organisation']],
+																'sort'					=> ['end' => 'asc'],
+																'page'					=> 1,
+																'per_page'				=> 10
+															]
+														] 
+							];
+				}
+				else 
+				{
+					$query 	= ['widget_template' 	=> 'panel', 
+								'widget_title' 		=> Input::get('title'),
+								'widget_options'	=> [	'widgetlist'	=> 
+															[
+																'title' 				=> Input::get('widget_option_title'),
+																'organisation_id'		=> Input::get('org_id'),
+																'search'				=> [Input::get('widget_data') => Input::get('periode'), 'personid' => Session::get('loggedUser')],
+																'sort'					=> [],
+																'page'					=> 1,
+																'per_page'				=> 15
+															]
+														] 
+							];
+				}
 			}
 		}
 

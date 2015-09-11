@@ -81,7 +81,7 @@
 										<option value="totalondate" data-type="stat" data-widget-option-title="Total Karyawan Sedang Cuti" data-template="widgets.common.personwidget.stat.stat_workleave" data-query="workleave">
 											Total Karyawan Yang Sedang Cuti
 										</option>
-										<option value="globalattendance" data-type="stat" data-widget-option-title="Total Dokumen" data-template="widgets.common.personwidget.stat.stat_loss_rate" data-query="lossrate">
+										<option value="globalattendance" data-type="stat" data-widget-option-title="Total Dokumen" data-template="widgets.common.personwidget.stat.stat_lossrate" data-query="lossrate">
 											Total Loss Rate
 										</option>
 									</select>
@@ -89,14 +89,23 @@
 
 								{{-- Person Widget --}}
 								<select name="data_widget_person" id="" class="form-control select_widget_person @if (Session::get('user.menuid')<=3) hide @endif">
+									<option value="" data-type="table" data-widget-option-title="Daftar Pekerjaan" data-template="widgets.common.personwidget.table.table_work" data-query="work">
+										Daftar Pekerjaan
+									</option>
+									<option value="globalworkleave" data-type="stat" data-widget-option-title="Sisa Cuti" data-template="widgets.common.personwidget.stat.stat_leftquota" data-query="leftquota">
+										Sisa Cuti
+									</option>
 									<option value="processlogondate" data-type="table" data-widget-option-title="Daftar SP" data-template="widgets.common.personwidget.table.table_sp" data-query="sp">
 										SP
+									</option>
+									<option value="totalprocesslogondate" data-type="stat" data-widget-option-title="Total Aktif" data-template="widgets.common.personwidget.stat.stat_active" data-query="active">
+										Total Aktif
 									</option>
 									<option value="totalprocesslogondate" data-type="stat" data-widget-option-title="Total Idle" data-template="widgets.common.personwidget.stat.stat_idle" data-query="idle">
 										Total Idle
 									</option>
-									<option value="totalprocesslogondate" data-type="stat" data-widget-option-title="Total Aktif" data-template="widgets.common.personwidget.stat.stat_active" data-query="active">
-										Total Aktif
+									<option value="globalattendance" data-type="stat" data-widget-option-title="Total Loss Rate" data-template="widgets.common.personwidget.stat.stat_lossrate" data-query="lossrate">
+										Total Loss Rate
 									</option>
 								</select>
 							</div>

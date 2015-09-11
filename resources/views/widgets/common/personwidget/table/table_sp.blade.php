@@ -30,11 +30,6 @@
 					@endforelse
 				</tbody>
 			</table>
-			<div class="row">
-				<div class="col-sm-12 text-right">
-					<a href="javascript:;" class="btn btn-primary">Lihat Semua</a>
-				</div>
-			</div>
 		@endif
 	@overwrite	
 @else

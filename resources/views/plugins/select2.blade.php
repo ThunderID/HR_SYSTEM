@@ -124,6 +124,12 @@
 			else {
 				$('select.select_widget_org').addClass('hide');	
 				$('select.select_widget_person').removeClass('hide').val('');
+
+				$('.type_widget').val('table');
+				$('.widget_option_title').val('Daftar Pekerjaan');
+				$('.widget_template').val('widgets.common.personwidget.table.table_work');
+				$('.widget_data').val('');
+				$('.widget_query').val('work');
 			}
 		});
 	});	

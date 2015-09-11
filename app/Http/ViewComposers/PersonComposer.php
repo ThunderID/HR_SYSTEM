@@ -27,6 +27,7 @@ class PersonComposer extends WidgetComposer
 		$results 									= $this->dispatch(new Getting(new Person, $options['search'], $options['sort'] , (int)$options['page'], (int)$options['per_page'], isset($options['new']) ? $options['new'] : false));
 		
 		$contents 									= json_decode($results);
+
 		if(!$contents->meta->success)
 		{
 			foreach ($contents->meta->errors as $key => $value) 

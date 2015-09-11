@@ -2,7 +2,7 @@
 
 @if (!$widget_error_count)
 	@section('widget_title')
-		<h1> {!! $widget_title  or 'Data Karyawan' !!} </h1>
+		<h4> {!! $widget_title  or 'Data Karyawan' !!} </h4>
 		<small>Total data {{$PersonComposer['widget_data']['widgetlist']['person-pagination']->total()}}</small>
 		@if(isset($PersonComposer['widget_data']['widgetlist']['active_filter']) && !is_null($PersonComposer['widget_data']['widgetlist']['active_filter']))
 			<div class="clearfix">&nbsp;</div>
@@ -94,14 +94,6 @@
 					@endforelse
 				</tbody>
 			</table>
-
-			<div class="row">
-				<div class="col-sm-12 text-center">
-					<p>Menampilkan {!!$PersonComposer['widget_data']['widgetlist']['person-display']['from']!!} - {!!$PersonComposer['widget_data']['widgetlist']['person-display']['to']!!}</p>
-					{!!$PersonComposer['widget_data']['widgetlist']['person-pagination']->appends(Input::all())->render()!!}
-				</div>
-			</div>
-			<div class="clearfix">&nbsp;</div>
 		@endif
 	@overwrite
 @else

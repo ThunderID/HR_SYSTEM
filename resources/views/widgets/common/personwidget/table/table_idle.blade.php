@@ -33,11 +33,6 @@
 					@endforelse
 				</tbody>
 			</table>
-			<div class="row">
-				<div class="col-sm-12 text-right">
-					<a href="javascript:;">Lihat detail</a>
-				</div>
-			</div>
 		@endif
 	@overwrite	
 @else
