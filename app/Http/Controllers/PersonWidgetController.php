@@ -98,7 +98,7 @@ class PersonWidgetController extends BaseController
 
 				$data 										= json_decode(json_encode($content->data), true);
 
-				if (count($data)<=4) 
+				if (count($data)<=3) 
 				{
 					/*====QUERY PERSON STATUS STATIC====*/
 					if (Input::get('widget_query') == 'state') 
