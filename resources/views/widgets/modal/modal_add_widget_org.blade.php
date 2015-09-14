@@ -45,43 +45,67 @@
 								{{-- Organisation Widget --}}
 								@if (Session::get('user.menuid')<=3)
 									<select name="data_widget_org" id="select2-dashboard-widget" class="form-control select_widget_org">
-										<option value="processlogondate" data-composer="ProcessLogComposer" data-type="table" data-widget-option-title="Table SP Print" data-template="widgets.common.personwidget.table.table_sp" data-query="sp">
+										<option value="processlogondate" data-type="table" data-widget-option-title="Table SP Print" data-template="widgets.common.personwidget.table.table_sp" data-query="sp">
 											SP Print list
 										</option>
-										<option value="processlogondate" data-composer="IdleLogComposer" data-type="table" data-widget-option-title="Table Idle Terbanyak" data-template="widgets.common.personwidget.table.table_idle" data-query="idle">
+										<option value="processlogondate" data-type="table" data-widget-option-title="Table Idle Terbanyak" data-template="widgets.common.personwidget.table.table_idle" data-query="idle">
 											Idle Terbanyak
 										</option>
-										<option value="totalprocesslogondate" data-composer="IdleLogComposer" data-type="stat" data-widget-option-title="Total Idle Terbanyak" data-template="widgets.common.personwidget.stat.stat_idle" data-query="idle">
-											Total Idle
+										<option value="fullschedule" data-type="table" data-widget-option-title="Table Karyawan" data-template="widgets.common.personwidget.table.table_person" data-query="person">
+											Daftar Karyawan
 										</option>
-										<option value="totalprocesslogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="as" data-widget-option-title="Total Karyawan Status AS Terbanyak" data-template="widgets.common.personwidget.stat.stat_status" data-query="state">
-											Total Karyawan Status AS Terbanyak
-										</option>
-										<option value="totalprocesslogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="hb" data-widget-option-title="Total Karyawan Status HB Terbanyak" data-template="widgets.common.personwidget.stat.stat_status" data-query="state">
-											Total Karyawan Status HB Terbanyak
-										</option>
-										<option value="totalprocesslogondate" data-composer="AttendanceLogComposer" data-type="stat" data-status="hc" data-widget-option-title="Total Karayawan Status HC Terbanyak" data-template="widgets.common.personwidget.stat.stat_status" data-query="state">
-											Total Karyawan Status HC Terbanyak
-										</option>
-										<option value="ondate" data-composer="PersonWorkleaveComposer" data-type="table" data-widget-option-title="Table Karyawan Sedang Cuti" data-template="widgets.common.personwidget.table.table_workleave" data-query="workleave">
+										<option value="ondate" data-type="table" data-widget-option-title="Table Karyawan Sedang Cuti" data-template="widgets.common.personwidget.table.table_workleave" data-query="workleave">
 											Karyawan Yang Sedang Cuti
 										</option>
-										<option value="totalondate" data-composer="PersonWorkleaveComposer" data-type="stat" data-widget-option-title="Total Karyawan Sedang Cuti" data-template="widgets.common.personwidget.stat.stat_workleave" data-query="workleave">
+										<option value="" data-type="stat" data-widget-option-title="Total Cabang" data-template="widgets.common.personwidget.stat.stat_branch" data-query="branch">
+											Total Cabang
+										</option>
+										<option value="" data-type="stat" data-widget-option-title="Total Dokumen" data-template="widgets.common.personwidget.stat.stat_document" data-query="document">
+											Total Dokumen
+										</option>
+										<option value="totalprocesslogondate" data-type="stat" data-widget-option-title="Total Idle Terbanyak" data-template="widgets.common.personwidget.stat.stat_idle" data-query="idle">
+											Total Idle
+										</option>
+										<option value="chartnotadmin" data-type="stat" data-widget-option-title="Total Karyawan" data-template="widgets.common.personwidget.stat.stat_person" data-query="person">
+											Total Karyawan
+										</option>
+										<option value="totalprocesslogondate" data-type="stat" data-status="as" data-widget-option-title="Total Karyawan Status AS Terbanyak" data-template="widgets.common.personwidget.stat.stat_status" data-query="state">
+											Total Karyawan Status AS Terbanyak
+										</option>
+										<option value="totalprocesslogondate" data-type="stat" data-status="hb" data-widget-option-title="Total Karyawan Status HB Terbanyak" data-template="widgets.common.personwidget.stat.stat_status" data-query="state">
+											Total Karyawan Status HB Terbanyak
+										</option>
+										<option value="totalprocesslogondate" data-type="stat" data-status="hc" data-widget-option-title="Total Karayawan Status HC Terbanyak" data-template="widgets.common.personwidget.stat.stat_status" data-query="state">
+											Total Karyawan Status HC Terbanyak
+										</option>
+										<option value="totalondate" data-type="stat" data-widget-option-title="Total Karyawan Sedang Cuti" data-template="widgets.common.personwidget.stat.stat_workleave" data-query="workleave">
 											Total Karyawan Yang Sedang Cuti
+										</option>
+										<option value="globalattendance" data-type="stat" data-widget-option-title="Total Dokumen" data-template="widgets.common.personwidget.stat.stat_lossrate" data-query="lossrate">
+											Total Loss Rate
 										</option>
 									</select>
 								@endif
 
 								{{-- Person Widget --}}
 								<select name="data_widget_person" id="" class="form-control select_widget_person @if (Session::get('user.menuid')<=3) hide @endif">
+									<option value="" data-type="table" data-widget-option-title="Daftar Pekerjaan" data-template="widgets.common.personwidget.table.table_work" data-query="work">
+										Daftar Pekerjaan
+									</option>
+									<option value="globalworkleave" data-type="stat" data-widget-option-title="Sisa Cuti" data-template="widgets.common.personwidget.stat.stat_leftquota" data-query="leftquota">
+										Sisa Cuti
+									</option>
 									<option value="processlogondate" data-type="table" data-widget-option-title="Daftar SP" data-template="widgets.common.personwidget.table.table_sp" data-query="sp">
 										SP
+									</option>
+									<option value="totalprocesslogondate" data-type="stat" data-widget-option-title="Total Aktif" data-template="widgets.common.personwidget.stat.stat_active" data-query="active">
+										Total Aktif
 									</option>
 									<option value="totalprocesslogondate" data-type="stat" data-widget-option-title="Total Idle" data-template="widgets.common.personwidget.stat.stat_idle" data-query="idle">
 										Total Idle
 									</option>
-									<option value="totalprocesslogondate" data-type="stat" data-widget-option-title="Total Aktif" data-template="widgets.common.personwidget.stat.stat_active" data-query="active">
-										Total Aktif
+									<option value="globalattendance" data-type="stat" data-widget-option-title="Total Loss Rate" data-template="widgets.common.personwidget.stat.stat_lossrate" data-query="lossrate">
+										Total Loss Rate
 									</option>
 								</select>
 							</div>
@@ -155,7 +179,7 @@
 				{!! Form::hidden('org_id', '', ['class' => 'hid_org_id']) !!}
 				{!! Form::hidden('type', 'table', ['class' => 'type_widget']) !!}
 				{!! Form::hidden('status', '', ['class' => 'processlog_status']) !!}
-				{!! Form::hidden('widget_option_title', 'Table SP Print', ['class' => 'widget_option_title']) !!}
+				{!! Form::hidden('widget_option_title', 'Table SP', ['class' => 'widget_option_title']) !!}
 				{!! Form::hidden('widget_template', 'widgets.common.personwidget.table.table_sp', ['class' => 'widget_template']) !!}
 				{!! Form::hidden('widget_data', 'processlogondate', ['class' => 'widget_data']) !!}
 				{!! Form::hidden('widget_query', 'sp', ['class' => 'widget_query']) !!}

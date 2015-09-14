@@ -57,7 +57,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// BRANCH
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.branch.table', 'widgets.organisation.branch.form', 'widgets.organisation.branch.stat.total_branch'], 	'App\Http\ViewComposers\BranchComposer');
+		View::composer(['widgets.organisation.branch.table', 'widgets.organisation.branch.form', 'widgets.organisation.branch.stat.total_branch', 'widgets.common.personwidget.stat.stat_branch'], 	'App\Http\ViewComposers\BranchComposer');
 
 		// -----------------------------------------------------------------------------
 		// CALENDAR
@@ -67,7 +67,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// DOCUMENT
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.document.table', 'widgets.organisation.document.form', 'widgets.organisation.document.select', 'widgets.common.persondocument.form', 'widgets.common.persondocument.form_no_title', 'widgets.common.persondocument.form_multiple', 'widgets.organisation.document.stat.total_document'], 	'App\Http\ViewComposers\DocumentComposer');
+		View::composer(['widgets.organisation.document.table', 'widgets.organisation.document.form', 'widgets.organisation.document.select', 'widgets.common.persondocument.form', 'widgets.common.persondocument.form_no_title', 'widgets.common.persondocument.form_multiple', 'widgets.organisation.document.stat.total_document', 'widgets.common.personwidget.stat.stat_document'], 	'App\Http\ViewComposers\DocumentComposer');
 
 		// -----------------------------------------------------------------------------
 		// Policy
@@ -82,7 +82,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// PERSON
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.person.table', 'widgets.organisation.person.form', 'widgets.organisation.person.form_multiple', 'widgets.organisation.person.form_no_title', 'widgets.organisation.person.select', 'widgets.organisation.report.attendance.table', 'widgets.organisation.report.wage.table', 'widgets.organisation.person.stat.total_employee', 'widgets.organisation.person.stat.average_loss_rate', 'widgets.organisation.report.attendance.global.table', 'widgets.organisation.report.attendance.person.table', 'widgets.organisation.report.activity.person.log.table', 'widgets.organisation.report.attendance.table_csv', 'widgets.organisation.report.attendance.person.table_csv', 'widgets.organisation.report.attendance.person.log.table_csv', 'widgets.organisation.report.wage.table_csv', 'widgets.organisation.person.workleave.left_quota', 'widgets.organisation.person.upload_csv', 'widgets.organisation.report.activity.table', 'widgets.organisation.report.activity.person.table', 'widgets.organisation.person.stat.total_idle'], 	'App\Http\ViewComposers\PersonComposer');
+		View::composer(['widgets.organisation.person.table', 'widgets.organisation.person.form', 'widgets.organisation.person.form_multiple', 'widgets.organisation.person.form_no_title', 'widgets.organisation.person.select', 'widgets.organisation.report.attendance.table', 'widgets.organisation.report.wage.table', 'widgets.organisation.person.stat.total_employee', 'widgets.organisation.person.stat.average_loss_rate', 'widgets.organisation.report.attendance.global.table', 'widgets.organisation.report.attendance.person.table', 'widgets.organisation.report.activity.person.log.table', 'widgets.organisation.report.attendance.table_csv', 'widgets.organisation.report.attendance.person.table_csv', 'widgets.organisation.report.attendance.person.log.table_csv', 'widgets.organisation.report.wage.table_csv', 'widgets.organisation.person.workleave.left_quota', 'widgets.organisation.person.upload_csv', 'widgets.organisation.report.activity.table', 'widgets.organisation.report.activity.person.table', 'widgets.organisation.person.stat.total_idle', 'widgets.common.personwidget.stat.stat_person', 'widgets.common.personwidget.stat.stat_lossrate', 'widgets.common.personwidget.table.table_person', 'widgets.common.personwidget.stat.stat_leftquota'], 	'App\Http\ViewComposers\PersonComposer');
 
 		// -----------------------------------------------------------------------------
 		// CONTACT
@@ -127,7 +127,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// WORK
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.person.work.table', 'widgets.organisation.person.work.form', 'widgets.organisation.person.work.experience.form', 'widgets.organisation.person.work.select'], 	'App\Http\ViewComposers\WorkComposer');
+		View::composer(['widgets.organisation.person.work.table', 'widgets.organisation.person.work.form', 'widgets.organisation.person.work.experience.form', 'widgets.organisation.person.work.select', 'widgets.common.personwidget.table.table_work'], 	'App\Http\ViewComposers\WorkComposer');
 
 		// -----------------------------------------------------------------------------
 		// PERSON WORKLEAVE

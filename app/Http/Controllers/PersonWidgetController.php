@@ -63,6 +63,7 @@ class PersonWidgetController extends BaseController
 			$org_id	 							= Session::get('user.organisationid');
 		}
 
+		$attributes['organisation_id']			= $org_id;
 		$attributes['type']						= Input::get('type');
 		$attributes['dashboard']				= Input::get('dashboard');
 		$attributes['is_active']				= Input::get('is_active');
@@ -71,24 +72,35 @@ class PersonWidgetController extends BaseController
 		$attributes['row']						= 1;
 		$attributes['col']						= 1;
 
+		/*=====WIDGET DASHBOARD ORGANISATION=====*/
 		if ($attributes['dashboard'] == 'organisation')
 		{
+			/*====DASHBOARD ORGANISATION TYPE STATIC====*/
 			if ($attributes['type'] == 'stat')
 			{
+				/*====CHECK HAVE DASHBOARD IN ORGANISATION OR PERSON====*/
+				if ($attributes['dashboard'] == 'organisation')
+				{
+					$result									= $this->dispatch(new Getting(new PersonWidget, ['type' => 'stat', 'dashboard' => 'organisation'], [] ,1, 100));
+				}
+				else
+				{
+					$result									= $this->dispatch(new Getting(new PersonWidget, ['type' => 'stat', 'dashboard' => 'person'], [] ,1, 100));
 
-				$result									= $this->dispatch(new Getting(new PersonWidget, ['type' => 'stat'], [] ,1, 100));
-				$content 								= json_decode($result);
+				}
+
+				$content 									= json_decode($result);
 
 				if (!$content->meta->success)
 				{
 					App::abort(404);
 				}
 
-				$data 									= json_decode(json_encode($content->data), true);
-				
+				$data 										= json_decode(json_encode($content->data), true);
+
 				if (count($data)<=3) 
 				{
-
+					/*====QUERY PERSON STATUS STATIC====*/
 					if (Input::get('widget_query') == 'state') 
 					{
 						$query 	= ['widget_template' 	=> 'plain', 
@@ -105,6 +117,7 @@ class PersonWidgetController extends BaseController
 															] 
 								];
 					}
+					/*====QUERY PERSON WORKLEAVE STATIC====*/
 					else if (Input::get('widget_query') == 'workleave') 
 					{
 						$query 	= ['widget_template' 	=> 'plain', 
@@ -121,6 +134,61 @@ class PersonWidgetController extends BaseController
 															] 
 								];
 					}
+					/*====QUERY BRANCH & DOCUMENT STATIC====*/
+					else if ((Input::get('widget_query') == 'branch')||(Input::get('widget_query') == 'document'))
+					{
+						$query 	= ['widget_template'		=> 'plain',
+									'widget_title'			=> Input::get('title'),
+									'widget_options'		=> 	[
+																	'widgetlist'		=>
+																	[
+																		'title' 			=> Input::get('widget_option_title'),
+																		'organisation_id'	=> $org_id,
+																		'search'			=> [],
+																		'sort'				=> [],
+																		'page'				=> 1,
+																		'per_page'			=> 100,
+																	]
+																]
+									];
+					}
+					/*====QUERY PERSON STATIC====*/
+					else if (Input::get('widget_query') == 'person')
+					{
+						$query 	= ['widget_template'		=> 'plain',
+									'widget_title'			=> Input::get('title'),
+									'widget_options'		=> 	[
+																	'widgetlist'		=>
+																	[
+																		'title' 			=> Input::get('widget_option_title'),
+																		'organisation_id'	=> $org_id,
+																		'search'			=> [Input::get('widget_data') => true],
+																		'sort'				=> [],
+																		'page'				=> 1,
+																		'per_page'			=> 100,
+																	]
+																]
+									];
+					}
+					/*====QUERY TIME LOSS RATE STATIC====*/
+					else if(Input::get('widget_query') == 'lossrate')
+					{
+						$query 	= ['widget_template'		=> 'plain',
+									'widget_title'			=> Input::get('title'),
+									'widget_options'		=> 	[
+																	'widgetlist'		=>
+																	[
+																		'title' 			=> Input::get('widget_option_title'),
+																		'organisation_id'	=> $org_id,
+																		'search'			=> [Input::get('widget_data') => ['organisationid' => $org_id, 'on' => [Input::get('periode'), Input::get('periode')]]],
+																		'sort'				=> [],
+																		'page'				=> 1,
+																		'per_page'			=> 100,
+																	]
+																]
+									];
+					}
+					/*====QUERY IDLE STATIC====*/
 					else
 					{
 						$query 	= ['widget_template' 	=> 'plain', 
@@ -143,9 +211,10 @@ class PersonWidgetController extends BaseController
 					return Redirect::back()->withErrors(['Maaf untuk widget type stat, tidak bisa lebih dari 4 widget']);
 				}
 			}
-
+			/*====DASHBOARD ORGANISATION TYPE TABLE====*/
 			else 
 			{
+				/*====QUERY PERSON SP TABLE====*/
 				if (Input::get('widget_query') == 'sp') 
 				{
 					$query	= [	'widget_template' 	=> 'panel', 
@@ -162,6 +231,7 @@ class PersonWidgetController extends BaseController
 														] 
 							];
 				}
+				/*====QUERY PERSON WORKLEAVE TABLE====*/
 				else if (Input::get('widget_query') == 'workleave') 
 				{
 					$query 	= ['widget_template' 	=> 'panel', 
@@ -174,6 +244,23 @@ class PersonWidgetController extends BaseController
 																'sort'					=> [],
 																'page'					=> 1,
 																'per_page'				=> 15
+															]
+														] 
+							];
+				}
+				/*====QUERY PERSON TABLE====*/
+				else if (Input::get('widget_query') == 'person')
+				{
+					$query 	= ['widget_template' 	=> 'panel', 
+								'widget_title' 		=> Input::get('title'),
+								'widget_options'	=> [	'widgetlist'	=> 
+															[
+																'title' 				=> Input::get('widget_option_title'),
+																'organisation_id'		=> $org_id,
+																'search'				=> [Input::get('widget_data') => Input::get('periode'), 'withattributes' => ['works.branch']],
+																'sort'					=> [],
+																'page'					=> 1,
+																'per_page'				=> 10
 															]
 														] 
 							];
@@ -196,39 +283,95 @@ class PersonWidgetController extends BaseController
 				}
 			}
 		}
+		/*====WIDGET DASHBOARD PERSON====*/
 		else
 		{
+			/*====QUERY PERSON STATUS====*/
 			if ($attributes['type'] == 'stat')
 			{
-				$query 	= ['widget_template' 	=> 'plain', 
-							'widget_title' 		=> Input::get('title'),
-							'widget_options'	=> [	'widgetlist'	=> 
-														[
-															'title' 				=> Input::get('widget_option_title'),
-															'organisation_id'		=> Input::get('org_id'),
-															'search'				=> [Input::get('widget_data') => Input::get('periode'), 'personid' => Session::get('loggedUser')],
-															'sort'					=> [],
-															'page'					=> 1,
-															'per_page'				=> 1
+				if (Input::get('widget_query') == 'leftquota')
+				{
+					$query 	= ['widget_template'	=> 'plain',
+								'widget_title'		=> Input::get('title'),
+								'widget_options'	=> [	'widgetlist'	=> 
+															[
+																'title'					=> Input::get('widget_option_title'),
+																'organisation_id'		=> $org_id,
+																'search'				=> ['id' => Session::get('loggedUser'), Input::get('widget_data') => ['organisationid' => $org_id, 'on' => Input::get('periode')]],
+																'sort'					=> ['persons.name' => 'asc'],
+																'page'					=> 1,
+																'per_page'				=> 1
+															]
 														]
-													] 
-						];
+							];
+				}
+				else if (Input::get('widget_query') == 'lossrate')
+				{
+					$query 	= ['widget_template' 	=> 'plain', 
+								'widget_title' 		=> Input::get('title'),
+								'widget_options'	=> [	'widgetlist'	=> 
+															[
+																'title' 				=> Input::get('widget_option_title'),
+																'organisation_id'		=> $org_id,
+																'search'				=> ['id' => Session::get('loggedUser'), Input::get('widget_data') => ['organisationid' => $org_id, 'on' => [Input::get('periode'), Input::get('periode')]]],
+																'sort'					=> [],
+																'page'					=> 1,
+																'per_page'				=> 100
+															]
+														] 
+							];
+				}
+				else
+				{
+					$query 	= ['widget_template' 	=> 'plain', 
+								'widget_title' 		=> Input::get('title'),
+								'widget_options'	=> [	'widgetlist'	=> 
+															[
+																'title' 				=> Input::get('widget_option_title'),
+																'organisation_id'		=> Input::get('org_id'),
+																'search'				=> [Input::get('widget_data') => Input::get('periode'), 'personid' => Session::get('loggedUser')],
+																'sort'					=> [],
+																'page'					=> 1,
+																'per_page'				=> 1
+															]
+														] 
+							];
+				}
 			}
 			else 
 			{
-				$query 	= ['widget_template' 	=> 'panel', 
-							'widget_title' 		=> Input::get('title'),
-							'widget_options'	=> [	'widgetlist'	=> 
-														[
-															'title' 				=> Input::get('widget_option_title'),
-															'organisation_id'		=> Input::get('org_id'),
-															'search'				=> [Input::get('widget_data') => Input::get('periode'), 'personid' => Session::get('loggedUser')],
-															'sort'					=> [],
-															'page'					=> 1,
-															'per_page'				=> 15
-														]
-													] 
-						];
+				if (Input::get('widget_query') == 'work')
+				{
+					$query 	= ['widget_template' 	=> 'panel', 
+								'widget_title' 		=> Input::get('title'),
+								'widget_options'	=> [	'widgetlist'	=> 
+															[
+																'title' 				=> Input::get('widget_option_title'),
+																'organisation_id'		=> $org_id,
+																'search'				=> ['personid' => Session::get('loggedUser'), 'withattributes' => ['chart', 'chart.branch', 'chart.branch.organisation']],
+																'sort'					=> ['end' => 'asc'],
+																'page'					=> 1,
+																'per_page'				=> 10
+															]
+														] 
+							];
+				}
+				else 
+				{
+					$query 	= ['widget_template' 	=> 'panel', 
+								'widget_title' 		=> Input::get('title'),
+								'widget_options'	=> [	'widgetlist'	=> 
+															[
+																'title' 				=> Input::get('widget_option_title'),
+																'organisation_id'		=> Input::get('org_id'),
+																'search'				=> [Input::get('widget_data') => Input::get('periode'), 'personid' => Session::get('loggedUser')],
+																'sort'					=> [],
+																'page'					=> 1,
+																'per_page'				=> 15
+															]
+														] 
+							];
+				}
 			}
 		}
 
@@ -325,7 +468,14 @@ class PersonWidgetController extends BaseController
 				$contents					= json_decode(json_encode($contents->data), true);
 				$data 						= json_decode($contents['query']);
 
-				return Redirect::route('hr.organisation.show')->with('alert_success', 'Widget sudah dihapus');
+				if ($contents['dashboard']=='organisation')
+				{
+					return Redirect::route('hr.organisations.show', [$contents['organisation_id'], 'org_id' => $contents['organisation_id']])->with('alert_success', 'Widget sudah dihapus');	
+				}
+				else
+				{
+					return Redirect::route('hr.persons.show', [$contents['person_id'], 'org_id' => $contents['organisation_id']])->with('alert_success', 'Widget sudah dihapus');
+				}
 			}
 		}
 		else

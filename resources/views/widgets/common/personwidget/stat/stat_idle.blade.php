@@ -5,13 +5,15 @@
 		@if(!is_null($IdleLogComposer['widget_data']['widgetlist']['idlelog']))
 			<div class="alert alert-callout alert-warning no-margin">
 				<strong class="pull-right text-warning text-lg"><i class="fa fa-clock-o fa-2x"></i></strong>
-				<strong class="text-xl">{{ $IdleLogComposer['widget_data']['widgetlist']['idlelog']['total_idle'] }}</strong><br>
+				<h4>
+					{{ $IdleLogComposer['widget_data']['widgetlist']['idlelog']['total_idle'] }} <small>Detik</small>
+				</h4>
 				<span class="opacity-50">{{ $IdleLogComposer['widget_data']['widgetlist']['title'] }}</span>					
 			</div>
 		@else
 			<div class="alert alert-callout alert-warning no-margin">
 				<strong class="pull-right text-warning text-lg"><i class="fa fa-clock-o fa-2x"></i></strong>
-				<strong class="text-xl">0</strong><br>
+				<h4>0 <small>Detik</small></h4>
 				<span class="opacity-50">{{ $IdleLogComposer['widget_data']['widgetlist']['title'] }}</span>					
 			</div>
 		@endif

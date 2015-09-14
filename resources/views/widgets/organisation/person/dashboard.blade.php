@@ -12,11 +12,11 @@
 					<?php $x = json_decode($value['query'], 500);?>
 					<div class="col-sm-6 box-widgets">
 						<div class="action-widget hide">
-							<a href="javascript:;" data-target="#add_widget" data-toggle="modal">
+							{{-- <a href="javascript:;" data-target="#add_widget" data-toggle="modal">
 								<i class="fa fa-pencil"></i>
-							</a>
+							</a> --}}
 							<a href="javascript:;" data-toggle="modal" data-target="#del_widget" data-delete-action="{{ route('hr.person.widgets.delete', $value['id']) }}" title="hapus">
-								<i class="fa fa-times-circle"></i>
+								<i class="fa fa-trash"></i> Hapus
 							</a>
 						</div>
 						@include($value['widget'], $x)
@@ -29,14 +29,18 @@
 				<?php $tot_ws = 0; ?>
 				@foreach ($PersonWidgetComposer['widget_data']['widgetlist']['widget'] as $key => $value)
 					@if ($value['type']!='stat')
+						@if ($tot_ws%2==0)
+							</div>
+							<div class="row">
+						@endif
 						<?php $x = json_decode($value['query'], 500);?>
-						<div class="col-sm-12 box-widgets">
+						<div class="col-sm-6 box-widgets">
 							<div class="action-widget hide">
-								<a href="javascript:;" data-target="#add_widget" data-toggle="modal">
+								{{-- <a href="javascript:;" data-target="#add_widget" data-toggle="modal">
 									<i class="fa fa-pencil"></i>
-								</a>
+								</a> --}}
 								<a href="javascript:;" data-toggle="modal" data-target="#del_widget" data-delete-action="{{ route('hr.person.widgets.delete', $value['id']) }}" title="hapus">
-									<i class="fa fa-times-circle"></i>
+									<i class="fa fa-trash"></i> Hapus
 								</a>
 							</div>
 							@include($value['widget'], $x)
