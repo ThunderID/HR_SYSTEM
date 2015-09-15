@@ -84,79 +84,7 @@ class HRSUpdateCommand extends Command {
 	 **/
 	public function update10092015()
 	{	
-		//update26082015
-		$orgs 										= Organisation::get();
-		$types 										= ['asid', 'ulid', 'hcid', 'htid', 'hpid'];
-		try
-		{
-			foreach(range(0, count($orgs)-1) as $index)
-			{
-				foreach(range(0, count($types)-1) as $key2 => $index2)
-				{
-					$next1 								= 14 + ($index * 19);
-					$next2 								= 15 + ($index * 19);
-					$next3 								= 16 + ($index * 19);
-
-					$data 								= new Policy;
-					$data->fill([
-						'created_by'					=> 1,
-						'type'							=> $types[$key2],
-						'value'							=> $next1.','.$next2.','.$next3,
-						'started_at'					=> date('Y-m-d H:i:s'),
-					]);
-
-					$data->organisation()->associate(Organisation::find($orgs[$index]->id));
-
-					if (!$data->save())
-					{
-						print_r($data->getError());
-						exit;
-					}
-				}
-			}
-		}
-		catch (Exception $e) 
-		{
-    		echo 'Caught exception: ',  $e->getMessage(), "\n";
-		}	
-
 		//update27082015
-		Schema::table('works', function(Blueprint $table)
-		{
-			$table->string('grade', 255);
-		});
-
-		$this->info("Add grade on works table");
-
-		Schema::table('charts', function(Blueprint $table)
-		{
-			$table->dropColumn('grade');
-		});
-
-		$this->info("Drop grade from charts table");
-
-		Schema::create('record_logs', function(Blueprint $table)
-		{
-			$table->increments('id');
-			$table->integer('parent_id')->unsigned()->index();
-			$table->integer('person_id')->unsigned()->index();
-			$table->integer('record_log_id')->unsigned()->index();
-			$table->string('record_log_type', 255);
-			$table->string('name', 255);
-			$table->integer('level');
-			$table->enum('action', ['save', 'delete', 'restore']);
-			$table->text('notes');
-			$table->text('old_attributes');
-			$table->text('new_attributes');
-			$table->timestamps();
-			$table->softDeletes();
-			
-			$table->index(['deleted_at', 'person_id']);
-			$table->index(['deleted_at', 'record_log_type']);
-		});
-
-		$this->info("Add record logs table");
-
 		$app 							= Application::find(1);
 
 		$menus 							= 
