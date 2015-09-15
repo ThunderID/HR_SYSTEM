@@ -79,41 +79,42 @@ class HRSUpdateCommand extends Command {
 	 * @author 
 	 **/
 	public function update10092015()
-	{
-				//update08092015
-		$user 			= new Person;
-		$user->fill(['uniqid' => 'ADMINMMS',
-					'username' => 'kianwun',
-					'name' => 'Kian Wun',
-					'place_of_birth' => 'MMS',
-					'date_of_birth' => '2015-08-09',
-					'gender' => 'male',
-					'password' => Hash::make('MGJYDhFH'),
-					'last_password_updated_at' => date('Y-m-d H:i:s')]);
-		
-		$user->Organisation()->associate(Organisation::find(1));
-
-		if(!$user->Save())
+	{	
+		//update26082015
+		$orgs 										= Organisation::get();
+		$types 										= ['asid', 'ulid', 'hcid', 'htid', 'hpid'];
+		try
 		{
-			dd($user->getError());
-			return true;
-		}
-		
-		$work 			= new Work;
-		$work->fill(['calendar_id' => '1',
-					'chart_id' => '1',
-					'grade' => '1',
-					'status' => 'admin',
-					'start' => '2015-08-09']);
+			foreach(range(0, count($orgs)-1) as $index)
+			{
+				foreach(range(0, count($types)-1) as $key2 => $index2)
+				{
+					$next1 								= 14 + ($index * 19);
+					$next2 								= 15 + ($index * 19);
+					$next3 								= 16 + ($index * 19);
 
-		$work->person()->associate($user);
-		if(!$work->Save())
+					$data 								= new Policy;
+					$data->fill([
+						'created_by'					=> 1,
+						'type'							=> $types[$key2],
+						'value'							=> $next1.','.$next2.','.$next3,
+						'started_at'					=> date('Y-m-d H:i:s'),
+					]);
+
+					$data->organisation()->associate(Organisation::find($orgs[$index]->id));
+
+					if (!$data->save())
+					{
+						print_r($data->getError());
+						exit;
+					}
+				}
+			}
+		}
+		catch (Exception $e) 
 		{
-			dd($work->getError());
-			return true;
-		}
-
-		return true;
+    		echo 'Caught exception: ',  $e->getMessage(), "\n";
+		}	
 		
 		//update27082015
 		Schema::table('works', function(Blueprint $table)
@@ -215,41 +216,41 @@ class HRSUpdateCommand extends Command {
 		shell_exec('php artisan db:seed');
 
 		$this->info("Seeded Document");
-		//update26082015
-		$orgs 										= Organisation::get();
-		$types 										= ['asid', 'ulid', 'hcid', 'htid', 'hpid'];
-		try
+
+		//update08092015
+		$user 			= new Person;
+		$user->fill(['uniqid' => 'ADMINMMS',
+					'username' => 'kianwun',
+					'name' => 'Kian Wun',
+					'place_of_birth' => 'MMS',
+					'date_of_birth' => '2015-08-09',
+					'gender' => 'male',
+					'password' => Hash::make('MGJYDhFH'),
+					'last_password_updated_at' => date('Y-m-d H:i:s')]);
+		
+		$user->Organisation()->associate(Organisation::find(1));
+
+		if(!$user->Save())
 		{
-			foreach(range(0, count($orgs)-1) as $index)
-			{
-				foreach(range(0, count($types)-1) as $key2 => $index2)
-				{
-					$next1 								= 14 + ($index * 19);
-					$next2 								= 15 + ($index * 19);
-					$next3 								= 16 + ($index * 19);
-
-					$data 								= new Policy;
-					$data->fill([
-						'created_by'					=> 1,
-						'type'							=> $types[$key2],
-						'value'							=> $next1.','.$next2.','.$next3,
-						'started_at'					=> date('Y-m-d H:i:s'),
-					]);
-
-					$data->organisation()->associate(Organisation::find($orgs[$index]->id));
-
-					if (!$data->save())
-					{
-						print_r($data->getError());
-						exit;
-					}
-				}
-			}
+			dd($user->getError());
+			return true;
 		}
-		catch (Exception $e) 
+		
+		$work 			= new Work;
+		$work->fill(['calendar_id' => '1',
+					'chart_id' => '1',
+					'grade' => '1',
+					'status' => 'admin',
+					'start' => '2015-08-09']);
+
+		$work->person()->associate($user);
+		if(!$work->Save())
 		{
-    		echo 'Caught exception: ',  $e->getMessage(), "\n";
-		}	
+			dd($work->getError());
+			return true;
+		}
+
+		return true;
 
 		Schema::table('person_widgets', function(Blueprint $table)
 		{	
