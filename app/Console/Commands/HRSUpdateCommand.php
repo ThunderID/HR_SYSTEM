@@ -7,7 +7,11 @@ use Illuminate\Database\Schema\Blueprint;
 use Schema;
 use App\Models\Person;
 use App\Models\Work;
+use App\Models\Policy;
 use App\Models\Organisation;
+use App\Models\Menu;
+use App\Models\GroupMenu;
+use App\Models\Application;
 use DB, Hash;
 
 class HRSUpdateCommand extends Command {
@@ -115,7 +119,7 @@ class HRSUpdateCommand extends Command {
 		{
     		echo 'Caught exception: ',  $e->getMessage(), "\n";
 		}	
-		
+
 		//update27082015
 		Schema::table('works', function(Blueprint $table)
 		{
