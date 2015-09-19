@@ -90,6 +90,8 @@ class ProcessingLogObserver
 			$break_idle 			= 0;
 			$total_active 			= 0;
 			$count_status 			= 1;
+			$break_time 			= 0;
+			$idle_line 				= '';
 
 			$frequency_idle_1 		= 0;
 			$frequency_idle_2 		= 0;
@@ -140,8 +142,8 @@ class ProcessingLogObserver
 						$modified_status 		= 'DN';
 						$actual_status 			= 'AS';
 					}
-					$modified_by 	= $model['attributes']['created_by'];
-					$modified_at 	= $model->created_at->format('Y-m-d H:i:s');
+					$modified_by 		= $model['attributes']['created_by'];
+					$modified_at 		= $model->created_at->format('Y-m-d H:i:s');
 				}
 				else
 				{
@@ -214,6 +216,7 @@ class ProcessingLogObserver
 							$modified_by 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_by;
 							$modified_at 				= $ccalendar->workscalendars[0]->calendar->schedules[0]->created_at->format('Y-m-d H:i:s');
 							break;
+
 						case 'l': 
 							$actual_status 				= 'L';
 							break;
@@ -259,9 +262,9 @@ class ProcessingLogObserver
 					}
 					else
 					{
-						$actual_status 	= 'L';
-						$schedule_start = '00:00:00';
-						$schedule_end 	= '00:00:00';
+						$actual_status 		= 'L';
+						$schedule_start 	= '00:00:00';
+						$schedule_end 		= '00:00:00';
 					}
 				}
 			}
@@ -359,7 +362,7 @@ class ProcessingLogObserver
 			}
 			else
 			{
-				$maxend 				= max($end, $fp_end);
+				$maxend 			= max($end, $fp_end);
 			}
 
 			list($hours, $minutes, $seconds) = explode(":", $minstart);
@@ -394,62 +397,68 @@ class ProcessingLogObserver
 				{
 					if($key==0)
 					{
-						$last_input_time = date('H:i:s', strtotime('00:00:00'));
+						$last_input_time 		= date('H:i:s', strtotime('00:00:00'));
 					}
 
 					if(date('H:i:s', strtotime($value['last_input_time'])) == $last_input_time)
 					{
 						if(isset($start_idle))
 						{
-							$start_idle	= min($start_idle, date('H:i:s', strtotime($value['last_input_time'])));
+							$start_idle			= min($start_idle, date('H:i:s', strtotime($value['last_input_time'])));
 						}
 						else
 						{
-							$start_idle	= date('H:i:s', strtotime($value['last_input_time']));
+							$start_idle			= date('H:i:s', strtotime($value['last_input_time']));
 						}
 					}
 					elseif(strtolower($value['name'])=='sessionlock' || strtolower($value['name'])=='consoledisconnect' || strtolower($value['name'])=='sessionlogout')
 					{
 						if(isset($start_idle))
 						{
-							$start_idle	= min($start_idle, date('H:i:s', strtotime($value['last_input_time'])));
+							$start_idle			= min($start_idle, date('H:i:s', strtotime($value['last_input_time'])));
 						}
 						else
 						{
-							$start_idle	= date('H:i:s', strtotime($value['last_input_time']));
+							$start_idle			= date('H:i:s', strtotime($value['last_input_time']));
 						}
 					}
 					elseif(isset($start_idle))
 					{
-						$new_idle 		= date('H:i:s', strtotime($value['on']));
+						$new_idle 				= date('H:i:s', strtotime($value['on']));
 						list($hours, $minutes, $seconds) = explode(":", $new_idle);
 
-						$new_idle 		= $hours*3600+$minutes*60+$seconds;
+						$new_idle 				= $hours*3600+$minutes*60+$seconds;
 
 						list($hours, $minutes, $seconds) = explode(":", $start_idle);
-						$start_idle 	= $hours*3600+$minutes*60+$seconds;
+						$start_idle 			= $hours*3600+$minutes*60+$seconds;
 
-						$total_idle		= $total_idle + $new_idle - $start_idle;
+						$total_idle				= $total_idle + $new_idle - $start_idle;
 						if($new_idle - $start_idle >= $margin_bottom_idle && $new_idle - $start_idle <= $idle_1)
 						{
 							$total_idle_1 		= $total_idle_1 + $new_idle - $start_idle;
 							$frequency_idle_1 	= $frequency_idle_1 + 1;
+							$idlesline[]		= 'total_idle_1';
+							$idles[]			= $new_idle - $start_idle;
 						}
 						elseif($new_idle - $start_idle > $idle_1 && $new_idle - $start_idle < $idle_2)
 						{
 							$total_idle_2 		= $total_idle_2 + $new_idle - $start_idle;
 							$frequency_idle_2 	= $frequency_idle_2 + 1;
+							$idlesline[]		= 'total_idle_2';
+							$idles[]			= $new_idle - $start_idle;
 						}
 						elseif($new_idle - $start_idle >= $idle_2)
 						{
 							$total_idle_3 		= $total_idle_3 + $new_idle - $start_idle;
 							$frequency_idle_3 	= $frequency_idle_3 + 1;
+							$idlesline[]		= 'total_idle_3';
+							$idles[]			= $new_idle - $start_idle;
 						}
 
 						unset($start_idle);
 					}
 
-					$last_input_time 		= date('H:i:s', strtotime($value['last_input_time']));
+					$last_input_time 			= date('H:i:s', strtotime($value['last_input_time']));
 				}
 
 				//if second version
@@ -457,34 +466,40 @@ class ProcessingLogObserver
 				{
 					if(in_array(strtolower($value['name']), ['idle', 'sessionlock', 'sleep']) && !isset($start_idle))
 					{
-						$start_idle 	= date('H:i:s', strtotime($value['on']));
+						$start_idle 			= date('H:i:s', strtotime($value['on']));
 					}
 					elseif(!in_array(strtolower($value['name']), ['idle', 'sessionlock', 'sleep']) && isset($start_idle))
 					{
-						$new_idle 		= date('H:i:s', strtotime($value['on']));
+						$new_idle 				= date('H:i:s', strtotime($value['on']));
 						list($hours, $minutes, $seconds) = explode(":", $new_idle);
 
-						$new_idle 		= $hours*3600+$minutes*60+$seconds;
+						$new_idle 				= $hours*3600+$minutes*60+$seconds;
 
 						list($hours, $minutes, $seconds) = explode(":", $start_idle);
 
-						$start_idle 	= $hours*3600+$minutes*60+$seconds;
+						$start_idle 			= $hours*3600+$minutes*60+$seconds;
 
-						$total_idle		= $total_idle + $new_idle - $start_idle;
+						$total_idle				= $total_idle + $new_idle - $start_idle;
 						if($new_idle - $start_idle >= $margin_bottom_idle && $new_idle - $start_idle <= $idle_1)
 						{
-							$total_idle_1 	= $total_idle_1 + $new_idle - $start_idle;
-							$frequency_idle_1 = $frequency_idle_1 + 1;
+							$total_idle_1 		= $total_idle_1 + $new_idle - $start_idle;
+							$frequency_idle_1 	= $frequency_idle_1 + 1;
+							$idlesline[]		= 'total_idle_1';
+							$idles[]			= $new_idle - $start_idle;
 						}
 						elseif($new_idle - $start_idle > $idle_1 && $new_idle - $start_idle < $idle_2)
 						{
-							$total_idle_2 	= $total_idle_2 + $new_idle - $start_idle;
-							$frequency_idle_2 = $frequency_idle_2 + 1;
+							$total_idle_2 		= $total_idle_2 + $new_idle - $start_idle;
+							$frequency_idle_2 	= $frequency_idle_2 + 1;
+							$idlesline[]		= 'total_idle_2';
+							$idles[]			= $new_idle - $start_idle;
 						}
 						elseif($new_idle - $start_idle >= $idle_2)
 						{
-							$total_idle_3 	= $total_idle_3 + $new_idle - $start_idle;
-							$frequency_idle_3 = $frequency_idle_3 + 1;
+							$total_idle_3 		= $total_idle_3 + $new_idle - $start_idle;
+							$frequency_idle_3 	= $frequency_idle_3 + 1;
+							$idlesline[]		= 'total_idle_3';
+							$idles[]			= $new_idle - $start_idle;
 						}
 						
 						unset($start_idle);
@@ -496,39 +511,111 @@ class ProcessingLogObserver
 			{
 				if(isset($value['on']))
 				{
-					$new_idle 	= date('H:i:s', strtotime($value['on']));
+					$new_idle 			= date('H:i:s', strtotime($value['on']));
 				}
 				else
 				{
-					$new_idle 	= date('H:i:s', strtotime($model['attributes']['on']));
+					$new_idle 			= date('H:i:s', strtotime($model['attributes']['on']));
 				}
 
 				list($hours, $minutes, $seconds) = explode(":", $new_idle);
 
-				$new_idle 		= $hours*3600+$minutes*60+$seconds;
+				$new_idle 				= $hours*3600+$minutes*60+$seconds;
 
 				list($hours, $minutes, $seconds) = explode(":", $start_idle);
-				$start_idle 	= $hours*3600+$minutes*60+$seconds;
+				$start_idle 			= $hours*3600+$minutes*60+$seconds;
 
-				$total_idle		= $total_idle + $new_idle - $start_idle;
+				$total_idle				= $total_idle + $new_idle - $start_idle;
 				if($new_idle - $start_idle >= $margin_bottom_idle && $new_idle - $start_idle <= $idle_1)
 				{
 					$total_idle_1 		= $total_idle_1 + $new_idle - $start_idle;
 					$frequency_idle_1 	= $frequency_idle_1 + 1;
+					$idlesline[]		= 'total_idle_1';
+					$idles[]			= $new_idle - $start_idle;
 				}
 				elseif($new_idle - $start_idle > $idle_1 && $new_idle - $start_idle < $idle_2)
 				{
 					$total_idle_2 		= $total_idle_2 + $new_idle - $start_idle;
 					$frequency_idle_2 	= $frequency_idle_2 + 1;
+					$idlesline[]		= 'total_idle_2';
+					$idles[]			= $new_idle - $start_idle;
 				}
 				elseif($new_idle - $start_idle >= $idle_2)
 				{
 					$total_idle_3 		= $total_idle_3 + $new_idle - $start_idle;
 					$frequency_idle_3 	= $frequency_idle_3 + 1;
+					$idlesline[]		= 'total_idle_3';
+					$idles[]			= $new_idle - $start_idle;
 				}
 
 				unset($start_idle);
 			}
+
+			// count breaktime
+			foreach ($idles as $key => $value) 
+			{
+				if($break_time < $value)
+				{
+					$break_time 		= $value;
+					$idle_line 			= $idlesline[$key];
+				}
+			}
+
+			$left_idle 					= $break_time - $break_idle;
+			if($left_idle <= 0)
+			{
+				switch ($idle_line) 
+				{
+					case 'total_idle_1':
+						$total_idle_1 		= $total_idle_1 - $break_time;
+						$frequency_idle_1 	= $frequency_idle_1 - 1;
+						break;
+					case 'total_idle_2':
+						$total_idle_2 		= $total_idle_2 - $break_time;
+						$frequency_idle_2 	= $frequency_idle_2 - 1;
+						break;
+					case 'total_idle_3':
+						$total_idle_3 		= $total_idle_3 - $break_time;
+						$frequency_idle_3 	= $frequency_idle_3 - 1;
+						break;
+				}
+			}
+			else
+			{
+				switch ($idle_line) 
+				{
+					case 'total_idle_1':
+						$total_idle_1 		= $total_idle_1 - $break_idle;
+						$frequency_idle_1 	= $frequency_idle_1 - 1;
+						break;
+					case 'total_idle_2':
+						$total_idle_2 		= $total_idle_2 - $break_idle;
+						$frequency_idle_2 	= $frequency_idle_2 - 1;
+						break;
+					case 'total_idle_3':
+						$total_idle_3 		= $total_idle_3 - $break_idle;
+						$frequency_idle_3 	= $frequency_idle_3 - 1;
+						break;
+				}
+
+				if($left_idle <= $idle_1)
+				{
+					$total_idle_1 		= $total_idle_1 + $left_idle;
+					$frequency_idle_1 	= $frequency_idle_1 + 1;
+				}
+				elseif($left_idle < $idle_2)
+				{
+					$total_idle_2 		= $total_idle_2 + $left_idle;
+					$frequency_idle_2 	= $frequency_idle_2 + 1;
+				}
+				elseif($left_idle >= $idle_2)
+				{
+					$total_idle_3 		= $total_idle_3 + $left_idle;
+					$frequency_idle_3 	= $frequency_idle_3 + 1;
+				}
+			}
+
+
 
 			//4. UPDATE ACTUAL AND MODIFIED STATUS
 			if($is_absence==1)
