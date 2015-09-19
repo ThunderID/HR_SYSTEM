@@ -230,7 +230,7 @@ class Person extends BaseModel {
 
 	public $sortable 				= 	['name', 'prefix_title', 'suffix_title', 'date_of_birth', 'created_at', 'persons.created_at', 'persons.id', 'persons.name'];
 	
-	protected $appends				= 	['has_relatives', 'has_works', 'has_contacts', 'log_notes'];
+	protected $appends				= 	['has_relatives', 'has_works', 'has_contacts', 'log_notes', 'nik'];
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**
@@ -276,6 +276,17 @@ class Person extends BaseModel {
 	/* ---------------------------------------------------------------------------- MUTATOR ---------------------------------------------------------------------------------*/
 
 	/* ---------------------------------------------------------------------------- ACCESSOR --------------------------------------------------------------------------------*/
+
+	public function getNIKAttribute($value)
+	{
+		$nik 				= strtoupper($value->organisation->code).date('y').'.';
+
+		$frequentnumber 	= Person::where('uniqid', 'like', $nik.'%')->get();
+
+		$nik 				= $nik.str_pad(count($frequentnumber), 4, '0', STR_PAD_LEFT);
+		
+		return $nik;
+	}
 
 	public function getHasRelativesAttribute($value)
 	{

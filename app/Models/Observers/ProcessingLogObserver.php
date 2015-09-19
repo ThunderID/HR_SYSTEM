@@ -251,7 +251,7 @@ class ProcessingLogObserver
 							$modified_status= '';
 							$schedule_start = $calendar->workscalendars[0]->calendar->start;
 							$schedule_end 	= $calendar->workscalendars[0]->calendar->end;	
-							$break_idle 	= (int)$lbreaks[strtolower($day)]	
+							$break_idle 	= (int)$lbreaks[strtolower($day)];
 						}
 						else
 						{
