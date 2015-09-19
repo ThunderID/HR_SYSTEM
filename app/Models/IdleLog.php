@@ -13,6 +13,7 @@
  * 	frequency_idle_1 			 	: Required, numeric
  * 	frequency_idle_2 			 	: Required, numeric
  * 	frequency_idle_3 			 	: Required, numeric
+ * 	break_idle		 				: Numeric
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -46,6 +47,7 @@ class IdleLog extends BaseModel {
 											'total_idle_1' 						,
 											'total_idle_2' 						,
 											'total_idle_3' 						,
+											'break_idle' 						,
 											'frequency_idle_1' 					,
 											'frequency_idle_2' 					,
 											'frequency_idle_3' 					,
@@ -57,6 +59,7 @@ class IdleLog extends BaseModel {
 											'total_idle_1' 						=> 'required|numeric',
 											'total_idle_2' 						=> 'required|numeric',
 											'total_idle_3' 						=> 'required|numeric',
+											'break_idle'						=> 'numeric',
 											'frequency_idle_1' 					=> 'required|numeric',
 											'frequency_idle_2' 					=> 'required|numeric',
 											'frequency_idle_3' 					=> 'required|numeric',

@@ -9,6 +9,7 @@
  * 	workdays 		 				: Text
  * 	start 		 					: Required time
  * 	end 		 					: Required time
+ * 	break_idle 		 				: Text
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -60,6 +61,7 @@ class Calendar extends BaseModel {
 											'workdays' 					,
 											'start' 					,
 											'end' 						,
+											'break_idle' 				,
 										];
 
 	protected 	$rules				= 	[

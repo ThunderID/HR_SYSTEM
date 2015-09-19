@@ -10,6 +10,7 @@
  * 	start 	 						: Required, Time
  * 	end		 						: Required, Time
  * 	status		 					: Required, enum DN, SS, SL, CN, CB, CI, UL, HB, L
+ * 	break_idle		 				: Numeric
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -44,6 +45,7 @@ class PersonSchedule extends BaseModel {
 											'start' 					,
 											'end' 						,
 											'status' 					,
+											'break_idle' 				,
 										];
 
 	protected 	$rules				= 	[
@@ -53,6 +55,7 @@ class PersonSchedule extends BaseModel {
 											'start'						=> 'required|date_format:"H:i:s"',
 											'end'						=> 'required|date_format:"H:i:s"',
 											'status'					=> 'required|in:DN,SS,SL,CN,CB,UL,HB,L',
+											'break_idle'				=> 'numeric',
 										];
 
 	public $searchable 				= 	[

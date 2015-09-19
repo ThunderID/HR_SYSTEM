@@ -13,6 +13,7 @@
  * 	position 						: required if chart_id not present
  * 	organisation 					: required if chart_id not present
  * 	reason_end_job 					: required if end present
+ * 	is_absence 						: boolean
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -55,6 +56,7 @@ class Work extends BaseModel {
 											'position' 					,
 											'organisation' 				,
 											'reason_end_job' 			,
+											'is_absence' 				,
 										];
 
 	protected 	$rules				= 	[
@@ -66,6 +68,7 @@ class Work extends BaseModel {
 											'position' 					=> 'required_without:chart_id',
 											'organisation' 				=> 'required_without:chart_id',
 											'reason_end_job' 			=> 'required_with:end',
+											'is_absence' 				=> 'boolean',
 										];
 
 	public $searchable 				= 	[
