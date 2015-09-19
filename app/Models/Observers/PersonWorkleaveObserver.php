@@ -112,7 +112,7 @@ class PersonWorkleaveObserver
 				else
 				{
 					//hitung quota
-					if(date('d', strtotime($start)) != '1')
+					if(date('d', strtotime($start)) >= '15')
 					{
 						$quota 			= 0;
 					}
