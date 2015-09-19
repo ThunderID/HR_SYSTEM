@@ -115,6 +115,23 @@ class HRSUpdateCommand extends Command {
 
 		$this->info("Add break idle on idle logs table");
 
+		$calendars 							= Calendar::get();
+
+		foreach($calendars as $value => $key)
+		{
+			$value->fill([
+				'break_idle'				=> '60,60,60,60,90',
+			]);
+
+			if (!$data->save())
+			{
+				print_r($data->getError());
+				exit;
+			}
+		}
+
+		$this->info("Updating Calendar with break idle");
+
 		return true;
 	}
 }
