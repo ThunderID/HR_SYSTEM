@@ -22,6 +22,7 @@ class CreateIdleLogsTable extends Migration {
 			$table->double('total_idle_1');
 			$table->double('total_idle_2');
 			$table->double('total_idle_3');
+			$table->double('break_idle');
 
 			$table->integer('frequency_idle_1');
 			$table->integer('frequency_idle_2');

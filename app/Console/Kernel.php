@@ -18,6 +18,8 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\AttendanceQueueCommand',
 		'App\Console\Commands\SanctionQueueCommand',
 		'App\Console\Commands\HRQueueCommand',
+		'App\Console\Commands\HRExpiredWorkleaveQueueCommand',
+		'App\Console\Commands\HRRaiseWorkleaveQueueCommand',
 
 		'App\Console\Commands\LogAbsenceCommand',
 		'App\Console\Commands\FirstLockCommand',
@@ -29,10 +31,14 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\PersonBatchCommand',
 		'App\Console\Commands\PersonDocumentBatchCommand',
 		'App\Console\Commands\WorkBatchCommand',
+		'App\Console\Commands\ExpiredWorkleaveBatchCommand',
+		'App\Console\Commands\RaiseWorkleaveBatchCommand',
 
 		'App\Console\Commands\HRClearCacheCommand',
 		'App\Console\Commands\HRSUpdateCommand',
 		'App\Console\Commands\ResetPasswordCommand',
+		'App\Console\Commands\HRResetTableCommand',
+		'App\Console\Commands\HRUpdateNIKCommand',
 		'App\Console\Commands\HRTestLoginCommand',
 	];
 
@@ -69,6 +75,14 @@ class Kernel extends ConsoleKernel {
 		//running queue (every month)
 		$schedule->command('hr:clearcache HRClearCacheCommand')
 				 ->monthly();
+
+		//running expired queue command
+		$schedule->command('hr:expireworkleavequeue HRExpiredWorkleaveQueueCommand')
+				 ->cron('0 0 */31 */3 *');
+
+		//running expired queue command
+		$schedule->command('hr:raiseworkleavequeue HRRaiseWorkleaveQueueCommand')
+				 ->cron('0 0 */31 */3 *');
 	}
 
 }

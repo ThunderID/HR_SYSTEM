@@ -5,9 +5,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Database\Schema\Blueprint;
 use Schema;
-use App\Models\Person;
-use App\Models\Work;
-use App\Models\Organisation;
+use App\Models\Calendar;
 use DB, Hash;
 
 class HRSUpdateCommand extends Command {
@@ -43,7 +41,7 @@ class HRSUpdateCommand extends Command {
 	 */
 	public function fire()
 	{
-		$result 		= $this->update10092015();
+		$result 		= $this->update19092015();
 		
 		return true;
 	}
@@ -78,14 +76,59 @@ class HRSUpdateCommand extends Command {
 	 * @return void
 	 * @author 
 	 **/
-	public function update10092015()
+	public function update19092015()
 	{
-		Schema::table('person_widgets', function(Blueprint $table)
+		Schema::table('works', function(Blueprint $table)
 		{	
-			$table->integer('organisation_id')->unsigned()->index();
+			$table->boolean('is_absence');
 		});
 
-		$this->info("Add org id on person widget table");
+		$this->info("Add boolean is absence on works table");
+
+		Schema::table('tmp_calendars', function(Blueprint $table)
+		{	
+			$table->text('break_idle');
+		});
+
+		$this->info("Add break idle on calendars table");
+
+		Schema::table('tmp_schedules', function(Blueprint $table)
+		{	
+			$table->double('break_idle');
+		});
+
+		$this->info("Add break idle on schedules table");
+
+		Schema::table('person_schedules', function(Blueprint $table)
+		{	
+			$table->double('break_idle');
+		});
+
+		$this->info("Add break idle on person schedules table");
+
+		Schema::table('idle_logs', function(Blueprint $table)
+		{	
+			$table->double('break_idle');
+		});
+
+		$this->info("Add break idle on idle logs table");
+
+		$calendars 							= Calendar::get();
+
+		foreach($calendars as $value => $key)
+		{
+			$value->fill([
+				'break_idle'				=> '60,60,60,60,90',
+			]);
+
+			if (!$data->save())
+			{
+				print_r($data->getError());
+				exit;
+			}
+		}
+
+		$this->info("Updating Calendar with break idle");
 
 		return true;
 	}

@@ -112,7 +112,7 @@ class PersonWorkleaveObserver
 				else
 				{
 					//hitung quota
-					if(date('d', strtotime($start)) != '1')
+					if(date('d', strtotime($start)) >= '15')
 					{
 						$quota 			= 0;
 					}
@@ -122,13 +122,15 @@ class PersonWorkleaveObserver
 					}
 
 					//check policies
-					$extendpolicy 		= Policy::organisationid($model->workleave->organisation_id)->type('extendsmidworkleave')->OnDate(date('Y-m-d H:i:s', strtotime($end)))->orderby('started_at', 'asc')->first();
+					// $extendpolicy 		= Policy::organisationid($model->workleave->organisation_id)->type('extendsmidworkleave')->OnDate(date('Y-m-d H:i:s', strtotime($end)))->orderby('started_at', 'asc')->first();
 					
-					if(is_null($extendpolicy))
-					{
-						$extendpolicy['value']	= '+ 1 year + 3 months';
-					}
+					// if(is_null($extendpolicy))
+					// {
+					// 	$extendpolicy['value']	= '+ 1 year + 3 months';
+					// }
 
+					$extendpolicy['value']	= '+ 3 months';
+					
 					//check could be taken at
 					$couldbetaken 		= date('Y-m-d', strtotime($start. ' + 1 year'));
 				}
