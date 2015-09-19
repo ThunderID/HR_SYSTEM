@@ -34,6 +34,7 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\HRSUpdateCommand',
 		'App\Console\Commands\ResetPasswordCommand',
 		'App\Console\Commands\HRResetTableCommand',
+		'App\Console\Commands\HRUpdateNIKCommand',
 		'App\Console\Commands\HRTestLoginCommand',
 	];
 

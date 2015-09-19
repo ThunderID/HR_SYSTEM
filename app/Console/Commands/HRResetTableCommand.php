@@ -4,8 +4,8 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-use DB;
 use App\Models\AttendanceDetail;
+use DB;
 
 class HRResetTableCommand extends Command {
 
@@ -70,9 +70,8 @@ class HRResetTableCommand extends Command {
 		];
 	}
 
-
 	/**
-	 * absence log
+	 * EMPTY TABLE
 	 *
 	 * @return void
 	 * @author 
