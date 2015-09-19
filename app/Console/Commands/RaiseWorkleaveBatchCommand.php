@@ -6,24 +6,27 @@ use Symfony\Component\Console\Input\InputArgument;
 
 use App\Models\Queue;
 use App\Models\QueueMorph;
+use App\Models\Person;
 use App\Models\PersonWorkleave;
+use App\Models\FollowWorkleave;
+
 use \Illuminate\Support\MessageBag as MessageBag;
 
-class ExpiredWorkleaveBatchCommand extends Command {
+class RaiseWorkleaveBatchCommand extends Command {
 
 	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	protected $name = 'hr:expireworkleavebatch';
+	protected $name = 'hr:raiseworkleavebatch';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Expire queue running.';
+	protected $description = 'Raise queue running.';
 
 	/**
 	 * Create a new command instance.
@@ -45,7 +48,7 @@ class ExpiredWorkleaveBatchCommand extends Command {
 		//
 		$id 			= $this->argument()['queueid'];
 
-		$result 		= $this->batchexpiredworkleave($id);
+		$result 		= $this->batchraiseworkleave($id);
 
 		return $result;
 	}
@@ -80,7 +83,7 @@ class ExpiredWorkleaveBatchCommand extends Command {
 	 * @return void
 	 * @author 
 	 **/
-	public function batchexpiredworkleave($id)
+	public function batchraiseworkleave($id)
 	{
 		$queue 						= new Queue;
 		$pending 					= $queue->find($id);
@@ -94,33 +97,23 @@ class ExpiredWorkleaveBatchCommand extends Command {
 		
 		foreach ($persons as $key => $value) 
 		{
-			$pwleaveplus 			= PersonWorkleave::personid($value['id'])->Quota(true)->where('end', '<=', date('Y-m-d', strtotime($parameters['end'])))->sum('quota');
-			$pwleaveminus 			= PersonWorkleave::personid($value['id'])->Quota(false)->where('end', '<=', date('Y-m-d', strtotime($parameters['end'])))->sum('quota');
+			//cek riwayat kerja
+			// cek status
+			$pwleave 				= FollowWorkleave::workid($value['works'][0]['pivot']['id'])->withattributes(['workleave'])->first();
+
+			$wleave 				= Workleave::workleaveid($pwleave['id'])->where('quota', '>', $pwleave['quota'])->orderBy('quota', 'desc')->first();
 			
-			$pwleave 				= $pwleaveplus - $pwleaveminus;
+			$is_success 			= new FollowWorkleave;
+			$is_success->fill([
+					'work_id'		=> $value['works'][0]['pivot']['id'],
+				]);
 
-			if($pwleave > 0)
+			$is_success->Workleave()->associate($wleave);
+
+			if(!$is_success->save())
 			{
-				$pwleaves 			= PersonWorkleave::personid($value['id'])->Quota(true)->where('end', '<=', date('Y-m-d', strtotime($parameters['end'])))->first();
-
-				$is_success 					= new PersonWorkleave;
-				$is_success->fill([
-						'work_id'				=> $value['works'][0]['pivot']['id'],
-						'person_workleave_id'	=> $pwleaves->id,
-						'name'					=> 'Expired Workleave',
-						'notes'					=> 'Auto generated expire workleave',
-						'start'					=> date('Y-m-d', strtotime($parameters['end'])),
-						'end'					=> date('Y-m-d', strtotime($parameters['end'])),
-						'quota'					=> 0 - $pwleave,
-						'status'				=> 'CN',
-					]);
-
-				$is_success->Person()->associate($value);
-
-				if(!$is_success->save())
-				{
-					$errors->add('Batch', $is_success->getError());
-				}
+				$errors->add('Batch', $is_success->getError());
+			}
 			}
 			
 			if(!$errors->count())
@@ -129,18 +122,18 @@ class ExpiredWorkleaveBatchCommand extends Command {
 				$morphed->fill([
 					'queue_id'					=> $id,
 					'queue_morph_id'			=> $is_success->id,
-					'queue_morph_type'			=> get_class(new PersonWorkleave),
+					'queue_morph_type'			=> get_class(new FollowWorkleave),
 				]);
 				$morphed->save();
 
 				$pnumber 						= $pending->total_process;
-				$messages['message'][$pnumber] 	= 'Sukses Menyimpan Cuti '.(isset($value['name']) ? $value['name'] : '');
+				$messages['message'][$pnumber] 	= 'Sukses Menyimpan Kenaikan Hak Cuti '.(isset($value['name']) ? $value['name'] : '');
 				$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 			}
 			else
 			{
 				$pnumber 						= $pending->total_process;
-				$messages['message'][$pnumber] 	= 'Gagal Menyimpan Cuti '.(isset($value['name']) ? $value['name'] : '');
+				$messages['message'][$pnumber] 	= 'Gagal Menyimpan Kenaikan Hak Cuti '.(isset($value['name']) ? $value['name'] : '');
 				$messages['errors'][$pnumber] 	= $errors;
 
 				$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
