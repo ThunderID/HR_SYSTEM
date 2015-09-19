@@ -121,7 +121,7 @@ class ScheduleBatchCommand extends Command {
 			$is_success				= new Schedule;
 		}
 
-		$calendar 							= Calendar::find($parameters['associate_calendar_id']);
+		$calendar 						= Calendar::find($parameters['associate_calendar_id']);
 
 		$is_success->fill($parameters);
 		$is_success->Calendar()->associate($calendar);
@@ -134,7 +134,7 @@ class ScheduleBatchCommand extends Command {
 		{
 			if(in_array(strtoupper($is_success->status), ['CN', 'CB', 'CI']))
 			{
-				$check 						= $this->call('hr:personworkleavebatch', ['queueid' => $pending->id, '--queuefunc' => 'personstaken']);
+				$check 					= $this->call('hr:personworkleavebatch', ['queueid' => $pending->id, '--queuefunc' => 'personstaken']);
 			}
 		}
 
