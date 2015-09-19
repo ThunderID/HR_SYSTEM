@@ -278,4 +278,31 @@
 		$('.date_range').html(temp_sch);
 		$('.date-mask').inputmask('dd-mm-yyyy');
 	});
+
+	/* ====Template Break Idle===== */
+	$('.select2-tag-days').on('change', function() {
+		var temp_break			= '';
+		var day 				= $(this).select2('val');
+
+		jQuery.each(day, function (index, item) {
+			temp_break += '<div class="col-xs-12 col-sm-2"> \
+								<div class="form-group"> \
+									<label class="control-label">'+item+'</label> \
+									<input type="text" name="break_idle" class="form-control select2-tag-minute"/> \
+									<span class="font-12">menit</span> \
+								</div> \
+						   </div>';
+		});
+
+		$('.tmp_break_idle').html(temp_break);
+		$('.select2-tag-minute').select2({
+			tokenSeparators: [",", " ", "_", "-"],
+			tags: ['0', '30', '45', '60', '75', '90'],
+			maximumSelectionSize: 1,
+			selectOnBlur: true,
+			createSearchChoice: function() { return null; }
+		});
+		// console.log($(this).select2('val'));
+
+	});
 </script>
