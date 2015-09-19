@@ -52,11 +52,19 @@
 				</div>
 			</div>
 
+			<div class="form-group">
+				<div class="checkbox">
+					<label>
+						{!! Form::checkbox('is_absence', '1', '', ['class' => '', 'tabindex' => '8']) !!} Boleh Absen
+					</label>
+				</div>
+			</div>
+
 			@if(is_null($id))
 				<div class="form-group">
 					<div class="checkbox">
 						<label>
-							{!!Form::checkbox('affect', '1', '', ['class' => '', 'tabindex' => '8'])!!} Set Kalender Default : 
+							{!!Form::checkbox('affect', '1', '', ['class' => '', 'tabindex' => '9'])!!} Set Kalender Default : 
 						</label>
 					</div>
 				</div>
