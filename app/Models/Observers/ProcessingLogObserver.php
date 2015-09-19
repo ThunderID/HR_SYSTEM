@@ -531,9 +531,10 @@ class ProcessingLogObserver
 			}
 
 			//4. UPDATE ACTUAL AND MODIFIED STATUS
-			if($is_absence==1 && !isset($modified_status))
+			if($is_absence==1)
 			{
 				$actual_status 			= 'NA';
+				$modified_status 		= 'NA';
 			}
 			elseif($actual_status=='' && $schedule_start=='00:00:00' && $schedule_end=='00:00:00')
 			{
