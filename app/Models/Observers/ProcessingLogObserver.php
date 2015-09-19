@@ -67,6 +67,7 @@ class ProcessingLogObserver
 			}
 
 			$workid 				= null;
+			$is_absence 			= 0;
 			$plog 					= new ProcessLog;
 
 			//check if process log exists
@@ -118,6 +119,7 @@ class ProcessingLogObserver
 				if(isset($working['works'][0]))
 				{
 					$workid 		= $working['works'][0]['pivot']['id'];
+					$is_absence 	= $working['works'][0]['pivot']['is_absence'];
 				}
 
 				//set modified status
@@ -185,6 +187,7 @@ class ProcessingLogObserver
 					$schedule_end	= $ccalendar->workscalendars[0]->calendar->schedules[0]->end;
 					$break_idle		= $ccalendar->workscalendars[0]->calendar->schedules[0]->break_idle;
 					$workid 		= $ccalendar->workscalendars[0]->id;
+					$is_absence 	= $ccalendar->workscalendars[0]->is_absence;
 
 					//sync schedule status with process log
 					switch (strtolower($ccalendar->workscalendars[0]->calendar->schedules[0]->status)) 
@@ -224,6 +227,7 @@ class ProcessingLogObserver
 					if($calendar)
 					{
 						$workid 	= $calendar->workscalendars[0]->id;
+						$is_absence = $calendar->workscalendars[0]->is_absence;
 						$workdays  	= explode(',', $calendar->workscalendars[0]->calendar->workdays);
 						$breakidles = explode(',', $calendar->workscalendars[0]->calendar->break_idle);
 						$lworkdays 	= [];
@@ -527,7 +531,11 @@ class ProcessingLogObserver
 			}
 
 			//4. UPDATE ACTUAL AND MODIFIED STATUS
-			if($actual_status=='' && $schedule_start=='00:00:00' && $schedule_end=='00:00:00')
+			if($is_absence==1 && !isset($modified_status))
+			{
+				$actual_status 			= 'NA';
+			}
+			elseif($actual_status=='' && $schedule_start=='00:00:00' && $schedule_end=='00:00:00')
 			{
 				$actual_status 			= 'L';
 			}
