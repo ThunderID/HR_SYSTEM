@@ -5,9 +5,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Database\Schema\Blueprint;
 use Schema;
-use App\Models\Person;
-use App\Models\Work;
-use App\Models\Organisation;
+use App\Models\Calendar;
 use DB, Hash;
 
 class HRSUpdateCommand extends Command {

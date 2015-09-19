@@ -615,8 +615,6 @@ class ProcessingLogObserver
 				}
 			}
 
-
-
 			//4. UPDATE ACTUAL AND MODIFIED STATUS
 			if($is_absence==1)
 			{
@@ -733,7 +731,7 @@ class ProcessingLogObserver
 
 			if(!is_null($workid))
 			{
-				$work 			= Work::find($workid);
+				$work 				= Work::find($workid);
 				if($work)
 				{
 					$plog->Work()->associate($work);
@@ -742,7 +740,7 @@ class ProcessingLogObserver
 
 			if (!$plog->save())
 			{
-				$model['errors'] = $plog->getError();
+				$model['errors'] 	= $plog->getError();
 
 				return false;
 			}
