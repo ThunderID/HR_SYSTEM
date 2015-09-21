@@ -331,19 +331,18 @@ class WorkleaveController extends BaseController
 				App::abort(404);
 			}
 
+			$attributes['work_id']				= $contents->data->workscalendars[0]->id;
 			$attributes['workleave_id']			= $contents_2->data->id;
 			$attributes['name']					= $contents_2->data->name;
 			$attributes['status']				= $contents_2->data->status;
 			$attributes['quota']				= $contents_2->data->quota;
 
 			$attributes['start'] 				= $begin->format('Y-m-d');
-			$attributes['end'] 					= date('Y-m-d', strtotime('last day of last month'));
-
-			DB::beginTransaction();
+			$attributes['end'] 					= $ended->format('Y-m-d');
 
 			$content 							= $this->dispatch(new Saving(new PersonWorkleave, $attributes, $id, new Person, $person_id));
 			$is_success 						= json_decode($content);
-			
+
 			if(!$is_success->meta->success)
 			{
 				foreach ($is_success->meta->errors as $key => $value) 
@@ -474,6 +473,7 @@ class WorkleaveController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
+
 			return Redirect::route('hr.person.workleaves.index', ['person_id' => $person_id, 'org_id' => $org_id])->with('alert_info', 'Cuti "' . $contents->data->name. '" sedang disimpan');
 		}
 

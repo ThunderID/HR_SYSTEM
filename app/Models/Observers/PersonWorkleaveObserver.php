@@ -187,14 +187,27 @@ class PersonWorkleaveObserver
 				$psch 				= $schedule->personid($model['attributes']['person_id'])->ondate([$period->format('Y-m-d'), $period1->format('Y-m-d')])->status(strtoupper($model['attributes']['status']))->first();
 				if(!$psch)
 				{
-					$schedule->fill([
-						'created_by'	=>  $model['attributes']['created_by'],
-						'name'			=>  $model['attributes']['name'],
-						'status'		=>  strtoupper($model['attributes']['status']),
-						'on'			=>  $period->format('Y-m-d'),
-						'start'			=>  '00:00:00',
-						'end'			=>  '00:00:00',
-					]);
+					if(isset($model['attributes']['created_by']))
+					{
+						$schedule->fill([
+							'created_by'	=>  $model['attributes']['created_by'],
+							'name'			=>  $model['attributes']['name'],
+							'status'		=>  strtoupper($model['attributes']['status']),
+							'on'			=>  $period->format('Y-m-d'),
+							'start'			=>  '00:00:00',
+							'end'			=>  '00:00:00',
+						]);
+					}
+					else
+					{
+						$schedule->fill([
+							'name'			=>  $model['attributes']['name'],
+							'status'		=>  strtoupper($model['attributes']['status']),
+							'on'			=>  $period->format('Y-m-d'),
+							'start'			=>  '00:00:00',
+							'end'			=>  '00:00:00',
+						]);
+					}
 					
 					$schedule->Person()->associate($person);
 					
@@ -206,14 +219,29 @@ class PersonWorkleaveObserver
 				}
 				else
 				{
-					$psch->fill([
-						'created_by'	=>  $model['attributes']['created_by'],
-						'name'			=>  $model['attributes']['name'],
-						'status'		=>  strtoupper($model['attributes']['status']),
-						'on'			=>  $period->format('Y-m-d'),
-						'start'			=>  '00:00:00',
-						'end'			=>  '00:00:00',
-					]);
+					if(isset($model['attributes']['created_by']))
+					{
+						$psch->fill([
+							'created_by'	=>  $model['attributes']['created_by'],
+							'name'			=>  $model['attributes']['name'],
+							'status'		=>  strtoupper($model['attributes']['status']),
+							'on'			=>  $period->format('Y-m-d'),
+							'start'			=>  '00:00:00',
+							'end'			=>  '00:00:00',
+						]);
+					}
+					else
+					{
+						$psch->fill([
+							'name'			=>  $model['attributes']['name'],
+							'status'		=>  strtoupper($model['attributes']['status']),
+							'on'			=>  $period->format('Y-m-d'),
+							'start'			=>  '00:00:00',
+							'end'			=>  '00:00:00',
+						]);
+					}
+
+					
 					
 					$psch->Person()->associate($person);
 					
@@ -225,6 +253,8 @@ class PersonWorkleaveObserver
 				}
 			}
 		}
+		
+		return true;
 	}
 
 	public function updating($model)

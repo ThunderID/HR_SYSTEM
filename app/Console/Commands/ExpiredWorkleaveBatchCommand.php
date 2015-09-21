@@ -7,6 +7,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use App\Models\Queue;
 use App\Models\QueueMorph;
 use App\Models\PersonWorkleave;
+use App\Models\Person;
+use App\Models\Work;
 use \Illuminate\Support\MessageBag as MessageBag;
 
 class ExpiredWorkleaveBatchCommand extends Command {
@@ -58,7 +60,7 @@ class ExpiredWorkleaveBatchCommand extends Command {
 	protected function getArguments()
 	{
 		return [
-			['example', InputArgument::REQUIRED, 'An example argument.'],
+			['queueid', InputArgument::REQUIRED, 'An example argument.'],
 		];
 	}
 
@@ -69,9 +71,9 @@ class ExpiredWorkleaveBatchCommand extends Command {
 	 */
 	protected function getOptions()
 	{
-		return [
-			['example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
-		];
+		return array(
+            array('queuefunc', null, InputOption::VALUE_OPTIONAL, 'Queue Function', null),
+        );
 	}
 
 	/**
@@ -90,7 +92,7 @@ class ExpiredWorkleaveBatchCommand extends Command {
 
 		$errors 					= new MessageBag;
 
-		$persons					= Person::organisationid($parameters['id'])->checkwork(true)->currentwork(true)->get();
+		$persons					= Person::organisationid($parameters['organisation_id'])->checkwork(true)->get();
 		
 		foreach ($persons as $key => $value) 
 		{
@@ -99,13 +101,15 @@ class ExpiredWorkleaveBatchCommand extends Command {
 			
 			$pwleave 				= $pwleaveplus - $pwleaveminus;
 
-			if($pwleave > 0)
-			{
-				$pwleaves 			= PersonWorkleave::personid($value['id'])->Quota(true)->where('end', '<=', date('Y-m-d', strtotime($parameters['end'])))->first();
+			$work 					= Work::active(true)->personid($value['id'])->first();
+			
+			$pwleaves 				= PersonWorkleave::personid($value['id'])->Quota(true)->where('end', '<=', date('Y-m-d', strtotime($parameters['end'])))->first();
 
+			if($pwleave > 0 && $work && $pwleaves)
+			{
 				$is_success 					= new PersonWorkleave;
 				$is_success->fill([
-						'work_id'				=> $value['works'][0]['pivot']['id'],
+						'work_id'				=> $work->id,
 						'person_workleave_id'	=> $pwleaves->id,
 						'name'					=> 'Expired Workleave',
 						'notes'					=> 'Auto generated expire workleave',
@@ -125,21 +129,24 @@ class ExpiredWorkleaveBatchCommand extends Command {
 			
 			if(!$errors->count())
 			{
-				$morphed 						= new QueueMorph;
-				$morphed->fill([
-					'queue_id'					=> $id,
-					'queue_morph_id'			=> $is_success->id,
-					'queue_morph_type'			=> get_class(new PersonWorkleave),
-				]);
-				$morphed->save();
+				if(isset($is_success))
+				{
+					$morphed 					= new QueueMorph;
+					$morphed->fill([
+						'queue_id'				=> $id,
+						'queue_morph_id'		=> $is_success->id,
+						'queue_morph_type'		=> get_class(new PersonWorkleave),
+					]);
+					$morphed->save();
+				}
 
-				$pnumber 						= $pending->total_process;
+				$pnumber 						= $pending->process_number+1;
 				$messages['message'][$pnumber] 	= 'Sukses Menyimpan Cuti '.(isset($value['name']) ? $value['name'] : '');
 				$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 			}
 			else
 			{
-				$pnumber 						= $pending->total_process;
+				$pnumber 						= $pending->process_number+1;
 				$messages['message'][$pnumber] 	= 'Gagal Menyimpan Cuti '.(isset($value['name']) ? $value['name'] : '');
 				$messages['errors'][$pnumber] 	= $errors;
 
