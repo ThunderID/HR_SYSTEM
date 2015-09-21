@@ -166,6 +166,10 @@ class AttendanceLog extends BaseModel {
 
 	public function scopeNotActualStatus($query, $variable)
 	{
+		if(is_array($variable))
+		{
+			return $query->whereNotIn('actual_status', $variable);
+		}
 		return $query->where('actual_status', '<>', $variable);
 	}
 
@@ -210,7 +214,7 @@ class AttendanceLog extends BaseModel {
 		}
 
 		$query =  $query->selectraw('attendance_logs.*')
-					->wherenotin('actual_status', ['HB', 'L'])->wherenotin('modified_status', ['HD', 'SS', 'SL', 'CN', 'CB', 'CI', 'DN', 'L'])
+					->wherenotin('actual_status', ['HB', 'L', 'NA'])->wherenotin('modified_status', ['HD', 'SS', 'SL', 'CN', 'CB', 'CI', 'DN', 'L', 'NA'])
 					->wheredoesnthave('attendancedetails', function($q){$q;})
 					->join('process_logs', function ($join) use($start, $end, $personid) {
 							$join->on('attendance_logs.process_log_id', '=', 'process_logs.id')

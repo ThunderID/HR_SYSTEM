@@ -31,8 +31,8 @@ trait HasAttendanceLogsTrait {
 	{
 		if(!is_null($variable))
 		{
-			return $query->whereHas('attendancelogs', function($q)use($variable){$q;})
-						->with(['attendancelogs' => function($q)use($variable){$q->notactualstatus('L')->orderBy('updated_at', 'desc');}, 'attendancelogs.modifiedby']);
+			return $query->whereHas('attendancelogs', function($q)use($variable){$q->notactualstatus(['L', 'NA']);})
+						->with(['attendancelogs' => function($q)use($variable){$q->notactualstatus(['L', 'NA'])->orderBy('updated_at', 'desc');}, 'attendancelogs.modifiedby']);
 		}
 
 		return $query->whereHas('attendancelogs', function($q)use($variable){$q;})

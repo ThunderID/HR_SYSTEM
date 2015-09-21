@@ -30,7 +30,7 @@ trait HasProcessLogsTrait {
 
 	public function ScopeProcessLogIdlesOndate($query, $variable)
 	{
-		return $query->with(['processlogs' => function($q)use($variable){$q->ondate($variable['on'])->lastidlelog(true)->orderby('on', 'asc');}]);
+		return $query->with(['processlogs' => function($q)use($variable){$q->ondate($variable['on'])->lastattendancelog(true)->lastidlelog(true)->orderby('on', 'asc');}]);
 	}
 
 	public function ScopeFullSchedule($query, $variable)
