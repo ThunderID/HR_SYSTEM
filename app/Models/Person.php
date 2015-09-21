@@ -279,13 +279,16 @@ class Person extends BaseModel {
 
 	public function getNIKAttribute($value)
 	{
-		$nik 				= strtoupper($value->organisation->code).date('y').'.';
+		if($this->organisation)
+		{
+			$nik 				= strtoupper($this->organisation->code).date('y').'.';
 
-		$frequentnumber 	= Person::where('uniqid', 'like', $nik.'%')->get();
+			$frequentnumber 	= Person::where('uniqid', 'like', $nik.'%')->get();
 
-		$nik 				= $nik.str_pad(count($frequentnumber), 4, '0', STR_PAD_LEFT);
-		
-		return $nik;
+			$nik 				= $nik.str_pad(count($frequentnumber), 4, '0', STR_PAD_LEFT);
+			
+			return $nik;
+		}
 	}
 
 	public function getHasRelativesAttribute($value)
