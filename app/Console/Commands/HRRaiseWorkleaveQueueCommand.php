@@ -4,6 +4,10 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
+use App\Models\Organisation;
+use App\Models\Person;
+use App\Models\Queue;
+
 use Log, DB;
 use \Illuminate\Support\MessageBag as MessageBag;
 
@@ -88,7 +92,7 @@ class HRRaiseWorkleaveQueueCommand extends Command {
 			
 			DB::beginTransaction();
 
-			$parameter['end']				= date('Y-m-d', strtotime('first day of this year'));
+			$parameter['end']				= date('Y-m-d', strtotime('first day of January this year'));
 			$parameter['organisation_id']	= $value->id;
 
 			$queue 							= new Queue;

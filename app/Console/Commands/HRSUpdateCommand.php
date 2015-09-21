@@ -158,6 +158,7 @@ class HRSUpdateCommand extends Command {
 				$data 						= new ChartWorkleave;
 				$data->fill([
 					'chart_id'				=> $value->id,
+					'rules'					=> '- 5 years',
 				]);
 
 				$data->Workleave()->associate($workleave);

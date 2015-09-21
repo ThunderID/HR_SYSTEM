@@ -9,6 +9,10 @@ use App\Models\QueueMorph;
 use App\Models\Person;
 use App\Models\PersonWorkleave;
 use App\Models\FollowWorkleave;
+use App\Models\ChartWorkleave;
+use App\Models\Work;
+
+use Carbon\Carbon;
 
 use \Illuminate\Support\MessageBag as MessageBag;
 
@@ -61,7 +65,7 @@ class RaiseWorkleaveBatchCommand extends Command {
 	protected function getArguments()
 	{
 		return [
-			['example', InputArgument::REQUIRED, 'An example argument.'],
+			['queueid', InputArgument::REQUIRED, 'An example argument.'],
 		];
 	}
 
@@ -72,9 +76,9 @@ class RaiseWorkleaveBatchCommand extends Command {
 	 */
 	protected function getOptions()
 	{
-		return [
-			['example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
-		];
+		return array(
+            array('queuefunc', null, InputOption::VALUE_OPTIONAL, 'Queue Function', null),
+        );
 	}
 
 	/**
@@ -93,44 +97,44 @@ class RaiseWorkleaveBatchCommand extends Command {
 
 		$errors 					= new MessageBag;
 
-		$persons					= Person::organisationid($parameters['id'])->checkwork(true)->currentwork(true)->get();
+		$persons					= Person::organisationid($parameters['organisation_id'])->checkwork(true)->currentwork(true)->get();
 		
 		foreach ($persons as $key => $value) 
 		{
 			//cek riwayat kerja
-			$work 					= Work::find($value['works'][0]['pivot']['id']);
+			$work 					= Work::active(true)->personid($value['id'])->first();
 
-			$prev_work 				= Work::active(false)->personid($model['attributes']['person_id'])->startbefore($work->start)->orderby('start', 'desc')->get();
+			$prev_work 				= Work::active(false)->personid($value['id'])->startbefore($work->start)->orderby('start', 'desc')->get();
 
 			$work_start 			= $work->start;
 
-			foreach ($prev_work as $key => $value) 
+			foreach ($prev_work as $key2 => $value2) 
 			{
-				if($key > 0)
+				if($key2 > 0)
 				{
-					$prev_end 		= new Carbon($prev_work[$key-1]->end);
-					$date_diff 		= $prev_end->diffInDays(new Carbon($value->start));
+					$prev_end 		= new Carbon($prev_work[$key2-1]->end);
+					$date_diff 		= $prev_end->diffInDays(new Carbon($value2->start));
 
 					//if end of prev work not same day of next start (idle), then start of work must be next start
 					if($date_diff > 1)
 					{
-						$work_start = $value->start;
+						$work_start = $value2->start;
 					}
 					//else if end of prev work is same day of next start (idle), then start of work must be first work start
 				}
 				else
 				{
-					$work_start 		= $value->start;
+					$work_start 		= $value2->start;
 				}
 			}
 
-			$cwleave 					= ChartWorkleave::chartid($value['works'][0]['id'])->withattributes(['workleave'])->first();
+			$cwleave 					= ChartWorkleave::chartid($work['chart_id'])->withattributes(['workleave'])->first();
 			
 			if($cwleave && $work_start >= date('Y-m-d', strtotime($cwleave->rules)))
 			{
 				$is_success 			= new FollowWorkleave;
 				$is_success->fill([
-						'work_id'		=> $value['works'][0]['pivot']['id'],
+						'work_id'		=> $work->id,
 					]);
 
 				$is_success->Workleave()->associate($cwleave->workleave);
@@ -139,26 +143,28 @@ class RaiseWorkleaveBatchCommand extends Command {
 				{
 					$errors->add('Batch', $is_success->getError());
 				}
-				
 			}
 			
 			if(!$errors->count())
 			{
-				$morphed 						= new QueueMorph;
-				$morphed->fill([
-					'queue_id'					=> $id,
-					'queue_morph_id'			=> $is_success->id,
-					'queue_morph_type'			=> get_class(new FollowWorkleave),
-				]);
-				$morphed->save();
+				if(isset($is_success))
+				{
+					$morphed 					= new QueueMorph;
+					$morphed->fill([
+						'queue_id'				=> $id,
+						'queue_morph_id'		=> $is_success->id,
+						'queue_morph_type'		=> get_class(new FollowWorkleave),
+					]);
+					$morphed->save();
+				}
 
-				$pnumber 						= $pending->total_process;
+				$pnumber 						= $pending->process_number+1;
 				$messages['message'][$pnumber] 	= 'Sukses Menyimpan Kenaikan Hak Cuti '.(isset($value['name']) ? $value['name'] : '');
 				$pending->fill(['process_number' => $pnumber, 'message' => json_encode($messages)]);
 			}
 			else
 			{
-				$pnumber 						= $pending->total_process;
+				$pnumber 						= $pending->process_number+1;
 				$messages['message'][$pnumber] 	= 'Gagal Menyimpan Kenaikan Hak Cuti '.(isset($value['name']) ? $value['name'] : '');
 				$messages['errors'][$pnumber] 	= $errors;
 
