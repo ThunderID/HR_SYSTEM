@@ -19,10 +19,19 @@
 	</div>
 	<div class="col-sm-9">
 		<div class="row">
-			<div class="col-sm-12">
+			<div class="col-sm-9">
 				<div class="form-group">
 					<label class="control-label">N I K</label>
-					{!!Form::input('text', 'uniqid', $PersonComposer['widget_data']['personlist']['person']['uniqid'], ['class' => 'form-control', 'required' => 'required', 'autofocus' => 'autofocus'])!!}							
+					{!! Form::input('text', 'uniqid', $PersonComposer['widget_data']['personlist']['person']['uniqid'], ['class' => 'form-control form_person_nik', 'required' => 'required', 'autofocus' => 'autofocus']) !!}
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group">
+					<div class="checkbox">
+						<label class="mt-20">
+							{!! Form::checkbox('is_automatic_nik', '1', '', ['class' => 'checkbox_person_automatic_nik checkbox-generate']) !!} <span class="label-automatic-generate">Otomatis Generate</span>
+						</label>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -105,7 +114,12 @@
 			<div class="col-sm-12">
 				<div class="form-group">
 					<label class="control-label">Status Kawin</label>
-					@include('widgets.organisation.person.select_married')
+					@if($id && isset($PersonComposer['widget_data']['personlist']['person']['maritalstatuses'][0]))
+						@include('widgets.organisation.person.select_married', ['currentstatus' => $PersonComposer['widget_data']['personlist']['person']['maritalstatuses'][0]['status']])
+						{!!Form::hidden('maritalold', $PersonComposer['widget_data']['personlist']['person']['maritalstatuses'][0]['status']) !!}
+					@else
+						@include('widgets.organisation.person.select_married', ['currentstatus' => null])
+					@endif
 				</div>
 			</div>
 		</div>

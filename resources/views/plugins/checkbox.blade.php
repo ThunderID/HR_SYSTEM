@@ -24,4 +24,12 @@ $('.thumb').change(function(e){
 			$('.schedule_delete').attr('data-affect', 0);	
 		}
 	});
+
+	/*====CHECKBOX AUTOMATIC GENERATE NIK=====*/
+	$('.checkbox_person_automatic_nik').change(function() {
+		// CODING GET AJAX FROM .....
+		if ($(this).is(':checked')) {
+			$('.form_person_nik').val('halo');
+		}
+	});
 </script>
