@@ -30,6 +30,19 @@
 			selectOnBlur: true,
 			createSearchChoice: function() { return null; }
 		});
+		
+		// $('.select2-tag-days').on('change', function() {
+		// 	console.log($(this).select2('val'));
+		// });
+
+		$('.select2-tag-minute').select2({
+			tokenSeparators: [",", " ", "_", "-"],
+			tags: ['0', '30', '45', '60', '75', '90'],
+			maximumSelectionSize: 7,
+			selectOnBlur: true,
+			createSearchChoice: function() { return null; }
+		});
+
 
 		$('.select_chart').on('change', function()
 		{			
