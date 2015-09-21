@@ -194,6 +194,18 @@ class CalendarController extends BaseController
 			App::abort(404);
 		}
 
+		if (Input::has('break_idle')) 
+		{
+			$break_idle 						= Input::get('break_idle');
+			$tmp_break_idle						= [];
+
+			foreach ($break_idle as $k => $v) {
+				$tmp_break_idle[$k] = $v*60; 
+			}
+
+			$attributes['break_idle']			= implode(',', $tmp_break_idle);
+		}
+
 		$errors 								= new MessageBag();
 		
 		DB::beginTransaction();

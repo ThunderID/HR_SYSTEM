@@ -47,6 +47,11 @@
 					</div>
 				</div>
 			</div>
+			<div class="row mt-10">
+				<div class="col-sm-12">
+					<h4>Break Idle</h4>
+				</div>
+			</div>
 			<div class="row tmp_break_idle">
 			</div>
 			<div class="form-group text-right">				
