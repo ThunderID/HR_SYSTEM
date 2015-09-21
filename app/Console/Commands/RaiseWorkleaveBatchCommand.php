@@ -98,21 +98,48 @@ class RaiseWorkleaveBatchCommand extends Command {
 		foreach ($persons as $key => $value) 
 		{
 			//cek riwayat kerja
-			// cek status
-			$pwleave 				= FollowWorkleave::workid($value['works'][0]['pivot']['id'])->withattributes(['workleave'])->first();
+			$work 					= Work::find($value['works'][0]['pivot']['id']);
 
-			$wleave 				= Workleave::workleaveid($pwleave['id'])->where('quota', '>', $pwleave['quota'])->orderBy('quota', 'desc')->first();
-			
-			$is_success 			= new FollowWorkleave;
-			$is_success->fill([
-					'work_id'		=> $value['works'][0]['pivot']['id'],
-				]);
+			$prev_work 				= Work::active(false)->personid($model['attributes']['person_id'])->startbefore($work->start)->orderby('start', 'desc')->get();
 
-			$is_success->Workleave()->associate($wleave);
+			$work_start 			= $work->start;
 
-			if(!$is_success->save())
+			foreach ($prev_work as $key => $value) 
 			{
-				$errors->add('Batch', $is_success->getError());
+				if($key > 0)
+				{
+					$prev_end 		= new Carbon($prev_work[$key-1]->end);
+					$date_diff 		= $prev_end->diffInDays(new Carbon($value->start));
+
+					//if end of prev work not same day of next start (idle), then start of work must be next start
+					if($date_diff > 1)
+					{
+						$work_start = $value->start;
+					}
+					//else if end of prev work is same day of next start (idle), then start of work must be first work start
+				}
+				else
+				{
+					$work_start 		= $value->start;
+				}
+			}
+
+			$cwleave 					= ChartWorkleave::chartid($value['works'][0]['id'])->withattributes(['workleave'])->first();
+			
+			if($cwleave && $work_start >= date('Y-m-d', strtotime($cwleave->rules)))
+			{
+				$is_success 			= new FollowWorkleave;
+				$is_success->fill([
+						'work_id'		=> $value['works'][0]['pivot']['id'],
+					]);
+
+				$is_success->Workleave()->associate($cwleave->workleave);
+
+				if(!$is_success->save())
+				{
+					$errors->add('Batch', $is_success->getError());
+				}
+				
 			}
 			
 			if(!$errors->count())

@@ -5,6 +5,7 @@
  * 	ID 								: Auto Increment, Integer, PK
  * 	chart_id 						: Foreign Key From Work, Integer, Required
  * 	workleave_id 					: Foreign Key From Workleave, Integer, Required
+ * 	rules 							: Text
  *	created_at						: Timestamp
  * 	updated_at						: Timestamp
  * 	deleted_at						: Timestamp
@@ -40,6 +41,7 @@ class ChartWorkleave extends BaseModel {
 
 	protected 	$fillable			= 	[
 											'chart_id' 					,
+											'rules' 					,
 										];
 
 	protected 	$rules				= 	[
