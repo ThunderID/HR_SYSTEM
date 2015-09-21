@@ -54,6 +54,7 @@ class AppServiceProvider extends ServiceProvider {
 		\App\Models\Workleave::observe(new \App\Models\Observers\WorkleaveObserver);
 		\App\Models\PersonWorkleave::observe(new \App\Models\Observers\PersonWorkleaveObserver);
 		\App\Models\FollowWorkleave::observe(new \App\Models\Observers\FollowWorkleaveObserver);
+		\App\Models\ChartWorkleave::observe(new \App\Models\Observers\ChartWorkleaveObserver);
 
 		\App\Models\Work::observe(new \App\Models\Observers\WorkObserver);
 		
@@ -122,6 +123,7 @@ class AppServiceProvider extends ServiceProvider {
 		\App\Models\Workleave::observe(new \App\Models\Observers\WorkleaveObserver);
 		\App\Models\PersonWorkleave::observe(new \App\Models\Observers\PersonWorkleaveObserver);
 		\App\Models\FollowWorkleave::observe(new \App\Models\Observers\FollowWorkleaveObserver);
+		\App\Models\ChartWorkleave::observe(new \App\Models\Observers\ChartWorkleaveObserver);
 
 		\App\Models\Work::observe(new \App\Models\Observers\WorkObserver);
 
