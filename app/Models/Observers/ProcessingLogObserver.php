@@ -101,6 +101,7 @@ class ProcessingLogObserver
 
 			$name 					= 'Attendance';
 			$tooltip 				= [];
+			$idles 					= [];
 
 			//1. CHECK SCHEDULE
 			//check if person schedule were provided
@@ -113,7 +114,7 @@ class ProcessingLogObserver
 				
 				$schedule_end		= $pschedulee->schedules[0]->end;
 
-				$break_idle			= $pschedulee->schedules[0]->break_idle;
+				$break_idle			= ($pschedulee->schedules[0]->break_idle);
 
 				//set workid
 				$working 			= Person::ID($model['attributes']['person_id'])->CurrentWork($on)->first();
@@ -233,6 +234,7 @@ class ProcessingLogObserver
 						$is_absence = $calendar->workscalendars[0]->is_absence;
 						$workdays  	= explode(',', $calendar->workscalendars[0]->calendar->workdays);
 						$breakidles = explode(',', $calendar->workscalendars[0]->calendar->break_idle);
+
 						$lworkdays 	= [];
 						foreach ($workdays as $idx => $days) 
 						{
@@ -246,12 +248,12 @@ class ProcessingLogObserver
 						$wd			= ['monday' => 'senin', 'tuesday' => 'selasa', 'wednesday' => 'rabu', 'thursday' => 'kamis', 'friday' => 'jumat', 'saturday' => 'sabtu', 'sunday' => 'minggu', 'senin' => 'monday', 'selasa' => 'tuesday', 'rabu' => 'wednesday', 'kamis' => 'thursday', 'jumat' => 'friday', 'sabtu' => 'saturday', 'minggu' => 'sunday'];
 						$day 		= date("l", strtotime($model['attributes']['on']));
 
-						if(isset($wd[strtolower($day)]) && in_array(strtolower($wd[strtolower($day)]), $lworkdays) && isset($lbreaks[strtolower($day)]))
+						if(isset($wd[strtolower($day)]) && in_array(strtolower($wd[strtolower($day)]), $lworkdays) && isset($lbreaks[strtolower($wd[strtolower($day)])]))
 						{
 							$modified_status= '';
 							$schedule_start = $calendar->workscalendars[0]->calendar->start;
 							$schedule_end 	= $calendar->workscalendars[0]->calendar->end;	
-							$break_idle 	= (int)$lbreaks[strtolower($day)];
+							$break_idle 	= (int)$lbreaks[strtolower($wd[strtolower($day)])];
 						}
 						else
 						{
@@ -562,8 +564,10 @@ class ProcessingLogObserver
 			}
 
 			$left_idle 					= $break_time - $break_idle;
+
 			if($left_idle <= 0)
 			{
+				$break_idle 			= $break_time;
 				switch ($idle_line) 
 				{
 					case 'total_idle_1':
@@ -585,15 +589,15 @@ class ProcessingLogObserver
 				switch ($idle_line) 
 				{
 					case 'total_idle_1':
-						$total_idle_1 		= $total_idle_1 - $break_idle;
+						$total_idle_1 		= $total_idle_1 - $break_time;
 						$frequency_idle_1 	= $frequency_idle_1 - 1;
 						break;
 					case 'total_idle_2':
-						$total_idle_2 		= $total_idle_2 - $break_idle;
+						$total_idle_2 		= $total_idle_2 - $break_time;
 						$frequency_idle_2 	= $frequency_idle_2 - 1;
 						break;
 					case 'total_idle_3':
-						$total_idle_3 		= $total_idle_3 - $break_idle;
+						$total_idle_3 		= $total_idle_3 - $break_time;
 						$frequency_idle_3 	= $frequency_idle_3 - 1;
 						break;
 				}
