@@ -288,7 +288,7 @@
 			temp_break += '<div class="col-xs-12 col-sm-2"> \
 								<div class="form-group"> \
 									<label class="control-label">'+item+'</label> \
-									<input type="text" name="break_idle" class="form-control select2-tag-minute"/> \
+									<input type="text" name="break_idle[]" class="form-control select2-tag-minute"/> \
 									<span class="font-12">menit</span> \
 								</div> \
 						   </div>';
