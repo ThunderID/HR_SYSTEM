@@ -32,6 +32,7 @@ class CalendarTableSeeder extends Seeder
 					'organisation_id'				=> rand(1, $total_orgs),
 					'name'							=> $faker->country,
 					'workdays'						=> 'senin,selasa,rabu,kamis,jumat',
+					'break_idle'					=> '3600,3600,3600,3600,5400',
 					'start'							=> $start,
 					'end'							=> date('H:i:s', strtotime($start.' + 9 hours')),
 				]);

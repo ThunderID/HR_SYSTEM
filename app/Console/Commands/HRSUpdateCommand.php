@@ -121,7 +121,7 @@ class HRSUpdateCommand extends Command {
 		foreach($calendars as $key => $value)
 		{
 			$value->fill([
-				'break_idle'				=> '60,60,60,60,90',
+				'break_idle'				=> '3600,3600,3600,3600,5400',
 			]);
 
 			if (!$value->save())
