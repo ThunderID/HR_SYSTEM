@@ -6,6 +6,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Database\Schema\Blueprint;
 use Schema;
 use App\Models\Calendar;
+use App\Models\Chart;
+use App\Models\ChartWorkleave;
+use App\Models\Workleave;
 use DB, Hash;
 
 class HRSUpdateCommand extends Command {
