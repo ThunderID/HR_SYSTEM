@@ -283,9 +283,19 @@ class Person extends BaseModel {
 		{
 			$nik 				= strtoupper($this->organisation->code).date('y').'.';
 
-			$frequentnumber 	= Person::where('uniqid', 'like', $nik.'%')->get();
+			$frequentnumber 	= Person::where('uniqid', 'like', $nik.'%')->orderby('uniqid', 'desc')->first();
 
-			$nik 				= $nik.str_pad(count($frequentnumber)+1, 4, '0', STR_PAD_LEFT);
+			if($frequentnumber)
+			{
+				$niknumb 		= str_replace(strtoupper($this->organisation->code).date('y').'.', '', $frequentnumber->uniqid);
+				$number 		= (int)$niknumb+1;
+			}
+			else
+			{
+				$number 		= 1;
+			}
+
+			$nik 				= $nik.str_pad($number, 4, '0', STR_PAD_LEFT);
 			
 			return $nik;
 		}
