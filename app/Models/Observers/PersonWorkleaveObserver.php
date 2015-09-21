@@ -50,7 +50,8 @@ class PersonWorkleaveObserver
 					return false;
 				}
 			}
-			elseif(isset($model['attributes']['workleave_id']) && $model['attributes']['workleave_id']!=0 && !isset($model->getDirty()['end']) && !isset($model->getDirty()['start']))
+			
+			if(isset($model['attributes']['workleave_id']) && $model['attributes']['workleave_id']!=0 && !isset($model->getOriginal()['end']) && !isset($model->getOriginal()['start']))
 			{
 				$work 					= Work::find($model['attributes']['work_id']);
 
@@ -94,9 +95,14 @@ class PersonWorkleaveObserver
 				//if start = beginning of this year then end count one by one
 				if($start == date('Y-m-d', strtotime($model['attributes']['start'])))
 				{
-					//hitung quota
-					$quota 				= (((date('m', strtotime($end)) - date('m', strtotime($start)) + 2)/12)*12) - $prev_quota;
-
+					if(date('d', strtotime($start)) >= '15')
+					{
+						$quota 			= 0;
+					}
+					else
+					{
+						$quota 			= (((date('m', strtotime($end)) - date('m', strtotime($start)) + 1 )/12)*12) - $prev_quota;
+					}
 					//check policies
 					$extendpolicy 		= Policy::organisationid($model->workleave->organisation_id)->type('extendsworkleave')->OnDate(date('Y-m-d H:i:s', strtotime($end)))->orderby('started_at', 'asc')->first();
 

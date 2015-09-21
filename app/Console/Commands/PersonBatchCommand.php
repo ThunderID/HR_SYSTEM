@@ -575,7 +575,7 @@ class PersonBatchCommand extends Command {
 				{
 					$is_fwleave_success 						= FollowWorkleave::workid($is_work_success->id)->workleaveid($is_workleave_success->id)->first();
 
-					if(!$is_fwleave_success->meta->success)
+					if(!$is_fwleave_success)
 					{
 						$fwleave[$i]['work_id'] 				= $is_work_success->id;
 
@@ -630,7 +630,7 @@ class PersonBatchCommand extends Command {
 
 						$morphed->fill([
 							'queue_id'					=> $pending->id,
-							'queue_morph_id'			=> $is_personworkleave_success->data->id,
+							'queue_morph_id'			=> $is_personworkleave_success->id,
 							'queue_morph_type'			=> get_class(new PersonWorkleave),
 						]);
 
@@ -685,7 +685,7 @@ class PersonBatchCommand extends Command {
 
 							$morphed->fill([
 								'queue_id'					=> $pending->id,
-								'queue_morph_id'			=> $is_pwleave_success->data->id,
+								'queue_morph_id'			=> $is_pwleave_success->id,
 								'queue_morph_type'			=> get_class(new PersonWorkleave),
 							]);
 
