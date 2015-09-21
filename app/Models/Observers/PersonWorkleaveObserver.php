@@ -135,7 +135,7 @@ class PersonWorkleaveObserver
 					// 	$extendpolicy['value']	= '+ 1 year + 3 months';
 					// }
 
-					$extendpolicy['value']	= '+ 3 months';
+					$extendpolicy['value']	= '+ 1 year';
 					
 					//check could be taken at
 					$couldbetaken 		= date('Y-m-d', strtotime($start. ' + 1 year'));
@@ -150,7 +150,7 @@ class PersonWorkleaveObserver
 				$model->quota			= $quota;
 				$model->start			= $couldbetaken;
 
-				$model->end				= date('Y-m-d', strtotime('last day of December '.date('Y', strtotime($model['attributes']['end'])).' '.$extendpolicy['value']));
+				$model->end				= date('Y-m-d', strtotime('last day of December '.date('Y', strtotime($model['attributes']['start'])).' '.$extendpolicy['value']));
 			}
 
 			return true;
