@@ -5,6 +5,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
 use App\Models\Person;
+use App\Models\Organisation;
 
 class HRUpdateNIKCommand extends Command {
 
@@ -77,15 +78,28 @@ class HRUpdateNIKCommand extends Command {
 	 **/
 	public function updatenik()
 	{
-		$persons 				= Person::get();
+		$organisation 			= Organisation::get();
 
-		foreach ($persons as $key => $value) 
+		foreach ($organisation as $key => $value) 
 		{
-			str_replace(strtoupper($value->organisation->code).'.', strtoupper($value->organisation->code), $value->uniqid);
-			if (!$value->save())
+			$this->info("Updating ".$value->code);
+
+			$persons 			= Person::organisationid($value->id)->get();
+			foreach ($persons as $key2 => $value2) 
 			{
-				print_r($value->getError());
-				exit;
+				$new_nik 		= str_replace(strtoupper($value2->organisation->code).'.', strtoupper($value2->organisation->code), $value2->uniqid);
+				
+				$value2->fill(['uniqid' => $new_nik]);
+
+				if (!$value2->save())
+				{
+					$this->info("Failed ".$value2->getError());
+				}
+
+				if(($key2+1)%10==0)
+				{
+					$this->info("Progress ".($key2+1)." Dari ".count($persons));
+				}
 			}
 		}
 
