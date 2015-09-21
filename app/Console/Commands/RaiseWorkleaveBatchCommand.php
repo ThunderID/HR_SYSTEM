@@ -114,7 +114,6 @@ class RaiseWorkleaveBatchCommand extends Command {
 			{
 				$errors->add('Batch', $is_success->getError());
 			}
-			}
 			
 			if(!$errors->count())
 			{
