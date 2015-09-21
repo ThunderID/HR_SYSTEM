@@ -6942,3 +6942,9 @@ ul.nav li.wizard a {
 .action-widget a {
 	color: #262626;
 }
+.checkbox-generate {
+	margin-top: 15px;
+}
+.label-generate {
+	margin-top: 10px;
+}
