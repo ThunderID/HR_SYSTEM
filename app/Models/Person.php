@@ -285,7 +285,7 @@ class Person extends BaseModel {
 
 			$frequentnumber 	= Person::where('uniqid', 'like', $nik.'%')->get();
 
-			$nik 				= $nik.str_pad(count($frequentnumber), 4, '0', STR_PAD_LEFT);
+			$nik 				= $nik.str_pad(count($frequentnumber)+1, 4, '0', STR_PAD_LEFT);
 			
 			return $nik;
 		}
