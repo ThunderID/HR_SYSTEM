@@ -115,15 +115,15 @@ class HRSUpdateCommand extends Command {
 
 		$calendars 							= Calendar::get();
 
-		foreach($calendars as $value => $key)
+		foreach($calendars as $key => $value)
 		{
 			$value->fill([
 				'break_idle'				=> '60,60,60,60,90',
 			]);
 
-			if (!$data->save())
+			if (!$value->save())
 			{
-				print_r($data->getError());
+				print_r($value->getError());
 				exit;
 			}
 		}
