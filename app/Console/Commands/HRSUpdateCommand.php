@@ -131,5 +131,20 @@ class HRSUpdateCommand extends Command {
 		$this->info("Updating Calendar with break idle");
 
 		return true;
+
+
+		Schema::create('charts_workleaves', function(Blueprint $table)
+		{
+			$table->increments('id');
+			$table->integer('chart_id')->unsigned()->index();
+			$table->integer('workleave_id')->unsigned()->index();
+			$table->text('rules');
+			$table->timestamps();
+			$table->softDeletes();
+			
+			$table->index(['deleted_at', 'chart_id']);
+		});
+
+		$this->info("Add charts workleaves table");
 	}
 }
