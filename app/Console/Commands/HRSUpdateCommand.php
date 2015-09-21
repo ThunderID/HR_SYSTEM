@@ -146,5 +146,32 @@ class HRSUpdateCommand extends Command {
 		});
 
 		$this->info("Add charts workleaves table");
+
+		$charts 							= Chart::get();
+
+		foreach($charts as $key => $value)
+		{
+			$workleave 						= Workleave::organisationid($value->branch->organisation_id)->status('CN')->first();
+
+			if($workleave)
+			{
+				$data 						= new ChartWorkleave;
+				$data->fill([
+					'chart_id'				=> $value->id,
+				]);
+
+				$data->Workleave()->associate($workleave);
+
+				if (!$data->save())
+				{
+					print_r($data->getError());
+					exit;
+				}
+			}
+		}
+
+		$this->info("Updating Chart with workleave");
+
+		return true;
 	}
 }
