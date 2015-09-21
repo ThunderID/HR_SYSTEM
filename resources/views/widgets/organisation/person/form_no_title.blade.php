@@ -29,7 +29,7 @@
 				<div class="form-group">
 					<div class="checkbox">
 						<label class="mt-20">
-							{!! Form::checkbox('is_automatic_nik', '1', '', ['class' => 'checkbox_person_automatic_nik checkbox-generate']) !!} <span class="label-automatic-generate">Otomatis Generate</span>
+							{!! Form::checkbox('is_automatic_nik', '1', '', ['class' => 'checkbox_person_automatic_nik checkbox-generate', 'data-org' => Input::get('org_id')]) !!} <span class="label-automatic-generate">Otomatis Generate</span>
 						</label>
 					</div>
 				</div>

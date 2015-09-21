@@ -27,9 +27,20 @@ $('.thumb').change(function(e){
 
 	/*====CHECKBOX AUTOMATIC GENERATE NIK=====*/
 	$('.checkbox_person_automatic_nik').change(function() {
-		// CODING GET AJAX FROM .....
+		var org_id = $(this).attr('data-org');
+		// CODING GET NIK AJAX FROM PERSONCONTROLLER
 		if ($(this).is(':checked')) {
-			$('.form_person_nik').val('halo');
+			$.ajax({
+				url: '{{ route("hr.person.getlastnik") }}',
+				method: 'GET',
+				dataType: 'json',
+				data: { org_id: org_id },
+				success: function(result) {
+					if (result.data) {	
+						$('.form_person_nik').val(result.data.nik);
+					}	
+				}
+			});
 		}
 	});
 </script>
