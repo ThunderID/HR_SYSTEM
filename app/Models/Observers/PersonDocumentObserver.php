@@ -1,7 +1,7 @@
 <?php namespace App\Models\Observers;
 
 use \Validator, Event;
-use \App\Models\Detail;
+use \App\Models\DocumentDetail;
 use App\Events\CreateRecordOnTable;
 
 /* ----------------------------------------------------------------------
@@ -40,7 +40,7 @@ class PersonDocumentObserver
 		{
 			foreach ($model->details as $key => $value) 
 			{
-				$detail 	 			= new Detail;
+				$detail 	 			= new DocumentDetail;
 				$delete 				= $detail->find($value['id']);
 
 				if($delete && !$delete->delete())

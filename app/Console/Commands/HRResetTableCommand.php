@@ -5,6 +5,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
 use App\Models\AttendanceDetail;
+use App\Models\PersonWorkleave;
+use App\Models\PersonDocument;
 use DB;
 
 class HRResetTableCommand extends Command {
@@ -100,19 +102,36 @@ class HRResetTableCommand extends Command {
 
 		foreach ($attendance_details as $key => $value) 
 		{
-			if($value->PersonWorkleave->delete())
+			if($value->person_workleave_id!=0)
 			{
-				$this->info($value->errors);
+				$pwleave 				= PersonWorkleave::find($value->person_workleave_id);
+				if(!$pwleave->delete())
+				{
+					$this->info($value->errors);
+				}
 			}
-			elseif($value->PersonDocument->delete())
+			
+			if($value->person_document_id!=0)
 			{
-				$this->info($value->errors);
+				$pdoc 					= PersonDocument::find($value->person_document_id);
+				if(!$pdoc->delete())
+				{
+					$this->info($value->errors);
+				}
 			}
 		}
 
 		DB::table('attendance_details')->truncate();
 
 		$this->info("Truncate Attendance Details");
+
+		DB::table('tmp_queues')->truncate();
+
+		$this->info("Truncate Queues");
+
+		DB::table('queue_morphs')->truncate();
+
+		$this->info("Truncate Queue Morphs");
 
 		return true;
 	}
