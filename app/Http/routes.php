@@ -280,6 +280,11 @@ Route::group(['namespace' => 'Organisation\\'], function()
 	Route::any('documents-list', 					['uses' => 'DocumentController@ajax', 				'as' => 'hr.documents.list']);
 
 	// ------------------------------------------------------------------------------------
+	// AJAX GET LAST NIK PERSON
+	// ------------------------------------------------------------------------------------
+	Route::any('get-last-nik',						['uses' => 'PersonController@getLastNIK',			'as' => 'hr.person.getlastnik']);
+
+	// ------------------------------------------------------------------------------------
 	// CHECK BATCH PROGESS ON WORKLEAVE
 	// ------------------------------------------------------------------------------------
 
@@ -323,7 +328,6 @@ Route::group(['namespace' => 'Organisation\\Person\\', 'prefix' => 'person'], fu
 	// ------------------------------------------------------------------------------------
 
 	Route::any('follows-list',						['uses' => 'WorkController@ajax',					'as' => 'hr.person.work.ajax']);
-
 
 	// ------------------------------------------------------------------------------------
 	// CHECK BATCH PROGESS ON PERSON WORKLEAVE

@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers\Organisation;
 
-use Input, Session, App, Paginator, Redirect, DB, Config, Validator, Image, Hash, Excel;
+use Input, Session, App, Paginator, Redirect, DB, Config, Validator, Image, Hash, Excel, Response;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -755,5 +755,16 @@ class PersonController extends BaseController
 		$image = Image::make(public_path() . '/' . $image_path)->resize($width, $height)->save(public_path($path['dirname'] . '/' . $new_file_name));
 
 		return $path['dirname'] . '/' . $new_file_name;
+	}
+
+	public function getLastNIK()
+	{
+		$search 						= ['organisationid' => 1];
+		$results 						= $this->dispatch(new Getting(new Person, $search, ['created_at' => 'desc'] , 1, 1));
+		$contents 						= json_decode($results);
+
+		$nik 							= json_decode(json_encode($contents->data), true);
+
+		return Response::json(['data' => $nik], 200);
 	}
 }
