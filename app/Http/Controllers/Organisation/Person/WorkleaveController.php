@@ -70,7 +70,7 @@ class WorkleaveController extends BaseController
 		$search['id'] 							= $person['works'][0]['pivot']['id'];
 		$search['currentworkleave'] 			= true;
 		$sort 									= ['created_at' => 'desc'];
-
+		
 		$results 								= $this->dispatch(new Getting(new Work, $search, $sort , 1, 1));
 		$contents 								= json_decode($results);
 
@@ -79,6 +79,7 @@ class WorkleaveController extends BaseController
 			$wleave['id'] 						= 0;
 			$wleave['quota'] 					= 0;
 			$wleave['work_id'] 					= 0;
+			$wleave['chart_id'] 				= 0;
 			$wleave['follow_workleave_id'] 		= null;
 		}
 		else
@@ -87,6 +88,8 @@ class WorkleaveController extends BaseController
 			$wleave['work_id'] 					= $contents->data->followworkleave->work_id;
 			$wleave['follow_workleave_id'] 		= $contents->data->followworkleave->id;
 		}
+
+		$wleave['chart_id'] 					= $person['works'][0]['id'];
 
 		$filter 									= [];
 		if(Input::has('q'))
@@ -164,7 +167,7 @@ class WorkleaveController extends BaseController
 				}
 			}
 		}
-		
+
 		$this->layout->page 						= view('pages.organisation.person.workleave.index');
 		$this->layout->page->controller_name 		= $this->controller_name;
 		$this->layout->page->data 					= $data;

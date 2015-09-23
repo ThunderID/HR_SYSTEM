@@ -77,7 +77,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// WORKLEAVE
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.workleave.table', 'widgets.organisation.workleave.form', 'widgets.organisation.workleave.select', 'widgets.organisation.person.work.select_workleave', 'widgets.organisation.person.workleave.followworkleave'], 	'App\Http\ViewComposers\WorkleaveComposer');
+		View::composer(['widgets.organisation.workleave.table', 'widgets.organisation.workleave.form', 'widgets.organisation.workleave.select', 'widgets.organisation.person.work.select_workleave'], 	'App\Http\ViewComposers\WorkleaveComposer');
 
 		// -----------------------------------------------------------------------------
 		// PERSON
@@ -122,7 +122,7 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		// -----------------------------------------------------------------------------
 		// CHARTWORKLEAVE
 		// -----------------------------------------------------------------------------
-		View::composer(['widgets.organisation.branch.chart.workleave.table', 'widgets.organisation.branch.chart.workleave.form'], 	'App\Http\ViewComposers\ChartWorkleaveComposer');
+		View::composer(['widgets.organisation.branch.chart.workleave.table', 'widgets.organisation.branch.chart.workleave.form', 'widgets.organisation.person.workleave.followworkleave'], 	'App\Http\ViewComposers\ChartWorkleaveComposer');
 
 		// -----------------------------------------------------------------------------
 		// SCHEDULE

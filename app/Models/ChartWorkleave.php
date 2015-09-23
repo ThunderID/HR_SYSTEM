@@ -52,6 +52,7 @@ class ChartWorkleave extends BaseModel {
 											'id' 						=> 'ID', 
 											'chartid' 					=> 'ChartID', 
 											'workleaveid' 				=> 'WorkleaveID', 
+											'status' 					=> 'WorkleaveStatus', 
 											'withattributes' 			=> 'WithAttributes',
 											'withtrashed' 				=> 'WithTrashed',
 										];
@@ -60,6 +61,7 @@ class ChartWorkleave extends BaseModel {
 											'id' 						=> 'Could be array or integer', 
 											'chartid' 					=> 'Could be array or integer', 
 											'workleaveid' 				=> 'Could be array or integer', 
+											'status' 					=> 'Could be array or string', 
 											'withattributes' 			=> 'Must be array of relationship',
 											'withtrashed' 				=> 'Must be true',
 										];

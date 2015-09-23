@@ -36,4 +36,9 @@ trait HasWorkleaveTrait {
 
 		return $query->where('workleave_id', $variable);
 	}
+
+	public function scopeWorkleaveStatus($query, $variable)
+	{
+		return $query->whereHas('workleave', function($q)use($variable){$q->status($variable);});
+	}
 }

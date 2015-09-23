@@ -49,8 +49,8 @@
 													'workleavelist'			=>
 													[
 														'organisation_id'	=> $data['id'],
-														'search'			=> ['status' => 'CN'],
-														'sort'				=> ['name' => 'asc'],
+														'search'			=> ['status' => 'CN', 'chartid' => $wleave['chart_id'], 'withattributes' => ['workleave']],
+														'sort'				=> ['chart_id' => 'asc'],
 														'page'				=> 1,
 														'per_page'			=> 100
 													],
