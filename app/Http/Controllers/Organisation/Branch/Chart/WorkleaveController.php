@@ -220,7 +220,7 @@ class WorkleaveController extends BaseController
 		if(!$errors->count())
 		{
 			DB::commit();
-			return Redirect::route('hr.chart.workleaves.index', ['chart_id' => $chart_id, 'branch_id' => $branch_id, 'org_id' => $org_id])->with('alert_success', 'Kalender Kerja Jabatan "' . $contents->data->name. '" sudah disimpan');
+			return Redirect::route('hr.chart.workleaves.index', ['chart_id' => $chart_id, 'branch_id' => $branch_id, 'org_id' => $org_id])->with('alert_success', 'Cuti Jabatan "' . $contents->data->name. '" sudah disimpan');
 		}
 		
 		DB::rollback();
@@ -306,7 +306,7 @@ class WorkleaveController extends BaseController
 			}
 			else
 			{
-				return Redirect::route('hr.chart.workleaves.index', ['chart_id' => $chart_id, 'branch_id' => $branch_id, 'org_id' => $org_id])->with('alert_success', 'Kalender Kerja sudah dihapus');
+				return Redirect::route('hr.chart.workleaves.index', ['chart_id' => $chart_id, 'branch_id' => $branch_id, 'org_id' => $org_id])->with('alert_success', 'Cuti sudah dihapus');
 			}
 		}
 		else
