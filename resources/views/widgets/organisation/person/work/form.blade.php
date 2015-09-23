@@ -89,6 +89,15 @@
 				<label class="control-label">Alasan Berhenti</label>
 				{!!Form::textarea('reason_end_job', $WorkComposer['widget_data']['worklist']['work']['reason_end_job'], ['class' => 'form-control', 'tabindex' => 6])!!}
 			</div>
+
+			<div class="form-group">
+				<div class="checkbox">
+					<label>
+						{!! Form::checkbox('is_absence', '1', $WorkComposer['widget_data']['worklist']['work']['is_absence'], ['class' => '', 'tabindex' => '8']) !!} Boleh Absen
+					</label>
+				</div>
+			</div>
+
 			<div class="form-group text-right">
 				<a href="{{ $WorkComposer['widget_data']['worklist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
 				<input type="submit" class="btn btn-primary" value="Simpan">

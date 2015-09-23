@@ -315,6 +315,11 @@ class WorkController extends BaseController
 			$attributes['end'] 					= date('Y-m-d', strtotime(Input::get('end')));
 		}
 
+		if (Input::has('is_absence'))
+		{
+			$attributes['is_absence']			= Input::get('is_absence');
+		}
+
 		$errors 								= new MessageBag();
 
 		DB::beginTransaction();
