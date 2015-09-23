@@ -42,6 +42,9 @@
 								<li>
 									<a href="{{ route('hr.chart.calendars.index', ['chart_id' => $value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']]) }}" title="lihat kalender"><i class="fa fa-calendar fa-fw"></i> Kalender</a>
 								</li>
+								<li>
+									<a href="{{ route('hr.chart.workleaves.index', ['chart_id' => $value['id'], 'org_id' => $data['id'], 'branch_id' => $branch['id']]) }}" title="lihat Cuti"><i class="fa fa-bed fa-fw"></i> Cuti</a>
+								</li>
 							</ul>
 						</div>
 					</div>

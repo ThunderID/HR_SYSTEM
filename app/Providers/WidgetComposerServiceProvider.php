@@ -120,6 +120,11 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		View::composer(['widgets.organisation.branch.chart.follow.table', 'widgets.organisation.branch.chart.follow.form', 'widgets.organisation.calendar.chart.table', 'widgets.organisation.calendar.chart.form'], 	'App\Http\ViewComposers\FollowComposer');
 
 		// -----------------------------------------------------------------------------
+		// CHARTWORKLEAVE
+		// -----------------------------------------------------------------------------
+		View::composer(['widgets.organisation.branch.chart.workleave.table', 'widgets.organisation.branch.chart.workleave.form'], 	'App\Http\ViewComposers\ChartWorkleaveComposer');
+
+		// -----------------------------------------------------------------------------
 		// SCHEDULE
 		// -----------------------------------------------------------------------------
 		View::composer(['widgets.schedule.table', 'widgets.schedule.form'], 	'App\Http\ViewComposers\ScheduleComposer');

@@ -63,6 +63,14 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.chart.calendars.update'						=> 15,
 							'hr.chart.calendars.delete'						=> 16,
 
+							'hr.chart.workleaves.index'						=> 13,
+							'hr.chart.workleaves.show'						=> 13,
+							'hr.chart.workleaves.create'					=> 14,
+							'hr.chart.workleaves.store'						=> 14,
+							'hr.chart.workleaves.edit'						=> 15,
+							'hr.chart.workleaves.update'					=> 15,
+							'hr.chart.workleaves.delete'					=> 16,
+
 							'hr.branch.apis.index'							=> 17,
 							'hr.branch.apis.show'							=> 17,
 							'hr.branch.apis.create'							=> 18,

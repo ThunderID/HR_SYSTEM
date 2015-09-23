@@ -163,6 +163,12 @@ Route::group(['middleware' => 'csrfverify'], function()
 					// ------------------------------------------------------------------------------------
 
 					Route::resource('calendars',	'CalendarController',								['names' => ['index' => 'hr.chart.calendars.index', 'create' => 'hr.chart.calendars.create', 'store' => 'hr.chart.calendars.store', 'show' => 'hr.chart.calendars.show', 'edit' => 'hr.chart.calendars.edit', 'update' => 'hr.chart.calendars.update', 'destroy' => 'hr.chart.calendars.delete']]);
+
+					// ------------------------------------------------------------------------------------
+					// WORKLEAVES FOR CHART RESOURCE
+					// ------------------------------------------------------------------------------------
+
+					Route::resource('workleaves',	'WorkleaveController',								['names' => ['index' => 'hr.chart.workleaves.index', 'create' => 'hr.chart.workleaves.create', 'store' => 'hr.chart.workleaves.store', 'show' => 'hr.chart.workleaves.show', 'edit' => 'hr.chart.workleaves.edit', 'update' => 'hr.chart.workleaves.update', 'destroy' => 'hr.chart.workleaves.delete']]);
 				});
 
 			});
