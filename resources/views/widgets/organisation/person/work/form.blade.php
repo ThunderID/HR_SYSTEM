@@ -57,6 +57,13 @@
 				?>
 				{!!Form::select('status', $status_work, $WorkComposer['widget_data']['worklist']['work']['status'], ['class' => 'form-control select2', 'tabindex' => 3]) !!}
 			</div>
+			<div class="form-group mt-30 mb-30">
+				<div class="checkbox">
+					<label>
+						{!! Form::checkbox('is_absence', '1', $WorkComposer['widget_data']['worklist']['work']['is_absence'], ['class' => '', 'tabindex' => '8']) !!} Tidak Perlu Absen
+					</label>
+				</div>
+			</div>
 			<div class="form-group">
 				<label class="control-label">Grade</label>
 				{!!Form::input('text', 'grade', $WorkComposer['widget_data']['worklist']['work']['grade'], ['class' => 'form-control'])!!}							
@@ -90,13 +97,6 @@
 				{!!Form::textarea('reason_end_job', $WorkComposer['widget_data']['worklist']['work']['reason_end_job'], ['class' => 'form-control', 'tabindex' => 6])!!}
 			</div>
 
-			<div class="form-group">
-				<div class="checkbox">
-					<label>
-						{!! Form::checkbox('is_absence', '1', $WorkComposer['widget_data']['worklist']['work']['is_absence'], ['class' => '', 'tabindex' => '8']) !!} Boleh Absen
-					</label>
-				</div>
-			</div>
 
 			<div class="form-group text-right">
 				<a href="{{ $WorkComposer['widget_data']['worklist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
