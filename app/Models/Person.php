@@ -454,10 +454,9 @@ class Person extends BaseModel {
 		}
 
 		$query =  $query->selectraw('persons.*')
-					->wherehas('works', function($q)use($end){$q->where(DB::raw('`end` >= '. $end));})
+					->wherehas('works', function($q)use($end){$q->where(function($query)use($end){$query->where('end', '>=' ,$end)->orWhereraw('end is null');});})
 					->wherehas('workscalendars', function($q)use($variable){$q->status(['permanent', 'contract', 'probation', 'internship', 'permanent','others']);})
-					->with(['works' => function($q)use($end){$q->where(DB::raw('`end` >= '. $end));}])
-					->with(['works.branch'])
+					->with(['works' => function($q)use($end){$q->where(function($query)use($end){$query->where('end', '>=' ,$end)->orWhereraw('end is null');});}, 'works.branch'])
 					->selectraw('branches.name as branch')
 					->selectraw('charts.name as position')
 					->selectraw('charts.tag as department')
@@ -585,10 +584,9 @@ class Person extends BaseModel {
 		}
 
 		$query =  $query->selectraw('persons.*')
-					->wherehas('works', function($q)use($end){$q->where(DB::raw('`end` >= '. $end));})
+					->wherehas('works', function($q)use($end){$q->where(function($query)use($end){$query->where('end', '>=' ,$end)->orWhereraw('end is null');});})
 					->wherehas('workscalendars', function($q)use($variable){$q->status(['permanent', 'contract', 'probation', 'internship', 'permanent','others']);})
-					->with(['works' => function($q)use($end){$q->where(DB::raw('`end` >= '. $end));}])
-					->with(['works.branch'])
+					->with(['works' => function($q)use($end){$q->where(function($query)use($end){$query->where('end', '>=' ,$end)->orWhereraw('end is null');});}, 'works.branch'])
 					->selectraw('branches.name as branch')
 					->selectraw('charts.name as position')
 					->selectraw('charts.tag as department')
@@ -717,8 +715,7 @@ class Person extends BaseModel {
 		}
 		
 		$query =  $query->selectraw('persons.*')
-					->wherehas('works', function($q)use($start){$q->wherenull('end')->orwhere('end', '>=',  $start);})
-					->with(['works' => function($q)use($start){$q->wherenull('end')->orwhere('end', '>=',  $start);}])
+					->with(['works' => function($q)use($end){$q->where(function($query)use($end){$query->where('end', '>=' ,$end)->orWhereraw('end is null');});}, 'works.branch'])
 					->selectraw('(SELECT sum(if(person_workleaves.status="CN", if(person_workleaves.quota>0, person_workleaves.quota, 0), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.' and deleted_at is null) as quotas')
 					->selectraw('(SELECT sum(if(person_workleaves.status="CI", if(person_workleaves.quota>0, person_workleaves.quota, 0), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.' and deleted_at is null) as plus_quotas')
 					->selectraw('(SELECT sum(if(person_workleaves.quota<0, abs(person_workleaves.quota), 0)) FROM person_workleaves WHERE person_workleaves.person_id = persons.id and date_format(date(person_workleaves.start),"%Y-%m-%d") >= '.$start.' and date_format(date(person_workleaves.end),"%Y-%m-%d") >= '.$end.' and deleted_at is null) as minus_quotas')
