@@ -5,8 +5,17 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
 use App\Models\AttendanceDetail;
+use App\Models\AttendanceLog;
+use App\Models\IdleLog;
+use App\Models\ProcessLog;
+use App\Models\Log;
+use App\Models\ErrorLog;
+use App\Models\RecordLog;
+use App\Models\QueueMorph;
+use App\Models\Queue;
 use App\Models\PersonWorkleave;
 use App\Models\PersonDocument;
+use App\Models\Organisation;
 use DB;
 
 class HRResetTableCommand extends Command {
@@ -43,7 +52,25 @@ class HRResetTableCommand extends Command {
 	public function fire()
 	{
 		//
-		$result 		= $this->emptytable();
+		if(isset($this->option()['orgcode']))
+		{
+			$id 			= $this->option()['orgcode'];
+
+			$org 			= Organisation::code($id)->first();
+
+			if($org)
+			{
+				$result 		= $this->emptytable($id);
+			}
+			else
+			{
+				$this->info("invalid code");
+			}
+		}
+		else
+		{
+			$this->info("no orgcode");
+		}
 
 		return true;
 	}
@@ -56,7 +83,7 @@ class HRResetTableCommand extends Command {
 	protected function getArguments()
 	{
 		return [
-			['example', InputArgument::REQUIRED, 'An example argument.'],
+			['orgcode', InputArgument::REQUIRED, 'An example argument.'],
 		];
 	}
 
@@ -67,9 +94,9 @@ class HRResetTableCommand extends Command {
 	 */
 	protected function getOptions()
 	{
-		return [
-			['example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
-		];
+		return array(
+            array('orgcode', null, InputOption::VALUE_OPTIONAL, 'Queue ID', null),
+        );
 	}
 
 	/**
@@ -78,27 +105,9 @@ class HRResetTableCommand extends Command {
 	 * @return void
 	 * @author 
 	 **/
-	public function emptytable()
+	public function emptytable($orgcode)
 	{
-		DB::table('process_logs')->truncate();
-		$this->info("Truncate Process Logs");
-
-		DB::table('idle_logs')->truncate();
-		$this->info("Truncate Idle Logs");
-
-		DB::table('attendance_logs')->truncate();
-		$this->info("Truncate Attendance Logs");
-
-		DB::table('logs')->truncate();
-		$this->info("Truncate Logs");
-
-		DB::table('error_logs')->truncate();
-		$this->info("Truncate Error Logs");
-
-		DB::table('record_logs')->truncate();
-		$this->info("Truncate Record Logs");
-
-		$attendance_details 			= AttendanceDetail::get();
+		$attendance_details 		= AttendanceDetail::whereHas('attendancelog.processlog.person.organisation', function($q)use($orgcode){$q->code($orgcode);})->get();
 
 		foreach ($attendance_details as $key => $value) 
 		{
@@ -121,17 +130,41 @@ class HRResetTableCommand extends Command {
 			}
 		}
 
-		DB::table('attendance_details')->truncate();
+		$attendance_details 		= AttendanceDetail::whereHas('attendancelog.processlog.person.organisation', function($q)use($orgcode){$q->code($orgcode);})->delete();
 
-		$this->info("Truncate Attendance Details");
+		$this->info("Truncate Attendance Details for ".$orgcode);
 
-		DB::table('tmp_queues')->truncate();
+		$alogs 						= AttendanceLog::whereHas('processlog.person.organisation', function($q)use($orgcode){$q->code($orgcode);})->delete();
+		
+		$this->info("Truncate Attendance Logs for ".$orgcode);
 
-		$this->info("Truncate Queues");
+		$ilogs 						= IdleLog::whereHas('processlog.person.organisation', function($q)use($orgcode){$q->code($orgcode);})->delete();
 
-		DB::table('queue_morphs')->truncate();
+		$this->info("Truncate Idle Logs for ".$orgcode);
 
-		$this->info("Truncate Queue Morphs");
+		$plogs 						= ProcessLog::whereHas('person.organisation', function($q)use($orgcode){$q->code($orgcode);})->delete();
+
+		$this->info("Truncate Process Logs for ".$orgcode);
+
+		$logs 						= Log::whereHas('person.organisation', function($q)use($orgcode){$q->code($orgcode);})->delete();
+
+		$this->info("Truncate Logs for ".$orgcode);
+
+		$elogs 						= ErrorLog::whereHas('organisation', function($q)use($orgcode){$q->code($orgcode);})->delete();
+
+		$this->info("Truncate Error Logs for ".$orgcode);
+
+		$rlogs 						= RecordLog::whereHas('person.organisation', function($q)use($orgcode){$q->code($orgcode);})->delete();
+
+		$this->info("Truncate Record Logs for ".$orgcode);
+
+		$queuesM 					= QueueMorph::whereHas('queue.createdby.organisation', function($q)use($orgcode){$q->code($orgcode);})->delete();
+
+		$this->info("Truncate Queues Morph for ".$orgcode);
+
+		$queues 					= Queue::whereHas('createdby.organisation', function($q)use($orgcode){$q->code($orgcode);})->delete();
+
+		$this->info("Truncate Queues for ".$orgcode);
 
 		return true;
 	}
