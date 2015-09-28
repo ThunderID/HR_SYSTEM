@@ -1,5 +1,5 @@
 <?php namespace App\Http\Controllers\Organisation\Branch\Chart;
-use Input, Session, App, Paginator, Redirect, DB, Config;
+use Input, Session, App, Paginator, Redirect, DB, Config, Response;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -313,5 +313,25 @@ class WorkleaveController extends BaseController
 		{
 			return Redirect::back()->withErrors(['Password yang Anda masukkan tidak sah!']);
 		}
+	}
+
+	public function getChartWorkleave()
+	{
+
+		$search['chartid']						= Input::get('term');
+		$search['status'] 						= 'CN';
+		$search['withattributes'] 				= ['workleave'];
+		$sort 									= ['chart_id' => 'asc'];
+		$results 								= $this->dispatch(new Getting(new ChartWorkleave, $search, $sort , 1, 100));
+		$contents 								= json_decode($results);
+
+		if(!$contents->meta->success)
+		{
+			App::abort(404);
+		}
+
+		$chart 									= json_decode(json_encode($contents->data), true);
+
+		return Response::json($chart, 200);
 	}
 }

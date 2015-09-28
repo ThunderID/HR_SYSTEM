@@ -49,7 +49,8 @@
 			var org_id		= $(this).select2().data('organisationid');
 			var branch_id	= $(this).select2().find(':selected').data('branchid');
 			var chart_id 	= $(this).select2("val");
-			var select 		= [];			
+			var select 		= [];
+			var select2 	= [];
 			$.ajax({
 				url: "{{ route('hr.person.work.ajax') }}",
 				dataType: 'json',
@@ -66,6 +67,29 @@
 						select += '<option value="">Tidak Ada Data</option>';
 						$('select.select_follow').html(select);
 						$('select.select_follow').select2("val", "");
+					}
+
+				}
+			});
+
+			$.ajax({
+				url: "{{ route('hr.person.chart.workleave') }}",
+				dataType: 'json',
+				data: { org_id: org_id, term: chart_id },
+				success: function (data) {
+					if (data.length!=0) {
+						for (var i=0; i<data.length; i++)
+						{
+							select2 += '<option value="'+data[i].workleave.id+'">'+data[i].workleave.name+'</option>';
+						}
+						$('select.select-chart-workleave').html(select2);
+						$('select.select-chart-workleave').select2("val", data[0].workleave.id);
+					}
+					else
+					{
+						select2 += '<option value="">Tidak Ada Data</option>';
+						$('select.select-chart-workleave').html(select2);
+						$('select.select-chart-workleave').select2("val", "");	
 					}
 
 				}

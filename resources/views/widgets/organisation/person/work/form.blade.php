@@ -57,6 +57,12 @@
 				?>
 				{!!Form::select('status', $status_work, $WorkComposer['widget_data']['worklist']['work']['status'], ['class' => 'form-control select2', 'tabindex' => 3]) !!}
 			</div>
+			@if (!$id)
+				<div class="form-group">
+					<label class="control-label">Cuti</label>
+					<select name="" class="form-control select2 select-chart-workleave"></select>
+				</div>
+			@endif
 			<div class="form-group mt-30 mb-30">
 				<div class="checkbox">
 					<label>

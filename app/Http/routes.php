@@ -304,6 +304,14 @@ Route::group(['namespace' => 'Organisation\\Branch\\', 'prefix' => 'branch'], fu
 	// ------------------------------------------------------------------------------------
 
 	Route::resource('fingers',						'FingerController',									['names' => ['index' => 'hr.branch.fingers.index', 'create' => 'hr.branch.fingers.create', 'store' => 'hr.branch.fingers.store', 'show' => 'hr.branch.fingers.show', 'edit' => 'hr.branch.fingers.edit', 'update' => 'hr.branch.fingers.update', 'destroy' => 'hr.branch.fingers.delete']]);
+
+	// ------------------------------------------------------------------------------------
+	// PERSON CHART WORKLEAVE IN FORM WORK
+	// ------------------------------------------------------------------------------------	
+	Route::group(['namespace' => 'Chart\\', 'prefix' => 'chart'], function()
+	{
+		Route::any('workleave',					['uses' => 'WorkleaveController@getChartWorkleave',		'as' => 'hr.person.chart.workleave']);
+	});
 });
 
 Route::group(['namespace' => 'Organisation\\Calendar\\', 'prefix' => 'calendar', 'middleware' => 'interfere'], function() 
