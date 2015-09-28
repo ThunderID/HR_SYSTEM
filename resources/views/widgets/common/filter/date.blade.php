@@ -21,7 +21,9 @@
 				<input type="submit" class="btn btn-primary" value="Generate">
 				@if(Route::currentRouteName()=='hr.report.attendances.index')
 					<input type="submit" name="withschedule" class="btn btn-primary" value="Laporan Status">
-					<input type="submit" name="PersonalRep" class="btn btn-primary" value="Laporan Saya">
+					@if (Input::get('org_id')==Session::get('user.organisationid'))
+						<input type="submit" name="PersonalRep" class="btn btn-primary" value="Laporan Saya">
+					@endif
 				@endif
 			</div>
 		{!! Form::close() !!}
