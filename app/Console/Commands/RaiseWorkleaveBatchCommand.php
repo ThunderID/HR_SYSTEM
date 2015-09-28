@@ -131,7 +131,7 @@ class RaiseWorkleaveBatchCommand extends Command {
 			$cwleave 					= ChartWorkleave::chartid($work['chart_id'])->withattributes(['workleave'])->first();
 			$fwleave 					= FollowWorkleave::workid($work['id'])->first();
 			
-			if($cwleave && $fwleave && $work_start >= date('Y-m-d', strtotime($cwleave->rules)) && $cwleave->workleave_id != $work->workleave_id)
+			if($cwleave && $fwleave && $work_start <= date('Y-m-d', strtotime($cwleave->rules)) && $cwleave->workleave_id != $work->workleave_id)
 			{
 				$is_success 			= new FollowWorkleave;
 				$is_success->fill([

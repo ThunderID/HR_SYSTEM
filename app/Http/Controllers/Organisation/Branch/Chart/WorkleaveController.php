@@ -195,6 +195,7 @@ class WorkleaveController extends BaseController
 		DB::beginTransaction();
 
 		$attributes 							= ['chart_id' => $chart_id];
+		$attributes['rules']					= Input::get('rules');
 
 		$content 								= $this->dispatch(new Saving(new ChartWorkleave, $attributes, $id, new Workleave, $cal_id));
 		$is_success 							= json_decode($content);

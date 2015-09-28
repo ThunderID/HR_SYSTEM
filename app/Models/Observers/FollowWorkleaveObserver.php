@@ -3,6 +3,12 @@
 use DB, Validator, Event;
 use App\Events\CreateRecordOnTable;
 
+use App\Models\Work;
+use App\Models\ChartWorkleave;
+
+use \Illuminate\Support\MessageBag as MessageBag;
+use Carbon\Carbon;
+
 /* ----------------------------------------------------------------------
  * Event:
  * 	Saving						
@@ -16,6 +22,61 @@ class FollowWorkleaveObserver
 
 		if ($validator->passes())
 		{
+		
+			//cek riwayat kerja
+			if(isset($model['attributes']['workleave_id']))
+			{
+				$errors 					= new MessageBag;
+				$work 						= Work::active(true)->id($model['attributes']['work_id'])->first();
+
+				if($work)
+				{
+					$prev_work 				= Work::active(false)->personid($work->person_id)->startbefore($work->start)->orderby('start', 'desc')->get();
+					
+					$work_start 			= $work->start;
+
+					foreach ($prev_work as $key2 => $value2) 
+					{
+						if($key2 > 0)
+						{
+							$prev_end 		= new Carbon($prev_work[$key2-1]->end);
+							$date_diff 		= $prev_end->diffInDays(new Carbon($value2->start));
+
+							//if end of prev work not same day of next start (idle), then start of work must be next start
+							if($date_diff > 1)
+							{
+								$work_start = $value2->start;
+							}
+							//else if end of prev work is same day of next start (idle), then start of work must be first work start
+						}
+						else
+						{
+							$work_start 	= $value2->start;
+						}
+					}
+
+				
+					$cwleave 				= ChartWorkleave::chartid($work['chart_id'])->workleaveid($model['attributes']['workleave_id'])->withattributes(['workleave'])->first();
+					
+					if($cwleave && (date('Y-m-d', strtotime($work_start)) <= date('Y-m-d', strtotime($cwleave->rules))) && $cwleave->workleave_id != $work->workleave_id)
+					{
+						return true;
+					}
+
+					$errors->add('CWleave', 'Tidak dapat mengubah kuota cuti tahunan.');
+
+					$model['errors']		= $errors;
+
+					return false;
+				}
+				
+				$errors->add('CWleave', 'Tidak dapat mengubah kuota cuti untuk posisi dengan tanggal berakhir.');
+
+				$model['errors']			= $errors;
+
+				return false;
+			}
+
 			return true;
 		}
 		else
@@ -24,6 +85,7 @@ class FollowWorkleaveObserver
 
 			return false;
 		}
+
 	}
 
 	public function created($model)
