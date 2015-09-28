@@ -102,9 +102,9 @@ class WorkController extends BaseController
 		}
 		else
 		{
-			dd(1);
 			return Response::json([], 404);
 		}
+
 
 		$errors 								= new MessageBag();
 
