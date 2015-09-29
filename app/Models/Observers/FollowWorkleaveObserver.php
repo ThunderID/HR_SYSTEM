@@ -57,24 +57,32 @@ class FollowWorkleaveObserver
 
 				
 					$cwleave 				= ChartWorkleave::chartid($work['chart_id'])->workleaveid($model['attributes']['workleave_id'])->withattributes(['workleave'])->first();
-					
-					if($cwleave && (date('Y-m-d', strtotime($work_start)) <= date('Y-m-d', strtotime($cwleave->rules))) && $cwleave->workleave_id != $work->FollowWorkleave()->workleave_id)
+
+					if($cwleave && (date('Y-m-d', strtotime($work_start)) <= date('Y-m-d', strtotime($cwleave->rules))) && (!$work->FollowWorkleave || $cwleave->workleave_id != $work->FollowWorkleave->workleave_id))
 					{
+						// dd(1);
 						return true;
 					}
+					elseif(!isset($model->getDirty()['workleave_id']))
+					{
+						dd($model->getDirty());
+						$errors->add('CWleave', 'Tidak dapat mengubah kuota cuti tahunan.');
 
-					$errors->add('CWleave', 'Tidak dapat mengubah kuota cuti tahunan.');
+						$model['errors']		= $errors;
 
-					$model['errors']		= $errors;
+						return false;
+					}
+
+				}
+				else
+				{
+					
+					$errors->add('CWleave', 'Tidak dapat mengubah kuota cuti untuk posisi dengan tanggal berakhir.');
+
+					$model['errors']			= $errors;
 
 					return false;
 				}
-				
-				$errors->add('CWleave', 'Tidak dapat mengubah kuota cuti untuk posisi dengan tanggal berakhir.');
-
-				$model['errors']			= $errors;
-
-				return false;
 			}
 
 			return true;

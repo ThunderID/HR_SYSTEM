@@ -206,6 +206,8 @@ class WorkController extends BaseController
 	
 	public function store($id = null)
 	{
+		$errors 								= new MessageBag();
+		
 		if(Input::has('id'))
 		{
 			$id 								= Input::get('id');
@@ -232,6 +234,10 @@ class WorkController extends BaseController
 		if (Input::has('workleave_id'))
 		{
 			$workleave_id 						= Input::get('workleave_id');
+		}
+		elseif(is_null($id))
+		{
+			$errors->add('Work', 'Cuti tidak boleh kosong');
 		}
 
 		if(!in_array($org_id, Session::get('user.organisationids')))
@@ -327,8 +333,6 @@ class WorkController extends BaseController
 			$attributes['is_absence']			= Input::get('is_absence');
 		}
 
-		$errors 								= new MessageBag();
-
 		DB::beginTransaction();
 		
 		$content 								= $this->dispatch(new Saving(new Work, $attributes, $id, new Person, $person_id));
@@ -353,7 +357,7 @@ class WorkController extends BaseController
 		}
 
 		// Associate FollowWorkleave to Workleave
-		if(($id==null) && !$errors->count())
+		if(is_null($id) && !$errors->count())
 		{
 			$attributes2						= ['work_id' => $is_success->data->id];
 			$content_2 							= $this->dispatch(new Saving(new FollowWorkleave, $attributes2, null, new Workleave, $workleave_id));
