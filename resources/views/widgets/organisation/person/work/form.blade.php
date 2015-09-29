@@ -60,7 +60,7 @@
 			@if (!$id)
 				<div class="form-group">
 					<label class="control-label">Cuti</label>
-					<select name="" class="form-control select2 select-chart-workleave"></select>
+					<select name="workleave_id" class="form-control select2 select-chart-workleave"></select>
 				</div>
 			@endif
 			<div class="form-group mt-30 mb-30">

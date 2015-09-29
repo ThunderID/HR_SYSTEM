@@ -12,7 +12,9 @@ use App\Console\Commands\Deleting;
 
 use App\Models\Work;
 use App\Models\Person;
+use App\Models\Workleave;
 use App\Models\Follow;
+use App\Models\FollowWorkleave;
 use App\Models\Queue;
 
 class WorkController extends BaseController
@@ -227,6 +229,11 @@ class WorkController extends BaseController
 			App::abort(404);
 		}
 
+		if (Input::has('workleave_id'))
+		{
+			$workleave_id 						= Input::get('workleave_id');
+		}
+
 		if(!in_array($org_id, Session::get('user.organisationids')))
 		{
 			App::abort(404);
@@ -341,6 +348,32 @@ class WorkController extends BaseController
 				else
 				{
 					$errors->add('Person', $value);
+				}
+			}
+		}
+
+		// Associate FollowWorkleave to Workleave
+		if(($id==null) && !$errors->count())
+		{
+			$attributes2						= ['work_id' => $is_success->data->id];
+			$content_2 							= $this->dispatch(new Saving(new FollowWorkleave, $attributes2, null, new Workleave, $workleave_id));
+			$is_success_2 						= json_decode($content_2);
+
+			if(!$is_success_2->meta->success)
+			{
+				foreach ($is_success_2->meta->errors as $key => $value) 
+				{
+					if(is_array($value))
+					{
+						foreach ($value as $key2 => $value2) 
+						{
+							$errors->add('Workleave', $value2);
+						}
+					}
+					else
+					{
+						$errors->add('Workleave', $value);
+					}
 				}
 			}
 		}
