@@ -272,15 +272,18 @@ class PersonWorkleaveBatchCommand extends Command {
 				
 				$person 					= Person::find($value->person_id);
 
-				$is_success 				= $pwid->fill($parameters);
-				$is_success->Person()->associate($person);
-
-				if(!$is_success->save())
+				if($person)
 				{
-					$errors->add('Batch', $is_success->getError());
+					$is_success 				= $pwid->fill($parameters);
+					$is_success->Person()->associate($person);
+
+					if(!$is_success->save())
+					{
+						$errors->add('Batch', $is_success->getError());
+					}
 				}
 
-				if(!$errors->count())
+				if(!$errors->count() && isset($is_success))
 				{
 					DB::commit();
 

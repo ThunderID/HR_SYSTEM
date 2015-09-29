@@ -60,12 +60,10 @@ class FollowWorkleaveObserver
 
 					if($cwleave && (date('Y-m-d', strtotime($work_start)) <= date('Y-m-d', strtotime($cwleave->rules))) && (!$work->FollowWorkleave || $cwleave->workleave_id != $work->FollowWorkleave->workleave_id))
 					{
-						// dd(1);
 						return true;
 					}
 					elseif(!isset($model->getDirty()['workleave_id']))
 					{
-						dd($model->getDirty());
 						$errors->add('CWleave', 'Tidak dapat mengubah kuota cuti tahunan.');
 
 						$model['errors']		= $errors;
