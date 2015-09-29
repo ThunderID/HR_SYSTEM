@@ -29,8 +29,10 @@
 							<th class="text-center font-12">No<br/>&nbsp;</th>
 							<th class="text-left font-12 mr-30 pr-30" style="width:20em;">Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </th>
 							<th class="text-center font-12 pl-20 pr-20" style="width:20em">Tanggal</th>
-							<th class="text-center font-12" style="width:20em">Jam Masuk <br> (Jadwal)</th>
-							<th class="text-center font-12" style="width:20em">Jam Keluar <br> (Jadwal)</th>
+							<th class="text-center font-12" style="width:20em">Jam Masuk <br> Jadwal</th>
+							<th class="text-center font-12" style="width:20em">Jam Keluar <br> Jadwal</th>
+							<th class="text-center font-12" style="width:20em">Jam Datang <br> Karyawan</th>
+							<th class="text-center font-12" style="width:20em">Jam Pulang <br> Karyawan</th>
 							<th class="text-center font-12" style="width:20em">Status Terakhir</th>
 						</tr>
 					</thead>
@@ -47,12 +49,24 @@
 										{{ date('d-m-Y', strtotime($value['processlogs'][0]['on'])) }}
 									</td>
 									<td class="font-11 text-center">
-										{{ date('H:i:s', strtotime($value['processlogs'][0]['start'])) }}
-										({{ date('H:i:s', strtotime($value['processlogs'][0]['schedule_start'])) }})
+										{{ date('H:i:s', strtotime($value['processlogs'][0]['schedule_start'])) }}
 									</td>
 									<td class="font-11 text-center">
-										{{ date('H:i:s', strtotime($value['processlogs'][0]['end'])) }}
-										({{ date('H:i:s', strtotime($value['processlogs'][0]['schedule_end'])) }})
+										{{ date('H:i:s', strtotime($value['processlogs'][0]['schedule_end'])) }}
+									</td>
+									<td class="font-11 text-center">
+										@if (strtotime($value['processlogs'][0]['fp_start']) > strtotime($value['processlogs'][0]['start']))
+											{{ date('H:i:s', strtotime($value['processlogs'][0]['fp_start'])) }}
+										@else
+											{{ date('H:i:s', strtotime($value['processlogs'][0]['start'])) }}
+										@endif
+									</td>
+									<td class="font-11 text-center">
+										@if (strtotime($value['processlogs'][0]['fp_end']) > strtotime($value['processlogs'][0]['end']))
+											{{ date('H:i:s', strtotime($value['processlogs'][0]['fp_end'])) }}
+										@else
+											{{ date('H:i:s', strtotime($value['processlogs'][0]['end'])) }}
+										@endif
 									</td>
 									<td class="font-11 text-center">
 										@if(isset($value['processlogs'][0]['attendancelogs'][0]))
@@ -92,6 +106,8 @@
 									<td class="text-center">&#8211;</td>
 									<td class="text-center">&#8211;</td>
 									<td class="text-center">&#8211;</td>
+									<td class="text-center">&#8211;</td>
+									<td class="text-center">&#8211;</td>
 								@endif
 							</tr>
 							@foreach($value['processlogs'] as $key2 => $value2)
@@ -100,13 +116,25 @@
 									<td class="text-center font-12">
 										{{ date('d-m-Y', strtotime($value2['on'])) }}
 									</td>
-									<td class="font-11 text-center">
-										{{ date('H:i:s', strtotime($value2['start'])) }}
-										({{ date('H:i:s', strtotime($value2['schedule_start'])) }})
+									<td class="font-11 text-center">	
+										{{ date('H:i:s', strtotime($value2['schedule_start'])) }}
 									</td>
 									<td class="font-11 text-center">
-										{{ date('H:i:s', strtotime($value2['end'])) }}
-										({{ date('H:i:s', strtotime($value2['schedule_end'])) }})
+										{{ date('H:i:s', strtotime($value2['schedule_end'])) }}
+									</td>
+									<td class="font-11 text-center">
+										@if (strtotime($value2['fp_start']) > strtotime($value2['start']))
+											{{ date('H:i:s', strtotime($value2['fp_start'])) }}
+										@else
+											{{ date('H:i:s', strtotime($value2['start'])) }}
+										@endif
+									</td>
+									<td class="font-11 text-center">
+										@if (strtotime($value2['fp_end']) > strtotime($value2['end']))
+											{{ date('H:i:s', strtotime($value2['fp_end'])) }}
+										@else
+											{{ date('H:i:s', strtotime($value2['end'])) }}
+										@endif
 									</td>
 									<td class="font-11 text-center">
 										@if(isset($value2['attendancelogs'][0]))

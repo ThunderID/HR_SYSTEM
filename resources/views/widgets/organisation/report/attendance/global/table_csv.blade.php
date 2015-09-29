@@ -18,8 +18,10 @@
 					<th rowspan="2" style="width:4%; height:25%">No</th>
 					<th rowspan="2" style="width:30%; height:25%">Nama </th>
 					<th rowspan="2" style="width:25%; height:25%">Tanggal</th>
-					<th rowspan="2" style="width:30%; height:25%">Jam Masuk (Jadwal)</th>					
-					<th rowspan="2" style="width:30%; height:25%">Jam Keluar (Jadwal)</th>
+					<th rowspan="2" style="width:30%; height:25%">Jam Masuk Jadwal</th>					
+					<th rowspan="2" style="width:30%; height:25%">Jam Keluar Jadwal</th>
+					<th rowspan="2" style="width:30%; height:25%">Jam Datang Karyawan</th>					
+					<th rowspan="2" style="width:30%; height:25%">Jam Pulang Karyawan</th>
 					<th rowspan="2" style="width:25%; height:25%">Status Terakhir</th>
 				</tr>
 				<tr></tr>
@@ -37,12 +39,24 @@
 								{{ date('d-m-Y', strtotime($value['processlogs'][0]['on'])) }}
 							</td>
 							<td style="text-align:center; width:30%; height:35%">
-								{{ date('H:i:s', strtotime($value['processlogs'][0]['start'])) }}
-								({{ date('H:i:s', strtotime($value['processlogs'][0]['schedule_start'])) }})
+								{{ date('H:i:s', strtotime($value['processlogs'][0]['schedule_start'])) }}
 							</td>
 							<td style="text-align:center; width:30%; height:35%">
-								{{ date('H:i:s', strtotime($value['processlogs'][0]['end'])) }}
-								({{ date('H:i:s', strtotime($value['processlogs'][0]['schedule_end'])) }})
+								{{ date('H:i:s', strtotime($value['processlogs'][0]['schedule_end'])) }}
+							</td>
+							<td style="text-align:center; width:30%; height:35%">
+								@if (strtotime($value['processlogs'][0]['fp_start']) > strtotime($value['processlogs'][0]['start']))
+									{{ date('H:i:s', strtotime($value['processlogs'][0]['fp_start'])) }}
+								@else
+									{{ date('H:i:s', strtotime($value['processlogs'][0]['start'])) }}
+								@endif
+							</td>
+							<td style="text-align:center; width:30%; height:35%">
+								@if (strtotime($value['processlogs'][0]['fp_end']) > strtotime($value['processlogs'][0]['end'])))
+									{{ date('H:i:s', strtotime($value['processlogs'][0]['fp_end'])) }}
+								@else
+									{{ date('H:i:s', strtotime($value['processlogs'][0]['end'])) }}
+								@endif
 							</td>
 							<td style="text-align:center; width:25%; height:35%">
 								@if(isset($value['processlogs'][0]['attendancelogs'][0]))
@@ -53,6 +67,8 @@
 							<td style="text-align:center; width:25%; height:35%">-</td>
 							<td style="text-align:center; width:30%; height:35%">-</td>
 							<td style="text-align:center; width:30%; height:35%">-</td>
+							<td style="text-align:center; width:25%; height:35%">-</td>
+							<td style="text-align:center; width:25%; height:35%">-</td>
 							<td style="text-align:center; width:25%; height:35%">-</td>
 						@endif
 					</tr>
@@ -66,12 +82,24 @@
 								{{ date('d-m-Y', strtotime($value2['on'])) }}
 							</td>
 							<td style="text-align:center; width:30%; height:35%">
-								{{ date('H:i:s', strtotime($value2['start'])) }}
-								({{ date('H:i:s', strtotime($value2['schedule_start'])) }})
+								{{ date('H:i:s', strtotime($value2['schedule_start'])) }}
 							</td>
 							<td style="text-align:center; width:30%; height:35%">
-								{{ date('H:i:s', strtotime($value2['end'])) }}
-								({{ date('H:i:s', strtotime($value2['schedule_end'])) }})
+								{{ date('H:i:s', strtotime($value2['schedule_end'])) }}
+							</td>
+							<td style="text-align:center; width:30%; height:35%">
+								@if (strtotime($value2['fp_start']) > strtotime($value2['start']))
+									{{ date('H:i:s', strtotime($value2['fp_start'])) }}
+								@else
+									{{ date('H:i:s', strtotime($value2['start'])) }}
+								@endif
+							</td>
+							<td style="text-align:center; width:30%; height:35%">
+								@if (strtotime($value2['fp_end']) > strtotime($value2['end']))
+									{{ date('H:i:s', strtotime($value2['fp_end'])) }}
+								@else
+									{{ date('H:i:s', strtotime($value2['end'])) }}
+								@endif
 							</td>
 							<td style="text-align:center; width:25%; height:35%">
 								@if(isset($value2['attendancelogs'][0]))
