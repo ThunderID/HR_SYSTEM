@@ -58,7 +58,7 @@ class FollowWorkleaveObserver
 				
 					$cwleave 				= ChartWorkleave::chartid($work['chart_id'])->workleaveid($model['attributes']['workleave_id'])->withattributes(['workleave'])->first();
 					
-					if($cwleave && (date('Y-m-d', strtotime($work_start)) <= date('Y-m-d', strtotime($cwleave->rules))) && $cwleave->workleave_id != $work->workleave_id)
+					if($cwleave && (date('Y-m-d', strtotime($work_start)) <= date('Y-m-d', strtotime($cwleave->rules))) && $cwleave->workleave_id != $work->FollowWorkleave()->workleave_id)
 					{
 						return true;
 					}
