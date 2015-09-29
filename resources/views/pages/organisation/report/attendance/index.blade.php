@@ -51,7 +51,7 @@
 										'personlist'			=>
 										[
 											'organisation_id'	=> $data['id'],
-											'search'			=> array_merge(['processlogattendancesondate' => ['on' => [$start, $end]]], (isset($filtered['search']) ? $filtered['search'] : [])),
+											'search'			=> array_merge(['processlogattendancesondate' => ['on' => [$start, $end]], 'chartnotadmin' => true], (isset($filtered['search']) ? $filtered['search'] : [])),
 											'sort'				=> ['persons.name' => 'asc'],
 											'page'				=> 1,
 											'per_page'			=> 100,
