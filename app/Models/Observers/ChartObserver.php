@@ -87,7 +87,7 @@ class ChartObserver
 
 				foreach ($childs as $key => $value) 
 				{
-					$new 						= Chart::where('id', $value['id'])->update(['path' => (str_replace($model->path, $newpath, $value['path']))]);
+					$new 						= Chart::where('id', $value['id'])->update(['path' => (preg_replace('/'.$model->path.',/', $newpath.',', $value['path'], 1))]);
 				}
 
 				$updatechartpath 				= Chart::where('id',  $model['attributes']['id'])->update(['path' => $newpath]);
