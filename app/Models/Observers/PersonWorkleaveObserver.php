@@ -54,6 +54,8 @@ class PersonWorkleaveObserver
 			if(isset($model['attributes']['workleave_id']) && $model['attributes']['workleave_id']!=0 && !isset($model->getOriginal()['end']) && !isset($model->getOriginal()['start']))
 			{
 				$work 					= Work::find($model['attributes']['work_id']);
+				
+				$work_start 			= $work->start;
 
 				$prev_work 				= Work::active(false)->personid($model['attributes']['person_id'])->startbefore($work->start)->orderby('start', 'desc')->get();
 
