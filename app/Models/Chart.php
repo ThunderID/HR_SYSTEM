@@ -65,6 +65,7 @@ class Chart extends BaseModel {
 	protected 	$table 				= 	'charts';
 
 	protected 	$fillable			= 	[
+											'chart_id'				,
 											'path'					,
 											'name' 					,
 											'tag' 					,

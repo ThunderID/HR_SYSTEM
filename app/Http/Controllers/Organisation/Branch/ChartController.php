@@ -261,9 +261,9 @@ class ChartController extends BaseController
 
 		$attributes 							= Input::only('name', 'tag', 'min_employee', 'max_employee', 'ideal_employee');
 
-		if(Input::has('path'))
+		if(Input::has('chart_id'))
 		{
-			$attributes['path']					= Input::get('path');
+			$attributes['chart_id']				= Input::get('chart_id');
 		}
 
 		$errors 								= new MessageBag();

@@ -57,7 +57,7 @@ class ChartObserver
 		}
 	}
 
-	public function updated($model)
+	public function updating($model)
 	{
 		//
 		if(isset($model['attributes']['branch_id']))
@@ -72,16 +72,27 @@ class ChartObserver
 
 			Event::fire(new CreateRecordOnTable($attributes));
 
-			if(isset($model->getDirty()['path']))
+			if(isset($model->getDirty()['chart_id']))
 			{
-				$updates 						= Chart::where('path', 'like', $model->getOriginal('path').'%')->get();
-				$newparent 						= Chart::where('path',  $model['attributes']['path'])->first();
-				foreach ($updates as $key => $value) 
+				$childs 						= Chart::where('path', 'like', $model->path.'%')->get();
+
+				if($model->chart()->count())
 				{
-					$new 						= Chart::where('id', $value['id'])->update(['path' => (str_replace($model->getOriginal('path'), $newparent['path'].','.$model['attributes']['id'], $value['path']))]);
+					$newpath 					= $model->chart->path.','.$model->id;
 				}
-				$updatechartid 					= Chart::where('id',  $model['attributes']['id'])->update(['chart_id' => $newparent['id'], 'path' => $newparent['path'].','.$model['attributes']['id']]);
+				else
+				{
+					$newpath 					= $model->id;
+				}
+
+				foreach ($childs as $key => $value) 
+				{
+					$new 						= Chart::where('id', $value['id'])->update(['path' => (str_replace($model->path, $newpath, $value['path']))]);
+				}
+
+				$updatechartpath 				= Chart::where('id',  $model['attributes']['id'])->update(['path' => $newpath]);
 			}
+
 			return true;
 		}	
 	}

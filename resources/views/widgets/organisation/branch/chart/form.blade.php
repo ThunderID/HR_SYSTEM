@@ -16,10 +16,10 @@
 				<div class="col-sm-6">
 					<div class="form-group">				
 						<label class="control-label">Bawahan Dari</label>				
-						<select name="path" class="form-control select2" tabindex="2">
-							<option></option>
+						<select name="chart_id" class="form-control select2" tabindex="2">
+							<option value="0"></option>
 							@foreach($ChartComposer['widget_data']['chartpath']['chart'] as $key => $value)
-								<option value="{{$value['path']}}" @if($value['id']==$ChartComposer['widget_data']['chartlist']['chart']['chart_id']) selected @endif>{{$value['name']}} Departemen {{$value['tag']}}</option>
+								<option value="{{$value['id']}}" @if($value['id']==$ChartComposer['widget_data']['chartlist']['chart']['chart_id']) selected @endif>{{$value['name']}} Departemen {{$value['tag']}}</option>
 							@endforeach
 						</select>								
 					</div>
