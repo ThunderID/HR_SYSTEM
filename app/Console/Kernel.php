@@ -54,11 +54,11 @@ class Kernel extends ConsoleKernel {
 
 		//auto generate log for previous day (or) previous day : as sanction
 		$schedule->command('hr:absencequeue AbsenceQueueCommand')
-				 ->dailyAt('08:00');
+				 ->dailyAt('06:00');
 
 		//auto generate log for previous day 
 		$schedule->command('hr:attendancequeue AttendanceQueueCommand')
-				 ->cron('0 0 */26 * * *');
+				 ->cron('0 */6 */26 * * *');
 
 		//auto generate sanction for previous day (currently 5 days)
 		$schedule->command('hr:sanctionqueue SanctionQueueCommand')
@@ -66,7 +66,7 @@ class Kernel extends ConsoleKernel {
 
 		//auto generate progressive workleave for previous month
 		$schedule->command('hr:workleavequeue WorkleaveQueueCommand')
-				 ->monthly();
+				 ->cron('0 0 */15 * * *');
 
 		//running queue (every five minutes)
 		$schedule->command('hr:queue HRQueueCommand')
@@ -74,15 +74,15 @@ class Kernel extends ConsoleKernel {
 
 		//running queue (every month)
 		$schedule->command('hr:clearcache HRClearCacheCommand')
-				 ->monthly();
+				 ->cron('0 */21 */25 * * *');
 
 		//running expired queue command
 		$schedule->command('hr:expireworkleavequeue HRExpiredWorkleaveQueueCommand')
-				 ->cron('0 0 */31 */3 *');
+				 ->cron('0 */4 */28 * * *');
 
 		//running expired queue command
 		$schedule->command('hr:raiseworkleavequeue HRRaiseWorkleaveQueueCommand')
-				 ->cron('0 0 */31 */3 *');
+				 ->cron('0 */22 */27 * * *');
 	}
 
 }
