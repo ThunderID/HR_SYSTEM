@@ -115,7 +115,7 @@ class PersonWorkleaveImportBatchCommand extends Command {
 					$sum 							= PersonWorkleave::personid($person->id)->quota(true)->OnDate('now')->sum('quota');
 
 					$pwleave[$i]['work_id'] 		= $work['id'];
-					$pwleave[$i]['created_by'] 		= $pending->created_by;
+					// $pwleave[$i]['created_by'] 		= $pending->created_by;
 					$pwleave[$i]['name'] 			= 'Pengambilan (awal) Cuti';
 					$pwleave[$i]['notes'] 			= 'Auto generated dari import csv. Hanya Quota yang valid';
 					
