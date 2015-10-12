@@ -1,5 +1,5 @@
 <?php namespace App\Http\Controllers\Organisation\Person;
-use Input, Session, App, Paginator, Redirect, DB, Config, DatePeriod, DateTime, DateInterval, Response;
+use Input, Session, App, Paginator, Redirect, DB, Config, DatePeriod, DateTime, DateInterval, Response, Excel;
 use App\Http\Controllers\BaseController;
 use Illuminate\Support\MessageBag;
 use App\Console\Commands\Saving;
@@ -258,14 +258,6 @@ class WorkleaveController extends BaseController
 			App::abort(404);
 		}
 
-		if(Input::has('type') && in_array(strtolower(Input::get('type')), ['given', 'taken']))
-		{
-			$type 								= strtolower(Input::get('type'));
-		}
-		else
-		{
-			App::abort(404);
-		}
 
 		if(!in_array($org_id, Session::get('user.organisationids')))
 		{
@@ -280,13 +272,13 @@ class WorkleaveController extends BaseController
 				$attributes 								= [];				
 				$sheet 										= Excel::load($file_csv)->toArray();				
 				
-				$queattr['created_by'] 					= Session::get('loggedUser');
-				$queattr['process_name'] 				= 'hr:personworkleaveimportbatch';
-				$queattr['parameter'] 					= json_encode($sheet);
-				$queattr['total_process'] 				= count($sheet);
-				$queattr['task_per_process']			= 1;
-				$queattr['process_number'] 			= 0;
-				$queattr['total_task'] 					= count($sheet);
+				$queattr['created_by'] 						= Session::get('loggedUser');
+				$queattr['process_name'] 					= 'hr:personworkleaveimportbatch';
+				$queattr['parameter']		 				= json_encode(['csv' => $sheet]);
+				$queattr['total_process'] 					= count($sheet);
+				$queattr['task_per_process']				= 1;
+				$queattr['process_number'] 					= 0;
+				$queattr['total_task'] 						= count($sheet);
 				$queattr['message'] 						= 'Initial Queue';
 
 				$content 									= $this->dispatch(new Saving(new Queue, $queattr, null));
@@ -312,6 +304,15 @@ class WorkleaveController extends BaseController
 
 				return Redirect::back()->with('alert_info', 'Data sedang disimpan');
 			}
+		}
+
+		if(Input::has('type') && in_array(strtolower(Input::get('type')), ['given', 'taken']))
+		{
+			$type 								= strtolower(Input::get('type'));
+		}
+		else
+		{
+			App::abort(404);
 		}
 
 		$begin 									= new DateTime( Input::get('start') );
