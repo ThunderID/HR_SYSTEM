@@ -9,10 +9,12 @@ class LoginController extends BaseController {
 
 	function getLogin() 
 	{
-		if (Session::has('loggedUser')) {
+		if (Session::has('loggedUser')) 
+		{
 			return Redirect::route('hr.organisations.index');
 		}
-		else {
+		else 
+		{
 			$this->layout->page 	= view('pages.login.login');
 		}
 
