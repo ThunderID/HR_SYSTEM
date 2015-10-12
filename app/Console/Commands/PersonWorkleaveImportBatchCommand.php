@@ -146,7 +146,7 @@ class PersonWorkleaveImportBatchCommand extends Command {
 
 					$is_pwleave_success 				= new PersonWorkleave;
 					$is_pwleave_success->fill($pwleave[$i]);
-					$is_pwleave_success->Person()->associate($is_success);
+					$is_pwleave_success->Person()->associate($person);
 
 					if(!$is_pwleave_success->save())
 					{
