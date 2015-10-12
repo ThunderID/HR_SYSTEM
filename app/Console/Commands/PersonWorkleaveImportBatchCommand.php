@@ -96,7 +96,7 @@ class PersonWorkleaveImportBatchCommand extends Command {
 
 		foreach($parameters['csv'] as $i => $row)
 		{
-			if($i<$pending->process_number)
+			if($i<=$pending->process_number)
 			{
 				$person 							= Person::uniqid($row['nik'])->checkwork(true)->currentwork(true)->first();
 
