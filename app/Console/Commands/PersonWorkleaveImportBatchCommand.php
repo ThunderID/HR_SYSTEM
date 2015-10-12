@@ -9,6 +9,7 @@ use App\Models\Queue;
 use App\Models\QueueMorph;
 use App\Models\Person;
 use App\Models\PersonWorkleave;
+use App\Models\Work;
 
 use DB, Hash, App;
 
@@ -98,11 +99,12 @@ class PersonWorkleaveImportBatchCommand extends Command {
 		{
 			if($i<=$pending->process_number)
 			{
-				$person 							= Person::uniqid($row['nik'])->checkwork(true)->currentwork(true)->first();
+				$person 							= Person::uniqid($row['nik'])->first();
 
 				if($person && isset($row['sisacuti']))
 				{
-					$work 							= $person['work'][0];
+					$work 							= Work::personid($person['id'])->active(true)->first();
+
 					$person_workleave 				= PersonWorkleave::personid($person->id)->quota(true)->OnDate('now')->first();
 
 					if($person_workleave)
@@ -112,18 +114,18 @@ class PersonWorkleaveImportBatchCommand extends Command {
 
 					$sum 							= PersonWorkleave::personid($person->id)->quota(true)->OnDate('now')->sum('quota');
 
-					$pwleave[$i]['work_id'] 		= $work->id;
+					$pwleave[$i]['work_id'] 		= $work['id'];
 					$pwleave[$i]['created_by'] 		= $pending->created_by;
-					$pwleave[$i]['name'] 			= 'Pengambilan (awal) '.$is_workleave_success->name;
+					$pwleave[$i]['name'] 			= 'Pengambilan (awal) Cuti';
 					$pwleave[$i]['notes'] 			= 'Auto generated dari import csv. Hanya Quota yang valid';
 					
 					if($sum)
 					{
-						$leave 						= $sum - $row['sisacuti'];
+						$leave 						= $sum - abs($row['sisacuti']);
 					}
 					else
 					{
-						$leave 						= 0 - $row['sisacuti'];
+						$leave 						= $row['sisacuti'];
 					}
 
 					if($leave == 1)
@@ -136,15 +138,25 @@ class PersonWorkleaveImportBatchCommand extends Command {
 					}
 					else
 					{
-						$leaves 					= ' + '.$leave.' days';
+						$leaves 					= ' + '.(abs($leave) -1).' days';
 					}
 
-					$pwleave[$i]['start'] 				= date('Y-m-d', strtotime($work->start));
-					$pwleave[$i]['end'] 				= date('Y-m-d', strtotime($work->start.$leaves));
+					$pwleave[$i]['start'] 				= date('Y-m-d', strtotime($work['start']));
+					$pwleave[$i]['end'] 				= date('Y-m-d', strtotime($work['start'].$leaves));
 					$pwleave[$i]['quota'] 				= 0 - $leave;
 					$pwleave[$i]['status'] 				= 'CN';
 
-					$is_pwleave_success 				= new PersonWorkleave;
+					$pwleaves 							= PersonWorkleave::personid($person->id)->ondate([$pwleave[$i]['start'], $pwleave[$i]['end']])->quota(false)->first();
+
+					if($pwleaves)
+					{
+						$is_pwleave_success 			= $pwleaves;
+					}
+					else
+					{
+						$is_pwleave_success 			= new PersonWorkleave;
+					}
+
 					$is_pwleave_success->fill($pwleave[$i]);
 					$is_pwleave_success->Person()->associate($person);
 
