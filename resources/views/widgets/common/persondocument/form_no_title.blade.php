@@ -1,4 +1,9 @@
 <div class="clearfix">&nbsp;</div>
+<!-- Checbox flag ignore -->
+{!! Form::checkbox('flag_ignore_document', '1', '') !!} 
+<span class="label-automatic-generate">Lewati</span>
+<div class="clearfix">&nbsp;</div>
+
 {!! Form::open(['url' => $DocumentComposer['widget_data']['documentlist']['form_url'], 'class' => 'form no_enter']) !!}	
 	<?php $tabindex=1; ?>
 	@foreach($DocumentComposer['widget_data']['documentlist']['document'] as $key => $value)

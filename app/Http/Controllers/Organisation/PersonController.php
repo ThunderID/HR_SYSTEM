@@ -399,85 +399,89 @@ class PersonController extends BaseController
 				}
 			}
 
-			if(!$errors->count() && Input::has('email'))
+			// In Flag checkbox Contact in person create
+			if (!Input::has('flag_ignore_contact')) 
 			{
-				$email['item']						= 'email';
-				$email['value']						= Input::get('email');
-				$email['is_default']				= true;
-
-				$content 							= $this->dispatch(new Saving(new Contact, $email, null, new Person, $is_success->data->id));
-
-				$is_email_success 					= json_decode($content);
-				if(!$is_email_success->meta->success)
+				if (!$errors->count() && Input::has('email'))
 				{
-					foreach ($is_email_success->meta->errors as $key => $value) 
+					$email['item']						= 'email';
+					$email['value']						= Input::get('email');
+					$email['is_default']				= true;
+
+					$content 							= $this->dispatch(new Saving(new Contact, $email, null, new Person, $is_success->data->id));
+
+					$is_email_success 					= json_decode($content);
+					if(!$is_email_success->meta->success)
 					{
-						if(is_array($value))
+						foreach ($is_email_success->meta->errors as $key => $value) 
 						{
-							foreach ($value as $key2 => $value2) 
+							if(is_array($value))
 							{
-								$errors->add('Person', $value2);
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
 							}
-						}
-						else
-						{
-							$errors->add('Person', $value);
+							else
+							{
+								$errors->add('Person', $value);
+							}
 						}
 					}
 				}
-			}
-
-			if(!$errors->count() && Input::has('mobile'))
-			{
-				$mobile['item']						= 'mobile';
-				$mobile['value']					= Input::get('mobile');
-				$mobile['is_default']				= true;
-
-				$content 							= $this->dispatch(new Saving(new Contact, $mobile, null, new Person, $is_success->data->id));
-
-				$is_mobile_success 					= json_decode($content);
-				if(!$is_mobile_success->meta->success)
+				
+				if (!$errors->count() && Input::has('mobile'))
 				{
-					foreach ($is_mobile_success->meta->errors as $key => $value) 
+					$mobile['item']						= 'mobile';
+					$mobile['value']					= Input::get('mobile');
+					$mobile['is_default']				= true;
+
+					$content 							= $this->dispatch(new Saving(new Contact, $mobile, null, new Person, $is_success->data->id));
+
+					$is_mobile_success 					= json_decode($content);
+					if(!$is_mobile_success->meta->success)
 					{
-						if(is_array($value))
+						foreach ($is_mobile_success->meta->errors as $key => $value) 
 						{
-							foreach ($value as $key2 => $value2) 
+							if(is_array($value))
 							{
-								$errors->add('Person', $value2);
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
 							}
-						}
-						else
-						{
-							$errors->add('Person', $value);
+							else
+							{
+								$errors->add('Person', $value);
+							}
 						}
 					}
 				}
-			}
 
-			if(!$errors->count() && Input::has('address'))
-			{
-				$address['item']					= 'address';
-				$address['value']					= Input::get('address');
-				$address['is_default']				= true;
-
-				$content 							= $this->dispatch(new Saving(new Contact, $address, null, new Person, $is_success->data->id));
-
-				$is_address_success 				= json_decode($content);
-				if(!$is_address_success->meta->success)
+				if (!$errors->count() && Input::has('address'))
 				{
-					foreach ($is_address_success->meta->errors as $key => $value) 
+					$address['item']					= 'address';
+					$address['value']					= Input::get('address');
+					$address['is_default']				= true;
+
+					$content 							= $this->dispatch(new Saving(new Contact, $address, null, new Person, $is_success->data->id));
+
+					$is_address_success 				= json_decode($content);
+					if(!$is_address_success->meta->success)
 					{
-						if(is_array($value))
+						foreach ($is_address_success->meta->errors as $key => $value) 
 						{
-							foreach ($value as $key2 => $value2) 
+							if(is_array($value))
 							{
-								$errors->add('Person', $value2);
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
 							}
-						}
-						else
-						{
-							$errors->add('Person', $value);
+							else
+							{
+								$errors->add('Person', $value);
+							}
 						}
 					}
 				}
@@ -513,76 +517,80 @@ class PersonController extends BaseController
 				}
 			}
 
-			if(!$errors->count() && Input::has('document_id'))
+			// In Flag checkbox Document in person create
+			if (!Input::has('flag_ignore_document'))
 			{
-				$docs 								= Input::get('document_id');
-				$tmps 								= Input::get('template_id');
-				$cnts 								= Input::get('content');
-
-				foreach ($docs as $key => $value) 
+				if (!$errors->count() && Input::has('document_id'))
 				{
-					$doc['document_id']				= $value;
+					$docs 								= Input::get('document_id');
+					$tmps 								= Input::get('template_id');
+					$cnts 								= Input::get('content');
 
-					$content 						= $this->dispatch(new Saving(new PersonDocument, $doc, null, new Person, $is_success->data->id));
-
-					$is_document_success 			= json_decode($content);
-					if(!$is_document_success->meta->success)
+					foreach ($docs as $key => $value) 
 					{
-						foreach ($is_document_success->meta->errors as $key2 => $value2) 
+						$doc['document_id']				= $value;
+
+						$content 						= $this->dispatch(new Saving(new PersonDocument, $doc, null, new Person, $is_success->data->id));
+
+						$is_document_success 			= json_decode($content);
+						if(!$is_document_success->meta->success)
 						{
-							if(is_array($value2))
+							foreach ($is_document_success->meta->errors as $key2 => $value2) 
 							{
-								foreach ($value2 as $key3 => $value3) 
+								if(is_array($value2))
 								{
-									$errors->add('Person', $value3);
+									foreach ($value2 as $key3 => $value3) 
+									{
+										$errors->add('Person', $value3);
+									}
+								}
+								else
+								{
+									$errors->add('Person', $value2);
 								}
 							}
-							else
-							{
-								$errors->add('Person', $value2);
-							}
 						}
-					}
-					else
-					{
-						foreach ($tmps[$key] as $key4 => $value4) 
+						else
 						{
-							$dtl['template_id']				= $value4;
-							$val 							= explode('-', $cnts[$key][$key4]);
-							if(count($val)==3)
+							foreach ($tmps[$key] as $key4 => $value4) 
 							{
-								$dtl['on']					= date('Y-m-d H:i:s', strtotime($val[2].'-'.$val[1].'-'.$val[0]));
-							}
-							elseif((int)$cnts[$key][$key4])
-							{
-								$dtl['numeric']				= $cnts[$key][$key4];
-							}
-							elseif(strlen($cnts[$key][$key4]) <= 255)
-							{
-								$dtl['string']				= $cnts[$key][$key4];
-							}
-							else
-							{
-								$dtl['text']				= $cnts[$key][$key4];
-							}
-
-							$content 						= $this->dispatch(new Saving(new DocumentDetail, $dtl, null, new PersonDocument, $is_document_success->data->id));
-
-							$is_detail_success 				= json_decode($content);
-							if(!$is_detail_success->meta->success)
-							{
-								foreach ($is_detail_success->meta->errors as $key5 => $value5) 
+								$dtl['template_id']				= $value4;
+								$val 							= explode('-', $cnts[$key][$key4]);
+								if(count($val)==3)
 								{
-									if(is_array($value5))
+									$dtl['on']					= date('Y-m-d H:i:s', strtotime($val[2].'-'.$val[1].'-'.$val[0]));
+								}
+								elseif((int)$cnts[$key][$key4])
+								{
+									$dtl['numeric']				= $cnts[$key][$key4];
+								}
+								elseif(strlen($cnts[$key][$key4]) <= 255)
+								{
+									$dtl['string']				= $cnts[$key][$key4];
+								}
+								else
+								{
+									$dtl['text']				= $cnts[$key][$key4];
+								}
+
+								$content 						= $this->dispatch(new Saving(new DocumentDetail, $dtl, null, new PersonDocument, $is_document_success->data->id));
+
+								$is_detail_success 				= json_decode($content);
+								if(!$is_detail_success->meta->success)
+								{
+									foreach ($is_detail_success->meta->errors as $key5 => $value5) 
 									{
-										foreach ($value5 as $key6 => $value6) 
+										if(is_array($value5))
 										{
-											$errors->add('Person', $value6);
+											foreach ($value5 as $key6 => $value6) 
+											{
+												$errors->add('Person', $value6);
+											}
 										}
-									}
-									else
-									{
-										$errors->add('Person', $value5);
+										else
+										{
+											$errors->add('Person', $value5);
+										}
 									}
 								}
 							}

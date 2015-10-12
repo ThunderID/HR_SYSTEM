@@ -1,4 +1,9 @@
 <div class="clearfix">&nbsp;</div>
+<!-- Checbox flag ignore -->
+{!! Form::checkbox('flag_ignore_contact', '1', '') !!} 
+<span class="label-automatic-generate">Lewati</span>
+<div class="clearfix">&nbsp;</div>
+
 <?php $tabindex = 1; ?>
 @for ($x=0; $x<=2; $x++)
 	<div class="form-group">				
