@@ -99,6 +99,15 @@
 		$(this).parent().attr('action', action+'?org_id='+org_id);
 	});
 
+	/* modal import csv person workleave */
+	$('.import_csv_person_workleave').on('show.bs.modal', function(e) {
+		var action 		= $(e.relatedTarget).attr('data-action');
+		var org_id 		= $(e.relatedTarget).attr('data-org_id');
+		var person_id 	= $(e.relatedTarget).attr('data-person_id');
+
+		$(this).parent().attr('action', action+'?org_id='+org_id+'&person_id='+person_id);
+	});
+
 	/* modal add widget org */
 	$('.add_widget').on('show.bs.modal', function(e) {
 		var org_id 		= $(e.relatedTarget).attr('data-org');

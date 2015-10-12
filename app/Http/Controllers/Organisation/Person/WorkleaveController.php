@@ -272,8 +272,50 @@ class WorkleaveController extends BaseController
 			App::abort(404);
 		}
 
+		if(Input::has('import'))
+		{
+			if (Input::hasFile('file_csv')) 
+			{
+				$file_csv 									= Input::file('file_csv');
+				$attributes 								= [];				
+				$sheet 										= Excel::load($file_csv)->toArray();				
+				
+				$queattr['created_by'] 					= Session::get('loggedUser');
+				$queattr['process_name'] 				= 'hr:personworkleaveimportbatch';
+				$queattr['parameter'] 					= json_encode($sheet);
+				$queattr['total_process'] 				= count($sheet);
+				$queattr['task_per_process']			= 1;
+				$queattr['process_number'] 			= 0;
+				$queattr['total_task'] 					= count($sheet);
+				$queattr['message'] 						= 'Initial Queue';
+
+				$content 									= $this->dispatch(new Saving(new Queue, $queattr, null));
+				$is_success_2 								= json_decode($content);
+
+				if(!$is_success_2->meta->success)
+				{
+					foreach ($is_success_2->meta->errors as $key2 => $value2) 
+					{
+						if(is_array($value2))
+						{
+							foreach ($value2 as $key3 => $value3) 
+							{
+								$errors->add('Import Batch', $value3);
+							}
+						}
+						else
+						{
+							$errors->add('Import Batch', $value2);
+						}
+					}
+				}
+
+				return Redirect::back()->with('alert_info', 'Data sedang disimpan');
+			}
+		}
+
 		$begin 									= new DateTime( Input::get('start') );
-		$end 									= new DateTime( Input::get('end').' + 1 day' );
+		$end 										= new DateTime( Input::get('end').' + 1 day' );
 
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
