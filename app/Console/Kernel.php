@@ -33,6 +33,7 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\WorkBatchCommand',
 		'App\Console\Commands\ExpiredWorkleaveBatchCommand',
 		'App\Console\Commands\RaiseWorkleaveBatchCommand',
+		'App\Console\Commands\PersonWorkleaveImportBatchCommand',
 
 		'App\Console\Commands\HRClearCacheCommand',
 		'App\Console\Commands\HRSUpdateCommand',
