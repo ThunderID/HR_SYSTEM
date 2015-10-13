@@ -378,18 +378,18 @@ class DocumentController extends BaseController
 						
 						if(!$contents->meta->success)
 						{
-							foreach ($contents->meta->errors as $key => $value) 
+							foreach ($contents->meta->errors as $key => $value1) 
 							{
-								if(is_array($value))
+								if(is_array($value1))
 								{
-									foreach ($value as $key2 => $value2) 
+									foreach ($value1 as $key2 => $value2) 
 									{
 										$errors->add('Document', $value2);
 									}
 								}
 								else
 								{
-									$errors->add('Document', $value);
+									$errors->add('Document', $value1);
 								}
 							}
 						}
@@ -400,18 +400,18 @@ class DocumentController extends BaseController
 						
 						if(!$contents->meta->success)
 						{
-							foreach ($contents->meta->errors as $key => $value) 
+							foreach ($contents->meta->errors as $key => $value1) 
 							{
-								if(is_array($value))
+								if(is_array($value1))
 								{
-									foreach ($value as $key2 => $value2) 
+									foreach ($value1 as $key2 => $value2) 
 									{
 										$errors->add('Document', $value2);
 									}
 								}
 								else
 								{
-									$errors->add('Document', $value);
+									$errors->add('Document', $value1);
 								}
 							}
 						}
@@ -421,18 +421,18 @@ class DocumentController extends BaseController
 
 						if (!$contents->meta->success)
 						{
-							foreach ($contents->meta->errors as $key => $value) 
+							foreach ($contents->meta->errors as $key => $value1) 
 							{
-								if(is_array($value))
+								if(is_array($value1))
 								{
-									foreach ($value as $key2 => $value2) 
+									foreach ($value1 as $key2 => $value2) 
 									{
 										$errors->add('Document', $value2);
 									}
 								}
 								else
 								{
-									$errors->add('Document', $value);
+									$errors->add('Document', $value1);
 								}
 							}
 						}
