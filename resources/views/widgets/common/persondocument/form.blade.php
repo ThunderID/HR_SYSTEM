@@ -34,22 +34,22 @@
 						switch (strtolower($value['type'])) 
 						{
 							case 'text':
-								$form 		= '<textarea name="content" value="" class="form-control">'.$content.'</textarea>';
+								$form 		= '<textarea name="content['.$key.']" value="" class="form-control">'.$content.'</textarea>';
 								break;
 							case 'date':
-								$form 		= '<input type="date" class="form-control date-mask" id="text" name="content" value="'.$content.'">';
+								$form 		= '<input type="date" class="form-control date-mask" id="text" name="content['.$key.']" value="'.$content.'">';
 								break;
 							case 'numeric':
-								$form 		= '<input type="numeric" class="form-control" id="text" name="content" value="'.$content.'">';
+								$form 		= '<input type="numeric" class="form-control" id="text" name="content['.$key.']" value="'.$content.'">';
 								break;
 							default:
-								$form 		= '<input type="text" class="form-control" id="text" name="content" value="'.$content.'">';
+								$form 		= '<input type="text" class="form-control" id="text" name="content['.$key.']" value="'.$content.'">';
 								break;
 						}
 					;?>					
 					{!!$form!!}					
-					<input type="hidden" class="form-control" id="text" name="template_id" value="{{$value['id']}}">
-					<input type="hidden" class="form-control" id="text" name="detail_id" value="{{$detailid}}">
+					<input type="hidden" class="form-control" id="text" name="template_id[{{$key}}]" value="{{$value['id']}}">
+					<input type="hidden" class="form-control" id="text" name="detail_id[{{$key}}]" value="{{$detailid}}">
 				</div>
 			@endforeach
 			<div class="form-group text-right">				
