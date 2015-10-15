@@ -8,7 +8,7 @@ use Schema;
 use App\Models\Calendar;
 use App\Models\Chart;
 use App\Models\ChartWorkleave;
-use App\Models\Workleave;
+use App\Models\PersonWorkleave;
 use DB, Hash;
 
 class HRSUpdateCommand extends Command {
@@ -81,97 +81,110 @@ class HRSUpdateCommand extends Command {
 	 **/
 	public function update19092015()
 	{
-		Schema::table('works', function(Blueprint $table)
-		{	
-			$table->boolean('is_absence');
-		});
+		$pwleave 					= PersonWorkleave::find(498);
 
-		$this->info("Add boolean is absence on works table");
-
-		Schema::table('tmp_calendars', function(Blueprint $table)
-		{	
-			$table->text('break_idle');
-		});
-
-		$this->info("Add break idle on calendars table");
-
-		Schema::table('tmp_schedules', function(Blueprint $table)
-		{	
-			$table->double('break_idle');
-		});
-
-		$this->info("Add break idle on schedules table");
-
-		Schema::table('person_schedules', function(Blueprint $table)
-		{	
-			$table->double('break_idle');
-		});
-
-		$this->info("Add break idle on person schedules table");
-
-		Schema::table('idle_logs', function(Blueprint $table)
-		{	
-			$table->double('break_idle');
-		});
-
-		$this->info("Add break idle on idle logs table");
-
-		$calendars 							= Calendar::get();
-
-		foreach($calendars as $key => $value)
-		{
-			$value->fill([
-				'break_idle'				=> '3600,3600,3600,3600,5400',
+		$pwleave->fill([
+				'end'				=> date('Y-m-d', strtotime('2014-12-03')),
 			]);
 
-			if (!$value->save())
-			{
-				print_r($value->getError());
-				exit;
-			}
+		if(!$pwleave->save())
+		{
+			dd($pwleave->getError());
 		}
 
-		$this->info("Updating Calendar with break idle");
+		$this->info("Updating person workleave");
 
-		Schema::create('charts_workleaves', function(Blueprint $table)
-		{
-			$table->increments('id');
-			$table->integer('chart_id')->unsigned()->index();
-			$table->integer('workleave_id')->unsigned()->index();
-			$table->text('rules');
-			$table->timestamps();
-			$table->softDeletes();
+		// Schema::table('works', function(Blueprint $table)
+		// {	
+		// 	$table->boolean('is_absence');
+		// });
+
+		// $this->info("Add boolean is absence on works table");
+
+		// Schema::table('tmp_calendars', function(Blueprint $table)
+		// {	
+		// 	$table->text('break_idle');
+		// });
+
+		// $this->info("Add break idle on calendars table");
+
+		// Schema::table('tmp_schedules', function(Blueprint $table)
+		// {	
+		// 	$table->double('break_idle');
+		// });
+
+		// $this->info("Add break idle on schedules table");
+
+		// Schema::table('person_schedules', function(Blueprint $table)
+		// {	
+		// 	$table->double('break_idle');
+		// });
+
+		// $this->info("Add break idle on person schedules table");
+
+		// Schema::table('idle_logs', function(Blueprint $table)
+		// {	
+		// 	$table->double('break_idle');
+		// });
+
+		// $this->info("Add break idle on idle logs table");
+
+		// $calendars 							= Calendar::get();
+
+		// foreach($calendars as $key => $value)
+		// {
+		// 	$value->fill([
+		// 		'break_idle'				=> '3600,3600,3600,3600,5400',
+		// 	]);
+
+		// 	if (!$value->save())
+		// 	{
+		// 		print_r($value->getError());
+		// 		exit;
+		// 	}
+		// }
+
+		// $this->info("Updating Calendar with break idle");
+
+		// Schema::create('charts_workleaves', function(Blueprint $table)
+		// {
+		// 	$table->increments('id');
+		// 	$table->integer('chart_id')->unsigned()->index();
+		// 	$table->integer('workleave_id')->unsigned()->index();
+		// 	$table->text('rules');
+		// 	$table->timestamps();
+		// 	$table->softDeletes();
 			
-			$table->index(['deleted_at', 'chart_id']);
-		});
+		// 	$table->index(['deleted_at', 'chart_id']);
+		// });
 
-		$this->info("Add charts workleaves table");
+		// $this->info("Add charts workleaves table");
 
-		$charts 							= Chart::get();
+		// $charts 							= Chart::get();
 
-		foreach($charts as $key => $value)
-		{
-			$workleave 						= Workleave::organisationid($value->branch->organisation_id)->status('CN')->first();
+		// foreach($charts as $key => $value)
+		// {
+		// 	$workleave 						= Workleave::organisationid($value->branch->organisation_id)->status('CN')->first();
 
-			if($workleave)
-			{
-				$data 						= new ChartWorkleave;
-				$data->fill([
-					'chart_id'				=> $value->id,
-					'rules'					=> '- 5 years',
-				]);
+		// 	if($workleave)
+		// 	{
+		// 		$data 						= new ChartWorkleave;
+		// 		$data->fill([
+		// 			'chart_id'				=> $value->id,
+		// 			'rules'					=> '- 5 years',
+		// 		]);
 
-				$data->Workleave()->associate($workleave);
+		// 		$data->Workleave()->associate($workleave);
 
-				if (!$data->save())
-				{
-					print_r($data->getError());
-					exit;
-				}
-			}
-		}
+		// 		if (!$data->save())
+		// 		{
+		// 			print_r($data->getError());
+		// 			exit;
+		// 		}
+		// 	}
+		// }
 
-		$this->info("Updating Chart with workleave");
+		// $this->info("Updating Chart with workleave");
 
 		return true;
 	}
