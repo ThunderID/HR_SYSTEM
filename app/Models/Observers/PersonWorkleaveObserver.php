@@ -328,7 +328,7 @@ class PersonWorkleaveObserver
 		foreach ($pschedules as $key => $value) 
 		{
 			$dschedule 						= PersonSchedule::find($value->id);
-			if(!$dschedule->delete())
+			if($dschedule && !$dschedule->delete())
 			{
 				$model['errors']			= $dschedule->getError();
 			
