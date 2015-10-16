@@ -25,9 +25,10 @@
 
 		$('.select2-tag-days').select2({
 	 		tokenSeparators: [",", " ", "_", "-"],
-			tags: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],			
+			tags: ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'minggu'],			
 			maximumSelectionSize: 7,
-			selectOnBlur: true,
+			selectOnBlur: false,
+			multiple: false,
 			createSearchChoice: function() { return null; }
 		});
 		
@@ -38,8 +39,9 @@
 		$('.select2-tag-minute').select2({
 			tokenSeparators: [",", " ", "_", "-"],
 			tags: ['0', '30', '45', '60', '75', '90'],
-			maximumSelectionSize: 7,
+			maximumSelectionSize: 1,
 			selectOnBlur: true,
+			multiple: false,
 			createSearchChoice: function() { return null; }
 		});
 

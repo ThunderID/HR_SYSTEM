@@ -302,6 +302,7 @@
 			tags: ['0', '30', '45', '60', '75', '90'],
 			maximumSelectionSize: 1,
 			selectOnBlur: true,
+			multiple: false,
 			createSearchChoice: function() { return null; }
 		});
 		// console.log($(this).select2('val'));
