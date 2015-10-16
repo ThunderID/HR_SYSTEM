@@ -56,7 +56,7 @@
 				<div class="form-group">
 					<div class="checkbox">
 						<label>
-							{!!Form::checkbox('affect', '1', '', ['class' => '', 'tabindex' => '9'])!!} Set Kalender Default : 
+							{!!Form::checkbox('affect', '1', '', ['class' => '', 'tabindex' => '8'])!!} Set Kalender Default : 
 						</label>
 					</div>
 				</div>
@@ -82,8 +82,8 @@
 				@endif
 
 			<div class="form-group text-right">				
-				<a href="{{ $ChartComposer['widget_data']['chartlist']['route_back'] }}" class="btn btn-default mr-5" tabindex="9">Batal</a>
-				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="8">
+				<a href="{{ $ChartComposer['widget_data']['chartlist']['route_back'] }}" class="btn btn-default mr-5" tabindex="10">Batal</a>
+				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="9">
 			</div>
 		{!! Form::close() !!}
 	@overwrite	

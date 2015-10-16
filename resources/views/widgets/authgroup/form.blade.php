@@ -13,13 +13,13 @@
 				<div class="col-sm-12">
 					<div class="form-group">
 						<label class="control-label">Nama Otentikasi Group</label>
-						{!! Form::input('text', 'name', $AuthGroupComposer['widget_data']['authgroup']['authgroup']['name'], ['class' => 'form-control']) !!}
+						{!! Form::input('text', 'name', $AuthGroupComposer['widget_data']['authgroup']['authgroup']['name'], ['class' => 'form-control', 'tabindex' => '1']) !!}
 					</div>
 				</div>
 			</div>
 			<div class="form-group text-right">				
-				<a href="{{ $AuthGroupComposer['widget_data']['authgroup']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
-				<input type="submit" class="btn btn-primary" value="Simpan">
+				<a href="{{ $AuthGroupComposer['widget_data']['authgroup']['route_back'] }}" class="btn btn-default mr-5" tabindex="3">Batal</a>
+				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="2">
 			</div>
 		{!! Form::close() !!}
 	@overwrite	

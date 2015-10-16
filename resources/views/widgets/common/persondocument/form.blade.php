@@ -34,16 +34,16 @@
 						switch (strtolower($value['type'])) 
 						{
 							case 'text':
-								$form 		= '<textarea name="content['.$key.']" value="" class="form-control">'.$content.'</textarea>';
+								$form 		= '<textarea name="content['.$key.']" value="" class="form-control" tabindex="'.($key+1).'">'.$content.'</textarea>';
 								break;
 							case 'date':
-								$form 		= '<input type="date" class="form-control date-mask" id="text" name="content['.$key.']" value="'.$content.'">';
+								$form 		= '<input type="date" class="form-control date-mask" id="text" name="content['.$key.']" value="'.$content.'" tabindex="'.($key+1).'">';
 								break;
 							case 'numeric':
-								$form 		= '<input type="numeric" class="form-control" id="text" name="content['.$key.']" value="'.$content.'">';
+								$form 		= '<input type="numeric" class="form-control" id="text" name="content['.$key.']" value="'.$content.'" tabindex="'.($key+1).'">';
 								break;
 							default:
-								$form 		= '<input type="text" class="form-control" id="text" name="content['.$key.']" value="'.$content.'">';
+								$form 		= '<input type="text" class="form-control" id="text" name="content['.$key.']" value="'.$content.'" tabindex="'.($key+1).'">';
 								break;
 						}
 					;?>					
@@ -53,8 +53,8 @@
 				</div>
 			@endforeach
 			<div class="form-group text-right">				
-				<a href="{{ $DocumentComposer['widget_data']['documentlist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
-				<input type="submit" class="btn btn-primary" value="Simpan">				
+				<a href="{{ $DocumentComposer['widget_data']['documentlist']['route_back'] }}" class="btn btn-default mr-5" tabindex="15">Batal</a>
+				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="14">				
 			</div>
 		{!! Form::close() !!}
 	@overwrite	

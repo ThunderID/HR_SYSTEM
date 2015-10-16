@@ -29,23 +29,23 @@
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label class="control-label">Berlaku Sejak</label>
-						{!!Form::input('text', 'start', isset($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['start']) ? date('d-m-Y', strtotime($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['start'])) : '', ['class' => 'form-control date-mask', 'tabindex' => 5])!!}
+						{!!Form::input('text', 'start', isset($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['start']) ? date('d-m-Y', strtotime($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['start'])) : '', ['class' => 'form-control date-mask', 'tabindex' => 2])!!}
 					</div>
 				</div>
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label class="control-label">Berlaku Hingga</label>
-						{!!Form::input('text', 'end', isset($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['end']) ? date('d-m-Y', strtotime($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['end'])) : '', ['class' => 'form-control date-mask', 'tabindex' => 6])!!}
+						{!!Form::input('text', 'end', isset($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['end']) ? date('d-m-Y', strtotime($PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['end'])) : '', ['class' => 'form-control date-mask', 'tabindex' => 3])!!}
 					</div>	
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label">Notes</label>
-				{!!Form::textarea('notes', $PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['notes'], ['class' => 'form-control', 'tabindex' => 7])!!}
+				{!!Form::textarea('notes', $PersonWorkleaveComposer['widget_data']['personworkleavelist']['workleave']['notes'], ['class' => 'form-control', 'tabindex' => 4])!!}
 			</div>
 			<div class="form-group text-right">
-				<a href="{{ $PersonWorkleaveComposer['widget_data']['personworkleavelist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
-				<input type="submit" class="btn btn-primary" value="Simpan">
+				<a href="{{ $PersonWorkleaveComposer['widget_data']['personworkleavelist']['route_back'] }}" class="btn btn-default mr-5" tabindex="6">Batal</a>
+				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="5">
 			</div>
 		{!! Form::close() !!}
 	@overwrite	

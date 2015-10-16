@@ -55,8 +55,8 @@
 			<div class="row tmp_break_idle">
 			</div>
 			<div class="form-group text-right">				
-				<a href="{{ $CalendarComposer['widget_data']['calendarlist']['route_back'] }}" class="btn btn-default mr-5" tabindex="7">Batal</a>
-				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="8">
+				<a href="{{ $CalendarComposer['widget_data']['calendarlist']['route_back'] }}" class="btn btn-default mr-5" tabindex="14">Batal</a>
+				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="13">
 			</div>
 		{!! Form::close() !!}
 	@overwrite	

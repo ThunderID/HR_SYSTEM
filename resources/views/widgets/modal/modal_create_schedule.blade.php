@@ -23,11 +23,11 @@
 						<div class="col-sm-12 p-30">
 							<div class="form-group pt-20">						
 								<label class="control-label">Label</label>						
-								<input type="text" name="name" class="form-control schedule_label">						
+								<input type="text" name="name" class="form-control schedule_label" tabindex="1">						
 							</div>
 							<div class="form-group">						
 								<label class="control-label">Status</label>
-								<select name="status" class="form-control schedule_status">
+								<select name="status" class="form-control schedule_status" tabindex="2">
 									<option value="HB">Hadir</option>
 									<option value="L">Libur</option>
 									@if(Input::has('person_id'))
@@ -45,7 +45,7 @@
 							<div class="form-group">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" class="is_range" > Range Tanggal
+										<input type="checkbox" class="is_range" tabindex="3"> Range Tanggal
 									</label>
 								</div>	
 							</div>
@@ -53,7 +53,7 @@
 								<div class="col-sm-12">
 									<div class="form-group">
 										<label class="control-label">Tanggal</label>						
-										<input type="text" name="on" class="form-control date-mask schedule_on">		
+										<input type="text" name="on" class="form-control date-mask schedule_on" tabindex="4">		
 									</div>
 								</div>
 							</div>
@@ -62,14 +62,14 @@
 								<div class="col-sm-5">
 									<div class="form-group">
 										<label class="control-label">Start</label>
-										<input type="text" name="start" class="form-control time-mask schedule_start">
+										<input type="text" name="start" class="form-control time-mask schedule_start" tabindex="5">
 									</div>
 								</div>
 								<div class="col-sm-2"></div>
 								<div class="col-sm-5">
 									<div class="form-group">
 										<label class="control-label">End</label>
-										<input type="text" name="end" class="form-control time-mask schedule_end">
+										<input type="text" name="end" class="form-control time-mask schedule_end" tabindex="6">
 									</div>
 								</div>
 							</div>
@@ -77,7 +77,7 @@
 								<div class="form-group">
 									<div class="checkbox">
 										<label>
-											{!!Form::checkbox('affect', '1', '', ['class' => 'affect_schedule_org', 'tabindex' => '6'])!!} Perubahan Pada Kalender ini akan mempengaruhi : 
+											{!!Form::checkbox('affect', '1', '', ['class' => 'affect_schedule_org', 'tabindex' => '7'])!!} Perubahan Pada Kalender ini akan mempengaruhi : 
 										</label>
 									</div>
 								</div>
@@ -99,9 +99,9 @@
 					</div>
 				</div>
 				<div class="modal-footer bg-grey">
-					<a href="javascript:;" class="btn btn-danger pull-left schedule_delete" data-toggle="modal" data-target="#delete" data-delete-action="" data-affect="">Hapus</a>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-					<button type="submit" class="btn btn-primary">Simpan</button>
+					<a href="javascript:;" class="btn btn-danger pull-left schedule_delete" data-toggle="modal" data-target="#delete" data-delete-action="" data-affect="" tabindex="10">Hapus</a>
+					<button type="button" class="btn btn-default" data-dismiss="modal" tabindex="9">Batal</button>
+					<button type="submit" class="btn btn-primary" tabindex="8">Simpan</button>
 				</div>
 			</div>
 		</div>

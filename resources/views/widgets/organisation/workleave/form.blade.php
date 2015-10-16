@@ -37,8 +37,8 @@
 				</div>				
 			</div>
 			<div class="form-group text-right">				
-				<a href="{{ $WorkleaveComposer['widget_data']['workleavelist']['route_back'] }}" class="btn btn-default mr-5" tabindex="5">Batal</a>
-				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="6">
+				<a href="{{ $WorkleaveComposer['widget_data']['workleavelist']['route_back'] }}" class="btn btn-default mr-5" tabindex="6">Batal</a>
+				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="5">
 			</div>
 		{!! Form::close() !!}
 	@overwrite	

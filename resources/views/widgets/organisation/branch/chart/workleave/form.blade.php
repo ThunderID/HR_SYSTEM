@@ -28,11 +28,11 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label">Rules</label>
-				{!! Form::textarea('rules', $ChartWorkleaveComposer['widget_data']['workleavelist']['workleave']['rules'], ['class' => 'form-control', 'rows' => '2']) !!}
+				{!! Form::textarea('rules', $ChartWorkleaveComposer['widget_data']['workleavelist']['workleave']['rules'], ['class' => 'form-control', 'rows' => '2', 'tabindex' => '2']) !!}
 			</div>
 			<div class="form-group text-right">				
-				<a href="{{ $ChartWorkleaveComposer['widget_data']['workleavelist']['route_back'] }}" class="btn btn-default mr-5" tabindex="3">Batal</a>
-				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="2">
+				<a href="{{ $ChartWorkleaveComposer['widget_data']['workleavelist']['route_back'] }}" class="btn btn-default mr-5" tabindex="4">Batal</a>
+				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="3">
 			</div>
 		{!! Form::close() !!}
 	@overwrite	

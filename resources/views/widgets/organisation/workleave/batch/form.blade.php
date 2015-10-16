@@ -18,8 +18,8 @@
 			</div>
 		</div>
 		<div class="form-group text-right">
-			<a href="{{ $widget_options['workleavelist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
-			<input type="submit" class="btn btn-primary" value="Simpan">
+			<a href="{{ $widget_options['workleavelist']['route_back'] }}" class="btn btn-default mr-5" tabindex="3">Batal</a>
+			<input type="submit" class="btn btn-primary" value="Simpan" tabindex="2">
 		</div>
 	{!! Form::close() !!}
 @overwrite	

@@ -23,7 +23,7 @@
 						<div class="col-sm-12">
 							<div class="form-group">
 								<label for="">Title</label>
-								{!! Form::input('text', 'title', '', ['class' => 'form-control', 'placeholder' => 'Title Widget']) !!}
+								{!! Form::input('text', 'title', '', ['class' => 'form-control', 'placeholder' => 'Title Widget', 'tabindex' => '1']) !!}
 							</div>
 						</div>
 					</div>
@@ -31,7 +31,7 @@
 						<div class="col-sm-12">
 							<div class="form-group">
 								<label for="">Tipe Dashboard Widget</label>
-								<select name="dashboard" class="form-control select_type_widget">
+								<select name="dashboard" class="form-control select_type_widget" tabindex="2">
 									@if (Session::get('user.menuid')<=3) <option value="organisation">Organisasi</option> @endif
 									<option value="person">Karyawan</option>
 								</select>
@@ -44,7 +44,7 @@
 								<label for="">Data</label>
 								{{-- Organisation Widget --}}
 								@if (Session::get('user.menuid')<=3)
-									<select name="data_widget_org" id="select2-dashboard-widget" class="form-control select_widget_org">
+									<select name="data_widget_org" id="select2-dashboard-widget" class="form-control select_widget_org" tabindex="3">
 										<option value="processlogondate" data-type="table" data-widget-option-title="Table SP Print" data-template="widgets.common.personwidget.table.table_sp" data-query="sp">
 											SP Print list
 										</option>
@@ -88,7 +88,7 @@
 								@endif
 
 								{{-- Person Widget --}}
-								<select name="data_widget_person" id="" class="form-control select_widget_person @if (Session::get('user.menuid')<=3) hide @endif">
+								<select name="data_widget_person" id="" class="form-control select_widget_person @if (Session::get('user.menuid')<=3) hide @endif" tabindex="4">
 									<option value="" data-type="table" data-widget-option-title="Daftar Pekerjaan" data-template="widgets.common.personwidget.table.table_work" data-query="work">
 										Daftar Pekerjaan
 									</option>
@@ -115,7 +115,7 @@
 						<div class="col-sm-12">
 							<div class="form-group">
 								<label for="">Periode</label>
-								<select name="periode" class="form-control select2">
+								<select name="periode" class="form-control select2" tabindex="5">
 									<option value="today">Hari Ini</option>
 									<option value="this week">Minggu Ini</option>
 									<option value="this month">Bulan Ini</option>
@@ -157,7 +157,7 @@
 							<div class="form-group">
 								<div class="checkbox">
 									<label>
-										{!!Form::checkbox('is_active', '1', '', ['class' => '', 'tabindex' => '3'])!!} Aktif
+										{!!Form::checkbox('is_active', '1', '', ['class' => '', 'tabindex' => '6'])!!} Aktif
 									</label>
 								</div>				
 							</div>
@@ -184,8 +184,8 @@
 				{!! Form::hidden('widget_data', 'processlogondate', ['class' => 'widget_data']) !!}
 				{!! Form::hidden('widget_query', 'sp', ['class' => 'widget_query']) !!}
 				<div class="modal-footer bg-grey">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-					<button type="submit" class="btn btn-primary">Tambah</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal" tabindex="8">Batal</button>
+					<button type="submit" class="btn btn-primary" tabindex="7">Tambah</button>
 				</div>
 			</div>
 		</div>

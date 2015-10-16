@@ -45,8 +45,8 @@
 				</div>				
 			</div>
 			<div class="form-group text-right">				
-				<a href="{{ $ApiComposer['widget_data']['apilist']['route_back'] }}" class="btn btn-default mr-5" tabindex="4">Batal</a>
-				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="3">
+				<a href="{{ $ApiComposer['widget_data']['apilist']['route_back'] }}" class="btn btn-default mr-5" tabindex="7">Batal</a>
+				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="6">
 			</div>
 		{!! Form::close() !!}
 	@overwrite	
