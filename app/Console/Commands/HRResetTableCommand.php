@@ -119,7 +119,7 @@ class HRResetTableCommand extends Command {
 				$pwleave 				= PersonWorkleave::id($value->person_workleave_id)->createdat($ondate)->first();
 				if(!$pwleave->delete())
 				{
-					$this->info($value->errors);
+					$this->info($pwleave->errors);
 				}
 			}
 			
@@ -128,7 +128,7 @@ class HRResetTableCommand extends Command {
 				$pdoc 					= PersonDocument::id($value->person_document_id)->createdat($ondate)->first();
 				if(!$pdoc->delete())
 				{
-					$this->info($value->errors);
+					$this->info($pdoc->errors);
 				}
 			}
 		}
