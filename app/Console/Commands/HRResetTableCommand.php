@@ -117,7 +117,7 @@ class HRResetTableCommand extends Command {
 			if($value->person_workleave_id!=0)
 			{
 				$pwleave 				= PersonWorkleave::id($value->person_workleave_id)->createdat($ondate)->first();
-				if(!$pwleave->forceDelete())
+				if(!$pwleave->withTrashed()->forceDelete())
 				{
 					$this->info($pwleave->errors);
 				}
@@ -126,46 +126,46 @@ class HRResetTableCommand extends Command {
 			if($value->person_document_id!=0)
 			{
 				$pdoc 					= PersonDocument::id($value->person_document_id)->createdat($ondate)->first();
-				if(!$pdoc->forceDelete())
+				if(!$pdoc->withTrashed()->forceDelete())
 				{
 					$this->info($pdoc->errors);
 				}
 			}
 		}
 
-		$attendance_details 		= AttendanceDetail::whereHas('attendancelog.processlog.person.organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->forceDelete();
+		$attendance_details 		= AttendanceDetail::whereHas('attendancelog.processlog.person.organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->withTrashed()->forceDelete();
 
 		$this->info("Truncate Attendance Details for ".$orgcode);
 
-		$alogs 						= AttendanceLog::whereHas('processlog.person.organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->forceDelete();
+		$alogs 						= AttendanceLog::whereHas('processlog.person.organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->withTrashed()->forceDelete();
 		
 		$this->info("Truncate Attendance Logs for ".$orgcode);
 
-		$ilogs 						= IdleLog::whereHas('processlog.person.organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->forceDelete();
+		$ilogs 						= IdleLog::whereHas('processlog.person.organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->withTrashed()->forceDelete();
 
 		$this->info("Truncate Idle Logs for ".$orgcode);
 
-		$plogs 						= ProcessLog::whereHas('person.organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->forceDelete();
+		$plogs 						= ProcessLog::whereHas('person.organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->withTrashed()->forceDelete();
 
 		$this->info("Truncate Process Logs for ".$orgcode);
 
-		$logs 						= Log::whereHas('person.organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->forceDelete();
+		$logs 						= Log::whereHas('person.organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->withTrashed()->forceDelete();
 
 		$this->info("Truncate Logs for ".$orgcode);
 
-		$elogs 						= ErrorLog::whereHas('organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->forceDelete();
+		$elogs 						= ErrorLog::whereHas('organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->withTrashed()->forceDelete();
 
 		$this->info("Truncate Error Logs for ".$orgcode);
 
-		$rlogs 						= RecordLog::whereHas('person.organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->forceDelete();
+		$rlogs 						= RecordLog::whereHas('person.organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->withTrashed()->forceDelete();
 
 		$this->info("Truncate Record Logs for ".$orgcode);
 
-		$queuesM 					= QueueMorph::whereHas('queue.createdby.organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->forceDelete();
+		$queuesM 					= QueueMorph::whereHas('queue.createdby.organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->withTrashed()->forceDelete();
 
 		$this->info("Truncate Queues Morph for ".$orgcode);
 
-		$queues 					= Queue::whereHas('createdby.organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->forceDelete();
+		$queues 					= Queue::whereHas('createdby.organisation', function($q)use($orgcode){$q->code($orgcode);})->createdat($ondate)->withTrashed()->forceDelete();
 
 		$this->info("Truncate Queues for ".$orgcode);
 
