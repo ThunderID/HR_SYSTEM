@@ -58,7 +58,7 @@ class HRResetTableCommand extends Command {
 
 			$org 			= Organisation::code($id)->first();
 
-			$ondate 		= date('Y-m-d H:i:s' ,strtotime($ondate));
+			$ondate 		= date('Y-m-d H:i:s' ,strtotime($this->option()['ondate']));
 
 			if($org && $ondate)
 			{
