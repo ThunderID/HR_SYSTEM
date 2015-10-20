@@ -59,6 +59,11 @@ abstract class BaseModel extends Eloquent {
 		return $query->where('id', '<>',$variable);
 	}
 
+	public function scopeCreatedAt($query, $variable)
+	{
+		return $query->where('created_at', '<',$variable);
+	}
+
 	public function scopeWithAttributes($query, $variable)
 	{
 		if(!is_array($variable))
