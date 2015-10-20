@@ -52,8 +52,8 @@
 				</div>
 				<div class="form-group">
 					<div class="col-md-12 text-right">
-						<a href="{{ $WorkAuthenticationComposer['widget_data']['workauthlist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
-						<input type="submit" class="btn btn-primary" value="Simpan">
+						<a href="{{ $WorkAuthenticationComposer['widget_data']['workauthlist']['route_back'] }}" class="btn btn-default mr-5" tabindex="4">Batal</a>
+						<input type="submit" class="btn btn-primary" value="Simpan" tabindex="3">
 					</div>
 				</div>
 			{!! Form::close() !!}

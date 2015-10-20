@@ -13,7 +13,7 @@
 					<label class="control-label">Modifikasi Status</label>
 				</div>	
 				<div class="col-md-10">
-					<select name="modified_status" class="form-control select2 modified_status_absen">
+					<select name="modified_status" class="form-control select2 modified_status_absen" tabindex="1">
 						@if (($ProcessLogComposer['widget_data']['processlogslist']['processlog']['attendancelogs'][0]['actual_status']=='HT')||($ProcessLogComposer['widget_data']['processlogslist']['processlog']['attendancelogs'][0]['actual_status']=='HP')||($ProcessLogComposer['widget_data']['processlogslist']['processlog']['attendancelogs'][0]['actual_status']=='HC')||($ProcessLogComposer['widget_data']['processlogslist']['processlog']['attendancelogs'][0]['actual_status']=='HD'))
 							<option value="HC">HC - Hadir Cacat Tanpa Penjelasan</option>
 							<option value="HD">HD - Hadir Cacat Dengan Ijin Dinas</option>
@@ -37,13 +37,13 @@
 					<label class="control-label">Note</label>
 				</div>
 				<div class="col-md-10">
-					{!! Form::textarea('notes', $ProcessLogComposer['widget_data']['processlogslist']['processlog']['attendancelogs'][0]['notes'], ['class' => 'form-control', 'rows' => '4']) !!}
+					{!! Form::textarea('notes', $ProcessLogComposer['widget_data']['processlogslist']['processlog']['attendancelogs'][0]['notes'], ['class' => 'form-control', 'rows' => '4', 'tabindex' => '2']) !!}
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-md-12 text-right">
-					<a href="{{ $ProcessLogComposer['widget_data']['processlogslist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
-					<input type="submit" class="btn btn-primary" value="Simpan">
+					<a href="{{ $ProcessLogComposer['widget_data']['processlogslist']['route_back'] }}" class="btn btn-default mr-5" tabindex="4">Batal</a>
+					<input type="submit" class="btn btn-primary" value="Simpan" tabindex="3">
 				</div>
 			</div>
 		{!! Form::close() !!}

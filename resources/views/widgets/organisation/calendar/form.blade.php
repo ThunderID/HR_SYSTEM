@@ -53,10 +53,28 @@
 				</div>
 			</div>
 			<div class="row tmp_break_idle">
+				@if (isset($CalendarComposer['widget_data']['calendarlist']['calendar']['workdays'])&&($CalendarComposer['widget_data']['calendarlist']['calendar']['id']))
+					<?php 
+						$workdays = explode(',', $CalendarComposer['widget_data']['calendarlist']['calendar']['workdays']); 
+					?>
+
+						@if (isset($CalendarComposer['widget_data']['calendarlist']['calendar']['break_idle']))
+							<?php $break_idle = explode(',', $CalendarComposer['widget_data']['calendarlist']['calendar']['break_idle']); ?>
+							@for ($x=0; $x<count($workdays); $x++)
+								<div class="col-xs-12 col-sm-2">
+									<div class="form-group">
+										<label class="control-label"></label>
+										<input type="text" name="break_idle[]" class="form-control select2-tag-minute" tabindex="" value="{{ ((int)$break_idle[$x]/60) }}"/>
+										<span class="font-12">menit</span> 
+									</div>
+								</div>
+							@endfor
+						@endif
+				@endif
 			</div>
 			<div class="form-group text-right">				
-				<a href="{{ $CalendarComposer['widget_data']['calendarlist']['route_back'] }}" class="btn btn-default mr-5" tabindex="7">Batal</a>
-				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="8">
+				<a href="{{ $CalendarComposer['widget_data']['calendarlist']['route_back'] }}" class="btn btn-default mr-5" tabindex="14">Batal</a>
+				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="13">
 			</div>
 		{!! Form::close() !!}
 	@overwrite	

@@ -27,70 +27,70 @@
 							<td class="text-center">
 								<div class="checkbox checkbox-inline checkbox-styled">
 									<label>	
-										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'left_thumb']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'left_thumb']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['left_thumb']) checked @endif>
+										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'left_thumb']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'left_thumb']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['left_thumb']) checked @endif tabindex="1">
 									</label>
 								</div>
 							</td>
 							<td class="text-center">
 								<div class="checkbox checkbox-inline checkbox-styled">
 									<label>	
-										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'left_index_finger']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'left_index_finger']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['left_index_finger']) checked @endif>
+										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'left_index_finger']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'left_index_finger']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['left_index_finger']) checked @endif tabindex="2">
 									</label>
 								</div>
 							</td>
 							<td class="text-center">
 								<div class="checkbox checkbox-inline checkbox-styled">
 									<label>	
-										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'left_middle_finger']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'left_middle_finger']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['left_middle_finger']) checked @endif>
+										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'left_middle_finger']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'left_middle_finger']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['left_middle_finger']) checked @endif tabindex="3">
 									</label>
 								</div>
 							</td>
 							<td class="text-center">
 								<div class="checkbox checkbox-inline checkbox-styled">
 									<label>	
-										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'left_ring_finger']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'left_ring_finger']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['left_ring_finger']) checked @endif>
+										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'left_ring_finger']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'left_ring_finger']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['left_ring_finger']) checked @endif tabindex="4">
 									</label>
 								</div>
 							</td>
 							<td class="text-center">
 								<div class="checkbox checkbox-inline checkbox-styled">
 									<label>	
-										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'left_little_finger']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'left_little_finger']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['left_little_finger']) checked @endif>
+										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'left_little_finger']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'left_little_finger']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['left_little_finger']) checked @endif tabindex="5">
 									</label>
 								</div>
 							</td>
 							<td class="text-center">
 								<div class="checkbox checkbox-inline checkbox-styled">
 									<label>	
-										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'right_thumb']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'right_thumb']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['right_thumb']) checked @endif>
+										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'right_thumb']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'right_thumb']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['right_thumb']) checked @endif tabindex="6">
 									</label>
 								</div>
 							</td>
 							<td class="text-center">
 								<div class="checkbox checkbox-inline checkbox-styled">
 									<label>	
-										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'right_index_finger']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'right_index_finger']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['right_index_finger']) checked @endif>
+										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'right_index_finger']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'right_index_finger']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['right_index_finger']) checked @endif tabindex="7">
 									</label>
 								</div>
 							</td>
 							<td class="text-center">
 								<div class="checkbox checkbox-inline checkbox-styled">
 									<label>	
-										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'right_middle_finger']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'right_middle_finger']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['right_middle_finger']) checked @endif>
+										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'right_middle_finger']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'right_middle_finger']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['right_middle_finger']) checked @endif tabindex="8">
 									</label>
 								</div>
 							</td>
 							<td class="text-center">
 								<div class="checkbox checkbox-inline checkbox-styled">
 									<label>	
-										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'right_ring_finger']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'right_ring_finger']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['right_ring_finger']) checked @endif>
+										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'right_ring_finger']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'right_ring_finger']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['right_ring_finger']) checked @endif tabindex="9">
 									</label>
 								</div>
 							</td>
 							<td class="text-center">
 								<div class="checkbox checkbox-inline checkbox-styled">
 									<label>	
-										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'right_little_finger']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'right_little_finger']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['right_little_finger']) checked @endif>
+										<input type="checkbox" class="thumb" data-checked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'wrong' => 'right_little_finger']) }}" data-unchecked-action="{{ route('hr.branch.fingers.store', ['branch_id' => $branch['id'], 'org_id' => $data['id'], 'id' => $FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['id'], 'right' => 'right_little_finger']) }}" @if($FingerPrintComposer['widget_data']['fingerprintlist']['fingerprint']['right_little_finger']) checked @endif tabindex="10">
 									</label>
 								</div>
 							</td>

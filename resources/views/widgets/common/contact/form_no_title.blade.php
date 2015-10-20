@@ -1,10 +1,10 @@
 <div class="clearfix">&nbsp;</div>
 <!-- Checbox flag ignore -->
-{!! Form::checkbox('flag_ignore_contact', '1', '') !!} 
+{!! Form::checkbox('flag_ignore_contact', '1', '', ['tabindex' => '1']) !!} 
 <span class="label-automatic-generate">Lewati</span>
 <div class="clearfix">&nbsp;</div>
 
-<?php $tabindex = 1; ?>
+<?php $tabindex = 2; ?>
 @for ($x=0; $x<=2; $x++)
 	<div class="form-group">				
 		<label class="control-label text-capitalize">{{ $ContactComposer['widget_data']['contactlist']['value'][$x] }}</label>

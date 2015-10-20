@@ -60,19 +60,19 @@
 			@if (!$id)
 				<div class="form-group">
 					<label class="control-label">Cuti</label>
-					<select name="workleave_id" class="form-control select2 select-chart-workleave"></select>
+					<select name="workleave_id" class="form-control select2 select-chart-workleave" tabindex="4"></select>
 				</div>
 			@endif
 			<div class="form-group mt-30 mb-30">
 				<div class="checkbox">
 					<label>
-						{!! Form::checkbox('is_absence', '1', $WorkComposer['widget_data']['worklist']['work']['is_absence'], ['class' => '', 'tabindex' => '8']) !!} Tidak Perlu Absen
+						{!! Form::checkbox('is_absence', '1', $WorkComposer['widget_data']['worklist']['work']['is_absence'], ['class' => '', 'tabindex' => '5']) !!} Tidak Perlu Absen
 					</label>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label">Grade</label>
-				{!!Form::input('text', 'grade', $WorkComposer['widget_data']['worklist']['work']['grade'], ['class' => 'form-control'])!!}							
+				{!!Form::input('text', 'grade', $WorkComposer['widget_data']['worklist']['work']['grade'], ['class' => 'form-control', 'tabindex' => '6'])!!}							
 			</div>
 			<div class="row">
 				<div class="col-sm-6">
@@ -83,7 +83,7 @@
 						@else
 							<?php $date_start = null; ?>
 						@endif
-						{!!Form::input('text', 'start', $date_start, ['class' => 'form-control date-mask', 'tabindex' => 4])!!}
+						{!!Form::input('text', 'start', $date_start, ['class' => 'form-control date-mask', 'tabindex' => 7])!!}
 					</div>	
 				</div>
 				<div class="col-sm-6">
@@ -94,19 +94,19 @@
 						@else
 							<?php $date_end = null; ?>
 						@endif
-						{!!Form::input('text', 'end', $date_end, ['class' => 'form-control date-mask', 'tabindex' => 5])!!}
+						{!!Form::input('text', 'end', $date_end, ['class' => 'form-control date-mask', 'tabindex' => 8])!!}
 					</div>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label">Alasan Berhenti</label>
-				{!!Form::textarea('reason_end_job', $WorkComposer['widget_data']['worklist']['work']['reason_end_job'], ['class' => 'form-control', 'tabindex' => 6])!!}
+				{!!Form::textarea('reason_end_job', $WorkComposer['widget_data']['worklist']['work']['reason_end_job'], ['class' => 'form-control', 'tabindex' => 9])!!}
 			</div>
 
 
 			<div class="form-group text-right">
-				<a href="{{ $WorkComposer['widget_data']['worklist']['route_back'] }}" class="btn btn-default mr-5">Batal</a>
-				<input type="submit" class="btn btn-primary" value="Simpan">
+				<a href="{{ $WorkComposer['widget_data']['worklist']['route_back'] }}" class="btn btn-default mr-5" tabindex="11">Batal</a>
+				<input type="submit" class="btn btn-primary" value="Simpan" tabindex="10">
 			</div>
 		{!! Form::close() !!}
 	@overwrite	
