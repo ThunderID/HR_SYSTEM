@@ -36,7 +36,7 @@
 							{{$value['name']}}
 						</td>
 						<td style="text-align:left; vertical-align:top; width:30%; height:35%" @if(count($value['processlogs'])!=0) rowspan="{{count($value['processlogs'])}}" @endif>
-							{{$value['nik']}}
+							{{$value['uniqid']}}
 						</td>
 						@if(isset($value['processlogs'][0]))
 							<td style="text-align:center; width:25%; height:35%">
