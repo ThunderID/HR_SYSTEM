@@ -28,6 +28,7 @@
 						<tr>
 							<th class="text-center font-12">No<br/>&nbsp;</th>
 							<th class="text-left font-12 mr-30 pr-30" style="width:20em;">Nama &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </th>
+							<th class="text-left font-12 mr-30 pr-30" style="width:20em;">NIK &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </th>
 							<th class="text-center font-12 pl-20 pr-20" style="width:20em">Tanggal</th>
 							<th class="text-center font-12" style="width:20em">Jam Masuk <br> Jadwal</th>
 							<th class="text-center font-12" style="width:20em">Jam Keluar <br> Jadwal</th>
@@ -43,6 +44,9 @@
 								<td @if(count($value['processlogs'])!=0) rowspan="{{count($value['processlogs'])}}" @endif class="text-center font-12">{{$key+1}}</td>
 								<td @if(count($value['processlogs'])!=0) rowspan="{{count($value['processlogs'])}}" @endif class="text-left font-12" style="width:20em">
 									{{$value['name']}}
+								</td>
+								<td @if(count($value['processlogs'])!=0) rowspan="{{count($value['processlogs'])}}" @endif class="text-left font-12" style="width:20em">
+									{{$value['nik']}}
 								</td>
 								@if(isset($value['processlogs'][0]))
 									<td class="text-center font-12">

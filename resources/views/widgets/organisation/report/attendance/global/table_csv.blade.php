@@ -16,6 +16,7 @@
 				<tr>
 					<th style="width:10%">&nbsp;</th>
 					<th rowspan="2" style="width:4%; height:25%">No</th>
+					<th rowspan="2" style="width:30%; height:25%">NIK </th>
 					<th rowspan="2" style="width:30%; height:25%">Nama </th>
 					<th rowspan="2" style="width:25%; height:25%">Tanggal</th>
 					<th rowspan="2" style="width:30%; height:25%">Jam Masuk Jadwal</th>					
@@ -33,6 +34,9 @@
 						<td style="text-align:center; vertical-align:top; width:4%; height:35%" @if(count($value['processlogs'])!=0) rowspan="{{count($value['processlogs'])}}" @endif>{{$key+1}}</td>
 						<td style="text-align:left; vertical-align:top; width:30%; height:35%" @if(count($value['processlogs'])!=0) rowspan="{{count($value['processlogs'])}}" @endif>
 							{{$value['name']}}
+						</td>
+						<td style="text-align:left; vertical-align:top; width:30%; height:35%" @if(count($value['processlogs'])!=0) rowspan="{{count($value['processlogs'])}}" @endif>
+							{{$value['nik']}}
 						</td>
 						@if(isset($value['processlogs'][0]))
 							<td style="text-align:center; width:25%; height:35%">
