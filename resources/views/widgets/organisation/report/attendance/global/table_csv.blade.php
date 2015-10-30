@@ -4,14 +4,14 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th colspan="7"></th>
+					<th colspan="8"></th>
 				</tr>
 				<tr>
 					<th style="width:10%">&nbsp;</th>
-					<th colspan="6" style="height:20%">Laporan Kehadiran Per Tanggal {{$start}} - {{$end}} Unit Bisnis {{$org['name']}}</th>
+					<th colspan="7" style="height:20%">Laporan Kehadiran Per Tanggal {{$start}} - {{$end}} Unit Bisnis {{$org['name']}}</th>
 				</tr>
 				<tr>
-					<th colspan="7"></th>
+					<th colspan="8"></th>
 				</tr>
 				<tr>
 					<th style="width:10%">&nbsp;</th>
@@ -69,9 +69,9 @@
 							</td>
 						@else
 							<td style="text-align:center; width:25%; height:35%">-</td>
-							<td style="text-align:center; width:30%; height:35%">-</td>
-							<td style="text-align:center; width:30%; height:35%">-</td>
 							<td style="text-align:center; width:25%; height:35%">-</td>
+							<td style="text-align:center; width:30%; height:35%">-</td>
+							<td style="text-align:center; width:30%; height:35%">-</td>
 							<td style="text-align:center; width:25%; height:35%">-</td>
 							<td style="text-align:center; width:25%; height:35%">-</td>
 						@endif
@@ -79,6 +79,7 @@
 					@foreach($value['processlogs'] as $key2 => $value2)
 						@if($key2!=0)
 						<tr>
+							<td></td>
 							<td></td>
 							<td></td>
 							<td></td>
