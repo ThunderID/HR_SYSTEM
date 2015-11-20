@@ -1,6 +1,7 @@
 @extends('widget_templates.'.($widget_template ? $widget_template : 'plain'))
 
 @if (!$widget_error_count)
+	<?php $RecordLogComposer['widget_data']['recordlog']['recordlog-pagination']->setPath(route('hr.recordlogs.index')); ?>
 	@section('widget_title')
 		<h1> {!! $widget_title  or 'Otentikasi Group' !!} </h1>
 		<small>Total data {{$RecordLogComposer['widget_data']['recordlog']['recordlog-pagination']->total()}}</small>
@@ -27,13 +28,15 @@
 										{{ isset($value['person']['name']) ? $value['person']['name'] : 'System' }} {{ $value['notes'] }}
 									</td>
 									<td class="text-center">
-										@if ($value['action'] && in_array($value['action'], ['save']))
+										<?php /*
+										<!-- @if ($value['action'] && in_array($value['action'], ['save']))
 											{!! Form::open(['url' => route('hr.recordlogs.store', ['id' => $value['id']]), 'method' => 'post']) !!}
 												<button type="submit" class="btn btn-sm @if($value['action']=='delete') btn-danger @elseif($value['action']=='save') btn-primary @else btn-default @endif">
 													{{ ucwords($value['action']) }}
 												</button>											
 											{!! Form::close() !!}
-										@endif
+										@endif -->
+											*/;?>
 									</td>
 								</tr>							
 								<?php $i++; ?>
