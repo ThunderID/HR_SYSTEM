@@ -106,4 +106,9 @@ class MaritalStatus extends BaseModel {
 		}
 		return $query->where('marital_statuses.id', $variable);
 	}
+
+	public function scopeStatus($query, $variable)
+	{
+		return $query->where('marital_statuses.status', $variable);
+	}
 }
