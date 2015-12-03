@@ -115,7 +115,7 @@ class HRCheckDocumentCommand extends Command {
 			{
 				$account 					= PersonDocument::personid($person['id'])->documenttag('akun')->with(['details', 'details.template'])->first();
 
-				if(!$account)
+				if($account)
 				{
 					foreach ($account['details'] as $key2 => $value2) 
 					{
@@ -141,6 +141,12 @@ class HRCheckDocumentCommand extends Command {
 							var_dump($msg);
 						}
 					}
+				}
+				else
+				{
+					$errors 				= true;
+					$msg					= 'Kary. Nomor : '.$value['no'].' [AKUN DOESNT EXISTS]';
+					var_dump($msg);
 				}
 			}
 
@@ -186,7 +192,7 @@ class HRCheckDocumentCommand extends Command {
 			{
 				$account 					= PersonDocument::personid($person['id'])->documenttag('identitas')->with(['details', 'details.template'])->first();
 
-				if(!$account)
+				if($account)
 				{
 					foreach ($account['details'] as $key2 => $value2) 
 					{
@@ -212,6 +218,12 @@ class HRCheckDocumentCommand extends Command {
 							var_dump($msg);
 						}
 					}
+				}
+				else
+				{
+					$errors 				= true;
+					$msg					= 'Kary. Nomor : '.$value['no'].' [IDENTITAS DOESNT EXISTS]';
+					var_dump($msg);
 				}
 			}
 
