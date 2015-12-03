@@ -240,7 +240,7 @@ class HRCheckDocumentCommand extends Command {
 						var_dump($msg);
 					}
 
-					$fwleave 			= FollowWorkleave::workid($work['id'])->wherehas('workleave', function($q)use($value){$q->where('quota', $value['quota'])})->first();
+					$fwleave 			= FollowWorkleave::workid($work['id'])->wherehas('workleave', function($q)use($value){$q->where('quota', $value['quota']);})->first();
 
 					if(!$fwleave)
 					{
