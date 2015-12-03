@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use App\Console\Commands\Getting;
 use App\Console\Commands\Checking;
 
-use Excel, Storage;
+use Excel, Storage, Carbon\Carbon as Carbon;
 use App\Models\Person;
 use App\Models\Contact;
 use App\Models\MaritalStatus;
@@ -63,7 +63,8 @@ class HRCheckDocumentCommand extends Command {
 		{
 			$errors 					= false;
 			//check full biodata
-			$person 					= Person::uniqid($value['nik'])->checkwork(true)->gender(($value['gender']=='L' ? 'male' : 'female'))->name($value['name'])->where('date_of_birth', $value['date_of_birth'])->where('place_of_birth', $value['place_of_birth'])->first();
+			$dob 						= Carbon::createFromFormat('d/m/Y', $value['date_of_birth'])->format('Y-m-d');
+			$person 					= Person::uniqid($value['nik'])->checkwork(true)->gender(($value['gender']=='L' ? 'male' : 'female'))->name($value['name'])->where('date_of_birth', $dob)->where('place_of_birth', $value['place_of_birth'])->first();
 
 			if(!$person)
 			{
