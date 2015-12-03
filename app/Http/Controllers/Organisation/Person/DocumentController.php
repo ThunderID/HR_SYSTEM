@@ -10,6 +10,7 @@ use App\Models\Person;
 use App\Models\PersonDocument;
 use App\Models\DocumentDetail;
 use App\Models\Document;
+use App\Models\Template;
 use App\Models\Queue;
 
 class DocumentController extends BaseController
@@ -390,24 +391,35 @@ class DocumentController extends BaseController
 				foreach ($template_ids as $key => $value) 
 				{
 					$attributes_2 					= ['template_id' => $value];
-					$checkdate						= explode('-', $contents[$key]);
-					$checknumeric					= (int)$contents[$key];
-					$checkstring					= strlen($contents[$key]);
-					if(count($checkdate) == 3)
+					$results_x 						= $this->dispatch(new Getting(new Template, ['id' => $value], [] , 1, 1));
+					$is_success_x 					= json_decode($results_x);
+
+					if(!$is_success_x->meta->success)
 					{
+						foreach ($is_success_x->meta->errors as $key => $value) 
+						{
+							if(is_array($value))
+							{
+								foreach ($value as $key2 => $value2) 
+								{
+									$errors->add('Person', $value2);
+								}
+							}
+							else
+							{
+								$errors->add('Person', $value);
+							}
+						}
+					}
+					elseif($is_success_x->data->type=='date')
+					{
+						$checkdate					= explode('-', $contents[$key]);
 						$attributes_2['on']			= date('Y-m-d H:i:s', strtotime($checkdate[2].'-'.$checkdate[1].'-'.$checkdate[0]));
-					}
-					elseif($checknumeric)
-					{
-						$attributes_2['numeric']	= $contents[$key];
-					}
-					elseif($checkstring <= 255)
-					{
-						$attributes_2['string']		= $contents[$key];
 					}
 					else
 					{
-						$attributes_2['text']		= $contents[$key];
+						$checkdate									= explode('-', $contents[$key]);
+						$attributes_2[$is_success_x->data->type]	= $contents[$key];
 					}
 
 					if(isset($detail_ids[$key]) && $detail_ids[$key]!='' && !is_null($detail_ids[$key]))
