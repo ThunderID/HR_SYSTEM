@@ -65,7 +65,7 @@ class HRCheckDocumentCommand extends Command {
 			//check full biodata
 			if(!is_null($value['date_of_birth']))
 			{
-				$dob 						= Carbon::createFromFormat('d/m/Y', $value['date_of_birth'])->format('Y-m-d');
+				$dob 						= Carbon::createFromFormat('m/d/Y', $value['date_of_birth'])->format('Y-m-d');
 			}
 			else
 			{
@@ -166,7 +166,7 @@ class HRCheckDocumentCommand extends Command {
 			{
 				$accounts 					= PersonDocument::personid($person['id'])->documenttag('pajak')->with(['details', 'details.template'])->get();
 
-				if(!$accounts)
+				if($accounts)
 				{
 					foreach ($accounts as $keyx => $account) 
 					{
@@ -195,6 +195,12 @@ class HRCheckDocumentCommand extends Command {
 							}
 						}
 					}
+				}
+				else
+				{
+					$errors 				= true;
+					$msg					= 'Kary. Nomor : '.$value['no'].' [PAJAK DOESNT EXISTS]';
+					var_dump($msg);
 				}
 			}
 
@@ -225,7 +231,7 @@ class HRCheckDocumentCommand extends Command {
 						else
 						{
 							$errors 				= true;
-							$msg					= 'Kary. Nomor : '.$value['no'].' [IDENTITAS INVALID] '.$value2['template']['field';
+							$msg					= 'Kary. Nomor : '.$value['no'].' [IDENTITAS INVALID] '.$value2['template']['field'];
 							var_dump($msg);
 						}
 					}
