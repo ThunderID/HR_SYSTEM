@@ -225,7 +225,7 @@ class HRCheckDocumentCommand extends Command {
 						else
 						{
 							$errors 				= true;
-							$msg					= 'Kary. Nomor : '.$value['no'].' [IDENTITAS INVALID]';
+							$msg					= 'Kary. Nomor : '.$value['no'].' [IDENTITAS INVALID]'.$account['document']['name'];
 							var_dump($msg);
 						}
 					}
@@ -270,8 +270,11 @@ class HRCheckDocumentCommand extends Command {
 						$msg					= 'Kary. Nomor : '.$value['no'].' [CHART INVALID]';
 						var_dump($msg);
 					}
+					
+					$in 						= date_format('H:i:s', strtotime($value['jammasukkerja']));
+					$out 						= date_format('H:i:s', strtotime($value['jampulangkerja']));
 
-					$calendar 			= Calendar::id($work['calendar_id'])->StartHour($value['jammasukkerja'])->endhour($value['jamkeluarkerja'])->first();
+					$calendar 			= Calendar::id($work['calendar_id'])->StartHour($in)->endhour($out)->first();
 
 					if(!$calendar)
 					{
