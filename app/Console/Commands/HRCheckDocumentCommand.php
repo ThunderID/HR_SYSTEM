@@ -231,7 +231,24 @@ class HRCheckDocumentCommand extends Command {
 			//check WORK & Calendar
 			if(!$person)
 			{
-				$work 					= Work::personid($person['id'])->active(true)->status($value['statuskerja'])->first();
+				if(strtolower($value['statuskerja'])=='tetap')
+				{
+					$statuses 				= 'permanent';
+				}
+				elseif(strtolower($value['statuskerja'])=='percobaan')
+				{
+					$statuses 				= 'probation';
+				}
+				elseif(strtolower($value['statuskerja'])=='kontrak')
+				{
+					$statuses 				= 'contract';
+				}
+				else
+				{
+					$statuses 				= 'others';
+				}
+
+				$work 					= Work::personid($person['id'])->active(true)->status($statuses)->first();
 
 				if($work)
 				{
