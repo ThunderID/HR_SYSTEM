@@ -71,8 +71,10 @@ class HRCheckDocumentCommand extends Command {
 			{
 				$dob 						= Carbon::now()->format('Y-m-d');
 			}
-			
-			$person 					= Person::uniqid($value['nik'])->checkwork(true)->gender(($value['gender']=='L' ? 'male' : 'female'))->name($value['name'])->where('date_of_birth', $dob)->where('place_of_birth', $value['place_of_birth'])->first();
+			$ub                                             = strtoupper($this->option('example'));
+            $nik                                            = str_replace($ub.'.', $ub, $value['nik']);
+
+			$person 					= Person::uniqid($nik)->checkwork(true)->gender(($value['gender']=='L' ? 'male' : 'female'))->name($value['name'])->where('date_of_birth', $dob)->where('place_of_birth', $value['place_of_birth'])->first();
 
 			if(!$person)
 			{
