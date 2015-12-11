@@ -63,7 +63,15 @@ class HRCheckDocumentCommand extends Command {
 		{
 			$errors 					= false;
 			//check full biodata
-			$dob 						= Carbon::createFromFormat('d/m/Y', $value['date_of_birth'])->format('Y-m-d');
+			if(!is_null($value['date_of_birth']))
+			{
+				$dob 						= Carbon::createFromFormat('d/m/Y', $value['date_of_birth'])->format('Y-m-d');
+			}
+			else
+			{
+				$dob 						= Carbon::now()->format('Y-m-d');
+			}
+			
 			$person 					= Person::uniqid($value['nik'])->checkwork(true)->gender(($value['gender']=='L' ? 'male' : 'female'))->name($value['name'])->where('date_of_birth', $dob)->where('place_of_birth', $value['place_of_birth'])->first();
 
 			if(!$person)
@@ -74,7 +82,7 @@ class HRCheckDocumentCommand extends Command {
 			}
 
 			//check contact
-			if(!$person)
+			if($person)
 			{
 				$contact 					= Contact::item('email')->value($value['email'])->personid($person['id'])->default(true)->first();
 
@@ -86,7 +94,7 @@ class HRCheckDocumentCommand extends Command {
 				}
 			}
 
-			if(!$person)
+			if($person)
 			{
 				$contact 					= Contact::item('address')->value($value['address'])->personid($person['id'])->default(true)->first();
 
@@ -99,7 +107,7 @@ class HRCheckDocumentCommand extends Command {
 			}
 
 			//check marital
-			if(!$person)
+			if($person)
 			{
 				$status 					= MaritalStatus::personid($person['id'])->status($value['marital_status'])->first();
 
@@ -112,7 +120,7 @@ class HRCheckDocumentCommand extends Command {
 			}
 
 			//check document
-			if(!$person)
+			if($person)
 			{
 				$account 					= PersonDocument::personid($person['id'])->documenttag('akun')->with(['details', 'details.template'])->first();
 
@@ -152,7 +160,7 @@ class HRCheckDocumentCommand extends Command {
 			}
 
 			//check document pajak
-			if(!$person)
+			if($person)
 			{
 				$accounts 					= PersonDocument::personid($person['id'])->documenttag('pajak')->with(['details', 'details.template'])->get();
 
@@ -189,7 +197,7 @@ class HRCheckDocumentCommand extends Command {
 			}
 
 			//check document ktp
-			if(!$person)
+			if($person)
 			{
 				$account 					= PersonDocument::personid($person['id'])->documenttag('identitas')->with(['details', 'details.template'])->first();
 
@@ -229,7 +237,7 @@ class HRCheckDocumentCommand extends Command {
 			}
 
 			//check WORK & Calendar
-			if(!$person)
+			if($person)
 			{
 				if(strtolower($value['statuskerja'])=='tetap')
 				{
