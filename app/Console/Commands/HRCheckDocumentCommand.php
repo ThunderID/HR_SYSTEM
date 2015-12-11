@@ -148,7 +148,7 @@ class HRCheckDocumentCommand extends Command {
 						else
 						{
 							$errors 				= true;
-							$msg					= 'Kary. Nomor : '.$value['no'].' [AKUN INVALID]';
+							$msg					= 'Kary. Nomor : '.$value['no'].' [AKUN INVALID] '.$value2['template']['field'];
 							var_dump($msg);
 						}
 					}
@@ -190,7 +190,7 @@ class HRCheckDocumentCommand extends Command {
 							else
 							{
 								$errors 				= true;
-								$msg					= 'Kary. Nomor : '.$value['no'].' [PAJAK INVALID]'.$account['document']['name'];
+								$msg					= 'Kary. Nomor : '.$value['no'].' [PAJAK INVALID] '.$value2['template']['field'];
 								var_dump($msg);
 							}
 						}
@@ -225,7 +225,7 @@ class HRCheckDocumentCommand extends Command {
 						else
 						{
 							$errors 				= true;
-							$msg					= 'Kary. Nomor : '.$value['no'].' [IDENTITAS INVALID]'.$account['document']['name'];
+							$msg					= 'Kary. Nomor : '.$value['no'].' [IDENTITAS INVALID] '.$value2['template']['field';
 							var_dump($msg);
 						}
 					}
@@ -271,8 +271,8 @@ class HRCheckDocumentCommand extends Command {
 						var_dump($msg);
 					}
 					
-					$in 						= date_format('H:i:s', strtotime($value['jammasukkerja']));
-					$out 						= date_format('H:i:s', strtotime($value['jampulangkerja']));
+					$in 						= date('H:i:s', strtotime($value['jammasukkerja']));
+					$out 						= date('H:i:s', strtotime($value['jampulangkerja']));
 
 					$calendar 			= Calendar::id($work['calendar_id'])->StartHour($in)->endhour($out)->first();
 
