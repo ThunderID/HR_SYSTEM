@@ -479,6 +479,15 @@ Route::group(['namespace' => 'FP\\'], function()
 	Route::post('api/fp/delete/',					['uses' => 'FingerController@destroy',				'as' => 'hr.finger.destroy']);
 });
 
+// Route::group(['domain' => 'myip.rcmsystem.co'], function()
+Route::group(['domain' => 'myip.rcmsystem.id'], function()
+{
+	Route::get('/', function()
+	{
+		return echo $_SERVER['address'];
+	});
+});
+
 Blade::extend(function ($value, $compiler)
 {
 	$pattern = $compiler->createMatcher('time_indo');
