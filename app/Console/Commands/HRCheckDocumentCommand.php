@@ -63,8 +63,18 @@ class HRCheckDocumentCommand extends Command {
 		{
 			$errors 					= false;
 			//check full biodata
-			$dob 						= Carbon::createFromFormat('d/m/Y', $value['date_of_birth'])->format('Y-m-d');
-			$person 					= Person::uniqid($value['nik'])->checkwork(true)->gender(($value['gender']=='L' ? 'male' : 'female'))->name($value['name'])->where('date_of_birth', $dob)->where('place_of_birth', $value['place_of_birth'])->first();
+			if(!is_null($value['date_of_birth']))
+			{
+				$dob 						= Carbon::createFromFormat('m/d/Y', $value['date_of_birth'])->format('Y-m-d');
+			}
+			else
+			{
+				$dob 						= Carbon::now()->format('Y-m-d');
+			}
+			$ub                                             = strtoupper($this->option('example'));
+            $nik                                            = str_replace($ub.'.', $ub, $value['nik']);
+
+			$person 					= Person::uniqid($nik)->checkwork(true)->gender(($value['gender']=='L' ? 'male' : 'female'))->name($value['name'])->where('date_of_birth', $dob)->where('place_of_birth', $value['place_of_birth'])->first();
 
 			if(!$person)
 			{
@@ -74,7 +84,7 @@ class HRCheckDocumentCommand extends Command {
 			}
 
 			//check contact
-			if(!$person)
+			if($person)
 			{
 				$contact 					= Contact::item('email')->value($value['email'])->personid($person['id'])->default(true)->first();
 
@@ -86,7 +96,7 @@ class HRCheckDocumentCommand extends Command {
 				}
 			}
 
-			if(!$person)
+			if($person)
 			{
 				$contact 					= Contact::item('address')->value($value['address'])->personid($person['id'])->default(true)->first();
 
@@ -99,7 +109,7 @@ class HRCheckDocumentCommand extends Command {
 			}
 
 			//check marital
-			if(!$person)
+			if($person)
 			{
 				$status 					= MaritalStatus::personid($person['id'])->status($value['marital_status'])->first();
 
@@ -112,7 +122,7 @@ class HRCheckDocumentCommand extends Command {
 			}
 
 			//check document
-			if(!$person)
+			if($person)
 			{
 				$account 					= PersonDocument::personid($person['id'])->documenttag('akun')->with(['details', 'details.template'])->first();
 
@@ -138,7 +148,7 @@ class HRCheckDocumentCommand extends Command {
 						else
 						{
 							$errors 				= true;
-							$msg					= 'Kary. Nomor : '.$value['no'].' [AKUN INVALID]';
+							$msg					= 'Kary. Nomor : '.$value['no'].' [AKUN INVALID] '.$value2['template']['field'];
 							var_dump($msg);
 						}
 					}
@@ -152,11 +162,11 @@ class HRCheckDocumentCommand extends Command {
 			}
 
 			//check document pajak
-			if(!$person)
+			if($person)
 			{
 				$accounts 					= PersonDocument::personid($person['id'])->documenttag('pajak')->with(['details', 'details.template'])->get();
 
-				if(!$accounts)
+				if($accounts)
 				{
 					foreach ($accounts as $keyx => $account) 
 					{
@@ -180,16 +190,22 @@ class HRCheckDocumentCommand extends Command {
 							else
 							{
 								$errors 				= true;
-								$msg					= 'Kary. Nomor : '.$value['no'].' [PAJAK INVALID]'.$account['document']['name'];
+								$msg					= 'Kary. Nomor : '.$value['no'].' [PAJAK INVALID] '.$value2['template']['field'];
 								var_dump($msg);
 							}
 						}
 					}
 				}
+				else
+				{
+					$errors 				= true;
+					$msg					= 'Kary. Nomor : '.$value['no'].' [PAJAK DOESNT EXISTS]';
+					var_dump($msg);
+				}
 			}
 
 			//check document ktp
-			if(!$person)
+			if($person)
 			{
 				$account 					= PersonDocument::personid($person['id'])->documenttag('identitas')->with(['details', 'details.template'])->first();
 
@@ -215,7 +231,7 @@ class HRCheckDocumentCommand extends Command {
 						else
 						{
 							$errors 				= true;
-							$msg					= 'Kary. Nomor : '.$value['no'].' [IDENTITAS INVALID]';
+							$msg					= 'Kary. Nomor : '.$value['no'].' [IDENTITAS INVALID] '.$value2['template']['field'];
 							var_dump($msg);
 						}
 					}
@@ -229,9 +245,26 @@ class HRCheckDocumentCommand extends Command {
 			}
 
 			//check WORK & Calendar
-			if(!$person)
+			if($person)
 			{
-				$work 					= Work::personid($person['id'])->active(true)->status($value['statuskerja'])->first();
+				if(strtolower($value['statuskerja'])=='tetap')
+				{
+					$statuses 				= 'permanent';
+				}
+				elseif(strtolower($value['statuskerja'])=='percobaan')
+				{
+					$statuses 				= 'probation';
+				}
+				elseif(strtolower($value['statuskerja'])=='kontrak')
+				{
+					$statuses 				= 'contract';
+				}
+				else
+				{
+					$statuses 				= 'others';
+				}
+
+				$work 					= Work::personid($person['id'])->active(true)->status($statuses)->first();
 
 				if($work)
 				{
@@ -243,8 +276,11 @@ class HRCheckDocumentCommand extends Command {
 						$msg					= 'Kary. Nomor : '.$value['no'].' [CHART INVALID]';
 						var_dump($msg);
 					}
+					
+					$in 						= date('H:i:s', strtotime($value['jammasukkerja']));
+					$out 						= date('H:i:s', strtotime($value['jampulangkerja']));
 
-					$calendar 			= Calendar::id($work['calendar_id'])->StartHour($value['jammasukkerja'])->endhour($value['jamkeluarkerja'])->first();
+					$calendar 			= Calendar::id($work['calendar_id'])->StartHour($in)->endhour($out)->first();
 
 					if(!$calendar)
 					{

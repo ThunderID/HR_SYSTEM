@@ -18,15 +18,15 @@
 						{
 							foreach ($persondocument['details'] as $key2 => $value2) 
 							{
-								if($value['id']==$value2['template_id'] && $value2['numeric']!=0)
+								if($value['id']==$value2['template_id'] && $value['type']=='date')
 								{
 									$detailid = $value2['id'];
-									$content = $value2['numeric'];
+									$content = $value2['on'];
 								}
 								elseif($value['id']==$value2['template_id'])
 								{
 									$detailid = $value2['id'];
-									$content = $value2['text'];
+									$content = $value2[$value['type']];
 								}
 							}
 						}
