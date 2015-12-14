@@ -480,7 +480,7 @@ Route::group(['namespace' => 'FP\\'], function()
 });
 
 // Route::group(['domain' => 'myip.rcmsystem.co'], function()
-Route::group(['domain' => 'myip.rcmsystem.id'], function()
+Route::group(['domain' => 'myip.rcmsystem.co'], function()
 {
 	Route::get('/', function()
 	{
