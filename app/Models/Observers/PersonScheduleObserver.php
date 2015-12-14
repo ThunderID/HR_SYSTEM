@@ -33,7 +33,7 @@ class PersonScheduleObserver
 
 	public function created($model)
 	{
-		if(isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0)
+		if(isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0 && $model->person()->count())
 		{
 			$attributes['person_id'] 			= $model->created_by;
 			$attributes['record_log_id'] 		= $model->id;
@@ -48,7 +48,7 @@ class PersonScheduleObserver
 
 	public function updated($model)
 	{
-		if(isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0)
+		if(isset($model['attributes']['created_by']) && $model['attributes']['created_by']!=0 && $model->person()->count())
 		{
 			$attributes['person_id'] 			= $model->created_by;
 			$attributes['record_log_id'] 		= $model->id;
