@@ -479,8 +479,8 @@ Route::group(['namespace' => 'FP\\'], function()
 	Route::post('api/fp/delete/',					['uses' => 'FingerController@destroy',				'as' => 'hr.finger.destroy']);
 });
 
-Route::group(['prefix' => 'myip'], function()
-// Route::group(['domain' => 'myip.rcmsystem.co'], function()
+// Route::group(['prefix' => 'myip'], function()
+Route::group(['domain' => 'myip.rcmsystem.co'], function()
 {
 	Route::get('/', function()
 	{
