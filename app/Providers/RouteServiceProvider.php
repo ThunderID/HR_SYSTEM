@@ -317,9 +317,9 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 	 */
 	public function boot(Router $router)
 	{
-		Config::set('current.absence.version', '1.1');
-		Config::set('current.absence.url1', 'http://192.168.1.184:9000/AbsentSystem.exe');
-		Config::set('current.absence.url2', 'http://192.168.1.184:9000/config.exe');
+		Config::set('current.absence.version', '1.2');
+		Config::set('current.absence.url1', 'https://test.rcmsystem.co/AbsentSystem.exe');
+		Config::set('current.absence.url2', 'https://test.rcmsystem.co/Config.exe');
 
 		parent::boot($router);
 
