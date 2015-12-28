@@ -81,6 +81,8 @@ class HRQueueCommand extends Command {
 	 **/
 	public function checkpendingjobs()
 	{
+		set_time_limit(0);
+		
 		$queue 						= new Queue;
 		$pendings 					= $queue->whereRaw('`process_number` < `total_process`')->orderby('updated_at', 'desc')->get();
 

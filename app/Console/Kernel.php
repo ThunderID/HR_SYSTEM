@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\HRQueueCommand',
 		'App\Console\Commands\HRExpiredWorkleaveQueueCommand',
 		'App\Console\Commands\HRRaiseWorkleaveQueueCommand',
+		'App\Console\Commands\LogObserverQueueCommand',
 
 		'App\Console\Commands\LogAbsenceCommand',
 		'App\Console\Commands\FirstLockCommand',
@@ -34,6 +35,7 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\ExpiredWorkleaveBatchCommand',
 		'App\Console\Commands\RaiseWorkleaveBatchCommand',
 		'App\Console\Commands\PersonWorkleaveImportBatchCommand',
+		'App\Console\Commands\LogObserverCommand',
 
 		'App\Console\Commands\HRClearCacheCommand',
 		'App\Console\Commands\HRSUpdateCommand',
@@ -53,6 +55,10 @@ class Kernel extends ConsoleKernel {
 	protected function schedule(Schedule $schedule)
 	{
 		//write queue
+
+		//auto generate process log, idle and so
+		$schedule->command('hr:logobservequeue LogObserverQueueCommand')
+				 ->dailyAt('02:00');
 
 		//auto generate log for previous day (or) previous day : as sanction
 		$schedule->command('hr:absencequeue AbsenceQueueCommand')
