@@ -25,7 +25,7 @@ class ProcessingLogObserver
 
 		if($date_today->diffInDays($date_on) >= 1 && $model->person()->count())
 		{
-			$on 						= $model['attributes']['on'];
+			$on 						= date('Y-m-d H:i:s', strtotime($date_on->format('Y-m-d')));
 
 			$idle_rule 					= new Policy;
 			$idle_rule_1 				= $idle_rule->organisationid($model->person->organisation_id)->type('firstidle')->OnDate($on)->orderBy('started_at', 'desc')->first();
@@ -35,21 +35,21 @@ class ProcessingLogObserver
 			$margin_bottom_idle 		= 900;
 			$idle_1 					= 3600;
 			$idle_2 					= 7200;
-
+			
 			if($idle_rule_1)
 			{
-				$margin_bottom_idle = (int)$idle_rule_1->value;
+				$margin_bottom_idle 		= (int)$idle_rule_1->value;
 			}
 			if($idle_rule_2)
 			{
-				$idle_1 			= (int)$idle_rule_2->value;
+				$idle_1 					= (int)$idle_rule_2->value;
 			}
 			if($idle_rule_3)
 			{
-				$idle_2 			= (int)$idle_rule_3->value;
+				$idle_2 					= (int)$idle_rule_3->value;
 			}
 
-			$persons 					= Person::organisationid($model->person->organisation_id)->checkwork(true)->count();
+			$persons 						= Person::organisationid($model->person->organisation_id)->checkwork(true)->count();
 
 			$parameter['margin_bottom_idle']= $margin_bottom_idle;
 			$parameter['idle_1']			= $idle_1;
@@ -58,28 +58,33 @@ class ProcessingLogObserver
 
 			$parameter['organisation_id']	= $model->person->organisation_id;
 
-			$queue 							= new Queue;
-			$queue->fill([
-					'process_name' 			=> 'hr:logobserver',
-					'parameter' 			=> json_encode($parameter),
-					'total_process' 		=> $persons,
-					'task_per_process' 		=> 1,
-					'process_number' 		=> 0,
-					'total_task' 			=> $persons,
-					'message' 				=> 'Initial Commit',
-			]);
-
-			if(!$queue->save())
+			$check 						= Queue::where('parameter', json_encode($parameter))->where('process_name', 'hr:logobserver')->where('process_number', '0')->first();
+			
+			if(!$check)
 			{
-				// Log::error('Save queue on LogObserver command from processing log observer '.json_encode($queue->getError()));
-				
-				return false;
-			}
-			else
-			{
-				// Log::info('Save queue on LogObserver command from processing log observer '.$queue['id']);
+				$queue 							= new Queue;
+				$queue->fill([
+						'process_name' 			=> 'hr:logobserver',
+						'parameter' 			=> json_encode($parameter),
+						'total_process' 		=> $persons,
+						'task_per_process' 		=> 1,
+						'process_number' 		=> 0,
+						'total_task' 			=> $persons,
+						'message' 				=> 'Initial Commit',
+				]);
 
-				return true;
+				if(!$queue->save())
+				{
+					// Log::error('Save queue on LogObserver command from processing log observer '.json_encode($queue->getError()));
+					
+					return false;
+				}
+				else
+				{
+					// Log::info('Save queue on LogObserver command from processing log observer '.$queue['id']);
+
+					return true;
+				}
 			}
 		}
 		
