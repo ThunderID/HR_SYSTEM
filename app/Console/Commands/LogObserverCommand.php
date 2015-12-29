@@ -100,21 +100,20 @@ class LogObserverCommand extends Command {
 		//check work active on that day, please consider if that queue were written days
 		$persons 					= Person::organisationid($parameters['organisation_id'])->checkwork(true)->currentwork(true)->get();
 
-		foreach ($persons as $key => $value) 
+		foreach ($persons as $idxperson => $person) 
 		{
 			$margin_bottom_idle 	= $parameters['margin_bottom_idle'];
 			$idle_1 				= $parameters['idle_1'];
 			$idle_2 				= $parameters['idle_2'];
 
 			//find person
-			$person 				= $value;
+			// $person 				= $person;
 
 			//check logs
 			$logs 					= Log::where('on', '>', date('Y-m-d H:i:s',strtotime($parameters['on'])))->where('on', '<', date('Y-m-d',strtotime($parameters['on'].' + 1 day')).' 00:00:00')->personid($person['id'])->orderBy('on', 'asc')->get();
 
 			if($logs->count())
 			{
-
 				$model 					= $logs[count($logs)-1];
 
 				$on 					= date("Y-m-d", strtotime($model['on']));
