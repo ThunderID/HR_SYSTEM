@@ -167,6 +167,7 @@ class LogObserverCommand extends Command {
 				$name 					= 'Attendance';
 				$tooltip 				= [];
 				$idles 					= [];
+				$idlesline 				= [];
 
 				//1. CHECK SCHEDULE
 
