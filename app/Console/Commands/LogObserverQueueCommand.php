@@ -88,7 +88,8 @@ class LogObserverQueueCommand extends Command {
 
 		foreach ($organisations as $key => $value) 
 		{
-			$on 						= date('Y-m-d H:i:s', strtotime('- 1 day'));
+			$oncheck					= date('Y-m-d', strtotime('- 1 day'));
+			$on 						= date('Y-m-d H:i:s', strtotime($oncheck));
 
 			$idle_rule 					= new Policy;
 			$idle_rule_1 				= $idle_rule->organisationid($value['id'])->type('firstidle')->OnDate($on)->orderBy('started_at', 'desc')->first();
