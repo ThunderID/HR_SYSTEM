@@ -342,49 +342,10 @@ class LogObserverCommand extends Command {
 				if(isset($data->id))
 				{
 					$plog 				= $data;
-					$fp_start 			= $data->fp_start;
-					$fp_end 			= $data->fp_end;
-					$start 				= $data->start;
-					$end 				= $data->end;
 
 					if(isset($data->modified_by) && $data->modified_by!=0)
 					{
 						$modified_by 	= $data->modified_by;
-					}
-
-					$result 			= json_decode($data->tooltip);
-					$tooltip 			= json_decode(json_encode($result), true);
-
-					if(strtolower($model['name'])=='fingerprint')
-					{
-						if(date('H:i:s',strtotime($data->fp_start)) < $time && $data->fp_start == '00:00:00')
-						{
-							$fp_start 	= $time;
-						}
-						elseif(date('H:i:s',strtotime($data->fp_start)) > $time)
-						{
-							$fp_start 	= $time;
-						}
-						elseif(date('H:i:s',strtotime($data->fp_end)) < $time)
-						{
-							$fp_end 	= $time;
-						}
-					}
-					else
-					{
-						if(date('H:i:s',strtotime($data->start)) < $time && $data->start == '00:00:00')
-						{
-							$start 		= $time;
-						}
-						elseif(date('H:i:s',strtotime($data->start)) > $time)
-						{
-							$start 		= $time;
-						}
-						
-						if(date('H:i:s',strtotime($data->end)) < $time)
-						{
-							$end 		= $time;
-						}
 					}
 				}
 				else
@@ -393,46 +354,19 @@ class LogObserverCommand extends Command {
 					{
 						$modified_by	= $model['created_by'];
 					}
-
-					if(strtolower($model['name'])=='fingerprint')
-					{
-						$fp_start 		= $time;
-						$start 			= $time;
-						$end 			= $time;
-						$tooltip[]		= 'fingerprint';
-					}
-					else
-					{
-						$start 			= $time;
-						$end 			= $time;
-						$tooltip[]		= 'absencesystem';
-					}
 				}
 
-				if($lon < $on)
-				{
-					$start 				= '00:00:00';
-					$end 				= '00:00:00';
-					$tooltip[]			= 'sincedaysbefore';
-				}
+				$maxend 		= date('H:i:s', strtotime($logs[count($logs)-1]['on']));
 
-				if($fp_start=='00:00:00')
+				$idxstart 		= 0;
+				do
 				{
-					$minstart 			= $start;
+					$lonstart 		= date('Y-m-d', strtotime($logs[$idxstart]['last_input_time']));
+					$idxstart 		= $idxstart + 1;
 				}
-				else
-				{
-					$minstart 			= min($start, $fp_start);
-				}
+				while(isset($logs[$idxstart]) && $lonstart < $on);
 
-				if($fp_end=='00:00:00')
-				{
-					$maxend 			= $end;
-				}
-				else
-				{
-					$maxend 			= max($end, $fp_end);
-				}
+				$minstart 			= date('H:i:s', strtotime($logs[$idxstart-1]['on']));
 
 				list($hours, $minutes, $seconds) = explode(":", $minstart);
 
@@ -719,7 +653,7 @@ class LogObserverCommand extends Command {
 										'on'					=> $on,
 										'schedule_start'		=> $schedule_start,
 										'schedule_end'			=> $schedule_end,										
-										'tooltip'				=> json_encode($tooltip),
+										// 'tooltip'				=> json_encode($tooltip),
 										'start'					=> $start,
 										'end'					=> $end,
 										'fp_start'				=> $fp_start,
@@ -847,7 +781,6 @@ class LogObserverCommand extends Command {
 
 			$pending->save();
 		}
-
 
 		return true;
 	}
