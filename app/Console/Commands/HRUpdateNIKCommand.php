@@ -83,78 +83,78 @@ class HRUpdateNIKCommand extends Command {
 
 		$organisations 			= \App\Models\Organisation::get();
 
-		//simpan nik lama
-		foreach ($organisations as $key => $value) 
-		{
-			$document 			= new \App\Models\Document;
+		// //simpan nik lama
+		// foreach ($organisations as $key => $value) 
+		// {
+		// 	$document 			= new \App\Models\Document;
 
-			$document->fill(['name' => 'NIK V1', 'tag' => 'NIK V1', 'is_required' => false]);
+		// 	$document->fill(['name' => 'NIK V1', 'tag' => 'NIK V1', 'is_required' => false]);
 
-			$document->organisation()->associate($value);
+		// 	$document->organisation()->associate($value);
 
-			if($document->save())
-			{
-				$template 		= new \App\Models\Template;
+		// 	if($document->save())
+		// 	{
+		// 		$template 		= new \App\Models\Template;
 
-				$template->fill(['field' => 'nik', 'type' => 'string']);
+		// 		$template->fill(['field' => 'nik', 'type' => 'string']);
 
-				if(!$template->save())
-				{
-					$this->info("Error Save Template");
+		// 		if(!$template->save())
+		// 		{
+		// 			$this->info("Error Save Template");
 
-					return false;
-				}
-			}
-			else
-			{
-				$this->info("Error Save Dokumen");
+		// 			return false;
+		// 		}
+		// 	}
+		// 	else
+		// 	{
+		// 		$this->info("Error Save Dokumen");
 
-				return false;
-			}
+		// 		return false;
+		// 	}
 
-			//simpan uniqid person
-			foreach ($value->persons as $key2 => $value2) 
-			{
-				$pdocs 				= new \App\Models\PersonDocument;
+		// 	//simpan uniqid person
+		// 	foreach ($value->persons as $key2 => $value2) 
+		// 	{
+		// 		$pdocs 				= new \App\Models\PersonDocument;
 
-				$pdocs->fill(['document_id' => $document->id]);
+		// 		$pdocs->fill(['document_id' => $document->id]);
 
-				$pdocs->person()->associate($value2);
+		// 		$pdocs->person()->associate($value2);
 
-				if($pdocs->save())
-				{
-					$docdetail 		= new \App\Models\DocumentDetail;
+		// 		if($pdocs->save())
+		// 		{
+		// 			$docdetail 		= new \App\Models\DocumentDetail;
 
-					$docdetail->fill(['template_id' => $template->id, 'string' => $value2->uniqid]);
+		// 			$docdetail->fill(['template_id' => $template->id, 'string' => $value2->uniqid]);
 
-					$docdetail->persondocument()->associate($pdocs);
+		// 			$docdetail->persondocument()->associate($pdocs);
 
-					if(!$docdetail->save())
-					{
-						$this->info("Error Save Template person");
+		// 			if(!$docdetail->save())
+		// 			{
+		// 				$this->info("Error Save Template person");
 
-						return false;
-					}
-				}
-				else
-				{
-					$this->info("Error Save document person");
+		// 				return false;
+		// 			}
+		// 		}
+		// 		else
+		// 		{
+		// 			$this->info("Error Save document person");
 
-					return false;
-				}
+		// 			return false;
+		// 		}
 
-				//reset db
-				$value2->fill(['uniqid' => '']);
+		// 		//reset db
+		// 		$value2->fill(['uniqid' => '']);
 
-				if(!$value2->save())
-				{
-					dd($value2->getError());
-					$this->info("Cannot save nik ".$value2->name.' ORG'.$value->name);
+		// 		if(!$value2->save())
+		// 		{
+		// 			dd($value2->getError());
+		// 			$this->info("Cannot save nik ".$value2->name.' ORG'.$value->name);
 
-					return false;
-				}
-			}
-		}
+		// 			return false;
+		// 		}
+		// 	}
+		// }
 
 		//generate nik baru
 		foreach ($organisations as $key => $value) 
