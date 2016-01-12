@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 
 use App\Models\Person;
 use App\Models\Organisation;
+use DB;
 
 class HRUpdateNIKCommand extends Command {
 
@@ -78,30 +79,145 @@ class HRUpdateNIKCommand extends Command {
 	 **/
 	public function updatenik()
 	{
-		$organisation 			= Organisation::get();
+		DB::beginTransaction();
 
-		foreach ($organisation as $key => $value) 
+		$organisations 			= \App\Models\Organisation::get();
+
+		//simpan nik lama
+		foreach ($organisations as $key => $value) 
 		{
-			$this->info("Updating ".$value->code);
+			$document 			= new \App\Models\Document;
 
-			$persons 			= Person::organisationid($value->id)->get();
-			foreach ($persons as $key2 => $value2) 
+			$document->fill(['name' => 'NIK V1', 'tag' => 'NIK V1', 'is_required' => false]);
+
+			$document->organisation()->associate($value);
+
+			if($document->save())
 			{
-				$new_nik 		= str_replace(strtoupper($value2->organisation->code).'.', strtoupper($value2->organisation->code), $value2->uniqid);
-				
-				$value2->fill(['uniqid' => $new_nik]);
+				$template 		= new \App\Models\Template;
 
-				if (!$value2->save())
+				$template->fill(['field' => 'nik', 'type' => 'string']);
+
+				if(!$template->save())
 				{
-					$this->info("Failed ".$value2->getError());
+					$this->info("Error Save Template");
+
+					return false;
+				}
+			}
+			else
+			{
+				$this->info("Error Save Dokumen");
+
+				return false;
+			}
+
+			//simpan uniqid person
+			foreach ($value->persons as $key2 => $value2) 
+			{
+				$pdocs 				= new \App\Models\PersonDocument;
+
+				$pdocs->fill(['document_id' => $document->id]);
+
+				$pdocs->person()->associate($value2);
+
+				if($pdocs->save())
+				{
+					$docdetail 		= new \App\Models\DocumentDetail;
+
+					$docdetail->fill(['template_id' => $template->id, 'string' => $value2->uniqid]);
+
+					$docdetail->persondocument()->associate($pdocs);
+
+					if(!$docdetail->save())
+					{
+						$this->info("Error Save Template person");
+
+						return false;
+					}
+				}
+				else
+				{
+					$this->info("Error Save document person");
+
+					return false;
 				}
 
-				if(($key2+1)%10==0)
+				//reset db
+				$value2->fill(['uniqid' => '']);
+
+				if(!$value2->save())
 				{
-					$this->info("Progress ".($key2+1)." Dari ".count($persons));
+					dd($value2->getError());
+					$this->info("Cannot save nik ".$value2->name.' ORG'.$value->name);
+
+					return false;
 				}
 			}
 		}
+
+		//generate nik baru
+		foreach ($organisations as $key => $value) 
+		{
+			//simpan uniqid person
+			foreach ($value->persons as $key2 => $value2) 
+			{
+				// check code org
+				$nik 				= $value->code;
+				// joined year
+				$work 				= \App\Models\Work::personid($value2['id'])->orderby('start', 'asc')->first();
+				if($work)
+				{
+					$nik 			= $nik.date('y', strtotime($work->start));
+
+					//ordering
+					$prev_nik 			= (\App\Models\Person::where('uniqid', 'like', $nik.'.%')->count()) + 1;
+
+					$nik 				= $nik.'.'.str_pad($prev_nik,3,"0",STR_PAD_LEFT);
+
+					$person 			= \App\Models\Person::find($value2['id']);
+
+					$person->fill(['uniqid' => $nik]);
+
+					if(!$person->save())
+					{
+						dd($person->getError());
+						$this->info("Cannot save nik ".$person->name.' ORG'.$value->name);
+
+						return false;
+					}
+				}
+			}
+		}
+
+		DB::commit();
+
+		return true;
+
+		// $organisation 			= Organisation::get();
+
+		// foreach ($organisation as $key => $value) 
+		// {
+		// 	$this->info("Updating ".$value->code);
+
+		// 	$persons 			= Person::organisationid($value->id)->get();
+		// 	foreach ($persons as $key2 => $value2) 
+		// 	{
+		// 		$new_nik 		= str_replace(strtoupper($value2->organisation->code).'.', strtoupper($value2->organisation->code), $value2->uniqid);
+				
+		// 		$value2->fill(['uniqid' => $new_nik]);
+
+		// 		if (!$value2->save())
+		// 		{
+		// 			$this->info("Failed ".$value2->getError());
+		// 		}
+
+		// 		if(($key2+1)%10==0)
+		// 		{
+		// 			$this->info("Progress ".($key2+1)." Dari ".count($persons));
+		// 		}
+		// 	}
+		// }
 
 		return true;
 	}
