@@ -172,8 +172,20 @@ class HRUpdateNIKCommand extends Command {
 					$year 			= date('Y', strtotime($work->start));
 
 					//ordering
-					$prev_nik 			= \App\Models\Work::where('start', '<=', $work->start)->where('start', '>=', date('Y-m-d', strtotime('first day of January '.$year)))->whereraw(DB::raw('(works.id = (select id from works as tl2 where tl2.person_id = works.person_id and tl2.deleted_at is null order by tl2.start asc limit 1))'))->wherehas('person', function($q)use($value){$q->organisationid($value['id']);})->groupby('person_id')->get(['id']);
-					$nik 				= $nik.'.'.str_pad((count($prev_nik)),3,"0",STR_PAD_LEFT);
+					$prev_nik		= \App\Models\Work::where('start', '<=', $work->start)->where('start', '>=', date('Y-m-d', strtotime('first day of January '.$year)))->whereraw(DB::raw('(works.id = (select id from works as tl2 where tl2.person_id = works.person_id and tl2.deleted_at is null order by tl2.start asc limit 1))'))->wherehas('person', function($q)use($value){$q->organisationid($value['id']);})->groupby('person_id')->get(['id']);
+					$counter 		= count($prev_nik);
+
+					do
+					{
+						$person 	= \App\Models\Person::where('uniqid', $nik.'.'.str_pad($counter,3,"0",STR_PAD_LEFT))->first();
+						if($person)
+						{
+							$counter = $counter - 1;
+						}
+					}
+					while($person);
+
+					$nik 				= $nik.'.'.str_pad($counter,3,"0",STR_PAD_LEFT);
 
 					$person 			= \App\Models\Person::find($value2['id']);
 
