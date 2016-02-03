@@ -115,7 +115,7 @@ class ExpiredWorkleaveBatchCommand extends Command {
 						'notes'					=> 'Auto generated expire workleave',
 						'start'					=> date('Y-m-d', strtotime($parameters['end'])),
 						'end'					=> date('Y-m-d', strtotime($parameters['end'])),
-						'quota'					=> 0 - $pwleave,
+						'quota'					=> 0 - abs($pwleave),
 						'status'				=> 'CN',
 					]);
 
