@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\AttendanceQueueCommand',
 		'App\Console\Commands\SanctionQueueCommand',
 		'App\Console\Commands\HRQueueCommand',
-		// 'App\Console\Commands\HRExpiredWorkleaveQueueCommand',
+		'App\Console\Commands\HRExpiredWorkleaveQueueCommand',
 		'App\Console\Commands\HRRaiseWorkleaveQueueCommand',
 		'App\Console\Commands\LogObserverQueueCommand',
 
@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\PersonBatchCommand',
 		'App\Console\Commands\PersonDocumentBatchCommand',
 		'App\Console\Commands\WorkBatchCommand',
-		// 'App\Console\Commands\ExpiredWorkleaveBatchCommand',
+		'App\Console\Commands\ExpiredWorkleaveBatchCommand',
 		'App\Console\Commands\RaiseWorkleaveBatchCommand',
 		'App\Console\Commands\PersonWorkleaveImportBatchCommand',
 		'App\Console\Commands\LogObserverCommand',
@@ -66,7 +66,7 @@ class Kernel extends ConsoleKernel {
 
 		//auto generate log for previous day 
 		$schedule->command('hr:attendancequeue AttendanceQueueCommand')
-				 ->cron('0 */6 */26 * * *');
+				 ->cron('0 5 */26 * * *');
 
 		//auto generate sanction for previous day (currently 5 days)
 		$schedule->command('hr:sanctionqueue SanctionQueueCommand')
@@ -82,15 +82,15 @@ class Kernel extends ConsoleKernel {
 
 		//running queue (every month)
 		$schedule->command('hr:clearcache HRClearCacheCommand')
-				 ->cron('0 */21 */25 * * *');
+				 ->cron('0 21 */25 * * *');
 
 		//running expired queue command
-		// $schedule->command('hr:expireworkleavequeue HRExpiredWorkleaveQueueCommand')
-		// 		 ->cron('0 */4 */28 * * *');
+		$schedule->command('hr:expireworkleavequeue HRExpiredWorkleaveQueueCommand')
+				 ->cron('0 4 */28 * * *');
 
 		//running expired queue command
 		$schedule->command('hr:raiseworkleavequeue HRRaiseWorkleaveQueueCommand')
-				 ->cron('0 */22 */27 * * *');
+				 ->cron('0 22 */27 * * *');
 	}
 
 }
