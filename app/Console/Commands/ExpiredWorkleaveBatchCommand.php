@@ -99,7 +99,7 @@ class ExpiredWorkleaveBatchCommand extends Command {
 			$pwleaveplus 			= PersonWorkleave::personid($value['id'])->Quota(true)->where('end', '<=', date('Y-m-d', strtotime($parameters['end'])))->sum('quota');
 			$pwleaveminus 			= PersonWorkleave::personid($value['id'])->Quota(false)->where('end', '<=', date('Y-m-d', strtotime($parameters['end'])))->sum('quota');
 			
-			$pwleave 				= $pwleaveplus - $pwleaveminus;
+			$pwleave 				= $pwleaveplus - abs($pwleaveminus);
 
 			$work 					= Work::active(true)->personid($value['id'])->first();
 			
