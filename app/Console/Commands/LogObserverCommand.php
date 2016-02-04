@@ -98,7 +98,7 @@ class LogObserverCommand extends Command {
 		$errors 					= new MessageBag;
 
 		//check work active on that day, please consider if that queue were written days
-		$persons 					= Person::organisationid($parameters['organisation_id'])->checkwork(true)->currentwork(true)->get();
+		$persons 					= Person::organisationid($parameters['organisation_id'])/*->checkwork(true)->currentwork(true)*/->get();
 
 		foreach ($persons as $idxperson => $person) 
 		{
