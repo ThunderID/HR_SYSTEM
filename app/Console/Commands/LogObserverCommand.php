@@ -118,6 +118,7 @@ class LogObserverCommand extends Command {
 
 				$on 					= date("Y-m-d", strtotime($model['on']));
 				$time 					= date("H:i:s", strtotime($model['on']));
+				$start 					= date("H:i:s", strtotime($logs[0]['on']));
 
 				if(isset($model['app_version']) && (float)$model['app_version']>=0.3)
 				{
@@ -141,8 +142,8 @@ class LogObserverCommand extends Command {
 				//preparing default variable
 				$fp_start 				= '00:00:00';
 				$fp_end 				= '00:00:00';
-				$start 					= '00:00:00';
-				$end 					= '00:00:00';
+				// $start 					= '00:00:00';
+				$end 					= $time;
 				$schedule_start 		= '00:00:00';
 				$schedule_end 			= '00:00:00';
 
