@@ -392,10 +392,15 @@ class LogObserverCommand extends Command {
 				$total_active 			= abs($maxend) - abs($minstart);
 
 				//3. COUNT IDLE
-				$idle 					= Log::where('on', '>', date('Y-m-d H:i:s',strtotime($on)))->where('on', '<', date('Y-m-d H:i:s',strtotime($on.' + 1 day')))->personid($model['person_id'])->orderBy('on', 'asc')->get();
+				$idle 					= $logs;
 
 				foreach ($idle as $key => $value) 
 				{
+					if(date('Y-m-d', strtotime($value['on'])) != date('Y-m-d', strtotime($value['last_input_time'])))
+					{
+						$start 			= date('H:i:s', strtotime($value['on']));
+					}
+
 					//if third version
 					if(isset($model['app_version']) && (float)$model['app_version']>=0.3)
 					{
