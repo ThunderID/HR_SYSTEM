@@ -647,7 +647,18 @@ class LogObserverCommand extends Command {
 				}
 				elseif($actual_status=='')
 				{
-					$actual_status 			= 'HC';
+					if($schedule_start < $start && $schedule_end < $start)
+					{
+						$actual_status		= 'AS';
+					}
+					elseif($schedule_start > $end && $schedule_end > $end)
+					{
+						$actual_status		= 'AS';
+					}
+					else
+					{
+						$actual_status		= 'HC';
+					}
 				}
 
 				$total_active 				= abs($total_active) - abs($total_idle_1) - abs($total_idle_2) - abs($total_idle_3);
