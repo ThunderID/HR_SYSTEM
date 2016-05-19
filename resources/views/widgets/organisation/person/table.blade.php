@@ -19,9 +19,8 @@
 
 		@if (Route::is('hr.persons.index')&((int)Session::get('user.menuid') <= 3))
 			<a href="javasript:;" class="btn btn-primary" data-toggle="modal" data-target="#import_csv_person_create" data-action="{{ route('hr.persons.store') }}" data-org_id="{{ $data['id'] }}">Import CSV</a>
+			<a href="{{route('hr.persons.index', array_merge(Input::all(), ['print' => 'yes', 'mode' => 'xls']))}}" class="btn btn-primary">Export (XLS)</a>
 		@endif
-
-	<a href="{{route('hr.persons.index', array_merge(Input::all(), ['print' => 'yes', 'mode' => 'xls']))}}" class="btn btn-primary">Export (XLS)</a>
 
 		@if(isset($PersonComposer['widget_data']['personlist']['person']))
 			<div class="clearfix">&nbsp;</div>
