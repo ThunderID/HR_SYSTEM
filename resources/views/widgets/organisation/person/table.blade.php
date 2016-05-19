@@ -21,6 +21,8 @@
 			<a href="javasript:;" class="btn btn-primary" data-toggle="modal" data-target="#import_csv_person_create" data-action="{{ route('hr.persons.store') }}" data-org_id="{{ $data['id'] }}">Import CSV</a>
 		@endif
 
+	<a href="{{route('hr.persons.index', array_merge(Input::all(), ['print' => 'yes', 'mode' => 'xls']))}}" class="btn btn-primary">XLS</a>
+
 		@if(isset($PersonComposer['widget_data']['personlist']['person']))
 			<div class="clearfix">&nbsp;</div>
 			<table class="table table-affix">

@@ -243,6 +243,39 @@ class PersonController extends BaseController
 
 		$this->layout->page->default_filter  		= ['org_id' => $data['id']];
 
+		if(Input::has('print'))
+		{
+			$search 								= ['withattributes' => ['works', 'works.branch']];
+			$sort 									= ['persons.name' => 'asc'];
+			$page 									= 1;
+			$per_page 								= 100;
+			$search['organisationid'] 				= ['fieldname' => 'persons.organisation_id', 'variable' => $data['id']];
+			$results 								= $this->dispatch(new Getting(new Person, $search, $sort , (int)$page, (int)$per_page, isset($new) ? $new : false));
+
+			$contents 									= json_decode($results);
+
+			if(!$contents->meta->success)
+			{	
+				App::abort(404);	
+			}
+			
+			$report 								= json_decode(json_encode($contents->data), true);
+
+			Excel::create('HRIS - Data Karyawan UB '.$data['name'], function($excel) use ($report, $data) 
+			{
+				// Set the title
+				$excel->setTitle('HRIS - Data Karyawan');
+				// Call them separately
+				$excel->setDescription('HRIS - Data Karyawan');
+				$excel->sheet('Sheetname', function ($sheet) use ($report, $data) 
+				{
+					$c 									= count($report);
+					$sheet->loadView('widgets.organisation.person.table_xls')->with('data', $report)->with('org', $data);
+				});
+			})->export(Input::get('mode'));	
+		}
+
+
 		return $this->layout;
 	}
 
