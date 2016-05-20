@@ -113,7 +113,6 @@ class LogObserverQueueCommand extends Command {
 				$idle_2 			= (int)$idle_rule_3->value;
 			}
 
-
 			$persons 					= Person::organisationid($value['id'])->checkwork(true)->count();
 
 			if($persons > 0)
