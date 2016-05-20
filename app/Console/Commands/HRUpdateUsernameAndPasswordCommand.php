@@ -66,7 +66,7 @@ class HRUpdateUsernameAndPasswordCommand extends Command {
 					if(!$person->save())
 					{
 						$errors 				= true;
-						$msg					= 'Kary. Nomor : '.($key+1).'  => '.json_decode($person->getError());
+						$msg					= 'Kary. Nomor : '.($key+1).'  => '.json_encode($person->getError());
 						var_dump($msg);
 					}
 				}
