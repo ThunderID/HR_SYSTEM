@@ -59,6 +59,7 @@
 								$end = $value2['end'];	
 								$is_absence = $value2['is_absence'];	
 							?>
+							@endif
 						@endforeach
 						<td class="hidden-xs font-11 text-center" style="height:35%">
 							{{$position}}
