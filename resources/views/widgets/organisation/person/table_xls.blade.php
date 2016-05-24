@@ -44,25 +44,33 @@
 						<td class="hidden-xs font-11 text-center" style="height:35%">
 							{{$value['username']}}
 						</td>
+						<?php 
+						$position = '';
+						$start = date('Y-m-d H:i:s', strtotime('first day of January 2000'));
+						$end = 'Sekarang';
+						$is_absence = true;
+						?>
+						
+						@foreach($value['works'] as $key2 => $value2)
+							@if($start > $value2['start'])
+							<?php
+								$position = $value2['name'].' '.$value2['tag'].' '.$value2['branch']['name'];	
+								$start = $value2['start'];	
+								$end = $value2['end'];	
+								$is_absence = $value2['is_absence'];	
+							?>
+						@endforeach
 						<td class="hidden-xs font-11 text-center" style="height:35%">
-							@if(isset($value['works'][0]))
-								{{$value['works'][0]['name']}} {{$value['works'][0]['tag']}} {{$value['works'][0]['branch']['name']}}
-							@endif
+							{{$position}}
 						</td>
 						<td class="hidden-xs font-11 text-center" style="height:35%">
-							@if(isset($value['works'][0]))
-								{{$value['works'][0]['pivot']['status']}}
-							@endif
+							{{$start}}
 						</td>
 						<td class="hidden-xs font-11 text-center" style="height:35%">
-							@if(isset($value['works'][0]))
-								{{$value['works'][0]['pivot']['end']}}
-							@endif
+							{{$end}}
 						</td>
 						<td class="hidden-xs font-11 text-center" style="height:35%">
-							@if(isset($value['works'][0]))
-								@if($value['works'][0]['pivot']['is_absence']) n @else y @endif
-							@endif
+							@if($is_absence) n @else y @endif
 						</td>
 					</tr>
 				@endforeach
