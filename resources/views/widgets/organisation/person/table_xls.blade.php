@@ -29,11 +29,37 @@
 				<tr></tr>
 			</thead>
 			<tbody>
+				<?php $idx = 1;?>
 				@foreach($data as $key => $value)
+					<?php 
+						$flag = true;
+						$position = '';
+						$start = date('Y-m-d H:i:s', strtotime('first day of January 2000'));
+						$end = 'Sekarang';
+						$is_absence = true;
+						?>
+						
+						@foreach($value['works'] as $key2 => $value2)
+							<?php
+								if($start < $value2['pivot']['start'])
+								{
+									$position = $value2['name'].' '.$value2['tag'].' '.$value2['branch']['name'];	
+									$start = $value2['pivot']['start'];	
+									$end = $value2['pivot']['end'];	
+									$is_absence = $value2['pivot']['is_absence'];	
+								}
+
+								if(strtolower($value2['pivot']['status'])=='admin')
+								{
+									$flag = false;
+								}
+							?>
+						@endforeach
+					@if($flag)
 					<tr>
 						<td style="width:10%">&nbsp;</td>
 						<td class="font-11" style="height:35%">
-							{{$key+1}}
+							{{$idx}}
 						</td>
 						<td class="hidden-xs font-11 text-center" style="height:35%">
 							{{$value['uniqid']}}
@@ -44,23 +70,7 @@
 						<td class="hidden-xs font-11 text-center" style="height:35%">
 							{{$value['username']}}
 						</td>
-						<?php 
-						$position = '';
-						$start = date('Y-m-d H:i:s', strtotime('first day of January 2000'));
-						$end = 'Sekarang';
-						$is_absence = true;
-						?>
 						
-						@foreach($value['works'] as $key2 => $value2)
-							@if($start > $value2['start'])
-							<?php
-								$position = $value2['name'].' '.$value2['tag'].' '.$value2['branch']['name'];	
-								$start = $value2['start'];	
-								$end = $value2['end'];	
-								$is_absence = $value2['is_absence'];	
-							?>
-							@endif
-						@endforeach
 						<td class="hidden-xs font-11 text-center" style="height:35%">
 							{{$position}}
 						</td>
@@ -74,6 +84,8 @@
 							@if($is_absence) n @else y @endif
 						</td>
 					</tr>
+					<?php $idx = $idx + 1;?>
+					@endif
 				@endforeach
 			</tbody>
 		</table>
