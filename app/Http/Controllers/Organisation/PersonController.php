@@ -800,7 +800,7 @@ class PersonController extends BaseController
 
 	public function getLastNIK()
 	{
-		$search 						= ['organisationid' => 1];
+		$search 						= ['organisationid' => Input::get('org_id')];
 		$results 						= $this->dispatch(new Getting(new Person, $search, ['created_at' => 'desc'] , 1, 1));
 		$contents 						= json_decode($results);
 
