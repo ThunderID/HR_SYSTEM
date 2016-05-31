@@ -330,7 +330,11 @@ class WorkController extends BaseController
 
 		if (Input::has('is_absence'))
 		{
-			$attributes['is_absence']			= Input::get('is_absence');
+			$attributes['is_absence']			= true;
+		}
+		else
+		{
+			$attributes['is_absence']			= false;
 		}
 
 		DB::beginTransaction();
