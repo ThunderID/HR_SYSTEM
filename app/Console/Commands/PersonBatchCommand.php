@@ -342,6 +342,7 @@ class PersonBatchCommand extends Command {
 						$calendar[$i]['import_from_id'] 	= 1;
 						$calendar[$i]['name'] 				= 'Costum Kalender Untuk '.$row['namacabang'];
 						$calendar[$i]['workdays'] 			= 'senin,selasa,rabu,kamis,jumat';
+						$calendar[$i]['break_idle'] 		= '3600,3600,3600,3600,5400';
 						$calendar[$i]['start'] 				= date('H:i:s', strtotime($row['jammasukkerja']));
 						$calendar[$i]['end'] 				= date('H:i:s', strtotime($row['jampulangkerja']));
 
