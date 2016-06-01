@@ -170,12 +170,12 @@ class PersonBatchCommand extends Command {
 
 						$attributes[$i]['username']			= $modifyuname.'.'.$row['kodeorganisasi'];
 
-						$attributes[$i]['place_of_birth']	= $row['tempatlahir'];
+						$attributes[$i]['place_of_birth']	= $row['place_of_birth'];
 						$attributes[$i]['last_password_updated_at'] = date('Y-m-d H:i:s', strtotime('- 3 month'));
 
 						// list($d, $m, $y) 					= explode("/", $row['tanggallahir']);
 						// $attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime("$y-$m-$d"));
-						$attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime($row['tanggallahir']));
+						$attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime($row['date_of_birth']));
 
 						$attributes[$i]['gender']			= $row['gender']=='L' ? 'male' : 'female';
 						if(isset($row['password']))
