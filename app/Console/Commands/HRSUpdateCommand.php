@@ -44,7 +44,7 @@ class HRSUpdateCommand extends Command {
 	 */
 	public function fire()
 	{
-		$result 		= $this->update29122015();
+		$result 		= $this->update08062016();
 		
 		return true;
 	}
@@ -79,21 +79,13 @@ class HRSUpdateCommand extends Command {
 	 * @return void
 	 * @author 
 	 **/
-	public function update29122015()
+	public function update08062016()
 	{
-		Schema::table('tmp_queues', function(Blueprint $table) 
-		{
-			$table->index(['deleted_at', 'process_number', 'process_name']);
-		});
-
-		Schema::table('logs', function(Blueprint $table) 
-		{
-			$table->index(['deleted_at', 'on']);
-		});
-
-		Schema::table('error_logs', function(Blueprint $table) 
-		{
-			$table->index(['deleted_at', 'on']);
+		Schema::create('tmp_ip_whitelists', function(Blueprint $table) {
+			$table->increments('id');
+			$table->string('ip', 255);
+			$table->timestamps();
+			$table->softDeletes();
 		});
 		
 		return true;

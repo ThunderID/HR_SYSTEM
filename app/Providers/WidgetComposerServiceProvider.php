@@ -115,6 +115,11 @@ class WidgetComposerServiceProvider extends ServiceProvider {
 		View::composer(['widgets.authgroup.select', 'widgets.authgroup.table', 'widgets.authgroup.form'], 	'App\Http\ViewComposers\AuthGroupComposer');
 
 		// -----------------------------------------------------------------------------
+		// IPWHITELIST
+		// -----------------------------------------------------------------------------
+		View::composer(['widgets.ipwhitelist.table', 'widgets.ipwhitelist.form'], 	'App\Http\ViewComposers\IPWhitelistComposer');
+
+		// -----------------------------------------------------------------------------
 		// FOLLOW
 		// -----------------------------------------------------------------------------
 		View::composer(['widgets.organisation.branch.chart.follow.table', 'widgets.organisation.branch.chart.follow.form', 'widgets.organisation.calendar.chart.table', 'widgets.organisation.calendar.chart.form'], 	'App\Http\ViewComposers\FollowComposer');
