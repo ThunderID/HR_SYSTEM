@@ -88,6 +88,21 @@ class HRSUpdateCommand extends Command {
 			$table->softDeletes();
 		});
 		
+		Schema::create('whitelist_logs', function(Blueprint $table)
+		{
+			$table->increments('id');
+			$table->string('email', 255);
+			$table->string('name', 255);
+			$table->string('pc', 255);
+			$table->datetime('on');
+			$table->text('message');
+			$table->string('ip', 255);
+			$table->timestamps();
+			$table->softDeletes();
+			
+			$table->index(['deleted_at', 'on']);
+		});
+		
 		return true;
 	}
 }
