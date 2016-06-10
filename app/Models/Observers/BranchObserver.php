@@ -19,21 +19,24 @@ class BranchObserver
 {
 	public function created($model)
 	{
-		$attributes['record_log_id'] 		= $model->id;
-		$attributes['record_log_type'] 		= get_class($model);
-		$attributes['name'] 				= 'Menambah Cabang dari unit bisnis '.$model->organisation->name;
-		$attributes['notes'] 				= 'Menambah Cabang dari unit bisnis '.$model->organisation->name.' pada '.date('d-m-Y');
-		$attributes['action'] 				= 'delete';
-
-		Event::fire(new CreateRecordOnTable($attributes));
-
-		$data 					= new FingerPrint;
-		$data->branch()->associate($model);
-		if(!$data->save())
+		if($model->organisation()->count())
 		{
-			$model['errors']	= $data->getError();
+			$attributes['record_log_id'] 		= $model->id;
+			$attributes['record_log_type'] 		= get_class($model);
+			$attributes['name'] 				= 'Menambah Cabang dari unit bisnis '.$model->organisation->name;
+			$attributes['notes'] 				= 'Menambah Cabang dari unit bisnis '.$model->organisation->name.' pada '.date('d-m-Y');
+			$attributes['action'] 				= 'delete';
+
+			Event::fire(new CreateRecordOnTable($attributes));
+
+			$data 					= new FingerPrint;
+			$data->branch()->associate($model);
+			if(!$data->save())
+			{
+				$model['errors']	= $data->getError();
+			}
+			return true;
 		}
-		return true;
 	}
 
 	public function saving($model)
