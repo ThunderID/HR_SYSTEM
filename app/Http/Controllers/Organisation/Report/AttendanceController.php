@@ -273,7 +273,7 @@ class AttendanceController extends BaseController
 			}
 			else
 			{
-				$search 								= ['processlogattendancesondate' => ['on' => [$start, $end]]];
+				$search 								= array_merge(['processlogattendancesondate' => ['on' => [$start, $end]], 'chartnotadmin' => true], (isset($filtered['search']) ? $filtered['search'] : []));
 				$sort 									= (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']);
 				$page 									= 1;
 				$per_page 								= 100;
