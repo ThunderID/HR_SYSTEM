@@ -141,16 +141,16 @@ class TimeController extends BaseController {
 				}
 				else
 				{
-					$data 						= $this->dispatch(new Getting(new IPWhitelist, ['ip' => $_SERVER['REMOTE_ADDR']], [] , 1, 1), false);
-					$ip 						= json_decode($data);
-					if(!$ip->meta->success)
-					{
-						$log['email']			= $value[0];
-						$log['message']			= 'Pengirim tidak terdaftar dalam IP Whitelist';
-						$saved_error_log 		= $this->dispatch(new Saving(new IPWhitelistLog, $log, null));
-					}
-					else
-					{
+					// $data 						= $this->dispatch(new Getting(new IPWhitelist, ['ip' => $_SERVER['REMOTE_ADDR']], [] , 1, 1), false);
+					// $ip 						= json_decode($data);
+					// if(!$ip->meta->success)
+					// {
+					// 	$log['email']			= $value[0];
+					// 	$log['message']			= 'Pengirim tidak terdaftar dalam IP Whitelist';
+					// 	$saved_error_log 		= $this->dispatch(new Saving(new IPWhitelistLog, $log, null));
+					// }
+					// else
+					// {
 						$saved_log 				= $this->dispatch(new Saving(new Log, $log, null, new Person, $person->data->id));
 						$is_success_2 			= json_decode($saved_log);
 						if(!$is_success_2->meta->success)
@@ -160,7 +160,7 @@ class TimeController extends BaseController {
 							$saved_error_log 	= $this->dispatch(new Saving(new ErrorLog, $log, null, new Organisation, $organisationid));
 						}
 						
-					}
+					// }
 				}
 			}
 		}
