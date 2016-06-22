@@ -327,6 +327,10 @@ class WorkController extends BaseController
 		{
 			$attributes['end'] 					= date('Y-m-d', strtotime(Input::get('end')));
 		}
+		else
+		{
+			$attributes['end']					= null;
+		}
 
 		if (Input::has('is_absence'))
 		{
