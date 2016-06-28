@@ -20,7 +20,7 @@ trait HasWorksOnTrait {
 	public function Works()
 	{
 		return $this->belongsToMany('App\Models\Chart', 'works', 'person_id', 'chart_id')
-					->withPivot('status', 'start', 'end', 'reason_end_job', 'id', 'is_absence');
+					->withPivot('status', 'start', 'end', 'reason_end_job', 'id', 'is_absence', 'grade');
 	}
 
 	public function WorksCalendars()
