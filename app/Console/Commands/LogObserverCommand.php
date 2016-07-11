@@ -397,7 +397,7 @@ class LogObserverCommand extends Command {
 
 				foreach ($idle as $key => $value) 
 				{
-					if(date('Y-m-d', strtotime($value['on'])) != date('Y-m-d', strtotime($value['last_input_time'])) && date('Y-m-d', strtotime($parameters['on'])) == date('Y-m-d', strtotime($value['on'])))
+					if(date('Y-m-d', strtotime($value['on'])) != date('Y-m-d', strtotime($value['last_input_time'])) && date('Y-m-d', strtotime($parameters['on'])) == date('Y-m-d', strtotime($value['last_input_time'])))
 					{
 						$start 			= date('H:i:s', strtotime($value['on']));
 					}
