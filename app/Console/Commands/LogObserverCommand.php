@@ -358,7 +358,7 @@ class LogObserverCommand extends Command {
 					}
 				}
 
-				$maxend 		= date('H:i:s', strtotime($logs[count($logs)-1]['on']));
+				$maxend 		= $ltime;
 
 				$idxstart 		= 0;
 				do
@@ -397,9 +397,8 @@ class LogObserverCommand extends Command {
 
 				foreach ($idle as $key => $value) 
 				{
-					if(date('Y-m-d', strtotime($value['on'])) != date('Y-m-d', strtotime($value['last_input_time'])) && $start_date != date('Y-m-d', strtotime($value['on'])))
+					if(date('Y-m-d', strtotime($value['on'])) != date('Y-m-d', strtotime($value['last_input_time'])) && date('Y-m-d', strtotime($parameters['on'])) == date('Y-m-d', strtotime($value['on'])))
 					{
-						$start_date 	= date('Y-m-d', strtotime($value['on']));
 						$start 			= date('H:i:s', strtotime($value['on']));
 					}
 
