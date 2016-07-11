@@ -118,6 +118,7 @@ class LogObserverCommand extends Command {
 
 				$on 					= date("Y-m-d", strtotime($model['on']));
 				$time 					= date("H:i:s", strtotime($model['on']));
+				$start_date 			= date("Y-m-d", strtotime($logs[0]['on']));
 				$start 					= date("H:i:s", strtotime($logs[0]['on']));
 
 				if(isset($model['app_version']) && (float)$model['app_version']>=0.3)
@@ -143,7 +144,7 @@ class LogObserverCommand extends Command {
 				$fp_start 				= '00:00:00';
 				$fp_end 				= '00:00:00';
 				// $start 					= '00:00:00';
-				$end 					= $time;
+				$end 					= $ltime;
 				$schedule_start 		= '00:00:00';
 				$schedule_end 			= '00:00:00';
 
@@ -396,8 +397,9 @@ class LogObserverCommand extends Command {
 
 				foreach ($idle as $key => $value) 
 				{
-					if(date('Y-m-d', strtotime($value['on'])) != date('Y-m-d', strtotime($value['last_input_time'])))
+					if(date('Y-m-d', strtotime($value['on'])) != date('Y-m-d', strtotime($value['last_input_time'])) && $start_date != date('Y-m-d', strtotime($value['on'])))
 					{
+						$start_date 	= date('Y-m-d', strtotime($value['on']));
 						$start 			= date('H:i:s', strtotime($value['on']));
 					}
 
