@@ -118,7 +118,7 @@ class LogObserverCommand extends Command {
 
 				$on 					= date("Y-m-d", strtotime($model['on']));
 				$time 					= date("H:i:s", strtotime($model['on']));
-				$start_date 			= date('Y-m-d', strtotime($logs[0]['on']));
+				$start_date 			= date('Y-m-d', strtotime($logs[0]['last_input_time']));
 				$start 					= date("H:i:s", strtotime($logs[0]['on']));
 
 				if(isset($model['app_version']) && (float)$model['app_version']>=0.3)
@@ -399,7 +399,7 @@ class LogObserverCommand extends Command {
 				{
 					if(date('Y-m-d', strtotime($parameters['on'])) == date('Y-m-d', strtotime($value['last_input_time'])) && $start_date != date('Y-m-d', strtotime($parameters['on'])))
 					{
-						$start_date 	= date('Y-m-d', strtotime($value['on']));
+						$start_date 	= date('Y-m-d', strtotime($value['last_input_time']));
 						$start 			= date('H:i:s', strtotime($value['on']));
 					}
 
