@@ -355,6 +355,7 @@ class LogObserverCommand extends Command {
 					if(isset($model['created_by']) && $model['created_by']!=0)
 					{
 						$modified_by	= $model['created_by'];
+						$modified_at	= $model['created_at'];
 					}
 				}
 
