@@ -233,6 +233,7 @@ class ActivityController extends BaseController
 
 		if(Input::has('print'))
 		{
+			set_time_limit(0);
 			$search 								= ['globalactivity' => array_merge(['organisationid' => $data['id'], 'on' => [$start, $end]], (isset($filter['search']) ? $filter['search'] : []))];
 			$sort 									= (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']);
 			$page 									= 1;
@@ -323,6 +324,7 @@ class ActivityController extends BaseController
 
 		if(Input::has('print'))
 		{
+			set_time_limit(0);
 			$search 								= ['id' => $person['id'], 'processlogidlesondate' => ['on' => [$start, $end]]];
 			$sort 									= ['persons.name' => 'asc'];
 			$page 									= 1;

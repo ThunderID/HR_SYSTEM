@@ -239,6 +239,7 @@ class AttendanceController extends BaseController
 
 		if(Input::has('print'))
 		{
+			set_time_limit(0);
 			// Report Global
 			if (!Input::has('withschedule'))
 			{
@@ -363,6 +364,7 @@ class AttendanceController extends BaseController
 
 		if(Input::has('print'))
 		{
+			set_time_limit(0);
 			$search 								= ['id' => $person['id'], 'processlogattendancesondate' => ['on' => [$start, $end]]];
 			$sort 									= ['persons.name' => 'asc'];
 			$page 									= 1;
