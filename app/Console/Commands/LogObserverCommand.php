@@ -111,7 +111,6 @@ class LogObserverCommand extends Command {
 
 			//check logs
 			$logs 					= Log::where('on', '>=', date('Y-m-d H:i:s',strtotime($parameters['on'])))->where('on', '<', date('Y-m-d',strtotime($parameters['on'].' + 1 day')).' 00:00:00')->personid($person['id'])->orderBy('on', 'asc')->get();
-			$total_logs 			= $logs->count();
 
 			if($logs->count())
 			{
@@ -119,6 +118,7 @@ class LogObserverCommand extends Command {
 
 				$on 					= date("Y-m-d", strtotime($model['on']));
 				$time 					= date("H:i:s", strtotime($model['on']));
+				$start_act 				= strtolower($logs[0]['name']);
 				$start_date 			= date('Y-m-d', strtotime($logs[0]['last_input_time']));
 				$start 					= date("H:i:s", strtotime($logs[0]['on']));
 
@@ -399,8 +399,9 @@ class LogObserverCommand extends Command {
 
 				foreach ($idle as $key => $value) 
 				{
-					if(date('Y-m-d', strtotime($parameters['on'])) == date('Y-m-d', strtotime($value['last_input_time'])) && $start_date != date('Y-m-d', strtotime($parameters['on'])) && $total_logs > 1)
+					if(date('Y-m-d', strtotime($parameters['on'])) == date('Y-m-d', strtotime($value['last_input_time'])) && $start_date != date('Y-m-d', strtotime($parameters['on'])) && $start_act != 'absence')
 					{
+						$start_act 		= strtolower($value['event']);
 						$start_date 	= date('Y-m-d', strtotime($value['last_input_time']));
 						$start 			= date('H:i:s', strtotime($value['on']));
 					}
