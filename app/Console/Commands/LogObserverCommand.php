@@ -401,7 +401,7 @@ class LogObserverCommand extends Command {
 				{
 					if((date('Y-m-d', strtotime($parameters['on'])) == date('Y-m-d', strtotime($value['last_input_time'])) && $start_date != date('Y-m-d', strtotime($parameters['on']))) || $start_act == 'absence')
 					{
-						$start_act 		= strtolower($value['event']);
+						$start_act 		= strtolower($value['name']);
 						$start_date 	= date('Y-m-d', strtotime($value['last_input_time']));
 						$start 			= date('H:i:s', strtotime($value['on']));
 					}
