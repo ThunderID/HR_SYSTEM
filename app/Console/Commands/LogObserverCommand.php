@@ -111,6 +111,7 @@ class LogObserverCommand extends Command {
 
 			//check logs
 			$logs 					= Log::where('on', '>', date('Y-m-d H:i:s',strtotime($parameters['on'])))->where('on', '<', date('Y-m-d',strtotime($parameters['on'].' + 1 day')).' 00:00:00')->personid($person['id'])->orderBy('on', 'asc')->get();
+			$total_logs 			= $logs->count();
 
 			if($logs->count())
 			{
@@ -398,7 +399,7 @@ class LogObserverCommand extends Command {
 
 				foreach ($idle as $key => $value) 
 				{
-					if(date('Y-m-d', strtotime($parameters['on'])) == date('Y-m-d', strtotime($value['last_input_time'])) && $start_date != date('Y-m-d', strtotime($parameters['on'])))
+					if(date('Y-m-d', strtotime($parameters['on'])) == date('Y-m-d', strtotime($value['last_input_time'])) && $start_date != date('Y-m-d', strtotime($parameters['on'])) && $total_logs > 1)
 					{
 						$start_date 	= date('Y-m-d', strtotime($value['last_input_time']));
 						$start 			= date('H:i:s', strtotime($value['on']));
