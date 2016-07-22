@@ -110,7 +110,7 @@ class LogObserverCommand extends Command {
 			// $person 				= $person;
 
 			//check logs
-			$logs 					= Log::where('on', '>', date('Y-m-d H:i:s',strtotime($parameters['on'])))->where('on', '<', date('Y-m-d',strtotime($parameters['on'].' + 1 day')).' 00:00:00')->personid($person['id'])->orderBy('on', 'asc')->get();
+			$logs 					= Log::where('on', '>=', date('Y-m-d H:i:s',strtotime($parameters['on'])))->where('on', '<', date('Y-m-d',strtotime($parameters['on'].' + 1 day')).' 00:00:00')->personid($person['id'])->orderBy('on', 'asc')->get();
 			$total_logs 			= $logs->count();
 
 			if($logs->count())
