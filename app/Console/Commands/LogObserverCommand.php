@@ -368,9 +368,9 @@ class LogObserverCommand extends Command {
 					$lonstart 		= date('Y-m-d', strtotime($logs[$idxstart]['last_input_time']));
 					$idxstart 		= $idxstart + 1;
 				}
-				while(isset($logs[$idxstart]) && $lonstart < $on);
+				while(isset($logs[$idxstart]) && ($lonstart < $on || strtolower($logs[$idxstart]['name'])=='absence'));
 
-				$minstart 			= date('H:i:s', strtotime($logs[$idxstart-1]['on']));
+				$minstart 				= date('H:i:s', strtotime($logs[$idxstart-1]['on']));
 
 				list($hours, $minutes, $seconds) = explode(":", $minstart);
 
