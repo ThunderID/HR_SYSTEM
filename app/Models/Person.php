@@ -295,7 +295,7 @@ class Person extends BaseModel {
 				$number 		= 1;
 			}
 
-			$nik 				= $nik.str_pad($number, 4, '0', STR_PAD_LEFT);
+			$nik 				= $nik.str_pad($number, 3, '0', STR_PAD_LEFT);
 			
 			return $nik;
 		}

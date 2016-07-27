@@ -145,7 +145,7 @@ class PersonBatchCommand extends Command {
 								$number 		= 1;
 							}
 
-							$row['nik']			= $nik.str_pad($number, 4, '0', STR_PAD_LEFT);
+							$row['nik']			= $nik.str_pad($number, 3, '0', STR_PAD_LEFT);
 						}
 
 						$attributes[$i]['uniqid']			= $row['nik'];
