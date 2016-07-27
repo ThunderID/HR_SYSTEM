@@ -129,6 +129,25 @@ class PersonBatchCommand extends Command {
 
 					if(!$person)
 					{
+						if(is_null($row['nik']))
+						{
+							$nik 				= strtoupper($organisation->code).date('y').'.';
+
+							$frequentnumber 	= Person::where('uniqid', 'like', $nik.'%')->orderby('uniqid', 'desc')->first();
+
+							if($frequentnumber)
+							{
+								$niknumb 		= str_replace(strtoupper($organisation->code).date('y').'.', '', $frequentnumber->uniqid);
+								$number 		= (int)$niknumb+1;
+							}
+							else
+							{
+								$number 		= 1;
+							}
+
+							$row['nik']			= $nik.str_pad($number, 4, '0', STR_PAD_LEFT);
+						}
+
 						$attributes[$i]['uniqid']			= $row['nik'];
 						$attributes[$i]['prefix_title']		= (!is_null($row['prefixtitle']) ? $row['prefixtitle'] : '');
 						$attributes[$i]['name']				= $row['namalengkap'];
@@ -168,7 +187,14 @@ class PersonBatchCommand extends Command {
 						}
 						while($uname);
 
-						$attributes[$i]['username']			= $modifyuname.'.'.$row['kodeorganisasi'];
+						if(!isset($row['username']) || is_null($row['username']))
+						{
+							$attributes[$i]['username']		= $modifyuname.'.'.$row['kodeorganisasi'];
+						}
+						else
+						{
+							$attributes[$i]['username']		= $row['username'];
+						}
 
 						$attributes[$i]['place_of_birth']	= $row['place_of_birth'];
 						$attributes[$i]['last_password_updated_at'] = date('Y-m-d H:i:s', strtotime('- 3 month'));
