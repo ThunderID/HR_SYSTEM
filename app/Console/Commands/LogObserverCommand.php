@@ -767,7 +767,7 @@ class LogObserverCommand extends Command {
 
 				if (!$plog->save())
 				{
-					$errors 		= $errors('ProcessLog', $plog->getError());
+					$errors 		= $errors->add('ProcessLog', $plog->getError());
 				}
 				else
 				{
@@ -776,12 +776,12 @@ class LogObserverCommand extends Command {
 
 					if (!$alog->save())
 					{
-						$errors 		= $errors('ProcessLog', $alog->getError());
+						$errors 		= $errors->add('ProcessLog', $alog->getError());
 					}
 
 					if (!$ilog->save())
 					{
-						$errors 		= $errors('ProcessLog', $ilog->getError());
+						$errors 		= $errors->add('ProcessLog', $ilog->getError());
 					}
 				}
 			}
