@@ -95,7 +95,7 @@ class Getting extends Command implements SelfHandling {
 				$skip 	= ($this->page-1) * $this->per_page;
 			}
 			
-			$total_data = $model->count();
+			$total_data = count($model->get());
 
 			$take = min($this->max_per_page, max(1, $this->per_page));
 			$data = $model->skip($skip)

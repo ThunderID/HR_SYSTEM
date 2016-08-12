@@ -5,7 +5,7 @@
 	<h1> {!! $widget_title or 'Laporan Kehadiran' !!} </h1>
 	<small>Total data {{ count($PersonComposer['widget_data']['personlist']['person']) }}</small>
 	<?php
-		$PersonComposer['widget_data']['personlist']['person-pagination']->setPath('hr.report.attendances.index');
+		$PersonComposer['widget_data']['personlist']['person-pagination']->setPath(route('hr.report.attendances.index'));
 	 ?>
 
 	 <div class="btn-group pull-right">
@@ -39,9 +39,10 @@
 					</thead>
 					<tbody>
 					
+						<?php $i = $PersonComposer['widget_data']['personlist']['person-display']['from'];?>
 						@foreach($PersonComposer['widget_data']['personlist']['person'] as $key => $value)
 							<tr>
-								<td @if(count($value['processlogs'])!=0) rowspan="{{count($value['processlogs'])}}" @endif class="text-center font-12">{{$key+1}}</td>
+								<td @if(count($value['processlogs'])!=0) rowspan="{{count($value['processlogs'])}}" @endif class="text-center font-12">{{$i}}</td>
 								<td @if(count($value['processlogs'])!=0) rowspan="{{count($value['processlogs'])}}" @endif class="text-left font-12" style="width:20em">
 									{{$value['name']}}
 								</td>
@@ -176,6 +177,7 @@
 								</tr>
 								@endif
 							@endforeach
+							<?php $i++;?>
 						@endforeach
 					</tbody>
 				</table>

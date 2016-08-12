@@ -53,8 +53,8 @@
 											'organisation_id'	=> $data['id'],
 											'search'			=> array_merge(['processlogattendancesondate' => ['on' => [$start, $end]], 'chartnotadmin' => true], (isset($filtered['search']) ? $filtered['search'] : [])),
 											'sort'				=> ['persons.name' => 'asc'],
-											'page'				=> 1,
-											'per_page'			=> 100,
+											'page'				=> (Input::has('page') ? Input::get('page') : 1),
+											'per_page'			=> 50,
 										]
 									]
 	])	
@@ -68,11 +68,11 @@
 											'personlist'			=>
 											[
 												'organisation_id'	=> $data['id'],
-												'search'			=> ['globalattendance' => array_merge(['organisationid' => $data['id'], 'on' => [$start, $end]], (isset($filtered['search']) ? $filtered['search'] : []))],
+												'search'			=> array_merge(['globalattendance' => ['on' => [$start, $end]], 'chartnotadmin' => true], (isset($filtered['search']) ? $filtered['search'] : [])),
 												'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']),
-												'page'				=> 1,
+												'page'				=> (Input::has('page') ? Input::get('page') : 1),
 												'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
-												'per_page'			=> 100,
+												'per_page'			=> 50,
 											]
 										]
 		])
