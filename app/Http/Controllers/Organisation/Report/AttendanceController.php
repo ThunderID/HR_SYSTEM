@@ -20,6 +20,8 @@ class AttendanceController extends BaseController
 
 	public function index()
 	{		
+		set_time_limit(0);
+		
 		if(Input::has('PersonalRep'))
 		{
 			return Redirect::route('hr.report.attendances.show', array_merge(['id' => Session::get('loggedUser'), 'person_id' => Session::get('loggedUser')],Input::all()));
