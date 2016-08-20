@@ -32,16 +32,16 @@ trait HasAttendanceLogsTrait {
 		if(!is_null($variable))
 		{
 			return $query->whereHas('attendancelogs', function($q)use($variable){$q->notactualstatus(['L', 'NA']);})
-						->with(['attendancelogs' => function($q)use($variable){$q->notactualstatus(['L', 'NA'])->orderBy('updated_at', 'desc');}, 'attendancelogs.modifiedby']);
+						->with(['attendancelogs' => function($q)use($variable){$q->notactualstatus(['L', 'NA'])->orderBy('created_at', 'desc');}, 'attendancelogs.modifiedby']);
 		}
 
 		return $query->whereHas('attendancelogs', function($q)use($variable){$q;})
-					->with(['attendancelogs' => function($q)use($variable){$q->orderBy('updated_at', 'desc');}]);
+					->with(['attendancelogs' => function($q)use($variable){$q->orderBy('created_at', 'desc');}]);
 	}
 
 	public function ScopeUnsettleAttendanceLog($query, $variable)
 	{
 		return $query->whereHas('attendancelogs', function($q)use($variable){$q->wherenull('settlement_at');})
-					->with(['attendancelogs' => function($q)use($variable){$q->wherenull('settlement_at')->orderBy('updated_at', 'desc');}]);
+					->with(['attendancelogs' => function($q)use($variable){$q->wherenull('settlement_at')->orderBy('created_at', 'desc');}]);
 	}
 }
