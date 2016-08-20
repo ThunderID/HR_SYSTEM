@@ -440,7 +440,9 @@ class WorkleaveController extends BaseController
 				$attributes['quota'] 			= 0 - (int)$is_success->data->quota;
 				$attributes['status'] 			= $is_success->data->status;
 				$attributes['notes'] 			= 'Pengambilan '.$is_success->data->name.' <> '.$is_success->data->notes;
-
+				$attributes['start'] 			= $begin->format('Y-m-d');
+				$attributes['end'] 				= $ended->format('Y-m-d');
+				
 				$batch 							= true;
 			}
 		}
