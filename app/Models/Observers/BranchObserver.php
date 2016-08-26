@@ -19,21 +19,24 @@ class BranchObserver
 {
 	public function created($model)
 	{
-		$attributes['record_log_id'] 		= $model->id;
-		$attributes['record_log_type'] 		= get_class($model);
-		$attributes['name'] 				= 'Menambah Cabang dari unit bisnis '.$model->organisation->name;
-		$attributes['notes'] 				= 'Menambah Cabang dari unit bisnis '.$model->organisation->name.' pada '.date('d-m-Y');
-		$attributes['action'] 				= 'delete';
-
-		Event::fire(new CreateRecordOnTable($attributes));
-
-		$data 					= new FingerPrint;
-		$data->branch()->associate($model);
-		if(!$data->save())
+		if($model->organisation()->count())
 		{
-			$model['errors']	= $data->getError();
+			$attributes['record_log_id'] 		= $model->id;
+			$attributes['record_log_type'] 		= get_class($model);
+			$attributes['name'] 				= 'Menambah Cabang dari unit bisnis '.$model->organisation->name;
+			$attributes['notes'] 				= 'Menambah Cabang dari unit bisnis '.$model->organisation->name.' pada '.date('d-m-Y');
+			$attributes['action'] 				= 'delete';
+
+			Event::fire(new CreateRecordOnTable($attributes));
+
+			$data 					= new FingerPrint;
+			$data->branch()->associate($model);
+			if(!$data->save())
+			{
+				$model['errors']	= $data->getError();
+			}
+			return true;
 		}
-		return true;
 	}
 
 	public function saving($model)
@@ -55,7 +58,7 @@ class BranchObserver
 	public function deleting($model)
 	{
 		//
-		if($model->charts->count())
+		if($model->charts()->count())
 		{
 			$model['errors'] 	= ['Tidak dapat menghapus cabang yang memiliki departemen.'];
 
@@ -73,7 +76,7 @@ class BranchObserver
 		$finger 				= new FingerPrint;
 		$deleted 				= $finger->branchid($model['attributes']['id'])->first();
 
-		if(!$deleted->delete())
+		if($deleted && !$deleted->delete())
 		{
 			$model['errors']	= $deleted->getError();
 		}
@@ -83,25 +86,31 @@ class BranchObserver
 
 	public function updated($model)
 	{
-		$attributes['record_log_id'] 		= $model->id;
-		$attributes['record_log_type'] 		= get_class($model);
-		$attributes['name'] 				= 'Mengubah Cabang dari unit bisnis '.$model->organisation->name;
-		$attributes['notes'] 				= 'Mengubah Cabang dari unit bisnis '.$model->organisation->name.' pada '.date('d-m-Y');
-		$attributes['old_attribute'] 		= json_encode($model->getOriginal());
-		$attributes['new_attribute'] 		= json_encode($model->getAttributes());
-		$attributes['action'] 				= 'save';
+		if($model->organisation()->count())
+		{
+			$attributes['record_log_id'] 		= $model->id;
+			$attributes['record_log_type'] 		= get_class($model);
+			$attributes['name'] 				= 'Mengubah Cabang dari unit bisnis '.$model->organisation->name;
+			$attributes['notes'] 				= 'Mengubah Cabang dari unit bisnis '.$model->organisation->name.' pada '.date('d-m-Y');
+			$attributes['old_attribute'] 		= json_encode($model->getOriginal());
+			$attributes['new_attribute'] 		= json_encode($model->getAttributes());
+			$attributes['action'] 				= 'save';
 
-		Event::fire(new CreateRecordOnTable($attributes));
+			Event::fire(new CreateRecordOnTable($attributes));
+		}
 	}
 
 	public function deleted($model)
 	{
-		$attributes['record_log_id'] 		= $model->id;
-		$attributes['record_log_type'] 		= get_class($model);
-		$attributes['name'] 				= 'Menghapus Cabang dari unit bisnis '.$model->organisation->name;
-		$attributes['notes'] 				= 'Menghapus Cabang dari unit bisnis '.$model->organisation->name.' pada '.date('d-m-Y');
-		$attributes['action'] 				= 'restore';
+		if($model->organisation()->count())
+		{
+			$attributes['record_log_id'] 		= $model->id;
+			$attributes['record_log_type'] 		= get_class($model);
+			$attributes['name'] 				= 'Menghapus Cabang dari unit bisnis '.$model->organisation->name;
+			$attributes['notes'] 				= 'Menghapus Cabang dari unit bisnis '.$model->organisation->name.' pada '.date('d-m-Y');
+			$attributes['action'] 				= 'restore';
 
-		Event::fire(new CreateRecordOnTable($attributes));
+			Event::fire(new CreateRecordOnTable($attributes));
+		}
 	}
 }

@@ -65,6 +65,8 @@ class AppServiceProvider extends ServiceProvider {
 		\App\Models\RecordLog::observe(new \App\Models\Observers\RecordLogObserver);
 
 		\App\Models\PersonWidget::observe(new \App\Models\Observers\PersonWidgetObserver);
+		\App\Models\IPWhitelist::observe(new \App\Models\Observers\IPWhitelistObserver);
+		\App\Models\IPWhitelistLog::observe(new \App\Models\Observers\IPWhitelistLogObserver);
 	}
 
 	/**
@@ -132,6 +134,8 @@ class AppServiceProvider extends ServiceProvider {
 		\App\Models\QueueMorph::observe(new \App\Models\Observers\QueueMorphObserver);
 		
 		\App\Models\RecordLog::observe(new \App\Models\Observers\RecordLogObserver);
+		\App\Models\IPWhitelist::observe(new \App\Models\Observers\IPWhitelistObserver);
+		\App\Models\IPWhitelistLog::observe(new \App\Models\Observers\IPWhitelistLogObserver);
 
 		$this->app->bind(
 			'Illuminate\Contracts\Auth\Registrar',

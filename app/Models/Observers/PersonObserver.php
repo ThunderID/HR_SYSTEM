@@ -2,6 +2,8 @@
 
 use \Validator, Event;
 use App\Events\CreateRecordOnTable;
+use Illuminate\Support\MessageBag;
+use App\Models\Person;
 
 /* ----------------------------------------------------------------------
  * Event:
@@ -22,21 +24,40 @@ class PersonObserver
 
 		if ($validator->passes())
 		{
-			if(isset($model['attributes']['username']) && $model['attributes']['username']!='')
+			$errors 				= new MessageBag;
+			
+			if(!is_null($model->id))
 			{
-				$validator 			= Validator::make($model['attributes'], ['uniqid' => 'unique:persons,uniqid,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : ''), 'username' => 'unique:persons,username,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : '')], ['uniqid.unique' => 'N I K sudah terpakai']);
+				$id 				= $model->id;
 			}
 			else
 			{
-				$validator 			= Validator::make($model['attributes'], ['uniqid' => 'unique:persons,uniqid,'.(isset($model['attributes']['id']) ? $model['attributes']['id'] : '')], ['uniqid.unique' => 'N I K sudah terpakai']);
+				$id 				= 0;
 			}
 
-			if ($validator->passes())
+			if(isset($model['attributes']['username']) && $model['attributes']['username']!='')
+			{
+				$username_checker 	= Person::username($model->username)->notid($id)->first();
+
+				if($username_checker)
+				{
+					$errors->add('Username', 'Username sudah terpakai');
+				}
+			}
+
+			$nik_checker 			= Person::uniqid($model->uniqid)->notid($id)->first();
+
+			if($nik_checker)
+			{
+				$errors->add('NIK', 'NIK sudah terpakai');
+			}
+
+			if (!$errors->count())
 			{
 				return true;
 			}
 			
-			$model['errors'] 		= $validator->errors();
+			$model['errors'] 		= $errors;
 
 			return false;
 		}

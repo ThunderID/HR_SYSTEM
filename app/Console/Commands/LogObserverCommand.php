@@ -110,7 +110,7 @@ class LogObserverCommand extends Command {
 			// $person 				= $person;
 
 			//check logs
-			$logs 					= Log::where('on', '>', date('Y-m-d H:i:s',strtotime($parameters['on'])))->where('on', '<', date('Y-m-d',strtotime($parameters['on'].' + 1 day')).' 00:00:00')->personid($person['id'])->orderBy('on', 'asc')->get();
+			$logs 					= Log::where('on', '>=', date('Y-m-d H:i:s',strtotime($parameters['on'])))->where('on', '<', date('Y-m-d',strtotime($parameters['on'].' + 1 day')).' 00:00:00')->personid($person['id'])->orderBy('on', 'asc')->get();
 
 			if($logs->count())
 			{
@@ -118,6 +118,8 @@ class LogObserverCommand extends Command {
 
 				$on 					= date("Y-m-d", strtotime($model['on']));
 				$time 					= date("H:i:s", strtotime($model['on']));
+				$start_act 				= strtolower($logs[0]['name']);
+				$start_date 			= date('Y-m-d', strtotime($logs[0]['last_input_time']));
 				$start 					= date("H:i:s", strtotime($logs[0]['on']));
 
 				if(isset($model['app_version']) && (float)$model['app_version']>=0.3)
@@ -143,7 +145,7 @@ class LogObserverCommand extends Command {
 				$fp_start 				= '00:00:00';
 				$fp_end 				= '00:00:00';
 				// $start 					= '00:00:00';
-				$end 					= $time;
+				$end 					= $ltime;
 				$schedule_start 		= '00:00:00';
 				$schedule_end 			= '00:00:00';
 
@@ -354,10 +356,11 @@ class LogObserverCommand extends Command {
 					if(isset($model['created_by']) && $model['created_by']!=0)
 					{
 						$modified_by	= $model['created_by'];
+						$modified_at	= $model['created_at'];
 					}
 				}
 
-				$maxend 		= date('H:i:s', strtotime($logs[count($logs)-1]['on']));
+				$maxend 		= $ltime;
 
 				$idxstart 		= 0;
 				do
@@ -365,9 +368,9 @@ class LogObserverCommand extends Command {
 					$lonstart 		= date('Y-m-d', strtotime($logs[$idxstart]['last_input_time']));
 					$idxstart 		= $idxstart + 1;
 				}
-				while(isset($logs[$idxstart]) && $lonstart < $on);
+				while(isset($logs[$idxstart]) && ($lonstart < $on || strtolower($logs[$idxstart-1]['name'])=='absence'));
 
-				$minstart 			= date('H:i:s', strtotime($logs[$idxstart-1]['on']));
+				$minstart 				= date('H:i:s', strtotime($logs[$idxstart-1]['on']));
 
 				list($hours, $minutes, $seconds) = explode(":", $minstart);
 
@@ -396,8 +399,10 @@ class LogObserverCommand extends Command {
 
 				foreach ($idle as $key => $value) 
 				{
-					if(date('Y-m-d', strtotime($value['on'])) != date('Y-m-d', strtotime($value['last_input_time'])))
+					if((date('Y-m-d', strtotime($parameters['on'])) == date('Y-m-d', strtotime($value['last_input_time'])) && $start_date != date('Y-m-d', strtotime($parameters['on']))) || $start_act == 'absence')
 					{
+						$start_act 		= strtolower($value['name']);
+						$start_date 	= date('Y-m-d', strtotime($value['last_input_time']));
 						$start 			= date('H:i:s', strtotime($value['on']));
 					}
 
@@ -762,7 +767,7 @@ class LogObserverCommand extends Command {
 
 				if (!$plog->save())
 				{
-					$errors 		= $errors('ProcessLog', $plog->getError());
+					$errors 		= $errors->add('ProcessLog', $plog->getError());
 				}
 				else
 				{
@@ -771,12 +776,12 @@ class LogObserverCommand extends Command {
 
 					if (!$alog->save())
 					{
-						$errors 		= $errors('ProcessLog', $alog->getError());
+						$errors 		= $errors->add('ProcessLog', $alog->getError());
 					}
 
 					if (!$ilog->save())
 					{
-						$errors 		= $errors('ProcessLog', $ilog->getError());
+						$errors 		= $errors->add('ProcessLog', $ilog->getError());
 					}
 				}
 			}

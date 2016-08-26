@@ -316,7 +316,7 @@ class WorkleaveController extends BaseController
 		}
 
 		$begin 									= new DateTime( Input::get('start') );
-		$end 										= new DateTime( Input::get('end').' + 1 day' );
+		$end									= new DateTime( Input::get('end').' + 1 day' );
 
 		$search['id'] 							= $person_id;
 		$search['organisationid'] 				= $org_id;
@@ -436,11 +436,13 @@ class WorkleaveController extends BaseController
 				$attributes['work_id'] 			= $is_success->data->work_id;
 				$attributes['person_workleave_id'] 	= $is_success->data->id;
 				$attributes['created_by'] 		= $is_success->data->created_by;
-				$attributes['name'] 			= 'Pengambilan '.$is_success->data->name.' '.date('Y', strtotime($attributes['start']));
+				$attributes['name'] 			= 'Pengambilan '.$is_success->data->name.' '.date('Y', strtotime($is_success->data->start));
 				$attributes['quota'] 			= 0 - (int)$is_success->data->quota;
 				$attributes['status'] 			= $is_success->data->status;
 				$attributes['notes'] 			= 'Pengambilan '.$is_success->data->name.' <> '.$is_success->data->notes;
-
+				$attributes['start'] 			= $begin->format('Y-m-d');
+				$attributes['end'] 				= $ended->format('Y-m-d');
+				
 				$batch 							= true;
 			}
 		}

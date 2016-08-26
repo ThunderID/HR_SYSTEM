@@ -81,6 +81,8 @@ Route::group(['middleware' => 'csrfverify'], function()
 
 		
 		Route::get('error/messages',			['uses' => 'InfoMessageDeviceController@index', 		'as' => 'hr.infomessage.index']);
+		
+		Route::resource('ip/whitelist',			'IPWhitelistController',								['names' => ['index' => 'hr.ipwhitelists.index', 'create' => 'hr.ipwhitelists.create', 'store' => 'hr.ipwhitelists.store', 'show' => 'hr.ipwhitelists.show', 'edit' => 'hr.ipwhitelists.edit', 'update' => 'hr.ipwhitelists.update', 'destroy' => 'hr.ipwhitelists.delete']]);
 
 		// ------------------------------------------------------------------------------------
 		// LANDING PAGE (CHOOSE ORGANISATION OR CREATE ORGANISATION), SHOW ORGANISATION (STARTED WITH DASHBOARD)

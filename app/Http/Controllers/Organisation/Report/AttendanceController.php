@@ -20,6 +20,8 @@ class AttendanceController extends BaseController
 
 	public function index()
 	{		
+		set_time_limit(0);
+		
 		if(Input::has('PersonalRep'))
 		{
 			return Redirect::route('hr.report.attendances.show', array_merge(['id' => Session::get('loggedUser'), 'person_id' => Session::get('loggedUser')],Input::all()));
@@ -239,13 +241,14 @@ class AttendanceController extends BaseController
 
 		if(Input::has('print'))
 		{
+			set_time_limit(0);
 			// Report Global
 			if (!Input::has('withschedule'))
 			{
-				$search 								= ['globalattendance' => array_merge(['organisationid' => $data['id'], 'on' => [$start, $end]], (isset($filtered['search']) ? $filtered['search'] : []))];
+				$search 								= array_merge(['globalattendance' => ['on' => [$start, $end]], 'chartnotadmin' => true], (isset($filtered['search']) ? $filtered['search'] : []));
 				$sort 									= (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']);
-				$page 									= 1;
-				$per_page 								= 100;
+				$page 									= (Input::has('page') ? Input::get('page') : 1);
+				$per_page 								= 25;
 				$search['organisationid'] 				= ['fieldname' => 'persons.organisation_id', 'variable' => $data['id']];
 				$results 								= $this->dispatch(new Getting(new Person, $search, $sort , (int)$page, (int)$per_page, isset($new) ? $new : false));
 
@@ -258,7 +261,7 @@ class AttendanceController extends BaseController
 				$report 								= json_decode(json_encode($contents->data), true);
 
 				// $case = Input::get('case');
-				Excel::create('Laporan Kehadiran per tanggal ( '.$start.' s.d '.$end.' ) di '.$data['name'], function($excel) use ($report, $start, $end, $data) 
+				Excel::create('Laporan Kehadiran per tanggal ( '.$start.' s.d '.$end.' ) di '.$data['name'].' Halaman '.(Input::has('page') ? Input::get('page') : 1), function($excel) use ($report, $start, $end, $data) 
 				{
 					// Set the title
 					$excel->setTitle('Laporan Kehadiran');
@@ -273,10 +276,10 @@ class AttendanceController extends BaseController
 			}
 			else
 			{
-				$search 								= ['processlogattendancesondate' => ['on' => [$start, $end]]];
+				$search 								= array_merge(['processlogattendancesondate' => ['on' => [$start, $end]], 'chartnotadmin' => true], (isset($filtered['search']) ? $filtered['search'] : []));
 				$sort 									= (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']);
-				$page 									= 1;
-				$per_page 								= 100;
+				$page 									= (Input::has('page') ? Input::get('page') : 1);
+				$per_page 								= 25;
 				$search['organisationid'] 				= ['fieldname' => 'persons.organisation_id', 'variable' => $data['id']];
 				$results 								= $this->dispatch(new Getting(new Person, $search, $sort , (int)$page, (int)$per_page, isset($new) ? $new : false));
 
@@ -289,7 +292,7 @@ class AttendanceController extends BaseController
 				$report 								= json_decode(json_encode($contents->data), true);
 
 				// $case = Input::get('case');
-				Excel::create('Laporan Kehadiran per tanggal ( '.$start.' s.d '.$end.' ) di '.$data['name'], function($excel) use ($report, $start, $end, $data) 
+				Excel::create('Laporan Kehadiran per tanggal ( '.$start.' s.d '.$end.' ) di '.$data['name'].' Halaman '.(Input::has('page') ? Input::get('page') : 1), function($excel) use ($report, $start, $end, $data) 
 				{
 					// Set the title
 					$excel->setTitle('Laporan Kehadiran');
@@ -363,6 +366,7 @@ class AttendanceController extends BaseController
 
 		if(Input::has('print'))
 		{
+			set_time_limit(0);
 			$search 								= ['id' => $person['id'], 'processlogattendancesondate' => ['on' => [$start, $end]]];
 			$sort 									= ['persons.name' => 'asc'];
 			$page 									= 1;

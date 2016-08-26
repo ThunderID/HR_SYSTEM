@@ -300,6 +300,14 @@ use \Illuminate\Foundation\Validation\ValidatesRequests;
 							'hr.person.widgets.edit'						=> 101,
 							'hr.person.widgets.update'						=> 101,
 							'hr.person.widgets.delete'						=> 101,
+
+							'hr.ipwhitelists.index' 						=> 49,
+							'hr.ipwhitelists.show'							=> 49,
+							'hr.ipwhitelists.create'						=> 49,
+							'hr.ipwhitelists.store'							=> 49,
+							'hr.ipwhitelists.edit'							=> 49,
+							'hr.ipwhitelists.update'						=> 49,
+							'hr.ipwhitelists.delete'						=> 49,
 				];
 			return $routes_acl;
 		});

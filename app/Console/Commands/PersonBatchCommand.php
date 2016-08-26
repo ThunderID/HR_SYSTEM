@@ -129,6 +129,25 @@ class PersonBatchCommand extends Command {
 
 					if(!$person)
 					{
+						if(is_null($row['nik']))
+						{
+							$nik 				= strtoupper($organisation->code).date('y').'.';
+
+							$frequentnumber 	= Person::where('uniqid', 'like', $nik.'%')->orderby('uniqid', 'desc')->first();
+
+							if($frequentnumber)
+							{
+								$niknumb 		= str_replace(strtoupper($organisation->code).date('y').'.', '', $frequentnumber->uniqid);
+								$number 		= (int)$niknumb+1;
+							}
+							else
+							{
+								$number 		= 1;
+							}
+
+							$row['nik']			= $nik.str_pad($number, 3, '0', STR_PAD_LEFT);
+						}
+
 						$attributes[$i]['uniqid']			= $row['nik'];
 						$attributes[$i]['prefix_title']		= (!is_null($row['prefixtitle']) ? $row['prefixtitle'] : '');
 						$attributes[$i]['name']				= $row['namalengkap'];
@@ -168,14 +187,21 @@ class PersonBatchCommand extends Command {
 						}
 						while($uname);
 
-						$attributes[$i]['username']			= $modifyuname.'.'.$row['kodeorganisasi'];
+						if(!isset($row['username']) || is_null($row['username']))
+						{
+							$attributes[$i]['username']		= $modifyuname.'.'.$row['kodeorganisasi'];
+						}
+						else
+						{
+							$attributes[$i]['username']		= $row['username'];
+						}
 
-						$attributes[$i]['place_of_birth']	= $row['tempatlahir'];
+						$attributes[$i]['place_of_birth']	= $row['place_of_birth'];
 						$attributes[$i]['last_password_updated_at'] = date('Y-m-d H:i:s', strtotime('- 3 month'));
 
 						// list($d, $m, $y) 					= explode("/", $row['tanggallahir']);
 						// $attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime("$y-$m-$d"));
-						$attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime($row['tanggallahir']));
+						$attributes[$i]['date_of_birth']	= date('Y-m-d', strtotime($row['date_of_birth']));
 
 						$attributes[$i]['gender']			= $row['gender']=='L' ? 'male' : 'female';
 						if(isset($row['password']))
@@ -342,6 +368,7 @@ class PersonBatchCommand extends Command {
 						$calendar[$i]['import_from_id'] 	= 1;
 						$calendar[$i]['name'] 				= 'Costum Kalender Untuk '.$row['namacabang'];
 						$calendar[$i]['workdays'] 			= 'senin,selasa,rabu,kamis,jumat';
+						$calendar[$i]['break_idle'] 		= '3600,3600,3600,3600,5400';
 						$calendar[$i]['start'] 				= date('H:i:s', strtotime($row['jammasukkerja']));
 						$calendar[$i]['end'] 				= date('H:i:s', strtotime($row['jampulangkerja']));
 

@@ -250,9 +250,32 @@ class PersonController extends BaseController
 			$page 									= 1;
 			$per_page 								= 100;
 			$search['organisationid'] 				= ['fieldname' => 'persons.organisation_id', 'variable' => $data['id']];
+			
+			if(!isset($filter['search']['checkwork']) || (isset($filter['search']['checkwork']) && $filter['search']['checkwork']==true))
+			{
+				if(Session::get('user.menuid')>=5)
+				{
+					$search['chartchild'] 			= [Session::get('user.chartpath'), Session::get('user.workid')];
+				}
+				else
+				{
+					$search['chartnotadmin'] 		= date('Y-m-d');
+				}
+
+				$title 								= 'Data Karyawan';
+			
+				$search['checkwork'] 				= true;
+			}
+			else
+			{
+				$search['checkwork'] 				= false;
+
+				$title 								= 'Data Non Karyawan';
+			}
+
 			$results 								= $this->dispatch(new Getting(new Person, $search, $sort , (int)$page, (int)$per_page, isset($new) ? $new : false));
 
-			$contents 									= json_decode($results);
+			$contents 								= json_decode($results);
 
 			if(!$contents->meta->success)
 			{	
@@ -261,12 +284,12 @@ class PersonController extends BaseController
 			
 			$report 								= json_decode(json_encode($contents->data), true);
 
-			Excel::create('HRIS - Data Karyawan UB '.$data['name'], function($excel) use ($report, $data) 
+			Excel::create('HRIS - '.$title.' UB '.$data['name'], function($excel) use ($report, $data, $title) 
 			{
 				// Set the title
-				$excel->setTitle('HRIS - Data Karyawan');
+				$excel->setTitle('HRIS - '.$title.'');
 				// Call them separately
-				$excel->setDescription('HRIS - Data Karyawan');
+				$excel->setDescription('HRIS - '.$title.'');
 				$excel->sheet('Sheetname', function ($sheet) use ($report, $data) 
 				{
 					$c 									= count($report);
@@ -800,7 +823,7 @@ class PersonController extends BaseController
 
 	public function getLastNIK()
 	{
-		$search 						= ['organisationid' => 1];
+		$search 						= ['organisationid' => Input::get('org_id')];
 		$results 						= $this->dispatch(new Getting(new Person, $search, ['created_at' => 'desc'] , 1, 1));
 		$contents 						= json_decode($results);
 

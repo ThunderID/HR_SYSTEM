@@ -44,6 +44,7 @@ class Kernel extends ConsoleKernel {
 		'App\Console\Commands\HRUpdateNIKCommand',
 		'App\Console\Commands\HRTestLoginCommand',
 		'App\Console\Commands\HRCheckDocumentCommand',
+		'App\Console\Commands\HRUpdateUsernameAndPasswordCommand',
 	];
 
 	/**

@@ -8,6 +8,8 @@ use App\Models\API;
 use App\Models\Organisation;
 use App\Models\Person;
 use App\Models\Branch;
+use App\Models\IPWhitelist;
+use App\Models\IPWhitelistLog;
 use App\Models\Log;
 use App\Models\ErrorLog;
 use Auth, Input, Session, Redirect, Response, DateTimeZone, DateTime, DB;
@@ -62,7 +64,7 @@ class TimeController extends BaseController {
 	}
 
 	public function testv3()
-	{		
+	{
 		$attributes 							= Input::only('application', 'log');
 
 		//cek apa ada aplication
@@ -139,17 +141,30 @@ class TimeController extends BaseController {
 				}
 				else
 				{
-					$saved_log 					= $this->dispatch(new Saving(new Log, $log, null, new Person, $person->data->id));
-					$is_success_2 				= json_decode($saved_log);
-					if(!$is_success_2->meta->success)
-					{
-						$log['email']			= $value[0];
-						$log['message']			= json_encode($is_success_2->meta->errors);
-						$saved_error_log 		= $this->dispatch(new Saving(new ErrorLog, $log, null, new Organisation, $organisationid));
-					}
+					// $data 						= $this->dispatch(new Getting(new IPWhitelist, ['ip' => $_SERVER['REMOTE_ADDR']], [] , 1, 1), false);
+					// $ip 						= json_decode($data);
+					// if(!$ip->meta->success)
+					// {
+					// 	$log['email']			= $value[0];
+					// 	$log['message']			= 'Pengirim tidak terdaftar dalam IP Whitelist';
+					// 	$saved_error_log 		= $this->dispatch(new Saving(new IPWhitelistLog, $log, null));
+					// }
+					// else
+					// {
+						$saved_log 				= $this->dispatch(new Saving(new Log, $log, null, new Person, $person->data->id));
+						$is_success_2 			= json_decode($saved_log);
+						if(!$is_success_2->meta->success)
+						{
+							$log['email']		= $value[0];
+							$log['message']		= json_encode($is_success_2->meta->errors);
+							$saved_error_log 	= $this->dispatch(new Saving(new ErrorLog, $log, null, new Organisation, $organisationid));
+						}
+						
+					// }
 				}
 			}
 		}
+
 		DB::commit();
 		return Response::json('Sukses', 200);
 	}

@@ -119,6 +119,7 @@ class PersonWorkleaveBatchCommand extends Command {
 		$parameters 				= json_decode($pending->parameter, true);
 		$messages 					= json_decode($pending->message, true);
 
+		\Log::info($id);
 		$begin 						= new DateTime( $parameters['start'] );
 		$ended 						= new DateTime( $parameters['end'].' + 1 day' );
 

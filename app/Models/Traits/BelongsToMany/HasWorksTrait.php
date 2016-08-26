@@ -19,12 +19,12 @@ trait HasWorksTrait {
 	public function Works()
 	{
 		return $this->belongsToMany('App\Models\Person', 'works', 'chart_id', 'person_id')
-				->withPivot('status','start', 'end', 'id');
+				->withPivot('status','start', 'end', 'id', 'grade');
 	}
 
 	public function CheckWorks()
 	{
 		return $this->belongsToMany('App\Models\Chart', 'works', 'chart_id', 'person_id')
-					->withPivot('status', 'start', 'end', 'reason_end_job')->whereNull('end')->orwhere('end', '>=', date('Y-m-d'));
+					->withPivot('status', 'start', 'end', 'reason_end_job', 'grade')->whereNull('end')->orwhere('end', '>=', date('Y-m-d'));
 	}
 }
