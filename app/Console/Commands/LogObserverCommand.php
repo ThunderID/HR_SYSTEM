@@ -252,7 +252,7 @@ class LogObserverCommand extends Command {
 				{
 					//check if global schedule were provided
 					$ccalendars 		= Person::ID($model['person_id'])->WorkCalendar($on)->WorkCalendarschedule(['on' => [$on, $on]])->first();
-					if(!is_null($ccalendars))
+					if(!is_null($ccalendars) && isset($ccalendars->workscalendars[0]) && isset($ccalendars->workscalendars[0]->calendar->schedules[0]))
 					{
 						$ccalendar 		= Person::ID($model['person_id'])->WorkCalendar($on)->WorkCalendarschedule(['on' => [$on, $on]])->WithWorkCalendarSchedules(['on' => [$on, $on]])->first();
 
@@ -298,7 +298,7 @@ class LogObserverCommand extends Command {
 						//check if default workdays provided
 						$calendar 		= Person::ID($model['person_id'])->WorkCalendar(true)->WithWorkSchedules(true)->first();
 
-						if($calendar)
+						if($calendar && isset($calendar->workscalendars[0])
 						{
 							$workid 	= $calendar->workscalendars[0]->id;
 							$is_absence = $calendar->workscalendars[0]->is_absence;
