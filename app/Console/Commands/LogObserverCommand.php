@@ -298,7 +298,7 @@ class LogObserverCommand extends Command {
 						//check if default workdays provided
 						$calendar 		= Person::ID($model['person_id'])->WorkCalendar(true)->WithWorkSchedules(true)->first();
 
-						if($calendar && isset($calendar->workscalendars[0])
+						if($calendar && isset($calendar->workscalendars[0]))
 						{
 							$workid 	= $calendar->workscalendars[0]->id;
 							$is_absence = $calendar->workscalendars[0]->is_absence;
