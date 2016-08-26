@@ -96,6 +96,8 @@
 											Cuti Untuk Keperluan Pribadi
 										@elseif ($value['attendancelogs'][0]['actual_status']=='DN')
 											Keperluan Dinas
+										@elseif ($value['attendancelogs'][0]['actual_status']=='HB')
+											Hadir dan Pulang tepat waktu
 										@elseif ($value['attendancelogs'][0]['actual_status']=='HC')
 											Hadir Cacat Tanpa Penjelasan
 										@elseif ($value['attendancelogs'][0]['actual_status']=='HD')
@@ -127,6 +129,8 @@
 											Cuti Untuk Keperluan Pribadi
 										@elseif ($value['attendancelogs'][0]['modified_status']=='DN')
 											Keperluan Dinas
+										@elseif ($value['attendancelogs'][0]['modified_status']=='HB')
+											Hadir dan Pulang tepat waktu
 										@elseif ($value['attendancelogs'][0]['modified_status']=='HC')
 											Hadir Cacat Tanpa Penjelasan
 										@elseif ($value['attendancelogs'][0]['modified_status']=='HD')
