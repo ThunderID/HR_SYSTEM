@@ -54,7 +54,7 @@
 											'search'			=> array_merge(['processlogattendancesondate' => ['on' => [$start, $end]], 'chartnotadmin' => true], (isset($filtered['search']) ? $filtered['search'] : [])),
 											'sort'				=> ['persons.name' => 'asc'],
 											'page'				=> (Input::has('page') ? Input::get('page') : 1),
-											'per_page'			=> 25,
+											'per_page'			=> 100,
 										]
 									]
 	])	
@@ -72,7 +72,7 @@
 												'sort'				=> (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']),
 												'page'				=> (Input::has('page') ? Input::get('page') : 1),
 												'active_filter'		=> (isset($filtered['active']) ? $filtered['active'] : null),
-												'per_page'			=> 25,
+												'per_page'			=> 100,
 											]
 										]
 		])

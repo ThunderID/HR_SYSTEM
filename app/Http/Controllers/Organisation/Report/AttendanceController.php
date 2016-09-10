@@ -248,7 +248,7 @@ class AttendanceController extends BaseController
 				$search 								= array_merge(['globalattendance' => ['on' => [$start, $end]], 'chartnotadmin' => true], (isset($filtered['search']) ? $filtered['search'] : []));
 				$sort 									= (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']);
 				$page 									= (Input::has('page') ? Input::get('page') : 1);
-				$per_page 								= 25;
+				$per_page 								= 100;
 				$search['organisationid'] 				= ['fieldname' => 'persons.organisation_id', 'variable' => $data['id']];
 				$results 								= $this->dispatch(new Getting(new Person, $search, $sort , (int)$page, (int)$per_page, isset($new) ? $new : false));
 
@@ -279,7 +279,7 @@ class AttendanceController extends BaseController
 				$search 								= array_merge(['processlogattendancesondate' => ['on' => [$start, $end]], 'chartnotadmin' => true], (isset($filtered['search']) ? $filtered['search'] : []));
 				$sort 									= (isset($filtered['sort']) ? $filtered['sort'] : ['persons.name' => 'asc']);
 				$page 									= (Input::has('page') ? Input::get('page') : 1);
-				$per_page 								= 25;
+				$per_page 								= 100;
 				$search['organisationid'] 				= ['fieldname' => 'persons.organisation_id', 'variable' => $data['id']];
 				$results 								= $this->dispatch(new Getting(new Person, $search, $sort , (int)$page, (int)$per_page, isset($new) ? $new : false));
 
