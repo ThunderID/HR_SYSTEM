@@ -113,9 +113,10 @@ class LogAbsenceCommand extends Command {
 				'app_version'		=> '1.0',
 				'ip'				=> getenv("REMOTE_ADDR"),
 				'pc'				=> 'cron',
+				'person_id'			=> $value['id'],
 			]);
 
-			$log->Person()->associate($value);
+			// $log->Person()->associate($value);
 
 			if(!$log->save())
 			{

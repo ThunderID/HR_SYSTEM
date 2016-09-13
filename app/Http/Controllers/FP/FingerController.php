@@ -83,13 +83,15 @@ class FingerController extends BaseController
 			{
 				$data['email']				= $value[0];
 				$data['message']			= json_encode($person->meta->errors);
-				$saved_error_data 			= $this->dispatch(new Saving(new ErrorLog, $data, null, new Organisation, $organisationid));
+				$data['organisation_id']	= $organisationid;
+				$saved_error_data 			= $this->dispatch(new Saving(new ErrorLog, $data));
 			}
 			elseif(!$person->data->finger)
 			{
 				$data['email']				= $person->data->username;
 				$data['message']			= json_encode(['Tidak ada data finger']);
-				$saved_error_data 			= $this->dispatch(new Saving(new ErrorLog, $data, null, new Organisation, $organisationid));
+				$data['organisation_id']	= $organisationid;
+				$saved_error_data 			= $this->dispatch(new Saving(new ErrorLog, $data));
 			}
 			else
 			{
@@ -144,7 +146,8 @@ class FingerController extends BaseController
 				{
 					$data['email']				= $person->data->name;
 					$data['message']			= $is_success_2->meta->errors;
-					$saved_error_data 			= $this->dispatch(new Saving(new ErrorLog, $data, null, new Organisation, $organisationid));
+					$data['organisation_id']	= $organisationid;
+					$saved_error_data 			= $this->dispatch(new Saving(new ErrorLog, $data));
 				}
 			}
 		}
@@ -216,13 +219,15 @@ class FingerController extends BaseController
 			{
 				$data['email']				= $value[0];
 				$data['message']			= json_encode($person->meta->errors);
-				$saved_error_data 			= $this->dispatch(new Saving(new ErrorLog, $data, null, new Organisation, $organisationid));
+				$data['organisation_id']	= $organisationid;
+				$saved_error_data 			= $this->dispatch(new Saving(new ErrorLog, $data));
 			}
 			elseif(!$person->data->finger)
 			{
 				$data['email']				= $person->data->username;
 				$data['message']			= json_encode(['Tidak ada data finger']);
-				$saved_error_data 			= $this->dispatch(new Saving(new ErrorLog, $data, null, new Organisation, $organisationid));
+				$data['organisation_id']	= $organisationid;
+				$saved_error_data 			= $this->dispatch(new Saving(new ErrorLog, $data));
 			}
 			else
 			{
@@ -277,7 +282,8 @@ class FingerController extends BaseController
 				{
 					$data['email']				= $person->data->name;
 					$data['message']			= $is_success_2->meta->errors;
-					$saved_error_data 			= $this->dispatch(new Saving(new ErrorLog, $data, null, new Organisation, $organisationid));
+					$data['organisation_id']	= $organisationid;
+					$saved_error_data 			= $this->dispatch(new Saving(new ErrorLog, $data));
 				}
 			}
 		}

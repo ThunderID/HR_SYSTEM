@@ -100,11 +100,12 @@ class PersonScheduleObserver
 						'pc'				=> 'HRIS',
 						'app_version'		=> 'WEB',
 						'ip'				=> getenv("REMOTE_ADDR"),
+						'person_id'			=> $model['attributes']['person_id'],
 				]);
 
-				$person 					= Person::find($model['attributes']['person_id']);
+				// $person 					= Person::find($model['attributes']['person_id']);
 
-				$data->Person()->associate($person);
+				// $data->Person()->associate($person);
 				
 				if(!$data->save())
 				{

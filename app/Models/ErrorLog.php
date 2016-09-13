@@ -37,6 +37,7 @@ class ErrorLog extends BaseModel {
 	protected 	$table 				= 'error_logs';
 
 	protected 	$fillable			= 	[
+											'organisation_id' 			,
 											'email' 					,
 											'name' 						,
 											'on' 						,
@@ -46,6 +47,7 @@ class ErrorLog extends BaseModel {
 										];
 
 	protected 	$rules				= 	[
+											'organisation_id' 			=> 'exists:organisations,id',
 											'email'						=> 'max:255',
 											'name'						=> 'max:255',
 											'on'						=> 'date_format:"Y-m-d H:i:s"',
@@ -68,6 +70,7 @@ class ErrorLog extends BaseModel {
 										];
 
 	public $sortable 				= 	['created_at'];
+
 
 	/* ---------------------------------------------------------------------------- CONSTRUCT ----------------------------------------------------------------------------*/
 	/**

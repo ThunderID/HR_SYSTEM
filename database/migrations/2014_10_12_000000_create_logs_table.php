@@ -30,7 +30,6 @@ class CreateLogsTable extends Migration {
 			$table->index(['deleted_at', 'on']);
 
 			$table->index(['deleted_at', 'created_at', 'on']);
-			$table->index(['deleted_at', 'id']);
 		});
 	}
 

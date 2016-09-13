@@ -80,7 +80,6 @@ class HRSUpdateCommand extends Command {
 		Schema::table('logs', function(Blueprint $table) 
 		{
 			$table->index(['deleted_at', 'created_at', 'on']);
-			$table->index(['deleted_at', 'id']);
 		});
 
 		$this->info("Add index id and created_at for logs");
@@ -88,7 +87,6 @@ class HRSUpdateCommand extends Command {
 		Schema::table('error_logs', function(Blueprint $table) 
 		{
 			$table->index(['deleted_at', 'created_at', 'on']);
-			$table->index(['deleted_at', 'id']);
 		});
 
 		$this->info("Add index on for error logs");
@@ -106,6 +104,14 @@ class HRSUpdateCommand extends Command {
 		});
 
 		$this->info("Add index on for person");
+
+		Schema::table('charts', function(Blueprint $table) 
+		{
+			$table->index(['deleted_at', 'start']);
+			$table->index(['deleted_at', 'chart_id', 'end']);
+		});
+
+		$this->info("Add index on for chart");
 
 		//temporary disabled til release
 

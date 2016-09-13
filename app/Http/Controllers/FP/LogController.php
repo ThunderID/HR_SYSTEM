@@ -94,17 +94,20 @@ class LogController extends BaseController
 				{
 					$log['email']				= $value[0];
 					$log['message']				= json_encode($person->meta->errors);
-					$saved_error_log 			= $this->dispatch(new Saving(new ErrorLog, $log, null, new Organisation, $organisationid));
+					$log['organisation_id']		= $organisationid;
+					$saved_error_log 			= $this->dispatch(new Saving(new ErrorLog, $log));
 				}
 				else
 				{
-					$saved_log 					= $this->dispatch(new Saving(new Log, $log, null, new Person, $person->data->id));
+					$log['person_id']			= $person->data->id;
+					$saved_log 					= $this->dispatch(new Saving(new Log, $log));
 					$is_success_2 				= json_decode($saved_log);
 					if(!$is_success_2->meta->success)
 					{
 						$log['email']			= $value[0];
 						$log['message']			= $is_success_2->meta->errors;
-						$saved_error_log 		= $this->dispatch(new Saving(new ErrorLog, $log, null, new Organisation, $organisationid));
+						$log['organisation_id']	= $organisationid;
+						$saved_error_log 		= $this->dispatch(new Saving(new ErrorLog, $log));
 					}
 				}
 			}

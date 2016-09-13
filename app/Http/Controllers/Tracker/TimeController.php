@@ -87,7 +87,7 @@ class TimeController extends BaseController {
 			$elog['on']							= date('Y-m-d H:i:s');
 			$elog['message']					= 'Upaya Masuk';
 			$elog['ip'] 						= $_SERVER['REMOTE_ADDR'];
-			$saved_error_log 					= $this->dispatch(new Saving(new ErrorLog, $elog, null));
+			$saved_error_log 					= $this->dispatch(new Saving(new ErrorLog, $elog));
 
 			return Response::json('402', 200);
 		}
@@ -137,7 +137,8 @@ class TimeController extends BaseController {
 				{
 					$log['email']				= $value[0];
 					$log['message']				= 'Pengirim tidak terdaftar dalam sistem';
-					$saved_error_log 			= $this->dispatch(new Saving(new ErrorLog, $log, null, new Organisation, $organisationid));
+					$log['organisation_id']		= $organisationid;
+					$saved_error_log 			= $this->dispatch(new Saving(new ErrorLog, $log));
 				}
 				else
 				{
@@ -151,13 +152,15 @@ class TimeController extends BaseController {
 					// }
 					// else
 					// {
-						$saved_log 				= $this->dispatch(new Saving(new Log, $log, null, new Person, $person->data->id));
+						$log['person_id']		= $person->data->id;
+						$saved_log 				= $this->dispatch(new Saving(new Log, $log));
 						$is_success_2 			= json_decode($saved_log);
 						if(!$is_success_2->meta->success)
 						{
-							$log['email']		= $value[0];
-							$log['message']		= json_encode($is_success_2->meta->errors);
-							$saved_error_log 	= $this->dispatch(new Saving(new ErrorLog, $log, null, new Organisation, $organisationid));
+							$log['email']			= $value[0];
+							$log['message']			= json_encode($is_success_2->meta->errors);
+							$log['organisation_id']	= $organisationid;
+							$saved_error_log 		= $this->dispatch(new Saving(new ErrorLog, $log));
 						}
 						
 					// }

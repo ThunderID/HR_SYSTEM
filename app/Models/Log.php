@@ -38,6 +38,7 @@ class Log extends BaseModel {
 	protected 	$table 				= 	'logs';
 
 	protected 	$fillable			= 	[
+											'person_id' 				,
 											'created_by' 				,
 											'name' 						,
 											'on' 						,
@@ -48,6 +49,7 @@ class Log extends BaseModel {
 										];
 
 	protected 	$rules				= 	[
+											'person_id'					=> 'exists:persons,id',
 											'created_by'				=> 'exists:persons,id',
 											'name'						=> 'required|max:255',
 											'on'						=> 'required|date_format:"Y-m-d H:i:s"',
