@@ -27,8 +27,10 @@ class CreateLogsTable extends Migration {
 			$table->softDeletes();
 			
 			$table->index(['deleted_at', 'person_id', 'on']);
-
 			$table->index(['deleted_at', 'on']);
+
+			$table->index(['deleted_at', 'created_at', 'on']);
+			$table->index(['deleted_at', 'id']);
 		});
 	}
 

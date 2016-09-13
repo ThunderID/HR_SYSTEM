@@ -32,6 +32,7 @@ class CreatePersonsTable extends Migration {
 
 			$table->index(['deleted_at', 'organisation_id', 'name']);
 			$table->index(['deleted_at', 'organisation_id', 'uniqid']);
+			$table->index(['deleted_at', 'uniqid']);
 		});
 	}
 

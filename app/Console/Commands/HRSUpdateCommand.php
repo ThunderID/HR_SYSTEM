@@ -5,10 +5,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Database\Schema\Blueprint;
 use Schema;
-use App\Models\Calendar;
-use App\Models\Chart;
-use App\Models\ChartWorkleave;
-use App\Models\PersonWorkleave;
 use DB, Hash;
 
 class HRSUpdateCommand extends Command {
@@ -44,34 +40,34 @@ class HRSUpdateCommand extends Command {
 	 */
 	public function fire()
 	{
-		$result 		= $this->update08062016();
+		$result 		= $this->update13092016();
 		
 		return true;
 	}
 
-	/**
-	 * Get the console command arguments.
-	 *
-	 * @return array
-	 */
-	protected function getArguments()
-	{
-		return [
-			['example', InputArgument::REQUIRED, 'An example argument.'],
-		];
-	}
+	// /**
+	//  * Get the console command arguments.
+	//  *
+	//  * @return array
+	//  */
+	// protected function getArguments()
+	// {
+	// 	return [
+	// 		['example', InputArgument::REQUIRED, 'An example argument.'],
+	// 	];
+	// }
 
-	/**
-	 * Get the console command options.
-	 *
-	 * @return array
-	 */
-	protected function getOptions()
-	{
-		return [
-			['example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
-		];
-	}
+	// /**
+	//  * Get the console command options.
+	//  *
+	//  * @return array
+	//  */
+	// protected function getOptions()
+	// {
+	// 	return [
+	// 		['example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
+	// 	];
+	// }
 
 	/**
 	 * update 1st version
@@ -79,29 +75,61 @@ class HRSUpdateCommand extends Command {
 	 * @return void
 	 * @author 
 	 **/
-	public function update08062016()
+	public function update13092016()
 	{
-		Schema::create('tmp_ip_whitelists', function(Blueprint $table) {
-			$table->increments('id');
-			$table->string('ip', 255);
-			$table->timestamps();
-			$table->softDeletes();
-		});
-		
-		Schema::create('whitelist_logs', function(Blueprint $table)
+		Schema::table('logs', function(Blueprint $table) 
 		{
-			$table->increments('id');
-			$table->string('email', 255);
-			$table->string('name', 255);
-			$table->string('pc', 255);
-			$table->datetime('on');
-			$table->text('message');
-			$table->string('ip', 255);
-			$table->timestamps();
-			$table->softDeletes();
-			
-			$table->index(['deleted_at', 'on']);
+			$table->index(['deleted_at', 'created_at', 'on']);
+			$table->index(['deleted_at', 'id']);
 		});
+
+		$this->info("Add index id and created_at for logs");
+
+		Schema::table('error_logs', function(Blueprint $table) 
+		{
+			$table->index(['deleted_at', 'created_at', 'on']);
+			$table->index(['deleted_at', 'id']);
+		});
+
+		$this->info("Add index on for error logs");
+
+		Schema::table('tmp_queues', function(Blueprint $table) 
+		{
+			$table->index(['deleted_at', 'process_number', 'total_process']);
+		});
+
+		$this->info("Add index on for queues");
+
+		Schema::table('persons', function(Blueprint $table) 
+		{
+			$table->index(['deleted_at', 'uniqid']);
+		});
+
+		$this->info("Add index on for person");
+
+		//temporary disabled til release
+
+		// Schema::create('tmp_ip_whitelists', function(Blueprint $table) {
+		// 	$table->increments('id');
+		// 	$table->string('ip', 255);
+		// 	$table->timestamps();
+		// 	$table->softDeletes();
+		// });
+		
+		// Schema::create('whitelist_logs', function(Blueprint $table)
+		// {
+		// 	$table->increments('id');
+		// 	$table->string('email', 255);
+		// 	$table->string('name', 255);
+		// 	$table->string('pc', 255);
+		// 	$table->datetime('on');
+		// 	$table->text('message');
+		// 	$table->string('ip', 255);
+		// 	$table->timestamps();
+		// 	$table->softDeletes();
+			
+		// 	$table->index(['deleted_at', 'on']);
+		// });
 		
 		return true;
 	}

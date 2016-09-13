@@ -27,6 +27,7 @@ class CreateTmpQueuesTable extends Migration {
 			$table->softDeletes();
 			
 			$table->index(['deleted_at', 'process_number', 'process_name']);
+			$table->index(['deleted_at', 'process_number', 'total_process']);
 		});
 	}
 
