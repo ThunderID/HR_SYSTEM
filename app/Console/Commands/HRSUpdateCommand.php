@@ -89,7 +89,7 @@ class HRSUpdateCommand extends Command {
 			$table->index(['deleted_at', 'uniqid']);
 		});
 
-		// $this->info("Add index on for person");
+		$this->info("Add index on for person");
 
 		// Schema::table('logs', function(Blueprint $table) 
 		// {
