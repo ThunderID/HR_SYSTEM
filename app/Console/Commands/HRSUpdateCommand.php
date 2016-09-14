@@ -77,20 +77,6 @@ class HRSUpdateCommand extends Command {
 	 **/
 	public function update13092016()
 	{
-		Schema::table('logs', function(Blueprint $table) 
-		{
-			$table->index(['deleted_at', 'created_at', 'on']);
-		});
-
-		$this->info("Add index id and created_at for logs");
-
-		Schema::table('error_logs', function(Blueprint $table) 
-		{
-			$table->index(['deleted_at', 'created_at', 'on']);
-		});
-
-		$this->info("Add index on for error logs");
-
 		Schema::table('tmp_queues', function(Blueprint $table) 
 		{
 			$table->index(['deleted_at', 'process_number', 'total_process']);
@@ -103,15 +89,29 @@ class HRSUpdateCommand extends Command {
 			$table->index(['deleted_at', 'uniqid']);
 		});
 
-		$this->info("Add index on for person");
+		// $this->info("Add index on for person");
 
-		Schema::table('charts', function(Blueprint $table) 
-		{
-			$table->index(['deleted_at', 'start']);
-			$table->index(['deleted_at', 'chart_id', 'end']);
-		});
+		// Schema::table('logs', function(Blueprint $table) 
+		// {
+		// 	$table->index(['deleted_at', 'created_at', 'on']);
+		// });
 
-		$this->info("Add index on for chart");
+		// $this->info("Add index id and created_at for logs");
+
+		// Schema::table('error_logs', function(Blueprint $table) 
+		// {
+		// 	$table->index(['deleted_at', 'created_at', 'on']);
+		// });
+
+		// $this->info("Add index on for error logs");
+
+		// Schema::table('charts', function(Blueprint $table) 
+		// {
+		// 	$table->index(['deleted_at', 'start']);
+		// 	$table->index(['deleted_at', 'chart_id', 'end']);
+		// });
+
+		// $this->info("Add index on for chart");
 
 		//temporary disabled til release
 
